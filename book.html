@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Objects</title>
+  </head>
+  <body>
+    <h1>Objects</h1>
+      <p>Ruby embodies the object-orientated paradigm. She holds as
+      fundamental principle that <q>everything is an object</q>.
+
+      <p>An <i>object</i> is a compilation of data (attributes) and behaviour
+      (methods) which encapsulate a specific <i>instance</i> of a
+      <i>class</i>. The String <code>"hello"</code> and the Integer
+      <code>3</code> are both examples of objects, and instances of the
+      <i>String</i> and <i>Integer</i> classes, respectively. They constitute
+      data (<q>hello</q> and <q>3</q>, respectively) and behaviour relevant to
+      that data.
+
+      <p>A <i>class</i> is a <i>classification</i> of objects. It constitutes a
+      template from which such objects can be constructed. Hence
+      <code>3</code> and <code>198705</code> are both instances of the
+      <code>Integer</code> class. Their data (i.e. their numerical value)
+      differs but they behave as any other instance of their class. That is,
+      by their nature as integers both objects can be multiplied by another
+      integer, and both are either odd or even, etc.
+      
+      <aside>The term <i>class</i> is roughly analogous to its biological
+      definition where it denotes a taxonomic rank, however this analogy does not
+      extend to subclasses. That is, a subclass of a class is termed a
+      <i>subclass</i>; not an <i>order</i>.</aside>
+      
+      <h2>Methods</h2>
+        
+        <p>A <i>method</i> is a block of code associated with a class or
+        object. For now we will define <i>block of code</i> as a sequence of
+        one or more statements.
+
+        <p>A method is invoked for the side-effect it causes, the value it
+        returns, or a combination of these factors. Note that this definition
+        encompasses <i>accessor</i> and <i>mutator</i> methods; Ruby makes no
+        such distinction.
+
+        <h3>Instance Methods</h3>
+
+          <p>An instance method is a behaviour of an object. It is typically
+          created with the <code>def</code> keyword in the context of a class.
+          
+          <aside>
+          It is conventional to employ the <code>Class#method</code> notation
+          when referring to instance methods in documentation and prose. For
+          example: <code>Integer#even?</code>.
+          </aside>
+
+          <figure id=def-instance-method>
+          <dt>Defining an instance method named <code>bark</code> for the <code>Dog</code> class
+            with the <code>def</code> keyword.
+            <dd>
+              <pre><code>
+                class Dog
+                  def bark
+                    :woof
+                  end
+                end
+                Dog.new.bark #=&gt; :woof
+              </code></pre>  
+            </dd>
+          </figure>
+
+        <h3>Singleton Methods</h3>
+
+          <p>A singleton method is associated with a class as opposed to its
+          instances. Indeed, it is typically a <i>factory method</i>: a constructor of
+          instances. They are also created with the <code>def</code> keyword,
+          but their names are prefixed with <code>self.</code> to denote their
+          singleton status.
+          
+          <figure id=def-singleton-method>
+          <dt>Defining a singleton method named <code>breed</code> for the
+          <code>Dog</code> class with the <code>def</code> keyword.
+            <dd>
+              <pre><code>
+                class Dog
+                  def self.breed
+                    [new, new]
+                  end
+                end
+                Dog.breed #=&gt; [#<Dog:0x95cb530>, #<Dog:0x95cb508>]
+              </code></pre>  
+            </dd>
+          </figure>
+
+          <aside>
+          It is conventional to employ the <code>Class.method</code>
+          notation when referring to singleton methods in documentation and
+          prose. For example: <code>File.exists?</code>.
+          </aside>
+
+          <h3>Return Values</h3>
+
+          <p>A method always returns a value. This is <code>nil</code> if the
+          method was defined without a body; the last statement executed
+          otherwise. If an explicit <code>return</code> statement is reached
+          inside a method, its value will be returned. 
+
+          <p>This gives rise to two conventions:
+            <ul>
+              <li>A method uses a <code>return</code> statement iff it may
+              return before its last statement.
+              <li>A method intended to return a value has that value as its
+              last statement
+            </ul>
+          </p>
+          
+          <!-- TODO: Mention Object#tap -->
+
+          <figure id=def-implicit-return>
+            <dt>A method which returns the Symbol <code>:to_sender</code>
+            <dd>
+              <pre><code>
+                def elvis
+                  :to_sender
+                end
+              </code></pre>
+            </dd>
+          </figure>
+
+          <h3>Names</h3>
+
+            <h4>Conventions</h4>
+
+            <p><i>Predicate</i> methods (those which return either
+            <code>true</code> or <code>false</code>) use a <code>?</code>
+            suffix. For example: <code>Integer#even?</code>.
+
+            <p>The <code>!</code> suffix (colloquially called a <i>bang</i>)
+            is used <q>…to mark a method as special. It doesn’t necessarily
+            mean that it will be destructive or dangerous, but it means that
+            it will require more attention than its alternative.</q> [Brown,
+            2009, pp. 52]. <q>Usually, the method without
+            the exclamation mark returns a modified copy of the object it is
+            invoked on, and the one with the exclamation mark is a mutator
+            method that alters the object in place.</q> [Flanagan &amp;
+            Matsumoto, 2008, pp. 7] 
+
+            <h4>The <code>=</code> Suffix</h4>
+            
+            <p>Methods named with a <code>=</code> suffix can be used in
+            assignment statements as <i>lvalues</i>. That is, a method defined
+            as <code>name=(value)</code> on object <code>obj</code> can be
+            invoked as <code>obj.name = value</code> or
+            <code>obj.name=(value)</code>.     
+
+            <aside class=warning>
+            <p>The syntax <code>name = value</code> is therefore ambiguous. Is
+            the intent to assign the value <code>value</code> to the local variable
+            <code>name</code> or to invoke the method named <code>name=</code>
+            with <code>value</code> as the argument?
+
+            <p>The resolution is to always invoke a <code>=</code>-suffixed method with an explicit
+            receiver, such as <code>self</code>. Alternatively, make it
+            explicit that you are invoking a method with the
+            <code>name=(value)</code> syntax.
+            </aside>
+           
+           
+       <h2>Classes</h2>
+
+      <p>We have introduced classes as templates from which objects can be
+      created. A class is typically created with the <code>class</code>
+      keyword followed by the class name.
+
+      <figure id=class-keyword>
+      <dt>Usage of the <code>class</code> keyword to <i>open</i> a class named
+      <code>Dog</code></dt>
+        <dd>
+          <pre><code>
+          class Dog
+          end
+          </code></pre>
+        </dd>
+      </figure>
+
+      <p>The <code>Class.new</code> constructor may be used to the same effect
+      if it is assigned to a constant.
+
+      <figure id=class-new>
+      <dt>Usage of the <code>Class.new</code> constructor to create a class
+      named <code>Dog</code></dt>
+        <dd>
+          <pre><code>
+          Dog = Class.new
+          </code></pre>
+        </dd>
+      </figure>
+
+        <h3>Names</h3>
+          
+          <h4>Rules</h4>
+          
+          <p>The name of class must: 
+            <ul>
+              <li>Begin with an uppercase ASCII letter (A-Z) (U+0041..U+005A).
+              <li>Not contain a colon (U+003A).
+              <li>Not contain an ASCII space character (U+0020)
+            </ul>
+            <!-- FIXME: Derive and enumerate rules -->
+
+          <p>More generally, a class name consists of an uppercase ASCII
+          character, optionally followed by a sequence of other alphanumeric
+          characters
+
+          <aside class=warning>
+            Class names containing non-ASCII characters cannot be referred to
+            from source files using a different encoding. For example, a class
+            name containing character U+03BB (<i>GREEK SMALL LETTER LAMDA</i>)
+            can only be referenced from source files using the UTF-8 source
+            encoding. <!-- FIXME: What about other Unicode character sets? -->
+           </aside>
+
+          <h4>Conventions</h4>
+
+          <p>Conventionally class names use camel-case capitalization: The
+          initial letter of each word is capitalized, and spaces between the
+          words are removed. For example:
+          <code>RubyProgrammingLanguage</code> or
+          <code>NutsAndBolts</code>.</p>
+
+          <p>A class name is a constant. The use of camel-case for class names
+          and uppercase for constant names ensures that the two don't clash.
+
+        <h3>Reopening Classes</h3>
+
+        <p>If <code>class</code> is used with the name of a pre-existing class
+        that class is <i>re-opened</i>. If a method is defined in a re-opened
+        class with the same name as a pre-existing method in the same class
+        the old method is overwritten with the new.
+
+        <figure id=reopened-class>
+          <dt>Re-defining a method in an existing class</dt>
+          <dd>
+            <pre><code>
+              'hello'.size #=&gt; 5
+              class String
+                def size
+                  'How long is a piece of string?'
+                end
+              end
+              'hello'.size #=&gt; 'How long is a piece of string?'
+            </code></pre>
+          </dd>
+        </figure>  
+
+        <h3>Anonymous Classes</h3>
+
+        <p>When a constant is used as a class name it has global scope. This
+        gives rise to the characteristic described above in <i>Reopening
+          Classes</i>. If this behaviour is not desirable, a class can be made
+        anonymous by assigning the value of <code>Class.new</code> to a local
+        variable, thus restricting the class to the local scope.
+
+        <figure id=anonymous-class>
+        <dt>Creating an anonymous class with <code>Class.new</code></dt>
+          <dd>
+            <pre><code>
+              dog = Class.new
+              dog.class_eval do
+                def bark
+                  :woof
+                end
+              end
+              dog.new.bark #=&gt; :woof
+            </code></pre>
+          </dd>
+        </figure>
+  <body>
+</html>
