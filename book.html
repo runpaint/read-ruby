@@ -137,13 +137,14 @@
 
             <p>The <code>!</code> suffix (colloquially called a <i>bang</i>)
             is used <q>…to mark a method as special. It doesn’t necessarily
-            mean that it will be destructive or dangerous, but it means that
-            it will require more attention than its alternative.</q> [Brown,
-            2009, pp. 52]. <q>Usually, the method without
-            the exclamation mark returns a modified copy of the object it is
-            invoked on, and the one with the exclamation mark is a mutator
-            method that alters the object in place.</q> [Flanagan &amp;
-            Matsumoto, 2008, pp. 7] 
+              mean that it will be destructive or dangerous, but it means that
+              it will require more attention than its alternative.</q> <a
+              class=ref href=#refBROWN09>[Brown,
+            2009, pp. 52]</a>. <q>Usually, the method without the exclamation
+            mark returns a modified copy of the object it is invoked on, and
+            the one with the exclamation mark is a mutator method that alters
+            the object in place.</q> <a class=ref href=#refFLAN08>[Flanagan
+            &amp; Matsumoto, 2008, pp. 7]</a> 
 
             <h4>The <code>=</code> Suffix</h4>
             
@@ -304,7 +305,8 @@
           same as private methods. However, unlike private methods
           they can be explicitly invoked on any instance of their class.
 
-          <p>Flanagan &amp; Matsumoto (2008, pp. 232) suggest that <q>A
+          <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, pp.
+            232)</a> suggest that <q>A
             protected method can be used, for example, to define an accessor
             that allows instances of a class to share internal state with each
             other, but does not allow users of the class to access that
@@ -420,5 +422,15 @@
             </code></pre>
           </dd>
         </figure>
+  
+  <h2>References</h2>
+    <dl>
+      <dt id="refBROWN09">[BROWN09]</dt>
+      <dd><cite><a href=//rubybestpractices.com/>Ruby Best Practices</a></cite>,
+      G. Brown, O'Reilly Media, 2009.</dd>
+      <dt id="refFLAN08">[FLAN08]</dt>
+      <dd><cite><a href=//oreilly.com/catalog/9780596516178>The Ruby Programming Language</a></cite>,
+      D. Flanagan &amp; Y. Matsumoto, O'Reilly Media, 2008.</dd>
+    </dl>
   <body>
 </html>
