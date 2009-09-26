@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Objects</title>
+    <title>Ruby</title>
+    <meta charset="utf-8"/>
   </head>
   <body>
-    <h1>Objects</h1>
+    <h1>Ruby</h1>
+      
+      <h2>Objects</h2>
       <p>Ruby embodies the object-orientated paradigm. She holds as
-      fundamental principle that <q>everything is an object</q>.
+      fundamental that <q>everything is an object</q>.
 
-      <p>An <i>object</i> is a compilation of data (attributes) and behaviour
-      (methods) which encapsulate a specific <i>instance</i> of a
-      <i>class</i>. The String <code>"hello"</code> and the Integer
-      <code>3</code> are both examples of objects, and instances of the
-      <i>String</i> and <i>Integer</i> classes, respectively. They constitute
-      data (<q>hello</q> and <q>3</q>, respectively) and behaviour relevant to
-      that data.
+      <p>An <dfn id=object>object</dfn> is a compilation of data
+      (attributes) and behaviour (methods) which encapsulate a specific
+      <i>instance</i> of a <i>class</i>. The String <code>"hello"</code> and
+      the Integer <code>3</code> are both examples of objects, and instances
+      of the <i>String</i> and <i>Integer</i> classes, respectively. They
+      constitute data (<q>hello</q> and <q>3</q>, respectively) and behaviour
+      relevant to that data.
 
-      <p>A <i>class</i> is a <i>classification</i> of objects. It constitutes a
-      template from which such objects can be constructed. Hence
+      <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It
+      constitutes a template from which such objects can be constructed. Hence
       <code>3</code> and <code>198705</code> are both instances of the
       <code>Integer</code> class. Their data (i.e. their numerical value)
       differs but they behave as any other instance of their class. That is,
@@ -31,9 +34,9 @@
       
       <h2>Methods</h2>
         
-        <p>A <i>method</i> is a block of code associated with a class or
-        object. For now we will define <i>block of code</i> as a sequence of
-        one or more statements.
+        <p>A <dfn id=method>method</dfn> is a block of code associated with a
+        class or object. For now we will define <i>block of code</i> as a
+        sequence of one or more statements.
 
         <p>A method is invoked for the side-effect it causes, the value it
         returns, or a combination of these factors. Note that this definition
@@ -162,6 +165,151 @@
             <code>name=(value)</code> syntax.
             </aside>
            
+        <h3>Visibility</h3>
+
+        <p>An instance method is either <i>public</i>, <i>private</i>, or
+        <i>protected</i>. It is declared as such with
+        <code>Module#public</code>, <code>Module#private</code>, and
+        <code>Module#protected</code> (hereafter: <i>visibility
+          specifiers</i>), respectively.
+
+         <p>A visibility specifier invoked without arguments affects every
+         method subsequently defined in the same class definition until
+         another visibility specifier is encountered.
+
+          <figure id=visibility-specifiers>
+            <dt>Declaring the visibility of methods with visibility specifiers
+            <dd>
+              <pre><code>
+              class C                
+                # This method is public because it hasn't been specified
+                # otherwise
+                def pub
+                end
+                
+                private
+                # This method is private because it appears after the
+                #'private' visibility specifier
+                def pri
+                end
+
+                # This method is also private because the previous visibility
+                # specifier has not been overridden
+                def pri2
+                end
+
+                protected
+                # This method is protected because it appears after the
+                #'protected' visibility specifier
+                def pro
+                end
+                
+                public
+                # This method is public because the protected visibility
+                # specifier has been explicitly overridden. Typically this would
+                # have been defined after 'pub', removing the need for a
+                # visibility specifier
+                def pub2
+                end  
+              end  
+              </code></pre>
+            </dd>
+          </figure>
+
+         <p>A visibility specifier with one or more method names (given as
+         Symbols or Strings) affects only the named methods, which must have
+         already been defined.
+
+          <figure id=visibility-specifiers-args>
+            <dt>Declaring the visibility of methods with visibility specifiers
+            that take arguments
+            <dd>
+              <pre><code>
+              class C                
+                # This method is public because it hasn't been specified
+                # otherwise
+                def pub
+                end
+                
+                def pri
+                end
+
+                def pri2
+                end
+
+                # Both :pri and :pri2 are made private because their names are
+                # given as arguments to the 'private' visibility specifier
+                private :pri, :pri2
+
+                def pro
+                end
+                # This method is made protected because its name is given to
+                # the 'protected' visibility specifier
+                protected 'pro'
+                
+                # This method is public because it hasn't been declared
+                # otherwise; the previous 'protected' specifier only affects the
+                # method it was called for
+                def pub2
+                end  
+              end  
+              </code></pre>
+            </dd>
+          </figure>
+
+          <h4>Advisory Privacy</h4>
+
+          <p>Method visibility is merely an advisory construct. Ruby does not
+          <i>prohibit</i> the invocation of private methods; she ensures that
+          they will not be called accidentally as follows:
+
+          <ul>
+            <li>Standard method invocation syntax (<code>obj.method</code>)
+            raises a <code>NoMethodError</code>, signaling that the
+            programmer's intent is ill-advised. The caviller programmer must
+            use a technique such as <code>Object#send</code> to explicitly
+            ignore the privacy advice.
+            <li>The method introspection API (e.g.
+            <code>Object#private_methods</code>,
+            <code>Object#protected_methods</code>, and
+            <code>Object#public_methods</code>) delineates methods by their visibility,
+            allowing private and protected methods to be determined
+            automatically.
+            <li>RDoc/<code>ri</code> only displays public methods by default.
+          </ul>
+
+          <h4>Public Methods</h4>
+
+          <p>A method is public unless explicitly declared otherwise, or
+          declared outside of a class definition. The <code>initialize</code>
+          method is private by default.
+
+          <h4>Private Methods</h4>
+
+          <p>A <dfn id=private-method>private method</dfn> cannot be invoked
+          with an explicit receiver.  Therefore they can only be called by
+          other instance methods of the class in which they were defined, or a
+          subclass thereof. 
+
+          <p><code>self</code> is also regarded as an explicit receiver so a
+          method invocation of the form <code>self.<var>private</var></code>,
+          where <var>private</var> is a private instance method in the same
+          class, is disallowed.
+
+
+          <h4>Protected Methods</h4>
+
+          <p>Protected methods can invoked only from the class in which
+          they were defined or a subclass thereof, that is they behave the
+          same as private methods. However, unlike private methods
+          they can be explicitly invoked on any instance of their class.
+
+          <p>Flanagan &amp; Matsumoto (2008, pp. 232) suggest that <q>A
+            protected method can be used, for example, to define an accessor
+            that allows instances of a class to share internal state with each
+            other, but does not allow users of the class to access that
+            state.</q>
+
            
        <h2>Classes</h2>
 
