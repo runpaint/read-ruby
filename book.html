@@ -53,7 +53,7 @@
           when referring to instance methods in documentation and prose. For
           example: <code>Integer#even?</code>.
           </aside>
-
+          
           <figure id=def-instance-method>
           <dt>Defining an instance method named <code>bark</code> for the <code>Dog</code> class
             with the <code>def</code> keyword.
@@ -312,8 +312,473 @@
             other, but does not allow users of the class to access that
             state.</q>
 
+          <h3>Arguments</h3> 
+          
+          <p>A method may accept one or more arguments, variables passed in
+          from the caller.
+
+          <p>When a method is defined with the <code>def</code> keyword its
+          name may be followed by a set of parentheses (<code>(</code>,
+          <code>)</code>). The contents thereof (hereafter: <dfn
+            id=parameter-list>the parameter list</dfn>) dictate the arguments
+          the method will accept.
+
+          <p>The parameter list specifies:
+            <ul>
+              <li>The local variable names (hereafter: <dfn
+                id=parameters>parameters</dfn>) to which the corresponding
+              argument will be aliased to inside the method.
+              <li>Whether the arguments are required or optional.
+              <li>Whether a fixed or variable number of arguments are allowed.
+              <li>The default value, if any, of each parameter.
+              <li>Whether an argument is expected to be a block.
+            </ul>
+          
+            <p>Each parameter name must be unique in the parameter list.
+
+            <h4>Pass By Reference</h4>
+            
+            <p>Arguments are passed to methods by reference instead of value.
+            If the method modifies an object it receives the caller’s copy is
+            modified, too.
+
+            <figure id=pass-by-reference>
+              <dt>The effect of a method’s modification of an argument on its
+              caller</dt>
+              <dd>
+                <pre>
+                  <code>
+                    def llama_sans_l(llama)
+                      llama.gsub!(/l/i,'')
+                    end
+                    llama = 'Larry'
+                    llama_sans_l(llama) #=&amp; 'arry'
+                    llama #=&gt; 'arry'
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <p>Methods may <i>dup</i> (<code>Object#dup</code>) their
+            arguments to avoid this situation.    
+
+            <figure id=pass-by-reference-dup>
+            <dt>The effect of a method’s modification of a <code>dup</code>’d
+            argument on its caller</dt>
+              <dd>
+                <pre>
+                  <code>
+                    def llama_sans_l(llama)
+                      llama.dup.gsub!(/l/i,'')
+                    end
+                    llama = 'Larry'
+                    llama_sans_l(llama) #=&amp; 'arry'
+                    <mark>llama #=&gt; 'Larry'</mark>
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <h3>Required Arguments</h3>
+
+            <p>A <dfn id=required-argument>required argument</dfn>
+            <em>must</em> be supplied by the caller. A method which requires
+            exactly 4 arguments must receive them all, otherwise it raises an
+            <code>ArgumentError</code>.
+
+            <aside class=note>
+              <code>nil</code> and <code>false</code> are as valid an
+              argument any other. If a method requires an argument and
+              <code>nil</code> is supplied in its place, Ruby will not
+              complain. Methods wishing to prohibit such values must do so
+              themselves.
+            </aside>
+
+            <p>Required arguments are specified with a comma-separated list of
+            parameter names. Each parameter represents a mandatory argument.
+
+            <figure id=required-arguments>
+            <dt>Defining a method which requires exactly two arguments.</dt>
+              <dd>
+                <pre>
+                  <code>
+                    class Llama
+                      def laugh(how, volume)
+                        puts volume == :loudly ? how.upcase : how
+                      end
+                    end
+                    Llama.new.laugh #=&gt; ArgumentError: wrong number of arguments (0 for 2)
+                    Llama.new.laugh(:snicker) #=&gt; ArgumentError: wrong number of arguments (1 for 2)
+                    Llama.new.laugh(:chortle,:softly) #=&gt; chortle
+                    Llama.new.laugh(:guffaw,:loudly) #=&gt; GUFFAW
+                    Llama.new.laugh(:ho, :ho, :ho) #=&gt; ArgumentError: wrong number of arguments (3 for 2)
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <h3>Optional Arguments and Default Values</h3>
+
+            <p>An <dfn id=optional-argument>optional argument</dfn>
+            <em>may</em> be supplied by the caller. If it is not the
+            corresponding parameter will be assigned the value given as its
+            default.
+
+            <p>Optional arguments are specified with a comma-separated list of
+            <code><var>name</var>=<var>value</var></code> pairs, where
+            <var>name</var> is a parameter name and <var>value</var> is its
+            default value. The <var>value</var> may be any Ruby expression. 
+            
+            <figure id=optional-arguments>
+            <dt>Defining a method which takes an optional argument.</dt>
+              <dd>
+                <pre>
+                  <code>
+                    class Llama
+                      def name(name='Larry')
+                        name + ' the llama (beast of burden)'
+                      end
+                    end
+                    Llama.new.name #=&gt; "Larry the llama (beast of burden)"
+                    Llama.new.name('Lyle Jr.') #=&gt; "Lyle Jr. the llama (beast of burden)"
+                    Llama.new.name('Lama', 'glama') #=&gt; ArgumentError: wrong number of arguments (2 for 1)
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <p>Optional and required arguments can be specified alongside each
+            other in a reasonably natural fashion. However, it is a
+            <code>SyntaxError</code> to both precede and follow a required
+            argument with optional arguments. Namely, one or more optional
+            arguments may precede one or more required arguments, <em>or</em>
+            one or more required arguments may precede one or more optional
+            arguments.
+
+            <figure id=required-arguments-with-optional-arguments>
+            <dt>Defining a method which takes both optional and required
+            arguments.</dt>
+              <dd>
+                <pre>
+                  <code>
+                    def required_optional(a,b=1) end
+                    def required_required_optional(a,b,c=1) end
+                    def optional_required(a=1,b) end
+                    def optional_optional_required(a=1,b=2,c) end
+                    <mark>def optional_required_optional(a=1,b,c=2) end #=&gt;
+                    SyntaxError</mark>
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <h3>Variable-Length Argument Lists</h3>
+
+            <!-- TODO: Standardise on terms: 'rest' or 'splat' -->
+
+            <p>A <dfn id=rest-parameter>rest parameter</dfn> (or <dfn
+              id=splat-parameter>splat parameter</dfn>) consumes every
+            argument that follows it while still allowing subsequent required
+            parameters to receive their corresponding arguments. Put simply:
+            it takes an arbitrary number of arguments from its position
+            onward. It is passed to the method as an <code>Array</code>
+            containing one argument per element.
+            
+            <aside class=note>
+              Rest parameters do not <em>require</em> any arguments, so a
+              method whose parameter list consists solely of a rest parameter,
+              for example, may be invoked with zero or more arguments.
+            </aside>
+
+            <p>A rest parameter is specified by preceding a parameter name
+            with an asterisk (U+002A: <code>*</code>). Only one rest parameter
+            may appear in a parameter list.
+            
+            <figure id=rest-arguments>
+            <dt>Defining a method which takes a variable number of arguments.</dt>
+              <dd>
+                <pre>
+                  <code>
+                  def zero_or_more(*rest)
+                    rest.join(', ')
+                  end
+                  zero_or_more #=&gt; ""
+                  zero_or_more(1) #=&gt; "1"
+                  zero_or_more(1,2,3) #=&gt; "1, 2, 3"
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <aside class=note>
+              The following syntax rules are complex, but do not be deterred.
+              They are unlikely to ever be relevant in practice.
+            </aside>
+
+            <!-- FIXME: Clarify this explanation; derive a general principle
+            which better expresses the rule -->
+
+            <p>A rest parameter must not be followed by an optional parameter
+            because of the resulting ambiguity: if two or more arguments were
+            supplied for the former, should the latter be assigned its default
+            value or take one of the aforementioned? However, there is no
+            ambiguity when optional parameters precede the rest parameter, so
+            this arrangement is legal.
+
+            <p>Conversely, a rest parameter may be either followed or preceded
+            by one or more required parameters
+
+            <figure id=required-arguments-with-optional-arguments>
+            <dt>Defining a method which takes both optional and required
+            arguments.</dt>
+              <dd>
+                <pre>
+                  <code>
+                    def required_optional(a,b=1) end
+                    def required_required_optional(a,b,c=1) end
+                    def optional_required(a=1,b) end
+                    def optional_optional_required(a=1,b=2,c) end
+                    <mark>def optional_required_optional(a=1,b,c=2) end #=&gt;
+                    SyntaxError</mark>
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <p>A rest parameter may be supplied as a sole asterisk, omitting
+            the corresponding parameter name. The effect is to consume the
+            corresponding arguments as an ordinary rest parameter, without
+            assigning them to a local variable. The arguments are ignored.
+            This allows methods to accept an arbitrary number of arguments,
+            but discard, say, all but the last. 
+            
+            <p>Thomas et al. (<a href=#refTHOM09>[THOM09]</a>) suggest that
+            this technique can used in conjunction with <code>super</code> to
+            define a method which accepts an arbitrary number of arguments
+            then passes them all to its superclass.
+
+            <figure id=rest-parameter-with-super>
+              <dt>A method which accepts a variable number of arguments then
+              passes them to its superclass (<code>Parent</code>) with the
+              implicit-argument form of <code>super</code>. (<a
+                href=#refTHOM09>[THOM09]</a>).
+              <dd>
+                <pre>
+                  <code>
+                    class Child &lt; Parent
+                      def do_something(*)
+                        # our processing
+                        super
+                      end
+                    end
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <h3>Named Arguments</h3>
+
+            <p>The parameter forms described above are positional in nature.
+            They depend on the argument’s location in the parameter list to
+            marry it with the correct parameter. An alternative approach, that
+            can aid the readability of otherwise ungainly parameter lists, is <dfn id=named-arguments>named
+              arguments</dfn>. Named arguments allow the method to be invoked
+            with a series of key-value pairs, arranged in an arbitrary order.
+
+            <p>Ruby does not offer explicit support for this style of argument
+            passing, but it can be ably approximated by defining methods that
+            expect a <code>Hash</code> argument: the keys of which become the parameter
+            names; and the values, the arguments.
+
+            <!-- TODO: Mention that File/IO, String#encode use this technique -->
+
+            <figure id=named-arguments>
+            <dt>A method which uses a <code>Hash</code> argument to simulate
+            named arguments.
+              <dd>
+                <pre>
+                  <code>
+                    class Chair
+                      def initialize(args)
+                        @legs = args[:legs] or raise ArgumentError
+                        @style = args[:style] || :victorian
+                        @height = args[:height] || :average
+                        @colour = args[:colour] || args[:color] || :brown
+                      end
+                    end
+                  Chair.new(legs: 4, height: :tall) #=&gt; 
+                    #&lt;Chair:0x8249908 @legs=4, @style=:victorian,
+                    @height=:tall, @colour=:brown&gt;
+                  Chair.new(:color =&gt; :fuschia, :legs =&gt; 7) #=&gt;
+                    #&lt;Chair:0x86958f4 @legs=7, @style=:victorian,
+                    @height=:average, @colour=:fuschia&gt;
+                  Chair.new(height: :childs, color: :fuschia) #=&gt;
+                  ArgumentError 
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <p>The advantages of this approach include:
+              <ul>
+                <li>Arguments can be specified in any order.
+                <li>Arguments with default values can be omitted.
+                <li>If <code>Symbol</code>s are used for the <code>Hash</code>
+                keys the invocation is particularly readable.
+                <li>Variable-length argument lists are supported.
+              </ul>
+
+            <figure id=named-arguments-with-defaults>
+            <dt>A method which uses a <code>Hash</code> argument to simulate
+            named arguments with default values.
+              <dd>
+                <pre>
+                  <code>
+                    class Chair
+                      DEFAULT_ARGS = {legs: 2, style: :victorian, height: :average, colour: :brown}
+                      def initialize(args)
+                        @attributes = DEFAULT_ARGS.merge args
+                      end
+                    end
+                    Chair.new(legs: 4, height: :tall) #=&gt;
+                      #&lt;Chair:0x9039af4 @attributes={
+                      :legs=&gt;4,       :style=&gt;:victorian, 
+                      :height=&gt;:tall, :colour=&gt;:brown
+                      }&gt;
+                    Chair.new(:color =&gt; :fuschia, :legs =&gt; 7) #=&gt;
+                      #&gt;Chair:0x998a9dc @attributes={
+                      :legs=&gt;7, :style=&gt;:victorian, 
+                      :height=&gt;:average, :colour=&gt;:fuschia
+                      }&gt;
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+            
+            <p>The primary shortcoming is that Ruby can not determine
+            automatically whether an invalid number of arguments have been
+            supplied; the programmer must validate the arguments instead. This
+            is unlikely to be particularly significant, however, because a
+            method expecting a variable number of arguments would otherwise
+            use rest arguments, which would also render it unable to perform
+            this validation.
+
+            <!-- TODO: Mention parentheses can be omitted? -->
+
+        <h3>Block Arguments</h3>
+          
+          <p>Any method may be invoked with a block literal as an argument by
+          specifying the block after the method invocation.
+
+            <figure id=method-invocation-with-block-literal>
+            <dt>A method which receives, and ignores, a block specified with
+            either of the block literal constructs.
+              <dd>
+                <pre>
+                  <code>
+                  def m
+                    :m
+                  end
+                  m { 1 + 2 }
+                  m do
+                    1 + 2
+                  end
+                  </code>
+                </pre>
+              </dd>
+            </figure>
            
-       <h2>Classes</h2>
+            <p>The method may determine whether it has received a block by
+            using the <code>block_given?</code> predicate.
+
+            <figure id=method-using-block_given>
+            <dt>A method which uses the <code>block_given?</code> predicate
+            to determine whether it has been passed a block.
+              <dd>
+                <pre>
+                  <code>
+                  def m
+                    puts "Thanks" if block_given?
+                  end
+                  m { 1 + 2 } #=&gt; "Thanks"
+                  m #=&gt; nil
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <p>A block passed to a method in this way is not called; the
+            method must use the <code>yield</code> keyword to do so. An
+            implication of this is that methods not expecting blocks will
+            ignore them. The return value of <code>yield</code> is that of the
+            block.
+
+            <!-- TODO: Mention that yield takes arguments -->
+
+            <figure id=method-using-block_given-yield>
+            <dt>A method which uses the <code>block_given?</code> predicate
+            to determine whether it has been passed a block, and if so calls
+            it.
+              <dd>
+                <pre>
+                  <code>
+                  def m
+                    puts "This block returns: #{yield}" if block_given?
+                  end
+                  m { 1 + 2 } #=&gt; This block returns: 3
+                  m #=&gt; nil
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+            <p>A method needing a reference to the block it was given, perhaps
+            to pass to another method, is defined with a final parameter whose
+            name is prefixed with an ampersand (U+0026: <code>&amp;</code>).
+            For example: <code> def m(a,b,&amp;block)</code>. The method can
+            access the block as a <code>Proc</code> object named after the
+            parameter (sans ampersand). The method is invoked in precisely the
+            same way as before.
+
+            <figure id=method-using-block-argument>
+            <dt>A method which uses a <code>&amp;block</code> parameter to
+            refer to the block it is given.
+              <dd>
+                <pre>
+                  <code>
+                  def m(&amp;block)
+                    puts "This block returns: #{block.call}" if block_given?
+                  end
+                  m { 1 + 2 } #=&gt; This block returns: 3
+                  m #=&gt; nil
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+
+        <aside class=note>
+          The discussion above applies only to block literals; a method
+          expecting a <em>reference</em> to a block, i.e. a <code>proc</code> or
+          <code>lambda</code>, need not pay heed. Such a method employs
+          precisely the same parameter list as in the previous sections.
+
+            <figure id=method-receiving-block-ref>
+            <dt>A method which expects a reference to a block uses the same
+            parameter list as it would if expecting any other type of variable.
+              <dd>
+                <pre>
+                  <code>
+                  def m(b)
+                    b.call
+                  end
+                  m -&gt;{ "I am a \u{3bb}!" } #=&gt; "I am a λ!"
+                  </code>
+                </pre>
+              </dd>
+            </figure>
+        </aside>
+
+      <h2>Classes</h2>
 
       <p>We have introduced classes as templates from which objects can be
       created. A class is typically created with the <code>class</code>
@@ -425,12 +890,17 @@
   
   <h2>References</h2>
     <dl>
-      <dt id="refBROWN09">[BROWN09]</dt>
+      <dt id=refBROWN09>[BROWN09]</dt>
       <dd><cite><a href=//rubybestpractices.com/>Ruby Best Practices</a></cite>,
       G. Brown, O'Reilly Media, 2009.</dd>
-      <dt id="refFLAN08">[FLAN08]</dt>
+      <dt id=refFLAN08>[FLAN08]</dt>
       <dd><cite><a href=//oreilly.com/catalog/9780596516178>The Ruby Programming Language</a></cite>,
       D. Flanagan &amp; Y. Matsumoto, O'Reilly Media, 2008.</dd>
+      <dt id=refTHOM09>[THOM09]</dt>
+      <dd><cite><a
+      href=//books.pragprog.com/titles/ruby3/programming-ruby-1-9>Programming
+      Ruby 1.9: The Pragmatic Programmers’ Guide</a></cite>, D. Thomas, et
+      al., The Pragmatic Bookshelf, 2009.</dd>
     </dl>
   <body>
 </html>
