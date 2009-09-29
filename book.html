@@ -122,7 +122,8 @@ sections -->
         </figure>
 
         <aside>
-        It is conventional to employ the <code>Class.method</code>
+        It is conventional to employ the
+        <code><var>Class</var>.<var>method</var></code>
         notation when referring to singleton methods in documentation and
         prose. For example: <code>File.exists?</code>.
         </aside>
@@ -143,6 +144,16 @@ sections -->
           receiver outside of a class definition is actually invoked on
           <code>Object</code>. <!-- TODO: Explain how 'puts "glark"' works in
           this context? -->
+
+          <aside class=note>
+            The style of invocation explained above is potentially ambiguous. If
+            Ruby sees a bare identifier, e.g. <code>glark</code>, is that a
+            reference to a local variable or the invocation of a
+            method? If Ruby has previously seen the identifier
+            being assigned to, e.g. <code>glark = 2</code>, it is treated as a
+            variable reference; otherwise it is a method to be invoked on
+            <code>self</code>
+          </aside>
 
           <p>The receiver can be specified explicitly with the
           <code><var>receiver</var>.<var>method</var></code> syntax, i.e. the
@@ -181,6 +192,24 @@ sections -->
           <p>If a method is invoked with a parameter list other than what it
           expects it raises an <code>ArgumentError</code>.
           
+          <aside class=note>
+          <p>It is often the case that a method needs to be invoked with multiple
+          arguments, yet those arguments are stored in an
+          <code>Enumerable</code> such as <code>Array</code>.
+          If the method is invoked with just the <code>Enumerable</code> it will
+          receive a single argument (a reference to the <code>Enumerable</code>)
+          rather than the constituent elements thereof. The solution is to prefix the
+          <code>Enumerable</code> argument with an asterisk (U+002A:
+          <code>*</code>), which in this context is termed a <dfn
+            id=splat-operator>splat operator</dfn>, thus expanding the
+          <code>Enumerable</code> into its individual elements.
+
+          <!-- TODO: Example -->
+          <p>This technique works by invoking the <code>:to_a</code> method on
+          the prefixed object, so any object that has a method by this name
+          which returns an <code>Array</code> can be used in the same fashion.
+          </aside>
+
           <p>A method invocation followed by a block literal causes the block
           to be passed to the method. A block literal may be enclosed in curly
           braces (<code>{</code>…<code>}</code>) or a
@@ -188,6 +217,57 @@ sections -->
           semantically equivalent, however it is conventional to use the
           former for short blocks that fit on a single line, and the latter
           for multi-line blocks.
+
+          <aside class=note>
+          <p>To pass a <code>Proc</code> object to a method expecting an
+          anonymous block, prefix the object name with an ampersand
+          ((U+0026: <code>&amp;</code>). If the method is invoked with
+          multiple arguments this <code>Proc</code> must be specified last.
+          
+          <p>This technique works by calling the object’s
+          <code>:to_proc</code> method, and using the <code>Proc</code> it
+          returns for the block. By extension, any object that defines a
+          <code>:to_proc</code> method which behaves in this manner can be
+          used in the same fashion.
+          <!-- Point to Symbol#to_proc here? -->
+          </aside>
+
+        <h4>Parentheses</h4>
+
+        <p>Parentheses may be omitted from method invocations when doing so
+        does not introduce syntactic ambiguity.
+
+        <p>Methods expecting no arguments are nearly always invoked without
+        parentheses. For example, <code>'briefcase'.upcase</code> is equivalent
+        to <code>'briefcase'.upcase()</code>; the former is the recommended
+        style. <!-- TODO: What about if doing so disambiguates the
+        method from a variable? -->
+
+        <p>Methods expecting multiple arguments may omit parentheses. This is
+        mostly a matter of style.
+
+        <p>A common case when parentheses are <i>required</i> to disambiguate
+        is nested method invocations where multiple arguments are involved,
+        such as <code><var>a</var> <var>b</var> <var>c, <var>d</var></code>,
+          where <var>a</var> and <var>b</var> are methods. To whom do the
+          arguments, <var>c</var> and <var>d</var>
+          belong? Does the programmer mean
+          <code><var>a</var>(<var>b</var>(<var>c</var>, <var>d</var>))</code>
+          or <code><var>a</var>(<var>b</var>(<var>c</var>),
+            <var>d</var>)</code>? Ruby assumes the former. However, even if
+          the programmer agrees with Ruby's interpretation these forms of
+          invocation are seldom as clear to others. Therefore, it is
+          recommended to employ parentheses in such cases, even if unnecessary,
+          as an aid to legibility.
+
+        <p>When parentheses are used to enclose a method’s arguments, the
+        opening parenthesis must immediately follow the method’s name like so:
+        <code><var>method</var>(<var>arg<sub>0</sub></var>,…,<var>arg<sub>n</sub></var>)</code>.
+        Whitespace between <var>method</var> and <code>(</code> will result in
+        a <code>SyntaxError</code>. This is due to a quirk in Ruby’s syntax
+        inasmuch as parentheses serve two distinct functions—grouping of
+        expressions and associating an argument list with a method
+        invocation—so the above form represents an ambiguity.
 
      <h3>Element Reference</h3>
 
@@ -242,7 +322,6 @@ sections -->
         returns, or a combination of these factors. Note that this definition
         encompasses <i>accessor</i> and <i>mutator</i> methods; Ruby makes no
         such distinction.
-
 
           <h3>Return Values</h3>
 
@@ -304,6 +383,7 @@ sections -->
           
           <!-- TODO: Mention Object#tap -->
 
+          <!-- TODO: #initialize is an exception to this rule -->
 
           <h3>Names</h3>
 
@@ -343,6 +423,7 @@ sections -->
             the object in place.</q> <a class=ref href=#refFLAN08>[Flanagan
             &amp; Matsumoto, 2008, pp. 7]</a> 
 
+            <!-- TODO: Unite this with section on attribute setters -->
             <h4>The <code>=</code> Suffix</h4>
             
             <p>Methods named with a <code>=</code> suffix can be used in
@@ -362,8 +443,214 @@ sections -->
             explicit that you are invoking a method with the
             <code>name=(value)</code> syntax.
             </aside>
+
+            <h3>Operator Methods</h3>
+
+            <p>The operators of conventional programming languages are mostly
+            implemented as methods in Ruby. An expression such as <code>3 + 2
+              * 10</code>  is evaluated as <code>3.+(2.*(10))</code>, i.e.
+            <code>2</code> is sent the message <code>:*</code> with
+            <code>10</code> as the argument, then <code>3</code> is sent the
+            message <code>:+</code> with <code>20</code> as its argument.
+            Operators implemented in this way are termed <dfn
+              id=operator-methods>operator methods</dfn> and are enumerated in
+            the table below.
+
+            <p>Classes can implement their own operator methods by defining a
+            method with the corresponding name, which is listed in the
+            <i>Method</i> column below. This name is generally the same as the
+            operator symbol, e.g.  <code>+</code> implies a method named
+            <code>:+</code>, but in the case of unary methods, e.g. the
+            <code>-</code> in <code>-2</code>, the method name consists of the
+            operator with an <code>@</code> suffix.
            
-            <!-- TODO: Unite this with section on attribute setters -->
+            <aside class=note>
+              <p>The method names detailed in the table are the only examples of
+              legal names which consist solely of punctuation. That
+              <code>^</code> and <code>~</code>, for example, are legal
+              characters, does not imply that a method named <code>^~</code> is
+              also legal.
+
+              <!-- TODO: Mention += and friends -->
+            </aside>
+
+            <table id=operator-methods>
+              <tr>
+                <th>Method</th> <th>Operator</th> <th>Description</th>
+              </tr>
+              <tr>
+                <td><code>[]</code></td>
+                <td><code>[</code>…<code>]</code></td>
+                <td>Element reference, e.g. <code>[1,2,3][1]</code>
+                  subscripting</td>
+                <!-- TODO: Link with element reference writeup -->
+              </tr>
+
+              <tr>
+                <td><code>[]=</code></td>
+                <td><code>[</code>…<code>]=</code></td>
+                <td>Element set, e.g. <code>{foo: :bar}[:glark] = :quark</code></td>
+                <!-- TODO: Link with element reference writeup -->
+              </tr>
+
+              <tr>
+                <td><code>**</code></td>
+                <td><code>**</code></td>
+                <td>Exponentiation, e.g. <code>3 ** 2</code></td>
+              </tr>
+
+              <tr>
+                <td><code>!</code></td>
+                <td><code>!</code></td>
+                <td>Not, e.g. <code>!pregnant</code></td>
+              </tr>
+
+              <tr>
+                <td><code>~</code></td>
+                <td><code>~</code></td>
+                <td>Complement, e.g. <code>~23</code></td>
+              </tr>
+
+              <tr>
+                <td><code>-@</code></td>
+                <td><code>-</code></td>
+                <td>Unary minus (negate), e.g. <code>-42</code></td>
+              </tr>
+
+              <tr>
+                <td><code>+@</code></td>
+                <td><code>+</code></td>
+                <td>Unary plus, e.g. <code>+(10-20)</code></td>
+              </tr>
+
+              <tr>
+                <td><code>*</code></td>
+                <td><code>*</code></td>
+                <td>Multiplication, e.g. <code>10 * 2</code></td>
+              </tr>
+
+              <tr>
+                <td><code>/</code></td>
+                <td><code>/</code></td>
+                <td>Division, e.g. <code>20 / 10</code></td>
+              </tr>
+
+              <tr>
+                <td><code>%</code></td>
+                <td><code>%</code></td>
+                <td>Modulo, e.g. <code>20.5 % 16</code></td>
+              </tr>
+
+              <tr>
+                <td><code>+</code></td>
+                <td><code>+</code></td>
+                <td>Addition, e.g. <code>20.5 + 5.2</code></td>
+              </tr>
+
+              <tr>
+                <td><code>-</code></td>
+                <td><code>-</code></td>
+                <td>Subtraction, e.g. <code>20.5 - 5.2</code></td>
+              </tr>
+
+              <tr>
+                <td><code>&gt;&gt;</code></td>
+                <td><code>&gt;&gt;</code></td>
+                <td>Right shift, e.g. <code>16 &gt;&gt; 1</code></td>
+              </tr>
+
+              <tr>
+                <td><code>&lt;&lt;</code></td>
+                <td><code>&lt;&lt;</code></td>
+                <td>Left shift, e.g. <code>16 &lt;&lt; 1</code></td>
+              </tr>
+
+              <tr>
+                <td><code>&amp;</code></td>
+                <td><code>&amp;</code></td>
+                <td>Bitwise AND, e.g. <code>2 &amp; 1</code></td>
+              </tr>
+
+              <tr>
+                <td><code>^</code></td>
+                <td><code>^</code></td>
+                <td>Bitwise XOR, e.g. <code>2 ^ 1</code></td>
+              </tr>
+
+              <tr>
+                <td><code>|</code></td>
+                <td><code>|</code></td>
+                <td>Bitwise OR, e.g. <code>2 | 1</code></td>
+              </tr>
+
+              <!-- TODO: Link the following with Comparable explanation -->
+              <tr>
+                <td><code>&lt;=</code></td>
+                <td><code>&lt;=</code></td>
+                <td>Less than or equal to (≤), e.g. <code>10 &lt;= 12</code></td>
+              </tr>
+
+              <tr>
+                <td><code>&lt;</code></td>
+                <td><code>&lt;</code></td>
+                <td>Less than, e.g. <code>10 &lt; 12</code></td>
+              </tr>
+
+              <tr>
+                <td><code>=&gt;</code></td>
+                <td><code>=&gt;</code></td>
+                <td>Greater than or equal to (≥), e.g. <code>12 =&gt; 10</code></td>
+              </tr>
+
+              <tr>
+                <td><code>&gt;</code></td>
+                <td><code>&gt;</code></td>
+                <td>Greater than, e.g. <code>12 &gt; 10</code></td>
+              </tr>
+
+              <tr>
+                <td><code>&lt;=&gt;</code></td>
+                <td><code>&lt;=&gt;</code></td>
+                <td><i>Spaceship</i> operator, e.g. <code>12 &lt;=&gt; 10</code></td>
+              </tr>
+
+              <tr>
+                <td><code>==</code></td>
+                <td><code>==</code></td>
+                <td>Equality, e.g. <code>"wool" == "wool"</code></td>
+              </tr>
+
+              <tr>
+                <td><code>===</code></td>
+                <td><code>===</code></td>
+                <td>Case equality, e.g. <code>Array === [1]</code></td>
+              </tr>
+
+              <!-- TODO: Mention this inverts == unless defined explicitly -->
+              <tr>
+                <td><code>!=</code></td>
+                <td><code>!=</code></td>
+                <td>Not equal, e.g. <code>"bark! != "bite"</code></td>
+              </tr>
+
+              <tr>
+                <td><code>=~</code></td>
+                <td><code>=~</code></td>
+                <td>Pattern match, e.g. <code>/\d/ =~ "99"</code></td>
+              </tr>
+
+              <!-- TODO: Mention this inverts =~ unless defined explicitly -->
+              <tr>
+                <td><code>!~</code></td>
+                <td><code>!~</code></td>
+                <td>Inverted pattern match, e.g. <code>/\d/ !~ "d"</code></td>
+              </tr>
+            </table>
+
+          <h3>Arity</h3>
+            <h4>Classification by Arity</h4>
+            <!-- TODO: binary, unary, etc. -->
+
           <h3>Defining</h3>
 
           <p>A method consists of a name, an optional parameter list, and a
@@ -435,8 +722,8 @@ prohibited on other Numeric objects.
         superclass’s definition. For example, consider a <code>Rectangle</code>
         class which defines <code>:height</code> and <code>:width</code>
         methods. A <code>Square</code> class inherits from it, but it doesn't
-        make sense for <code>Square</code> to have both a
-        <code>:height</code> and <code>:width</code> method.
+        make sense for <code>Square</code> to have both 
+        <code>:height</code> <i>and</i> <code>:width</code> methods.
         <code>Square</code> can <code>undef</code> <code>:height</code>,
         preventing <code>Square#height</code> from being called without
         affecting <code>Rectangle#height</code>.
@@ -450,7 +737,9 @@ prohibited on other Numeric objects.
           name may be followed by a set of parentheses (<code>(</code>,
           <code>)</code>). The contents thereof (hereafter: <dfn
             id=parameter-list>the parameter list</dfn>) dictate the arguments
-          the method will accept.
+          the method will accept. (The parentheses are actually optional, but
+          their omission doesn't enhance readability so their presence is
+          recommended).
 
           <p>The parameter list specifies:
             <ul>
@@ -556,8 +845,11 @@ prohibited on other Numeric objects.
             <p>Optional arguments are specified with a comma-separated list of
             <code><var>name</var>=<var>value</var></code> pairs, where
             <var>name</var> is a parameter name and <var>value</var> is its
-            default value. The <var>value</var> may be any Ruby expression. 
-            
+            default value. The <var>value</var> may be any Ruby expression,
+            and is permitted to refer to previous parameters. The default
+            value is evaluated each time the method is invoked, so may, for
+            example, instantiate an object on every invocation. 
+
             <figure id=optional-arguments>
             <dt>Defining a method which takes an optional argument.</dt>
               <dd>
@@ -577,12 +869,10 @@ prohibited on other Numeric objects.
             </figure>
 
             <p>Optional and required arguments can be specified alongside each
-            other in a reasonably natural fashion. However, it is a
+            other in a reasonably natural fashion. However, all optional
+            arguments must be adjacent. For instance, it is a
             <code>SyntaxError</code> to both precede and follow a required
-            argument with optional arguments. Namely, one or more optional
-            arguments may precede one or more required arguments, <em>or</em>
-            one or more required arguments may precede one or more optional
-            arguments.
+            argument with optional arguments.
 
             <figure id=required-arguments-with-optional-arguments>
             <dt>Defining a method which takes both optional and required
@@ -621,7 +911,8 @@ prohibited on other Numeric objects.
 
             <p>A rest parameter is specified by preceding a parameter name
             with an asterisk (U+002A: <code>*</code>). Only one rest parameter
-            may appear in a parameter list.
+            may appear in a parameter list, and it any optional parameters
+            must precede it.
             
             <figure id=rest-arguments>
             <dt>Defining a method which takes a variable number of arguments.</dt>
@@ -638,6 +929,9 @@ prohibited on other Numeric objects.
                 </pre>
               </dd>
             </figure>
+
+            <!-- TODO: Cut this section? We now state above that any optional
+            arguments must precede the _rest_ -->
 
             <aside class=note>
               The following syntax rules are complex, but do not be deterred.
@@ -735,7 +1029,7 @@ prohibited on other Numeric objects.
                         @colour = args[:colour] || args[:color] || :brown
                       end
                     end
-                  Chair.new(legs: 4, height: :tall) #=&gt; 
+                  Chair.new legs: 4, height: :tall #=&gt; 
                     #&lt;Chair:0x8249908 @legs=4, @style=:victorian,
                     @height=:tall, @colour=:brown&gt;
                   Chair.new(:color =&gt; :fuschia, :legs =&gt; 7) #=&gt;
@@ -747,6 +1041,11 @@ prohibited on other Numeric objects.
                 </pre>
               </dd>
             </figure>
+
+            <p>If the <code>Hash</code> is the final argument, other than a
+            block, that a method expects, the curly braces which delimit the
+            <code>Hash</code> can be omitted. For example, <code>m({ key:
+              :value })</code> can be written as <code>m key: :value</code>.
 
             <p>The advantages of this approach include:
               <ul>
@@ -769,7 +1068,7 @@ prohibited on other Numeric objects.
                         @attributes = DEFAULT_ARGS.merge args
                       end
                     end
-                    Chair.new(legs: 4, height: :tall) #=&gt;
+                    Chair.new legs: 4, height: :tall #=&gt;
                       #&lt;Chair:0x9039af4 @attributes={
                       :legs=&gt;4,       :style=&gt;:victorian, 
                       :height=&gt;:tall, :colour=&gt;:brown
@@ -792,30 +1091,39 @@ prohibited on other Numeric objects.
             use rest arguments, which would also render it unable to perform
             this validation.
 
-            <!-- TODO: Mention parentheses can be omitted? -->
-
         <h3>Block Arguments</h3>
           
           <p>Any method may be invoked with a block literal as an argument by
           specifying the block after the method invocation.
 
-            <figure id=method-invocation-with-block-literal>
-            <dt>A method which receives, and ignores, a block specified with
-            either of the block literal constructs.
-              <dd>
-                <pre>
-                  <code>
-                  def m
-                    :m
-                  end
-                  m { 1 + 2 }
-                  m do
-                    1 + 2
-                  end
-                  </code>
-                </pre>
-              </dd>
-            </figure>
+          <aside class=note>
+          <a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, pp.
+            130-131)</a> insist on <q>[using] the term iterator…to mean any method that uses
+            the <code>yield</code> statement</q>, despite admitting that this
+          doesn't make sense if the method doesn’t actually <i>iterate</i>
+          over the block it has been given. We will not perpetuate
+          this confusion: an <i>iterator method</i> iterates over the block it
+          has been given; a method which expects a block but does not iterate
+          over it is simply <i>a method that expects a block</i>.
+          </aside>
+
+          <figure id=method-invocation-with-block-literal>
+          <dt>A method which receives, and ignores, a block specified with
+          either of the block literal constructs.
+            <dd>
+              <pre>
+                <code>
+                def m
+                  :m
+                end
+                m { 1 + 2 }
+                m do
+                  1 + 2
+                end
+                </code>
+              </pre>
+            </dd>
+          </figure>
            
             <p>The method may determine whether it has received a block by
             using the <code>block_given?</code> predicate.
@@ -836,11 +1144,11 @@ prohibited on other Numeric objects.
               </dd>
             </figure>
 
-            <p>A block passed to a method in this way is not called; the
-            method must use the <code>yield</code> keyword to do so. An
-            implication of this is that methods not expecting blocks will
-            ignore them. The return value of <code>yield</code> is that of the
-            block.
+            <p>A block passed to a method in this way is not automatically
+            called; the method must use the <code>yield</code> keyword to do
+            so. An implication of this is that methods not expecting blocks
+            will ignore them. The return value of <code>yield</code> is that
+            of the block.
 
             <!-- TODO: Mention that yield takes arguments -->
 
@@ -866,8 +1174,10 @@ prohibited on other Numeric objects.
             name is prefixed with an ampersand (U+0026: <code>&amp;</code>).
             For example: <code> def m(a,b,&amp;block)</code>. The method can
             access the block as a <code>Proc</code> object named after the
-            parameter (sans ampersand). The method is invoked in precisely the
-            same way as before.
+            parameter (sans ampersand). It may invoke the block via its
+            <code>Proc#call</code> method, or <code>yield</code> to it. In
+            either case, the method is invoked in precisely the same way as
+            before.
 
             <figure id=method-using-block-argument>
             <dt>A method which uses a <code>&amp;block</code> parameter to
@@ -886,7 +1196,7 @@ prohibited on other Numeric objects.
             </figure>
 
         <aside class=note>
-          The discussion above applies only to block literals; a method
+          <p>The discussion above applies only to block literals; a method
           expecting a <em>reference</em> to a block, i.e. a <code>proc</code> or
           <code>lambda</code>, need not pay heed. Such a method employs
           precisely the same parameter list as in the previous sections.
@@ -906,6 +1216,7 @@ prohibited on other Numeric objects.
               </dd>
             </figure>
         </aside>
+
 
         <h3>Visibility</h3>
 
@@ -959,8 +1270,8 @@ prohibited on other Numeric objects.
           </figure>
 
          <p>A visibility specifier with one or more method names (given as
-         Symbols or Strings) affects only the named methods, which must have
-         already been defined.
+         <code>Symbol</code>s or <code>String</code>s) affects only the named
+         methods, which must have already been defined.
 
           <figure id=visibility-specifiers-args>
             <dt>Declaring the visibility of methods with visibility specifiers
@@ -1038,6 +1349,12 @@ prohibited on other Numeric objects.
           where <var>private</var> is a private instance method in the same
           class, is disallowed.
 
+          <aside class=note>
+            Methods created outside of a class or module definition, i.e. at
+            the top level, are private by default The <code>:initialize</code>
+            method is, too, because it is only intended to be invoked from the
+            object’s <code>:new</code> method.
+          </aside>
 
           <h4>Protected Methods</h4>
 
@@ -1054,6 +1371,72 @@ prohibited on other Numeric objects.
             state.</q>
 
 
+          <h3>Aliases</h3>
+
+          <p>An <dfn id=method-alias>alias</dfn> of a method is an alternate
+          name by which it can be referred. For a method, <var>m</var>, and
+          its alias, <var>a</var>, invoking <var>m</var> is equivalent to
+          invoking <var>a</var>.
+
+          <p>The alias refers to a copy of the existing method’s body. If the
+          existing method is redefined prior to being aliased, the alias will
+          continue to refer to the method’s original definition.
+
+          <p>Aliases are often used to provide synonyms for method names. For
+          instance, <code>:size</code> may be aliased to <code>:length</code>.
+          This allows the programmer to use method names which “read” more
+          naturally in a given context. <!-- TODO: example from FLAN09 about
+          Range#include? ? -->
+
+          <p>An alias is created with the <code>alias</code> keyword from
+          inside the class of the existing method. The
+          syntax is <code>alias <var>new_name</var>
+            <var>current_name</var></code>, where both <var>new_name</var> and
+          <var>current_name</var> are <code>Symbol</code>s or identifiers. A method named
+          <var>current_name</var> must already be defined. If a method named
+          <var>new_name</var> already exists it is overwritten.
+
+          <!-- TODO: Mention alias_method_chain ? -->
+
+          <p>Aliasing is also used to create a method which wraps the method
+          of the same name by performing its own computations then calling the
+          original method. For example, in the example below we wrap
+          <code>String#to_i</code> such that it raises an exception if the
+          string doesn't contain digits. (Normally, <code>String#to_i</code>
+          returns <code>0</code> for such strings).
+
+          <figure id=alias-for-wraping>
+          <dt>Using <code>alias</code> in order to wrap a method
+            <dd>
+              <pre><code>
+              class String
+                alias :old_to_i :to_i
+                def to_i
+                  raise "No digits found" unless match(/\d/)
+                  old_to_i
+                end
+              end
+              </code></pre>
+            </dd>
+          </figure>
+
+          <!-- TODO: Link with example of using method objects to wrap methods
+          (c.f.
+          http://blog.jayfields.com/2006/12/ruby-alias-method-alternative.html);
+          explain pros/cons -->
+
+                                    Aliasing Is Not Overloading
+   A Ruby method may have two names, but two methods cannot share a single name. In
+   statically typed languages, methods can be distinguished by the number and type of
+   their arguments, and two or more methods may share the same name as long as they
+   expect different numbers or types of arguments. This kind of overloading is not possible
+   in Ruby.
+   On the other hand, method overloading is not really necessary in Ruby. Methods can
+   accept arguments of any class and can be written to do different things based on the
+   type of the arguments they are passed. Also (as we’ll see later), Ruby’s method argu-
+   ments can be declared with default values, and these arguments may be omitted form
+   method invocations. This allows a single method to be invoked with differing numbers
+   of arguments.
         <h3><code>Object#send</code></h3>
 
         <figure id=object-send>
@@ -1069,884 +1452,8 @@ prohibited on other Numeric objects.
             </code></pre>  
           </dd>
           </figure>
-We’ll see later in this chapter that many of Ruby’s operators are defined as methods,
-and expressions like x+y are evaluated as x.+(y), where the method name is +. The fact
-that many of Ruby’s operators are defined as methods means that you can redefine
-these operators in your own classes.
-Now let’s consider this very simple expression:
-     x
-If a variable named x exists (that is, if the Ruby interpreter has seen an assignment to
-x), then this is a variable reference expression. If no such variable exists, then this is an
-invocation of the method x, with no arguments, on self.
 
 
-6.2.1 Operator Methods
-Many of Ruby’s operators, such as +, *, and even the array index operator [], are im-
-plemented with methods that you can define in your own classes. You define an
-operator by defining a method with the same “name” as the operator. (The only ex-
-ceptions are the unary plus and minus operators, which use method names +@ and
--@.) Ruby allows you to do this even though the method name is all punctuation. You
-might end up with a method definition like this:
-      def +(other)               # Define binary plus operator: x+y is x.+(y)
-        self.concatenate(other)
-      end
-Table 4-2 in Chapter 4 specifies which of Ruby’s operators are defined as methods.
-These operators are the only punctuation-based method names that you can use: you
-can’t invent new operators or define methods whose names consist of other sequences
-of punctuation characters. There are additional examples of defining method-based
-operators in §7.1.6.
-Methods that define a unary operator are passed no arguments. Methods that define
-binary operators are passed one argument and should operate on self and the argu-
-ment. The array access operators [] and []= are special because they can be invoked
-with any number of arguments. For []=, the last argument is always the value being
-assigned.
-6.2.2 Method Aliases
-It is not uncommon for methods in Ruby to have more than one name. The language
-has a keyword alias that serves to define a new name for an existing method. Use it
-like this:
-      alias aka also_known_as   # alias new_name existing_name
-                                                                       6.2 Method Names | 181
-After executing this statement, the identifier aka will refer to the same method thats
-also_known_as does.
-Method aliasing is one of the things that makes Ruby an expressive and natural lan-
-guage. When there are multiple names for a method, you can choose the one that seems
-most natural in your code. The Range class, for example, defines a method for testing
-whether a value falls within the range. You can call this method with the name
-include? or with the name member?. If you are treating a range as a kind of set, the name
-member? may be the most natural choice.
-A more practical reason for aliasing methods is to insert new functionality into a
-method. The following is a common idiom for augmenting existing methods:
-     def hello                              # A nice simple method
-       puts "Hello World"                   # Suppose we want to augment it...
-     end
-     alias original_hello hello             # Give the method a backup name
-     def hello                              #  Now we define a new method with the old name
-       puts "Your attention please"         #  That does some stuff
-       original_hello                       #  Then calls the original method
-       puts "This has been a test"          #  Then does some more stuff
-     end
-In this code, we’re working on global methods. It is more common to use alias with
-the instance methods of a class. (We’ll learn about this in Chapter 7.) In this situation,
-alias must be used within the class whose method is to be renamed. Classes in Ruby
-can be “reopened” (again, this is discussed in Chapter 7)—which means that your code
-can take an existing class, ‘open’ it with a class statement, and then use alias as shown
-in the example to augment or alter the existing methods of that class. This is called
-“alias chaining” and is covered in detail in §8.11.
-                                    Aliasing Is Not Overloading
-   A Ruby method may have two names, but two methods cannot share a single name. In
-   statically typed languages, methods can be distinguished by the number and type of
-   their arguments, and two or more methods may share the same name as long as they
-   expect different numbers or types of arguments. This kind of overloading is not possible
-   in Ruby.
-   On the other hand, method overloading is not really necessary in Ruby. Methods can
-   accept arguments of any class and can be written to do different things based on the
-   type of the arguments they are passed. Also (as we’ll see later), Ruby’s method argu-
-   ments can be declared with default values, and these arguments may be omitted form
-   method invocations. This allows a single method to be invoked with differing numbers
-   of arguments.
-182 | Chapter 6: Methods, Procs, Lambdas, and Closures
-6.3 Methods and Parentheses
-Ruby allows parentheses to be omitted from most method invocations. In simple cases,
-this results in clean-looking code. In complex cases, however, it causes syntactic am-
-biguities and confusing corner cases. We’ll consider these in the sections that follow.
-6.3.1 Optional Parentheses
-Parentheses are omitted from method invocations in many common Ruby idioms. The
-following two lines of code, for example, are equivalent:
-     puts "Hello World"
-     puts("Hello World")
-In the first line, puts looks like a keyword, statement, or command built in to the
-language. The equivalent second line demonstrates that it is simply the invocation of
-a global method, with the parentheses omitted. Although the second form is clearer,
-the first form is more concise, more commonly used, and arguably more natural.
-Next, consider this code:
-     greeting = "Hello"
-     size = greeting.length
-If you are accustomed to other object-oriented languages, you may think that length
-is a property, field, or variable of string objects. Ruby is strongly object oriented, how-
-ever, and its objects are fully encapsulated; the only way to interact with them is by
-invoking their methods. In this code, greeting.length is a method invocation. The
-length method expects no arguments and is invoked without parentheses. The
-following code is equivalent:
-     size = greeting.length()
-Including the optional parentheses emphasizes that a method invocation is occurring.
-Omitting the parentheses in method invocations with no arguments gives the illusion
-of property access, and is a very common practice.
-Parentheses are very commonly omitted when there are zero or one arguments to the
-invoked method. Although it is less common, the parentheses may be omitted even
-when there are multiple arguments, as in the following code:
-     x = 3               # x is a number
-     x.between? 1,5      # same as x.between?(1,5)
-Parentheses may also be omitted around the parameter list in method definitions,
-though it is hard to argue that this makes your code clearer or more readable. The
-following code, for example, defines a method that returns the sum of its arguments:
-     def sum x, y
-       x+y
-     end
-                                                                6.3 Methods and Parentheses | 183
-6.3.2 Required Parentheses
-Some code is ambiguous if the parentheses are omitted, and here Ruby requires that
-you include them. The most common case is nested method invocations of the form
-f g x, y. In Ruby, invocations of that form mean f(g(x,y)). Ruby 1.8 issues a warning,
-however, because the code could also be interpreted as f(g(x),y). The warning has
-been removed in Ruby 1.9. The following code, using the sum method defined above,
-prints 4, but issues a warning in Ruby 1.8:
-     puts sum 2, 2
-To remove the warning, rewrite the code with parentheses around the arguments:
-     puts sum(2,2)
-Note that using parentheses around the outer method invocation does not resolve the
-ambiguity:
-     puts(sum 2,2)     # Does this mean puts(sum(2,2)) or puts(sum(2), 2)?
-An expression involving nested function calls is only ambiguous when there is more
-than one argument. The Ruby interpreter can only interpret the following code in one
-way:
-     puts factorial x      # This can only mean puts(factorial(x))
-Despite the lack of ambiguity here, Ruby 1.8 still issues a warning if you omit the
-parentheses around the x.
-Sometimes omitting parentheses is a true syntax error rather than a simple warning.
-The following expressions, for example, are completely ambiguous without parenthe-
-ses, and Ruby doesn’t even attempt to guess what you mean:
-     puts 4, sum 2,2      # Error: does the second comma go with the 1st or 2nd method?
-     [sum 2,2]            # Error: two array elements or one?
-There is another wrinkle that arises from the fact that parentheses are optional. When
-you do use parentheses in a method invocation, the opening parenthesis must imme-
-diately follow the method name, with no intervening space. This is because parentheses
-do double-duty: they can be used around an argument list in a method invocation, and
-they can be used for grouping expressions. Consider the following two expressions,
-which differ only by a single space:
-     square(2+2)*2      # square(4)*2 = 16*2 = 32
-     square (2+2)*2     # square(4*2) = square(8) = 64
-In the first expression, the parentheses represent method invocation. In the second,
-they represent expression grouping. To reduce the potential for confusion, you should
-always use parentheses around a method invocation if any of the arguments use
-parentheses. The second expression would be written more clearly as:
-     square((2+2)*2)
-184 | Chapter 6: Methods, Procs, Lambdas, and Closures
-We’ll end this discussion of parentheses with one final twist. Recall that the following
-expression is ambiguous and causes a warning:
-    puts(sum 2,2)   # Does this mean puts(sum(2,2)) or puts(sum(2), 2)?
-The best way to resolve this ambiguity is to put parentheses around the arguments to
-the sum method. Another way is to add a space between puts and the opening
-parenthesis:
-    puts (sum 2,2)
-Adding the space converts the method invocation parentheses into expression grouping
-parentheses. Because these parentheses group a subexpression, the comma can no
-longer be interpreted as an argument delimiter for the puts invocation.
-6.4 Method Arguments
-Simple method declarations include a comma-separated list of argument names (in
-optional parentheses) after the method name. But there is much more to Ruby’s method
-arguments. The subsections that follow explain:
-  • How to declare an argument that has a default value, so that the argument can be
-    omitted when the method is invoked
-  • How to declare a method that accepts any number of arguments
-  • How to simulate named method arguments with special syntax for passing a hash
-    to a method
-  • How to declare a method so that the block associated with an invocation of the
-    method is treated as a method argument
-6.4.1 Parameter Defaults
-When you define a method, you can specify default values for some or all of the
-parameters. If you do this, then your method may be invoked with fewer argument
-values than the declared number of parameters. If arguments are omitted, then the
-default value of the parameter is used in its place. Specify a default value by following
-the parameter name with an equals sign and a value:
-    def prefix(s, len=1)
-      s[0,len]
-    end
-This method declares two parameters, but the second one has a default. This means
-that we can invoke it with either one argument or two:
-    prefix("Ruby", 3)    # => "Rub"
-    prefix("Ruby")       # => "R"
-                                                                  6.4 Method Arguments | 185
-Argument defaults need not be constants: they may be arbitrary expressions, and can
-be referred to instance variables and to previous parameters in the parameter list. For
-example:
-     # Return the last character of s or the substring from index to the end
-     def suffix(s, index=s.size-1)
-       s[index, s.size-index]
-     end
-Parameter defaults are evaluated when a method is invoked rather than when it is
-parsed. In the following method, the default value [] produces a new empty array on
-each invocation, rather than reusing a single array created when the method is defined:
-     # Append the value x to the array a, return a.
-     # If no array is specified, start with an empty one.
-     def append(x, a=[])
-       a << x
-     end
-In Ruby 1.8, method parameters with default values must appear after all ordinary
-parameters in the parameter list. Ruby 1.9 relaxes this restriction and allows ordinary
-parameters to appear after parameters with defaults. It still requires all parameters with
-defaults to be adjacent in the parameter list—you can’t declare two parameters with
-default values with an ordinary parameter between them, for example. When a method
-has more than one parameter with a default value, and you invoke the method with an
-argument for some, but not all, of these parameters, they are filled in from left to right.
-Suppose a method has two parameters, and both of those parameters have defaults.
-You can invoke this method with zero, one, or two arguments. If you specify one ar-
-gument, it is assigned to the first parameter and the second parameter uses its default
-value. There is no way, however, to specify a value for the second parameter and use
-the default value of the first parameter.
-6.4.2 Variable-Length Argument Lists and Arrays
-Sometimes we want to write methods that can accept an arbitrary number of argu-
-ments. To do this, we put an * before one of the method’s parameters. Within the body
-of the method, this parameter will refer to an array that contains the zero or more
-arguments passed at that position. For example:
-     # Return the largest of the one or more arguments passed
-     def max(first, *rest)
-       # Assume that the required first argument is the largest
-       max = first
-       # Now loop through each of the optional arguments looking for bigger ones
-       rest.each {|x| max = x if x > max }
-       # Return the largest one we found
-       max
-     end
-186 | Chapter 6: Methods, Procs, Lambdas, and Closures
-The max method requires at least one argument, but it may accept any number of ad-
-ditional arguments. The first argument is available through the first parameter. Any
-additional arguments are stored in the rest array. We can invoke max like this:
-      max(1)        # first=1, rest=[]
-      max(1,2)      # first=1, rest=[2]
-      max(1,2,3)    # first=1, rest=[2,3]
-Note that in Ruby, all Enumerable objects automatically have a max method, so the
-method defined here is not particularly useful.
-No more than one parameter may be prefixed with an *. In Ruby 1.8, this parameter
-must appear after all ordinary parameters and after all parameters with defaults speci-
-fied. It should be the last parameter of the method, unless the method also has a
-parameter with an & prefix (see below). In Ruby 1.9, a parameter with an * prefix must
-still appear after any parameters with defaults specified, but it may be followed by
-additional ordinary parameters. It must also still appear before any &-prefixed
-parameter.
-6.4.2.1 Passing arrays to methods
-We’ve seen how * can be used in a method declaration to cause multiple arguments to
-be gathered or coalesced into a single array. It can also be used in a method invocation
-to scatter, expand, or explode the elements of an array (or range or enumerator) so that
-each element becomes a separate method argument. The * is sometimes called the splat
-operator, although it is not a true operator. We’ve seen it used before in the discussion
-of parallel assignment in §4.5.5.
-Suppose we wanted to find the maximum value in an array (and that we didn’t know
-that Ruby arrays have a built-in max method!). We could pass the elements of the array
-to the max method (defined earlier) like this:
-      data = [3, 2, 1]
-      m = max(*data)    # first = 3, rest=[2,1] => 3
-Consider what happens without the *:
-      m = max(data)    # first = [3,2,1], rest=[] => [3,2,1]
-In this case, we’re passing an array as the first and only argument, and our max method
-returns that first argument without performing any comparisons on it.
-The * can also be used with methods that return arrays to expand those arrays for use
-in another method invocation. Consider the polar and cartesian methods defined
-earlier in this chapter:
-      # Convert the point (x,y) to Polar coordinates, then back to Cartesian
-      x,y = cartesian(*polar(x, y))
-In Ruby 1.9, enumerators are splattable objects. To find the largest letter in a string,
-for example, we could write:
-      max(*"hello world".each_char)    # => 'w'
-                                                                    6.4 Method Arguments | 187
-6.4.3 Mapping Arguments to Parameters
-When a method definition includes parameters with default values or a parameter pre-
-fixed with an *, the assignment of argument values to parameters during method
-invocation gets a little bit tricky.
-In Ruby 1.8, the position of the special parameters is restricted so that argument values
-are assigned to parameters from left to right. The first arguments are assigned to the
-ordinary parameters. If there are any remaining arguments, they are assigned to the
-parameters that have defaults. And if there are still more arguments, they are assigned
-to the array argument.
-Ruby 1.9 has to be more clever about the way it maps arguments to parameters because
-the order of the parameters is no longer constrained. Suppose we have a method that
-is declared with o ordinary parameters, d parameters with default values, and one array
-parameter prefixed with *. Now assume that we invoke this method with a arguments.
-If a is less than o, an ArgumentError is raised; we have not supplied the minimum
-required number of arguments.
-If a is greater than or equal to o and less than or equal to o+d, then the leftmost a–o
-parameters with defaults will have arguments assigned to them. The remaining (to the
-right) o+d–a parameters with defaults will not have arguments assigned to them, and
-will just use their default values.
-If a is greater than o+d, then the array parameter whose name is prefixed with an * will
-have a–o–d arguments stored in it; otherwise, it will be empty.
-Once these calculations are performed, the arguments are mapped to parameters from
-left to right, assigning the appropriate number of arguments to each parameter.
-6.4.4 Hashes for Named Arguments
-When a method requires more than two or three arguments, it can be difficult for the
-programmer invoking the method to remember the proper order for those arguments.
-Some languages allow you to write method invocations that explicitly specify a pa-
-rameter name for each argument that is passed. Ruby does not support this method
-invocation syntax, but it can be approximated if you write a method that expects a hash
-as its argument or as one of its arguments:
-      # This method returns an array a of n numbers. For any index i, 0 <= i < n,
-      # the value of element a[i] is m*i+c. Arguments n, m, and c are passed
-      # as keys in a hash, so that it is not necessary to remember their order.
-      def sequence(args)
-        # Extract the arguments from the hash.
-        # Note the use of the || operator to specify defaults used
-        # if the hash does not define a key that we are interested in.
-        n = args[:n] || 0
-        m = args[:m] || 1
-        c = args[:c] || 0
-188 | Chapter 6: Methods, Procs, Lambdas, and Closures
-       a = []                       # Start with an empty array
-       n.times {|i| a << m*i+c }    # Calculate the value of each array element
-       a                            # Return the array
-     end
-You might invoke this method with a hash literal argument like this:
-     sequence({:n=>3, :m=>5})       # => [0, 5, 10]
-In order to better support this style of programming, Ruby allows you to omit the curly
-braces around the hash literal if it is the last argument to the method (or if the only
-argument that follows it is a block argument, prefixed with &). A hash without braces
-is sometimes called a bare hash, and when we use one it looks like we are passing
-separate named arguments, which we can reorder however we like:
-     sequence(:m=>3, :n=>5)         # => [0, 3, 6, 9, 12]
-As with other ruby methods, we can omit the parentheses, too:
-     # Ruby 1.9 hash syntax
-     sequence c:1, m:3, n:5         # => [1, 4, 7, 10, 13]
-If you omit the parentheses, then you must omit the curly braces. If curly braces follow
-the method name outside of parentheses, Ruby thinks you’re passing a block to the
-method:
-     sequence {:m=>3, :n=>5}        # Syntax error!
-6.4.5 Block Arguments
-Recall from §5.3 that a block is a chunk of Ruby code associated with a method invo-
-cation, and that an iterator is a method that expects a block. Any method invocation
-may be followed by a block, and any method that has a block associated with it may
-invoke the code in that block with the yield statement. To refresh your memory, the
-following code is a block-oriented variant on the sequence method developed earlier in
-the chapter:
-     # Generate a sequence of n numbers m*i + c and pass them to the block
-     def sequence2(n, m, c)
-       i = 0
-       while(i < n)          # loop n times
-         yield i*m + c       # pass next element of the sequence to the block
-         i += 1
-       end
-     end
-     # Here is how you might use this version of the method
-     sequence2(5, 2, 2) {|x| puts x } # Print numbers 2, 4, 6, 8, 10
-One of the features of blocks is their anonymity. They are not passed to the method in
-a traditional sense, they have no name, and they are invoked with a keyword rather
-than with a method. If you prefer more explicit control over a block (so that you can
-                                                                    6.4 Method Arguments | 189
-pass it on to some other method, for example), add a final argument to your method,
-and prefix the argument name with an ampersand.* If you do this, then that argument
-will refer to the block—if any—that is passed to the method. The value of the argument
-will be a Proc object, and instead of using yield, you invoke the call method of the Proc:
-     def sequence3(n, m, c, &b) # Explicit argument to get block as a Proc
-        i = 0
-        while(i < n)
-           b.call(i*m + c)            # Invoke the Proc with its call method
-           i += 1
-        end
-     end
-     # Note that the block is still passed outside of the parentheses
-     sequence3(5, 2, 2) {|x| puts x }
-Notice that using the ampersand in this way changes only the method definition. The
-method invocation remains the same. We end up with the block argument being
-declared inside the parentheses of the method definition, but the block itself is still
-specified outside the parentheses of the method invocation.
-                                  Passing Proc Objects Explicitly
-   If you create your own Proc object (we’ll see how to do this later in the chapter) and
-   want to pass it explicitly to a method, you can do this as you would pass any other
-   value—a Proc is an object like any other. In this case, you should not use an ampersand
-   in the method definition:
-          # This version expects an explicitly-created Proc object, not a block
-          def sequence4(n, m, c, b) # No ampersand used for argument b
-            i = 0
-            while(i < n)
-              b.call(i*m + c)          # Proc is called explicitly
-              i += 1
-            end
-          end
-          p = Proc.new {|x| puts x }    # Explicitly create a Proc object
-          sequence4(5, 2, 2, p)         # And pass it as an ordinary argument
-Twice before in this chapter, we’ve said that a special kind of parameter must be the
-last one in the parameter list. Block arguments prefixed with ampersands must really
-be the last one. Because blocks are passed unusually in method invocations, named
-block arguments are different and do not interfere with array or hash parameters in
-which the brackets and braces have been omitted. The following two methods are legal,
-for example:
-* We use the term “block argument” instead of “block parameter” for method parameters prefixed with &.
-  This is because the phrase “block parameter” refers to the parameter list (such as |x|) of the block itself.
-190 | Chapter 6: Methods, Procs, Lambdas, and Closures
-      def sequence5(args, &b) # Pass arguments as a hash and follow with a block
-        n, m, c = args[:n], args[:m], args[:c]
-        i = 0
-        while(i < n)
-          b.call(i*m + c)
-          i += 1
-        end
-      end
-      # Expects one or more arguments, followed by a block
-      def max(first, *rest, &block)
-        max = first
-        rest.each {|x| max = x if x > max }
-        block.call(max)
-        max
-      end
-These methods work fine, but notice that you can avoid the complexity of these cases
-by simply leaving your blocks anonymous and calling them with yield.
-It is also worth noting that the yield statement still works in a method defined with an
-& parameter. Even if the block has been converted to a Proc object and passed as an
-argument, it can still be invoked as an anonymous block, as if the block argument was
-not there.
-6.4.5.1 Using & in method invocation
-We saw earlier that you can use * in a method definition to specify that multiple argu-
-ments should be packed into an array, and that you can use * in a method invocation
-to specify that an array should be unpacked so that its elements become separate
-arguments. & can also be used in definitions and invocations. We’ve just seen that & in
-a method definition allows an ordinary block associated with a method invocation to
-be used as a named Proc object inside the method. When & is used before a Proc object
-in a method invocation, it treats the Proc as if it was an ordinary block following the
-invocation.
-Consider the following code which sums the contents of two arrays:
-      a, b = [1,2,3], [4,5]                     # Start with some data.
-      sum = a.inject(0) {|total,x| total+x }    # => 6. Sum elements of a.
-      sum = b.inject(sum) {|total,x| total+x }  # => 15. Add the elements of b in.
-We described the inject iterator earlier in §5.3.2. If you don’t remember, you can look
-up its documentation with ri Enumerable.inject. The important thing to notice about
-this example is that the two blocks are identical. Rather than having the Ruby inter-
-preter parse the same block twice, we can create a Proc to represent the block, and use
-the single Proc object twice:
-      a, b = [1,2,3], [4,5]                     # Start with some data.
-      summation = Proc.new {|total,x| total+x } # A Proc object for summations.
-      sum = a.inject(0, &summation)             # => 6
-      sum = b.inject(sum, &summation)           # => 15
-                                                                    6.4 Method Arguments | 191
-If you use & in a method invocation, it must appear before the last argument in the
-invocation. Blocks can be associated with any method call, even when the method is
-not expecting a block, and never uses yield. In the same way, any method invocation
-may have an & argument as its last argument.
-In a method invocation an & typically appears before a Proc object. But it is actually
-allowed before any object with a to_proc method. The Method class (covered later in
-this chapter) has such a method, so Method objects can be passed to iterators just as
-Proc objects can.
-In Ruby 1.9, the Symbol class defines a to_proc method, allowing symbols to be prefixed
-with & and passed to iterators. When a symbol is passed like this, it is assumed to be
-the name of a method. The Proc object returned by the to_proc method invokes the
-named method of its first argument, passing any remaining arguments to that named
-method. The canonical case is this: given an array of strings, create a new array of those
-strings, converted to uppercase. Symbol.to_proc allows us to accomplish this elegantly
-as follows:
-     words = ['and', 'but', 'car']             # An array of words
-     uppercase = words.map &:upcase            # Convert to uppercase with String.upcase
-     upper = words.map {|w| w.upcase } # This is the equivalent code with a block
-6.5 Procs and Lambdas
-Blocks are syntactic structures in Ruby; they are not objects, and cannot be manipulated
-as objects. It is possible, however, to create an object that represents a block. Depending
-on how the object is created, it is called a proc or a lambda. Procs have block-like
-behavior and lambdas have method-like behavior. Both, however, are instances of class
-Proc.
-The subsections that follow explain:
-  •  How to create Proc objects in both proc and lambda forms
-  •  How to invoke Proc objects
-  •  How to determine how many arguments a Proc expects
-  •  How to determine if two Proc objects are the same
-  •  How procs and lambdas differ from each other
-6.5.1 Creating Procs
-We’ve already seen one way to crfate a Proc object: by associating a block with a method
-that is defined with an ampersand-prefixed block argument. There is nothing prevent-
-ing such a method from returning the Proc object for use outside the method:
-     # This method creates a proc from a block
-     def makeproc(&p) # Convert associated block to a Proc and store in p
-192 | Chapter 6: Methods, Procs, Lambdas, and Closures
-       p                 # Return the Proc object
-     end
-With a makeproc method like this defined, we can create a Proc object for ourselves:
-     adder = makeproc {|x,y| x+y }
-The variable adder now refers to a Proc object. Proc objects created in this way are procs,
-not lambdas. All Proc objects have a call method that, when invoked, runs the code
-contained by the block from which the proc was created. For example:
-     sum = adder.call(2,2)    # => 4
-In addition to being invoked, Proc objects can be passed to methods, stored in data
-structures and otherwise manipulated like any other Ruby object.
-As well as creating procs by method invocation, there are three methods that create
-Proc objects (both procs and lambdas) in Ruby. These methods are commonly used,
-and it is not actually necessary to define a makeproc method like the one shown earlier.
-In addition to these Proc-creation methods, Ruby 1.9 also supports a new literal syntax
-for defining lambdas. The subsections that follow discuss the methods Proc.new,
-lambda, and proc, and also explain the Ruby 1.9 lambda literal syntax.
-6.5.1.1 Proc.new
-We’ve already seen Proc.new used in some of the previous examples in this chapter.
-This is the normal new method that most classes support, and it’s the most obvious way
-to create a new instance of the Proc class. Proc.new expects no arguments, and returns
-a Proc object that is a proc (not a lambda). When you invoke Proc.new with an associated
-block, it returns a proc that represents the block. For example:
-     p = Proc.new {|x,y| x+y }
-If Proc.new is invoked without a block from within a method that does have an asso-
-ciated block, then it returns a proc representing the block associated with the containing
-method. Using Proc.new in this way provides an alternative to using an ampersand-
-prefixed block argument in a method definition. The following two methods are
-equivalent, for example:
-     def invoke(&b)       def invoke
-       b.call               Proc.new.call
-     end                  end
-6.5.1.2 Kernel.lambda
-Another technique for creating Proc objects is with the lambda method. lambda is a
-method of the Kernel module, so it behaves like a global function. As its name suggests,
-the Proc object returned by this method is a lambda rather than a proc. lambda expects
-no arguments, but there must be a block associated with the invocation:
-     is_positive = lambda {|x| x > 0 }
-                                                                    6.5 Procs and Lambdas | 193
-                                            Lambda History
-   Lambdas and the lambda method are so named in reference to lambda calculus, a branch
-   of mathematical logic that has been applied to functional programming languages. Lisp
-   also uses the term “lambda” to refer to functions that can be manipulated as objects.
-6.5.1.3 Kernel.proc
-In Ruby 1.8, the global proc method is a synonym for lambda. Despite its name, it returns
-a lambda, not a proc. Ruby 1.9 fixes this; in that version of the language, proc is a
-synonym for Proc.new.
-Because of this ambiguity, you should never use proc in Ruby 1.8 code. The behavior
-of your code might change if the interpreter was upgraded to a newer version. If you
-are using Ruby 1.9 code and are confident that it will never be run with a Ruby 1.8
-interpreter, you can safely use proc as a more elegant shorthand for Proc.new.
-6.5.1.4 Lambda Literals
-Ruby 1.9 supports an entirely new syntax for defining lambdas as literals. We’ll begin
-with a Ruby 1.8 lambda, created with the lambda method:
-     succ = lambda {|x| x+1}
-In Ruby 1.9, we can convert this to a literal as follows:
-  • Replace the method name lambda with the punctuation ->.
-  • Move the list of arguments outside of and just before the curly braces.
-  • Change the argument list delimiters from || to ().
-With these changes, we get a Ruby 1.9 lambda literal:
-     succ = ->(x){ x+1 }
-succ now holds a Proc object, which we can use just like any other:
-     succ.call(2)      # => 3
-The introduction of this syntax into Ruby was controversial, and it takes some getting
-used to. Note that the arrow characters -> are different from those used in hash literals.
-A lambda literal uses an arrow made with a hyphen, whereas a hash literal uses an arrow
-made with an equals sign.
-As with blocks in Ruby 1.9, the argument list of a lambda literal may include the dec-
-laration of block-local variables that are guaranteed not to overwrite variables with the
-same name in the enclosing scope. Simply follow the parameter list with a semicolon
-and a list of local variables:
-     # This lambda takes 2 args and declares 3 local vars
-     f = ->(x,y; i,j,k) { ... }
-194 | Chapter 6: Methods, Procs, Lambdas, and Closures
-One benefit of this new lambda syntax over the traditional block-based lambda creation
-methods is that the Ruby 1.9 syntax allows lambdas to be declared with argument
-defaults, just as methods can be:
-     zoom = ->(x,y,factor=2) { [x*factor, y*factor] }
-As with method declarations, the parentheses in lambda literals are optional, because
-the parameter list and local variable lists are completely delimited by the ->, ;, and {.
-We could rewrite the three lambdas above like this:
-     succ = ->x { x+1 }
-     f = -> x,y; i,j,k { ... }
-     zoom = ->x,y,factor=2 { [x*factor, y*factor] }
-Lambda parameters and local variables are optional, of course, and a lambda literal can
-omit this altogether. The minimal lambda, which takes no arguments and returns
-nil, is the following:
-     ->{}
-One benefit of this new syntax is its succinctness. It can be helpful when you want to
-pass a lambda as an argument to a method or to another lambda:
-     def compose(f,g)             # Compose 2 lambdas
-       ->(x) { f.call(g.call(x)) }
-     end
-     succOfSquare = compose(->x{x+1}, ->x{x*x})
-     succOfSquare.call(4)         # => 17: Computes (4*4)+1
-Lambda literals create Proc objects and are not the same thing as blocks. If you want
-to pass a lambda literal to a method that expects a block, prefix the literal with &, just
-as you would with any other Proc object. Here is how we might sort an array of numbers
-into descending order using both a block and a lambda literal:
-     data.sort {|a,b| b-a }    # The block version
-     data.sort &->(a,b){ b-a } # The lambda literal version
-In this case, as you can see, regular block syntax is simpler.
-6.5.2 Invoking Procs and Lambdas
-Procs and lambdas are objects, not methods, and they cannot be invoked in the same
-way that methods are. If p refers to a Proc object, you cannot invoke p as a method. But
-because p is an object, you can invoke a method of p. We’ve already mentioned that
-the Proc class defines a method named call. Invoking this method executes the code
-in the original block. The arguments you pass to the call method become arguments
-to the block, and the return value of the block becomes the return value of the call
-method:
-     f = Proc.new {|x,y| 1.0/(1.0/x + 1.0/y) }
-     z = f.call(x,y)
-                                                                  6.5 Procs and Lambdas | 195
-The Proc class also defines the array access operator to work the same way as call. This
-means that you can invoke a proc or lambda using a syntax that is like method
-invocation, where parentheses have been replaced with square brackets. The proc
-invocation above, for example, could be replaced with this code:
-     z = f[x,y]
-Ruby 1.9 offers an additional way to invoke a Proc object; as an alternative to square
-brackets, you can use parentheses prefixed with a period:
-     z = f.(x,y)
-.() looks like a method invocation missing the method name. This is not an operator
-that can be defined, but rather is syntactic-sugar that invokes the call method. It can
-be used with any object that defines a call method and is not limited to Proc objects.
-6.5.3 The Arity of a Proc
-The arity of a proc or lambda is the number of arguments it expects. (The word is
-derived from the “ary” suffix of unary, binary, ternary, etc.) Proc objects have an
-arity method that returns the number of arguments they expect. For example:
-     lambda{||}.arity              # => 0. No arguments expected
-     lambda{|x| x}.arity           # => 1. One argument expected
-     lambda{|x,y| x+y}.arity # => 2. Two arguments expected
-The notion of arity gets confusing when a Proc accepts an arbitrary number of argu-
-ments in an *-prefixed final argument. When a Proc allows optional arguments, the
-arity method returns a negative number of the form -n-1. A return value of this form
-indicates that the Proc requires n arguments, but it may optionally take additional ar-
-guments as well. -n-1 is known as the one’s-complement of n, and you can invert it
-with the ~ operator. So if arity returns a negative number m, then ~m (or -m-1) gives you
-the number of required arguments:
-     lambda {|*args|}.arity               # => -1.     ~-1 = -(-1)-1 = 0 arguments required
-     lambda {|first, *rest|}.arity # => -2.            ~-2 = -(-2)-1 = 1 argument required
-There is one final wrinkle to the arity method. In Ruby 1.8, a Proc declared without
-any argument clause at all (that is, without any || characters) may be invoked with any
-number of arguments (and these arguments are ignored). The arity method returns
-–1 to indicate that there are no required arguments. This has changed in Ruby 1.9: a
-Proc declared like this has an arity of 0. If it is a lambda, then it is an error to invoke it
-with any arguments:
-     puts lambda {}.arity       # –1 in Ruby 1.8; 0 in Ruby 1.9
-196 | Chapter 6: Methods, Procs, Lambdas, and Closures
-6.5.4 Proc Equality
-The Proc class defines an == method to determine whether two Proc objects are equal.
-It is important to understand, however, that merely having the same source code is not
-enough to make two procs or lambdas equal to each other:
-      lambda {|x| x*x } == lambda {|x| x*x }     # => false
-The == method only returns true if one Proc is a clone or duplicate of the other:
-      p = lambda {|x| x*x }
-      q = p.dup
-      p == q                         # => true: the two procs are equal
-      p.object_id == q.object_id     # => false: they are not the same object
-6.5.5 How Lambdas Differ from Procs
-A proc is the object form of a block, and it behaves like a block. A lambda has slightly
-modified behavior and behaves more like a method than a block. Calling a proc is like
-yielding to a block, whereas calling a lambda is like invoking a method. In Ruby 1.9,
-you can determine whether a Proc object is a proc or a lambda with the instance method
-lambda?. This predicate returns true for lambdas and false for procs. The subsections
-that follow explain the differences between procs and lambdas in detail.
-6.5.5.1 Return in blocks, procs, and lambdas
-Recall from Chapter 5 that the return statement returns from the lexically enclosing
-method, even when the statement is contained within a block. The return statement
-in a block does not just return from the block to the invoking iterator, it returns from
-the method that invoked the iterator. For example:
-      def test
-        puts "entering method"
-        1.times { puts "entering block"; return } # Makes test method return
-        puts "exiting method" # This line is never executed
-      end
-      test
-A proc is like a block, so if you call a proc that executes a return statement, it attempts
-to return from the method that encloses the block that was converted to the proc. For
-example:
-      def test
-        puts "entering method"
-        p = Proc.new { puts "entering proc"; return }
-        p.call                    # Invoking the proc makes method return
-        puts "exiting method" # This line is never executed
-      end
-      test
-                                                                        6.5 Procs and Lambdas | 197
-Using a return statement in a proc is tricky, however, because procs are often passed
-around between methods. By the time a proc is invoked, the lexically enclosing method
-may already have returned:
-     def procBuilder(message)                     # Create and return a proc
-       Proc.new { puts message; return } # return returns from procBuilder
-       # but procBuilder has already returned here!
-     end
-     def test
-       puts "entering method"
-       p = procBuilder("entering proc")
-       p.call                       # Prints "entering proc" and raises LocalJumpError!
-       puts "exiting method" # This line is never executed
-     end
-     test
-By converting a block into an object, we are able to pass that object around and use it
-“out of context.” If we do this, we run the risk of returning from a method that has
-already returned, as was the case here. When this happens, Ruby raises a
-LocalJumpError.
-The fix for this contrived example is to remove the unnecessary return statement, of
-course. But a return statement is not always unnecessary, and another fix is to use a
-lambda instead of a proc. As we said earlier, lambdas work more like methods than
-blocks. A return statement in a lambda, therefore, returns from the lambda itself, not
-from the method that surrounds the creation site of the lambda:
-     def test
-       puts "entering method"
-       p = lambda { puts "entering lambda"; return }
-       p.call                       # Invoking the lambda does not make the method return
-       puts "exiting method" # This line *is* executed now
-     end
-     test
-The fact that return in a lambda only returns from the lambda itself means that we
-never have to worry about LocalJumpError:
-     def lambdaBuilder(message)                # Create and return a lambda
-       lambda { puts message; return } # return returns from the lambda
-     end
-     def test
-       puts "entering method"
-       l = lambdaBuilder("entering lambda")
-       l.call                       # Prints "entering lambda"
-       puts "exiting method" # This line is executed
-     end
-     test
-198 | Chapter 6: Methods, Procs, Lambdas, and Closures
-6.5.5.2 Break in blocks, procs and lambdas
-Figure 5-3 illustrated the behavior of the break statement in a block; it causes the block
-to return to its iterator and the iterator to return to the method that invoked it. Because
-procs work like blocks, we expect break to do the same thing in a proc. We can’t easily
-test this, however. When we create a proc with Proc.new, Proc.new is the iterator that
-break would return from. And by the time we can invoke the proc object, the iterator
-has already returned. So it never makes sense to have a top-level break statement in a
-proc created with Proc.new:
-     def test
-       puts "entering test method"
-       proc = Proc.new { puts "entering proc"; break }
-       proc.call                        # LocalJumpError: iterator has already returned
-       puts "exiting test method"
-     end
-     test
-If we create a proc object with an & argument to the iterator method, then we can invoke
-it and make the iterator return:
-     def iterator(&proc)
-       puts "entering iterator"
-       proc.call # invoke the proc
-       puts "exiting iterator"       # Never executed if the proc breaks
-     end
-     def test
-       iterator { puts "entering proc"; break }
-     end
-     test
-Lambdas are method-like, so putting a break statement at the top-level of a lambda,
-without an enclosing loop or iteration to break out of, doesn’t actually make any sense!
-We might expect the following code to fail because there is nothing to break out of in
-the lambda. In fact, the top-level break just acts like a return:
-     def test
-       puts "entering test method"
-       lambda = lambda { puts "entering lambda"; break; puts "exiting lambda" }
-       lambda.call
-       puts "exiting test method"
-     end
-     test
-6.5.5.3 Other control-flow statements
-A top-level next statement works the same in a block, proc, or lambda: it causes the
-yield statement or call method that invoked the block, proc, or lambda to return. If
-next is followed by an expression, then the value of that expression becomes the return
-value of the block, proc, or lambda.
-                                                                       6.5 Procs and Lambdas | 199
-redo also works the same in procs and lambdas: it transfers control back to the begin-
-ning of the proc or lambda.
-retry is never allowed in procs or lambdas: using it always results in a LocalJumpError.
-raise behaves the same in blocks, procs, and lambdas. Exceptions always propagate
-up the call stack. If a block, proc, or lambda raises an exception and there is no local
-rescue clause, the exception first propagates to the method that invoked the block with
-yield or that invoked the proc or lambda with call.
-6.5.5.4 Argument passing to procs and lambdas
-Invoking a block with yield is similar to, but not the same as, invoking a method. There
-are differences in the way argument values in the invocation are assigned to the argu-
-ment variables declared in the block or method. The yield statement uses yield
-semantics, whereas method invocation uses invocation semantics. Yield semantics are
-similar to parallel assignment and are described in §5.4.4. As you might expect,
-invoking a proc uses yield semantics and invoking a lambda uses invocation semantics:
-     p = Proc.new {|x,y| print x,y }
-     p.call(1)         # x,y=1:         nil used for missing rvalue:     Prints 1nil
-     p.call(1,2)       # x,y=1,2:       2 lvalues, 2 rvalues:            Prints 12
-     p.call(1,2,3)     # x,y=1,2,3: extra rvalue discarded:              Prints 12
-     p.call([1,2])     # x,y=[1,2]: array automatically unpacked:        Prints 12
-This code demonstrates that the call method of a proc handles the arguments it
-receives flexibly: silently discarding extras, silently adding nil for omitted arguments,
-and even unpacking arrays. (Or, not demonstrated here, packing multiple arguments
-into a single array when the proc expects only a single argument.)
-Lambdas are not flexible in this way; like methods, they must be invoked with precisely
-the number of arguments they are declared with:
-     l = lambda {|x,y|    print x,y }
-     l.call(1,2)       #  This works
-     l.call(1)         #  Wrong number of      arguments
-     l.call(1,2,3)     #  Wrong number of      arguments
-     l.call([1,2])     #  Wrong number of      arguments
-     l.call(*[1,2]) #     Works: explicit      splat to unpack the array
-6.6 Closures
-In Ruby, procs and lambdas are closures. The term “closure” comes from the early days
-of computer science; it refers to an object that is both an invocable function and a
-variable binding for that function. When you create a proc or a lambda, the resulting
-Proc object holds not just the executable block but also bindings for all the variables
-used by the block.
-200 | Chapter 6: Methods, Procs, Lambdas, and Closures
-You already know that blocks can use local variables and method arguments that are
-defined outside the block. In the following code, for example, the block associated with
-the collect iterator uses the method argument n:
-       # multiply each element of the data array by n
-       def multiply(data, n)
-         data.collect {|x| x*n }
-       end
-       puts multiply([1,2,3], 2)   # Prints 2,4,6
-What is more interesting, and possibly even surprising, is that if the block were turned
-into a proc or lambda, it could access n even after the method to which it is an argument
-had returned. The following code demonstrates:
-       # Return a lambda that retains or "closes over" the argument n
-       def multiplier(n)
-         lambda {|data| data.collect{|x| x*n } }
-       end
-       doubler = multiplier(2)     # Get a lambda that knows how to double
-       puts doubler.call([1,2,3]) # Prints 2,4,6
-The multiplier method returns a lambda. Because this lambda is used outside of the
-scope in which it is defined, we call it a closure; it encapsulates or “closes over” (or just
-retains) the binding for the method argument n.
-6.6.1 Closures and Shared Variables
-It is important to understand that a closure does not just retain the value of the variables
-it refers to—it retains the actual variables and extends their lifetime. Another way to
-say this is that the variables used in a lambda or proc are not statically bound when the
-lambda or proc is created. Instead, the bindings are dynamic, and the values of the
-variables are looked up when the lambda or proc is executed.
-As an example, the following code defines a method that returns two lambdas. Because
-the lambdas are defined in the same scope, they share access to the variables in that
-scope. When one lambda alters the value of a shared variable, the new value is available
-to the other lambda:
-       # Return a pair of lambdas that share access to a local variable.
-       def accessor_pair(initialValue=nil)
-         value = initialValue # A local variable shared by the returned lambdas.
-         getter = lambda { value }          # Return value of local variable.
-         setter = lambda {|x| value = x }   # Change value of local variable.
-         return getter,setter               # Return pair of lambdas to caller.
-       end
-       getX, setX = accessor_pair(0) # Create accessor lambdas for initial value 0.
-       puts getX[]        # Prints 0. Note square brackets instead of call.
-       setX[10]           # Change the value through one closure.
-       puts getX[]        # Prints 10. The change is visible through the other.
-                                                                              6.6 Closures | 201
-The fact that lambdas created in the same scope share access to variables can be a feature
-or a source of bugs. Any time you have a method that returns more than one closure,
-you should pay particular attention to the variables they use. Consider the following
-code:
-     # Return an array of lambdas that multiply by the arguments
-     def multipliers(*args)
-       x = nil
-       args.map {|x| lambda {|y| x*y }}
-     end
-     double,triple = multipliers(2,3)
-     puts double.call(2)          # Prints 6 in Ruby 1.8
-This multipliers method uses the map iterator and a block to return an array of lambdas
-(created inside the block). In Ruby 1.8, block arguments are not always local to the
-block (see §5.4.3), and so all of the lambdas that are created end up sharing access to
-x, which is a local variable of the multipliers method. As noted above, closures don't
-capture the current value of the variable: they capture the variable itself. Each of the
-lambdas created here share the variable x. That variable has only one value, and all of
-the returned lambdas use that same value. That is why the lambda we name double
-ends up tripling its argument instead of doubling it.
-In this particular code, the issue goes away in Ruby 1.9 because block arguments are
-always block-local in that version of the language. Still, you can get yourself in trouble
-any time you create lambdas within a loop and use a loop variables (such as an array
-index) within the lambda.
-6.6.2 Closures and Bindings
-The Proc class defines a method named binding. Calling this method on a proc or
-lambda returns a Binding object that represents the bindings in effect for that closure.
-                                       More About Bindings
-   We’ve been discussing the bindings of a closure as if they were simply a mapping from
-   variable names to variable values. In fact, bindings involve more than just variables.
-   They hold all the information necessary to execute a method, such as the value of
-   self, and the block, if any, that would be invoked by a yield.
-A Binding object doesn’t have interesting methods of its own, but it can be used as the
-second argument to the global eval function (see §8.2), providing a context in which
-to evaluate a string of Ruby code. In Ruby 1.9, Binding has its own eval method, which
-you may prefer to use. (Use ri to learn more about Kernel.eval and Binding.eval.)
-The use of a Binding object and the eval method gives us a back door through which
-we can manipulate the behavior of a closure. Take another look at this code from earlier:
-202 | Chapter 6: Methods, Procs, Lambdas, and Closures
-     # Return a lambda that retains or "closes over" the argument n
-     def multiplier(n)
-         lambda {|data| data.collect{|x| x*n } }
-     end
-     doubler = multiplier(2)       # Get a lambda that knows how to double
-     puts doubler.call([1,2,3]) # Prints 2,4,6
-Now suppose we want to alter the behavior of doubler:
-     eval("n=3", doubler.binding) # Or doubler.binding.eval("n=3") in Ruby 1.9
-     puts doubler.call([1,2,3])     # Now this prints 3,6,9!
-As a shortcut, the eval method allows you to pass a Proc object directly instead of
-passing the Binding object of the Proc. So we could replace the eval invocation above
-with:
-     eval("n=3", doubler)
-Bindings are not only a feature of closures. The Kernel.binding method returns a
-Binding object that represents the bindings in effect at whatever point you happen to
-call it.
 6.7 Method Objects
 Ruby’s methods and blocks are executable language constructs, but they are not ob-
 jects. Procs and lambdas are object versions of blocks; they can be executed and also
