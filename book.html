@@ -1425,18 +1425,8 @@ prohibited on other Numeric objects.
           http://blog.jayfields.com/2006/12/ruby-alias-method-alternative.html);
           explain pros/cons -->
 
-                                    Aliasing Is Not Overloading
-   A Ruby method may have two names, but two methods cannot share a single name. In
-   statically typed languages, methods can be distinguished by the number and type of
-   their arguments, and two or more methods may share the same name as long as they
-   expect different numbers or types of arguments. This kind of overloading is not possible
-   in Ruby.
-   On the other hand, method overloading is not really necessary in Ruby. Methods can
-   accept arguments of any class and can be written to do different things based on the
-   type of the arguments they are passed. Also (as we’ll see later), Ruby’s method argu-
-   ments can be declared with default values, and these arguments may be omitted form
-   method invocations. This allows a single method to be invoked with differing numbers
-   of arguments.
+          <!-- TODO: Discuss method overloading? -->
+
         <h3><code>Object#send</code></h3>
 
         <figure id=object-send>
@@ -1453,21 +1443,41 @@ prohibited on other Numeric objects.
           </dd>
           </figure>
 
+          <!-- TODO: define_method -->
+          <h3><code>Method</code> Objects</h3>
+          
+          <p>A method can be represented as an instance of the
+          <code>Method</code> class. This <dfn id=method-object>method
+            object</dfn> enables you to store a reference to a method in a
+          variable, as you would any other object, query the method’s metadata,
+          and manipulate it. This is quite distinct from capturing the
+          return value of a method.
 
-6.7 Method Objects
-Ruby’s methods and blocks are executable language constructs, but they are not ob-
-jects. Procs and lambdas are object versions of blocks; they can be executed and also
-manipulated as data. Ruby has powerful metaprogramming (or reflection) capabilities,
-and methods can actually be represented as instances of the Method class. (Metaprog-
-ramming is covered in Chapter 8, but Method objects are introduced here.) You should
-note that invoking a method through a Method object is less efficient than invoking it
-directly. Method objects are not typically used as often as lambdas and procs.
-The Object class defines a method named method. Pass it a method name, as a string or
-a symbol, and it returns a Method object representing the named method of the receiver
-(or throws a NameError if there is no such method). For example:
-     m = 0.method(:succ)    # A Method representing the succ method of Fixnum 0
-In Ruby 1.9, you can also use public_method to obtain a Method object. It works like
-method does but ignores protected and private methods (see §7.2).
+          <p>Method objects can be created with <code>Kernel#method</code>:
+          <code><var>receiver</var>.method(<var>name</var>)</code>, where
+          <var>name</var> is the method name as a <code>Symbol</code> or
+          <code>String</code>. For
+          example, <code>method(:eval)</code> returns a <code>Method</code>
+          object for <code>Kernel#eval</code>. If the method does not exist a
+          <code>NameError</code> will be raised.
+
+          <p><code>Kernel#public_method</code> works in the same way, except
+          it also raises a <code>NameError</code> if the given method is
+          private or protected.
+          
+
+          <h4>Arity</h4>
+
+          <p><code>Method#arity</code> returns an <code>Integer</code>
+          corresponding to the method’s arity. If the method expects a fixed
+          number of arguments, the number of arguments it expects will be
+          returned.  If the method expects a variable number of arguments, the
+          additive inverse of its parameter count will be returned. Methods
+          implemented in C, i.e.  most core methods, have an arity of
+          <code>-1</code> if they accept a variable number of parameters. It
+          follows, then, that a return value ≥ 0 indicates a fixed number of
+          parameters; a negative value, a variable number. 
+
 The Method class is not a subclass of Proc, but it behaves much like it. Method objects
 are invoked with the call method (or the [] operator), just as Proc objects are. And
 Method defines an arity method just like the arity method of Proc. To invoke the Method
@@ -1499,7 +1509,16 @@ In Ruby 1.9, the Method class defines three methods that are not available in 1.
 returns the name of the method as a string; owner returns the class in which the method
 was defined; and receiver returns the object to which the method is bound. For any
 method object m, m.receiver.class must be equal to or a subclass of m.owner.
-6.7.1 Unbound Method Objects
+
+          <h3><code>UnboundMethod</code> Objects</h3>
+          <p><code>Module#instance_method</code> is used in the same way:
+          <code><var>receiver</var>.instance_method(<var>name</var>)</code>.
+          It is used to create an <code>UnboundMethod</code> object for the
+          given <em>instance method</em> of a class. For
+          example, <code>String.instance_method(:size)</code> returns an
+          <code>UnboundMethod</code> object for <code>String#size</code>.
+
+
 In addition to the Method class, Ruby also defines an UnboundMethod class. As its name
 suggests, an UnboundMethod object represents a method, without a binding to the object
 on which it is to be invoked. Because an UnboundMethod is unbound, it cannot be
