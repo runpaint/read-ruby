@@ -197,6 +197,27 @@
       <!-- Point to Symbol#to_proc here? -->
     </aside>
 
+    <h4>Dynamic Invocation with <code>Object#send</code></h4>
+      
+      <p>A message can also be sent to an object by providing it as an argument to
+      <code>Object#send</code>. This allows the message name to be determined dynamically, at
+      runtime, as opposed to the invocation syntax described above which requires the method name to
+      be a literal, embedded in the source. For example: <code>[1, 2, 3].send(:first)</code> or
+      <code>23.send(:to_s, 16)</code>.
+
+      <figure id=object-send>
+      <dt><code>Object#send</code> sends an object a message whose name can be determined at runtime.
+      <dd>
+        <pre><code>
+          name = :size
+          # Sends "wool" the :name message
+          "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
+          # Sends "wool" the :size message
+          "wool".send(name) #=&gt; 4
+        </code></pre>  
+      </dd>
+      </figure>
+
     <h4>Parentheses</h4>
 
       <p>Parentheses may be omitted from method invocations when doing so does not introduce syntactic
@@ -262,6 +283,7 @@
         setter</dfn>. It sets the attribute to the value supplied.
 
     <!-- TODO: Lookup rules? -->
+
 
   <h3>Return Values</h3>
 
@@ -571,8 +593,11 @@
     <p>A method consists of a name, an optional parameter list, and a body. Names have already been
     discussed, the parameter list is explained in <i>Arguments</i> below. The <dfn
       id=method-body>body</dfn> is a sequence of statements terminated with the <code>end</code>
-    keyword.
+    keyword. <!-- TODO: Clarify here that due to method_missing method’s need not be defined before
+    they are called? -->
     
+    <!-- TODO: define_method -->
+  
     <figure id=def-syntax>
     <dt>The syntax of a method definition.
       <dd>
@@ -1273,22 +1298,8 @@
 
   <!-- TODO: Discuss method overloading? -->
 
-  <h3><code>Object#send</code></h3>
+  <h3>Missing Methods</h3>
 
-    <figure id=object-send>
-    <dt><code>Object#send</code> sends an object a message whose name can be determined at runtime.
-    <dd>
-      <pre><code>
-        name = :size
-        # Sends "wool" the :name message
-        "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
-        # Sends "wool" the :size message
-        "wool".send(name) #=&gt; 4
-      </code></pre>  
-    </dd>
-    </figure>
-
-  <!-- TODO: define_method -->
   <h3><code>Method</code> Objects</h3>
 
   <p>An instance of the <code>Method</code> class represents a method bound to an object. This <dfn
