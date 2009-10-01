@@ -1086,6 +1086,70 @@
 
         </aside>
 
+    <h4>Dynamic Method Definition</h4>
+
+      <p>An instance method can be defined dynamically with
+      <code>Module#define_method(<var>name</var>, <var>body</var>)</code>, where <var>name</var> is the
+        method’s name given as a <code>Symbol</code>, and <var>body</var> is its body given as a
+        <code>Proc</code>, <code>Method</code>, <code>UnboundMethod</code>, or literal block. This
+        allows methods to be defined at runtime, in contrast to <code>def</code> which requires the
+        method name and body to appear literally in the source code.
+
+      <figure id=define-method>
+      <dt>Using <code>define_method</code> to dynamically create a method with a user-supplied
+      name and body.
+        <dd>
+          <pre>
+            <code>
+            class Conjure
+              def self.conjure(name, lamb)
+                define_method(name, lamb)
+              end
+            end
+            # Define a new instance method with a lambda as its body
+            Conjure.conjure(:glark, -&gt;{ (3..5).to_a * 2 })
+            Conjure.new.glark #=&gt; [3, 4, 5, 3, 4, 5]         
+            </code>
+          </pre>
+        </dd>
+      </figure>
+
+      <p><code>Module#define_method</code> is a private method so must be called from within the class
+      the method is being defined on. Alternatively, it can be invoked inside
+      <code>class_eval</code> like so:
+  
+      <figure id=define-method-class-eval>
+      <dt>Using <code>define_method</code> inside <code>class_eval</code> to dynamically create
+      a method with a user-supplied name and body.
+        <dd>
+          <pre>
+            <code>
+            Array.class_eval do
+              define_method(:second, -&gt;{ self.[](1) })
+            end
+            [3, 4, 5].second #=&gt; 4
+            </code>
+          </pre>
+        </dd>
+      </figure>
+        
+      <p><code>Object#define_singleton_method</code> is called with a class name as the receiver and
+      the same arguments as <code>Module#define_method</code> for the obvious purpose. 
+
+      <figure id=define-singleton-method>
+      <dt>Using <code>define_singleton_method</code> to dynamically create a method.
+        <dd>
+          <pre>
+            <code>
+            File.define_singleton_method(:match) do |file, pattern|
+              File.read(file).match(pattern)
+            end
+            File.match('/etc/passwd',/root/) #=&gt; #&lt;MatchData "root"&gt;
+            </code>
+          </pre>
+        </dd>
+      </figure>
+
   <h3>Undefining</h3>
 
     <p>The <code>undef</code> statement takes one or more <code>Symbol</code>s as arguments, then
@@ -1362,7 +1426,7 @@
     <h4>Parameters</h4>
 
       <!-- [ruby-core:19759] Proposal: Method#get_args -->   
-      
+        
       <p><code>Method#parameters</code> returns an <code>Array</code>, each element of which is a
       sub-<code>Array</code> of <code>Symbol</code>s that describe the corresponding parameter
       expected by the method. The first <code>Symbol</code> is <code>:req</code> for a required
