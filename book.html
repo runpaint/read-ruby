@@ -1361,34 +1361,60 @@
 
   <h3><code>UnboundMethod</code> Objects</h3>
 
-    <p><code>Module#instance_method</code> is used in the same way:
-    <code><var>receiver</var>.instance_method(<var>name</var>)</code>.  It is used to create an
-    <code>UnboundMethod</code> object for the given <em>instance method</em> of a class. For example,
-    <code>String.instance_method(:size)</code> returns an <code>UnboundMethod</code> object for
-    <code>String#size</code>.
+    <p>An <code>UnboundMethod</code> object is a <code>Method</code> object disassociated from the
+    object on which it was defined.     
+     
+    <p>A <code>Method</code> object may converted to an <code>UnboundMethod</code> object with
+    <code>Method#unbind</code>. Alternatively, they can be created with
+    <code>Module#instance_method</code>. For example,
+    <code>String.instance_method(:downcase)</code> creates an <code>UnboundMethod</code> object for
+    <code>String#downcase</code>.
+      
+    <p>Before an <code>UnboundMethod</code> is invoked it must be re-associated with, or <dfn
+      id=method-bind>bound</a> to, to an object which is a <code>Object#kind_of?</code> its original
+    class. This is achieved by passing an object reference to <code>UnboundMethod#bind</code>.
 
+    <p>With the exception of <code>#call</code>, for the reason described above,
+    <code>UnboundMethod</code> objects support the same method’s as <code>Method</code> objects.
 
-    In addition to the Method class, Ruby also defines an UnboundMethod class. As its name
-    suggests, an UnboundMethod object represents a method, without a binding to the object
-    on which it is to be invoked. Because an UnboundMethod is unbound, it cannot be
-    invoked, and the UnboundMethod class does not define a call or [] method.
-    To obtain an UnboundMethod object, use the instance_method method of any class or
-    module:
-    unbound_plus = Fixnum.instance_method("+")
-    In Ruby 1.9, you can also use public_instance_method to obtain an UnboundMethod
-    object. It works like instance_method does, but it ignores protected and private methods
-    (see §7.2).
-    In order to invoke an unbound method, you must first bind it to an object using the
-    bind method:
-    204 | Chapter 6: Methods, Procs, Lambdas, and Closures
-    plus_2 = unbound_plus.bind(2)  # Bind the method to the object 2
-    The bind method returns a Method object, which can be invoked with its call method:
-    sum = plus_2.call(2)    # => 4
-    Another way to obtain an UnboundMethod object is with the unbind method of the
-    Method class:
-    plus_3 = plus_2.unbind.bind(3)
-    In Ruby 1.9, UnboundMethod has name and owner methods that work just as they do for
-    the Method class.
+    <p><a href=#refBLACK09>Black</a> (pp. 418-420) provides the following example (with minor
+    adjustments for formating) of using <code>UnboundMethod</code> objects:
+      
+    <blockquote>
+        
+      <p>The following question comes up periodically in Ruby forums:
+        
+      <blockquote>
+        <p>Suppose I’ve got a class hierarchy where a method gets redefined:
+          
+        <pre><code>
+         class A
+          def a_method
+            puts "Definition in class A"
+          end
+         end
+         class B &lt; A
+          def a_method
+            puts "Definition in class B (subclass of A)"
+          end
+         end
+         class C &lt; B
+         end
+         </code></pre>
+          
+        <p>And I’ve got an instance of the subclass (<code>c = C.new</code>). Is there any way to
+        get that instance of the lowest class to respond to the message (<code>a_method</code>) by
+        executing the version of the method in the class two classes up the chain?
+        
+      </blockquote>
+        
+      <p>By default, of course, the instance doesn’t do that; it executes the first matching method
+      it finds as it traverses the method search path: <code>c.a_method</code>. The output is
+      <samp>Definition in class B (subclass of A)</samp>. But you can force the issue through an
+      unbind and bind operation: <code>A.instance_method(:a_method).bind(c).call</code>. Here the
+      output is <samp>Definition in class A</samp>.
+      
+    </blockquote>
 
 <h2>Classes</h2>
 
@@ -1496,6 +1522,9 @@
 
 <h2>References</h2>
   <dl>
+  <dt id=refBLACK09>[BLACK09]</dt>
+  <dd><cite><a href=//www.manning.com/black2/>The Well-Grounded Rubyist</a></cite>, D. A. Black,
+  Manning, 2009.</dd>
   <dt id=refBROWN09>[BROWN09]</dt>
   <dd><cite><a href=//rubybestpractices.com/>Ruby Best Practices</a></cite>, G. Brown, O'Reilly Media,
   2009.</dd>
