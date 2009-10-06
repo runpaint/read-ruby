@@ -1,0 +1,237 @@
+Form:
+'.' - Call method
+Initial capital - constant, class
+Lowercase - variable
+...
+
+Principles:
+To convert an object to another use its #to_* method
+To instantiate an object use its .new method
+
+<h2>Truth</h2>
+<ol>
+  <li>Anything non-false is true. 
+  <li><code>false</code> is false
+  <li><code>nil</code> is false
+  <li>Implications (0, '', and [] are true)
+  <li><code>!!</code> returns the truthfulness of an expression
+  <li>Primarily used in conditionals
+</ol>
+
+<h2>Identity</h2>
+<ol>
+  <li><code>Object#object_id</code>
+  <li><code>Object#hash</code>
+  <li>Distinct from equality (#eql? vs. ==)
+  <li>Distinct from name (better term?)
+  <li>In terms of class
+  <li>Implications regarding use as Hash keys
+  <li>Identity Hashes
+  <li>clone and dup
+</ol>
+
+<h2>Equality</h2>
+<ol>
+  <li><code>==</code> vs. <code>===</code>
+  <li>The essence of equality: equivalence
+  <li>Implementing with <code>Object#==</code>
+  <li><code>!=</code> need not imply <code>not ==</code>
+  <li>Assignment is not equality
+</ol>
+
+<h2>Repetition</h2>
+<ol>
+  <li>Why repeat yourself?
+  <li><code>loop</code>ing forever (<code>break</code>/<code>return</code>)
+  <li><code>#upto</code>/<code>#downto</code> for a fixed number of
+  repetitions
+  <li>Distinct from iteration, unlike other languages
+</ol>
+
+<h2>Choice</h2>
+<ol>
+  <li>Conditionals: comparison, <code>Enumerable#any?</code>, etc.
+  <li><code>if</code> for simple branches
+  <li><code>unless</code> to simplify negative conditionals
+  <li>Post-(proper name?)-<code>if</code>/<code>unless</code>.
+  <li><code>else</code>: expressing a default action
+  <li>Ternary expression to express simple either-or choice on a single line
+  <li>Multiple choices with <code>elsif</code>
+  <li>Choosing between multiple consecutive <code>if</code>s and
+  <code>if..elsif</code>.
+  <li><code>case</code>: <code>===</code>
+  <li><code>if</code> versus <code>case</code>
+</ol>
+
+<h2>Communication</h2>
+<!-- Too broad? -->
+<ol>
+  <li>Via message passing
+  <li>Methods versus messages
+  <li><code>#respond_to?</code>
+  <li>Sending messages: <code>.</code> and <code>Object#send</code>
+  <li>Naming conventions for messages: <code>?</code>, <code>!</code>,
+  <code>=</code>
+  <li>Argument passing: parentheses, '&amp;', '*', blocks, named arguments
+</ol>
+
+<h2>Vocabulary</h2>
+<!-- TODO: Discuss def here? -->
+<ol>
+  <li>An object's vocabulary is the set of messages it understands
+  <li><code>Object#methods</code>, and friends, enumerates a subset of this
+  vocabulary
+  <li>The difference between <code>#respond_to?</code> and
+  <li><code>Method</code> objects and RDoc provide a dictionary of sorts,
+  metadata
+  <code>methods.include?</code>.
+</ol>
+
+<h2>Understanding</h2> / <h2>Comprehension</h2>
+<ol>
+  <li>A message is only understood in context
+  <li>The object's state and the message's arguments provide this context
+  <li>IOW, that an object responds_to a message doesn't imply it understands
+  it in the same way the caller intends.
+  <li><code>Method#arity</code> and the raising of
+  <code>TypeError</code>/<code>ArgumentError</code> help in this regard
+  <li><code>NoMethodError</code> indicates that the message per se isn't
+  understood.
+</ol>
+
+<h2>Unforseen</h2>
+<ol>
+  <li>What an Exception is
+  <li>Exceptions must inherit from <code>Exception</code>
+  <li>When to use exceptions
+  <li>The meaning and use of <code>raise</code>
+  <li>Pessimism: expecting the exceptional with <code>rescue</code>
+  <li>What exceptions to rescue?
+</ol>
+
+<h2>Multiplicity</h2>
+<!-- Too broad? -->
+<ol>
+  <li>Arrays for storing ordered collection of objects
+  <li>Elements need not be homogeneous (<i>scalable</i> in mathematics jargon)
+  <li>Creation with <code>[]</code> literal
+  <li>Creation by multiplcation
+  <li>Communication en-masse with <code>Enumerable#map</code> and
+  <code>Symbol#to_proc</code>. Wholesale transformation.
+  <li>Querying with <code>Enumerable#any?</code> et al.
+  <li>Reduction with <code>Enumerable#reduce</code>
+  <li>Abstracting Arrays to Enumerables
+</ol>
+
+<h2>Lineage</h2>
+<ol>
+  <li>Inheritance: '&lt;'.
+  <li>Conceding control to one's parents. Expansion of vocabulary.
+  <li>Mixins (mongrel objects): learning traits
+</ol>
+
+<h4>Logic</h4>
+<ol>
+  <li>Short-circuiting decisions
+  <li><code>not</code> / <code>!</code>
+  <li><code>or</code> / <code>||</code>
+  <li><code>and</code> / <code>&amp;&amp;</code>
+</ol>
+
+<h4>Transformation</h4>
+<ol>
+  <li>Instructing an object to represent itself as a member of another class
+  <li>Using (to_*) methods for transformation to core classes
+  <li>Implicit transformation, e.g. #to_path, #to_s
+  <li>Explicit transformation, i.e. to_str vs. to_s.
+  <li>Numerics as a special case: #coerce,
+  <li>A more general approach: asking the target object to transform the
+  source object: .try_convert. <!-- Fix terminology -->
+</ol>
+
+Similarity (regexps)
+Creation/Reproduction (better title)
+
+<h2>Associations</h2>
+<ol>
+  <li>As a dictionary
+  <li>Name describes the type of association
+  <li>Hashes
+  <li>The association between one object and another
+  <li>Keys are unique, but Arrays can be used
+  <li>Abstract associations with default procs
+</ol>
+
+<h2>Action</h2> / <h2>Behaviour</h2>
+
+<h2>Privacy</h2>
+<ol>
+  <li>Its advisory
+  <li>private, protected, public
+  <li>Subverting with <code>Object#send</code>
+</ol>
+
+<h2>Order</h2>
+<ol>
+  <li>Sorting
+</ol>
+
+<h2>Class</h2>
+<ol>
+  <li>Is not a <i>type</i>
+  <li>Pre-destination, caste system: objects will always behave like their class
+  <li>An object's class cannot be changed
+  <li><code>#is_a?</code>: Wrong kind of discrimination; we prefer to judge an
+  object on its abilities: <code>respond_to?</code>.
+  <li>Aristotelian "classical" concept
+</ol>
+
+<h2>Individualism</h2>
+<ol>
+  <li>An object can behave differently to its class
+  <li>Singleton methods
+  <li><code>Object#extend</code>
+  <li>An object can be cloned then the clone specialised in these ways. A more
+  precise form of inheritance?
+</ol>
+
+<h2>Accountability</h2>
+<ol>
+  <li><code>Module#inherited</code>: Determining who my children are
+  <li><code>Kernel#set_trace_func</code>: Tracking who called what
+  <li>Other hook methods
+</ol>
+
+<h2>Responsibility</h2>
+<ol>
+  <li><code>super</code> for delegating upwards
+  <li>Inheritance as pushing responsibility downwards
+  <li><code>method_missing</code> allows decision to be made dynamically, at
+  run-time
+  <li>Abstract method that raises exception if not overridden: forcing your
+  children to be responsible
+  <li>Delegating with <code>delegator.rb</code>
+</ol>
+
+<h2>Epistemology</h2>
+<h2>Categorization</h2>
+<ol>
+  <li>Aristotelian "classical" concept
+</ol>
+
+Certainty (testing)
+Permanence (serialization, files,...)
+Composability?
+"An intrinsic property is a property that an object or a thing has of itself,
+independently of other things, including its context. An extrinsic (or
+relational) property is a property that depends on a thing's relationship with
+other things. "
+
+"In the context of Social Science to be Interpellated is to identify with a
+particular idea or identity. For example, if someone were to shout your name
+at you in the street, you would recognize that salutation to mean yourself. It
+is basically thinking 'that means me'. It is the process by which you
+recognise yourself to belong to a particular identity."
+
+Sortal
+Unity
