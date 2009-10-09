@@ -1,68 +1,50 @@
-Form:
-'.' - Call method
-Initial capital - constant, class
-Lowercase - variable
-...
-
-Principles:
-To convert an object to another use its #to_* method
-To instantiate an object use its .new method
-
-<h2>Truth</h2>
+<h1>The Communication of Objects in Ruby</h1>
 <ol>
-  <li>Anything non-false is true. 
-  <li><code>false</code> is false
-  <li><code>nil</code> is false
-  <li>Implications (0, '', and [] are true)
-  <li><code>!!</code> returns the truthfulness of an expression
-  <li>Primarily used in conditionals
+  <li>Ruby holds as fundamental that every value is an object. (Blatantly
+  untrue that "everything" is an object: variables and keywords aren't).
+  <li>An object is an entity that has state, behaviour, and identity. 
+  <li>The structure and behaviour of similar objects are defined in their common class. 
+  <li>Objects communicate by sending and receiving messages
+  <li>The receipt of a message implies a response
+  <li>Messages may alter state and/or enact behaviour, but cannot affect identity
+  qua identity ("This convenience is afforded by SELF’s uniform use of
+  messages to access both state and behavior,").
+  <li>A recipient of a message attempts to invoke a method whose name
+  corresponds with the message selector
+  <li>A recipient of a message may delegate it to another object/class
+  <li>Variables store references to objects (Implies pass by reference?)
+  <li>An object's class cannot be changed
 </ol>
 
-<h2>Identity</h2>
-<ol>
-  <li><code>Object#object_id</code>
-  <li><code>Object#hash</code>
-  <li>Distinct from equality (#eql? vs. ==)
-  <li>Distinct from name (better term?)
-  <li>In terms of class
-  <li>Implications regarding use as Hash keys
-  <li>Identity Hashes
-  <li>clone and dup
-</ol>
+<h2>Objects</h2>
 
-<h2>Equality</h2>
-<ol>
-  <li><code>==</code> vs. <code>===</code>
-  <li>The essence of equality: equivalence
-  <li>Implementing with <code>Object#==</code>
-  <li><code>!=</code> need not imply <code>not ==</code>
-  <li>Assignment is not equality
-</ol>
+  <h3>Identity</h3>
+  <ol>
+    <li><code>Object#object_id</code>
+    <li><code>Object#hash</code>
+    <li>Distinct from equality (#eql? vs. ==)
+    <li>Distinct from name (better term?)
+    <li>In terms of class
+    <li>Implications regarding use as Hash keys
+    <li>Identity Hashes
+    <li>clone and dup
+  </ol>
 
-<h2>Repetition</h2>
-<ol>
-  <li>Why repeat yourself?
-  <li><code>loop</code>ing forever (<code>break</code>/<code>return</code>)
-  <li><code>#upto</code>/<code>#downto</code> for a fixed number of
-  repetitions
-  <li>Distinct from iteration, unlike other languages
-</ol>
+  <h3>State</h3>
 
-<h2>Choice</h2>
-<ol>
-  <li>Conditionals: comparison, <code>Enumerable#any?</code>, etc.
-  <li><code>if</code> for simple branches
-  <li><code>unless</code> to simplify negative conditionals
-  <li>Post-(proper name?)-<code>if</code>/<code>unless</code>.
-  <li><code>else</code>: expressing a default action
-  <li>Ternary expression to express simple either-or choice on a single line
-  <li>Multiple choices with <code>elsif</code>
-  <li>Choosing between multiple consecutive <code>if</code>s and
-  <code>if..elsif</code>.
-  <li><code>case</code>: <code>===</code>
-  <li><code>if</code> versus <code>case</code>
-</ol>
+  <h3>Behaviour</h3>
 
+  <h3>Instantiation</h3>  
+
+  <h3>Equality</h3>
+  <ol>
+    <li><code>==</code> vs. <code>===</code>
+    <li>The essence of equality: equivalence
+    <li>Implementing with <code>Object#==</code>
+    <li><code>!=</code> need not imply <code>not ==</code>
+    <li>Assignment is not equality
+  </ol>
+  
 <h2>Communication</h2>
 <!-- Too broad? -->
 <ol>
@@ -97,6 +79,57 @@ To instantiate an object use its .new method
   <code>TypeError</code>/<code>ArgumentError</code> help in this regard
   <li><code>NoMethodError</code> indicates that the message per se isn't
   understood.
+</ol>
+
+<h2>Messages</h2>
+
+<h2>Methods</h2>
+<h2>Classes</h2>
+<h2>Modules</h2>
+
+Form:
+'.' - Call method
+Initial capital - constant, class
+Lowercase - variable
+...
+
+Principles:
+To convert an object to another use its #to_* method
+To instantiate an object use its .new method
+
+<h2>Truth</h2>
+<ol>
+  <li>Anything non-false is true. 
+  <li><code>false</code> is false
+  <li><code>nil</code> is false
+  <li>Implications (0, '', and [] are true)
+  <li><code>!!</code> returns the truthfulness of an expression
+  <li>Primarily used in conditionals
+</ol>
+
+
+<h2>Repetition</h2>
+<ol>
+  <li>Why repeat yourself?
+  <li><code>loop</code>ing forever (<code>break</code>/<code>return</code>)
+  <li><code>#upto</code>/<code>#downto</code> for a fixed number of
+  repetitions
+  <li>Distinct from iteration, unlike other languages
+</ol>
+
+<h2>Choice</h2>
+<ol>
+  <li>Conditionals: comparison, <code>Enumerable#any?</code>, etc.
+  <li><code>if</code> for simple branches
+  <li><code>unless</code> to simplify negative conditionals
+  <li>Post-(proper name?)-<code>if</code>/<code>unless</code>.
+  <li><code>else</code>: expressing a default action
+  <li>Ternary expression to express simple either-or choice on a single line
+  <li>Multiple choices with <code>elsif</code>
+  <li>Choosing between multiple consecutive <code>if</code>s and
+  <code>if..elsif</code>.
+  <li><code>case</code>: <code>===</code>
+  <li><code>if</code> versus <code>case</code>
 </ol>
 
 <h2>Unforseen</h2>
