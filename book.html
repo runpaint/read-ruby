@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- vim: set fdm=indent tw=100: --> 
+<!-- vim: set fdm=indent tw=78: --> 
 <html>
   <head>
     <title>Ruby</title>
@@ -30,47 +30,47 @@
 
 <h2>Messages</h2>
 
-  <p>A message is a "request for an object to perform some operation" (Budd, p
-  6). It consists of "...a receiving object (the receiver), the message selector
-  (which indicates which method to execute) and zero or more parameters." (Hunt,
-  1997, p 73). We will use these definitions with the slight modification that
-  <i>arguments</i> will be substituted for <i>parameters</i>, for reasons
-  explained later.
+  <p>A message is a <q>request for an object to perform some operation</q> (<a
+    href=#refBUDD87 class=ref>Budd</a>, pp. 6). It consists of <q>a
+    <i>receiver</i>, a message <i>selector</i>, and zero or more
+    <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, pp. 16). We
+  use the term <i>send</i> to describe this request: an object <i>sends</i> a
+  message to another object. 
 
-  <p>A message selector <var>s</var> is typically <i>sent</i> to a receiver
-  <var>r</var> with arguments
-  <var>a<sub>0</sub></var>...<var>a<sub>n</sub></var> with the dot operator:
-  <code><var>r</var>.<var>s</var>(<var>a<sub>0</sub></var>,...,<var>a<sub>n</sub></var>)</code>.
-
+  <!-- TODO: Mention telegram idea -->
+    
   <h3>The Distinction Between Messages and Methods</h3>
 
     <p>A message selector often corresponds to the name of a method in the
-    receiver. That is, sending the message <var>s</var> to receiver <var>r</var>
-    is equivalent to invoking the method <var>s</var> on <var>r</var>. Indeed,
-    Flanagan &amp; Matsumoto (p 178) claim that "...methods are called
-    “messages”". However, this analogy is problematic for the following reasons:
+    receiver. That is, sending the message <var>s</var> to receiver
+    <var>r</var> is equivalent to invoking the method <var>s</var> on
+    <var>r</var>. Indeed, <a href=#refFLAN08 class=ref>Flanagan &amp;
+      Matsumoto</a> (pp. 178) claim that <q>…methods are called
+      ‟messages”</q>. However, this analogy is problematic for the following
+    reasons:
 
-    <p>In the definitions of Budd (A Little Smalltalk, 1987, p 6), Hunt (Smalltalk
-    and Object Orientation: An Introduction, 1997, p 73), Mitchell (Concepts in
-    Programming Languages, 2004, p 279), and Klas &amp; Schrefl (Metaclasses and
-    Their Application, 1995, p 13) <i>message</i> refers to the <i>request</i>
-    being made of an object; whereas Flanagan &amp; Matsumoto use it to refer the
-    means with which the receiver would respond to such a request. We prefer what
-    Mitchell terms "Smalltalk terminology" because it is well established in the
-    literature, and the basis for Ruby's misappropriation.
+    <p>In the definitions of <a href=#refBUDD87 class=ref>Budd</a> (pp. 6), <a
+      href=#refHUNT97 class=ref>Hunt</a> (pp. 73), <a href=#refMITCHELL04
+      class=ref>Mitchell</a> (pp. 279), and <a href=#refKLAS95 class=ref>Klas
+      &amp; Schrefl</a> (pp. 13) <i>message</i> refers to the <i>request</i>
+    being made of an object; whereas <a href=#refFLAN08 class=ref>Flanagan &amp;
+      Matsumoto</a> use it to refer the means with which the receiver would
+    respond to such a request. We prefer what Mitchell terms <q>Smalltalk
+      terminology</q> because it is well established in the literature, and the
+    basis for Ruby’s misappropriation.
 
     <p>Further, there is not necessarily a one-to-one correspondence between
     message selector and method name. If the named method does not exist, the
     receiver may respond by sending itself a <code>method_missing</code> message,
     which would contradict this simplistic assertion, but still fulfil the
-    "request" the message represented.
+    request the message represented.
 
-    <p>The proper relation of <i>message</i> to <i>method</i> can be understood by
-    Budd's use of the term "operation": a method must perform the requested
-    operation, invoking whatever method is most appropriate to do so.
+    <p>The proper relation of <i>message</i> to <i>method</i> can be understood
+    by Budd's use of the term <i>operation</i>: a method must perform the
+    requested operation, invoking whatever method is most appropriate to do so.
 
     <p>Defining messages in terms of operations also provides the framework for
-    our discussion of "duck typing" later in this chapter.
+    our discussion of <i>duck typing</i> later in this chapter.
 
   <h3>Receivers</h3>
 
@@ -80,14 +80,14 @@
     <h4>Implicit Receivers</h4>
 
       <p>If a receiver is not specified an <i>implicit receiver</i> of
-      <code>self</code> is assumed. <code>self</code> is always defined and refers
+      <code>self</code> is assumed. <code>self</code> always refers
       to the current object. Outside of any class definition, i.e. at the top-level,
       the current object is an instance of <code>Object</code>. Inside a class
       definition, but outside of a method definition, the current object is an
       instance of <code>Class</code>. Within a method definition the current object
       is the instance of the containing class.
 
-      <p>There are three situations where the implicit reciever can not be used:
+      <p>There are three situations where the implicit receiver can not be used:
 
       <ol>
         <li>The message is also a keyword such as <code>class</code>
@@ -98,6 +98,7 @@
 
       <p>By contrast, the implicit receiver must be used when the message is
       private.
+       <!-- TODO: Explain how 'puts "glark"' works in this context? -->
 
     <h4>Explicit Receivers</h4>
 
@@ -105,6 +106,9 @@
       cannot be used when the message is private.
 
   <h3>Message Selectors</h3>
+
+    <!-- TODO: Clarify that we referto the selector as a Symbol subsequently
+    -->
 
     <p>The message selector is the name of the operation the receiver should
     perform. It is unique to a given object.
@@ -114,46 +118,15 @@
     parents, the receiver is sent a <code>method_missing</code> message, whose
     arguments are the original message selector and its arguments.
 
-    <p>A message selector may consist of any <code>Symbol</code>, even those which
-    are illegal when defining a method with the <code>def</code> keyword. Methods
-    with corresponding names can be defined with
+    <p>A message selector may consist of any <code>Symbol</code>, even those
+    which are illegal when defining a method with the <code>def</code>
+    keyword. Methods with corresponding names can be defined with
     <code>Object#define_method</code>, or such messages can be handled by
     <code>method_missing</code>
 
-<h2>Methods</h2>
-
-  <p>A <dfn id=method>method</dfn> is a named block of code associated with an
-  object. For now we will define <i>block of code</i> as a sequence of one or
-  more statements.
-
-  <p>A message may be accompanied by a series of variables, or <dfn
-    id=method-arguments>arguments</dfn>, to be understood in the context of
-  the message.  <p>A method is invoked for the side-effect it causes, the
-  value it returns, or a combination of these factors.  Note that this
-  definition encompasses <i>accessor</i> and <i>mutator</i> methods; Ruby
-  makes no such distinction.
-
-  <h3>Communication Through Message Sending</h3>
-
-    <p>An object communicates with another by sending it a <dfn
-      id=message>message</dfn>. The simplest message is a <code>Symbol</code>.
-    Upon receiving such a message the recipient object attempts to invoke a
-    method of the same name on itself. For example, sending a
-    <code>String</code> object a message of <code>:size</code> causes that
-    object to invoke the <code>String#size</code> method.
-
-    <!-- TODO: Mention telegram idea -->
-
-    <p>At this stage we will assume a 1∶1 mapping between messages and
-    methods.  That is, for a given object, we will consider as analogous the
-    sending of a message, <var>m</var>, and the invoking of a method,
-    <var>m</var>. Therefore the phrases <q>sending a message</q> and
-    <q>invoking a method</q> are equivalent.
-    <!-- TODO: Connect with explanation of method_missing -->
-
     <figure id=sending-a-message>
     <dt>Sending the message <code>:size</code> to a <code>String</code> object. The first example uses
-    the standard method calling syntax; the second uses <code>Object#send</code>.
+    the standard message sending syntax; the second uses <code>Object#send</code>.
       <dd>
         <pre><code>
           "wool".size #=&gt; 4
@@ -162,16 +135,231 @@
       </dd>
     </figure>
 
+
+  <h3>Responding to Messages</h3>
+
+
+
+  <h3>Message Expression Syntax</h3>
+
+    <!-- We're using _message expression_ to describe this syntax... (dfn it?) -->
+
+    <p>The simplest expression for sending a message is
+    <code><var>s</var></code>, where <var>s</var> is the message selector.
+    Omitting the name of the receiver to which <var>s</var> should be sent
+    causes an implicit receiver of <code>self</code> to be assumed. <!-- TODO:
+    Link to implicit receiver section -->
+
+    <aside class=note>
+      The syntax explained above is potentially ambiguous. If Ruby sees a bare
+      identifier, e.g. <code>glark</code>, is that a reference to a local
+      variable or an attempt to send a message to <code>self</code>? If Ruby
+      has previously seen the identifier being assigned to, e.g. <code>glark =
+        2</code>, it is treated as a variable reference; otherwise it is a
+      message.
+    </aside>
+
+    <p>The receiver can be specified explicitly with the
+    <code><var>receiver</var>.<var>selector</var></code> syntax, i.e. the
+    message selector is prefixed with the receiver name followed by a period
+    (U+002E: <code>.</code>). <var>receiver</var> is an expression which
+    evaluates to an object. <!-- TODO: Link to explicit receiver section --> For
+    example, <code>"esrever".reverse</code> sends the message
+    <code>:reverse</code> to the <code>String</code> <code>"esrever"</code>.
+    <code>(1 + 2).odd?</code> sends <code>:odd?</code> to the
+    <code>Fixnum</code> <code>3</code>.
+
+    <aside class=note>
+      An alternative to the <code><var>receiver</var>.<var>selector</var></code>
+      syntax is <code><var>receiver</var>::<var>selector</var></code>, where the
+      period (<code>.</code>) is replaced with a double colon (<code>::</code>).
+      However, the latter syntax has fallen out of favour due to the confusion
+      it creates between message sending and constant reference expressions.
+      It is not recommended for use in new code.
+    </aside>
+
+    <p>In either case a <code>NoMethodError</code> is raised if the receiver
+    neither defines a corresponding method nor defines a
+    <code>method_missing</code> method that handles the message.
+
+    <p>A message may be accompanied by one or more <dfn
+      id=method-arguments>arguments</var>: variables to be used in the
+    resulting computations. Arguments are supplied as a
+    parenthesized list of variables separated by commas:
+    <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.
+    For example, to send the <code>String</code> <code>"haystack"</code> the
+    <code>:include?</code> message with the argument <code>"needle"</code>:
+    <code>"haystack".include?("needle")</code>.
+
+    <p>If a message is sent with an unexpected argument list an
+    <code>ArgumentError</code> is raised.
+
+    <aside class=note> 
+      <p>It is often the case that a message needs to be sent with multiple
+      arguments, yet those arguments are stored in an <code>Enumerable</code>
+      such as <code>Array</code>.  If the message is sent with just the
+      <code>Enumerable</code> argument it will receive a single argument (a
+      reference to the <code>Enumerable</code>) rather than the constituent
+      elements thereof. The solution is to prefix the <code>Enumerable</code>
+      argument with an asterisk (U+002A: <code>*</code>), which in this context
+      is termed a <dfn id=splat-operator>splat operator</dfn>, thus expanding
+      the <code>Enumerable</code> into its individual elements.
+
+      <!-- TODO: Example -->
+      <p>This technique works by sending <code>:to_a</code> to the prefixed
+      object, so any object that responds to this message with an
+      <code>Array</code> can be used in the same fashion.  
+    </aside>
+
+    <p>A message expression followed by a block literal causes the block to be
+    sent along with the message. A block literal may be enclosed in curly
+    braces (<code>{</code>…<code>}</code>) or a <code>do</code>…<code>end</code>
+    construct. These forms are semantically equivalent, however it is
+    conventional to use the former for short blocks that fit on a single line,
+    and the latter for multi-line blocks.
+
+    <aside class=note>
+      <!-- FIXME: Reword in terms of messages -->
+      <p>To pass a <code>Proc</code> object to a method expecting an anonymous
+      block, prefix the object name with an ampersand ((U+0026:
+      <code>&amp;</code>). If the message is sent with multiple arguments this
+      <code>Proc</code> must be specified last.
+
+      <p>This technique works by sending <code>:to_proc</code> to the object,
+      and using the <code>Proc</code> returned as the block. By extension, any
+      object that responds to <code>:to_proc</code> in this manner can be used
+      in the same fashion.
+      <!-- Point to Symbol#to_proc here? -->
+    </aside>
+
+    <h4>Dynamic Invocation with <code>Object#send</code></h4>
+      
+      <p>A message can also be sent to an object with <code>Object#send</code>,
+      i.e. <code><var>receiver</var>.send(<var>selector</var>)</code>. This
+      allows the message selector to be determined dynamically, at runtime, as
+      opposed to the syntax described above which requires the selector to be a
+      literal, embedded in the source. For example: <code>[1, 2,
+        3].send(:first)</code> or <code>23.send(:to_s, 16)</code>.
+
+      <figure id=object-send>
+      <dt><code>Object#send</code> sends an object a message whose name can be determined at runtime.
+      <dd>
+        <pre><code>
+          name = :size
+          # Sends "wool" the :name message
+          "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
+          # Sends "wool" the :size message
+          "wool".send(name) #=&gt; 4
+        </code></pre>  
+      </dd>
+      </figure>
+
+    <h4>Parentheses</h4>
+
+      <p>Parentheses may be omitted from message expressions when doing so does
+      not introduce syntactic ambiguity.
+
+      <p>Parentheses are rarely used in message expressions that don't involve
+      arguments. For example, <code>'briefcase'.upcase</code> is equivalent to
+      <code>'briefcase'.upcase()</code>; the former is the recommended style.
+      <!-- TODO: What about if doing so disambiguates the method from a
+      variable?  -->
+
+      <p>Parentheses may usually be omitted even when arguments are involved.
+      This is mostly a matter of taste.
+
+      <p>A common case when parentheses are <i>required</i> to disambiguate is
+      nested message expressions where multiple arguments are involved, such as
+      <code><var>a</var> <var>b</var> <var>c</var>, <var>d</var></code>, where
+      <var>a</var> and <var>b</var> are selectors. To whom do the arguments,
+      <var>c</var> and <var>d</var> belong? Does the programmer mean
+      <code><var>a</var>(<var>b</var>(<var>c</var>, <var>d</var>))</code> or
+      <code><var>a</var>(<var>b</var>(<var>c</var>), <var>d</var>)</code>? Ruby
+      assumes the former. However, even if the programmer agrees with Ruby's
+      interpretation, these forms of expressions are seldom as clear to others.
+      Therefore, it is recommended to employ parentheses in such cases, even if
+      unnecessary, as an aid to legibility.
+
+      <p>When parentheses are used to enclose a message’s arguments, the opening
+      parenthesis must immediately follow the selector like so:
+      <code><var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg<sub>n</sub></var>)</code>.
+      Whitespace between <var>selector</var> and <code>(</code> will result in a
+      <code>SyntaxError</code>. This is due to a quirk in Ruby’s syntax inasmuch
+      as parentheses serve two distinct functions—grouping of expressions and
+      associating an argument list with a message expression—so the above form
+      represents an ambiguity.
+
+    <h4>Element Reference</h4>
+
+      <p>The <code>[<var>subscript</var>]</code> notation for referring to an
+      element of an <code>Array</code> or <code>Hash</code> is called <dfn
+        id=element-reference>element reference</dfn> syntax. It is a special
+      case of the message expression syntax because it sends a selector named
+      <code>:[]</code> to the receiver, passing in the contents of
+      <code>[</code>…<code>]</code> as arguments. For example,
+      <code>[1,2,3][0]</code> is equivalent to <code>[1,2,3].[](0)</code>.
+
+      <p>Indeed, any object may respond to <code>:[]</code>, allowing it to be
+      used in this fashion. 
+
+      <!-- TODO: Example of a #[] method -->
+
+      <p>Similarly, assignment to an element reference sends the
+      <code>:[]=</code> selector. For example, where <code>fruit</code> is a
+      <code>Hash</code>, <code>fruit[:apple] = :red</code> is equivalent to
+      <code>fruit.[]=(:apple, :red)</code>.
+    
+    <h4>Attribute Accessors and Setters</h4>
+
+    <!-- TODO: Note use of term 'unary' message --> 
+    <p>A message without arguments that returns the value of the corresponding
+    instance variable, or <dfn id=attribute>attribute</dfn>, in the receiver is
+    sometimes referred to as an <dfn id=attribute-accessor>attribute
+      accessor</dfn>. For example, <code>person.name</code> is said to return
+    the <code>name</code> attribute of the <code>person</code> object.
+
+      <!-- TODO: Link with discussion of _attr_ -->
+
+      <p>There is not necessarily a correspondence between the accessor’s name
+      and that of the corresponding instance variable. There is not, for that
+      matter, necessarily a corresponding instance variable at all: the
+      attribute value might have been computed dynamically, for example. 
+
+      <p>An message with an argument whose selector comprises an
+      attribute accessor’s name suffixed with an equals sign (<code>=</code>),
+      is called an <dfn id=attribute-setter>attribute setter</dfn>. It sets the
+      attribute to the value supplied.
+
+    <!-- TODO: Lookup rules? -->
+
+
+<h2>Methods</h2>
+
+  <p>A <dfn id=method>method</dfn> is a named block of code associated with an
+  object. For now we will define <i>block of code</i> as a sequence of one or
+  more statements. It constitutes a response to a message. The relationship
+  between methods and messages was explained in the last chapter, so now it is
+  suffice to say that sending a message to an object with a corresponding method
+  defined is also known as <i>invoking</i> that method, and it is that
+  terminology that we will use henceforth.
+
+  <p>A method is invoked for the side-effect it causes, the
+  value it returns, or a combination of these factors.  Note that this
+  definition encompasses <i>accessor</i> and <i>mutator</i> methods; Ruby
+  makes no such distinction.
+
     <!-- TODO: Move instructions for _creating_ these methods out of these
     sections -->
 
   <h3>Instance Methods</h3>
 
-    <p>An instance method is a behaviour of an object. It is typically created with the <code>def</code>
-    keyword in the context of a class.
+    <p>An instance method is a behaviour of an object. It is typically created
+    with the <code>def</code> keyword in the context of a class.
 
-    <aside> It is conventional to employ the <code>Class#method</code> notation when referring to
-    instance methods in documentation and prose. For example: <code>Integer#even?</code>.  </aside>
+    <aside> 
+      It is conventional to employ the <code>Class#method</code> notation when referring to
+      instance methods in documentation and prose. For example: <code>Integer#even?</code>.  
+    </aside>
 
     <figure id=def-instance-method>
     <dt>Defining an instance method named <code>bark</code> for the <code>Dog</code> class
@@ -213,174 +401,6 @@
     <aside> It is conventional to employ the <code><var>Class</var>.<var>method</var></code> notation
     when referring to singleton methods in documentation and prose. For example:
     <code>File.exists?</code>.  </aside>
-
-  <h3>Method Invocation</h3>
-
-    <p>To send a message, <var>m</var>, to an object, <var>o</var>, is to <dfn
-      id=invoke-method>invoke</dfn> <var>m</var> on <var>o</var>.
-
-    <p>The simplest expression for invoking a method consists of only the method’s name:
-    <code><var>m</var></code> invokes method <var>m</var>. Omitting the name of the object on which
-    <var>m</var> should be invoked causes an implicit receiver of <code>self</code> to be assumed.
-    <code>self</code> is a special variable which evaluates to the current object. <!-- TODO: Where to
-    describe this in more detail? --> Its value is initially <code>Object</code> so a method invoked
-    without an explicit receiver outside of a class definition is actually invoked on
-    <code>Object</code>. <!-- TODO: Explain how 'puts "glark"' works in this context? -->
-
-    <aside class=note>
-      The style of invocation explained above is potentially ambiguous. If Ruby sees a bare identifier,
-      e.g. <code>glark</code>, is that a reference to a local variable or the invocation of a method? If
-      Ruby has previously seen the identifier being assigned to, e.g. <code>glark = 2</code>, it is
-      treated as a variable reference; otherwise it is a method to be invoked on <code>self</code>
-      </aside>
-
-    <p>The receiver can be specified explicitly with the
-    <code><var>receiver</var>.<var>method</var></code> syntax, i.e. the method name is prefixed with the
-    receiver name followed by a period (U+002E: <code>.</code>). <var>receiver</var> is an expression
-    which evaluates to an object. For example, <code>"esrever".reverse</code> invokes the method
-    <code>:reverse</code> on the <code>String</code> <code>"esrever"</code>. <code>(1 + 2).odd?</code>
-    invokes <code>:odd?</code> on the <code>Fixnum</code> <code>3</code>.
-
-    <aside class=note>
-      An alternative to the <code><var>receiver</var>.<var>method</var></code> syntax is
-      <code><var>receiver</var>::<var>method</var></code>, where the period (<code>.</code>) is replaced
-      with a double colon (<code>::</code>). However, the latter syntax has fallen out of favour due to
-      the confusion it creates between method invocations and constant reference expressions. It is not
-      recommended for use in new code.  </aside>
-
-    <p>In either case a <code>NoMethodError</code> is raised if the named method does not exist.
-
-    <p>A message may be accompanied by one or more <dfn
-      id=method-arguments>arguments</var>: variables to be used in the method’s computations. Arguments
-    are supplied as a parenthesized list of variables separated by commas:
-    <code><var>receiver</var>.<var>message</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.
-      For example, to send the <code>String</code> <code>"haystack"</code> the <code>:include?</code>
-      message with the argument <code>"needle"</code>: <code>"haystack".include?("needle")</code>.
-
-    <p>If a method is invoked with a parameter list other than what it expects it raises an
-    <code>ArgumentError</code>.
-
-    <aside class=note> 
-      <p>It is often the case that a method needs to be invoked with multiple
-      arguments, yet those arguments are stored in an <code>Enumerable</code> such as <code>Array</code>.
-      If the method is invoked with just the <code>Enumerable</code> it will receive a single argument (a
-      reference to the <code>Enumerable</code>) rather than the constituent elements thereof. The solution
-      is to prefix the <code>Enumerable</code> argument with an asterisk (U+002A: <code>*</code>), which
-      in this context is termed a <dfn
-        id=splat-operator>splat operator</dfn>, thus expanding the <code>Enumerable</code> into its
-      individual elements.
-
-      <!-- TODO: Example -->
-      <p>This technique works by invoking the <code>:to_a</code> method on the prefixed object, so any
-      object that has a method by this name which returns an <code>Array</code> can be used in the same
-      fashion.  
-    </aside>
-
-    <p>A method invocation followed by a block literal causes the block to be passed to the method. A
-    block literal may be enclosed in curly braces (<code>{</code>…<code>}</code>) or a
-    <code>do</code>…<code>end</code> construct. These forms are semantically equivalent, however it is
-    conventional to use the former for short blocks that fit on a single line, and the latter for
-    multi-line blocks.
-
-    <aside class=note>
-      <p>To pass a <code>Proc</code> object to a method expecting an anonymous block,
-      prefix the object name with an ampersand ((U+0026: <code>&amp;</code>). If the method is invoked
-      with multiple arguments this <code>Proc</code> must be specified last.
-
-      <p>This technique works by calling the object’s <code>:to_proc</code> method, and using the
-      <code>Proc</code> it returns for the block. By extension, any object that defines a
-      <code>:to_proc</code> method which behaves in this manner can be used in the same fashion.
-      <!-- Point to Symbol#to_proc here? -->
-    </aside>
-
-    <h4>Dynamic Invocation with <code>Object#send</code></h4>
-      
-      <p>A message can also be sent to an object by providing it as an argument to
-      <code>Object#send</code>. This allows the message name to be determined dynamically, at
-      runtime, as opposed to the invocation syntax described above which requires the method name to
-      be a literal, embedded in the source. For example: <code>[1, 2, 3].send(:first)</code> or
-      <code>23.send(:to_s, 16)</code>.
-
-      <figure id=object-send>
-      <dt><code>Object#send</code> sends an object a message whose name can be determined at runtime.
-      <dd>
-        <pre><code>
-          name = :size
-          # Sends "wool" the :name message
-          "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
-          # Sends "wool" the :size message
-          "wool".send(name) #=&gt; 4
-        </code></pre>  
-      </dd>
-      </figure>
-
-    <h4>Parentheses</h4>
-
-      <p>Parentheses may be omitted from method invocations when doing so does not introduce syntactic
-      ambiguity.
-
-      <p>Methods expecting no arguments are nearly always invoked without parentheses. For example,
-      <code>'briefcase'.upcase</code> is equivalent to <code>'briefcase'.upcase()</code>; the former is
-      the recommended style. <!-- TODO: What about if doing so disambiguates the method from a variable?
-      -->
-
-      <p>Methods expecting multiple arguments may omit parentheses. This is mostly a matter of style.
-
-      <p>A common case when parentheses are <i>required</i> to disambiguate is nested method invocations
-      where multiple arguments are involved, such as <code><var>a</var> <var>b</var> <var>c</var>,
-          <var>d</var></code>,
-        where <var>a</var> and <var>b</var> are methods. To whom do the arguments, <var>c</var> and
-        <var>d</var> belong? Does the programmer mean <code><var>a</var>(<var>b</var>(<var>c</var>,
-          <var>d</var>))</code> or <code><var>a</var>(<var>b</var>(<var>c</var>), <var>d</var>)</code>?
-        Ruby assumes the former. However, even if the programmer agrees with Ruby's interpretation these
-        forms of invocation are seldom as clear to others. Therefore, it is recommended to employ
-        parentheses in such cases, even if unnecessary, as an aid to legibility.
-
-      <p>When parentheses are used to enclose a method’s arguments, the opening parenthesis must
-      immediately follow the method’s name like so:
-      <code><var>method</var>(<var>arg<sub>0</sub></var>,…,<var>arg<sub>n</sub></var>)</code>.  Whitespace
-      between <var>method</var> and <code>(</code> will result in a <code>SyntaxError</code>. This is due
-      to a quirk in Ruby’s syntax inasmuch as parentheses serve two distinct functions—grouping of
-      expressions and associating an argument list with a method invocation—so the above form represents
-      an ambiguity.
-
-    <h4>Element Reference</h4>
-
-      <p>The <code>[<var>subscript</var>]</code> notation for referring to an element of an
-      <code>Array</code> or <code>Hash</code> is called <dfn id=element-reference>element reference</dfn>
-      syntax. It is a special case of the method invocation syntax because it invokes a method named
-      <code>:[]</code> on the receiver, passing in the contents of <code>[</code>…<code>]</code> as
-      arguments. For example, <code>[1,2,3][0]</code> is equivalent to <code>[1,2,3].[](0)</code>.
-
-      <p>Indeed, any object may define a method named <code>:[]</code>, allowing it to be used in this
-      fashion. 
-
-      <!-- TODO: Example of a #[] method -->
-
-      <p>Similarly, assignment to an element reference invokes a method named <code>:[]=</code>. For
-      example, where <code>fruit</code> is a <code>Hash</code>, <code>fruit[:apple] = :red</code> is
-      equivalent to <code>fruit.[]=(:apple, :red)</code>.
-    
-    <h4>Attribute Accessors and Setters</h4>
-
-      <p>A method which accepts no arguments and returns the value of the corresponding instance variable,
-      or <dfn id=attribute>attribute</dfn>, in the receiver is sometimes referred to as an <dfn
-        id=attribute-accessor>attribute accessor</dfn> method. For example, <code>person.name</code> is
-      said to return the <code>name</code> attribute of the <code>person</code> object.
-
-      <!-- TODO: Link with discussion of _attr_ -->
-
-      <p>There is not necessarily a correspondence between the accessor’s name and that of the
-      corresponding instance variable. There is not, for that matter, necessarily a corresponding instance
-      variable at all: the attribute value might have been computed dynamically, for example. 
-
-      <p>An instance method whose name is that of an attribute accessor but suffixed with an equals sign
-      (<code>=</code>) and accepts an argument, is called an <dfn id=attribute-setter>attribute
-        setter</dfn>. It sets the attribute to the value supplied.
-
-    <!-- TODO: Lookup rules? -->
-
-
   <h3>Return Values</h3>
 
     <p>A method is a expression so always returns a value. This is <code>nil</code> if the method was
@@ -1699,12 +1719,18 @@
   <dt id=refBROWN09>[BROWN09]</dt>
   <dd><cite><a href=//rubybestpractices.com/>Ruby Best Practices</a></cite>, G. Brown, O'Reilly Media,
   2009.</dd>
+  <dt id=refBUDD87>[BUDD87]</dt>
+  <dd><cite>A Little Smalltalk</a></cite>, T. Budd, Addison-Wesley, 1987.</dd>
   <dt id=refFLAN08>[FLAN08]</dt>
   <dd><cite><a href=//oreilly.com/catalog/9780596516178>The Ruby Programming Language</a></cite>, D.
   Flanagan &amp; Y. Matsumoto, O'Reilly Media, 2008.</dd>
   <dt id=refTHOM09>[THOM09]</dt>
   <dd><cite><a href=//books.pragprog.com/titles/ruby3/programming-ruby-1-9>Programming Ruby 1.9: The
       Pragmatic Programmers’ Guide</a></cite>, D. Thomas, et al., The Pragmatic Bookshelf, 2009.</dd>
-  </dl>
+  <dt id=refMITCHELL04>[MITCHELL04]</dt>
+  <dd><cite>Concepts in Programming Languages</cite>, J. C. Mitchell, Cambridge University Press, 2004.</dd>
+  <dt id=refKLAS95>[KLAS95]</dt>
+  <dd><cite>Metaclasses and Their Application</cite>, W. Klass &amp; M. Schrefl,
+  Springer-Verlag Berlin Heidelberg, 1995.</dl>
 <body>
 </html>
