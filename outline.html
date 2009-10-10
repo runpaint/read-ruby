@@ -1,4 +1,11 @@
 <h1>The Communication of Objects in Ruby</h1>
+<h2>Fundamentals</h2>
+<p>Ruby holds as fundamental that every value is an object: an entity with
+state, behaviour, and identity. Objects communicate with each other through
+message passing. 
+
+Smith and Tockey, suggest that “an object represents an individual, identifiable item, unit, or entity, either real or abstract, with a well-defined role in the problem domain” [4].
+
 <ol>
   <li>Ruby holds as fundamental that every value is an object. (Blatantly
   untrue that "everything" is an object: variables and keywords aren't).
@@ -14,6 +21,16 @@
   <li>A recipient of a message may delegate it to another object/class
   <li>Variables store references to objects (Implies pass by reference?)
   <li>An object's class cannot be changed
+  <li>Messages are not analogous to methods:
+  <ol>
+    <li>A message has meaning outside of a class' context
+    <li>method_missing means one method may respond to a variety of messages
+    (plus parent's method_missing?)
+    <li>Very late binding means the caller does not, and cannot, assume a
+    message send implies a method invocation
+    <li>Metaclasses.pdf defines _message_ as "A request for an object to carry
+    out one of its methods."
+  </ol>
 </ol>
 
 <h2>Objects</h2>
@@ -82,6 +99,144 @@
 </ol>
 
 <h2>Messages</h2>
+
+<p>A message is a "request for an object to perform some operation" (Budd, p
+6). It consists of "...a receiving object (the receiver), the message selector
+(which indicates which method to execute) and zero or more parameters." (Hunt,
+1997, p 73). We will use these definitions with the slight modification that
+<i>arguments</i> will be substitued for <i>paramaters</i>, for reasons
+explained later.
+
+<p>A message selector <var>s</var> is typically <i>sent</i> to a receiver
+<var>r</var> with arguments
+<var>a<sub>0</sub></var>...<var>a<sub>n</sub></var> with the dot operator:
+<code><var>r</var>.<var>s</var>(<var>a<sub>0</sub></var>,...,<var>a<sub>n</sub></var>)</code>.
+
+<h3>The Distinction Between Messages and Methods</h3>
+
+<p>A message selector often corresponds to the name of a method in the
+receiver. That is, sending the message <var>s</var> to receiver <var>r</var>
+is equivalent to invoking the method <var>s</var> on <var>r</var>. Indeed,
+Flanagan &amp; Matsumoto (p 178) claim that "...methods are called
+“messages”". However, this analogy is problematic for the following reasons:
+
+<p>In the definitions of Budd (A Little Smalltalk, 1987, p 6), Hunt (Smalltalk
+and Object Orientation: An Introduction, 1997, p 73), Mitchell (Concepts in
+Programming Languages, 2004, p 279), and Klas &amp; Schrefl (Metaclasses and
+Their Application, 1995, p 13) <i>message</i> refers to the <i>request</i>
+being made of an object; whereas Flanagan &amp; Matsumoto use it to refer the
+means with which the receiver would respond to such a request. We prefer what
+Mitchell terms "Smalltalk terminology" because it is well established in the
+literature, and the basis for Ruby's misappropriation.
+
+<p>Further, there is not necessarily a one-to-one correspondence between
+message selector and method name. If the named method does not exist, the
+receiver may respond by sending itself a <code>method_missing</code> message,
+which would contradict this simplistic assertion, but still fulfil the
+"request" the message represented.
+
+<p>The proper relation of <i>message</i> to <i>method</i> can be understood by
+Budd's use of the term "operation": a method must perform the requested
+operation, invoking whatever method is most appropriate to do so.
+
+<p>Defining messages in terms of operations also provides the framework for
+our discussion of "duck typing" later in this chapter.
+
+<h3>Receivers</h3>
+
+<p>Every message is sent to a receiver object.  
+
+<h4>Implicit Receivers</h4>
+
+<p>If a receiver is not specified an <i>implicit receiver</i> of
+<code>self</code> is assumed. <code>self</code> is always defined and refers
+to the current object. Outside of any class definition, i.e. at the top-level,
+the current object is an instance of <code>Object</code>. Inside a class
+definition, but outside of a method definition, the current object is an
+instance of <code>Class</code>. Within a method definition the current object
+is the instance of the containing class.
+
+<p>There are three situations where the implicit reciever can not be used:
+
+<ol>
+  <li>The message is also a keyword such as <code>class</code>
+  <li>The message is used as an lvalue.
+  <li>The message name is identical to a local variable. There are other ways
+  to disambiguate this case.
+</ol>
+
+<p>By contrast, the implicit receiver must be used when the message is
+private.
+
+<h4>Explicit Receivers</h4>
+
+<p>An explicit receiver is an expression that evaluates to an object. It
+cannot be used when the message is private.
+
+<h3>Message Selectors</h3>
+
+<p>The message selector is the name of the operation the receiver should
+perform. It is unique to a given object.
+
+<p>The selector is assumed to be the name of a method defined upon the
+receiver. If a corresponding method is not found in the receiver or its
+parents, the receiver is sent a <code>method_missing</code> message, whose
+arguments are the original message selector and its arguments.
+
+<p>A message selector may consist of any <code>Symbol</code>, even those which
+are illegal when defining a method with the <code>def</code> keyword. Methods
+with corresponding names can be defined with
+<code>Object#define_method</code>, or such messages can be handled by
+<code>method_missing</code>
+
+
+
+
+
+
+
+[["In Smalltalk terminology, a message consists of an operation name and set of additional
+arguments. When a message is sent to an object, the object responds to the
+message by executing a function called a method. Dynamic lookup means that a
+method is selected dynamically, at run time according to the implementation of
+the object that receives a message. The important property of dynamic lookup
+is that different objects may implement the same operation differently."]]
+(Mitchell, Concepts in Programming Languages, 2004, p 279).
+
+
+
+
+Klas and Schrefl (1995, p 13) concur, stressing that the disparity between the
+two terms, by defining <i>message</i> as "A request for an object to carry out
+one of its methods."
+
+<p>Budd (pp 6) states that "A message is a request for an object to perform
+some operation, and it can contain certain argument values to be used in
+conjunction with the execution of the requested operation." 
+
+Hunt (1997,
+p 73) elaborates : "Message expressions describe messages to
+receivers. They are composed of a receiving object (the receiver), the message
+selector (which indicates which method to execute) and zero or more
+parameters." 
+
+
+<p>"In pure object-oriented languages such as Smalltalk, we speak of one
+object passing a message to another. Generally, a message is simply an
+operation that one object performs on another, although the underlying
+dispatch mechanisms are different. For our purposes, the terms operation and
+message are interchangeable. Message passing is one part of the equation that
+defines the behavior of an object; our definition for behavior also notes that
+the state of an object affects its behavior as well." (Booch et al., 2007, p
+81).
+
+<p>"A message consists of an addressee, a method selector, and possibly
+several actual parameters. In response to a message, the receiver invokes the
+method identified by the selector specified within the message." (p 10, Klas
+and Schrefl, 1995)
+
+<p>"When a message is sent to an object, the corresponding method of the
+object is executed". (p 17, Foundations of OO Languages, Bruce, 2002).
 
 <h2>Methods</h2>
 <h2>Classes</h2>

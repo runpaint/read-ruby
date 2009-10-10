@@ -28,31 +28,127 @@
   taxonomic rank, however this analogy does not extend to subclasses. That is, a subclass of a class
   is termed a <i>subclass</i>; not an <i>order</i>.</aside>
 
+<h2>Messages</h2>
+
+  <p>A message is a "request for an object to perform some operation" (Budd, p
+  6). It consists of "...a receiving object (the receiver), the message selector
+  (which indicates which method to execute) and zero or more parameters." (Hunt,
+  1997, p 73). We will use these definitions with the slight modification that
+  <i>arguments</i> will be substituted for <i>parameters</i>, for reasons
+  explained later.
+
+  <p>A message selector <var>s</var> is typically <i>sent</i> to a receiver
+  <var>r</var> with arguments
+  <var>a<sub>0</sub></var>...<var>a<sub>n</sub></var> with the dot operator:
+  <code><var>r</var>.<var>s</var>(<var>a<sub>0</sub></var>,...,<var>a<sub>n</sub></var>)</code>.
+
+  <h3>The Distinction Between Messages and Methods</h3>
+
+    <p>A message selector often corresponds to the name of a method in the
+    receiver. That is, sending the message <var>s</var> to receiver <var>r</var>
+    is equivalent to invoking the method <var>s</var> on <var>r</var>. Indeed,
+    Flanagan &amp; Matsumoto (p 178) claim that "...methods are called
+    “messages”". However, this analogy is problematic for the following reasons:
+
+    <p>In the definitions of Budd (A Little Smalltalk, 1987, p 6), Hunt (Smalltalk
+    and Object Orientation: An Introduction, 1997, p 73), Mitchell (Concepts in
+    Programming Languages, 2004, p 279), and Klas &amp; Schrefl (Metaclasses and
+    Their Application, 1995, p 13) <i>message</i> refers to the <i>request</i>
+    being made of an object; whereas Flanagan &amp; Matsumoto use it to refer the
+    means with which the receiver would respond to such a request. We prefer what
+    Mitchell terms "Smalltalk terminology" because it is well established in the
+    literature, and the basis for Ruby's misappropriation.
+
+    <p>Further, there is not necessarily a one-to-one correspondence between
+    message selector and method name. If the named method does not exist, the
+    receiver may respond by sending itself a <code>method_missing</code> message,
+    which would contradict this simplistic assertion, but still fulfil the
+    "request" the message represented.
+
+    <p>The proper relation of <i>message</i> to <i>method</i> can be understood by
+    Budd's use of the term "operation": a method must perform the requested
+    operation, invoking whatever method is most appropriate to do so.
+
+    <p>Defining messages in terms of operations also provides the framework for
+    our discussion of "duck typing" later in this chapter.
+
+  <h3>Receivers</h3>
+
+    <p>Every message is sent to a receiver object, which may be explicit or
+    implicit.
+
+    <h4>Implicit Receivers</h4>
+
+      <p>If a receiver is not specified an <i>implicit receiver</i> of
+      <code>self</code> is assumed. <code>self</code> is always defined and refers
+      to the current object. Outside of any class definition, i.e. at the top-level,
+      the current object is an instance of <code>Object</code>. Inside a class
+      definition, but outside of a method definition, the current object is an
+      instance of <code>Class</code>. Within a method definition the current object
+      is the instance of the containing class.
+
+      <p>There are three situations where the implicit reciever can not be used:
+
+      <ol>
+        <li>The message is also a keyword such as <code>class</code>
+        <li>The message is used as an lvalue.
+        <li>The message name is identical to a local variable. There are other ways
+        to disambiguate this case.
+      </ol>
+
+      <p>By contrast, the implicit receiver must be used when the message is
+      private.
+
+    <h4>Explicit Receivers</h4>
+
+      <p>An explicit receiver is an expression that evaluates to an object. It
+      cannot be used when the message is private.
+
+  <h3>Message Selectors</h3>
+
+    <p>The message selector is the name of the operation the receiver should
+    perform. It is unique to a given object.
+
+    <p>The selector is assumed to be the name of a method defined upon the
+    receiver. If a corresponding method is not found in the receiver or its
+    parents, the receiver is sent a <code>method_missing</code> message, whose
+    arguments are the original message selector and its arguments.
+
+    <p>A message selector may consist of any <code>Symbol</code>, even those which
+    are illegal when defining a method with the <code>def</code> keyword. Methods
+    with corresponding names can be defined with
+    <code>Object#define_method</code>, or such messages can be handled by
+    <code>method_missing</code>
+
 <h2>Methods</h2>
 
-  <p>A <dfn id=method>method</dfn> is a named block of code associated with an object. For now we will
-  define <i>block of code</i> as a sequence of one or more statements.
+  <p>A <dfn id=method>method</dfn> is a named block of code associated with an
+  object. For now we will define <i>block of code</i> as a sequence of one or
+  more statements.
 
   <p>A message may be accompanied by a series of variables, or <dfn
-    id=method-arguments>arguments</dfn>, to be understood in the context of the message.  <p>A method
-  is invoked for the side-effect it causes, the value it returns, or a combination of these factors.
-  Note that this definition encompasses <i>accessor</i> and <i>mutator</i> methods; Ruby makes no such
-  distinction.
+    id=method-arguments>arguments</dfn>, to be understood in the context of
+  the message.  <p>A method is invoked for the side-effect it causes, the
+  value it returns, or a combination of these factors.  Note that this
+  definition encompasses <i>accessor</i> and <i>mutator</i> methods; Ruby
+  makes no such distinction.
 
   <h3>Communication Through Message Sending</h3>
 
     <p>An object communicates with another by sending it a <dfn
-      id=message>message</dfn>. The simplest message is a <code>Symbol</code>. Upon receiving such a
-    message the recipient object attempts to invoke a method of the same name on itself. For example,
-    sending a <code>String</code> object a message of <code>:size</code> causes that object to invoke
-    the <code>String#size</code> method.
+      id=message>message</dfn>. The simplest message is a <code>Symbol</code>.
+    Upon receiving such a message the recipient object attempts to invoke a
+    method of the same name on itself. For example, sending a
+    <code>String</code> object a message of <code>:size</code> causes that
+    object to invoke the <code>String#size</code> method.
 
     <!-- TODO: Mention telegram idea -->
 
-    <p>At this stage we will assume a 1∶1 mapping between messages and methods.  That is, for a given
-    object, we will consider as analogous the sending of a message, <var>m</var>, and the invoking of a
-    method, <var>m</var>. Therefore the phrases <q>sending a message</q> and <q>invoking a method</q>
-    are equivalent.
+    <p>At this stage we will assume a 1∶1 mapping between messages and
+    methods.  That is, for a given object, we will consider as analogous the
+    sending of a message, <var>m</var>, and the invoking of a method,
+    <var>m</var>. Therefore the phrases <q>sending a message</q> and
+    <q>invoking a method</q> are equivalent.
     <!-- TODO: Connect with explanation of method_missing -->
 
     <figure id=sending-a-message>
