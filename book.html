@@ -110,6 +110,9 @@
     <!-- TODO: Clarify that we referto the selector as a Symbol subsequently
     -->
 
+    <!-- TODO: Talk here about "significant names"? Decide what material moves
+    from the Method > Names section to here -->
+
     <p>The message selector is the name of the operation the receiver should
     perform. It is unique to a given object.
 
@@ -1480,6 +1483,45 @@
 
   <h3>Missing Methods</h3>
 
+    <p>If an object receives a message for which it has no corresponding
+    method, it tries to send itself a <code>:method_missing</code> message,
+    with components of the original message as arguments. If
+    <code>method_missing</code> is not defined, a <code>NoMethodError</code>
+    is raised for the original message. However, if
+    <code>method_missing</code> <i>is</i> defined, it may be used to respond
+    to the original message.
+
+    <p>The <code>:method_missing</code> message is sent with the original
+    message selector (as a <code>Symbol</code>) for the first argument, then
+    any original message’s arguments, if any, as the subsequent arguments.
+    Therefore, it is usually defined as <code>def method_missing(name,
+      *arguments)</code>.
+
+    <p>The body of the <code>method_missing</code> method behaves like any
+    other. It may provide a catch-all response to the unknown message, or use
+    the original message’s selector and/or arguments to determine a more
+    appropriate message to delegate to. 
+
+    <p>If <code>method_missing</code> is invoked with a message it does not
+    wish to respond to, it should use the implicit-argument form of
+    <code>super</code> to delegate to its parent. If the parent defines
+    <code>method_missing</code> it may respond to the message itself,
+    otherwise the request is repeated for each class in the search path. At
+    the top of the of class hierarchy, <code>BasicOBject</code>,
+    <code>method_missing</code> is defined to raise a
+    <code>NoMethodError</code>, thus aborting the search.
+
+    <aside class=warn>
+      Logic errors inside <code>method_missing</code> can easily lead to
+      infinite loops, which can be troublesome to debug. The typical mistake
+      is for a statement in the body of <code>method_missing</code> to send a
+      non-existent message to the same object. The object does not respond to
+      that message, so the <code>method_missing</code> method is invoked a
+      second time, and so the loop continues.
+    </aside>
+
+    <!-- TODO: Mention "Dynamic Reception" idea of Fowler -->
+    
   <h3><code>Method</code> Objects</h3>
 
   <p>An instance of the <code>Method</code> class represents a method bound to an object. This <dfn
