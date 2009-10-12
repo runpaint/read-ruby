@@ -139,6 +139,179 @@
     </figure>
 
 
+    <h4>Conventions</h4>
+
+      <h5>Conversion Protocols: <code>#to_*</code></h5>
+
+      <p>Selectors whose names begin with <i>to_</i> are expected to return
+      the receiver converted to an object of the indicated class. A conversion
+      is either <i>implicit</i> or <i>explicit</i>, as explained below:
+     
+      <section>
+        <h6>Implicit Conversion</h6>
+        
+        <p>A method may expect an argument of a particular class. If it
+        receives an object of another class it wishes to automatically
+        convert that object into one of the desired class. 
+        
+        <p>For example, <code>Array.new</code> may be called with an Array as
+        an argument, which is copied to produce a new Array. If the argument
+        is not of class <code>Array</code>, <code>Array.new</code> sends
+        <code>:to_ary</code> to the argument, implicitly converting it to an
+        <code>Array</code>.
+
+        <p><code>Array.new</code> sent <code>:to_ary</code> because it is part
+        of the implicit conversion protocol. By responding to this message
+        with an <code>Array</code>  objects are declaring that they may be
+        used in place of an <code>Array</code>. 
+         
+        <p>If the argument responds to <code>:to_a</code> it can also be
+        automatically converted to an <code>Array</code>. However,
+        <code>Array.new</code> does not send this message for it is part of
+        the <i>explicit</i> conversion protocol; the sender of the message
+        must send the argument <code>:to_a</code> himself if he requires the
+        conversion.
+
+        <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (pp. 80)
+        suggest that objects should implement an implicit conversion protocol
+        if they have <q>strong characteristics</q> of the target class. 
+
+        <p>From the discussion above we can derive the following rules:
+
+        <ol>
+          <li>A method may send implicit conversion messages to its
+          arguments. 
+          <li>Objects responding to such messages are declaring that they may
+          be used in this way.
+          <li>A method must not send explicit conversion messages to its
+          arguments.
+        </ol>
+      </section>
+
+      <section>
+        <h6>Explicit Conversion</h6>
+        
+        <p>An object which can be represented as an object of another class
+        may implement the relevant explicit conversion protocol. It is
+        explicit because the user must explicitly send the conversion message
+        to the object to effect the conversion; the message should never be
+        sent automatically by another method.
+
+        <p>If an object implements an implicit conversion protocol that
+        corresponds with an explicit conversion protocol, it should implement
+        the explicit protocol, too. The implicit protocol is a superset of the
+        explicit protocol, so there will not exist a scenario where an object
+        would need to implement the former without the latter. This can be easily
+        achieved by aliasing the implicit method to the explicit method. For
+        example, if an object responds to <code>:to_ary</code> but not to
+        <code>:to_a</code> it should alias <code>:to_a</code> to
+        <code>:to_ary</code>.
+
+        <p>From the discussion above we can derive the following rules:
+
+        <ol>
+          <li>A method should not send explicit conversion messages to its
+          arguments. 
+          <li>Objects responding to implicit conversion messages that have
+          explicit counterparts should respond to the latter, too. 
+        </ol>
+      </section>
+
+      <p>The conversion protocol is summarised in the table below. The
+      <i>Target Class</i> column indicates the class of the object the
+      conversion method should return. The <i>Implicit</i> column specifies
+      the message, if any, that is part of the implicit conversion protocol
+      for the target class. Likewise, the <i>Explicit</i> column specifies
+      the message, if any, that is part of the explicit conversion protocol
+      for the target class. If a protocol is not defined for a class, it has a
+      value of <i>N/A</i> is given. 
+      
+      <p>Note that the absence of an implicit protocol for a class implies
+      that it should not be converted implicitly. Methods expecting arguments
+      of a non-convertible class should raise a <code>TypeError</code> if they
+      receive arguments of an unsuitable type.
+
+      <table>
+        <tr>
+          <th>Target Class</th> 
+          <th>Implicit</th> 
+          <th>Explicit</th>
+          <th>Note</th>
+        </tr>
+        <tr>
+          <td><code>Array</code></td> 
+          <td><code>:to_ary</code></td>
+          <td><code>:to_a</code></td>
+        </tr>
+        <tr>
+          <td><code>Complex</code></td> 
+          <td><code>:to_c</code></td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td><code>Enumerator</code></td> 
+          <td>N/A</td>
+          <td><code>:to_enum</code></td>
+        </tr>
+        <tr>
+          <td><code>Float</code></td> 
+          <td><code>:to_f</code></td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td><code>Hash</code></td> 
+          <td><code>:to_hash</code></td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td><code>Integer</code></td> 
+          <td><code>:to_int</code></td>
+          <td><code>:to_i</code></td>
+        </tr>
+        <tr>
+          <td><code>IO</code></td> 
+          <td><code>:to_open</code></td>
+          <td>N/A</td>
+          <td>Sent by <code>Kernel#open</code> to its first argument</td>
+        </tr>
+        <tr>
+          <td><code>Proc</code></td> 
+          <td><code>:to_proc</code></td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td><code>Rational</code></td> 
+          <td><code>:to_r</code></td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td><code>Regexp</code></td> 
+          <td><code>:to_regexp</code></td>
+          <td>N/A</td>
+          <td>Sent by <code>Regexp.try_convert</code></td>
+        </tr>
+        <tr>
+          <td><code>String</code></td> 
+          <td><code>:to_str</code></td>
+          <td><code>:to_s</code></td>
+        </tr>
+        <tr>
+          <td><code>String</code></td> 
+          <td><code>:to_path</code></td>
+          <td>N/A</td>
+          <td>Sent by methods expecting a file path as an argument, such as
+            the class methods of <code>File</code></td>
+        </tr>
+        <tr>
+          <td><code>Symbol</code></td> 
+          <td><code>:to_sym</code></td>
+          <td>N/A</td>
+        </tr>
+      </table> 
+
+      <!-- Mention !! -->
+      <!-- Mention try_convert -->
+
   <h3>Responding to Messages</h3>
 
     <p>An object is said to <i>respond to</i> a given message if it expects to
