@@ -141,16 +141,20 @@
 
   <h3>Responding to Messages</h3>
 
-  <p>An object is said to <i>respond to</i> a given message if it expects to
-  receive it. The <code>BasicObject#respond_to?(<var>selector</var>)</code>
-  predicate returns <code>true</code> if a method is defined with the same
-  name as the selector; <code>false</code> otherwise. However, by defining
-  <code>method_missing</code> an object may respond to a message without
-  having a corresponding method defined, making the behaviour of
-  <code>BasicObject#respond_to?</code> insufficient. The solution is
-  <code>BasicObject#respond_to_missing?</code>, which is explained later. <!--
-  TODO: Link -->
+    <p>An object is said to <i>respond to</i> a given message if it expects to
+    receive it. The <code>Kernel#respond_to?(<var>selector</var>)</code>
+    predicate returns <code>true</code> if a method is defined with the same
+    name as the selector; <code>false</code> otherwise. However, by defining
+    <code>method_missing</code> an object may respond to a message without
+    having a corresponding method defined, making the behaviour of
+    <code>Kernel#respond_to?</code> insufficient. The solution is
+    <code>Kernel#respond_to_missing?</code>, which is explained later. <!--
+    TODO: Link -->
 
+    <p><code>Kernel#respond_to?</code> ignores private methods by default. If it
+    is sent with a second argument of <code>true</code>, private methods are
+    included in its search.  
+    
   <h3>Message Expression Syntax</h3>
 
     <!-- We're using _message expression_ to describe this syntax... (dfn it?) -->
@@ -1535,6 +1539,29 @@
     <!-- TODO: Mention "Dynamic Reception" idea of Fowler -->
     <!-- TODO: Link with #respond_to_missing? -->
     <!-- TODO: Mention NoMethodError#args and #name -->
+
+  <h3><code>BasicObject#respond_to_missing?</code></h3>
+
+  <p>A consequence of defining methods dynamically by means of
+  <code>BasicObject#method_missing</code> is that an object may respond to a
+  given message, yet return <code>false</code> for
+  <code>Kernel#respond_to?(<var>selector</var>)</code>.
+
+  <p>Before <code>Kernel#respond_to?</code> returns <code>false</code> it
+  tries to send itself a message named <code>:respond_to_missing?</code> with
+  the selector in question as the first argument. If
+  <code>#respond_to_missing?</code> is defined and returns a true value,
+  <code>#respond_to?</code> returns <code>true</code>; otherwise
+  <code>#respond_to?</code> returns <code>false</code>. 
+
+  <p>By default <code>#respond_to_missing?</code> excludes private methods
+  from its search. If sent with a second argument of <code>true</code>,
+  private methods should be considered. 
+
+  <p>Therefore, <code>#respond_to?</code> can be made to work with methods
+  defined with <code>method_missing</code> by defining a
+  <code>#respond_to_missing?</code> method which returns <code>true</code>
+  when passed the name of such a method.
 
   <h3><code>Method</code> Objects</h3>
 
