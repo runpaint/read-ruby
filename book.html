@@ -141,7 +141,15 @@
 
   <h3>Responding to Messages</h3>
 
-
+  <p>An object is said to <i>respond to</i> a given message if it expects to
+  receive it. The <code>BasicObject#respond_to?(<var>selector</var>)</code>
+  predicate returns <code>true</code> if a method is defined with the same
+  name as the selector; <code>false</code> otherwise. However, by defining
+  <code>method_missing</code> an object may respond to a message without
+  having a corresponding method defined, making the behaviour of
+  <code>BasicObject#respond_to?</code> insufficient. The solution is
+  <code>BasicObject#respond_to_missing?</code>, which is explained later. <!--
+  TODO: Link -->
 
   <h3>Message Expression Syntax</h3>
 
@@ -334,7 +342,6 @@
       attribute to the value supplied.
 
     <!-- TODO: Lookup rules? -->
-
 
 <h2>Methods</h2>
 
@@ -1527,7 +1534,8 @@
 
     <!-- TODO: Mention "Dynamic Reception" idea of Fowler -->
     <!-- TODO: Link with #respond_to_missing? -->
-    
+    <!-- TODO: Mention NoMethodError#args and #name -->
+
   <h3><code>Method</code> Objects</h3>
 
   <p>An instance of the <code>Method</code> class represents a method bound to an object. This <dfn
