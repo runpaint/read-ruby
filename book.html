@@ -211,8 +211,16 @@
     </tr>
   </table> 
 
-  <!-- Mention !! -->
-  <!-- Mention try_convert -->
+  <h3>Converting to “Boolean”</h3>
+
+  <p>It is rarely necessary to convert an object to a “Boolean” because Ruby
+  automatically treats <code>false</code> and <code>nil</code> as false, and
+  any other value as true. However, if a method wishes to return either
+  <code>true</code> or <code>false</code> it may use the
+  <code>!!<var>object</var></code> idiom. This returns <code>false</code> if
+  <var>object</var> is <code>false</code> or <code>nil</code>;
+  <code>true</code> otherwise.
+
 <h2>Messages</h2>
 
   <p>A message is a <q>request for an object to perform some operation</q> (<a
