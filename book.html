@@ -1483,33 +1483,38 @@
 
   <h3>Missing Methods</h3>
 
-    <p>If an object receives a message for which it has no corresponding
-    method, it tries to send itself a <code>:method_missing</code> message,
-    with components of the original message as arguments. If
-    <code>method_missing</code> is not defined, a <code>NoMethodError</code>
-    is raised for the original message. However, if
-    <code>method_missing</code> <i>is</i> defined, it may be used to respond
-    to the original message.
+    <p>By default a <code>NoMethodError</code> is raised when an object
+    receives a message for which a corresponding method is not defined.
+    Beforehand the object tries to send itself a <code>:method_missing</code>
+    message, with a <code>Symbol</code> of the original message selector as
+    the first argument, followed by the original message’s arguments. So, by
+    defining a method named <code>method_missing</code> an object is able to
+    override the default behaviour, providing its own response to the message.
 
-    <p>The <code>:method_missing</code> message is sent with the original
-    message selector (as a <code>Symbol</code>) for the first argument, then
-    any original message’s arguments, if any, as the subsequent arguments.
-    Therefore, it is usually defined as <code>def method_missing(name,
-      *arguments)</code>.
+    <p>If the object does not define <code>method_missing</code> it is
+    searched for along the usual search path. At the top of the class
+    hierarchy, <code>BasicObject</code>, <code>method_missing</code> is
+    defined to raise a <code>NoMethodError</code> for the original message.
+    This terminates the search and provides the default behaviour.
 
-    <p>The body of the <code>method_missing</code> method behaves like any
-    other. It may provide a catch-all response to the unknown message, or use
-    the original message’s selector and/or arguments to determine a more
-    appropriate message to delegate to. 
-
-    <p>If <code>method_missing</code> is invoked with a message it does not
-    wish to respond to, it should use the implicit-argument form of
-    <code>super</code> to delegate to its parent. If the parent defines
-    <code>method_missing</code> it may respond to the message itself,
-    otherwise the request is repeated for each class in the search path. At
-    the top of the of class hierarchy, <code>BasicOBject</code>,
-    <code>method_missing</code> is defined to raise a
-    <code>NoMethodError</code>, thus aborting the search.
+    <figure id=basicobject-method_missing>
+    <dt>A demonstration of <code>BasicObject#method_missing</code>
+    <dd>
+        <pre><code>
+        class BasicObject
+          public :method_missing
+        end
+        b = BasicObject.new
+        b.method_missing :glark #=&gt; NoMethodError: undefined method `glark' for #<BasicObject:0x93ace0c>
+        </code></pre>
+      </dd>
+    </figure>
+    
+    <p>Therefore, if <code>method_missing</code> is invoked with a message it
+    does not wish to respond to, it should use the implicit-argument form of
+    <code>super</code> to delegate to its parent. This gives the parent the
+    option of responding to the message, or otherwise triggers the default
+    behaviour. 
 
     <aside class=warn>
       Logic errors inside <code>method_missing</code> can easily lead to
@@ -1521,6 +1526,7 @@
     </aside>
 
     <!-- TODO: Mention "Dynamic Reception" idea of Fowler -->
+    <!-- TODO: Link with #respond_to_missing? -->
     
   <h3><code>Method</code> Objects</h3>
 
