@@ -52,6 +52,7 @@
 <!-- Chapter on variables? -->
 
 <h2>Objects</h2>
+  <!-- Discuss imeediate values -->
   <p>Ruby embodies the object-orientated paradigm. She holds as fundamental that <q>everything is an
     object</q>. <!-- Note that this is untrue? -->
 
@@ -265,6 +266,8 @@
   <code>!!<var>object</var></code> idiom. This returns <code>false</code> if
   <var>object</var> is <code>false</code> or <code>nil</code>;
   <code>true</code> otherwise.
+
+  <!-- Describe how #method_defined? differs from #respond_to? -->
 
 <h2>Messages</h2>
 
@@ -511,6 +514,11 @@
       </dd>
       </figure>
 
+      <p><code>Object#public_send</code> performs the same function, but
+      raises a <code>NoMethodError</code> if the method is private or
+      protected.
+      
+      <p><!-- __send__ -->
     <h4>Parentheses</h4>
 
       <p>Parentheses may be omitted from message expressions when doing so does
@@ -970,8 +978,6 @@
     keyword. <!-- TODO: Clarify here that due to method_missing method’s need not be defined before
     they are called? -->
     
-    <!-- TODO: define_method -->
-  
     <figure id=def-syntax>
     <dt>The syntax of a method definition.
       <dd>
@@ -985,31 +991,21 @@
     
     <!-- TODO: Returns value which is not a method object -->
     
-    <!-- TODO: Distinguish between defining instance and singleton
-    methods -->
-    The methods we’ve defined so far are all global methods. If we place a def statement
-    like the ones shown earlier inside a class statement, then the methods that are defined
-    are instance methods of the class; these methods are defined on all objects that are
-    instances of the class. (Classes and instance methods are explained in Chapter 7.)
-    It is also possible, however, to use the def statement to define a method on a single
-    specified object. Simply follow the def keyword with an expression that evaluates to
-    an object. This expression should be followed by a period and the name of the method
-    to be defined. The resulting method is known as a singleton method because it is
-    available only on a single object:
-    o = "message"    # A string is an object
-    def o.printme    # Define a singleton method for this object
-    puts self
-    end
-    o.printme        # Invoke the singleton
-    Class methods (covered in Chapter 7) such as Math.sin and File.delete are actually
-    singleton methods. Math is a constant that refers to a Module object, and File is a constant
-    that refers to a Class object. These two objects have singleton methods named sin and
-    delete, respectively.
-    
-    Ruby implementations typically treat Fixnum and Symbol values as immediate values
-    rather than as true object references. (See §3.8.1.1.) For this reason, singleton methods
-    may not be defined on Fixnum and Symbol objects. For consistency, singletons are also
-    prohibited on other Numeric objects.
+    <p>If the method name doesn't include a period the method is defined an as
+    instance method of the current class. <!-- How does this interact with
+    eigenclass? --> However, if the name is of the form
+    <code><var>object</var>.<var>name</var></code>, a <i>singleton</i> method
+    named <var>name</var> is defined on the object <var>object</var>. 
+
+    <p>Therefore, <code>def self.<var>name</var></code> defines a class method
+    for the current class. <code>def <var>Class</var>.<var>name</var></code>
+    defines a method named <var>name</var> on the class named
+    <var>Class</var>.
+
+    <aside class=warn>
+    Singleton methods cannot be defined on immediate values such as
+    <code>Numeric</code>s and <code>Symbol</code>s.
+    </aside>
     
     <h4>Arguments</h4> 
     
@@ -1913,11 +1909,15 @@
     <p>An <code>UnboundMethod</code> object is a <code>Method</code> object disassociated from the
     object on which it was defined.     
      
-    <p>A <code>Method</code> object may converted to an <code>UnboundMethod</code> object with
-    <code>Method#unbind</code>. Alternatively, they can be created with
+    <p>A <code>Method</code> object may converted to an
+    <code>UnboundMethod</code> object with <code>Method#unbind</code>.
+    Alternatively, they can be created with
     <code>Module#instance_method</code>. For example,
-    <code>String.instance_method(:downcase)</code> creates an <code>UnboundMethod</code> object for
-    <code>String#downcase</code>.
+    <code>String.instance_method(:downcase)</code> creates an
+    <code>UnboundMethod</code> object for <code>String#downcase</code>.
+    <code>Module#public_instance_method</code> works in the same way, but
+    raises a <code>NameError</code> if the given method is private or
+    protected. 
       
     <p>Before an <code>UnboundMethod</code> is invoked it must be re-associated with, or <dfn
       id=method-bind>bound</a> to, to an object which is a <code>Object#kind_of?</code> its original
