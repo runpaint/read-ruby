@@ -12,6 +12,7 @@
 
 <ol>
   <!-- Mention that objects _are_ individualistic? (as opposed to SmallTalk) -->
+  <!-- Mention variables? -->
   <li><b>Every value is an object</b>. Numbers, strings, blocks of code,
   methods, times, and files are all examples of values. <!-- Define 'value'
   instead? --> <q>An object consists of a set of operations on some hidden
@@ -47,6 +48,8 @@
   <li><b>Classes are objects</b>.
   <!-- Is this a fundamental? -->
 </ol>
+
+<!-- Chapter on variables? -->
 
 <h2>Objects</h2>
   <p>Ruby embodies the object-orientated paradigm. She holds as fundamental that <q>everything is an
@@ -173,6 +176,8 @@
   of a non-convertible class should raise a <code>TypeError</code> if they
   receive arguments of an unsuitable type.
 
+  <!-- Use spanning cell when an implicit message is given without an explicit
+  counterpart? -->
   <table>
     <tr>
       <th>Target Class</th> 
@@ -267,7 +272,8 @@
     href=#refBUDD87 class=ref>Budd</a>, pp. 6). It consists of <q>a
     <i>receiver</i>, a message <i>selector</i>, and zero or more
     <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, pp. 16). We
-  use the term <i>send</i> to describe this request: an object <i>sends</i> a
+  use the term <i>send</i> to describe the action of making the request: an
+  object <i>sends</i> a
   message to another object. 
 
   <!-- TODO: Mention telegram idea -->
@@ -597,6 +603,8 @@
   value it returns, or a combination of these factors.  Note that this
   definition encompasses <i>accessor</i> and <i>mutator</i> methods; Ruby
   makes no such distinction.
+
+  <!-- mapping messages to methods -->
 
     <!-- TODO: Move instructions for _creating_ these methods out of these
     sections -->
@@ -1728,6 +1736,29 @@
 
   <!-- TODO: Discuss method overloading? -->
 
+  <!-- TODO: Algo. for determining a method's aliases -->
+  <h3>Lookup Algorithm</h3>
+  
+    <p>Evaluating a message expression requires the corresponding method
+    definition to be located in the receiver. The steps below illustrate the
+    lookup algorithm for a message with a selector of <var>selector</var>, where
+    <var>class</var> is set to that of the receiver. When a method is found
+    whose name is equal to <var>selector</var> the process terminates. It will
+    always ultimately succeed because <code>BasicObject</code> defines a
+    <code>:method_missing</code> method.
+
+    <ol>
+      <li>Search the singleton methods of <var>class</var>’s eigenclass.
+      <li>Search the instance methods of <var>class</var>.
+      <li>Search the instance methods of modules included by <var>class</var>. (Modules
+      are searched in reverse order of inclusion).
+      <li>If <var>class</var> has a superclass, assign it to <var>class</var>
+      then go to step two. (<code>BasicObject</code> doesn't have a superclass,
+      so at that point this step will terminate).
+      <li>Set <var>selector</var> to <code>:method_missing</code>, 
+      <var>class</var> back to the receiver’s class, and go to step one.
+    </ol>
+
   <h3>Missing Methods</h3>
 
     <p>By default a <code>NoMethodError</code> is raised when an object
@@ -1956,6 +1987,8 @@
   </dd>
   </figure>
 
+  <!-- Superclass can't be changed once set. (The old class can be deleted and
+  redefined, of course) -->
   <h3>Names</h3>
 
   <h4>Rules</h4>
@@ -2046,6 +2079,8 @@
   <dt id=refTHOM09>[THOM09]</dt>
   <dd><cite><a href=//books.pragprog.com/titles/ruby3/programming-ruby-1-9>Programming Ruby 1.9: The
       Pragmatic Programmers’ Guide</a></cite>, D. Thomas, et al., The Pragmatic Bookshelf, 2009.</dd>
+  <dt id=refLIU99>[LIU99]</dt>
+  <dd><cite>Smalltalk, Objects, and Design</cite>, C. Liu, ToExcel, 1999.</dd>
   <dt id=refMITCHELL04>[MITCHELL04]</dt>
   <dd><cite>Concepts in Programming Languages</cite>, J. C. Mitchell, Cambridge University Press, 2004.</dd>
   <dt id=refKLAS95>[KLAS95]</dt>
