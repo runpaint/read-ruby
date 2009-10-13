@@ -1740,7 +1740,7 @@
   <h3>Lookup Algorithm</h3>
   
     <p>Evaluating a message expression requires the corresponding method
-    definition to be located in the receiver. The steps below illustrate the
+    definition be located in the receiver. The steps below illustrate the
     lookup algorithm for a message with a selector of <var>selector</var>, where
     <var>class</var> is set to that of the receiver. When a method is found
     whose name is equal to <var>selector</var> the process terminates. It will
@@ -1749,15 +1749,23 @@
 
     <ol>
       <li>Search the singleton methods of <var>class</var>’s eigenclass.
+      <li>Search the singleton methods of the superclass, and ancestors, of
+      <var>class</var>’s eigenclass.
       <li>Search the instance methods of <var>class</var>.
       <li>Search the instance methods of modules included by <var>class</var>. (Modules
       are searched in reverse order of inclusion).
       <li>If <var>class</var> has a superclass, assign it to <var>class</var>
-      then go to step two. (<code>BasicObject</code> doesn't have a superclass,
+      then go to step three. (<code>BasicObject</code> doesn't have a superclass,
       so at that point this step will terminate).
       <li>Set <var>selector</var> to <code>:method_missing</code>, 
       <var>class</var> back to the receiver’s class, and go to step one.
     </ol>
+
+    <p><a href=#refTHOM09 class=ref>Thomas et al.</a> describe this
+    algorithm as <q>Ruby looks first in the immediate class of an object, then
+      in the mixins included into that class, and then in superclasses and
+      their mixins. If a class has multiple modules mixed in, the last one
+      included is searched first.</q>
 
   <h3>Missing Methods</h3>
 
