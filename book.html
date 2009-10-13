@@ -281,6 +281,9 @@
 
   <!-- TODO: Mention telegram idea -->
     
+  <!-- Mention that Dr Kay believes messages are more important than objects
+  in OO -->
+
   <h3>The Distinction Between Messages and Methods</h3>
 
     <p>A message selector often corresponds to the name of a method in the
@@ -599,6 +602,7 @@
 
 <h2>Methods</h2>
 
+  <!-- Use Flan&Y's definition of method -->
   <p>A <dfn id=method>method</dfn> is a named block of code associated with an
   object. For now we will define <i>block of code</i> as a sequence of one or
   more statements. It constitutes a response to a message. The relationship
@@ -644,29 +648,29 @@
 
   <h3>Singleton Methods</h3>
 
-    <p>A singleton method is associated with a class as opposed to its instances. Indeed, it is
-    typically a <i>factory method</i>: a constructor of instances. They are also created with the
-    <code>def</code> keyword, but their names are prefixed with <code>self.</code> to denote their
-    singleton status.
+    <p>A singleton method is bound only to a specific object, as opposed to an
+    instance method which is bound to all instances of a class. Indeed, it is
+    typically a <i>factory method</i>: a constructor of instances.
 
-    <figure id=def-singleton-method>
-    <dt>Defining a singleton method named <code>breed</code> for the <code>Dog</code> class with the
-    <code>def</code> keyword.
-      <dd>
-        <pre><code>
-          class Dog
-            def self.breed
-              [new, new]
-            end
-          end
-          Dog.breed #=&gt; [#<Dog:0x95cb530>, #<Dog:0x95cb508>]
-        </code></pre>  
-      </dd>
-    </figure>
+    <p>Singleton methods bound to a particular class are known as <i>class
+      methods</i>. For instance, <code>File.absolute_path</code> is a class
+    method defined on the <code>File</code> class.
 
-    <aside> It is conventional to employ the <code><var>Class</var>.<var>method</var></code> notation
-    when referring to singleton methods in documentation and prose. For example:
-    <code>File.exists?</code>.  </aside>
+    <p>However, a singleton method may be defined on any object. Whereas
+    inheritance allows a class to be created that specializes a more
+    general class, singleton methods allow creation of an object that
+    specializes on a more general object. This is similar in concept to
+    prototype-based programming. <!-- TODO: Expand -->
+
+    <aside> 
+      It is conventional to employ the
+      <code><var>Class</var>.<var>method</var></code> notation when referring
+      to singleton methods in documentation and prose. For example:
+      <code>File.exists?</code>.  
+    </aside>
+
+    <!-- Link to Defining where singleton methods are explained -->
+
   <h3>Return Values</h3>
 
     <p>A method is a expression so always returns a value. This is <code>nil</code> if the method was
@@ -991,11 +995,9 @@
     
     <!-- TODO: Returns value which is not a method object -->
     
-    <p>If the method name doesn't include a period the method is defined an as
-    instance method of the current class. <!-- How does this interact with
-    eigenclass? --> However, if the name is of the form
-    <code><var>object</var>.<var>name</var></code>, a <i>singleton</i> method
-    named <var>name</var> is defined on the object <var>object</var>. 
+    <p>A singleton method is defined by specifying a method name of the form
+    <code><var>object</var>.<var>name</var></code>, where <var>object</var> is
+    a reference to the object on which the method is being defined.
 
     <p>Therefore, <code>def self.<var>name</var></code> defines a class method
     for the current class. <code>def <var>Class</var>.<var>name</var></code>
@@ -1004,9 +1006,27 @@
 
     <aside class=warn>
     Singleton methods cannot be defined on immediate values such as
-    <code>Numeric</code>s and <code>Symbol</code>s.
+    <code>Numeric</code>s and <code>Symbol</code>s. Attempting to do so raises
+    a <code>TypeError</code>.
     </aside>
     
+    <figure id=def-singleton-method>
+    <dt>Defining a singleton method named <code>breed</code> for the <code>Dog</code> class with the
+    <code>def</code> keyword.
+      <dd>
+        <pre><code>
+          class Dog
+            def self.breed
+              [new, new]
+            end
+          end
+          Dog.breed #=&gt; [#<Dog:0x95cb530>, #<Dog:0x95cb508>]
+        </code></pre>  
+      </dd>
+    </figure>
+
+    <!-- Link with define_singleton_method -->
+
     <h4>Arguments</h4> 
     
       <p>A method may accept one or more arguments, variables passed in from the caller.
