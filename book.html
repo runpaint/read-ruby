@@ -200,6 +200,7 @@
 
     <h4>Conventions</h4>
 
+  <section>
   <h3>Tone</h3>
 
     <p>By convention, a selector with a question mark (<code>?</code>) suffix
@@ -225,7 +226,81 @@
       numbers, <code>-1</code> for negative infinity, or <code>+1</code> for
       positive infinity. <!-- TODO: Use infinity symbols -->
 
-  <h3>Responding to Messages</h3>
+    </section>
+    
+   <section>  
+    <h4>Significant Names</h4>
+    <ol>
+      <li>each
+      <li>each_: Implies enumerator
+      <li>rewind
+      <li>initialize
+      <li>new
+      <li>to_*
+      <li>coerce
+      <li>&lt;=&gt;
+    </ol>
+   </section>
+
+   <!--
+   <h4>A Survey of Selectors</h4>
+   Enumerable
+   :all?, - Determiner, predicate 
+   :any?, - Determiner, predicate
+   :chunk, 
+   :collect, 
+   :count, 
+   :cycle, 
+   :detect, 
+   :drop, 
+   :drop_while, 
+   :each_cons, - String aliases each_#{x} to #{x}s; Enumerable doesn't.
+   :each_slice, 
+   :each_with_index, 
+   :each_with_object,
+   :entries, - Plural: implies an enumerable will be returned?
+   :find, 
+   :find_all, 
+   :find_index, 
+   :first, 
+   :grep, 
+   :group_by, 
+   :include?, 
+   :inject, 
+   :join, 
+   :map, 
+   :max, 
+   :max_by, 
+   :member?, 
+   :min, 
+   :min_by, 
+   :minmax, 
+   :minmax_by, 
+   :none?, - Determiner, predicate
+   :one?, - Not a determiner, predicate
+   :partition, 
+   :reduce, 
+   :reject, 
+   :reverse_each, 
+   :select, 
+   :slice_before, verb_adverb
+   :sort, 
+   :sort_by, verb_adverb
+   :take, 
+   :take_while, verb_conjunction
+   :to_a, 
+   :zip
+
+   Hash#has_*
+   <ol>
+     <li>Typically verbs. If message has multiple senses, verbal is most
+     likely.
+     <li>Plurals return Enumerables
+     <li>Nouns imply attribute accessor; don't take block?
+     <li>each_* returns Enumerator
+   </ol>
+   -->
+   <h3>Responding to Messages</h3>
 
     <p>An object is said to <i>respond to</i> a given message if it expects to
     receive it. The <code>Kernel#respond_to?(<var>selector</var>)</code>
@@ -1817,10 +1892,12 @@
   sending (constructors), which may be instance or singleton methods, or via
   literals -->
 
-  <p>An <dfn id=object>object</dfn> is a compilation of data (attributes) and behaviour (methods)
-  which encapsulate a specific <i>instance</i> of a <i>class</i>. The String <code>"hello"</code> and
-  the Integer <code>3</code> are both examples of objects, and instances of the <i>String</i> and
-  <i>Integer</i> classes, respectively. They constitute data (<q>hello</q> and <q>3</q>, respectively)
+  <!-- cite source of object definition --> <p>An <dfn id=object>object</dfn>
+  is a compilation of data (attributes) and behaviour (methods) which
+  encapsulate a specific <i>instance</i> of a <i>class</i>. The String
+  <code>"hello"</code> and the Integer <code>3</code> are both examples of
+  objects, and instances of the <i>String</i> and <i>Integer</i> classes,
+  respectively. They constitute data (<q>hello</q> and <q>3</q>, respectively)
   and behaviour relevant to that data.
 
   <h3>Instantiation</h3>
@@ -1852,6 +1929,14 @@
       <p>A single character prefixed with a question mark
       (<code>?<var>char</var></code>) instantiates a <code>String</code>
       containing the character.
+
+      <h5>Symbols</h5>
+
+      <p>A literal of the form <code>:<var>identifier</var></code>, where
+      <var>identifier</var> is a valid identifier, or
+      <code>:<var>string</var></code>, where <var>string</var> is a
+      <code>String</code> literal, instantiates a <code>Symbol</code> object.
+      For example, <code>:roland_barthes</code> or <code>:'!^%$'</code>.
 
       <h5>Numerics</h5>
       <!-- Are immediates _instantiated_? -->
