@@ -61,13 +61,41 @@
     <i>receiver</i>, a message <i>selector</i>, and zero or more
     <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, pp. 16). We
   use the term <i>send</i> to describe the action of making the request: an
-  object <i>sends</i> a
-  message to another object. 
+  object <i>sends</i> a message to another object. 
 
-  <!-- TODO: Mention telegram idea -->
+  <aside>
+    <p><a href=#refLIU99 class=ref>Liu</a> (pp. 2) suggests that it can be
+    helpful to envisage messages as telegrams:
     
-  <!-- Mention that Dr Kay believes messages are more important than objects
-  in OO -->
+    <blockquote>
+      “Message” is too abstract a word. A better word is <i>telegram</i>. A
+      “telegram” is tangible: I can touch it, I can see the information it
+      carries, and I can picture the moment it arrives at the door of its
+      addressee. It is not some vague electronic-sounding thing like a
+      “message”. Therefore, I encourage you to think of an old-fashioned
+      telegram whenever you see the term “message”.
+    </blockquote>
+    <!-- How do we markup the source of the blockquote? -->
+  </aside>
+
+  <!-- Integrate this into the text -->
+  <p>Dr Alan Kay (1998) explains why messages, not objects, are the <q>big
+    idea</q>:
+
+  <blockquote
+    cite="http://lists.squeakfoundation.org/pipermail/squeak-dev/1998-October/017019.html">  
+    <p>…Smalltalk is not only NOT its syntax or the class library, it is not
+    even about classes. I'm sorry that I long ago coined the term “objects”
+    for this topic because it gets many people to focus on the lesser idea.
+
+    <p>The big idea is “messaging” -- that is what the kernal[<i>sic</i>] of
+    Smalltalk/Squeak is all about (and it’s something that was never quite
+    completed in our Xerox PARC phase). The Japanese have a small
+    word—<i>ma</i>—for “that which is in between”—perhaps the nearest English
+    equivalent is “interstitial”. The key in making great and growable systems
+    is much more to design how its modules communicate rather than what their
+    internal properties and behaviors should be. 
+  </blockquote>
 
   <h3>The Distinction Between Messages and Methods</h3>
 
@@ -99,6 +127,7 @@
     by Budd's use of the term <i>operation</i>: a method must perform the
     requested operation, invoking whatever method is most appropriate to do so.
 
+    <!-- Expand on this idea: shared vocabulary? -->
     <p>Defining messages in terms of operations also provides the framework for
     our discussion of <i>duck typing</i> later in this chapter.
 
@@ -127,7 +156,7 @@
       </ol>
 
       <p>By contrast, the implicit receiver must be used when the message is
-      private.
+      private. <!-- Are _messages_ private? -->
        <!-- TODO: Explain how 'puts "glark"' works in this context? -->
 
     <h4>Explicit Receivers</h4>
@@ -1891,6 +1920,14 @@
      o.close rescue nil
    end
   end
+
+  <h3>Context</h3>
+  <ol>
+    <li>Instance eval/exec
+    <li>Class eval/exec
+    <li>Module eval/exec
+  </ol>
+  <!-- Or should the last two be dealt with in Classes and Modules? -->
 
   <h3>Conversion Protocols</h3>
 
