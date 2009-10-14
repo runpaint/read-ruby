@@ -16,7 +16,7 @@
   <li><b>Every value is an object</b>. Numbers, strings, blocks of code,
   methods, times, and files are all examples of values. <!-- Define 'value'
   instead? --> <q>An object consists of a set of operations on some hidden
-    data.</q> (<a href=#refMITCHELL04 class=ref>Mitchell</a>, pp. 277). The
+    data.</q> (<a href=#refMITCHELL04 class=ref>Mitchell</a>, p. 277). The
   former are <i>methods</i>; the latter <i>attributes</i>. It is a specific
   entity, such as the number 43 or the file <code>/etc/passwd</code>. <!--
   Explain that everything _isn't_ an object -->
@@ -35,7 +35,7 @@
   
   <li><b>Every object is an instance of exactly one class</b>. A class is <q>A
     template defining the implementation of a set of objects.</q> (<a
-    href=#refMITCHELL04 class=ref>Mitchell</a>, pp. 312) Or, as <a class=ref
+    href=#refMITCHELL04 class=ref>Mitchell</a>, p. 312) Or, as <a class=ref
     href=#refLIU99>Liu</a> suggests, <q>…a factory that can produce
     programming objects. Each factory makes just one kind of object, or
     product.</q>. An <i>instance of</i> simply describes the class from which
@@ -57,14 +57,14 @@
 <h2>Messages</h2>
 
   <p>A message is a <q>request for an object to perform some operation</q> (<a
-    href=#refBUDD87 class=ref>Budd</a>, pp. 6). It consists of <q>a
+    href=#refBUDD87 class=ref>Budd</a>, p. 6). It consists of <q>a
     <i>receiver</i>, a message <i>selector</i>, and zero or more
-    <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, pp. 16). We
+    <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, p. 16). We
   use the term <i>send</i> to describe the action of making the request: an
   object <i>sends</i> a message to another object. 
 
   <aside>
-    <p><a href=#refLIU99 class=ref>Liu</a> (pp. 2) suggests that it can be
+    <p><a href=#refLIU99 class=ref>Liu</a> (p. 2) suggests that it can be
     helpful to envisage messages as telegrams:
     
     <blockquote>
@@ -103,14 +103,14 @@
     receiver. That is, sending the message <var>s</var> to receiver
     <var>r</var> is equivalent to invoking the method <var>s</var> on
     <var>r</var>. Indeed, <a href=#refFLAN08 class=ref>Flanagan &amp;
-      Matsumoto</a> (pp. 178) claim that <q>…methods are called
+      Matsumoto</a> (p. 178) claim that <q>…methods are called
       ‟messages”</q>. However, this analogy is problematic for the following
     reasons:
 
-    <p>In the definitions of <a href=#refBUDD87 class=ref>Budd</a> (pp. 6), <a
-      href=#refHUNT97 class=ref>Hunt</a> (pp. 73), <a href=#refMITCHELL04
-      class=ref>Mitchell</a> (pp. 279), and <a href=#refKLAS95 class=ref>Klas
-      &amp; Schrefl</a> (pp. 13) <i>message</i> refers to the <i>request</i>
+    <p>In the definitions of <a href=#refBUDD87 class=ref>Budd</a> (p. 6), <a
+      href=#refHUNT97 class=ref>Hunt</a> (p. 73), <a href=#refMITCHELL04
+      class=ref>Mitchell</a> (p. 279), and <a href=#refKLAS95 class=ref>Klas
+      &amp; Schrefl</a> (p. 13) <i>message</i> refers to the <i>request</i>
     being made of an object; whereas <a href=#refFLAN08 class=ref>Flanagan &amp;
       Matsumoto</a> use it to refer the means with which the receiver would
     respond to such a request. We prefer what Mitchell terms <q>Smalltalk
@@ -213,11 +213,11 @@
       mark a method as special. It doesn’t necessarily mean that it will be
       destructive or dangerous, but it means that it will require more
       attention than its alternative.</q> <a class=ref
-      href=#refBROWN09>[Brown, 2009, pp. 52]</a>. <q>Usually, the method
+      href=#refBROWN09>[Brown, 2009, p. 52]</a>. <q>Usually, the method
       without the exclamation mark returns a modified copy of the object it is
       invoked on, and the one with the exclamation mark is a mutator method
       that alters the object in place.</q> <a class=ref
-      href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, pp. 7]</a> 
+      href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a> 
 
       <p>Both suffixes are merely <i>conventional</i>, however; they do not
       guarantee that the receiver will respond in the aforementioned manner. For
@@ -1525,7 +1525,7 @@
       thereof, that is they behave the same as private methods. However, unlike private methods they can
       be explicitly invoked on any instance of their class.
 
-      <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, pp.
+      <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, p.
         232)</a> suggest that <q>A protected method can be used, for example, to define an accessor that
         allows instances of a class to share internal state with each other, but does not allow users of
         the class to access that state.</q>
@@ -2056,7 +2056,7 @@
     must send the argument <code>:to_a</code> himself if he requires the
     conversion.
 
-    <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (pp. 80)
+    <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (p. 80)
     suggest that objects should implement an implicit conversion protocol
     if they have <q>strong characteristics</q> of the target class. 
 
