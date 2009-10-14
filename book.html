@@ -1824,7 +1824,103 @@
   and behaviour relevant to that data.
 
   <h3>Instantiation</h3>
+    <p>An object is instantiated by either sending an appropriate message to
+    an existing object or using a <i>literal</i>. 
+    
+    <aside>
+      <p>This may seem to imply that, ultimately, all objects are instantiated
+      by means of literals, because a message cannot be sent to an object
+      unless that object already exists. This is not so. Certain objects
+      always exist. They come into being with the Ruby interpreter. 
+    </aside>
+
     <h4>Literals</h4>
+
+    <p>A <dfn title=literal>literal</dfn> is a syntactical shortcut for the
+    instantiation of a particular core object.
+
+      <h5>Strings</h5>
+
+      <p>Single quotation marks (<code>'</code>) instantiate a
+      <code>String</code> containing the text they delimit. Double quotation
+      marks (<code>"</code>) do likewise, but they also perform variable
+      interpolation and recognise escapes. For example, <code>"Ruby"</code>
+      creates a <code>String</code> consisting of the text <i>Ruby</i>. <!--
+      Provide example of interpolation and escaping? Or does that distract
+      from our purpose? -->
+
+      <p>A single character prefixed with a question mark
+      (<code>?<var>char</var></code>) instantiates a <code>String</code>
+      containing the character.
+
+      <h5>Numerics</h5>
+      <!-- Are immediates _instantiated_? -->
+      <p>A consecutive sequence of decimal digits instantiates an
+      <code>Integer</code> representing their decimal value. Specifically, a
+      <code>Fixnum</code> object is returned for numbers small enough to be
+      represented natively; a <code>Bignum</code> otherwise.
+
+      <p>A consecutive sequence of decimal digits instantiates an
+      <code>Integer</code> representing their decimal value. Specifically, a
+      <code>Fixnum</code> object is returned for numbers small enough to be
+      represented natively; a <code>Bignum</code> otherwise.
+
+      <p>Two integer literals concatenated with a radix point form a floating
+      point number, represented as a <code>Float</code> object. For example,
+      <code>3.14</code> or <code>42.0</code>.
+
+      <!-- 0x and friends? -->
+
+      <h5>Arrays</h5>
+
+      <p>Square brackets (<code>[</code> and <code>]</code>) delimit a
+      comma-separated list of objects, with which they instantiate an
+      <code>Array</code>. For example, <code>[12, "fish fingers"]</code>
+      instantiates a two-element <code>Array</code>, with the <code>12</code> as
+      the first element, <code>"fish fingers"</code> as the second.
+
+      <h5>Hashes</h5>
+
+      <p>Curly brackets (<code>{</code> and <code>}</code>) delimit a
+      comma-separated list of key-value pairs, with which they instantiate a
+      <code>Hash</code>. The key-value pairs are usually separated by
+      <code>=&gt;</code>, e.g. <code>{ 'key' =&gt; value }</code>. If the key
+      is a <code>Symbol</code> literal, the colon which prefixes it may be
+      made its suffix, allowing <code>=&gt;</code> to be omitted, e.g.
+      <code>{phileas_fog: :jean_passepartout, bertie_wooster:
+        :reginald_jeeves}</code>.
+
+      <h5>Regexps</h5>
+
+      <p>A <code>Regexp</code> is instantiated by delimiting a pattern with
+      solidi (<code>/</code> and </code>\</code>). The reverse solidus may be
+      followed by one or more option letters. For example, <code>/cat/i</code>
+      instantiates a <code>Regexp</code> matching <i>cat</i> in a case-insensitive
+      manner.
+
+      <h5>Ranges</h5>
+
+      <p>A literal of the form <code><var>start</var>..<var>end</var></code>,
+      where <var>start</var> and <var>end</var> are expressions, instantiates
+      an inclusive <code>Range</code> object representing the period
+      <var>start</var> to <var>end</var>. For example, <code>2..10</code>
+      instantiates a range beginning at 2 and ending at 10. 
+      
+      <p>Similarly, a literal of the form
+      <code><var>start</var>...<var>end</var></code> instantiates an
+      <i>exclusive</i>, i.e. one between <var>start</var> and <var>end</var>
+      excluding <var>end</var>.
+
+      <h5>Lambdas</h5>
+
+      <p>A literal of the form
+      <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
+        { <var>statements</var> }</code> instantiates a <code>Proc</code>
+      object with lambda characteristics. The parameter list takes the same
+      form as that used in method definitions <!-- link -->. It may be omitted
+      entirely. <var>statements</var> is zero or more statements. For example,
+      <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a + b }</code>.
+
       <h5>Immediates</h5>
     <h4>Constructors</h4>
       <h5><code>.new</code></h5>
