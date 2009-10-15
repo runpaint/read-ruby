@@ -2099,12 +2099,40 @@
     <!-- Hash#compare_by_identity -->
 
   <h3>Equality</h3>      
-    <ol>
-      <li>==
-      <li>===
-      <li>eql?
-      <li>equal?
-    </ol>
+    <p>The means by which objects are compared for equality depend on the type
+    of equality desired.
+
+    <p><code>Object#equal?</code> considers the receiver equal to the argument
+    if the two objects are identical, i.e. their object IDs are equal. For
+    example, <code>[].equal?([]) == false</code>. Classes are discouraged from
+    overriding this method, so its semantics should not change.
+
+    <p><code>Object#==</code> is an alias of <code>Object#equal?</code>, but
+    <i>is</i> normally overridden in subclasses to denote <i>logical</i>
+    equivalence. For example, <code>Array#==</code> regards two
+    <code>Array</code> objects equal if they contain the same number of
+    elements and each element is <code>==</code> to its corresponding element.
+    So, <code>[O.new] == [O.new]</code> is <code>true</code> if <code>O.new ==
+      O.new</code>.
+
+    <p><code>Object#!=</code> returns the inverse of <code>Object#==</code>,
+    so it does not normally need to be defined explicitly. It can be, however.
+
+    <p><code>Object#eql?</code> is also an alias of <code>Object#equal?</code>
+    that subclasses often override. It differs from <code>Object#==</code> in
+    that it denotes <i>strict</i> logical comparison without performing type
+    conversion. For example, consider 1 and 1.0. The two are logically
+    equivalent if converted to the same class, so <code>1 == 1.0</code>.
+    However, <code>1.eql?(1.0) == false</code> because
+    <code>Object#eql?</code> does not perform type conversion.
+
+    <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (pp. 77–78)
+    state that <q>If two objects are <code>eql?</code>, their
+      <code>hash</code> methods must also return the same value.</q>, going on
+    to recommend that classes implement <code>#eql?</code> in terms of
+    <code>#hash</code>.
+
+    <!-- Cover === and =~ ? -->
 
   <h3>Comparison</h3>
     <ol>
