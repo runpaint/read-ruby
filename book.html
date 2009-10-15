@@ -2081,12 +2081,22 @@
   </ol>
 
   <h3>Identity</h3>      
-    <ol>
-      <li>object_id
-      <li>ObjectSpace._id2ref
-      <li>hash
-      <li>Hash#compare_by_identity
-    </ol>
+    
+    <p>Every object has a numeric identifier that is unique among other
+    objects and constant for the object’s lifetime. It is returned as a
+    <code>Fixnum</code> by <code>Object#object_id</code>.
+
+    <p><code>ObjectSpace._id2ref</code> returns a reference to an object given
+    its ID. For example, <code>ObjectSpace._id2ref([1, 2].object_id) = [1,
+      2]</code>.
+
+    <p>An object’s ID should not be confused with its hash code as returned by
+    <code>Object#hash</code>. Logically identical objects should have the same
+    hash code, yet will have different object IDs if they are pointed to by
+    different references. For example, <code>[].object_id !=
+      [].object_id</code> yet <code>[].hash == [].hash</code>.
+
+    <!-- Hash#compare_by_identity -->
 
   <h3>Equality</h3>      
     <ol>
