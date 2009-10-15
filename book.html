@@ -75,7 +75,8 @@
       “message”. Therefore, I encourage you to think of an old-fashioned
       telegram whenever you see the term “message”.
     </blockquote>
-    <!-- How do we markup the source of the blockquote? -->
+    <!-- How do we markup the source of the blockquote? We could use the cite
+    attribute to link to the reference section of this document. -->
   </aside>
 
   <!-- Integrate this into the text -->
@@ -178,7 +179,8 @@
     <p>The selector is assumed to be the name of a method defined upon the
     receiver. If a corresponding method is not found in the receiver or its
     parents, the receiver is sent a <code>method_missing</code> message, whose
-    arguments are the original message selector and its arguments.
+    arguments are the original message selector and its arguments. <!-- Cut
+    this sentence; link to method_missing section? -->
 
     <p>A message selector may consist of any <code>Symbol</code>, even those
     which are illegal when defining a method with the <code>def</code>
@@ -207,7 +209,7 @@
     denotes that the message poses a polar question to the receiver. For example,
     <code>Fixnum#odd?</code> asks the receiver whether it is odd, returning
     <code>true</code> if it is; <code>false</code> otherwise. Such messages
-    are referred to as <dfn title="predicate message">predicate</dfn>s.
+    are referred to as <dfn title="predicate message">predicates</dfn>.
 
     <p>Following similar convention, a selector with an exclamation mark
     (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
@@ -302,7 +304,8 @@
    -->
    <h3>Responding to Messages</h3>
 
-    <p>An object is said to <i>respond to</i> a given message if it expects to
+   <!-- Is this definition sane? -->
+   <p>An object is said to <i>respond to</i> a given message if it expects to
     receive it. The <code>Kernel#respond_to?(<var>selector</var>)</code>
     predicate returns <code>true</code> if a method is defined with the same
     name as the selector; <code>false</code> otherwise. However, by defining
@@ -410,6 +413,7 @@
 
     <h4>Dynamic Invocation with <code>Object#send</code></h4>
       
+    <!-- Explain that arguments can be sent along with the message. -->
       <p>A message can also be sent to an object with <code>Object#send</code>,
       i.e. <code><var>receiver</var>.send(<var>selector</var>)</code>. This
       allows the message selector to be determined dynamically, at runtime, as
@@ -480,8 +484,8 @@
       <code>[</code>…<code>]</code> as arguments. For example,
       <code>[1,2,3][0]</code> is equivalent to <code>[1,2,3].[](0)</code>.
 
-      <p>Indeed, any object may respond to <code>:[]</code>, allowing it to be
-      used in this fashion. 
+      <p>Indeed, any object that responds to <code>:[]</code> may be used in
+      this fashion. 
 
       <!-- TODO: Example of a #[] method -->
 
@@ -510,8 +514,6 @@
       attribute accessor’s name suffixed with an equals sign (<code>=</code>),
       is called an <dfn id=attribute-setter>attribute setter</dfn>. It sets the
       attribute to the value supplied.
-
-    <!-- TODO: Lookup rules? -->
 
 <h2>Methods</h2>
 
@@ -586,9 +588,11 @@
 
   <h3>Return Values</h3>
 
-    <p>A method is a expression so always returns a value. This is <code>nil</code> if the method was
-    defined without a body; the last statement executed otherwise. Multiple values can be returned by
-    using an <code>Array</code> as the last statement. 
+    <!-- Describe common case (last expression) before uncommon case (nil) -->
+    <p>A method is a expression so always returns a value. This is
+    <code>nil</code> if the method was defined without a body; the last
+    statement executed otherwise. Multiple values can be returned by using an
+    <code>Array</code> as the last statement. 
 
     <figure id=def-implicit-return>
       <dt>A method which returns the Symbol <code>:to_sender</code>
@@ -613,9 +617,10 @@
       </dd>
     </figure>
 
-    <p>A <code>return</code> statement causes <code>nil</code> to be immediately returned to the caller.
-    <code>return</code> may be followed by an argument in which case its value is returned instead.  If
-    multiple arguments are given they will be returned as an <code>Array</code>. 
+    <p>A <code>return</code> statement causes <code>nil</code> to be
+    immediately returned to the caller. <code>return</code> may be followed
+    by an argument in which case that is returned instead.  If multiple
+    arguments are given they will be returned as an <code>Array</code>. 
 
     <figure id=def-explicit-return-multiple>
     <dt>A method which explicitly returns multiple values.
@@ -644,8 +649,8 @@
       <!-- TODO: Talk about "significant" names here? e.g. to_*,
       inspect, etc.? -->
 
-    <p>Method names begin with a lowercase letter. If they consist of multiple words underscores
-    (U+005F: <code>_</code>) are used to separate.
+    <p>Method names begin with a lowercase letter. If they consist of multiple
+    words underscores (U+005F: <code>_</code>) are used to separate.
 
     <aside>
       It is legal for a method name to begin with an uppercase letter, but then they may be confused
@@ -872,11 +877,12 @@
 
   <h3>Defining</h3>
     
-    <p>A method consists of a name, an optional parameter list, and a body. Names have already been
-    discussed, the parameter list is explained in <i>Arguments</i> below. The <dfn
-      id=method-body>body</dfn> is a sequence of statements terminated with the <code>end</code>
-    keyword. <!-- TODO: Clarify here that due to method_missing method’s need not be defined before
-    they are called? -->
+    <p>A method consists of a name, an optional parameter list, and a body.
+    Names have already been discussed, the parameter list is explained in
+    <i>Arguments</i> below. The <dfn id=method-body>body</dfn> is a sequence
+    of statements terminated with the <code>end</code> keyword. <!-- TODO:
+    Clarify here that due to method_missing method’s need not be defined
+    before they are called? -->
     
     <figure id=def-syntax>
     <dt>The syntax of a method definition.
@@ -891,6 +897,7 @@
     
     <!-- TODO: Returns value which is not a method object -->
     
+    <!-- Describe instance methods before singletons -->
     <p>A singleton method is defined by specifying a method name of the form
     <code><var>object</var>.<var>name</var></code>, where <var>object</var> is
     a reference to the object on which the method is being defined.
@@ -927,11 +934,12 @@
     
       <p>A method may accept one or more arguments, variables passed in from the caller.
 
-      <p>When a method is defined with the <code>def</code> keyword its name may be followed by a set of
-      parentheses (<code>(</code>, <code>)</code>). The contents thereof (hereafter: <dfn
-        id=parameter-list>the parameter list</dfn>) dictate the arguments the method will accept. (The
-      parentheses are actually optional, but their omission doesn't enhance readability so their presence
-      is recommended).
+      <p>When a method is defined with the <code>def</code> keyword its name
+      may be followed by a set of parentheses (<code>(</code>,
+      <code>)</code>). The contents thereof (hereafter: <dfn
+        id=parameter-list>the parameter list</dfn>) dictate the arguments the
+      method will accept. (The parentheses are actually optional, but their
+      omission doesn't enhance readability so they are recommended).
 
       <p>The parameter list specifies:
       <ul>
@@ -986,18 +994,20 @@
 
       <h5>Required Arguments</h5>
 
-        <p>A <dfn id=required-argument>required argument</dfn> <em>must</em> be supplied by the caller. A
-        method which requires exactly 4 arguments must receive them all, otherwise it raises an
+        <p>A <dfn id=required-argument>required argument</dfn> <em>must</em>
+        be supplied by the caller. A method which requires exactly 4 arguments
+        must receive them all, otherwise it raises an
         <code>ArgumentError</code>.
 
         <aside class=note>
-          <code>nil</code> and <code>false</code> are as valid an argument any other. If a method requires
-          an argument and <code>nil</code> is supplied in its place, Ruby will not complain. Methods wishing
-          to prohibit such values must do so themselves.
+          <code>nil</code> and <code>false</code> are as valid an argument any
+          other. If a method requires an argument and <code>nil</code> is
+          supplied in its place, Ruby will not complain. Methods wishing to
+          prohibit such values must do so themselves.
         </aside>
 
-        <p>Required arguments are specified with a comma-separated list of parameter names. Each parameter
-        represents a mandatory argument.
+        <p>Required arguments are specified with a comma-separated list of
+        parameter names. Each parameter represents a mandatory argument.
 
         <figure id=required-arguments>
         <dt>Defining a method which requires exactly two arguments.</dt>
@@ -1021,14 +1031,17 @@
 
       <h5>Optional Arguments and Default Values</h5>
 
-        <p>An <dfn id=optional-argument>optional argument</dfn> <em>may</em> be supplied by the caller. If
-        it is not, the corresponding parameter will be assigned the value given as its default.
+        <p>An <dfn id=optional-argument>optional argument</dfn> <em>may</em>
+        be supplied by the caller. If it is not, the corresponding parameter
+        will be assigned the value given as its default.
 
         <p>Optional arguments are specified with a comma-separated list of
-        <code><var>name</var>=<var>value</var></code> pairs, where <var>name</var> is a parameter name and
-        <var>value</var> is its default value. The <var>value</var> may be any Ruby expression, and is
-        permitted to refer to previous parameters. The default value is evaluated each time the method is
-        invoked, so may, for example, instantiate an object on every invocation. 
+        <code><var>name</var>=<var>value</var></code> pairs, where
+        <var>name</var> is a parameter name and <var>value</var> is its
+        default value. The <var>value</var> may be any Ruby expression, and is
+        permitted to refer to previous parameters. The default value is
+        evaluated each time the method is invoked, so may, for example,
+        instantiate an object on every invocation. 
 
         <figure id=optional-arguments>
         <dt>Defining a method which takes an optional argument.</dt>
@@ -1048,9 +1061,10 @@
           </dd>
         </figure>
 
-        <p>Optional and required arguments can be specified alongside each other in a reasonably natural
-        fashion. However, all optional arguments must be adjacent. For instance, it is a
-        <code>SyntaxError</code> to both precede and follow a required argument with optional arguments.
+        <p>Optional and required arguments can be specified alongside each
+        other in a reasonably natural fashion. However, all optional arguments
+        must be adjacent. For instance, it is a <code>SyntaxError</code> to
+        both precede and follow a required argument with optional arguments.
 
         <figure id=required-arguments-with-optional-arguments>
         <dt>Defining a method which takes both optional and required arguments.</dt>
@@ -1073,21 +1087,22 @@
         <!-- TODO: Standardise on terms: 'rest' or 'splat' -->
 
         <p>A <dfn id=rest-parameter>rest parameter</dfn> (or <dfn
-          id=splat-parameter>splat parameter</dfn>) consumes every argument that follows it while still
-        allowing subsequent required parameters to receive their corresponding arguments. Put simply: it
-        takes an arbitrary number of arguments from its position onward. It is passed to the method as an
-        <code>Array</code> containing one argument per element.
+          id=splat-parameter>splat parameter</dfn>) consumes every argument
+        that follows it while still allowing subsequent required parameters to
+        receive their corresponding arguments. Put simply: it takes an
+        arbitrary number of arguments from its position onward. It is passed
+        to the method as an <code>Array</code> containing one argument per
+        element.
 
         <aside class=note>
-
-        Rest parameters do not <em>require</em> any arguments, so a method whose parameter list consists
-        solely of a rest parameter, for example, may be invoked with zero or more arguments.
-
+          Rest parameters do not <em>require</em> any arguments, so a method
+          whose parameter list consists solely of a rest parameter, for example,
+          may be invoked with zero or more arguments.
         </aside>
 
-        <p>A rest parameter is specified by preceding a parameter name with an asterisk (U+002A:
-        <code>*</code>). Only one rest parameter may appear in a parameter list, and it any optional
-        parameters must precede it.
+        <p>A rest parameter is specified by preceding a parameter name with an
+        asterisk (U+002A: <code>*</code>). Only one rest parameter may appear
+        in a parameter list, and any optional parameters must precede it.
 
         <figure id=rest-arguments>
         <dt>Defining a method which takes a variable number of arguments.</dt>
@@ -1207,9 +1222,10 @@
           </dd>
         </figure>
 
-        <p>If the <code>Hash</code> is the final argument, other than a block, that a method expects, the
-        curly braces which delimit the <code>Hash</code> can be omitted. For example, <code>m({ key:
-          :value })</code> can be written as <code>m key: :value</code>.
+        <p>If the <code>Hash</code> is the final argument, other than a block,
+        that a method expects, the curly braces which delimit the
+        <code>Hash</code> can be omitted. For example, <code>m({ key: :value
+          })</code> can be written as <code>m key: :value</code>.
 
         <p>The advantages of this approach include:
           <ul>
@@ -1247,23 +1263,29 @@
           </dd>
         </figure>
 
-        <p>The primary shortcoming is that Ruby can not determine automatically whether an invalid number of
-        arguments have been supplied; the programmer must validate the arguments instead. This is unlikely
-        to be particularly significant, however, because a method expecting a variable number of arguments
-        would otherwise use rest arguments, which would also render it unable to perform this validation.
+        <p>The primary shortcoming is that Ruby can not determine
+        automatically whether an invalid number of arguments have been
+        supplied; the programmer must validate the arguments instead. This is
+        unlikely to be particularly significant, however, because a method
+        expecting a variable number of arguments would otherwise use rest
+        arguments, which would also render it unable to perform this
+        validation.
 
       <h5>Block Arguments</h5>
         
-        <p>Any method may be invoked with a block literal as an argument by specifying the block after the
-        method invocation.
+        <p>Any method may be invoked with a block literal as an argument by
+        specifying the block after the method invocation. <!-- message
+        expression instead of method invocation? -->
 
         <aside class=note>
         <a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, pp.
-          130-131)</a> insist on <q>[using] the term iterator…to mean any method that uses the
-          <code>yield</code> statement</q>, despite admitting that this doesn't make sense if the method
-        doesn’t actually <i>iterate</i> over the block it has been given. We will not perpetuate this
-        confusion: an <i>iterator method</i> iterates over the block it has been given; a method which
-        expects a block but does not iterate over it is simply <i>a method that expects a block</i>.
+          130-131)</a> insist on <q>[using] the term iterator…to mean any
+          method that uses the <code>yield</code> statement</q>, despite
+        admitting that this doesn't make sense if the method doesn’t actually
+        <i>iterate</i> over the block it has been given. We will not
+        perpetuate this confusion: an <i>iterator method</i> iterates over the
+        block it has been given; a method which expects a block but does not
+        iterate over it is simply <i>a method that expects a block</i>.
         </aside>
 
         <figure id=method-invocation-with-block-literal>
@@ -1284,8 +1306,8 @@
           </dd>
         </figure>
          
-        <p>The method may determine whether it has received a block by using the <code>block_given?</code>
-        predicate.
+        <p>A method may determine whether it has received a block with the
+        <code>block_given?</code> predicate.
 
         <figure id=method-using-block_given>
         <dt>A method which uses the <code>block_given?</code> predicate to determine whether it has been
@@ -1303,9 +1325,10 @@
           </dd>
         </figure>
 
-        <p>A block passed to a method in this way is not automatically called; the method must use the
-        <code>yield</code> keyword to do so. An implication of this is that methods not expecting blocks
-        will ignore them. The return value of <code>yield</code> is that of the block.
+        <p>A block passed to a method in this way is not automatically called;
+        the method must use the <code>yield</code> keyword to do so. An
+        implication of this is that methods not expecting blocks will ignore
+        them. The return value of <code>yield</code> is that of the block.
 
         <!-- TODO: Mention that yield takes arguments -->
 
@@ -1325,12 +1348,14 @@
           </dd>
         </figure>
 
-        <p>A method needing a reference to the block it was given, perhaps to pass to another method, is
-        defined with a final parameter whose name is prefixed with an ampersand (U+0026:
-        <code>&amp;</code>).  For example: <code> def m(a,b,&amp;block)</code>. The method can access the
-        block as a <code>Proc</code> object named after the parameter (sans ampersand). It may invoke the
-        block via its <code>Proc#call</code> method, or <code>yield</code> to it. In either case, the method
-        is invoked in precisely the same way as before.
+        <p>A method needing a reference to the block it was given, perhaps to
+        pass to another method, is defined with a final parameter whose name
+        is prefixed with an ampersand (U+0026: <code>&amp;</code>).  For
+        example: <code> def m(a,b,&amp;block)</code>. The method can access
+        the block as a <code>Proc</code> object named after the parameter
+        (sans ampersand). It may invoke the block via its
+        <code>Proc#call</code> method, or <code>yield</code> to it. In either
+        case, the method is invoked in precisely the same way as before.
 
         <!-- Example with instance_eval ? -->
 
@@ -1350,26 +1375,25 @@
         </figure>
 
         <aside class=note>
+          <p>The discussion above applies only to block <i>literals</i>; a method
+          expecting a <em>reference</em> to a block, i.e. a <code>proc</code>
+          or <code>lambda</code>, need not pay heed. Such a method employs
+          precisely the same parameter list as in the previous sections.
 
-        <p>The discussion above applies only to block literals; a method expecting a <em>reference</em> to a
-        block, i.e. a <code>proc</code> or <code>lambda</code>, need not pay heed. Such a method employs
-        precisely the same parameter list as in the previous sections.
-
-        <figure id=method-receiving-block-ref>
-        <dt>A method which expects a reference to a block uses the same parameter list as it would if
-        expecting any other type of variable.
-          <dd>
-            <pre>
-              <code>
-              def m(b)
-                b.call
-              end
-              m -&gt;{ "I am a \u{3bb}!" } #=&gt; "I am a λ!"
-              </code>
-            </pre>
-          </dd>
-        </figure>
-
+          <figure id=method-receiving-block-ref>
+          <dt>A method which expects a reference to a block uses the same
+          parameter list as it would if expecting any other type of variable.
+            <dd>
+              <pre>
+                <code>
+                def m(b)
+                  b.call
+                end
+                m -&gt;{ "I am a \u{3bb}!" } #=&gt; "I am a λ!"
+                </code>
+              </pre>
+            </dd>
+          </figure>
         </aside>
 
     <h4>Dynamic Method Definition</h4>
@@ -1758,22 +1782,25 @@
 
   <h3><code>Method</code> Objects</h3>
 
-  <p>An instance of the <code>Method</code> class represents a method bound to an object. This <dfn
-      id=method-object>method
-      object</dfn> enables you to store a reference to a method in a variable, as you would any other
-    object, query the method’s metadata, and manipulate it. This is quite distinct from capturing the
-    return value of a method. <!-- TODO: Note that unlike procs, method objects aren't closures -->
+    <p>An instance of the <code>Method</code> class represents a method bound
+    to an object. This <dfn id=method-object>method object</dfn> enables you
+    to store a reference to a method in a variable, as you would any other
+    object, query the method’s metadata, and manipulate it. This is quite
+    distinct from capturing the return value of a method. <!-- TODO: Note that
+    unlike procs, method objects aren't closures -->
 
     <p>Method objects can be created with <code>Kernel#method</code>:
-    <code><var>receiver</var>.method(<var>name</var>)</code>, where <var>name</var> is the method
-    name as a <code>Symbol</code> or <code>String</code>. For example, <code>method(:eval)</code>
-    returns a <code>Method</code> object for <code>Kernel#eval</code>. If the object does not
-    <code>respond_to?</code> the given method a <code>NameError</code> will be raised. (Therefore,
-    if the object’s <code>respond_to_missing?</code> method returns <code>true</code> for the method
-    in question the method object will be created successfully).
+    <code><var>receiver</var>.method(<var>name</var>)</code>, where
+    <var>name</var> is the method name as a <code>Symbol</code> or
+    <code>String</code>. For example, <code>method(:eval)</code> returns a
+    <code>Method</code> object for <code>Kernel#eval</code>. If the object
+    does not <code>respond_to?</code> the given method a
+    <code>NameError</code> will be raised. (Therefore, if the object’s
+    <code>respond_to_missing?</code> method returns <code>true</code> for the
+    method in question the method object will be created successfully).
 
-    <p><code>Kernel#public_method</code> works in the same way, but raises a <code>NameError</code>
-    if the given method is private or protected.
+    <p><code>Kernel#public_method</code> works in the same way, but raises a
+    <code>NameError</code> if the given method is private or protected.
 
     <h4>Arity</h4>
 
@@ -1916,6 +1943,8 @@
     <p>A <dfn title=literal>literal</dfn> is a syntactical shortcut for the
     instantiation of a particular core object.
 
+      <!-- Cover block literals? -->
+
       <h5>Strings</h5>
 
       <p>Single quotation marks (<code>'</code>) instantiate a
@@ -2007,12 +2036,49 @@
       <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a + b }</code>.
 
       <h5>Immediates</h5>
+
+      <p><code>Symbol</code> and <code>Fixnum</code> literals are <dfn
+        title=immediates>immediate</dfn> values. They are stored as values
+      rather than object references so are immutable and cannot have singleton
+      methods defined on them.
+
     <h4>Constructors</h4>
       <h5><code>.new</code></h5>
-        <!-- Relationship between initialize and new; pseudo code showing that
-        the return value of initialize is ignored -->
+        <p>Sending the <code>:new</code> message to a class instantiates that
+        class. For example, <code>Array.new</code> creates an
+        <code>Array</code> object. A method that instantiates a class is a
+        <dfn title="constructor">constructor</dfn>: it allocates an object
+        then initializes its state.
+
+      <h5>Allocation</h5>
+
+        <p><code>Class#allocate</code> allocates memory for a new object and
+        returns a reference to it. It cannot be overridden. If invoked
+        manually, it returns an uninitialized instance of the class.
+
+      <h5>Initialization</h5>
+      
+        <p>The newly allocated object is sent an <code>:initialize</code>
+        message along with the arguments passed to <code>.new</code>. The
+        <code>#initialize</code> method typically validates the constructor’s
+        arguments then assigns them to instance variables. It is a private
+        method so cannot be called from outside the class.
+
+        <p>The <code>.new</code> constructor ignores the return value of
+        <code>#initialize</code>, so as to return the initialized object
+        instead.
+
+        <p>A class that has a superclass other than <code>Object</code> and
+        defines an <code>#initialize</code> method should call its parent’s
+        <code>#initialize</code> with <code>super</code>.
+
     <!-- Pickaxe pp. 427: Hook for object creation -->
-    <h4>Allocation</h4>
+
+  <h3>Vocabulary</h3>
+  <ol>
+    <li>Ask an object what it understands by sending it :methods /
+    :instance_methods
+  </ol>
 
   <h3>Identity</h3>      
     <ol>
@@ -2148,6 +2214,8 @@
     <section>
       <h5><code>try_convert</code></h5>
 
+      <!-- Describe idioms that this implies, e.g Array.try_convert(arg) or
+      raise ArgumentError -->
       <p><code>Array</code>, <code>Hash</code>, <code>IO</code>,
       <code>Regexp</code>, and <code>String</code> define a class method named
       <code>try_convert</code> which uses the appropriate implicit conversion
