@@ -161,14 +161,30 @@
       <!-- Method objects? -->
 
     <h2>Arrays</h2>
-    <ol>
-      <li>Literal syntax
-      <li>Ordered collection of arbitrary elements
-      <li>Subscripts: 0..-1
-      <li>Stacks: #push, #pop
-      <li>Append elements
-      <li>Test elements: #include?
-    </ol>
+    <p>An <code>Array</code> instance represents an ordered collection of
+    objects. It is automatically resized as elements are added or removed.
+    Elements are not required to be instances of a specific class, or all
+    share the same class.
+    <p>An <code>Array</code> literal is a comma-separated list of objects
+    enclosed in square brackets (<code>[</code>, <code>]</code>). For example,
+    <code>[1, :two, 'three']</code> creates a three-element
+    <code>Array</code> object with <code>1</code> as the first element.
+    <p>Arrays are indexed by integral subscripts, beginning with 0. If the
+    subscript is negative it counts backward from the last element (i.e.
+    <code>-1</code> refers to the last element).
+    An element with subscript <var>index</var> can be retrieved with
+    <code>Array#[<var>index</var>]</code>. If the index doesn’t exist,
+    <code>nil</code> is returned. The index can be assigned to with
+    <code>Array#[<var>index</var>]=</code>. 
+    <p>Elements are appended to an array with <code>Array#&lt;&lt;</code>; and
+    prepended with <code>Array#unshift</code>.
+    <code>Array#include?(<var>element</var>)</code> tests whether the array
+    contains <var>element</var>. The total number of elements is returned by
+    <code>Array#size</code>. <code>Array#each</code> iterates over the array,
+    <code>yield</code>ing the next element each time.
+    <p><code>Array</code> is <code>Enumerable</code> <!-- link -->, so all
+    <code>Enumerable</code> methods are available as well.
+
     <h2>Enumerables</h2>
     <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
     <code>Range</code> mixin the <code>Enumerable</code> module. Any object
