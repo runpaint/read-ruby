@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ruby in 43 Pages</title>
+    <meta charset="utf-8"/>
+    <style>
+      dfn { font-weight: bold; }
+      /*h3 { display: run-in; }
+      h3:after { content: ':'; margin-right: 1%; }*/
+    </style>
+  </head>
+  <body>
+    <!-- Link with RubySpec specs to show detailed examples? -->
+    <!-- Start with Principles -->
+    <h2>Messages</h2>
+      <p>A message is a <q>request for an object to perform some operation</q>
+      (<a href=#refBUDD87 class=ref>Budd</a>, p. 6). It consists of <q>a
+        <i>receiver</i>, a message <i>selector</i>, and zero or more
+        <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, p. 16).
+      An object <i>sends</i> a message to another object.
+      <p>The <dfn title=receiver>receiver</dfn> is the object to which the
+      message is sent. If not specified an <i>implicit</i> receiver of the
+      current object (<code>self</code>) is assumed.
+      <p>The <dfn title=selector>selector</dfn> is the name of the operation
+      the receiver should perform. Typically this corresponds to the name of a
+      method in the receiver, but need not if <code>method_missing</code> <!--
+      Link --> is used.
+      <p><code>Object#respond_to?(<var>selector</var>)</code> returns
+      <code>true</code> if an object understands the given selector.
+      <p>The <dfn title=arguments>arguments</dfn> are a list of variables to
+      be used in the receiver’s computations.  Arguments are passed by
+      reference, so when the receiver modifies an object it receives, the
+      sender’s copy will also be affected.
+      <p>Prefixing an <code>Enumerable</code> argument’s name with an asterisk causes it to be
+      exploded into its constituent elements by sending it
+      <code>#to_ary</code>. For example, if a message expects three arguments and the sender
+      has an <code>Array</code>, <var>array</var>, each element of which constitutes an
+      argument, he can’t supply <var>array</var> as an argument, because then
+      the receiver would only receive one argument (a reference to
+      <var>array</var>); he must send <code>*array</code>, instead.  
+      <p>Similarly, if a message is to be sent with a literal block but the
+      sender only has a reference to one, he may prefix the block name with an
+      ampersand (<code>&amp;</code>). This sends the argument
+      <code>#to_proc</code>, leaving it indistinguishable from a block literal
+      to the method.
+      <h3>Message Expression Syntax</h3>
+      <p>The syntax
+      <code><var>receiver</var>.<var>selector</var>(<var>argument<sub>0</sub></var>,</code>…<code>,<var>argument<sub>n</sub></var>)</code>
+        sends a message with the selector <var>selector</var> to the object
+        <var>receiver</var> with arguments
+        <var>argument<sub>0</sub></var>–<var>argument<sub>n</sub></var>.
+        Omitting <code><var>receiver</var>.</code> causes the message to be
+        sent to <code>self</code>. 
+      <p>The parenthetical is a comma-separated list of variables. It can be
+      omitted if no arguments are being sent. Whitespace is forbidden between
+      <var>selector</var> and the opening parenthesis. The parentheses are
+      only required when they resolve ambiguity. <!-- Explain this better -->
+      If they are omitted, whitespace <em>is</em> required between the selector and
+      first argument.
+      <p>A message expression may be followed by a block literal, which is
+      made available to the receiver.
+      <p>The syntax above requires the selector to be a literal, hardcoded
+      into the source file. It can be determined dynamically at runtime with
+      <code>Object#send(<var>selector</var>,
+        <var>argument<sub>0</sub></var>,</code>…<code>,<var>argument<sub>n</sub></var>)</code>,
+        where <var>selector</var> is a <code>Symbol</code>, e.g.
+        <code>3.send(:odd?) #=&gt; true</code>.
+    <h2>Methods</h2>
+      <p>A method is the means by which an object responds to a message. An
+      object that receives a message attempts to invoke a method with the same
+      name as the selector.
+      <p>By default a method is an <dfn title="instance method">instance
+        method</dfn>: it is available to every instance of the class inside
+      which it is defined. For example, <code>String#upcase</code> is an
+      instance method because each <code>String</code> instance responds to
+      it.
+      <p>A <dfn title="singleton method">singleton method</dfn>, by contrast,
+      is defined on a specific, <i>single</i> object. Class methods are
+      singleton methods defined on a <code>Class</code> object. For example,
+      <code>File.expand_path</code> is a singleton method defined on the
+      <code>File</code> class.
+      <p>Methods are defined with the <code>def</code> keyword:
+      <pre><code>
+        def
+        <var>name</var>(<var>parameter<sub>0</sub></var>,</code>…<code>,<var>parameter<sub>n</sub></var>)
+          <var>body</var>
+        end
+      </pre></code>
+      <p><var>name</var> is the method name. If <var>name</var> is of the form
+      <code><var>object</var>.<var>name</var></code> the method is a singleton
+      method defined on <var>object</var>. For example, <code>def
+        Array.glark</code> defines a singleton method on the
+      <code>Array</code> class. Otherwise, if <var>name</var> does not include
+      a period, an instance method is defined. 
+      <p>The <var>body</var> is a sequence of statements which will be
+      executed when the method is invoked. The last statement executed is the
+      method’s <dfn title="method return value">return value</dfn>. A method
+      may return prematurely with the <code>return
+        <var>value<sub>0</sub></var>,</code>…<code>,<var>value<sub>n</sub></var></code>
+      keyword. If no arguments are supplied, <code>nil</code> will be
+      returned. <!--
+      Expand on return values? -->
+      <p>The parenthetical portion is the <dfn id="paramater
+        list">parameter list</dfn>, which is omitted if the method expects no arguments.
+      <p>Parameters are the names of local variables to which the
+      corresponding arguments will be assigned. A parameter list of <code>(a,
+        b)</code> assigns the first argument to a local variable named
+      <var>a</var>, and the second to a variable named <var>b</var>.
+      Parameters specified in this way are <dfn title="required
+        parameters">required</dfn>; if the method does not receive the same
+      number of arguments as it has parameters, an <code>ArgumentError</code>
+      will be raised.
+      <p>A parameter can be <dfn title="optional paramaters">optional</dfn>
+      with the <code><var>parameter</var>=<var>default</var></code> syntax,
+      where <var>default</var> is an expression whose value will be assigned
+      to <var>parameter</var> if a corresponding argument is not supplied. For
+      example, a parameter list of <code>(a,b=2)</code> allows either one or
+      two arguments to be supplied; in the first case, <var>b</var> will be
+      assigned the value <code>2</code>.
+      <p>A parameter prefixed with an asterisk consumes every remaining
+      parameter while still allowing any following parameters to receive their
+      arguments. The arguments consumed are given to the method as an
+      <code>Array</code>. For example, a parameter list of <code>(a, b=2,
+        *c)</code> requires at least one argument, with the second defaulting
+      to <code>2</code>, and any remaining arguments being stored in an
+      <code>Array</code> named <var>c</var>.
+      <p>The final parameter may be prefixed with an ampersand, in which case
+      the method accepts, but does not require, a block literal argument. If
+      the method simply wants to <code>yield</code> to a block it receives,
+      this parameter is unnecessary; it is used when the method needs a
+      reference to the block, perhaps for assigning to a variable or sending
+      to another method. 
+      <p>A method can simulate <i>named arguments</i> by accepting a
+      <code>Hash</code> as the last parameter. In this scenario, the curly
+      braces of the <code>Hash</code> literal can be omitted, which furthers
+      the illusion. Lastly, the <i>symbol-key</i> notation <!-- Link --> can
+      be employed. This allows a method defined as <code>def m(<var>args</var>)</code> to
+      be invoked as <code>m fish: :chips, size: 25</code>; causing
+      <var>args</var> to equal <code>{ :fish =&gt; :chips, :size =&gt; 25
+        }</code>.
+      <p>The <dfn title="method visibility">visibility</dfn> of a method
+      determines how it can be invoked. A method may be <dfn title="public
+        method">public</dfn>, <dfn title="protected method">protected</dfn>,
+      or <dfn title="private method">private</dfn>.
+      <p>Methods are private by default if defined at the top-level, i.e.
+        outside of a class definition, named <code>#initialize</code>. They
+        may not be called with an explicit receiver, so can only be invoked
+        from within their class.
+      <p>Protected methods can be invoked only from the class in which they
+      were defined or a subclass thereof, that is they behave the same as
+      private methods. However, unlike private methods they can be explicitly
+      invoked on any instance of their class.
+      <p>All other methods are public unless specified otherwise.
+      <p>The <code>public</code>, <code>protected</code>, and
+      <code>private</code> keywords are used to change a method’s visibility.
+      They may be followed by a comma-separated list of method names
+      (specified as <code>Symbol</code>s), in which case they alter the
+      visibility of those named. If they are used without arguments, they set
+      the visibility of any method defined subsequently until another
+      visibility specifier is seen or the class definition ends. 
+      <!-- Method objects? -->
+
+    <h2>Enumerables</h2>
+      <ol>
+        <li>Reliant on #each yielding elements
+        <li>Mixin: include Enumerable
+        <li>Provides determinative predicates: #any?, #all?, #none?, #one?
+        <li>Fine-grained selection: #partition, #chunk, #select
+      </ol>
+    <h2>Arrays</h2>
+      <ol>
+        <li>Literal syntax
+        <li>Ordered collection of arbitrary elements
+        <li>Subscripts: 0..-1
+        <li>Stacks: #push, #pop
+        <li>Append elements
+        <li>Test elements: #include?
+      </ol>
+    <h2>Hashes</h2>
+      <ol>
+        <li>Literal syntax
+        <ol>
+          <li><code>=&gt;</code> vs. <code>:</code> to separate pairs
+        </ol>
+        <li>Preserve insertion order (not actually hash tables)
+        <li>Use #hash (#eql? for keys)
+        <li>Unique keys
+        <li>Uses:
+          <ol>
+            <li>Dictionary/map
+            <li>Dispatch table
+            <li>Cache
+            <li>Counter
+          </ol>
+        <li>Enumerables
+        <li>Iteration
+      </ol>
+    <h2>Ranges</h2>
+      <ol>
+        <li>Sequence of objects with a start-point and endpoint. <!-- FIXME -->
+        <li>Inclusive or exclusive
+        <li>Literal syntax
+        <li>Points must respond to <code>&lt;=&gt;</code> (Comparable?)
+        <li>Points must be of same type?
+        <li>Can be infinite
+        <li>Enumerable
+        <li>Testing membership
+        <li>Creating arrays
+      </ol>
+
+    <h2>Numerics</h2>
+      <ol>
+        <li>Integer literals
+        <li>Float literals
+        <li>Hex and Oct literals
+        <li>Fixnum to Bignum conversion
+        <li>Inaccuracy of Floats
+        <li>Rationals
+        <li>Complex
+        <li>Standard mathematical operations as methods
+        <li><code>/</code> performs integer division
+      </ol>
+    <h2>Symbols</h2>
+      <ol>
+        <li>Literal syntax
+        <li>Immediates
+        <li>Singletons
+        <li>Not garbage collected
+        <li>Useful for hash keys and named arguments
+      </ol>
+    <h2>Strings</h2>
+      <ol>
+        <li>Literal syntax: <code>'…'</code> <code>"…"</code>
+        <li>Double-quoted strings
+        <ol>
+          <li>Escapes
+          <ol>
+            <li>\u, \n, \t
+          </ol>
+          <li>Interpolation
+        </ol>
+        <li>Mutable
+        <li>Have encoding
+        <li>#[]
+        <li>Iterating by character, codepoint, or line
+      </ol>
+    <h2>Structs</h2>
+      <ol>
+        <li>Light-weight classes
+        <li>Data-only objects
+        <li>Can be extended with methods; how
+        <li>Used as superclass for proper class
+        <li>Struct vs. OpenStruct
+      </ol>
+    <h2>Blocks &amp; Closures</h2>
+      <ol>
+        <li>Literal syntax: <code>{</code>…<code>}</code>,
+        <code>do</code>…<code>end</code>
+        <li>What a closure is
+        <li>Block-local variables
+        <li>Can be passed to methods
+        <li>Stored in variables (Proc objects)
+        <li>Procs vs. lambdas (#lambda?)
+        <li>Literal lambda syntax
+        <ol>
+          <li>Optional parameter list; like method parameters
+        </ol>
+      </ol>
+    <h2>Exceptions</h2>
+      <ol>
+        <li>What they are
+        <li>#is_a?(Exception)
+        <li>Bubble up
+        <li>Caught with postfix <code>rescue</code>
+        <li>Caught with <code>begin</code>…<code>rescue</code>
+        <li>Multiple <code>rescue</code>s can be given
+        <li><code>rescue</code> catches named exception and its children
+        <li><code>rescue</code> catches <code>StandardError</code> by default
+        <li>Raised with <code>raise</code>
+        <li>Created with <code>MyError = Class.new(Exception)</code> (inside
+        Module?)
+        <li>Common types:
+        <ol>
+          <li><code>RuntimeError</code>
+          <li><code>ArgumentError</code>
+          <li><code>NoMethodError</code>
+          <li><code>TypeError</code>
+          <li><code>SyntaxError</code>
+        </ol>
+        <li><code>ensure</code> clause
+      </ol>
+    <h2>Logic &amp; Truth</h2>
+      <ol>
+        <li><code>false</code> and <code>nil</code> are false
+        <li>Everything else is true
+        <li>False is represented explicitly as <code>false</code>
+        <li>True is represented explicitly as <code>true</code>
+        <li><code>nil</code> means…
+        <li>Used in conditionals
+        <li><code>and</code>, <code>&amp;&amp;</code>
+        <li><code>or</code>, <code>||</code>
+        <li><code>not</code>, <code>!</code>
+        <li>These short-circuit
+        <li><code>!!object</code>
+      </ol>
+    <h2>Conditionals</h2>
+    <ol>
+      <li>Purpose
+      <li>What is a condition
+      <li><code>if</code>…<code>end</code>
+      <li><code>else</code>…<code>end</code>
+      <li><code>elsif</code>…<code>end</code>
+      <li><code>unless</code>…<code>end</code>
+      <li>…<code>if</code> (postfix form)
+      <li>…<code>unless</code> (postfix form)
+      <li><code><var>condition</var>? <var>statement<sub>0</sub></var> :
+        <var>statement<sub>1</sub></var></code>
+    </ol>
+    <h2>Loops</h2>
+    <ol>
+      <li>Why loop
+      <li>Explicit subscript loops are rare
+      <li><code>loop</code>…<code>end</code>
+      <li><code>until(<var>cond</var>)</code>…<code>end</code>
+      <li><code>while(<var>cond</var>)</code>…<code>end</code>
+      <li><code><var>integer</var>.times do<code>…<code>end</code>
+      <li>Iteration with enumerators is more common. (Explain here or own
+      section?
+    </ol>
+    <h2>Classes</h2>
+    <ol>
+      <li>Definition
+      <li>Are constants
+      <li>Created with <code>class</code>
+      <li>Created with <code>Class.new</code> (<i>because</i> they're objects)
+      <li>May have superclass (link to Inheritance)
+      <li>Methods (link to Methods)
+      <li>Instance variables (link to Variables)
+      <li>Attributes
+      <ol>
+        <li><code>attr</code>
+        <li><code>attr_reader</code>
+        <li><code>attr_writer</code>
+      </ol>
+      <li><code>.new</code>
+      <ol>
+        <li><code>.allocate</code>
+        <li><code>#initialize</code>
+      </ol>
+    </ol>
+    <h2>Objects</h2>
+    <ol>
+      <li>Definition
+      <li>Instances of classes
+      <li>Created by literals or constructors <!-- .new here or in Classes?
+      -->
+      <li><code>#is_a?</code> vs. <code>#kind_of?</code>
+      <li>Can have methods defined on
+      <li><code>#methods</code>
+    </ol>
+    <h2>Modules</h2>
+    <ol>
+      <li><code>module</code>
+      <li>Namespacing
+      <li>Mixins
+      <ol>
+        <li><code>include</code>
+        <li><code>extend</code>
+        <li>How instance/class methods are mixed in
+        <li><code>#include?</code>
+      </ol>
+    </ol>
+    <h2>Equality</h2>
+    <ol>
+      <li><code>==</code>
+      <li><code>eql?</code>
+      <li><code>equal?</code>
+      <li>Identity
+    </ol>
+    <h2>Comparison</h2>
+    <ol>
+      <li><code>&gt;</code>
+      <li><code>&lt;</code>
+      <li>Spaceship operator: <code>&lt;=&gt;</code>
+      <li><code>Comparable</code>
+    </ol>
+    <h2>Source Files</h2>
+    <ol>
+      <li><code>require</code>
+      <li><code>load</code>
+      <li>Load path
+      <li>Encoding: magic comments
+      <ol>
+        <li><code>__ENCODING__</code>
+      </ol>
+      <li><code>__FILE__</code>
+    </ol>
+    <h2>Encoding</h2>
+    <ol>
+      <li>Source encoding (link: Source Files)
+      <li>Default internal
+      <li>Default external
+    </ol>
+    <h2>Gems</h2>
+    <ol>
+      <li>Loaded with <code>require</code>
+      <li>Installed with <code>gem</code>
+      <li>Created with <code>jeweler</code>
+    </ol>
+    <h2>Conversion</h2>
+    <ol>
+      <li><code>#to_*</code>
+      <li>Implicit conversion
+      <li>Explicit conversion
+      <li><code>#coerce</code>
+    </ol>
+    <h2>Eval &amp; Exec</h2>
+    <h2>Files</h2>
+    <ol>
+      <li><code>File.open</code> with block
+      <li><code>File.read</code>
+      <li><code>File.expand_path</code>
+      <li><code>File.absolute_path</code>
+    </ol>
+    <h2>Processes &amp; Commands</h2>
+    <ol>
+      <li><code>Process.spawn</code>
+      <li><code>`</code>…<code>`</code>
+    </ol>
+    <h2>Inheritance</h2>
+    <ol>
+      <li>Purpose
+      <li>Superclass
+      <li>Effect on method lookup
+      <li>Inheritance versus mixins
+      <li><code>super</code>
+    </ol>
+    <h2>Threads</h2>
+    <h2>Fibers</h2>
+    <h2>Variables</h2>
+    <ol>
+      <li>Sigils
+      <li>Local variables
+      <ol>
+        <li>Scope
+        <li>Naming
+      </ol>
+      <li>Instance variables
+      <ol>
+        <li>Used in method definitions
+        <li>Local to a specific object
+        <li>Initial value
+      </ol>
+      <li>Class variables
+      <ol>
+        <li>Used in class bodies
+        <li>Initial values
+        <li>Bad idea
+      </ol>
+      <li>Global variables
+      <ol>
+        <li>Bad idea
+      </ol>
+      <li>Assignment
+      <ol>
+        <code>||=</code>
+      </ol>
+      <li>Constants
+      <ol>
+        <li>All capitals
+        <li>Not really constant
+        <li>Use with <code>#freeze</code>
+      </ol>
+    </ol>
+    <h2>Serialization</h2>
+    <ol>
+      <li>Marshal
+      <ol>
+        <li>What can't be dumped
+        <li>Dumping
+        <li>Loading
+      </ol>
+      <li>YAML
+      <ol>
+        <li>Plain text: readable
+        <li>Editable: good for config files
+        <li>Dumping
+        <li>Loading
+      </ol>
+    </ol>
+    <h2>Randomness</h2>
+    <h2>Regexps</h2>
+    <ol>
+      <li>Literal syntax
+      <li><code>MatchData</code>
+      <li>Numbered captures
+      <li>Named captures
+      <li>Testing for matches with <code>String#[]</code>
+      <li>Searching and replacing with <code>#gsub</code>
+      <li>Description of regexps?
+    </ol>
+    <h2>Time</h2>
+    <h2>Missing Methods</h2>
+    <ol>
+      <li>When <code>method_missing</code> is called
+      <li>Its arguments
+      <li>Uses (<i>Dynamic reception</i>)
+      <li><code>super</code>
+    </ol>
+    <h2></h2>
+    <h2></h2>
+    <h2></h2>
+    <h2></h2>
+    <h2></h2>
+  </body>
+</html>
