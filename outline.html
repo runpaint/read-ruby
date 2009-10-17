@@ -159,9 +159,10 @@
       the visibility of any method defined subsequently until another
       visibility specifier is seen or the class definition ends. 
       <!-- Method objects? -->
-
+      <!-- aliases -->
     <h2>Arrays</h2>
     
+    <!-- Mention #to_a? -->
     <p>An <code>Array</code> instance represents an ordered collection of
     objects. It is automatically resized as elements are added or removed.
     Elements are not required to be instances of a specific class, or all
@@ -192,6 +193,7 @@
 
     <h2>Hashes</h2>
     
+    <!-- Mention Hash#[]? -->
     <p>A <code>Hash</code> instance represents a collection of associations
     between unique keys and values (<i>key-value</i> pairs), both of which may
     be any object. It is indexed by key, and ordered by insertion. For
@@ -230,6 +232,8 @@
     <code>Enumerable</code> methods are available as well.
 
     <h2>Enumerables</h2>
+
+    <!-- Mention #to_enum? -->
     <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
     <code>Range</code> mixin the <code>Enumerable</code> module. Any object
     may do the same as long as its class defines an <code>#each</code> method
@@ -260,17 +264,38 @@
     element in the collection satisfies the block. 
     
     <h2>Ranges</h2>
-      <ol>
-        <li>Sequence of objects with a start-point and endpoint. <!-- FIXME -->
-        <li>Inclusive or exclusive
-        <li>Literal syntax
-        <li>Points must respond to <code>&lt;=&gt;</code> (Comparable?)
-        <li>Points must be of same type?
-        <li>Can be infinite
-        <li>Enumerable
-        <li>Testing membership
-        <li>Creating arrays
-      </ol>
+
+    <p>A <code>Range</code> represents a sequence between two given values.
+    It is either <i>inclusive</i> or <i>exclusive</i>: the former includes the
+    endpoint; the latter does not. For example, 0–9 is a range consisting of
+    all single-digit integers, expressed by specifying the start-point and
+    endpoint.
+
+    <p>A <code>Range</code> literal consists of two values
+    separated by two or three periods: the former range is inclusive;
+    the latter exclusive. For example, <code>'a'...'z'</code> represents
+    letters <i>a</i>–<i>y</i>.
+
+    <p>The start-point and endpoint must be comparable <!-- link --> with
+    <code>#&lt;=&gt;</code>. That is,
+    for a range <code><var>start</var>..<var>end</var></code>,
+    <code><var>start</var> &lt;=&gt; <var>end</var></code> must return -1, 0,
+    or 1. <code>Range#include?(<var>object</var>)</code> allows ranges to be
+    used as intervals: returning <code>true</code> if <var>object</var> is a
+    member; <code>false</code> otherwise.  
+
+    <p>A range is <dfn title="discrete ranges">discrete</dfn> if it begins
+    with a value that responds to <code>#succ</code> by returning the next
+    element of the sequence. It is so called because it represents a finite
+    set of values that can be iterated over with <code>Range#each</code>.
+    Alternatively, <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
+    passes each <var>n</var><sup>th</sup></var> element to the block. As
+    <code>Range</code>s are <code>Enumerable</code>, they can also be converted
+    to an <code>Array</code> with <code>Range#to_a</code>. 
+    
+    <p>A non-discrete range is <dfn title="continuous range">continuous</dfn>.
+    It represents an infinite set of values, therefore a
+    <code>TypeError</code> is raised when attempting to iterate over it.
 
     <h2>Numerics</h2>
       <ol>
@@ -283,6 +308,7 @@
         <li>Complex
         <li>Standard mathematical operations as methods
         <li><code>/</code> performs integer division
+        <li>to_*
       </ol>
     <h2>Symbols</h2>
       <ol>
@@ -291,6 +317,7 @@
         <li>Singletons
         <li>Not garbage collected
         <li>Useful for hash keys and named arguments
+        <li>to_sym
       </ol>
     <h2>Strings</h2>
       <ol>
@@ -307,6 +334,7 @@
         <li>Have encoding
         <li>#[]
         <li>Iterating by character, codepoint, or line
+        <li>to_s
       </ol>
     <h2>Structs</h2>
       <ol>
@@ -476,6 +504,7 @@
       <li><code>#to_*</code>
       <li>Implicit conversion
       <li>Explicit conversion
+      <li>try_convert
       <li><code>#coerce</code>
     </ol>
     <h2>Eval &amp; Exec</h2>
@@ -552,7 +581,6 @@
         <li>Loading
       </ol>
     </ol>
-    <h2>Randomness</h2>
     <h2>Regexps</h2>
     <ol>
       <li>Literal syntax
@@ -571,8 +599,23 @@
       <li>Uses (<i>Dynamic reception</i>)
       <li><code>super</code>
     </ol>
-    <h2></h2>
-    <h2></h2>
+    <h2>Assignment</h2>
+    <ol>
+      <li>rvalue is an object reference
+      <li><code>=</code> isn’t a method
+      <li>Selectors with <code>=</code> suffix as lvalues
+      <li>Parallel assignment
+      <li>Splats
+      <li>To constants
+      <li>Abbreviated assignment
+    </ol>
+    <h2>Comments</h2>
+    <ol>
+      <li>#
+      <li>=begin…=end
+      <li>__END__
+    </ol>
+    <h2>Operators</h2>
     <h2></h2>
     <h2></h2>
     <h2></h2>
