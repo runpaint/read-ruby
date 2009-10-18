@@ -324,14 +324,24 @@
         <li><code>/</code> performs integer division
         <li>to_* -->
     <h2>Symbols</h2>
-      <ol>
-        <li>Literal syntax
-        <li>Immediates
-        <li>Singletons
-        <li>Not garbage collected
-        <li>Useful for hash keys and named arguments
-        <li>to_sym
-      </ol>
+    
+    <p>A <code>Symbol</code> represents a name. <code>Symbol</code>s are
+    immutable immediates. Two symbols with the same content will always be
+    represented by the same object, e.g. <code>:glark.object_id ==
+      :glark.object_id</code>, so symbol comparisons are extremely efficient.
+    However, <code>Symbol</code> objects are not garbage collected, so are
+    unsuitable for storing data from unbounded collections; use
+    <code>String</code>s instead.
+    
+    <p><code>Symbol</code>s are used for unique identifiers, such as
+    <code>Hash</code> keys, as message selectors and method names, and as a
+    substitute for constants.
+
+    <p>A <code>Symbol</code> literal consists of a colon followed by an
+    identifier or <code>String</code> literal, e.g. <code>:barthes</code> or
+    <code>:'887'</code>.
+    <!-- #to_sym -->
+
     <h2>Strings</h2>
       <ol>
         <li>Literal syntax: <code>'…'</code> <code>"…"</code>
