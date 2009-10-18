@@ -298,18 +298,31 @@
     <code>TypeError</code> is raised when attempting to iterate over it.
 
     <h2>Numerics</h2>
-      <ol>
-        <li>Integer literals
-        <li>Float literals
-        <li>Hex and Oct literals
-        <li>Fixnum to Bignum conversion
-        <li>Inaccuracy of Floats
-        <li>Rationals
-        <li>Complex
-        <li>Standard mathematical operations as methods
+
+    <p>An integer literal consists of one or more consecutive digits.
+    Implementation limits dictate whether its a <code>Fixnum</code> or
+    <code>Bignum</code>, but the distinction can be ignored by treating both
+    as <code>Integer</code>s.
+
+    <p>Hexadecimal and octal literals allow integers to be expressed in base
+    sixteen or eight, respectively. A hexadecimal literal begins with
+    <code>0x</code>, and is followed by one or more hex digits (0–9, a–f). An
+    octal literal begins with <code>0o</code>, and is followed by one or more
+    octal digits (0–7). Both forms ignore case and create <code>Integer</code>
+    objects.
+
+    <p>A floating-point literal consists of two integer literals separated
+    with a period, e.g. <code>3.14</code>. It is of class <code>Float</code>.
+    <!-- Notes on the inacuracy of floats -->
+
+    <p><code>Rational</code> numbers are expressed with the
+    <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
+    constructor. Similarly, <code>Complex(<var>real</var>,
+      <var>imaginary</var>)</code> creates a <code>Complex</code> object.
+
+<!--        <li>Standard mathematical operations as methods
         <li><code>/</code> performs integer division
-        <li>to_*
-      </ol>
+        <li>to_* -->
     <h2>Symbols</h2>
       <ol>
         <li>Literal syntax
