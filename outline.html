@@ -397,19 +397,50 @@
         </ol>
       </ol>
     <h2>Exceptions</h2>
-      <ol>
-        <li>What they are
-        <li>#is_a?(Exception)
-        <li>Bubble up
-        <li>Caught with postfix <code>rescue</code>
-        <li>Caught with <code>begin</code>…<code>rescue</code>
-        <li>Multiple <code>rescue</code>s can be given
-        <li><code>rescue</code> catches named exception and its children
-        <li><code>rescue</code> catches <code>StandardError</code> by default
-        <li>Raised with <code>raise</code>
-        <li>Created with <code>MyError = Class.new(Exception)</code> (inside
-        Module?)
-        <li>Common types:
+
+    <p>An <dfn title=exception>exception</dfn> is an urgent notification of an
+    unexpected error <i>raised</i> for the attention of the enclosing block.
+    If the exception is ignored, it will continue propagating up the call
+    stack until it reaches the top-level, where it will cause the program to
+    abort. At any stage of the exception’s passage it may be <i>rescued</i>,
+    acknowledging the notification, and preventing the program’s termination.
+
+    <p>An exception is raised with <code>raise <var>exception</var>,
+      <var>message</var></code>, where <var>exception</var> is the
+    name of a class inheriting from <code>Exception</code> (hereafter: the
+    exception class), and <var>message</var> is an optional
+    <code>String</code> describing the exception. If <var>exception</var> is
+    omitted, a <code>RuntimeError</code> is raised.
+
+    
+    <p>Statements expected to raise exceptions may be wrapped in a
+    <code>begin…rescue <var>exception</var>…end</code> construct. The
+    statements between <code>begin</code> and <code>rescue</code> are
+    executed. If they cause an exception of class <var>exception</var>, or a
+    child thereof, to be raised, the statements inside the <code>rescue</code>
+    block are executed.  Again, <var>exception</var> may be omitted, in which
+    case it defaults to <code>StandardError</code>, or a subclass thereof.
+    <code>rescue</code> accepts a comma-separated list of exception classes,
+    any of which will cause execution of the <code>rescue</code> block.
+    <var>exception</var> may be followed by <code> =&gt; <var>var</var></code>
+    to capture the <code>Exception</code> object to a local variable named
+    <var>var</var>, accessible from the <code>rescue</code> block.
+
+    <p><code>rescue</code> blocks may be followed by other
+    <code>rescue</code> blocks, each of which handle a different set of
+    exception classes. The first such block that matches the current exception
+    will be executed; the others ignored.
+
+    <p><code>rescue</code> may also be used as a postfix statement, whose
+    argument is returned if the proceeding expression raises an exception,
+    i.e. <code><var>expression</var> rescue <var>value</var></code>. This form
+    does not allow the exception class to be specified.
+
+    <p>A custom exception object is created idiomatically with
+    <code><var>exception</var> = Class.new(Exception)</code>, where
+    <var>exception</var> is a constant naming the new exception class.
+      
+        <!--<li>Common types:
         <ol>
           <li><code>RuntimeError</code>
           <li><code>ArgumentError</code>
@@ -418,7 +449,7 @@
           <li><code>SyntaxError</code>
         </ol>
         <li><code>ensure</code> clause
-      </ol>
+      </ol>-->
     <h2>Logic &amp; Truth</h2>
       <ol>
         <li><code>false</code> and <code>nil</code> are false
