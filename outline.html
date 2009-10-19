@@ -569,40 +569,46 @@
     <h2>Threads</h2>
     <h2>Fibers</h2>
     <h2>Variables</h2>
-    <ol>
-      <li>Sigils
-      <li>Local variables
-      <ol>
-        <li>Scope
-        <li>Naming
-      </ol>
-      <li>Instance variables
-      <ol>
-        <li>Used in method definitions
-        <li>Local to a specific object
-        <li>Initial value
-      </ol>
-      <li>Class variables
-      <ol>
-        <li>Used in class bodies
-        <li>Initial values
-        <li>Bad idea
-      </ol>
-      <li>Global variables
-      <ol>
-        <li>Bad idea
-      </ol>
-      <li>Assignment
-      <ol>
-        <code>||=</code>
-      </ol>
-      <li>Constants
-      <ol>
-        <li>All capitals
-        <li>Not really constant
-        <li>Use with <code>#freeze</code>
-      </ol>
-    </ol>
+
+    <p>A variable is a name attached to a specific object reference, valid
+    within a certain scope. The scope is determined by the sigil with which
+    the variable name is prefixed. The name beings with a lowercase character
+    and uses low lines as word separators.
+
+    <p>A dollar sign prefix denotes a global scope. Such <dfn title="global
+      variable">global variables</dfn> are available to any part of the
+    program. They are rarely used in practice.
+
+    <p>A prefix of two commercial at signs creates a <dfn title="class
+      variable">class variable</dfn>, visible
+    to all instances of the class in which defined and initialized only once.
+    Class variables may be used to share data between instances of a class.
+    <!-- warn against? -->
+
+    <p>A single commercial at sign introduces an <dfn title="instance
+      variable">instance variable</dfn>, local to a specific instance of a
+    class, and initialized anew for each instantiation.
+
+    <p>An unadorned variable is a <dfn title="local variable">local
+      variable</dfn>. It is local to the block in which it was defined, and
+    remains accessible to any block defined inside of that block, falling out
+    of scope when this block ends. <!-- Explain about block local variables?
+    -->
+
+    <h2>Constants</h2>
+
+    <p>A constant is an identifier whose name begins with an uppercase ASCII
+    character. It is used both to name classes and values which will not
+    change for the course of the program. The two uses are distinguished with a
+    naming convention: Class names are written in camel-case, a mixture of
+    upper- and lowercase; names of constant values are written entirely in
+    uppercase.
+
+    <p>Ruby does not prevent the value of a constant being changed, although
+    does issue a warning. Freezing <!-- link --> the
+    value causes an exception to be raised if it is modified; but does not
+    stop another value from being assigned to the constant.
+
     <h2>Serialization</h2>
     <ol>
       <li>Marshal
@@ -691,6 +697,7 @@
     <ol>
       <li>rvalue is an object reference
       <li><code>=</code> isn’t a method
+      <li> ||=
       <li>Selectors with <code>=</code> suffix as lvalues
       <li>Parallel assignment
       <li>Splats
