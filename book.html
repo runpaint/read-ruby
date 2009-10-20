@@ -1952,17 +1952,39 @@
 
       <h5>Strings</h5>
 
-      <p>Single quotation marks (<code>'</code>) instantiate a
-      <code>String</code> containing the text they delimit. Double quotation
-      marks (<code>"</code>) do likewise, but they also perform variable
-      interpolation and recognise escapes. For example, <code>"Ruby"</code>
-      creates a <code>String</code> consisting of the text <i>Ruby</i>. <!--
-      Provide example of interpolation and escaping? Or does that distract
-      from our purpose? -->
+        <p><code>String</code>s are mutable sequences of characters with an
+        associated encoding.
 
-      <p>A single character prefixed with a question mark
-      (<code>?<var>char</var></code>) instantiates a <code>String</code>
-      containing the character.
+        <p>A <code>String</code> literal delimited by apostrophes (<code>'</code>)
+        is not subject to interpolation or escape sequences; whereas one delimited
+        by quotation marks (<code>"</code>) is. <!--alternative delimiters?-->
+        
+        <p>A single character prefixed with a question mark
+        (<code>?<var>char</var></code>) instantiates a <code>String</code>
+        containing the character.
+
+        <p><dfn title="string interpolation">Interpolation</dfn> is the embedding
+        of the value of an expression within a string. It is achieved with the
+        syntax <code>#{<var>expression</var>}</code>, where <var>expression</var>
+        is an arbitrary expression. It is common for <var>expression</var> to be
+        simply the name of variable which is to be substituted for its value.
+        
+        <p><dfn title="backslash escape">Escape sequences</dfn> are character
+        sequences prefixed with a reverse solidus (“backslash”) that have a
+        meaning other than their constituent characters. <code>\n</code> is a
+        newline (U+000A); <code>\t</code> a tab (U+0009); <code>\r</code> a
+        carriage return (U+000D); <code>\s</code> a space (U+0020);
+        <code>\\</code> a reverse solidus; <code>\n<var>octal</var></code> the
+        byte given by <var>octal</var>, a three digit octal number &lt; 377;
+        and <code>\u{<var>hex</var>}</code> the Unicode codepoint
+        <var>hex</var>, a hexadecimal number. To include a literal apostrophe
+        or quotation mark in a string literal delimited by the same, the
+        character must be preceded by a backlash.
+
+        <p>A string may be iterated over by Unicode codepoint with
+        <code>String#codepoints</code>, byte with <code>String#bytes</code>,
+        character with <code>String#chars</code>, or line with
+        <code>String#lines</code>.
 
       <h5>Symbols</h5>
 
@@ -2865,38 +2887,6 @@
     identifier or <code>String</code> literal, e.g. <code>:barthes</code> or
     <code>:'887'</code>.
     <!-- #to_sym -->
-
-    <h2>Strings</h2>
-
-    <p><code>String</code>s are mutable sequences of characters with an
-    associated encoding.
-
-    <p>A <code>String</code> literal delimited by apostrophes (<code>'</code>)
-    is not subject to interpolation or escape sequences; whereas one delimited
-    by quotation marks (<code>"</code>) is. <!--alternative delimiters?-->
-
-    <p><dfn title="string interpolation">Interpolation</dfn> is the embedding
-    of the value of an expression within a string. It is achieved with the
-    syntax <code>#{<var>expression</var>}</code>, where <var>expression</var>
-    is an arbitrary expression. It is common for <var>expression</var> to be
-    simply the name of variable which is to be substituted for its value.
-
-    <p><dfn title="backslash escape">Escape sequences</dfn> are character
-    sequences prefixed with a reverse solidus (“backslash”) that have a
-    meaning other than their constituent characters. <code>\n</code> is a
-    newline (U+000A); <code>\t</code> a tab (U+0009); <code>\r</code> a
-    carriage return (U+000D); <code>\s</code> a space (U+0020);
-    <code>\\</code> a reverse solidus; <code>\n<var>octal</var></code> the
-    byte given by <var>octal</var>, a three digit octal number &lt; 377; and
-    <code>\u{<var>hex</var>}</code> the Unicode codepoint number
-    <var>hex</var>, a hexadecimal number. To include a literal apostrophe or
-    quotation mark in a string literal delimited by the same, the character
-    must be preceded by a backlash.
-
-    <p>A string may be iterated over by Unicode codepoint with
-    <code>String#codepoints</code>, byte with <code>String#bytes</code>,
-    character with <code>String#chars</code>, or line with
-    <code>String#lines</code>.
 
     <h2>Structs</h2>
       <ol>
