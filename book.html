@@ -1988,11 +1988,22 @@
 
       <h5>Symbols</h5>
 
-      <p>A literal of the form <code>:<var>identifier</var></code>, where
-      <var>identifier</var> is a valid identifier, or
-      <code>:<var>string</var></code>, where <var>string</var> is a
-      <code>String</code> literal, instantiates a <code>Symbol</code> object.
-      For example, <code>:roland_barthes</code> or <code>:'!^%$'</code>.
+        <p>A <code>Symbol</code> represents a name. <code>Symbol</code>s are
+        immutable immediates. Two symbols with the same content will always be
+        represented by the same object, e.g. <code>:glark.object_id ==
+          :glark.object_id</code>, so symbol comparisons are extremely efficient.
+        However, <code>Symbol</code> objects are not garbage collected, so are
+        unsuitable for storing data from unbounded collections; use
+        <code>String</code>s instead.
+        
+        <p><code>Symbol</code>s are used for unique identifiers, such as
+        <code>Hash</code> keys, as message selectors and method names, and as a
+        substitute for constants.
+
+        <p>A <code>Symbol</code> literal consists of a colon followed by an
+        identifier or <code>String</code> literal, e.g.
+        <code>:roland_barthes</code> or <code>:'887'</code>.
+        <!-- #to_sym -->
 
       <h5>Numerics</h5>
       <!-- Are immediates _instantiated_? -->
@@ -2869,25 +2880,6 @@
 <!--        <li>Standard mathematical operations as methods
         <li><code>/</code> performs integer division
         <li>to_* -->
-    <h2>Symbols</h2>
-    
-    <p>A <code>Symbol</code> represents a name. <code>Symbol</code>s are
-    immutable immediates. Two symbols with the same content will always be
-    represented by the same object, e.g. <code>:glark.object_id ==
-      :glark.object_id</code>, so symbol comparisons are extremely efficient.
-    However, <code>Symbol</code> objects are not garbage collected, so are
-    unsuitable for storing data from unbounded collections; use
-    <code>String</code>s instead.
-    
-    <p><code>Symbol</code>s are used for unique identifiers, such as
-    <code>Hash</code> keys, as message selectors and method names, and as a
-    substitute for constants.
-
-    <p>A <code>Symbol</code> literal consists of a colon followed by an
-    identifier or <code>String</code> literal, e.g. <code>:barthes</code> or
-    <code>:'887'</code>.
-    <!-- #to_sym -->
-
     <h2>Structs</h2>
       <ol>
         <li>Light-weight classes
