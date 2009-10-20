@@ -2250,6 +2250,7 @@
     <!-- Pickaxe pp. 427: Hook for object creation -->
 
   <h3>Vocabulary</h3>
+  <!-- Do we want to use this term? -->
   <ol>
     <li>Ask an object what it understands by sending it :methods /
     :instance_methods
@@ -2274,6 +2275,7 @@
     <!-- Hash#compare_by_identity -->
 
   <h3>Equality</h3>      
+  
     <p>The means by which objects are compared for equality depend on the type
     of equality desired.
 
@@ -2310,10 +2312,19 @@
     <!-- Cover === and =~ ? -->
 
   <h3>Comparison</h3>
-    <ol>
-      <li>&lt;=&gt;
-      <li>Comparable
-    </ol>
+    
+    <p>If instances of a class suggest an ordering relationship such that one
+    instance is either less than, greater than, or equal to, another, they are
+    said to be <dfn title="comparable class">comparable</dfn>. The class can
+    define a method named <code>&lt;=&gt;</code> (the <dfn title="spaceship
+      operator">spaceship operator</dfn>) expecting a single argument and
+    following the <tt>qsort(3)</tt> convention of returning <code>-1</code> if
+    <code>self</code> is less than the argument, <code>0</code> if they are
+    equal, or <code>1</code> if <code>self</code> is greater.
+
+    <p>The class then mixes in the <code>Comparable</code> module, which
+    provides <code>#&lt;</code>, <code>#==</code>, and <code>#&gt;</code>
+    methods implemented in terms of <code>#&lt;=&gt;</code>. 
 
   <h3>Type</h3> <!-- Does this belong in Class section -->
     <ol>
@@ -3049,13 +3060,6 @@
       <li><code>eql?</code>
       <li><code>equal?</code>
       <li>Identity
-    </ol>
-    <h2>Comparison</h2>
-    <ol>
-      <li><code>&gt;</code>
-      <li><code>&lt;</code>
-      <li>Spaceship operator: <code>&lt;=&gt;</code>
-      <li><code>Comparable</code>
     </ol>
     <h2>Source Files</h2>
     <ol>
