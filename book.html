@@ -2007,21 +2007,31 @@
 
       <h5>Numerics</h5>
       <!-- Are immediates _instantiated_? -->
-      <p>A consecutive sequence of decimal digits instantiates an
-      <code>Integer</code> representing their decimal value. Specifically, a
-      <code>Fixnum</code> object is returned for numbers small enough to be
-      represented natively; a <code>Bignum</code> otherwise.
 
-      <p>A consecutive sequence of decimal digits instantiates an
-      <code>Integer</code> representing their decimal value. Specifically, a
-      <code>Fixnum</code> object is returned for numbers small enough to be
-      represented natively; a <code>Bignum</code> otherwise.
+        <p>An integer literal consists of one or more consecutive digits.
+        Implementation limits dictate whether its a <code>Fixnum</code> or
+        <code>Bignum</code>, but the distinction can be ignored by treating both
+        as <code>Integer</code>s.
 
-      <p>Two integer literals concatenated with a radix point form a floating
-      point number, represented as a <code>Float</code> object. For example,
-      <code>3.14</code> or <code>42.0</code>.
+        <p>Hexadecimal and octal literals allow integers to be expressed in base
+        sixteen or eight, respectively. A hexadecimal literal begins with
+        <code>0x</code>, and is followed by one or more hex digits (0–9, a–f). An
+        octal literal begins with <code>0o</code>, and is followed by one or more
+        octal digits (0–7). Both forms ignore case and create <code>Integer</code>
+        objects.
 
-      <!-- 0x and friends? -->
+        <p>A floating-point literal consists of two integer literals separated
+        with a period, e.g. <code>3.14</code>. It is of class <code>Float</code>.
+        <!-- Notes on the inacuracy of floats -->
+
+        <p><code>Rational</code> numbers are expressed with the
+        <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
+        constructor. Similarly, <code>Complex(<var>real</var>,
+          <var>imaginary</var>)</code> creates a <code>Complex</code> object.
+
+    <!--        <li>Standard mathematical operations as methods
+            <li><code>/</code> performs integer division
+            <li>to_* -->
 
       <h5>Arrays</h5>
 
@@ -2854,32 +2864,6 @@
     It represents an infinite set of values, therefore a
     <code>TypeError</code> is raised when attempting to iterate over it.
 
-    <h2>Numerics</h2>
-
-    <p>An integer literal consists of one or more consecutive digits.
-    Implementation limits dictate whether its a <code>Fixnum</code> or
-    <code>Bignum</code>, but the distinction can be ignored by treating both
-    as <code>Integer</code>s.
-
-    <p>Hexadecimal and octal literals allow integers to be expressed in base
-    sixteen or eight, respectively. A hexadecimal literal begins with
-    <code>0x</code>, and is followed by one or more hex digits (0–9, a–f). An
-    octal literal begins with <code>0o</code>, and is followed by one or more
-    octal digits (0–7). Both forms ignore case and create <code>Integer</code>
-    objects.
-
-    <p>A floating-point literal consists of two integer literals separated
-    with a period, e.g. <code>3.14</code>. It is of class <code>Float</code>.
-    <!-- Notes on the inacuracy of floats -->
-
-    <p><code>Rational</code> numbers are expressed with the
-    <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
-    constructor. Similarly, <code>Complex(<var>real</var>,
-      <var>imaginary</var>)</code> creates a <code>Complex</code> object.
-
-<!--        <li>Standard mathematical operations as methods
-        <li><code>/</code> performs integer division
-        <li>to_* -->
     <h2>Structs</h2>
       <ol>
         <li>Light-weight classes
