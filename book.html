@@ -9,7 +9,7 @@
   </head>
   <body>
 <h1>Ruby</h1>
-
+<!-- html2text book.html | diction --language en_GB --suggest|less -->
 <h2>Principles</h2>
 
 <ol>
@@ -48,7 +48,7 @@
   <i>superclass</i>. The former inherits the behaviour of the latter, then
   specialises itself by defining additional behaviour. A <code>Mammal</code>
   class may be a superclass of a <code>Dog</code> class because a dog can do
-  everything a mammal can, plus fetch newspapers, etc.
+  everything a mammal can, plus fetch newspapers, etc. <!-- snip etc. -->
   <li><b>Classes are objects</b>.
   <!-- Is this a fundamental? -->
 </ol>
@@ -2352,13 +2352,13 @@
       al.</a>, p 372): if an object responds to the messages it would be sent
     in the course of a computation it constitutes suitable input. The
     yardstick is ability; not class.
-   
+     
     <p>An optimistic method simply assumes that its arguments are suitable;
     allowing them to raise a <code>NoMethodError</code> if sent a message they
     don't understand. This allows for particularly flexible <abbr
       title="Application Programming Interface">API</abbr>s at the cost of
     potentially obscure error messages for nonsensical arguments.
-
+    
       <!--
       def m(a)
         a.roger
@@ -2366,27 +2366,46 @@
         raise ArgumentError
       end
       -->
-
+    
     <p>More typically, the
     <code>Kernel#respond_to?(<var>selector</var>)</code> predicate is used to
     determine the suitability of an object. For instance, a method may raise
     an <code>ArgumentError</code> unless its argument responds to
     <code>:&lt;&lt;</code>.
-
+    
     <p>A refinement on the above is to send an argument the appropriate
     <code>:try_convert</code> message, raising an exception if
     <code>nil</code> is returned. <!-- Think about this more fully. Link with
     .try_convert explanation -->
-
+    
     <!-- Discuss meaning of TypeError -->
+    <!-- Note that "respond to" doesn't necessarily imply the object will
+    accept the arguments its given (mention #understand? idea). -->
+    <!-- Discuss somewhere the concept of selectors having a shared meaning
+    -->
 
   <h3>Instance Variables</h3>
-    <ol>
-      <li>Scope
-      <li>#instance_variables
-      <li>#instance_variable_get
-      <li>#instance_variable_set
-    </ol>
+
+    <p>The state of an object is encapsulated in instance variables, whose
+    values are local to that particular object, hidden <!-- better word? -->
+    from others. An object will not respond to a message selecting one if its
+    instance variables unless a corresponding method has been defined, either
+    explicitly, or implicitly with <code>attr</code> <!-- link to section;
+    clarify the attr _familly_? -->.
+
+    <p>An instance variable is typically defined in an instance method. Its
+    name is an identifier prefixed with a commercial at sign (<code>@</code>).
+    
+    <!-- Use Object# instead of Kernel# ? --> <p>The names of an object’s
+    instance variables are returned as an <code>Array</code> of
+    <code>Symbol</code>s by <code>Kernel#instance_variables</code>. Their
+    values may be retrieved and modified from another object with
+    <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
+    <code>Kernel#instance_variable_set(<var>ivar</var>,
+      <var>value</var>)</code>, respectively, where <var>ivar</var> is the
+    variable’s name as a <code>Symbol</code>, including the <code>@</code>
+    prefix. These methods should be used sparingly as they break
+    encapsulation.
 
   <h3>References / Garbage Collection</h3>
   
@@ -2658,6 +2677,7 @@
   instances of the <code>Integer</code> class. Their data (i.e. their numerical value) differs but
   they behave as any other instance of their class. That is, by their nature as integers both objects
   can be multiplied by another integer, and both are either odd or even, etc.
+  <!-- snip etc. -->
 
   <aside>The term <i>class</i> is roughly analogous to its biological definition where it denotes a
   taxonomic rank, however this analogy does not extend to subclasses. That is, a subclass of a class
@@ -2943,6 +2963,8 @@
     instance, <code>#any?</code> returns <code>true</code> as soon as a single
     element in the collection satisfies the block. 
     
+    <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
+
     <h2>Structs</h2>
       <ol>
         <li>Light-weight classes
