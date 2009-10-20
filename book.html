@@ -2168,16 +2168,37 @@
 
       <h5>Ranges</h5>
 
-      <p>A literal of the form <code><var>start</var>..<var>end</var></code>,
-      where <var>start</var> and <var>end</var> are expressions, instantiates
-      an inclusive <code>Range</code> object representing the period
-      <var>start</var> to <var>end</var>. For example, <code>2..10</code>
-      instantiates a range beginning at 2 and ending at 10. 
-      
-      <p>Similarly, a literal of the form
-      <code><var>start</var>...<var>end</var></code> instantiates an
-      <i>exclusive</i>, i.e. one between <var>start</var> and <var>end</var>
-      excluding <var>end</var>.
+        <p>A <code>Range</code> represents a sequence between two given values.
+        It is either <i>inclusive</i> or <i>exclusive</i>: the former includes the
+        endpoint; the latter does not. For example, 0–9 is a range consisting of
+        all single-digit integers, expressed by specifying the start-point and
+        endpoint.
+
+        <p>A <code>Range</code> literal consists of two values
+        separated by two or three periods: the former range is inclusive;
+        the latter exclusive. For example, <code>'a'...'z'</code> represents
+        letters <i>a</i>–<i>y</i>.
+
+        <p>The start-point and endpoint must be comparable <!-- link --> with
+        <code>#&lt;=&gt;</code>. That is,
+        for a range <code><var>start</var>..<var>end</var></code>,
+        <code><var>start</var> &lt;=&gt; <var>end</var></code> must return -1, 0,
+        or 1. <code>Range#include?(<var>object</var>)</code> allows ranges to be
+        used as intervals: returning <code>true</code> if <var>object</var> is a
+        member; <code>false</code> otherwise.  
+
+        <p>A range is <dfn title="discrete ranges">discrete</dfn> if it begins
+        with a value that responds to <code>#succ</code> by returning the next
+        element of the sequence. It is so called because it represents a finite
+        set of values that can be iterated over with <code>Range#each</code>.
+        Alternatively, <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
+        passes each <var>n</var><sup>th</sup></var> element to the block. As
+        <code>Range</code>s are <code>Enumerable</code>, they can also be converted
+        to an <code>Array</code> with <code>Range#to_a</code>. 
+        
+        <p>A non-discrete range is <dfn title="continuous range">continuous</dfn>.
+        It represents an infinite set of values, therefore a
+        <code>TypeError</code> is raised when attempting to iterate over it.
 
       <h5>Lambdas</h5>
 
@@ -2865,40 +2886,6 @@
     instance, <code>#any?</code> returns <code>true</code> as soon as a single
     element in the collection satisfies the block. 
     
-    <h2>Ranges</h2>
-
-    <p>A <code>Range</code> represents a sequence between two given values.
-    It is either <i>inclusive</i> or <i>exclusive</i>: the former includes the
-    endpoint; the latter does not. For example, 0–9 is a range consisting of
-    all single-digit integers, expressed by specifying the start-point and
-    endpoint.
-
-    <p>A <code>Range</code> literal consists of two values
-    separated by two or three periods: the former range is inclusive;
-    the latter exclusive. For example, <code>'a'...'z'</code> represents
-    letters <i>a</i>–<i>y</i>.
-
-    <p>The start-point and endpoint must be comparable <!-- link --> with
-    <code>#&lt;=&gt;</code>. That is,
-    for a range <code><var>start</var>..<var>end</var></code>,
-    <code><var>start</var> &lt;=&gt; <var>end</var></code> must return -1, 0,
-    or 1. <code>Range#include?(<var>object</var>)</code> allows ranges to be
-    used as intervals: returning <code>true</code> if <var>object</var> is a
-    member; <code>false</code> otherwise.  
-
-    <p>A range is <dfn title="discrete ranges">discrete</dfn> if it begins
-    with a value that responds to <code>#succ</code> by returning the next
-    element of the sequence. It is so called because it represents a finite
-    set of values that can be iterated over with <code>Range#each</code>.
-    Alternatively, <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
-    passes each <var>n</var><sup>th</sup></var> element to the block. As
-    <code>Range</code>s are <code>Enumerable</code>, they can also be converted
-    to an <code>Array</code> with <code>Range#to_a</code>. 
-    
-    <p>A non-discrete range is <dfn title="continuous range">continuous</dfn>.
-    It represents an infinite set of values, therefore a
-    <code>TypeError</code> is raised when attempting to iterate over it.
-
     <h2>Structs</h2>
       <ol>
         <li>Light-weight classes
