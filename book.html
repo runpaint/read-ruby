@@ -2054,11 +2054,64 @@
 
       <h5>Regexps</h5>
 
-      <p>A <code>Regexp</code> is instantiated by delimiting a pattern with
-      solidi (<code>/</code> and </code>\</code>). The reverse solidus may be
-      followed by one or more option letters. For example, <code>/cat/i</code>
-      instantiates a <code>Regexp</code> matching <i>cat</i> in a case-insensitive
-      manner.
+        <p>A <code>Regexp</code> represents a pattern that describes a
+        <code>String</code>. It <i>matches</i> when contained by the former. The
+        literal is of the form
+        <code>/<var>pattern</var>/<var>options</var></code>: a pattern delimited
+        by solidi, followed by zero or more option specifiers.
+
+        <p>The pattern consists of literal characters and meta-characters. A
+        literal character is a non-meta-character; it matches itself. Prefixing a
+        meta-character with a reverse solidus causes it to match literally.
+        <!-- List the meta-characters explicitly? -->>
+
+        <p>A balanced pair of parentheses are meta-characters which group and/or
+        capture the characters they enclose. Grouping allows the enclosed to be
+        treated as an atomic whole such that meta-characters directly following
+        the closing parenthesis act on the whole. Capturing is the extraction of
+        specific parts of the text being matched so it can be referred to later,
+        from within the pattern <!-- Mention backreferences? --> or the
+        surrounding program. Parentheses do not capture if the opening parenthesis
+        is directly followed by <code>?:</code>. Captures can be referred to by
+        name if the opening parenthesis is followed by
+        <code>?&lt;<var>name</var>&gt;</code>.  Alternatively, they can be
+        referred to by number, where the <var>n</var><sup>th</sup> group of
+        parentheses is numbered <var>n</var>.
+
+        <p>A literal character or parenthetical may be followed by a quantifier
+        meta-character which specifies how many consecutive occurrences are
+        required at that point in the pattern. <code>+</code> requires at least
+        one, <code>*</code> zero or more, and
+        <code>{<var>min</var>,<var>max</var>}</code> between <var>min</var> and
+        <var>max</var> times. <!-- Note that one of these can be omitted? -->
+
+        <p>A character class specifies a set of characters, one of which must
+        appear at that point in the pattern, enclosed within a pair of square
+        brackets. The characters are specified literally, one after the other. A
+        range of consecutive characters may be abbreviated with the notation
+        <code><var>start</var>-<var>end</var</code>: the first character in the
+        range separated from the last by a hyphen. Inside a character class the
+        hyphen is therefore a metacharacter, so to be matched literally must
+        appear immediately before the right square bracket.
+        
+        <p>There are pre-defined character classes to match alphabetical
+        characters (<code>[[:alpha:]]</code>), lowercase
+        (<code>[[:lower:]]</code>), uppercase (<code>[[:upper:]]</code>),
+        alphanumerics (<code>[[:alnum:]]</code>), digits
+        (<code>[[:digit:]]</code>), whitespace (<code>[[:space:]]</code>), and
+        punctuation (<code>[[:punct:]]</code>), among others. The period matches
+        any character except newline.
+
+        <p>A vertical line is a meta-character specifying that either the
+        expression to its right, or that to its left, must match. It is usually used
+        inside a parenthetical.
+
+        <p><code>String#match</code> returns a <code>MatchData</code> object if
+        the match succeeded; <code>nil</code> otherwise. <code>MatchData#[]</code>
+        returns the text captured by the capture group given as a
+        <code>Symbol</code>, for a named group, or an <code>Integer</code>.
+
+        <!-- String#gsub? -->
 
       <h5>Ranges</h5>
 
@@ -3146,66 +3199,6 @@
         <li>Loading
       </ol>
     </ol>
-    <h2>Regexps</h2>
-
-    <p>A <code>Regexp</code> represents a pattern that describes a
-    <code>String</code>. It <i>matches</i> when contained by the former. The
-    literal is of the form
-    <code>/<var>pattern</var>/<var>options</var></code>: a pattern delimited
-    by solidi, followed by zero or more option specifiers.
-
-    <p>The pattern consists of literal characters and meta-characters. A
-    literal character is a non-meta-character; it matches itself. Prefixing a
-    meta-character with a reverse solidus causes it to match literally.
-
-    <p>A balanced pair of parentheses are meta-characters which group and/or
-    capture the characters they enclose. Grouping allows the enclosed to be
-    treated as an atomic whole such that meta-characters directly following
-    the closing parenthesis act on the whole. Capturing is the extraction of
-    specific parts of the text being matched so it can be referred to later,
-    from within the pattern <!-- Mention backreferences? --> or the
-    surrounding program. Parentheses do not capture if the opening parenthesis
-    is directly followed by <code>?:</code>. Captures can be referred to by
-    name if the opening parenthesis is followed by
-    <code>?&lt;<var>name</var>&gt;</code>.  Alternatively, they can be
-    referred to by number, where the <var>n</var><sup>th</sup> group of
-    parentheses is numbered <var>n</var>.
-
-    <p>A literal character or parenthetical may be followed by a quantifier
-    meta-character which specifies how many consecutive occurrences are
-    required at that point in the pattern. <code>+</code> requires at least
-    one, <code>*</code> zero or more, and
-    <code>{<var>min</var>,<var>max</var>}</code> between <var>min</var> and
-    <var>max</var> times. <!-- Note that one of these can be omitted? -->
-
-    <p>A character class specifies a set of characters, one of which must
-    appear at that point in the pattern, enclosed within a pair of square
-    brackets. The characters are specified literally, one after the other. A
-    range of consecutive characters may be abbreviated with the notation
-    <code><var>start</var>-<var>end</var</code>: the first character in the
-    range separated from the last by a hyphen. Inside a character class the
-    hyphen is therefore a metacharacter, so to be matched literally must
-    appear immediately before the right square bracket.
-    
-    <p>There are pre-defined character classes to match alphabetical
-    characters (<code>[[:alpha:]]</code>), lowercase
-    (<code>[[:lower:]]</code>), uppercase (<code>[[:upper:]]</code>),
-    alphanumerics (<code>[[:alnum:]]</code>), digits
-    (<code>[[:digit:]]</code>), whitespace (<code>[[:space:]]</code>), and
-    punctuation (<code>[[:punct:]]</code>), among others. The period matches
-    any character except newline.
-
-    <p>A vertical line is a meta-character specifying that either the
-    expression to its right, or that to its left, must match. It is usually used
-    inside a parenthetical.
-
-    <p><code>String#match</code> returns a <code>MatchData</code> object if
-    the match succeeded; <code>nil</code> otherwise. <code>MatchData#[]</code>
-    returns the text captured by the capture group given as a
-    <code>Symbol</code>, for a named group, or an <code>Integer</code>.
-
-    <!-- String#gsub? -->
-
     <h2>Time</h2>
     <h2>Missing Methods</h2>
     <ol>
