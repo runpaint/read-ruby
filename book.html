@@ -2327,12 +2327,58 @@
     methods implemented in terms of <code>#&lt;=&gt;</code>. 
 
   <h3>Type</h3> <!-- Does this belong in Class section -->
-    <ol>
-      <li>Classes are not types
-      <li>is_a?
-      <li>kind_of?
-      <li>Duck typing
-    </ol>
+
+    <p><q>In many object-oriented languages, class names are used…for the type
+      of objects generated from the class.</q> <a class=ref
+      href=#refBRUCE02>Bruce</a> (p 20). <a href=#refKLAS95 class=ref>Klas
+      &amp; Schrefl</a> concur: <q>A class…defines…the type of [its]
+      instances</q> (p 10). Applying this notion to Ruby is problematic
+    because while it is certainly possible for a method to dynamically <i>type
+      check</i> its arguments with the
+    <code>Kernel#is_a?(<var>class</var>)</code> predicate, this approach is
+    both insufficient and unnecessary. 
+
+    <p>It is insufficient because an object’s class is not indicative of its
+    suitability for a specific role. Class-based type checking rests on
+    the premise that all object of a given type will respond to the same
+    messages in the same fashion. However, Ruby’s classes may be modified at
+    will—allowing their methods to be redefined or removed—so two objects of
+    the same class will not necessarily provide the same behaviour. Similarly,
+    methods may be defined on, or removed from, individual objects, again
+    breaking the assumption.
+
+    <p>It is unnecessary because Ruby offers a superior, meritocratic
+    alternative called “duck typing” (<a href=#refTHOM09 class=ref>Thomas et
+      al.</a>, p 372): if an object responds to the messages it would be sent
+    in the course of a computation it constitutes suitable input. The
+    yardstick is ability; not class.
+   
+    <p>An optimistic method simply assumes that its arguments are suitable;
+    allowing them to raise a <code>NoMethodError</code> if sent a message they
+    don't understand. This allows for particularly flexible <abbr
+      title="Application Programming Interface">API</abbr>s at the cost of
+    potentially obscure error messages for nonsensical arguments.
+
+      <!--
+      def m(a)
+        a.roger
+      rescue NoMethodError
+        raise ArgumentError
+      end
+      -->
+
+    <p>More typically, the
+    <code>Kernel#respond_to?(<var>selector</var>)</code> predicate is used to
+    determine the suitability of an object. For instance, a method may raise
+    an <code>ArgumentError</code> unless its argument responds to
+    <code>:&lt;&lt;</code>.
+
+    <p>A refinement on the above is to send an argument the appropriate
+    <code>:try_convert</code> message, raising an exception if
+    <code>nil</code> is returned. <!-- Think about this more fully. Link with
+    .try_convert explanation -->
+
+    <!-- Discuss meaning of TypeError -->
 
   <h3>Instance Variables</h3>
     <ol>
@@ -3206,6 +3252,10 @@
   <dt id=refBROWN09>[BROWN09]</dt>
   <dd><cite><a href=//rubybestpractices.com/>Ruby Best Practices</a></cite>, G. Brown, O'Reilly Media,
   2009.</dd>
+  <dt id=refBRUCE02>[BRUCE02]</dt>
+  <dd><cite><a href=//www.cs.pomona.edu/~kim/FOOLbook.html>Foundations of
+      Object-Oriented Languages: Types and Semantics</a></cite>, K. B. Bruce,
+  The MIT Press, 2002.</dd>
   <dt id=refBUDD87>[BUDD87]</dt>
   <dd><cite>A Little Smalltalk</a></cite>, T. Budd, Addison-Wesley, 1987.</dd>
   <dt id=refFLAN08>[FLAN08]</dt>
