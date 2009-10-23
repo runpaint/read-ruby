@@ -2426,7 +2426,19 @@
     determined by its longest living reference. If an object is intended to be
     temporal, its references must be likewise.
 
+    <!-- GC.start, GC.disable -->
   <h3>BasicObject</h3>
+
+    <p><code>BasicObject</code> is the root of the class hierarchy: from this
+    all other classes ultimately inherit. Its superclass is <code>nil</code>.
+    It defines the bare minimum of methods so as to be a “blank
+    slate”: <q>…useful as the superclass of delegating wrapper classes…</q>
+    (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, p 235). (A
+    thorough explanation of “blank slate” classes in Ruby is found in <a
+      href=#refBROWN09 class=ref>Brown</a>, pp. 57–62).
+
+    <!-- Clarify that by default classes inherit from Object? -->
+    <!-- Note implications of having so few methods? In irb? -->
 
   <h3>Attributes</h3>
     <ol>
