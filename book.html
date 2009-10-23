@@ -1809,12 +1809,15 @@
 
     <h4>Arity</h4>
 
-      <p><code>Method#arity</code> returns an <code>Integer</code> corresponding to the method’s arity. If
-      the method expects a fixed number of arguments, the number of arguments it expects will be returned.
-      If the method expects a variable number of arguments, the additive inverse of its parameter count
-      will be returned. Methods implemented in C, i.e.  most core methods, have an arity of
-      <code>-1</code> if they accept a variable number of parameters. It follows, then, that a return
-      value ≥ 0 indicates a fixed number of parameters; a negative value, a variable number. 
+      <p><code>Method#arity</code> returns an <code>Integer</code>
+      corresponding to the method’s arity. If the method expects a fixed
+      number of arguments, this number will be returned.  If the method
+      expects a variable number of arguments, the additive inverse of its
+      parameter count will be returned. Methods implemented in C, i.e.  most
+      core methods, have an arity of <code>-1</code> if they accept a variable
+      number of parameters. It follows, then, that a return value ≥ 0
+      indicates a fixed number of parameters; a negative value, a variable
+      number. 
 
     <h4>Calling</h4>
 
@@ -2340,7 +2343,7 @@
 
     <p>It is insufficient because an object’s class is not indicative of its
     suitability for a specific role. Class-based type checking rests on
-    the premise that all object of a given type will respond to the same
+    the premise that all objects of a given type will respond to the same
     messages in the same fashion. However, Ruby’s classes may be modified at
     will—allowing their methods to be redefined or removed—so two objects of
     the same class will not necessarily provide the same behaviour. Similarly,
@@ -2398,7 +2401,9 @@
     
     <!-- Use Object# instead of Kernel# ? --> <p>The names of an object’s
     instance variables are returned as an <code>Array</code> of
-    <code>Symbol</code>s by <code>Kernel#instance_variables</code>. Their
+    <code>Symbol</code>s by <code>Kernel#instance_variables</code> in the
+    order they were assigned. <!--
+    http://redmine.ruby-lang.org/issues/show/2243 -->  Their
     values may be retrieved and modified from another object with
     <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
     <code>Kernel#instance_variable_set(<var>ivar</var>,
@@ -2407,8 +2412,20 @@
     prefix. These methods should be used sparingly as they break
     encapsulation.
 
-  <h3>References / Garbage Collection</h3>
-  
+  <h3>References &amp; Garbage Collection</h3>
+
+    <p>Variables store references to objects. Assignment is, therefore, the
+    copying of the reference on the right-hand side to the variable named on
+    the left, leaving both sides referring to the same object. However, a
+    reference may not be dereferenced; it is not a pointer.
+
+    <p>An object is deemed <dfn title="unreachable object">unreachable</dfn>
+    when there are no references to it, or the sources of the remaining
+    references are themselves unreachable. Such objects are subject to garbage
+    collection: automatic destruction by Ruby. The lifetime of an object is
+    determined by its longest living reference. If an object is intended to be
+    temporal, its references must be likewise.
+
   <h3>BasicObject</h3>
 
   <h3>Attributes</h3>
