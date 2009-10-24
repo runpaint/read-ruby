@@ -1762,23 +1762,23 @@
     <!-- TODO: Link with #respond_to_missing? -->
     <!-- TODO: Mention NoMethodError#args and #name -->
 
-  <h3><code>BasicObject#respond_to_missing?</code></h3>
+  <h3><code>Kernel#respond_to_missing?</code></h3>
 
-  <p>A consequence of defining methods dynamically by means of
-  <code>BasicObject#method_missing</code> is that an object may respond to a
-  given message, yet return <code>false</code> for
+  <p>A consequence of defining methods dynamically with
+  <code>Kernel#method_missing</code> is that an object may respond to a given
+  message, yet return <code>false</code> for
   <code>Kernel#respond_to?(<var>selector</var>)</code>.
 
   <p>Before <code>Kernel#respond_to?</code> returns <code>false</code> it
   tries to send itself a message named <code>:respond_to_missing?</code> with
-  the selector in question as the first argument. If
+  a first argument of the selector in question, and the second the value of
+  <var>include_private</var>. (If <code>#respond_to?</code> is called with a
+  second argument of <code>true</code>, <var>include_private</var> is
+  <code>true</code> and private methods should be considered; otherwise its
+  <code>false</code> and they shouldn’t). If
   <code>#respond_to_missing?</code> is defined and returns a true value,
   <code>#respond_to?</code> returns <code>true</code>; otherwise
   <code>#respond_to?</code> returns <code>false</code>. 
-
-  <p>By default <code>#respond_to_missing?</code> excludes private methods
-  from its search. If sent with a second argument of <code>true</code>,
-  private methods should be considered. 
 
   <p>Therefore, <code>#respond_to?</code> can be made to work with methods
   defined with <code>method_missing</code> by defining a
@@ -2328,6 +2328,9 @@
     <p>The class then mixes in the <code>Comparable</code> module, which
     provides <code>#&lt;</code>, <code>#==</code>, and <code>#&gt;</code>
     methods implemented in terms of <code>#&lt;=&gt;</code>. 
+    
+    <!-- http://redmine.ruby-lang.org/repositories/diff/ruby-19/object.c?rev=25453
+    -->
 
   <h3>Type</h3> <!-- Does this belong in Class section -->
 
@@ -2474,7 +2477,7 @@
       
     <p>Objects that shouldn’t be duplicated can privatise their
     <code>#dup</code> method or define it to raise an informative exception
-    (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp 243–245).
+    (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 243–245).
 
   <h3>Cloning</h3>
   
@@ -2482,7 +2485,7 @@
     it also copies singleton methods and frozen state. Therefore, cloning
     creates a more faithful copy of the receiver than duplication.
 
-  <h3>Freezing</h3>
+    <h3>Freezing</h3> <!-- <h3>Mutability</h3> ? -->
     
     <p><code>Object#freeze</code> makes the receiver immutable: attempts to
     change its state elicit a <code>RuntimeError</code>. The
