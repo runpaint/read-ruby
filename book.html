@@ -2463,7 +2463,7 @@
     object was, then populated with shallow copies of the receiver’s instance
     variables. Neither singleton methods nor frozen state are duplicated.
     Corresponding instance variables will refer to the same object because
-    they are copied by reference.
+    they are copied by reference; not referent.
 
     <p>If the duplicated object responds to <code>:initialize_copy</code>, it
     will be sent this message with the receiver as an argument. Its return
@@ -2477,7 +2477,10 @@
     (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp 243–245).
 
   <h3>Cloning</h3>
-    <!-- Object#clone -->
+  
+    <p><code>Object#clone</code> behaves like <code>Object#dup</code> except
+    it also copies singleton methods and frozen state. Therefore, cloning
+    creates a more faithful copy of the receiver than duplication.
 
   <h3>Freezing / Mutability</h3>
     <ol>
