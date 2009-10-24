@@ -2412,6 +2412,19 @@
     prefix. These methods should be used sparingly as they break
     encapsulation.
 
+  <h3>Attributes</h3>
+    
+    <p>An attribute, <var>a</var>, is a pair <!-- F&M p 95 --> of public
+    methods—an accessor (<var>a</var>) and a writer (<var>a=</var>)—exposing a
+    property of an object’s state to other objects. They can be created
+    automatically by supplying their names to <code>Module#attr_accessor</code>
+    or <code>Module#attr_writer</code> inside a class definition. This assumes,
+    as is typical, that an attribute corresponds to an instance variable of the
+    same name, i.e. <var>a</var> returns <var>@a</var>; <var>a=</var> sets
+    <var>@a</var>. If the attribute value is not backed by an instance variable,
+    it should be exposed in the same way (<a href=#refMEYER00
+      class=ref>Meyer</a>, pp. 55–57) by defining the methods manually. 
+
   <h3>References &amp; Garbage Collection</h3>
 
     <p>Variables store references to objects. Assignment is, therefore, the
@@ -3317,6 +3330,9 @@
       Pragmatic Programmers’ Guide</a></cite>, D. Thomas, et al., The Pragmatic Bookshelf, 2009.</dd>
   <dt id=refLIU99>[LIU99]</dt>
   <dd><cite>Smalltalk, Objects, and Design</cite>, C. Liu, ToExcel, 1999.</dd>
+  <dt id=refMEYER00>[MEYER00]</dt>
+  <dd><cite>Object-oriented Software Construction, 2<sup>nd</sup> ed.</cite>,
+  B. Meyer, Prentice Hall, 2000.</dd>
   <dt id=refMITCHELL04>[MITCHELL04]</dt>
   <dd><cite>Concepts in Programming Languages</cite>, J. C. Mitchell, Cambridge University Press, 2004.</dd>
   <dt id=refKLAS95>[KLAS95]</dt>
