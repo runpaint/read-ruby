@@ -2482,11 +2482,22 @@
     it also copies singleton methods and frozen state. Therefore, cloning
     creates a more faithful copy of the receiver than duplication.
 
-  <h3>Freezing / Mutability</h3>
-    <ol>
-      <li>No 'thaw'
-      <li>Acts on objects; not variables
-    </ol>
+  <h3>Freezing</h3>
+    
+    <p><code>Object#freeze</code> makes the receiver immutable: attempts to
+    change its state elicit a <code>RuntimeError</code>. The
+    <code>Object#frozen?</code> predicate returns <code>true</code> if the
+    receiver is frozen. There is not a <code>#thaw</code> method, so this
+    operation is not reversible. However, duplicating an object <!-- link #dup
+    --> removes its frozen state.
+
+    <aside class=note>
+      Freezing works on objects not variables, so it is permissible to assign
+      a new value to a “frozen variable”. <!-- explain why we're saying this?
+      -->
+    </aside> 
+  
+    <!-- Note that immediates can be frozen...; link to my bug report -->
 
   <h3>Marshaling</h3>
     <h4>marshal_dump</h4>
