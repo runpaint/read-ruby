@@ -2427,6 +2427,7 @@
     same way (<a href=#refMEYER00 class=ref>Meyer</a>, pp. 55–57) by defining
     the methods manually. 
 
+    <!-- Module#attr ? -->
   <h3>References &amp; Garbage Collection</h3>
 
     <p>Variables store references to objects. Assignment is, therefore, the
@@ -2455,18 +2456,25 @@
     <!-- Clarify that by default classes inherit from Object? -->
     <!-- Note implications of having so few methods? In irb? -->
 
-  <h3>Attributes</h3>
-    <ol>
-      <li>attr
-      <li>attr_writer
-      <li>attr_reader
-    </ol>
+  <h3>Duplication</h3>
 
-  <h3>Copying</h3>
-    <ol>
-      <li>Object#dup
-      <li>initialize_copy
-    </ol>
+    <p><code>Object#dup</code> performs a shallow copy of the receiver. A new
+    instance of the receiver’s class is allocated, tainted if the original
+    object was, then populated with shallow copies of the receiver’s instance
+    variables. Neither singleton methods nor frozen state are duplicated.
+    Corresponding instance variables will refer to the same object because
+    they are copied by reference.
+
+    <p>If the duplicated object responds to <code>:initialize_copy</code>, it
+    will be sent this message with the receiver as an argument. Its return
+    value is ignored. A common use is to perform a deep copy of instance
+    variables by explicitly duplicating them. If an object may only be
+    duplicated under certain circumstances, <code>#initialize_copy</code> may
+    choose to raise an exception.
+      
+    <p>Objects that shouldn’t be duplicated can privatise their
+    <code>#dup</code> method or define it to raise an informative exception
+    (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp 243–245).
 
   <h3>Cloning</h3>
     <!-- Object#clone -->
