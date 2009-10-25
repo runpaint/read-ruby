@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!-- vim: set fdm=indent tw=78: --> 
+<html>
+  <head>
+    <title>Classes</title>
+    <meta charset="utf-8"/>
+    <!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
+    <script src="http://html5-now.appspot.com/html5-now.js"></script>
+    -->
+  </head>
+  <body>
+<h2>Classes</h2>
+
+  <p>We have introduced classes as templates from which objects can be
+  created. A class is typically created with the <code>class</code>
+  keyword followed by the class name.
+
+  <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It constitutes a template from
+  which such objects can be constructed. Hence <code>3</code> and <code>198705</code> are both
+  instances of the <code>Integer</code> class. Their data (i.e. their numerical value) differs but
+  they behave as any other instance of their class. That is, by their nature as integers both objects
+  can be multiplied by another integer, and both are either odd or even, etc.
+  <!-- snip etc. -->
+
+  <aside>The term <i>class</i> is roughly analogous to its biological definition where it denotes a
+  taxonomic rank, however this analogy does not extend to subclasses. That is, a subclass of a class
+  is termed a <i>subclass</i>; not an <i>order</i>.</aside>
+
+  <figure id=class-keyword>
+  <dt>Usage of the <code>class</code> keyword to <i>open</i> a class named
+  <code>Dog</code></dt>
+  <dd>
+    <pre><code>
+    class Dog
+    end
+    </code></pre>
+  </dd>
+  </figure>
+
+  <p>The <code>Class.new</code> constructor may be used to the same effect
+  if it is assigned to a constant. <!-- Describe use of Class.new to
+  dynamically create a class with a given superclass -->
+
+  <figure id=class-new>
+  <dt>Usage of the <code>Class.new</code> constructor to create a class
+  named <code>Dog</code></dt>
+  <dd>
+    <pre><code>
+    Dog = Class.new
+    </code></pre>
+  </dd>
+  </figure>
+
+  <!-- Superclass can't be changed once set. (The old class can be deleted and
+  redefined, of course) -->
+  <h3>Names</h3>
+
+  <h4>Rules</h4>
+
+  <p>The name of class must: 
+    <ul>
+      <li>Begin with an uppercase ASCII letter (A-Z) (U+0041..U+005A).
+      <li>Not contain a colon (U+003A).
+      <li>Not contain an ASCII space character (U+0020)
+    </ul>
+    <!-- FIXME: Derive and enumerate rules -->
+
+  <p>More generally, a class name consists of an uppercase ASCII character, optionally followed by a
+  sequence of other alphanumeric characters
+
+  <aside class=warning>
+    Class names containing non-ASCII characters cannot be referred to from source files using a
+    different encoding. For example, a class name containing character U+03BB (<i>GREEK SMALL LETTER
+      LAMDA</i>) can only be referenced from source files using the UTF-8 source encoding. <!-- FIXME:
+    What about other Unicode character sets? -->
+   </aside>
+
+  <h4>Conventions</h4>
+
+  <p>Conventionally class names use camel-case capitalization: The initial letter of each word is
+  capitalized, and spaces between the words are removed. For example:
+  <code>RubyProgrammingLanguage</code> or <code>NutsAndBolts</code>.</p>
+
+  <p>A class name is a constant. The use of camel-case for class names and uppercase for constant
+  names ensures that the two don't clash.
+
+  <h3>Reopening Classes</h3>
+
+  <p>If <code>class</code> is used with the name of a pre-existing class that class is
+  <i>re-opened</i>. If a method is defined in a re-opened class with the same name as a pre-existing
+  method in the same class the old method is overwritten with the new.
+
+  <figure id=reopened-class>
+    <dt>Re-defining a method in an existing class</dt>
+    <dd>
+      <pre><code>
+        'hello'.size #=&gt; 5
+        class String
+          def size
+            'How long is a piece of string?'
+          end
+        end
+        'hello'.size #=&gt; 'How long is a piece of string?'
+      </code></pre>
+    </dd>
+  </figure>  
+
+  <h3>Anonymous Classes</h3>
+
+  <p>When a constant is used as a class name it has global scope. This gives rise to the
+  characteristic described above in <i>Reopening
+    Classes</i>. If this behaviour is not desirable, a class can be made anonymous by assigning the
+  value of <code>Class.new</code> to a local variable, thus restricting the class to the local scope.
+
+  <figure id=anonymous-class>
+  <dt>Creating an anonymous class with <code>Class.new</code></dt>
+    <dd>
+      <pre><code>
+        dog = Class.new
+        dog.class_eval do
+          def bark
+            :woof
+          end
+        end
+        dog.new.bark #=&gt; :woof
+      </code></pre>
+    </dd>
+  </figure>
+
+  <h3>Context</h3>
+  <!-- class_eval / class_exec -->
+  <h3>Type</h3> 
+
+    <p><q>In many object-oriented languages, class names are used…for the type
+      of objects generated from the class.</q> <a class=ref
+      href=#refBRUCE02>Bruce</a> (p 20). <a href=#refKLAS95 class=ref>Klas
+      &amp; Schrefl</a> concur: <q>A class…defines…the type of [its]
+      instances</q> (p 10). Applying this notion to Ruby is problematic
+    because while it is certainly possible for a method to dynamically <i>type
+      check</i> its arguments with the
+    <code>Kernel#is_a?(<var>class</var>)</code> predicate, this approach is
+    both insufficient and unnecessary. 
+
+    <p>It is insufficient because an object’s class is not indicative of its
+    suitability for a specific role. Class-based type checking rests on
+    the premise that all objects of a given type will respond to the same
+    messages in the same fashion. However, Ruby’s classes may be modified at
+    will—allowing their methods to be redefined or removed—so two objects of
+    the same class will not necessarily provide the same behaviour. Similarly,
+    methods may be defined on, or removed from, individual objects, again
+    breaking the assumption.
+
+    <p>It is unnecessary because Ruby offers a superior, meritocratic
+    alternative called “duck typing” (<a href=#refTHOM09 class=ref>Thomas et
+      al.</a>, p 372): if an object responds to the messages it would be sent
+    in the course of a computation it constitutes suitable input. The
+    yardstick is ability; not class.
+     
+    <p>An optimistic method simply assumes that its arguments are suitable;
+    allowing them to raise a <code>NoMethodError</code> if sent a message they
+    don't understand. This allows for particularly flexible <abbr
+      title="Application Programming Interface">API</abbr>s at the cost of
+    potentially obscure error messages for nonsensical arguments.
+    
+      <!--
+      def m(a)
+        a.roger
+      rescue NoMethodError
+        raise ArgumentError
+      end
+      -->
+    
+    <p>More typically, the
+    <code>Kernel#respond_to?(<var>selector</var>)</code> predicate is used to
+    determine the suitability of an object. For instance, a method may raise
+    an <code>ArgumentError</code> unless its argument responds to
+    <code>:&lt;&lt;</code>.
+    
+    <p>A refinement on the above is to send an argument the appropriate
+    <code>:try_convert</code> message, raising an exception if
+    <code>nil</code> is returned. <!-- Think about this more fully. Link with
+    .try_convert explanation -->
+    
+    <!-- Discuss meaning of TypeError -->
+    <!-- Note that "respond to" doesn't necessarily imply the object will
+    accept the arguments its given (mention #understand? idea). -->
+    <!-- Discuss somewhere the concept of selectors having a shared meaning
+    -->
+  </body>
+</html>
