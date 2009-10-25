@@ -1980,12 +1980,12 @@
   and behaviour relevant to that data.
 
   <h3>Instantiation</h3>
-  <!-- There are 3½ ways to instantiate an object...-->
+    <!-- There are 3½ ways to instantiate an object...-->
     <p>An object is instantiated by either sending an appropriate message to
     an existing object or using a <i>literal</i>. 
     
     <!-- Marshal.load also creates an object -->
-
+    
     <aside>
       <p>This may seem to imply that, ultimately, all objects are instantiated
       by means of literals, because a message cannot be sent to an object
@@ -2379,105 +2379,66 @@
     <!-- http://redmine.ruby-lang.org/repositories/diff/ruby-19/object.c?rev=25453
     -->
 
-  <h3>Type</h3> <!-- Does this belong in Class section -->
+  <h3>State</h3>
+    <h4>Instance Variables</h4>
 
-    <p><q>In many object-oriented languages, class names are used…for the type
-      of objects generated from the class.</q> <a class=ref
-      href=#refBRUCE02>Bruce</a> (p 20). <a href=#refKLAS95 class=ref>Klas
-      &amp; Schrefl</a> concur: <q>A class…defines…the type of [its]
-      instances</q> (p 10). Applying this notion to Ruby is problematic
-    because while it is certainly possible for a method to dynamically <i>type
-      check</i> its arguments with the
-    <code>Kernel#is_a?(<var>class</var>)</code> predicate, this approach is
-    both insufficient and unnecessary. 
+      <p>The state of an object is encapsulated in instance variables, whose
+      values are local to that particular object, hidden <!-- better word? -->
+      from others. An object will not respond to a message selecting one if its
+      instance variables unless a corresponding method has been defined, either
+      explicitly, or implicitly with <code>attr</code> <!-- link to section;
+      clarify the attr _familly_? -->.
 
-    <p>It is insufficient because an object’s class is not indicative of its
-    suitability for a specific role. Class-based type checking rests on
-    the premise that all objects of a given type will respond to the same
-    messages in the same fashion. However, Ruby’s classes may be modified at
-    will—allowing their methods to be redefined or removed—so two objects of
-    the same class will not necessarily provide the same behaviour. Similarly,
-    methods may be defined on, or removed from, individual objects, again
-    breaking the assumption.
+      <p>An instance variable is typically defined in an instance method. Its
+      name is an identifier prefixed with a commercial at sign (<code>@</code>).
+      
+      <!-- Use Object# instead of Kernel# ? --> <p>The names of an object’s
+      instance variables are returned as an <code>Array</code> of
+      <code>Symbol</code>s by <code>Kernel#instance_variables</code> in the
+      order they were assigned. <!--
+      http://redmine.ruby-lang.org/issues/show/2243 -->  Their
+      values may be retrieved and modified from another object with
+      <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
+      <code>Kernel#instance_variable_set(<var>ivar</var>,
+        <var>value</var>)</code>, respectively, where <var>ivar</var> is the
+      variable’s name as a <code>Symbol</code>, including the <code>@</code>
+      prefix. These methods should be used sparingly as they break
+      encapsulation.
 
-    <p>It is unnecessary because Ruby offers a superior, meritocratic
-    alternative called “duck typing” (<a href=#refTHOM09 class=ref>Thomas et
-      al.</a>, p 372): if an object responds to the messages it would be sent
-    in the course of a computation it constitutes suitable input. The
-    yardstick is ability; not class.
-     
-    <p>An optimistic method simply assumes that its arguments are suitable;
-    allowing them to raise a <code>NoMethodError</code> if sent a message they
-    don't understand. This allows for particularly flexible <abbr
-      title="Application Programming Interface">API</abbr>s at the cost of
-    potentially obscure error messages for nonsensical arguments.
-    
-      <!--
-      def m(a)
-        a.roger
-      rescue NoMethodError
-        raise ArgumentError
-      end
-      -->
-    
-    <p>More typically, the
-    <code>Kernel#respond_to?(<var>selector</var>)</code> predicate is used to
-    determine the suitability of an object. For instance, a method may raise
-    an <code>ArgumentError</code> unless its argument responds to
-    <code>:&lt;&lt;</code>.
-    
-    <p>A refinement on the above is to send an argument the appropriate
-    <code>:try_convert</code> message, raising an exception if
-    <code>nil</code> is returned. <!-- Think about this more fully. Link with
-    .try_convert explanation -->
-    
-    <!-- Discuss meaning of TypeError -->
-    <!-- Note that "respond to" doesn't necessarily imply the object will
-    accept the arguments its given (mention #understand? idea). -->
-    <!-- Discuss somewhere the concept of selectors having a shared meaning
-    -->
+    <h4>Attributes</h4>
+        
+      <p>An attribute, <var>a</var>, is a pair (<a class=ref
+        href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 94–95) of public
+      methods—an accessor (<var>a</var>) and a writer (<var>a=</var>)—exposing a
+      property of an object’s state to other objects. They can be created
+      automatically by supplying their names to
+      <code>Module#attr_accessor</code> or <code>Module#attr_writer</code>
+      inside a class definition. This assumes, as is typical, that an attribute
+      corresponds to an instance variable of the same name, i.e. <var>a</var>
+      returns <var>@a</var>; <var>a=</var> sets <var>@a</var>. If the attribute
+      value is not backed by an instance variable, it should be exposed in the
+      same way (<a href=#refMEYER00 class=ref>Meyer</a>, pp. 55–57) by defining
+      the methods manually. 
+      
+      <!-- Module#attr ? -->
+  
+    <h4>Mutability</h4>
+      
+      <p><code>Object#freeze</code> makes the receiver immutable: attempts to
+      change its state elicit a <code>RuntimeError</code>. The
+      <code>Object#frozen?</code> predicate returns <code>true</code> if the
+      receiver is frozen. There is not a <code>#thaw</code> method, so this
+      operation is not reversible. However, duplicating an object <!-- link #dup
+      --> removes its frozen state.
+      
+      <aside class=note>
+        Freezing works on objects not variables, so it is permissible to assign
+        a new value to a “frozen variable”. <!-- explain why we're saying this?
+        -->
+      </aside> 
+      
+      <!-- Note that immediates can be frozen...; link to my bug report -->
 
-  <h3>Instance Variables</h3>
-
-    <p>The state of an object is encapsulated in instance variables, whose
-    values are local to that particular object, hidden <!-- better word? -->
-    from others. An object will not respond to a message selecting one if its
-    instance variables unless a corresponding method has been defined, either
-    explicitly, or implicitly with <code>attr</code> <!-- link to section;
-    clarify the attr _familly_? -->.
-
-    <p>An instance variable is typically defined in an instance method. Its
-    name is an identifier prefixed with a commercial at sign (<code>@</code>).
-    
-    <!-- Use Object# instead of Kernel# ? --> <p>The names of an object’s
-    instance variables are returned as an <code>Array</code> of
-    <code>Symbol</code>s by <code>Kernel#instance_variables</code> in the
-    order they were assigned. <!--
-    http://redmine.ruby-lang.org/issues/show/2243 -->  Their
-    values may be retrieved and modified from another object with
-    <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
-    <code>Kernel#instance_variable_set(<var>ivar</var>,
-      <var>value</var>)</code>, respectively, where <var>ivar</var> is the
-    variable’s name as a <code>Symbol</code>, including the <code>@</code>
-    prefix. These methods should be used sparingly as they break
-    encapsulation.
-
-  <h3>Attributes</h3>
-    
-    <p>An attribute, <var>a</var>, is a pair (<a class=ref
-      href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 94–95) of public
-    methods—an accessor (<var>a</var>) and a writer (<var>a=</var>)—exposing a
-    property of an object’s state to other objects. They can be created
-    automatically by supplying their names to
-    <code>Module#attr_accessor</code> or <code>Module#attr_writer</code>
-    inside a class definition. This assumes, as is typical, that an attribute
-    corresponds to an instance variable of the same name, i.e. <var>a</var>
-    returns <var>@a</var>; <var>a=</var> sets <var>@a</var>. If the attribute
-    value is not backed by an instance variable, it should be exposed in the
-    same way (<a href=#refMEYER00 class=ref>Meyer</a>, pp. 55–57) by defining
-    the methods manually. 
-
-    <!-- Module#attr ? -->
   <h3>References &amp; Garbage Collection</h3>
 
     <p>Variables store references to objects. Assignment is, therefore, the
@@ -2538,23 +2499,6 @@
     it also copies singleton methods and frozen state. Therefore, cloning
     creates a more faithful copy of the receiver than duplication.
 
-  <h3>Freezing</h3> <!-- <h3>Mutability</h3> ? -->
-    
-    <p><code>Object#freeze</code> makes the receiver immutable: attempts to
-    change its state elicit a <code>RuntimeError</code>. The
-    <code>Object#frozen?</code> predicate returns <code>true</code> if the
-    receiver is frozen. There is not a <code>#thaw</code> method, so this
-    operation is not reversible. However, duplicating an object <!-- link #dup
-    --> removes its frozen state.
-
-    <aside class=note>
-      Freezing works on objects not variables, so it is permissible to assign
-      a new value to a “frozen variable”. <!-- explain why we're saying this?
-      -->
-    </aside> 
-  
-    <!-- Note that immediates can be frozen...; link to my bug report -->
-
   <h3>Marshaling</h3>
     
     <p>An object may be serialized as a binary <code>String</code> by
@@ -2607,11 +2551,11 @@
     predicate returns <code>true</code> when the receiver is not trusted;
     <code>false</code> otherwise.
 
-  <h3>Defining Methods On</h3>
+    <h3>Defining Methods On</h3> <!-- Behaviour -->
 
-  <h3>Listing Methods</h3>
+  <h3>Listing Methods</h3> <!-- Interrogating? -->
 
-  <h3>Extending</h3>
+  <h3>Extending</h3> <!-- In Modules? -->
 
   <h3>ObjectSpace</h3>
   <!-- [ruby-core:19600] -->
@@ -2949,6 +2893,63 @@
     </dd>
   </figure>
 
+  <h3>Type</h3> 
+
+    <p><q>In many object-oriented languages, class names are used…for the type
+      of objects generated from the class.</q> <a class=ref
+      href=#refBRUCE02>Bruce</a> (p 20). <a href=#refKLAS95 class=ref>Klas
+      &amp; Schrefl</a> concur: <q>A class…defines…the type of [its]
+      instances</q> (p 10). Applying this notion to Ruby is problematic
+    because while it is certainly possible for a method to dynamically <i>type
+      check</i> its arguments with the
+    <code>Kernel#is_a?(<var>class</var>)</code> predicate, this approach is
+    both insufficient and unnecessary. 
+
+    <p>It is insufficient because an object’s class is not indicative of its
+    suitability for a specific role. Class-based type checking rests on
+    the premise that all objects of a given type will respond to the same
+    messages in the same fashion. However, Ruby’s classes may be modified at
+    will—allowing their methods to be redefined or removed—so two objects of
+    the same class will not necessarily provide the same behaviour. Similarly,
+    methods may be defined on, or removed from, individual objects, again
+    breaking the assumption.
+
+    <p>It is unnecessary because Ruby offers a superior, meritocratic
+    alternative called “duck typing” (<a href=#refTHOM09 class=ref>Thomas et
+      al.</a>, p 372): if an object responds to the messages it would be sent
+    in the course of a computation it constitutes suitable input. The
+    yardstick is ability; not class.
+     
+    <p>An optimistic method simply assumes that its arguments are suitable;
+    allowing them to raise a <code>NoMethodError</code> if sent a message they
+    don't understand. This allows for particularly flexible <abbr
+      title="Application Programming Interface">API</abbr>s at the cost of
+    potentially obscure error messages for nonsensical arguments.
+    
+      <!--
+      def m(a)
+        a.roger
+      rescue NoMethodError
+        raise ArgumentError
+      end
+      -->
+    
+    <p>More typically, the
+    <code>Kernel#respond_to?(<var>selector</var>)</code> predicate is used to
+    determine the suitability of an object. For instance, a method may raise
+    an <code>ArgumentError</code> unless its argument responds to
+    <code>:&lt;&lt;</code>.
+    
+    <p>A refinement on the above is to send an argument the appropriate
+    <code>:try_convert</code> message, raising an exception if
+    <code>nil</code> is returned. <!-- Think about this more fully. Link with
+    .try_convert explanation -->
+    
+    <!-- Discuss meaning of TypeError -->
+    <!-- Note that "respond to" doesn't necessarily imply the object will
+    accept the arguments its given (mention #understand? idea). -->
+    <!-- Discuss somewhere the concept of selectors having a shared meaning
+    -->
     <h2>Messages</h2>
       <p>A message is a <q>request for an object to perform some operation</q>
       (<a href=#refBUDD87 class=ref>Budd</a>, p. 6). It consists of <q>a
