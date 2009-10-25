@@ -2324,60 +2324,64 @@
 
     <!-- Hash#compare_by_identity -->
 
-  <h3>Equality</h3>      
-  
-    <p>The means by which objects are compared for equality depend on the type
-    of equality desired.
+  <h3>Relations</h3>
+    <!-- Explain that as relational operators are method calls the LHS gets to
+    evaluate the relation -->
+    <h4>Order</h4>
+          
+      <p>If instances of a class suggest an ordering relationship such that one
+      instance is either less than, greater than, or equal to, another, they are
+      said to be <dfn title="comparable class">comparable</dfn>. The class can
+      define a method named <code>&lt;=&gt;</code> (the <dfn title="spaceship
+        operator">spaceship operator</dfn>) expecting a single argument and
+      following the <tt>qsort(3)</tt> convention of returning <code>-1</code> if
+      <code>self</code> is less than the argument, <code>0</code> if they are
+      equal, or <code>1</code> if <code>self</code> is greater.
 
-    <p><code>Object#equal?</code> considers the receiver equal to the argument
-    if the two objects are identical, i.e. their object IDs are equal. For
-    example, <code>[].equal?([]) == false</code>. Classes are discouraged from
-    overriding this method, so its semantics should not change.
-
-    <p><code>Object#==</code> is an alias of <code>Object#equal?</code>, but
-    <i>is</i> normally overridden in subclasses to denote <i>logical</i>
-    equivalence. For example, <code>Array#==</code> regards two
-    <code>Array</code> objects equal if they contain the same number of
-    elements and each element is <code>==</code> to its corresponding element.
-    So, <code>[O.new] == [O.new]</code> is <code>true</code> if <code>O.new ==
-      O.new</code>.
-
-    <p><code>Object#!=</code> returns the inverse of <code>Object#==</code>,
-    so it does not normally need to be defined explicitly. It can be, however.
-
-    <p><code>Object#eql?</code> is also an alias of <code>Object#equal?</code>
-    that subclasses often override. It differs from <code>Object#==</code> in
-    that it denotes <i>strict</i> logical comparison without performing type
-    conversion. For example, consider 1 and 1.0. The two are logically
-    equivalent if converted to the same class, so <code>1 == 1.0</code>.
-    However, <code>1.eql?(1.0) == false</code> because
-    <code>Object#eql?</code> does not perform type conversion.
-
-    <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (pp. 77–78)
-    state that <q>If two objects are <code>eql?</code>, their
-      <code>hash</code> methods must also return the same value.</q>, going on
-    to recommend that classes implement <code>#eql?</code> in terms of
-    <code>#hash</code>.
-
-    <!-- Cover === and =~ ? -->
-
-  <h3>Comparison</h3>
+      <p>The class then mixes in the <code>Comparable</code> module, which
+      provides <code>#&lt;</code>, <code>#==</code>, and <code>#&gt;</code>
+      methods implemented in terms of <code>#&lt;=&gt;</code>. 
+      
+      <!-- http://redmine.ruby-lang.org/repositories/diff/ruby-19/object.c?rev=25453
+      -->
     
-    <p>If instances of a class suggest an ordering relationship such that one
-    instance is either less than, greater than, or equal to, another, they are
-    said to be <dfn title="comparable class">comparable</dfn>. The class can
-    define a method named <code>&lt;=&gt;</code> (the <dfn title="spaceship
-      operator">spaceship operator</dfn>) expecting a single argument and
-    following the <tt>qsort(3)</tt> convention of returning <code>-1</code> if
-    <code>self</code> is less than the argument, <code>0</code> if they are
-    equal, or <code>1</code> if <code>self</code> is greater.
+    <h4>Equivalence</h4>
 
-    <p>The class then mixes in the <code>Comparable</code> module, which
-    provides <code>#&lt;</code>, <code>#==</code>, and <code>#&gt;</code>
-    methods implemented in terms of <code>#&lt;=&gt;</code>. 
-    
-    <!-- http://redmine.ruby-lang.org/repositories/diff/ruby-19/object.c?rev=25453
-    -->
+      <!-- Link with Comparison section: <=> defines == --> 
+      <p>The means by which objects are compared for equality depend on the type
+      of equality desired.
+      
+      <p><code>Object#equal?</code> considers the receiver equal to the argument
+      if the two objects are identical, i.e. their object IDs are equal. For
+      example, <code>[].equal?([]) == false</code>. Classes are discouraged from
+      overriding this method, so its semantics should not change.
+      
+      <p><code>Object#==</code> is an alias of <code>Object#equal?</code>, but
+      <i>is</i> normally overridden in subclasses to denote <i>logical</i>
+      equivalence. For example, <code>Array#==</code> regards two
+      <code>Array</code> objects equal if they contain the same number of
+      elements and each element is <code>==</code> to its corresponding element.
+      So, <code>[O.new] == [O.new]</code> is <code>true</code> if <code>O.new ==
+        O.new</code>.
+      
+      <p><code>Object#!=</code> returns the inverse of <code>Object#==</code>,
+      so it does not normally need to be defined explicitly. It can be, however.
+      
+      <p><code>Object#eql?</code> is also an alias of <code>Object#equal?</code>
+      that subclasses often override. It differs from <code>Object#==</code> in
+      that it denotes <i>strict</i> logical comparison without performing type
+      conversion. For example, consider 1 and 1.0. The two are logically
+      equivalent if converted to the same class, so <code>1 == 1.0</code>.
+      However, <code>1.eql?(1.0) == false</code> because
+      <code>Object#eql?</code> does not perform type conversion.
+      
+      <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (pp. 77–78)
+      state that <q>If two objects are <code>eql?</code>, their
+        <code>hash</code> methods must also return the same value.</q>, going on
+      to recommend that classes implement <code>#eql?</code> in terms of
+      <code>#hash</code>.
+      
+      <!-- Cover === and =~ ? -->
 
   <h3>State</h3>
     <h4>Instance Variables</h4>
