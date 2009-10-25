@@ -9,7 +9,8 @@
     -->
   </head>
   <body>
-  <h2>Objects</h2>
+  
+<h1>Objects</h1>
 
   <!-- Discuss immediate values: objects can be constructed via message
   sending (constructors), which may be instance or singleton methods, or via
@@ -23,7 +24,7 @@
   respectively. They constitute data (<q>hello</q> and <q>3</q>, respectively)
   and behaviour relevant to that data.
 
-  <h3>Instantiation</h3>
+  <h2>Instantiation</h2>
     <!-- There are 3½ ways to instantiate an object...-->
     <p>An object is instantiated by either sending an appropriate message to
     an existing object or using a <i>literal</i>. 
@@ -37,14 +38,14 @@
       always exist. They come into being with the Ruby interpreter. 
     </aside>
 
-    <h4>Literals</h4>
+    <h3>Literals</h3>
 
-    <p>A <dfn title=literal>literal</dfn> is a syntactical shortcut for the
-    instantiation of a particular core object.
-
+    <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
+    for the instantiation of a particular core object.
+      <!-- Doesn’t call initialize; Performance pips pedagogy -->
       <!-- Cover block literals? -->
 
-      <h5>Strings</h5>
+      <h4>Strings</h4>
 
         <p><code>String</code>s are mutable sequences of characters with an
         associated encoding.
@@ -80,7 +81,7 @@
         character with <code>String#chars</code>, or line with
         <code>String#lines</code>.
 
-      <h5>Symbols</h5>
+      <h4>Symbols</h4>
 
         <p>A <code>Symbol</code> represents a name. <code>Symbol</code>s are
         immutable immediates. Two symbols with the same content will always be
@@ -99,7 +100,7 @@
         <code>:roland_barthes</code> or <code>:'887'</code>.
         <!-- #to_sym -->
 
-      <h5>Numerics</h5>
+      <h4>Numerics</h4>
       <!-- Are immediates _instantiated_? -->
 
         <p>An integer literal consists of one or more consecutive digits.
@@ -127,7 +128,7 @@
               <li><code>/</code> performs integer division
               <li>to_* -->
 
-      <h5>Arrays</h5>
+      <h4>Arrays</h4>
       
         <!-- Mention #to_a? --> <p>An <code>Array</code> instance represents
         an ordered collection of objects, which need not be homogeneous. It is
@@ -154,7 +155,7 @@
         <code>yield</code>ing the next element each time.
       
         <section>
-          <h6>Enumerables</h6>
+          <h5>Enumerables</h5>
 
             <!-- Mention #to_enum? -->
             <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
@@ -189,7 +190,7 @@
             <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
         </section>
 
-      <h5>Hashes</h5>
+      <h4>Hashes</h4>
 
         <!--<code>{phileas_fog: :jean_passepartout, bertie_wooster:
           :reginald_jeeves}</code>.-->
@@ -232,7 +233,7 @@
         <p><code>Hash</code> is <code>Enumerable</code>, <!-- link --> so all
         <code>Enumerable</code> methods are available as well.
 
-      <h5>Regexps</h5>
+      <h4>Regexps</h4>
 
         <p>A <code>Regexp</code> represents a pattern that describes a
         <code>String</code>. It <i>matches</i> when contained by the former. The
@@ -243,7 +244,7 @@
         <p>The pattern consists of literal characters and meta-characters. A
         literal character is a non-meta-character; it matches itself. Prefixing a
         meta-character with a reverse solidus causes it to match literally.
-        <!-- List the meta-characters explicitly? -->>
+        <!-- List the meta-characters explicitly? -->
 
         <p>A balanced pair of parentheses are meta-characters which group and/or
         capture the characters they enclose. Grouping allows the enclosed to be
@@ -293,7 +294,7 @@
 
         <!-- String#gsub? -->
 
-      <h5>Ranges</h5>
+      <h4>Ranges</h4>
 
         <p>A <code>Range</code> represents a sequence between two given values.
         It is either <i>inclusive</i> or <i>exclusive</i>: the former includes the
@@ -327,38 +328,42 @@
         It represents an infinite set of values, therefore a
         <code>TypeError</code> is raised when attempting to iterate over it.
 
-      <h5>Lambdas</h5>
+      <h4>Lambdas</h4>
 
-      <p>A literal of the form
-      <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
-        { <var>statements</var> }</code> instantiates a <code>Proc</code>
-      object with lambda characteristics. The parameter list takes the same
-      form as that used in method definitions <!-- link -->. It may be omitted
-      entirely. <var>statements</var> is zero or more statements. For example,
-      <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a + b }</code>.
+        <p>A literal of the form
+        <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
+          { <var>statements</var> }</code> instantiates a <code>Proc</code>
+        object with lambda characteristics. The parameter list takes the same
+        form as that used in method definitions <!-- link -->. It may be omitted
+        entirely. <var>statements</var> is zero or more statements. For example,
+        <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a + b }</code>.
 
-      <h5>Immediates</h5>
+      <h4>Immediates</h4> <!-- sidebar this? -->
 
-      <p><code>Symbol</code> and <code>Fixnum</code> literals are <dfn
-        title=immediates>immediate</dfn> values. They are stored as values
-      rather than object references so are immutable and cannot have singleton
-      methods defined on them.
+        <p><code>Symbol</code> and <code>Fixnum</code> literals are <dfn
+          title=immediates>immediate</dfn> values. They are stored as values
+        rather than object references so are immutable and cannot have singleton
+        methods defined on them.
 
-    <h4>Constructors</h4>
-      <h5><code>.new</code></h5>
+    <h3>Constructors</h3>
+
+      <h4><code>.new</code></h4>
+
         <p>Sending the <code>:new</code> message to a class instantiates that
         class. For example, <code>Array.new</code> creates an
         <code>Array</code> object. A method that instantiates a class is a
         <dfn title="constructor">constructor</dfn>: it allocates an object
         then initializes its state.
 
-      <h5>Allocation</h5>
+      <h4>Allocation</h4>
 
         <p><code>Class#allocate</code> allocates memory for a new object and
         returns a reference to it. It cannot be overridden. If invoked
-        manually, it returns an uninitialized instance of the class.
+        manually, it returns an uninitialized instance of the class. <!-- some
+        classes forbid this; maybe this is an idiom: privatise #allocate so as
+        to prevent uninitialized objects? -->
 
-      <h5>Initialization</h5>
+      <h4>Initialization</h4>
       
         <p>The newly allocated object is sent an <code>:initialize</code>
         message along with the arguments passed to <code>.new</code>. The
@@ -376,14 +381,14 @@
 
     <!-- Pickaxe pp. 427: Hook for object creation -->
 
-  <h3>Vocabulary</h3>
+  <h2>Vocabulary</h2>
   <!-- Do we want to use this term? -->
   <ol>
     <li>Ask an object what it understands by sending it :methods /
     :instance_methods
   </ol>
 
-  <h3>Identity</h3>      
+  <h2>Identity</h2>      
     
     <p>Every object has a numeric identifier that is unique among other
     objects and constant for the object’s lifetime. It is returned as a
@@ -401,11 +406,11 @@
 
     <!-- Hash#compare_by_identity -->
 
-  <h3>Relations</h3>
+  <h2>Relations</h2>
     <!-- Explain that as relational operators are method calls the LHS gets to
     evaluate the relation -->
     <!-- Look at wikipedia Relations article for this -->
-    <h4>Order</h4>
+    <h3>Order</h3>
           
       <p>If instances of a class suggest an ordering relationship such that one
       instance is either less than, greater than, or equal to, another, they are
@@ -423,7 +428,7 @@
       <!-- http://redmine.ruby-lang.org/repositories/diff/ruby-19/object.c?rev=25453
       -->
     
-    <h4>Equivalence</h4>
+    <h3>Equivalence</h3>
 
       <!-- Link with Comparison section: <=> defines == --> 
       <p>The means by which objects are compared for equality depend on the type
@@ -461,8 +466,9 @@
       
       <!-- Cover === and =~ ? -->
 
-  <h3>State</h3>
-    <h4>Instance Variables</h4>
+  <h2>State</h2>
+
+    <h3>Instance Variables</h3>
 
       <p>The state of an object is encapsulated in instance variables, whose
       values are local to that particular object, hidden <!-- better word? -->
@@ -487,7 +493,7 @@
       prefix. These methods should be used sparingly as they break
       encapsulation.
 
-    <h4>Attributes</h4>
+    <h3>Attributes</h3>
         
       <p>An attribute, <var>a</var>, is a pair (<a class=ref
         href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 94–95) of public
@@ -504,8 +510,9 @@
       
       <!-- Module#attr ? -->
   
-    <h4>Mutability</h4>
+    <h3>Mutability</h3>
       
+      <!-- Define _mutability_ -->
       <p><code>Object#freeze</code> makes the receiver immutable: attempts to
       change its state elicit a <code>RuntimeError</code>. The
       <code>Object#frozen?</code> predicate returns <code>true</code> if the
@@ -521,7 +528,7 @@
       
       <!-- Note that immediates can be frozen...; link to my bug report -->
 
-  <h3>References &amp; Garbage Collection</h3>
+  <h2>References &amp; Garbage Collection</h2> <!-- Lifespan / Lifetime ? -->
 
     <p>Variables store references to objects. Assignment is, therefore, the
     copying of the reference on the right-hand side to the variable named on
@@ -536,7 +543,7 @@
     temporal, its references must be likewise.
 
     <!-- GC.start, GC.disable -->
-  <h3>BasicObject</h3>
+  <h2>BasicObject</h2>
 
     <p><code>BasicObject</code> is the root of the class hierarchy: from this
     all other classes ultimately inherit. Its superclass is <code>nil</code>.
@@ -550,7 +557,7 @@
     <!-- Clarify that by default classes inherit from Object? -->
     <!-- Note implications of having so few methods? In irb? -->
 
-  <h3>Duplication</h3>
+  <h2>Duplication</h2>
 
     <p><code>Object#dup</code> performs a shallow copy of the receiver. A new
     instance of the receiver’s class is allocated, tainted if the original
@@ -575,13 +582,13 @@
     <code>#dup</code> method or define it to raise an informative exception
     (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 243–245).
 
-  <h3>Cloning</h3>
+  <h2>Cloning</h2>
   
     <p><code>Object#clone</code> behaves like <code>Object#dup</code> except
     it also copies singleton methods and frozen state. Therefore, cloning
     creates a more faithful copy of the receiver than duplication.
 
-  <h3>Marshaling</h3>
+  <h2>Marshaling</h2> <!-- Make part of Instantiation? -->
     
     <p>An object may be serialized as a binary <code>String</code> by
     supplying it to <code>Marshal.dump</code>. If an <code>IO</code> object is
@@ -606,8 +613,9 @@
     recreated object as an argument. It is expected to initialize the state of
     the receiver from that of its argument. The return value is ignored.
 
-  <h3>Taint</h3>
+  <h2>Taint</h2>
 
+    <!-- Clarify that every object is either tainted or not -->
     <p>Taint checking is a security mechanism that blacklists objects
     influenced by external input, propagating this trait to derivative
     objects. Data read from <code>IO</code> streams and user input is
@@ -621,7 +629,7 @@
     <code>SecurityError</code>s when given tainted objects. <!-- How do we
     handle this? Separate section for $SAFE? List a sampling of methods? -->
 
-  <h3>Trust</h3>
+  <h2>Trust</h2>
   
     <p>Objects and running code are either trusted or untrusted. They are
     trusted by default unless <code>$SAFE</code> ≥ 3, in which case they are
@@ -633,13 +641,13 @@
     predicate returns <code>true</code> when the receiver is not trusted;
     <code>false</code> otherwise.
 
-  <h3>Defining Methods On</h3> <!-- Behaviour -->
+  <h2>Defining Methods On</h2> <!-- Behaviour -->
 
-  <h3>Listing Methods</h3> <!-- Interrogating? -->
+  <h2>Listing Methods</h2> <!-- Interrogating? / Under Behaviour?-->
 
-  <h3>Extending</h3> <!-- In Modules? -->
+  <h2>Extending</h2> <!-- In Modules? -->
 
-  <h3>ObjectSpace</h3>
+  <h2>ObjectSpace</h2>
   <!-- [ruby-core:19600] -->
   ObjectSpace.each_object(o) do
    if o.is_a?(IO)
@@ -647,7 +655,7 @@
    end
   end
 
-  <h3>Context</h3>
+  <h2>Context</h2>
     
     <p><code>BasicObject#instance_eval</code> takes a string or block which it
     evaluates in the receiver’s context, setting <code>self</code> to the
@@ -658,205 +666,205 @@
     <p><code>BasicObject#instance_exec</code> is similar, but accepts
     any number of arguments which it passes to the required block.
 
-  <h3>Conversion Protocols</h3>
+  <h2>Conversion</h2>
 
-  <p>Selectors whose names begin with <i>to_</i> are expected to return
-  the receiver converted to an object of the indicated class. A conversion
-  is either <i>implicit</i> or <i>explicit</i>, as explained below:
- 
-  <section>
-    <h4>Implicit Conversion</h4>
-    
-    <p>A method may expect an argument of a particular class. If it
-    receives an object of another class it wishes to automatically
-    convert that object into one of the desired class. 
-    
-    <p>For example, <code>Array.new</code> may be called with an Array as
-    an argument, which is copied to produce a new Array. If the argument
-    is not of class <code>Array</code>, <code>Array.new</code> sends
-    <code>:to_ary</code> to the argument, implicitly converting it to an
-    <code>Array</code>.
-
-    <p><code>Array.new</code> sent <code>:to_ary</code> because it is part
-    of the implicit conversion protocol. By responding to this message
-    with an <code>Array</code>  objects are declaring that they may be
-    used in place of an <code>Array</code>. 
-     
-    <p>If the argument responds to <code>:to_a</code> it can also be
-    automatically converted to an <code>Array</code>. However,
-    <code>Array.new</code> does not send this message for it is part of
-    the <i>explicit</i> conversion protocol; the sender of the message
-    must send the argument <code>:to_a</code> himself if he requires the
-    conversion.
-
-    <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (p. 80)
-    suggest that objects should implement an implicit conversion protocol
-    if they have <q>strong characteristics</q> of the target class. 
-
+    <p>Selectors whose names begin with <i>to_</i> are expected to return
+    the receiver converted to an object of the indicated class. A conversion
+    is either <i>implicit</i> or <i>explicit</i>, as explained below:
+   
     <section>
-      <h5><code>try_convert</code></h5>
+      <h3>Implicit Conversion</h3>
+      
+      <p>A method may expect an argument of a particular class. If it
+      receives an object of another class it wishes to automatically
+      convert that object into one of the desired class. 
+      
+      <p>For example, <code>Array.new</code> may be called with an Array as
+      an argument, which is copied to produce a new Array. If the argument
+      is not of class <code>Array</code>, <code>Array.new</code> sends
+      <code>:to_ary</code> to the argument, implicitly converting it to an
+      <code>Array</code>.
 
-      <!-- Describe idioms that this implies, e.g Array.try_convert(arg) or
-      raise ArgumentError -->
-      <p><code>Array</code>, <code>Hash</code>, <code>IO</code>,
-      <code>Regexp</code>, and <code>String</code> define a class method named
-      <code>try_convert</code> which uses the appropriate implicit conversion
-      protocol to convert the argument to the receiver’s class. If the
-      argument does not respond to the appropriate implicit conversion
-      message, <code>.try_convert</code> returns <code>nil</code>.
+      <p><code>Array.new</code> sent <code>:to_ary</code> because it is part
+      of the implicit conversion protocol. By responding to this message
+      with an <code>Array</code>  objects are declaring that they may be
+      used in place of an <code>Array</code>. 
+       
+      <p>If the argument responds to <code>:to_a</code> it can also be
+      automatically converted to an <code>Array</code>. However,
+      <code>Array.new</code> does not send this message for it is part of
+      the <i>explicit</i> conversion protocol; the sender of the message
+      must send the argument <code>:to_a</code> himself if he requires the
+      conversion.
 
-      <p>For example, <code>String.try_convert(<var>object</var>)</code> returns
-      <code><var>object</var>.to_str</code> if <var>object</var> responds to
-      <code>:to_str</code>; <code>nil</code> otherwise.
+      <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (p. 80)
+      suggest that objects should implement an implicit conversion protocol
+      if they have <q>strong characteristics</q> of the target class. 
+
+      <section>
+        <h4><code>try_convert</code></h4>
+        
+          <!-- Describe idioms that this implies, e.g Array.try_convert(arg) or
+          raise ArgumentError -->
+          <p><code>Array</code>, <code>Hash</code>, <code>IO</code>,
+          <code>Regexp</code>, and <code>String</code> define a class method named
+          <code>try_convert</code> which uses the appropriate implicit conversion
+          protocol to convert the argument to the receiver’s class. If the
+          argument does not respond to the appropriate implicit conversion
+          message, <code>.try_convert</code> returns <code>nil</code>.
+
+          <p>For example, <code>String.try_convert(<var>object</var>)</code> returns
+          <code><var>object</var>.to_str</code> if <var>object</var> responds to
+          <code>:to_str</code>; <code>nil</code> otherwise.
+      </section>
+
+      <p>From the discussion above we can derive the following rules:
+
+      <ol>
+        <li>A method may send implicit conversion messages to its
+        arguments. 
+        <li>Objects responding to such messages are declaring that they may
+        be used in this way.
+        <li>A method must not send explicit conversion messages to its
+        arguments.
+      </ol>
     </section>
 
-    <p>From the discussion above we can derive the following rules:
+    <section>
+      <h3>Explicit Conversion</h3>
+      
+      <p>An object which can be represented as an object of another class
+      may implement the relevant explicit conversion protocol. It is
+      explicit because the user must explicitly send the conversion message
+      to the object to effect the conversion; the message should never be
+      sent automatically by another method.
 
-    <ol>
-      <li>A method may send implicit conversion messages to its
-      arguments. 
-      <li>Objects responding to such messages are declaring that they may
-      be used in this way.
-      <li>A method must not send explicit conversion messages to its
-      arguments.
-    </ol>
-  </section>
+      <p>If an object implements an implicit conversion protocol that
+      corresponds with an explicit conversion protocol, it should implement
+      the explicit protocol, too. The implicit protocol is a superset of the
+      explicit protocol, so there will not exist a scenario where an object
+      would need to implement the former without the latter. This can be easily
+      achieved by aliasing the implicit method to the explicit method. For
+      example, if an object responds to <code>:to_ary</code> but not to
+      <code>:to_a</code> it should alias <code>:to_a</code> to
+      <code>:to_ary</code>.
 
-  <section>
-    <h4>Explicit Conversion</h4>
+      <p>From the discussion above we can derive the following rules:
+
+      <ol>
+        <li>A method should not send explicit conversion messages to its
+        arguments. 
+        <li>Objects responding to implicit conversion messages that have
+        explicit counterparts should respond to the latter, too. 
+      </ol>
+    </section>
+
+    <p>The conversion protocol is summarised in the table below. The
+    <i>Target Class</i> column indicates the class of the object the
+    conversion method should return. The <i>Implicit</i> column specifies
+    the message, if any, that is part of the implicit conversion protocol
+    for the target class. Likewise, the <i>Explicit</i> column specifies
+    the message, if any, that is part of the explicit conversion protocol
+    for the target class. If a protocol is not defined for a class, it has a
+    value of <i>N/A</i> is given. 
     
-    <p>An object which can be represented as an object of another class
-    may implement the relevant explicit conversion protocol. It is
-    explicit because the user must explicitly send the conversion message
-    to the object to effect the conversion; the message should never be
-    sent automatically by another method.
+    <p>Note that the absence of an implicit protocol for a class implies
+    that it should not be converted implicitly. Methods expecting arguments
+    of a non-convertible class should raise a <code>TypeError</code> if they
+    receive arguments of an unsuitable type.
 
-    <p>If an object implements an implicit conversion protocol that
-    corresponds with an explicit conversion protocol, it should implement
-    the explicit protocol, too. The implicit protocol is a superset of the
-    explicit protocol, so there will not exist a scenario where an object
-    would need to implement the former without the latter. This can be easily
-    achieved by aliasing the implicit method to the explicit method. For
-    example, if an object responds to <code>:to_ary</code> but not to
-    <code>:to_a</code> it should alias <code>:to_a</code> to
-    <code>:to_ary</code>.
+    <!-- Use spanning cell when an implicit message is given without an explicit
+    counterpart? -->
+    <table>
+      <tr>
+        <th>Target Class</th> 
+        <th>Implicit</th> 
+        <th>Explicit</th>
+        <th>Note</th>
+      </tr>
+      <tr>
+        <td><code>Array</code></td> 
+        <td><code>:to_ary</code></td>
+        <td><code>:to_a</code></td>
+      </tr>
+      <tr>
+        <td><code>Complex</code></td> 
+        <td><code>:to_c</code></td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><code>Enumerator</code></td> 
+        <td>N/A</td>
+        <td><code>:to_enum</code></td>
+      </tr>
+      <tr>
+        <td><code>Float</code></td> 
+        <td><code>:to_f</code></td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><code>Hash</code></td> 
+        <td><code>:to_hash</code></td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><code>Integer</code></td> 
+        <td><code>:to_int</code></td>
+        <td><code>:to_i</code></td>
+      </tr>
+      <tr>
+        <td><code>IO</code></td> 
+        <td><code>:to_open</code></td>
+        <td>N/A</td>
+        <td>Sent by <code>Kernel#open</code> to its first argument</td>
+      </tr>
+      <tr>
+        <td><code>Proc</code></td> 
+        <td><code>:to_proc</code></td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><code>Rational</code></td> 
+        <td><code>:to_r</code></td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><code>Regexp</code></td> 
+        <td><code>:to_regexp</code></td>
+        <td>N/A</td>
+        <td>Sent by <code>Regexp.try_convert</code></td>
+      </tr>
+      <tr>
+        <td><code>String</code></td> 
+        <td><code>:to_str</code></td>
+        <td><code>:to_s</code></td>
+      </tr>
+      <tr>
+        <td><code>String</code></td> 
+        <td><code>:to_path</code></td>
+        <td>N/A</td>
+        <td>Sent by methods expecting a file path as an argument, such as
+          the class methods of <code>File</code></td>
+      </tr>
+      <tr>
+        <td><code>Symbol</code></td> 
+        <td><code>:to_sym</code></td>
+        <td>N/A</td>
+      </tr>
+    </table> 
 
-    <p>From the discussion above we can derive the following rules:
+    <h3>Converting to “Boolean”</h3>
 
-    <ol>
-      <li>A method should not send explicit conversion messages to its
-      arguments. 
-      <li>Objects responding to implicit conversion messages that have
-      explicit counterparts should respond to the latter, too. 
-    </ol>
-  </section>
+      <p>It is rarely necessary to convert an object to a “Boolean” because Ruby
+      automatically treats <code>false</code> and <code>nil</code> as false, and
+      any other value as true. However, if a method wishes to return either
+      <code>true</code> or <code>false</code> it may use the
+      <code>!!<var>object</var></code> idiom. This returns <code>false</code> if
+      <var>object</var> is <code>false</code> or <code>nil</code>;
+      <code>true</code> otherwise.
 
-  <p>The conversion protocol is summarised in the table below. The
-  <i>Target Class</i> column indicates the class of the object the
-  conversion method should return. The <i>Implicit</i> column specifies
-  the message, if any, that is part of the implicit conversion protocol
-  for the target class. Likewise, the <i>Explicit</i> column specifies
-  the message, if any, that is part of the explicit conversion protocol
-  for the target class. If a protocol is not defined for a class, it has a
-  value of <i>N/A</i> is given. 
-  
-  <p>Note that the absence of an implicit protocol for a class implies
-  that it should not be converted implicitly. Methods expecting arguments
-  of a non-convertible class should raise a <code>TypeError</code> if they
-  receive arguments of an unsuitable type.
-
-  <!-- Use spanning cell when an implicit message is given without an explicit
-  counterpart? -->
-  <table>
-    <tr>
-      <th>Target Class</th> 
-      <th>Implicit</th> 
-      <th>Explicit</th>
-      <th>Note</th>
-    </tr>
-    <tr>
-      <td><code>Array</code></td> 
-      <td><code>:to_ary</code></td>
-      <td><code>:to_a</code></td>
-    </tr>
-    <tr>
-      <td><code>Complex</code></td> 
-      <td><code>:to_c</code></td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <td><code>Enumerator</code></td> 
-      <td>N/A</td>
-      <td><code>:to_enum</code></td>
-    </tr>
-    <tr>
-      <td><code>Float</code></td> 
-      <td><code>:to_f</code></td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <td><code>Hash</code></td> 
-      <td><code>:to_hash</code></td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <td><code>Integer</code></td> 
-      <td><code>:to_int</code></td>
-      <td><code>:to_i</code></td>
-    </tr>
-    <tr>
-      <td><code>IO</code></td> 
-      <td><code>:to_open</code></td>
-      <td>N/A</td>
-      <td>Sent by <code>Kernel#open</code> to its first argument</td>
-    </tr>
-    <tr>
-      <td><code>Proc</code></td> 
-      <td><code>:to_proc</code></td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <td><code>Rational</code></td> 
-      <td><code>:to_r</code></td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <td><code>Regexp</code></td> 
-      <td><code>:to_regexp</code></td>
-      <td>N/A</td>
-      <td>Sent by <code>Regexp.try_convert</code></td>
-    </tr>
-    <tr>
-      <td><code>String</code></td> 
-      <td><code>:to_str</code></td>
-      <td><code>:to_s</code></td>
-    </tr>
-    <tr>
-      <td><code>String</code></td> 
-      <td><code>:to_path</code></td>
-      <td>N/A</td>
-      <td>Sent by methods expecting a file path as an argument, such as
-        the class methods of <code>File</code></td>
-    </tr>
-    <tr>
-      <td><code>Symbol</code></td> 
-      <td><code>:to_sym</code></td>
-      <td>N/A</td>
-    </tr>
-  </table> 
-
-  <h3>Converting to “Boolean”</h3>
-
-  <p>It is rarely necessary to convert an object to a “Boolean” because Ruby
-  automatically treats <code>false</code> and <code>nil</code> as false, and
-  any other value as true. However, if a method wishes to return either
-  <code>true</code> or <code>false</code> it may use the
-  <code>!!<var>object</var></code> idiom. This returns <code>false</code> if
-  <var>object</var> is <code>false</code> or <code>nil</code>;
-  <code>true</code> otherwise.
-
-  <!-- Describe how #method_defined? differs from #respond_to? -->
-  
-  <!-- Explain numeric coercion -->
+    <!-- Describe how #method_defined? differs from #respond_to? -->
+    
+    <!-- Explain numeric coercion -->
   </body>
 </html>
