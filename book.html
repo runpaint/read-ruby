@@ -1983,6 +1983,8 @@
     <p>An object is instantiated by either sending an appropriate message to
     an existing object or using a <i>literal</i>. 
     
+    <!-- Marshal.load also creates an object -->
+
     <aside>
       <p>This may seem to imply that, ultimately, all objects are instantiated
       by means of literals, because a message cannot be sent to an object
@@ -2498,7 +2500,8 @@
     slate”: <q>…useful as the superclass of delegating wrapper classes…</q>
     (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, p 235). (A
     thorough explanation of “blank slate” classes in Ruby is found in <a
-      href=#refBROWN09 class=ref>Brown</a>, pp. 57–62).
+      href=#refBROWN09 class=ref>Brown</a>, pp. 57–62). <!-- Footnote this
+    remark? -->
 
     <!-- Clarify that by default classes inherit from Object? -->
     <!-- Note implications of having so few methods? In irb? -->
@@ -2518,7 +2521,12 @@
     variables by explicitly duplicating them. If an object may only be
     duplicated under certain circumstances, <code>#initialize_copy</code> may
     choose to raise an exception.
-      
+
+    <aside class=note>
+      Another way to perform a deep copy of an object is:
+      <code>Marshal.load(Marshal.dump(<var>object</var>))</code>.
+    </aside>
+
     <p>Objects that shouldn’t be duplicated can privatise their
     <code>#dup</code> method or define it to raise an informative exception
     (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 243–245).
@@ -2529,7 +2537,7 @@
     it also copies singleton methods and frozen state. Therefore, cloning
     creates a more faithful copy of the receiver than duplication.
 
-    <h3>Freezing</h3> <!-- <h3>Mutability</h3> ? -->
+  <h3>Freezing</h3> <!-- <h3>Mutability</h3> ? -->
     
     <p><code>Object#freeze</code> makes the receiver immutable: attempts to
     change its state elicit a <code>RuntimeError</code>. The
@@ -2547,8 +2555,29 @@
     <!-- Note that immediates can be frozen...; link to my bug report -->
 
   <h3>Marshaling</h3>
-    <h4>marshal_dump</h4>
-    <h4>marshal_load</h4>
+    
+    <p>An object may be serialized as a binary <code>String</code> by
+    supplying it to <code>Marshal.dump</code>. If an <code>IO</code> object is
+    supplied as the second argument, the marshaled object is written to it.
+    <code>Marshal.load</code> reverses this process by recreating the object
+    from its marshaled form, which may be a string <!-- Explain somewhere that
+    _string_ (or _string-y_) is an object that String.try_convert(obj) != nil
+    --> or <code>IO</code> object.
+
+    <p>The Marshal data format is versioned with a major and minor number,
+    which are stored in the first two bytes of marshaled data.
+    <code>Marshal.load</code> raises a <code>TypeError</code> unless the data
+    has the current major version and a minor version ≤ the current
+    minor version.
+
+    <!-- Investigate interaction between #_dump and #marshal_dump -->
+
+    <p>Objects may control how they’re dumped by responding to
+    <code>:marshal_dump</code> with another object to be serialized in their
+    place. If so, they must also respond to <code>:marshal_load</code>, which
+    is sent to an allocated, uninitialized instance of their class with the
+    recreated object as an argument. It is expected to initialize the state of
+    the receiver from that of its argument. The return value is ignored.
 
   <h3>Tainting</h3>
   
