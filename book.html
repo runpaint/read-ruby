@@ -2580,7 +2580,20 @@
     the receiver from that of its argument. The return value is ignored.
 
   <h3>Tainting</h3>
-  
+
+    <p>Taint checking is a security mechanism that blacklists objects
+    influenced by external input, propagating this trait to derivative
+    objects. Data read from <code>IO</code> streams and user input is
+    automatically tainted. An object can be explicitly tainted by sending it
+    <code>:taint</code>. The <code>#tainted?</code> predicate returns
+    <code>true</code> if the receiver, or an object from which it derived, is
+    tainted. Taintedness persists over duplication and cloning. It can be
+    removed with <code>Object#untaint</code>.
+
+    <p>If <code>$SAFE &gt; 0</code> certain methods raise
+    <code>SecurityError</code>s when given tainted objects. <!-- How do we
+    handle this? Separate section for $SAFE? List a sampling of methods? -->
+
   <h3>Trusting</h3>
 
   <h3>Defining Methods On</h3>
