@@ -618,7 +618,8 @@
 
     <p>Singleton methods bound to a particular class are known as <i>class
       methods</i>. For instance, <code>File.absolute_path</code> is a class
-    method defined on the <code>File</code> class.
+    method defined on the <code>File</code> class. <!-- FIXME: WRONG. See BLACK09, p
+    384 -->
 
     <p>However, a singleton method may be defined on any object. Whereas
     inheritance allows a class to be created that specializes a more
@@ -2327,6 +2328,7 @@
   <h3>Relations</h3>
     <!-- Explain that as relational operators are method calls the LHS gets to
     evaluate the relation -->
+    <!-- Look at wikipedia Relations article for this -->
     <h4>Order</h4>
           
       <p>If instances of a class suggest an ordering relationship such that one
@@ -2555,7 +2557,7 @@
     predicate returns <code>true</code> when the receiver is not trusted;
     <code>false</code> otherwise.
 
-    <h3>Defining Methods On</h3> <!-- Behaviour -->
+  <h3>Defining Methods On</h3> <!-- Behaviour -->
 
   <h3>Listing Methods</h3> <!-- Interrogating? -->
 
@@ -2570,13 +2572,15 @@
   end
 
   <h3>Context</h3>
-  <h3><code>instance_eval</code>/<code>instance_exec</code></h3>
-  <ol>
-    <li>Instance eval/exec
-    <li>Class eval/exec
-    <li>Module eval/exec
-  </ol>
-  <!-- Or should the last two be dealt with in Classes and Modules? -->
+    
+    <p><code>BasicObject#instance_eval</code> takes a string or block which it
+    evaluates in the receiver’s context, setting <code>self</code> to the
+    receiver. The evaluated code can access the object’s instance variables,
+    invoke its private and protected methods, and define methods on its
+    singleton class. <!-- Needs examples of all three -->
+
+    <p><code>BasicObject#instance_exec</code> is similar, but accepts
+    any number of arguments which it passes to the required block.
 
   <h3>Conversion Protocols</h3>
 
@@ -2897,6 +2901,8 @@
     </dd>
   </figure>
 
+  <h3>Context</h3>
+  <!-- class_eval / class_exec -->
   <h3>Type</h3> 
 
     <p><q>In many object-oriented languages, class names are used…for the type
