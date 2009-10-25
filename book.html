@@ -10,6 +10,8 @@
   <body>
 <h1>Ruby</h1>
 <!-- html2text book.html | diction --language en_GB --suggest|less -->
+<!-- Cover: Read\nRuby with Rs overlapping, caligraphy font? -->
+
 <h2>Principles</h2>
 
 <ol>
@@ -53,8 +55,18 @@
   <!-- Is this a fundamental? -->
 </ol>
 
-<!-- Chapter on variables? -->
 
+<h2>Names</h2>
+<!-- Chapter on variables? -->
+<!-- Include in Principles? -->
+<ol>
+  <li>Variables
+  <li>Conventions
+  <li>Scope?
+  <li>Symbols as names
+  <li>Assignment
+  <li>Constants
+</ol>
 
 <h2>Messages</h2>
 
@@ -416,6 +428,37 @@
       <!-- Point to Symbol#to_proc here? -->
     </aside>
 
+    <h4>Chaining</h4>
+
+      <p>A message expression returns an object, which may in turn receive
+      messages, i.e.
+      <code><var>receiver</var>.<var>selector<sub>0</sub></var>.<var>selector<sub>1</sub></var></code>.
+      <var>receiver</var> is sent <var>selector<sub>0</sub></var> which
+      returns an object; that object is sent <var>selector<sub>1</sub></var>.
+      Message expressions can be arbitrarily <dfn title="message
+        chaining">chained</dfn> in this fashion.
+      <!-- Example with arguments -->
+
+      <p>This technique relies on the composite receiver consistently returning an
+      object responding to the selector; otherwise a
+      <code>NoMethodError</code> will break the chain. It is unsuitable when
+      the receiver may return a materially different object for certain
+      arguments. For instance, <code>Array#select</code> <!-- Footnote that
+      this method is provided by Enumerable but we haven't introduced modules
+      yet? --> always returns an <code>Array</code> even when it doesn’t
+      select any elements, allowing it to receive any <code>Array</code>
+      selector. Conversely, methods such as <code>Array#[]</code>, which return
+      either the specified element or <code>nil</code> if it does not exist,
+      make awkward links in chains because of their inconsistency.
+
+      <!-- Mention andand -->
+
+      <p>Messages sent purely for their side effects should, and often do,
+      return <code>self</code> so as to receive any message understood by
+      their receiver. For instance, <code>String#strip</code> and
+      <code>String#capitalize</code> both return <code>self</code>, allowing
+      <code>" wittgenstein \n".strip.capitalize #=&gt; "Wittgenstein"</code>.
+
     <h4>Dynamic Invocation with <code>Object#send</code></h4>
       
     <!-- Explain that arguments can be sent along with the message. -->
@@ -508,7 +551,7 @@
       accessor</dfn>. For example, <code>person.name</code> is said to return
     the <code>name</code> attribute of the <code>person</code> object.
 
-      <!-- TODO: Link with discussion of _attr_ -->
+      <!-- TODO: Link with discussion of _attr_ in Objects -->
 
       <p>There is not necessarily a correspondence between the accessor’s name
       and that of the corresponding instance variable. There is not, for that
@@ -519,6 +562,7 @@
       attribute accessor’s name suffixed with an equals sign (<code>=</code>),
       is called an <dfn id=attribute-setter>attribute setter</dfn>. It sets the
       attribute to the value supplied.
+      
 
 <h2>Methods</h2>
 
@@ -2514,8 +2558,6 @@
 
   <h3>Listing Methods</h3>
 
-  <h3><code>instance_eval</code>/<code>instance_exec</code></h3>
-
   <h3>Extending</h3>
 
   <h3>ObjectSpace</h3>
@@ -2527,6 +2569,7 @@
   end
 
   <h3>Context</h3>
+  <h3><code>instance_eval</code>/<code>instance_exec</code></h3>
   <ol>
     <li>Instance eval/exec
     <li>Class eval/exec
@@ -2764,7 +2807,8 @@
   </figure>
 
   <p>The <code>Class.new</code> constructor may be used to the same effect
-  if it is assigned to a constant.
+  if it is assigned to a constant. <!-- Describe use of Class.new to
+  dynamically create a class with a given superclass -->
 
   <figure id=class-new>
   <dt>Usage of the <code>Class.new</code> constructor to create a class
