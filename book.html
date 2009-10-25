@@ -183,40 +183,6 @@
       visibility specifier is seen or the class definition ends. 
       <!-- Method objects? -->
       <!-- aliases -->
-    <h2>Enumerables</h2> <!-- Sidebar of Objects: Literals: Arrays ? -->
-
-    <!-- Mention #to_enum? -->
-    <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
-    <code>Range</code> mixin the <code>Enumerable</code> module. Any object
-    may do the same as long as its class defines an <code>#each</code> method
-    which <code>yield</code>s the next element in the collection on every
-    invocation.  In return, the class gains a staggering variety of methods
-    for working with collections such as the following.
-
-    <p><code>#map {|<var>element</var>| }</code> returns an
-    <code>Array</code> created by passing each element of the collection to
-    the block, then storing the result. For example, <code>[1,2,3].map{|n|
-      n**2} #=&gt; [1,4,9]</code>. <!-- Symbol#to_proc ? -->
-
-    <p><code>#reduce {|<var>element<sub>0</sub></var>,
-      <var>element<sub>n</sub></var>| }</code> passes the first two elements
-    to the block, then for each subsequent element the last result of the
-    block and the element itself. For example: <code>[2,3,5,7].reduce(&amp;:+)
-      =&gt; 17</code>.
-
-    <p><code>#select {|<var>element</var>| }</code> returns an
-    <code>Array</code> of elements for which the block returned
-    <code>true</code>.
-
-    <p>Lastly, <code>#any?</code>, <code>#all?</code>, and <code>#none?</code>
-    accept a block which is called with an element of the collection. The
-    determinative indicates how many elements of the collection the block must
-    return <code>true</code> for the method to return <code>true</code>. For
-    instance, <code>#any?</code> returns <code>true</code> as soon as a single
-    element in the collection satisfies the block. 
-    
-    <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
-
     <h2>Structs</h2>
       <ol>
         <li>Light-weight classes
