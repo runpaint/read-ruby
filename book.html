@@ -1980,6 +1980,7 @@
   and behaviour relevant to that data.
 
   <h3>Instantiation</h3>
+  <!-- There are 3½ ways to instantiate an object...-->
     <p>An object is instantiated by either sending an appropriate message to
     an existing object or using a <i>literal</i>. 
     
@@ -2579,7 +2580,7 @@
     recreated object as an argument. It is expected to initialize the state of
     the receiver from that of its argument. The return value is ignored.
 
-  <h3>Tainting</h3>
+  <h3>Taint</h3>
 
     <p>Taint checking is a security mechanism that blacklists objects
     influenced by external input, propagating this trait to derivative
@@ -2594,7 +2595,17 @@
     <code>SecurityError</code>s when given tainted objects. <!-- How do we
     handle this? Separate section for $SAFE? List a sampling of methods? -->
 
-  <h3>Trusting</h3>
+  <h3>Trust</h3>
+  
+    <p>Objects and running code are either trusted or untrusted. They are
+    trusted by default unless <code>$SAFE</code> ≥ 3, in which case they are
+    untrusted. Untrusted code is prohibited from modifying trusted objects.
+
+    <p>An object may be explicitly trusted by sending it <code>:trust</code>
+    when <code>$SAFE &lt; 3</code>; a message of <code>:untrust</code> does the
+    converse when <code>$SAFE &lt; 4</code>. The <code>Object#untrusted?</code>
+    predicate returns <code>true</code> when the receiver is not trusted;
+    <code>false</code> otherwise.
 
   <h3>Defining Methods On</h3>
 
