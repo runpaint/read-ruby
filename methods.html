@@ -12,7 +12,9 @@
 
 <h2>Methods</h2>
 
+  <!-- Mention __method__ -->
   <!-- Use Flan&Y's definition of method -->
+
   <p>A <dfn id=method>method</dfn> is a named block of code associated with an
   object. For now we will define <i>block of code</i> as a sequence of one or
   more statements. It constitutes a response to a message. The relationship
@@ -139,6 +141,22 @@
     </p>
 
     <!-- TODO: Mention Object#tap -->
+
+  <h3><code>super</code></h3>
+  
+    <p>The <code>super</code> keyword is used in method definitions to invoke
+    the method with the same name in the superclass (or an ancestor thereof).
+    If called without arguments it invokes the superclass method with the
+    arguments received by the current method (this is known as the <dfn
+      title="implicit argument form of <code>super</code>">implicit argument
+      form of <code>super</code></dfn>).  Otherwise, it sends the arguments it
+    has been given to the superclass method. <!-- How do you invoke the method
+    without any arguments? -->
+
+    <p>A <code>NoMethodError</code> is raised if a corresponding method is not
+    defined in the superclass. <!-- Suggest if
+    self.class.superclass.instance_methods.include?(__method__) for testing
+    whether such a method is defined -->
 
   <h3>Names</h3>
 
@@ -1125,6 +1143,16 @@
         allows instances of a class to share internal state with each other, but does not allow users of
         the class to access that state.</q>
 
+      <!-- Discuss class method visibility:
+      Occasionally, it is useful to specify that a class method should be private. If your class
+  defines factory methods, for example, you might want to make the new method private.
+To do this, use the private_class_method method, specifying one or more method
+names as symbols:
+    private_class_method :new
+You can make a private class method public again with public_class_method. Neither
+method can be invoked without arguments in the way that public, protected, and
+private can be. -->
+
   <h3>Aliases</h3>
 
     <p>An <dfn id=method-alias>alias</dfn> of a method is an alternate name by which it can be referred.
@@ -1255,26 +1283,26 @@
 
   <h3><code>Kernel#respond_to_missing?</code></h3>
 
-  <p>A consequence of defining methods dynamically with
-  <code>Kernel#method_missing</code> is that an object may respond to a given
-  message, yet return <code>false</code> for
-  <code>Kernel#respond_to?(<var>selector</var>)</code>.
-
-  <p>Before <code>Kernel#respond_to?</code> returns <code>false</code> it
-  tries to send itself a message named <code>:respond_to_missing?</code> with
-  a first argument of the selector in question, and the second the value of
-  <var>include_private</var>. (If <code>#respond_to?</code> is called with a
-  second argument of <code>true</code>, <var>include_private</var> is
-  <code>true</code> and private methods should be considered; otherwise its
-  <code>false</code> and they shouldn’t). If
-  <code>#respond_to_missing?</code> is defined and returns a true value,
-  <code>#respond_to?</code> returns <code>true</code>; otherwise
-  <code>#respond_to?</code> returns <code>false</code>. 
-
-  <p>Therefore, <code>#respond_to?</code> can be made to work with methods
-  defined with <code>method_missing</code> by defining a
-  <code>#respond_to_missing?</code> method which returns <code>true</code>
-  when passed the name of such a method.
+    <p>A consequence of defining methods dynamically with
+    <code>Kernel#method_missing</code> is that an object may respond to a given
+    message, yet return <code>false</code> for
+    <code>Kernel#respond_to?(<var>selector</var>)</code>.
+    
+    <p>Before <code>Kernel#respond_to?</code> returns <code>false</code> it
+    tries to send itself a message named <code>:respond_to_missing?</code> with
+    a first argument of the selector in question, and the second the value of
+    <var>include_private</var>. (If <code>#respond_to?</code> is called with a
+    second argument of <code>true</code>, <var>include_private</var> is
+    <code>true</code> and private methods should be considered; otherwise its
+    <code>false</code> and they shouldn’t). If
+    <code>#respond_to_missing?</code> is defined and returns a true value,
+    <code>#respond_to?</code> returns <code>true</code>; otherwise
+    <code>#respond_to?</code> returns <code>false</code>. 
+    
+    <p>Therefore, <code>#respond_to?</code> can be made to work with methods
+    defined with <code>method_missing</code> by defining a
+    <code>#respond_to_missing?</code> method which returns <code>true</code>
+    when passed the name of such a method.
 
   <h3><code>Method</code> Objects</h3>
 
@@ -1333,6 +1361,9 @@
       <code>Object#define_method</code> using the same <code>Proc</code>/block, aliases created
       with <code>alias</code>, and core method aliases. <!-- TODO: clarify situation with
       #respond_to_missing? -->
+      
+      <!-- Example which uses equality to determine if a method is an alias,
+      or find all aliases for a given class -->
 
     <h4>Source Location</h4>
 
@@ -1341,6 +1372,9 @@
       <code>nil</code>. This is primarily useful for extracting a method’s signature and any preceding
       documentation.
 
+      <!-- Example using the fact that no source location indicates a non-Ruby
+      implementation. #ruby? #c? #core? The latter would need addition heuristics, in
+      theory. -->
     <h4>Parameters</h4>
 
       <!-- [ruby-core:19759] Proposal: Method#get_args -->   
