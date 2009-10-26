@@ -11,121 +11,187 @@
   <body>
 <h2>Classes</h2>
 
-  <p>We have introduced classes as templates from which objects can be
-  created. A class is typically created with the <code>class</code>
-  keyword followed by the class name.
-
-  <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It constitutes a template from
-  which such objects can be constructed. Hence <code>3</code> and <code>198705</code> are both
-  instances of the <code>Integer</code> class. Their data (i.e. their numerical value) differs but
-  they behave as any other instance of their class. That is, by their nature as integers both objects
-  can be multiplied by another integer, and both are either odd or even, etc.
+  <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It
+  constitutes a template from which such objects can be constructed. Hence
+  <code>3</code> and <code>198705</code> are both instances of the
+  <code>Integer</code> class. Their data (i.e. their numerical value) differs
+  but they behave as any other instance of their class. <!-- Not necessarily
+  true --> That is, by their nature as integers both objects can be multiplied
+  by another integer, and both are either odd or even, etc.
   <!-- snip etc. -->
 
-  <aside>The term <i>class</i> is roughly analogous to its biological definition where it denotes a
-  taxonomic rank, however this analogy does not extend to subclasses. That is, a subclass of a class
-  is termed a <i>subclass</i>; not an <i>order</i>.</aside>
+  <aside>
+    The term <i>class</i> is roughly analogous to its biological definition
+    where it denotes a taxonomic rank, however this analogy does not extend to
+    subclasses. That is, a subclass of a class is termed a <i>subclass</i>;
+    not an <i>order</i>.
+  </aside>
 
-  <figure id=class-keyword>
-  <dt>Usage of the <code>class</code> keyword to <i>open</i> a class named
-  <code>Dog</code></dt>
-  <dd>
-    <pre><code>
-    class Dog
-    end
-    </code></pre>
-  </dd>
-  </figure>
-
-  <p>The <code>Class.new</code> constructor may be used to the same effect
-  if it is assigned to a constant. <!-- Describe use of Class.new to
-  dynamically create a class with a given superclass -->
-
-  <figure id=class-new>
-  <dt>Usage of the <code>Class.new</code> constructor to create a class
-  named <code>Dog</code></dt>
-  <dd>
-    <pre><code>
-    Dog = Class.new
-    </code></pre>
-  </dd>
-  </figure>
-
-  <!-- Superclass can't be changed once set. (The old class can be deleted and
-  redefined, of course) -->
   <h3>Names</h3>
 
-  <h4>Rules</h4>
+    <p>A non-anonymous class is named with a constant, i.e. an identifier
+    which begins with an ASCII capital letter. 
 
-  <p>The name of class must: 
-    <ul>
-      <li>Begin with an uppercase ASCII letter (A-Z) (U+0041..U+005A).
-      <li>Not contain a colon (U+003A).
-      <li>Not contain an ASCII space character (U+0020)
-    </ul>
-    <!-- FIXME: Derive and enumerate rules -->
+    <h4>Rules</h4>
 
-  <p>More generally, a class name consists of an uppercase ASCII character, optionally followed by a
-  sequence of other alphanumeric characters
+      <p>The name of class must: 
+        <ul>
+          <li>Begin with an uppercase ASCII letter (A-Z) (U+0041..U+005A).
+          <li>Not contain a colon (U+003A).
+          <li>Not contain an ASCII space character (U+0020)
+        </ul>
+        <!-- FIXME: Derive and enumerate rules -->
 
-  <aside class=warning>
-    Class names containing non-ASCII characters cannot be referred to from source files using a
-    different encoding. For example, a class name containing character U+03BB (<i>GREEK SMALL LETTER
-      LAMDA</i>) can only be referenced from source files using the UTF-8 source encoding. <!-- FIXME:
-    What about other Unicode character sets? -->
-   </aside>
+      <p>More generally, a class name consists of an uppercase ASCII
+      character, optionally followed by a sequence of other alphanumeric
+      characters
 
-  <h4>Conventions</h4>
+      <aside class=warning>
+        Class names containing non-ASCII characters cannot be referred to from
+        source files using a different encoding. For example, a class name
+        containing character U+03BB (<i>GREEK SMALL LETTER LAMDA</i>) can only be
+        referenced from source files using the UTF-8 source encoding. <!-- FIXME:
+        What about other Unicode character sets? -->
+       </aside>
 
-  <p>Conventionally class names use camel-case capitalization: The initial letter of each word is
-  capitalized, and spaces between the words are removed. For example:
-  <code>RubyProgrammingLanguage</code> or <code>NutsAndBolts</code>.</p>
+    <h4>Conventions</h4>
 
-  <p>A class name is a constant. The use of camel-case for class names and uppercase for constant
-  names ensures that the two don't clash.
+      <p>Conventionally class names use camel-case capitalization: The initial letter of each word is
+      capitalized, and spaces between the words are removed. For example:
+      <code>RubyProgrammingLanguage</code> or <code>NutsAndBolts</code>.</p>
 
-  <h3>Reopening Classes</h3>
+      <p>A class name is a constant. The use of camel-case for class names and uppercase for constant
+      names ensures that the two don't clash.
 
-  <p>If <code>class</code> is used with the name of a pre-existing class that class is
-  <i>re-opened</i>. If a method is defined in a re-opened class with the same name as a pre-existing
-  method in the same class the old method is overwritten with the new.
+  <h3>Inheritance</h3>
 
-  <figure id=reopened-class>
-    <dt>Re-defining a method in an existing class</dt>
-    <dd>
-      <pre><code>
-        'hello'.size #=&gt; 5
-        class String
-          def size
-            'How long is a piece of string?'
+    <p>A class <dfn title=inheritance>inherits</dfn> behaviour and state from
+    another class called its <dfn title=superclass>superclass</dfn>. The
+    exception is <code>BasicObject</code>, which sits at the top of the class
+    hierarchy <!-- Discuss this concept? --> so doesn’t have a superclass. The
+    default superclass is <code>Object</code>. Classes that inherit from a
+    given class are its <dfn title=subclasses>subclasses</dfn>.<!-- reword this -->
+
+    <section>
+      <h4>Superclass</h4>
+        
+        <p>The superclass is a class object. It is typically specified as a
+        constant literal, but can be any expression evaluating to the same.
+        <code>Class#superclass</code> returns the receiver’s superclass as a
+        <code>Class</code> object, or <code>nil</code> if the receiver is
+        <code>BasicObject</code>.
+        
+        <p>A class’s superclass is fixed for its lifetime. (A new class may be
+        created with the same name and a different a superclass, of course).
+    </section>
+
+    <p><i>Inheritance</i> occurs because the method—, class-variable—, and
+    constant—lookup  <!-- is this all? --> algorithms consider the superclass
+    when unable to find what they’re looking for in a given class. Methods and
+    variables are not copied to subclasses. A subclass is, therefore, a
+    specialisation of its superclass.
+
+    <p>Inheritance merely determines the initial behaviour of a class; the
+    subclass can diverge by defining, redefining, or removing methods, and
+    modifying and undefining class variables or constants.
+
+  <h3>Creation</h3>
+
+    <h4>The <code>class</code> Keyword</h4>
+
+      <p>The <code>class <var>name</var> &lt; <var>superclass</var>…end</code>
+      construct opens a class named <var>name</var>. If the constant
+      <var>name</var> is already defined it must refer to an existing class,
+      otherwise a <code>TypeError</code> is raised.  If <var>name</var> was
+      previously undefined, it is created as a <code>Class</code> object. The
+      <code>&lt; <var>superclass</var></code> portion may be omitted, in which
+      case the <var>superclass</var> defaults to <code>Object</code>.
+      <var>superclass</var> may be any expression that evaluates to a
+      <code>Class</code> object. 
+
+      <section>
+        <h5>Reopening Classes</h5>
+
+          <p>If <code>class</code> is used with the name of a pre-existing class
+          that class is <i>re-opened</i>. If a method is defined in a re-opened
+          class with the same name as a pre-existing method in the same class the
+          old method is overwritten with the new.
+
+          <figure id=reopened-class>
+            <dt>Re-defining a method in an existing class</dt>
+            <dd>
+              <pre><code>
+                'hello'.size #=&gt; 5
+                class String
+                  def size
+                    'How long is a piece of string?'
+                  end
+                end
+                'hello'.size #=&gt; 'How long is a piece of string?'
+              </code></pre>
+            </dd>
+          </figure>  
+      </section>
+
+      <p>The class body, which may be empty, is the elliptical region in the
+      construct. It introduces a new context in which <code>self</code> refers
+      to the class.
+
+      <figure id=class-keyword>
+        <dt>Usage of the <code>class</code> keyword to <i>open</i> a class named
+        <code>Dog</code></dt>
+        <dd>
+          <pre><code>
+          class Dog
           end
-        end
-        'hello'.size #=&gt; 'How long is a piece of string?'
-      </code></pre>
-    </dd>
-  </figure>  
+          </code></pre>
+        </dd>
+      </figure>
 
-  <h3>Anonymous Classes</h3>
+    <h4><code>Class.new</code></h4>
+  
+      <p>The <code><var>name</var> = Class.new do…end</code> constructor may
+      be used to similar effect. The principle difference being that existing
+      classes are overwritten rather than reopened.
 
-  <p>When a constant is used as a class name it has global scope. This gives rise to the
-  characteristic described above in <i>Reopening
-    Classes</i>. If this behaviour is not desirable, a class can be made anonymous by assigning the
-  value of <code>Class.new</code> to a local variable, thus restricting the class to the local scope.
+      <figure id=class-new>
+        <dt>Usage of the <code>Class.new</code> constructor to create a class
+        named <code>Dog</code></dt>
+        <dd>
+          <pre><code>
+          Dog = Class.new
+          </code></pre>
+        </dd>
+      </figure>
 
-  <figure id=anonymous-class>
-  <dt>Creating an anonymous class with <code>Class.new</code></dt>
-    <dd>
-      <pre><code>
-        dog = Class.new
-        dog.class_eval do
-          def bark
-            :woof
-          end
-        end
-        dog.new.bark #=&gt; :woof
-      </code></pre>
-    </dd>
-  </figure>
+      <section>
+        <h5>Anonymous Classes</h5>
+
+          <p>When a constant is used as a class name it has global scope. This
+          gives rise to the characteristic described above in <i>Reopening
+            Classes</i>. If this behaviour is not desirable, a class can be
+          made anonymous by assigning the value of <code>Class.new</code> to a
+          local variable, thus restricting the class to the local scope.
+          Subsequently assigning this variable to a constant, names the class.
+          <!-- Example -->
+          
+          
+          <figure id=anonymous-class>
+          <dt>Creating an anonymous class with <code>Class.new</code></dt>
+            <dd>
+              <pre><code>
+                dog = Class.new
+                dog.class_eval do
+                  def bark
+                    :woof
+                  end
+                end
+                dog.new.bark #=&gt; :woof
+              </code></pre>
+            </dd>
+          </figure>
+
+      </section>
 
   <h3>Context</h3>
   <!-- class_eval / class_exec -->
