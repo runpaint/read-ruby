@@ -149,9 +149,11 @@
     If called without arguments it invokes the superclass method with the
     arguments received by the current method (this is known as the <dfn
       title="implicit argument form of <code>super</code>">implicit argument
-      form of <code>super</code></dfn>).  Otherwise, it sends the arguments it
-    has been given to the superclass method. <!-- How do you invoke the method
-    without any arguments? -->
+      form of <code>super</code></dfn>). Otherwise, it sends the arguments it
+    has been given to the superclass method. In either case, the arguments are
+    sent as they currently exist: if they have been modified by the method,
+    their modified forms are sent. To explicitly invoke the superclass
+    method without any arguments use <code>super()</code>.
 
     <p>A <code>NoMethodError</code> is raised if a corresponding method is not
     defined in the superclass. <!-- Suggest if
