@@ -65,12 +65,14 @@
 
   <h3>Inheritance</h3>
 
-    <p>A class <dfn title=inheritance>inherits</dfn> behaviour and state from
-    another class called its <dfn title=superclass>superclass</dfn>. The
-    exception is <code>BasicObject</code>, which sits at the top of the class
-    hierarchy <!-- Discuss this concept? --> so doesn’t have a superclass. The
-    default superclass is <code>Object</code>. Classes that inherit from a
-    given class are its <dfn title=subclasses>subclasses</dfn>.<!-- reword this -->
+    <p>A class <dfn title=inheritance>inherits</dfn> behaviour and certain
+    state <!-- is state inherited? --> from another class called its <dfn
+      title=superclass>superclass</dfn>. The exception is
+    <code>BasicObject</code>, which sits at the top of the class hierarchy
+    <!-- Discuss this concept? --> so doesn’t have a superclass. The default
+    superclass is <code>Object</code>. Classes that inherit from a given class
+    are its <dfn title=subclasses>subclasses</dfn>.<!-- reword this --> A
+    subclass is, therefore, a specialisation of its superclass.
 
     <section>
       <h4>Superclass</h4>
@@ -85,15 +87,36 @@
         created with the same name and a different a superclass, of course).
     </section>
 
-    <p><i>Inheritance</i> occurs because the method—, class-variable—, and
-    constant—lookup  <!-- is this all? --> algorithms consider the superclass
-    when unable to find what they’re looking for in a given class. Methods and
-    variables are not copied to subclasses. A subclass is, therefore, a
-    specialisation of its superclass.
-
     <p>Inheritance merely determines the initial behaviour of a class; the
     subclass can diverge by defining, redefining, or removing methods, and
-    modifying and undefining class variables or constants.
+    modifying <!-- must we talk about the modification of constants? --> and
+    undefining or constants.
+
+    <p>Inheritance occurs because the method— and constant—lookup  <!--
+    is this all? --> algorithms consider the superclass when unable to resolve
+    the given name against the current class. Methods and constants are not
+    copied to subclasses. 
+
+    <p>It is worth stating explicitly that instance variables and class
+    variables are <em>not</em> inherited. <a href=#refFLAN08
+      class=ref>Flanagan &amp; Matsumoto</a> (pp. 239–240) note a corollary:
+    <q>If a subclass uses an instance variable with the same name as a
+      variable used by one of its ancestors, it will overwrite the value of
+      its ancestor’s variable.</q> 
+
+    <p>Class variables are, however, <i>shared</i> between subclasses: the
+    same variable is accessed by all; it is neither duplicated nor shadowed.
+    Therefore, the modification of a class variable defined in a superclass
+    affects the superclass along with any sibling classes.
+
+    <!-- Is this the right place to discuss constants? -->
+
+    <p>Constants are inherited in a similar way to methods. A subclass may
+    access his superclass’s constants by referring to them with either their
+    fully— or non—qualified name. If a subclass assigns to an unqualified
+    constant name defined in his superclass, a new constant with that name is
+    defined in the subclass. <!-- Refer to constant-lookup algorithm
+    description -->
 
   <h3>Creation</h3>
 
