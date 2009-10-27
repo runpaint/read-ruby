@@ -11,6 +11,9 @@
   <body>
 <h2>Classes</h2>
 
+  <!-- http://blog.rubybestpractices.com/posts/rklemme/018-Complete_Class.html -->
+  <!-- What does it mean to dup or clone a class? -->
+
   <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It
   constitutes a template from which such objects can be constructed. Hence
   <code>3</code> and <code>198705</code> are both instances of the
@@ -29,8 +32,13 @@
 
   <h3>Names</h3>
 
-    <p>A non-anonymous class is named with a constant, i.e. an identifier
-    which begins with an ASCII capital letter. 
+    <!-- Mention the Class::Subclass name qualification here or in Constants
+    section? In same place mention Ruby's preference for flat hierarchies -->
+
+    <p>A non-anonymous <!-- Does it make sense to introduce anonymous classes
+    here? --> class is named with a constant, i.e. an identifier
+    which begins with an ASCII capital letter. <!-- Class#name returns name as
+    String; nil for anonymous classes -->
 
     <h4>Rules</h4>
 

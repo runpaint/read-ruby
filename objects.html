@@ -420,7 +420,8 @@
         operator">spaceship operator</dfn>) expecting a single argument and
       following the <tt>qsort(3)</tt> convention of returning <code>-1</code> if
       <code>self</code> is less than the argument, <code>0</code> if they are
-      equal, or <code>1</code> if <code>self</code> is greater.
+      equal, or <code>1</code> if <code>self</code> is greater. <!-- Describe
+      returning nil for incomparable argument -->
 
       <p>The class then mixes in the <code>Comparable</code> module, which
       provides <code>#&lt;</code>, <code>#==</code>, and <code>#&gt;</code>
@@ -432,6 +433,10 @@
     <h3>Equivalence</h3>
 
       <!-- Link with Comparison section: <=> defines == --> 
+      <!-- Diagram showing equality on a strict..loose line, e.g. 
+      equal?    eql?  ==
+      Strictest <-> Loosest
+      --> 
       <p>The means by which objects are compared for equality depend on the type
       of equality desired.
       
@@ -451,13 +456,14 @@
       <p><code>Object#!=</code> returns the inverse of <code>Object#==</code>,
       so it does not normally need to be defined explicitly. It can be, however.
       
-      <p><code>Object#eql?</code> is also an alias of <code>Object#equal?</code>
-      that subclasses often override. It differs from <code>Object#==</code> in
-      that it denotes <i>strict</i> logical comparison without performing type
-      conversion. For example, consider 1 and 1.0. The two are logically
-      equivalent if converted to the same class, so <code>1 == 1.0</code>.
-      However, <code>1.eql?(1.0) == false</code> because
-      <code>Object#eql?</code> does not perform type conversion.
+      <p><code>Object#eql?</code> is also an alias of
+      <code>Object#equal?</code> that subclasses often override. It differs
+      from <code>Object#==</code> in that it denotes <i>strict</i> logical
+      comparison without performing type conversion. For example, consider 1
+      and 1.0. The two are logically equivalent if converted to the same
+      class, so <code>1 == 1.0</code>.  However, <code>1.eql?(1.0) ==
+        false</code> because <code>Object#eql?</code> does not perform type
+      conversion.
       
       <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (pp. 77–78)
       state that <q>If two objects are <code>eql?</code>, their
