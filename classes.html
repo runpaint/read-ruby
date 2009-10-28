@@ -273,7 +273,26 @@
   <h3>Context</h3>
   <!-- class_eval / class_exec -->
   <h3>Structs</h3>
-  <h3>Singletons</h3>
+
+  <h3>Eigenclasses</h3> <!-- "singleton class"? -->
+  
+    <p>Every object is associated with two classes: that with which it was
+    instantiated, and an anonymous class specific to the object: its
+    <dfn title=eigenclass>eigenclass</dfn>. It is the eigenclass that holds
+    the object’s singleton methods. Class methods are, therefore, methods
+    defined in the eigenclass of a <code>Class</code> object.
+
+    <p>The eigenclass of an object is opened with the <code>class &lt;&lt;
+      <var>object</var>…end</code> construct: the <code>class</code> keyword
+    followed by two less-than signs, an expression evaluating to an object,
+    then the class body. Methods defined within the body are defined on
+    <var>object</var>. Within a standard class definition, the class’s
+    eigenclass can be opened by supplying <code>self</code> as the value for
+    <var>object</var>.
+
+    <p>It is usually clearer to define singleton methods with the <code>def
+      <code>object</var>.<var>method</var></code> syntax rather than
+    explicitly opening <var>object</var>’s eigenclass.
 
   <h3>Class Variables</h3>
 
