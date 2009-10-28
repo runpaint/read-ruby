@@ -119,11 +119,6 @@
       variable used by one of its ancestors, it will overwrite the value of
       its ancestor’s variable.</q> 
 
-    <p>Class variables are, however, <i>shared</i> between subclasses: the
-    same variable is accessed by all; it is neither duplicated nor shadowed.
-    Therefore, the modification of a class variable defined in a superclass
-    affects the superclass along with any sibling classes.
-
     <!-- Is this the right place to discuss constants? -->
 
     <p>Constants are inherited in a similar way to methods. A subclass may
@@ -281,7 +276,28 @@
   <h3>Singletons</h3>
 
   <h3>Class Variables</h3>
-  
+
+    <p><dfn title="class variables">Class variables</dfn> are variables local
+    to a class, typically used to share state between instances. They are
+    named with two commercial at signs followed by an identifier, i.e.
+    <code>@@<var>identifier</var></code>.
+
+    <p>They are encapsulated: inaccessible <!-- more accurate term? -->
+    outside of the class and its child classes. However, the encapsulation can
+    be broken with <code>Class#class_variable_get(<var>name</var>)</code> or
+    <code>Class#class_variable_set(<var>name</var>, <var>value</var>)</code>,
+    where <var>name</var> is the class variable name as a <code>Symbol</code>. 
+    
+    <p>Class variables are not subject to inheritance, but are <i>shared</i>
+    between subclasses: the same variable is accessed by all; it is neither
+    duplicated nor shadowed.  Therefore, the modification of a class variable
+    defined in a superclass affects the superclass along with any sibling
+    classes.
+
+    <p><code>Class#class_variables</code> returns an <code>Array</code> of the
+    class’s class variables as <code>Symbol</code>s, sans their
+    <code>@@</code> prefixes.
+
   <h3>Class Instance Variables</h3>
 
     <p>An instance variable used within a class definition, outside of an
