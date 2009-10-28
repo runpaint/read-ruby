@@ -35,7 +35,6 @@
     <!-- Mention the Class::Subclass name qualification here or in Constants
     section? In same place mention Ruby's preference for flat hierarchies -->
 
-    <!-- Scope of constants -->
     <p>A non-anonymous <!-- Does it make sense to introduce anonymous classes
     here? --> class is named with a constant, i.e. an identifier
     which begins with an ASCII capital letter. <!-- Class#name returns name as
@@ -66,12 +65,13 @@
 
     <h4>Conventions</h4>
 
-      <p>Conventionally class names use camel-case capitalization: The initial letter of each word is
-      capitalized, and spaces between the words are removed. For example:
-      <code>RubyProgrammingLanguage</code> or <code>NutsAndBolts</code>.</p>
+      <p>Conventionally class names use camel-case capitalization: The initial
+      letter of each word is capitalized, and spaces between the words are
+      removed. For example: <code>RubyProgrammingLanguage</code> or
+      <code>NutsAndBolts</code>.</p>
 
-      <p>A class name is a constant. The use of camel-case for class names and uppercase for constant
-      names ensures that the two don't clash.
+      <p>A class name is a constant. The use of camel-case for class names and
+      uppercase for constant names ensures that the two don't clash.
 
   <h3>Inheritance</h3>
 
@@ -83,6 +83,8 @@
     superclass is <code>Object</code>. Classes that inherit from a given class
     are its <dfn title=subclasses>subclasses</dfn>.<!-- reword this --> A
     subclass is, therefore, a specialisation of its superclass.
+
+    <!-- Discuss multiple inheritance and mix-ins? --> 
     
     <section>
       <h4>Superclass</h4>
@@ -141,11 +143,11 @@
       expression opens a class named <var>name</var>. If the constant
       <var>name</var> is already defined it must refer to an existing class,
       otherwise a <code>TypeError</code> is raised.  If <var>name</var> was
-      previously undefined, it is created as a <code>Class</code> object. The
-      <code>&lt; <var>superclass</var></code> portion may be omitted, in which
-      case the <var>superclass</var> defaults to <code>Object</code>.
-      <var>superclass</var> may be any expression that evaluates to a
-      <code>Class</code> object. 
+      previously undefined, it is created as<!-- "to refer to"? --> a
+      <code>Class</code> object. The <code>&lt; <var>superclass</var></code>
+      portion may be omitted, in which case the <var>superclass</var> defaults
+      to <code>Object</code>.  <var>superclass</var> may be any expression
+      that evaluates to a <code>Class</code> object. 
 
       <section>
         <h5>Reopening Classes</h5>
@@ -173,7 +175,7 @@
           <p>Classes can be made immutable, effectively preventing them from
           being reopened by freezing the class object. Frozen classes raise
           <code>RuntimeError</code>s when methods are defined, or variables
-          maniplauted, in their context. 
+          manipulated, in their context. 
       </section>
 
       <p>The class body, which may be empty, is the elliptical region in the
@@ -210,7 +212,8 @@
       <section>
         <h5>Anonymous Classes</h5>
 
-          <p>When a constant is used as a class name it has global scope. This
+          <p>When a constant is used as a class name it has global <!-- This
+          word is problematic. How to better explain? --> scope. This
           gives rise to the characteristic described above in <i>Reopening
             Classes</i>. If this behaviour is not desirable, a class can be
           made anonymous by assigning the value of <code>Class.new</code> to a
@@ -237,7 +240,7 @@
       </section>
 
     <h3>Nesting</h3>
-
+ 
       <p>A class may be defined within the body of another class. The fully
       qualified name of the inner class is
       <code><var>outer</var>::<var>inner</var></code>, where <var>outer</var> is
@@ -255,7 +258,7 @@
       referring to <code>Products::String</code>; not the core
       <code>String</code> class (which would need referring to as
       <code>::String</code>).
-
+  
       <p>Classes may, therefore, re-purpose the names of their ancestors to
       create materially different classes, as above, or to customise them
       through inheritance.<!-- examples of both --> In either case their changes
@@ -263,11 +266,11 @@
       unqualified name will be unaffected. Regardless, re-using names in this
       manner can obfuscate code, so should only be done intentionally with due
       consideration of the implications.
-
-      <p>A class’ nesting bears no relation to its superclass. A nested class
+  
+      <p>A class’ nesting does not determine its superclass. A nested class
       defined without an explicit superclass does not inherit from its
       enclosing class; it inherits from <code>Object</code>, as normal.
-
+  
       <p>The nesting of a class is returned as an <code>Array</code> of
       <code>Class</code> objects by <code>Module#nesting</code>, where the
       first element is the innermost class, and the last the outermost.
@@ -351,6 +354,7 @@ and Point.totalY. -->
     <li>const_missing (kind of like class_missing...)
     <li>Enumerating classes with #constants (Code example from understand).
     Right heading? )
+
   <h3>Type</h3> 
 
     <p><q>In many object-oriented languages, class names are used…for the type
