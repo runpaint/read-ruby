@@ -84,6 +84,8 @@
     are its <dfn title=subclasses>subclasses</dfn>.<!-- reword this --> A
     subclass is, therefore, a specialisation of its superclass.
 
+    <!-- Example: Ruby < Smalltalk...go on to explain multiple inheritance is
+    needed, i.e. mixins -->
     <!-- Discuss multiple inheritance and mix-ins? --> 
     
     <section>
@@ -95,9 +97,6 @@
         <code>Class</code> object, or <code>nil</code> if the receiver is
         <code>BasicObject</code>.
         
-        <!-- Example of subclassing a Struct, i.e. class S < Struct.new(:foo,
-        :bar) -->
-
         <p>A class’s superclass is fixed for its lifetime. (A new class may be
         created with the same name and a different a superclass, of course).
     </section>
@@ -129,7 +128,10 @@
     description -->
 
     <h4>The <code>Class#inherited</code> hook</h4>  
-    <!-- def Object.inherited -->
+
+      <p>If a class defines a singleton method named <code>:inherited</code>, it
+      is invoked when the class is inherited with the subclass as its argument.
+
   <h3>Creation</h3>
 
     <h4>The <code>class</code> Keyword</h4>
