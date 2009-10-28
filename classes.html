@@ -279,64 +279,35 @@
   <!-- class_eval / class_exec -->
   <h3>Structs</h3>
   <h3>Singletons</h3>
-  <h3>Class Instance Variables</h3>
-  <!--  Classes are objects and can have instance variables just as other objects can. The
-instance variables of a class—often called class instance variables—are not the same as
-class variables. But they are similar enough that they can often be used instead of class
-variables.
-An instance variable used inside a class definition but outside an instance method
-definition is a class instance variable. Like class variables, class instance variables are
-associated with the class rather than with any particular instance of the class. A
-disadvantage of class instance variables is that they cannot be used within instance
-methods as class variables can. Another disadvantage is the potential for confusing
-them with ordinary instance variables. Without the distinctive punctuation prefixes, it
-may be more difficult to remember whether a variable is associated with instances or
-with the class object.
-One of the most important advantages of class instance variables over class variables
-has to do with the confusing behavior of class variables when subclassing an existing
-class. We’ll return to this point later in the chapter.
-Let’s port our statistics-gathering version of the Point class to use class instance varia-
-bles instead of class variables. The only difficulty is that because class instance variables
-cannot be used from instance methods, we must move the statistics gathering code out
-of the initialize method (which is an instance method) and into the new class method
-used to create points:
-     class Point
-       # Initialize our class instance variables in the class definition itself
-       @n = 0               # How many points have been created
-       @totalX = 0          # The sum of all X coordinates
-       @totalY = 0          # The sum of all Y coordinates
-       def initialize(x,y) # Initialize method
-         @x,@y = x, y       # Sets initial values for instance variables
-       end
-       def self.new(x,y)    # Class method to create new Point objects
-         # Use the class instance variables in this class method to collect data
-         @n += 1            # Keep track of how many Points have been created
-         @totalX += x       # Add these coordinates to the totals
-         @totalY += y
-         super              # Invoke the real definition of new to create a Point
-                            # More about super later in the chapter
-       end
-                                                                  7.1 Defining a Simple Class | 231
-      # A class method to report the data we collected
-      def self.report
-        # Here we use the class instance variables in a class method
-        puts "Number of points created: #@n"
-        puts "Average X coordinate: #{@totalX.to_f/@n}"
-        puts "Average Y coordinate: #{@totalY.to_f/@n}"
-      end
-    end
-Because class instance variables are just instance variables of class objects, we can use
-attr, attr_reader, and attr_accessor to create accessor methods for them. The trick,
-however, is to invoke these metaprogramming methods in the right context. Recall that
-one way to define class methods uses the syntax class << self. This same syntax allows
-us to define attribute accessor methods for class instance variables:
-    class << self
-      attr_accessor :n, :totalX, :totalY
-    end
-With these accessors defined, we can refer to our raw data as Point.n, Point.totalX,
-and Point.totalY. -->
 
   <h3>Class Variables</h3>
+  
+  <h3>Class Instance Variables</h3>
+
+    <p>An instance variable used within a class definition, outside of an
+    instance method, is a <dfn title="class instance variable">class instance
+      variable</dfn>. It is not to be confused with a class variable. <!--
+    Note that if instance variables are "declared" outside of an instance
+    method, this will not affect their use as instance variables? -->
+
+    <p>Both kinds of variables are associated with the class, as opposed to
+    its instances. The primary advantage of class instance variables over
+    class variables is that they don't exhibit the latter’s awkward sharing
+    semantics: class instance variables are not shared with subclasses.
+
+    <p>Class instance variables can be used within class methods but not
+    instance methods—as in that context they are normal instance variables—so
+    are not necessarily appropriate substitutes.
+
+    <p>Accessor methods can be created for class instance variables by using
+    <code>Module#attr_accessor</code> and <code>Module#attr_writer</code>
+    inside the class’s singleton class.
+
+    <pre><code>
+      class &lt;&lt; self
+        attr_accessor :class_instance_variable
+      end
+    </code></pre>
 
   <h3>Eigenclasses</h3>
   <h3>Reflection</h3>
