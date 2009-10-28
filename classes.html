@@ -42,26 +42,6 @@
     String; nil for anonymous classes --> <!-- Explain that names are defined
     by a blacklist -->
 
-    <p>Constants are inherited, so classes defined at the top level, as core
-    classes conventionally are, can be referred to by their unqualified name
-    throughout the inheritance hierarchy. However, if the name is shadowed at
-    an intervening level of the hierarchy, the unqualified name refers to the
-    shadowed class/module. For example, if a class named
-    <code>Products::String</code> was defined, its subclasses that used the
-    <code>String</code> class would be referring to
-    <code>Products::String</code>; not the core <code>String</code> class
-    (which would need referring to as <code>::String</code>).
-
-    <!-- Mention that subclasses do not automatically inherit from their
-    parent -->
-    <p>Classes may, therefore, re-purpose the names of their ancestors to
-    create materially different classes, as above, or to customise them
-    through inheritance.<!-- examples of both --> In either case their changes
-    will only affect themselves and their children; other classes using the
-    unqualified name will be unaffected. Regardless, re-using names in this
-    manner can obfuscate code, so should only be done intentionally with due
-    consideration of the implications.
-
     <h4>Rules</h4>
 
       <p>The name of class must: 
@@ -104,10 +84,6 @@
     are its <dfn title=subclasses>subclasses</dfn>.<!-- reword this --> A
     subclass is, therefore, a specialisation of its superclass.
     
-    <p>A class’ superclass bears no relation to its nesting. A class defined
-    without an explicit superclass within the body of another class does not
-    inherit from its enclosing class; it inherits from <code>Object</code>.
-
     <section>
       <h4>Superclass</h4>
         
@@ -156,7 +132,7 @@
     description -->
 
     <h4>The <code>Class#inherited</code> hook</h4>  
-      <!-- def Object.inherited
+    <!-- def Object.inherited -->
   <h3>Creation</h3>
 
     <h4>The <code>class</code> Keyword</h4>
@@ -259,6 +235,42 @@
           </figure>
 
       </section>
+
+    <h3>Nesting</h3>
+
+      <p>A class may be defined within the body of another class. The fully
+      qualified name of the inner class is
+      <code><var>outer</var>::<var>inner</var></code>, where <var>outer</var> is
+      the name of the enclosing class, and <var>inner</var> that of the
+      enclosed. This <dfn title=nesting>nesting</dfn> behaviour is primarily
+      used for namespacing. Modules are another alternative.
+
+      <p>Since class names are constants and constants are inherited, classes
+      defined at the top level, as core classes conventionally are, can be
+      referred to by their unqualified name throughout the inheritance
+      hierarchy. However, if the name is shadowed at an intervening level of
+      the hierarchy, the unqualified name refers to the shadowed class/module.
+      For example, if a class named <code>Products::String</code> was defined,
+      its subclasses that used the <code>String</code> class would be
+      referring to <code>Products::String</code>; not the core
+      <code>String</code> class (which would need referring to as
+      <code>::String</code>).
+
+      <p>Classes may, therefore, re-purpose the names of their ancestors to
+      create materially different classes, as above, or to customise them
+      through inheritance.<!-- examples of both --> In either case their changes
+      will only affect themselves and their children; other classes using the
+      unqualified name will be unaffected. Regardless, re-using names in this
+      manner can obfuscate code, so should only be done intentionally with due
+      consideration of the implications.
+
+      <p>A class’ nesting bears no relation to its superclass. A nested class
+      defined without an explicit superclass does not inherit from its
+      enclosing class; it inherits from <code>Object</code>, as normal.
+
+      <p>The nesting of a class is returned as an <code>Array</code> of
+      <code>Class</code> objects by <code>Module#nesting</code>, where the
+      first element is the innermost class, and the last the outermost.
 
   <h3>Context</h3>
   <!-- class_eval / class_exec -->
