@@ -40,6 +40,7 @@
 
     <h3>Literals</h3>
 
+    <!-- Discuss &:sym as a literal? -->
     <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
     for the instantiation of a particular core object.
       <!-- Doesn’t call initialize; Performance pips pedagogy -->
@@ -513,7 +514,8 @@
       returns <var>@a</var>; <var>a=</var> sets <var>@a</var>. If the attribute
       value is not backed by an instance variable, it should be exposed in the
       same way (<a href=#refMEYER00 class=ref>Meyer</a>, pp. 55–57) by defining
-      the methods manually. 
+      the methods manually. <!-- In the Ruby cookbook these are called
+      "virtual attributes" --> 
       
       <!-- Module#attr ? -->
   
@@ -675,6 +677,7 @@
 
   <h2>Conversion</h2>
 
+    <!-- Borrow from Ruby Cookbook, pp 287–291 -->
     <p>Selectors whose names begin with <i>to_</i> are expected to return
     the receiver converted to an object of the indicated class. A conversion
     is either <i>implicit</i> or <i>explicit</i>, as explained below:

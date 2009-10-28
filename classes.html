@@ -35,10 +35,32 @@
     <!-- Mention the Class::Subclass name qualification here or in Constants
     section? In same place mention Ruby's preference for flat hierarchies -->
 
+    <!-- Scope of constants -->
     <p>A non-anonymous <!-- Does it make sense to introduce anonymous classes
     here? --> class is named with a constant, i.e. an identifier
     which begins with an ASCII capital letter. <!-- Class#name returns name as
-    String; nil for anonymous classes -->
+    String; nil for anonymous classes --> <!-- Explain that names are defined
+    by a blacklist -->
+
+    <p>Constants are inherited, so classes defined at the top level, as core
+    classes conventionally are, can be referred to by their unqualified name
+    throughout the inheritance hierarchy. However, if the name is shadowed at
+    an intervening level of the hierarchy, the unqualified name refers to the
+    shadowed class/module. For example, if a class named
+    <code>Products::String</code> was defined, its subclasses that used the
+    <code>String</code> class would be referring to
+    <code>Products::String</code>; not the core <code>String</code> class
+    (which would need referring to as <code>::String</code>).
+
+    <!-- Mention that subclasses do not automatically inherit from their
+    parent -->
+    <p>Classes may, therefore, re-purpose the names of their ancestors to
+    create materially different classes, as above, or to customise them
+    through inheritance.<!-- examples of both --> In either case their changes
+    will only affect themselves and their children; other classes using the
+    unqualified name will be unaffected. Regardless, re-using names in this
+    manner can obfuscate code, so should only be done intentionally with due
+    consideration of the implications.
 
     <h4>Rules</h4>
 
@@ -311,6 +333,8 @@ and Point.totalY. -->
     <li>method_removed / singleton_method_removed
     <li>method_undefined / singleton_method_undefined
     <li>const_missing (kind of like class_missing...)
+    <li>Enumerating classes with #constants (Code example from understand).
+    Right heading? )
   <h3>Type</h3> 
 
     <p><q>In many object-oriented languages, class names are used…for the type
