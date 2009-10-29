@@ -420,13 +420,16 @@
     method is given an argument of <code>false</code>, superclass methods are
     omitted.
 
+    <p>When an instance method is added to, removed from, or undefined on, a
+    class it receives <code>:method_added</code>,
+    <code>:method_removed</code>, or <code>method_undefined</code>,
+    respectively, with the method’s name as a <code>Symbol</code> argument.
+    The situation is similar for singleton methods, except the message
+    selectors are prefixed with <code>singleton_</code>. 
+
   <h3>Reflection</h3>
   <ol>
     <!-- Do the following belong here or in Methods? -->
-    <li>method_added
-    <li>singleton_method_added
-    <li>method_removed / singleton_method_removed
-    <li>method_undefined / singleton_method_undefined
     <li>const_missing (kind of like class_missing...)
     <li>Enumerating classes with #constants (Code example from understand).
     Right heading? )
