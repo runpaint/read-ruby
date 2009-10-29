@@ -41,6 +41,9 @@
     String; nil for anonymous classes --> <!-- Explain that names are defined
     by a blacklist -->
 
+    <p><code>Class#name</code> returns the class’s name as a
+    <code>String</code>, or <code>nil</code> if the class is anonymous.
+
     <h4>Rules</h4>
 
       <p>The name of class must: 
@@ -419,9 +422,6 @@
 
   <h3>Reflection</h3>
   <ol>
-    <li>ancestors
-    <li>name
-    <li>#methods / #instance_methods / etc.
     <!-- Do the following belong here or in Methods? -->
     <li>method_added
     <li>singleton_method_added
