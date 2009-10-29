@@ -95,10 +95,20 @@
         constant literal, but can be any expression evaluating to the same.
         <code>Class#superclass</code> returns the receiver’s superclass as a
         <code>Class</code> object, or <code>nil</code> if the receiver is
-        <code>BasicObject</code>.
+        <code>BasicObject</code>. 
         
         <p>A class’s superclass is fixed for its lifetime. (A new class may be
         created with the same name and a different a superclass, of course).
+    </section>
+
+    <section>
+      <h4>Ancestors</h4>
+
+        <p>The ancestors of a class are the classes and modules it inherits
+        from: its superclass and mixed-in modules, then their ancestors, and
+        so on up until the root of the inheritance hierarchy. They are
+        returned, in order, by <code>Module#ancestors</code> as an
+        <code>Array</code> of <code>Class</code> objects.
     </section>
 
     <p>Inheritance merely determines the initial behaviour of a class; the
@@ -400,10 +410,15 @@
     <code>Enumerator</code> of a <var>class</var>’s instances.
 
   <h3>Methods</h3>
+
+    <p>The methods defined on a class can be listed with
+    <code>Object#methods</code> or <code>Object#instance_methods</code>. They
+    are returned as an <code>Array</code> of <code>Symbol</code>s. If either
+    method is given an argument of <code>false</code>, superclass methods are
+    omitted.
+
   <h3>Reflection</h3>
   <ol>
-    <li>is_a? / === / kind_of? <!-- Object -->
-    <li>class<!-- Object -->
     <li>ancestors
     <li>name
     <li>#methods / #instance_methods / etc.
