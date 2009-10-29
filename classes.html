@@ -427,10 +427,15 @@
     The situation is similar for singleton methods, except the message
     selectors are prefixed with <code>singleton_</code>. 
 
+  <h3>Missing Classes</h3>  
+    
+    <p>When a constant is used without being defined the enclosing class is
+    sent a <code>:const_missing</code> message with the constant name as a
+    <code>Symbol</code> argument. This is similar to
+    <code>:method_missing</code>, but for classes.
+
   <h3>Reflection</h3>
   <ol>
-    <!-- Do the following belong here or in Methods? -->
-    <li>const_missing (kind of like class_missing...)
     <li>Enumerating classes with #constants (Code example from understand).
     Right heading? )
   </ol>
