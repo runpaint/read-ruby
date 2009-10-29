@@ -171,13 +171,13 @@
             <dt>Re-defining a method in an existing class</dt>
             <dd>
               <pre><code>
-                'hello'.size #=&gt; 5
+                'hello'.length #=&gt; 5
                 class String
-                  def size
+                  def length
                     'How long is a piece of string?'
                   end
                 end
-                'hello'.size #=&gt; 'How long is a piece of string?'
+                'hello'.length #=&gt; 'How long is a piece of string?'
               </code></pre>
             </dd>
           </figure>  
