@@ -78,6 +78,24 @@
 
   <h3>Inheritance</h3>
 
+  <!--
+     nil          }             General
+      ^           }                |
+      |           }                |
+   superclass     } ancestors      |
+       ^          }                |
+       |          }                |
+    superclass    }                | Increasing specialisation
+       ^                           |
+       |                           |
+     class                         |
+      / \                          |
+     /   \                         |
+   sub1 sub2                       |
+   ---------                       |
+   subclasses                    Specialised 
+
+    -->
     <p>A class <dfn title=inheritance>inherits</dfn> behaviour and certain
     state <!-- is state inherited? --> from another class called its <dfn
       title=superclass>superclass</dfn>. The exception is
