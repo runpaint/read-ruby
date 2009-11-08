@@ -19,11 +19,13 @@
     href=#refFLAN08>Flanagan &amp; Matsumoto (p 176)</a>. It is the <q>code
     found in a class <i>for responding to a message</i></q> (<a class=ref
     href=#refMITCHELL04>Mitchell (p 523)</a>,
-  emphasis mine. The relationship between methods and messages was explained
-  in the last chapter, so now it is suffice to say that sending a message to
-  an object with a corresponding method defined is also known as
-  <i>invoking</i> that method, and it is that terminology that we will use
-  henceforth. <!-- true? -->
+  emphasis mine. 
+
+  <p>Having received a message, an object <dfn
+    id=invoking-method>invokes</dfn> a method in response. <i>Invoke</i>
+  describes the calling of a specific method, in contrast to <i>send</i>,
+  which is used at a higher level to describe a request for an object to
+  perform a certain operation.
 
   <p>A method is invoked for the side-effect it causes, the
   value it returns, or a combination of these factors.  Note that this
