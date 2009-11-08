@@ -175,18 +175,20 @@
   <h3><code>super</code></h3>
   
     <p>The <code>super</code> keyword is used in method definitions to invoke
-    the method with the same name in the superclass (or an ancestor thereof).
-    If called without arguments it invokes the superclass method with the
-    arguments received by the current method (this is known as the <dfn
+    a method defined in the superclass, or an ancestor thereof (collectively
+    hereafter: the <i>superclass</i> <!-- Clumsy phrasing? -->), with the same
+    name. If called without arguments it invokes the superclass method with
+    the arguments received by the current method (this is known as the <dfn
       title="implicit argument form of <code>super</code>">implicit argument
-      form of <code>super</code></dfn>). Otherwise, it sends the arguments it
-    has been given to the superclass method. In either case, the arguments are
-    sent as they currently exist: if they have been modified by the method,
-    their modified forms are sent. To explicitly invoke the superclass
-    method without any arguments use <code>super()</code>.
-
-    <p>A <code>NoMethodError</code> is raised if a corresponding method is not
-    defined in the superclass. <!-- Suggest if
+      form of <code>super</code></dfn>).  Otherwise, it passes the arguments
+    it has been given to the superclass method. In either case, the arguments
+    are sent as they currently exist: if they have been modified by the
+    method, their modified forms are sent. To explicitly invoke the superclass
+    method without any arguments use <code>super()</code>. A
+    <code>NoMethodError</code> is raised if a corresponding method is not
+    defined in the superclass. 
+    
+    <!-- Suggest if
     self.class.superclass.instance_methods.include?(__method__) for testing
     whether such a method is defined -->
 
