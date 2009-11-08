@@ -115,11 +115,9 @@
 
   <h3>Return Values</h3>
 
-    <!-- Describe common case (last expression) before uncommon case (nil) -->
-    <p>A method is a expression so always returns a value. This is
-    <code>nil</code> if the method was defined without a body; the last
-    statement executed otherwise. Multiple values can be returned by using an
-    <code>Array</code> as the last statement. 
+    <p>A method is a expression so always returns a value: the last statement
+    executed, or <code>nil</code> if the method body is empty. If this value
+    is an <code>Array</code> the method effectively returns multiple values. 
 
     <figure id=def-implicit-return>
       <dt>A method which returns the Symbol <code>:to_sender</code>
@@ -144,10 +142,11 @@
       </dd>
     </figure>
 
-    <p>A <code>return</code> statement causes <code>nil</code> to be
-    immediately returned to the caller. <code>return</code> may be followed
-    by an argument in which case that is returned instead.  If multiple
-    arguments are given they will be returned as an <code>Array</code>. 
+    <p>A <code>return</code> statement causes the method to terminate
+    prematurely, immediately passing control back to the caller. The value
+    returned is that of <code>return</code>’s arguments, or <code>nil</code>
+    if it has none. If multiple arguments are given they will be returned as
+    an <code>Array</code>. 
 
     <figure id=def-explicit-return-multiple>
     <dt>A method which explicitly returns multiple values.
@@ -164,8 +163,10 @@
 
     <p>This gives rise to two conventions:
       <ul>
-        <li>A method uses a <code>return</code> statement iff it may return before its last statement.
-        <li>A method intended to return a value has that value as its last statement
+        <li>A method uses a <code>return</code> statement iff it may return
+        before its last statement.
+        <li>A method intended to return a value has that value as its last
+        statement
       </ul>
     </p>
 
