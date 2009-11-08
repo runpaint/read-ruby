@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>Methods</title>
-    <meta charset="utf-8"/>
+    <meta charset=utf-8>
     <!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
     <script src="http://html5-now.appspot.com/html5-now.js"></script>
     -->
@@ -13,15 +13,17 @@
 <h2>Methods</h2>
 
   <!-- Mention __method__ -->
-  <!-- Use Flan&Y's definition of method -->
 
-  <p>A <dfn id=method>method</dfn> is a named block of code associated with an
-  object. For now we will define <i>block of code</i> as a sequence of one or
-  more statements. It constitutes a response to a message. The relationship
-  between methods and messages was explained in the last chapter, so now it is
-  suffice to say that sending a message to an object with a corresponding method
-  defined is also known as <i>invoking</i> that method, and it is that
-  terminology that we will use henceforth.
+  <q>A <dfn id=method>method</dfn> is a named block of parameterized code
+    associated with one or more objects.</q> (<a class=ref
+    href=#refFLAN08>Flanagan &amp; Matsumoto (p 176)</a>. It is the <q>code
+    found in a class <i>for responding to a message</i></q> (<a class=ref
+    href=#refMITCHELL04>Mitchell (p 523)</a>,
+  emphasis mine. The relationship between methods and messages was explained
+  in the last chapter, so now it is suffice to say that sending a message to
+  an object with a corresponding method defined is also known as
+  <i>invoking</i> that method, and it is that terminology that we will use
+  henceforth. <!-- true? -->
 
   <p>A method is invoked for the side-effect it causes, the
   value it returns, or a combination of these factors.  Note that this
