@@ -64,22 +64,47 @@
 
   <h3>Singleton Methods</h3>
 
-    <p>A singleton method is bound only to a specific object, as opposed to an
-    instance method which is bound to all instances of a class. Indeed, it is
-    typically a <i>factory method</i>: a constructor of instances.
+    <p>A <dfn id=singleton-method>singleton method</dfn> is a method defined
+    in the context of an object’s eigenclass. It is commonly described as a
+    method defined on a specific object, rather than all instances of a
+    certain class.
 
-    <p>Singleton methods bound to a particular class are known as <i>class
-      methods</i>. For instance, <code>File.absolute_path</code> is a class
-    method defined on the <code>File</code> class. <!-- FIXME: WRONG. See BLACK09, p
-    384 -->
+    <section>
+      <h4>Class Methods</h4>
 
-    <p>However, a singleton method may be defined on any object. Whereas
-    inheritance allows a class to be created that specializes a more
-    general class, singleton methods allow creation of an object that
-    specializes on a more general object. This is similar in concept to
-    prototype-based programming. <!-- TODO: Expand -->
+        <p>Singleton methods defined on <code>Class</code> objects are known
+        as <dfn id=class-method>class methods</dfn>. For example,
+        <code>File.absolute_path</code> is a class method defined on the
+        <code>File</code> class. <a href=#refBLACK09>Black</a> (pp. 384–385)
+        remarks that class methods are further distinguished from singleton
+        methods in that <q>a method defined as a singleton method of a class
+          object can also be called on subclasses of that class.</q>: class
+        methods are considered by the method lookup algorithm so, unlike other
+        singleton methods, they are inherited. 
+        
+        <p>Class methods are typically <dfn id=factory-method>factory
+          methods</dfn> in that they are constructors (<i>manufacturers</i>)
+        of the class’ instances.
+    </section>
 
-    <aside> 
+    <p><q>In [the] prototype-based [programming] paradigm…there are no
+      classes. Rather, new kinds of objects are formed more directly by
+      composing concrete, full-fledged objects, which are often referred to as
+      prototypes.</q> (<a href=#refTAIVALSAARI96>Taivalsaari</a>, p. 1).
+    Taivalsaari contrasts these paradigms by remarking that <q>…unlike in
+      class-based languages in which the structure of an instance is dictated
+      by its class, in prototype-based languages it is usually possible to add
+      or remove methods and variables at the level of individual objects.</q>
+    (<i>ibid.</i>, pp. 8–10) Singleton methods (along with
+    <code>Object#instance_variable_set</code>) afford the same abilities to
+    the ostensibly class-based Ruby. Whereas inheritance allows a class to be
+    created that specializes a more general class, singleton methods allow
+    creation of an object that specializes on a more general object. (Ruby can
+    also support Taivalsaari’s observation that <q>…in prototype-based
+      languages object creation usually takes place by copying…</q>
+    (<i>ibid.</i>) through <code>Object#clone</code>). 
+   
+    <aside>
       It is conventional to employ the
       <code><var>Class</var>.<var>method</var></code> notation when referring
       to singleton methods in documentation and prose. For example:
