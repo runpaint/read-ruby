@@ -197,31 +197,66 @@
       <!-- TODO: Talk about "significant" names here? e.g. to_*,
       inspect, etc.? -->
 
-    <p>Method names begin with a lowercase letter. If they consist of multiple
-    words underscores (U+005F: <code>_</code>) are used to separate.
+    <!-- Markup characters with code or i or something else? -->
+    
+    <p>Method names conventionally begin with a lowercase letter or low line
+    (U+005F: <code>_</code>) (unless they name an operator method). They must
+    not begin with an ASCII integer. If they consist of multiple words, low
+    lines are used to separate. They must not contain any of the following
+    ASCII “punctuation” characters: <i>[</i>, <i>]</i>, <i>.</i>, <i>=</i>,
+    <i>*</i>, <i>!</i>, <i>~</i>, <i>@</i>, <i>-</i>, <i>+</i>, <i>/</i>,
+    <i>\</i>, <i>%</i>, <i>&lt;</i>, <i>&gt;</i>, <i>&amp;</i>, <i>^</i>,
+    <i>|</i>, <i>:</i>, <i>{</i>, <i>}</i>, however:
+    <!-- Unicode names -->
+
+    <ul>
+      <li>An otherwise legal method name may end with <i>=</i> or <i>!</i>,
+      <i>?</i>.
+      <li>The method names enumerated in the Operator Methods table are all
+      exceptions to this rule, representing the only permissible permutations
+      of these characters.
+    </ul>
 
     <aside>
-      It is legal for a method name to begin with an uppercase letter, but then they may be confused
-      with constants or class names. In fact, several core classes have methods named this way for
-      precisely this reason: they provide a syntactical shortcut for constructing instances. For
-      example, <code>Array()</code> is a method of <code>Kernel</code> which coerces its argument into
-      an <code>Array</code> object.  
+      It is legal for a method name to begin with an uppercase letter, but
+      then they may be confused with constants or class names. In fact,
+      several core classes have methods named this way for precisely this
+      reason: they provide a syntactical shortcut for constructing instances.
+      For example, <code>Array()</code> is a method of <code>Kernel</code>
+      which coerces its argument into an <code>Array</code> object. <!-- Quote
+      from Pickaxe p. 137?--> 
     </aside>
+
+    <p>By implication, any other character legal in the source encoding is
+    valid in a method name. 
+
+    <pre><code>
+    # coding: utf-8
+    def Π
+      Math::PI
+    end
+    Π #=&gt; 3.141592653589793
+    </code></pre>
 
       <!-- TODO: Unite this with section on attribute setters -->
     <h4>The <code>=</code> Suffix</h4>
 
-      <p>Methods named with a <code>=</code> suffix can be used in assignment statements as
-      <i>lvalues</i>. That is, a method defined as <code>name=(value)</code> on object <code>obj</code>
-      can be invoked as <code>obj.name = value</code> or <code>obj.name=(value)</code>.     
+      <p>Methods named with a <code>=</code> suffix can be used in assignment
+      statements as <i>lvalues</i>. That is, a method defined as
+      <code><var>name</var>=(<var>value</var>)</code> on object <var>obj</var>
+      can be invoked as <code><var>obj</var>.<var>name</var> =
+        <var>value</var></code> or
+      <code><var>obj</var>.<var>name</var>=(<var>value</var>)</code>.     
 
       <aside class=warning>
-        <p>The syntax <code>name = value</code> is therefore ambiguous. Is the intent
-        to assign the value <code>value</code> to the local variable <code>name</code> or to invoke the
-        method named <code>name=</code> with <code>value</code> as the argument?
+        <p>The syntax <code>name = value</code> is therefore ambiguous. Is the
+        intent to assign the value <code>value</code> to the local variable
+        <code>name</code> or to invoke the method named <code>name=</code>
+        with <code>value</code> as the argument?
 
-        <p>The resolution is to always invoke a <code>=</code>-suffixed method with an explicit receiver,
-        such as <code>self</code>. Alternatively, make it explicit that you are invoking a method with the
+        <p>The resolution is to always invoke a <code>=</code>-suffixed method
+        with an explicit receiver, such as <code>self</code>. Alternatively,
+        make it explicit that you are invoking a method with the
         <code>name=(value)</code> syntax.  
       </aside>
 
