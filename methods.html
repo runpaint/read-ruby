@@ -36,12 +36,15 @@
 
   <h3>Instance Methods</h3>
 
-    <p>An instance method is a behaviour of an object. It is typically created
-    with the <code>def</code> keyword in the context of a class.
-
+    <p>An <dfn id=instance-method>instance method</dfn> is a method defined,
+    without an explicit receiver, in the context of a class. Instances of this
+    class invoke the method when sent a message with its name as the selector.
+    Therefore, an object’s instance methods determine its behaviour.
+     
     <aside> 
-      It is conventional to employ the <code>Class#method</code> notation when referring to
-      instance methods in documentation and prose. For example: <code>Integer#even?</code>.  
+      It is conventional to employ the <code>Class#method</code> notation when
+      referring to instance methods in documentation and prose. For example:
+      <code>Integer#even?</code>.  
     </aside>
 
     <figure id=def-instance-method>
