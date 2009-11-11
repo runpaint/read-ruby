@@ -104,6 +104,14 @@
       languages object creation usually takes place by copying…</q>
     (<i>ibid.</i>) through <code>Object#clone</code>). 
    
+    <p>The ability to specify per-object behaviour is an improvement Ruby made
+    on her predecessors. For example, in the context of Smalltalk <a
+      href=refBUDD87>Budd</a> remarked that <q>It is not
+      possible to provide a method for an individual object; rather every
+      object must be associated with some class, and the behaviour of the
+      object in response to messages will be dictated by the methods
+      associated with that class.</q> (pp. 5–9).
+    
     <aside>
       It is conventional to employ the
       <code><var>Class</var>.<var>method</var></code> notation when referring
@@ -262,23 +270,38 @@
 
   <h3>Operator Methods</h3>
 
-    <p>The operators of conventional programming languages are mostly implemented as methods in Ruby. An
-    expression such as <code>3 + 2
-      * 10</code>  is evaluated as <code>3.+(2.*(10))</code>, i.e.  <code>2</code> is sent the message
-    <code>:*</code> with <code>10</code> as the argument, then <code>3</code> is sent the message
-    <code>:+</code> with <code>20</code> as its argument.  Operators implemented in this way are termed
-    <dfn id=operator-methods>operator methods</dfn> and are enumerated in the table below.
+    <p>Many <i>operators</i> of conventional programming languages are
+    implemented as <dfn id=operator-methods>operator methods</dfn> in Ruby,
+    allowing them to be <i>overloaded</i> by defining a corresponding method.
+    Logical operators such as <code>not</code>/<code>!</code>,
+    <code>or</code>/<code>||</code>, and
+    <code>and</code>/<code>&amp;&amp;</code>, are an exception to this rule,
+    so cannot be overridden.
 
-    <p>Classes can implement their own operator methods by defining a method with the corresponding
-    name, which is listed in the <i>Method</i> column below. This name is generally the same as the
-    operator symbol, e.g.  <code>+</code> implies a method named <code>:+</code>, but in the case of
-    unary methods, e.g. the <code>-</code> in <code>-2</code>, the method name consists of the operator
-    with an <code>@</code> suffix.
+    <p>For example, an expression such as <code>3 + 2 * 10</code> is evaluated as
+    <code>3.+(2.*(10))</code>, i.e. <code>2</code> is sent the message
+    <code>:*</code> with <code>10</code> as the argument, which returns
+    <code>20</code>, then <code>3</code>
+    is sent the message <code>:+</code> with <code>20</code> as its argument.
+    An implication is that even the fundamental arithmetical operations are
+    implemented as operator methods defined on <code>Numeric</code> objects.
+    <!-- Note derision of this concept; that it runs counter to normal
+    precedence rules (does it?) -->    
+    
+    <p>Classes can implement their own
+    operator methods by defining a method with the corresponding name, which
+    is listed in the <i>Method</i> column below. This name is generally the
+    same as the operator symbol, e.g.  <code>+</code> implies a method named
+    <code>:+</code>, but in the case of unary methods, e.g. the <code>-</code>
+    in <code>-2</code>, the method name consists of the operator with an
+    <code>@</code> suffix.
+
 
     <aside class=note>
-    <p>The method names detailed in the table are the only examples of legal names which consist solely
-    of punctuation. That <code>^</code> and <code>~</code>, for example, are legal characters, does not
-    imply that a method named <code>^~</code> is also legal.
+    <p>The method names detailed in the table are the only examples of legal
+    names which consist solely of punctuation. That <code>^</code> and
+    <code>~</code>, for example, are legal characters, does not imply that a
+    method named <code>^~</code> is also legal.
     <!-- TODO: Mention += and friends -->
     </aside>
 
