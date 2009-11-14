@@ -1520,26 +1520,29 @@
 
     <h4>Calling</h4>
 
-      <p>The method represented by a <code>Method</code> object can be invoked with
-      <code>Method#call</code> or its alias <code>Method#[]</code>. The semantics are the same as
-      for standard method invocation. <a href=#refFLAN08>Flanagan &amp; Matsumoto</a> caution,
-      however: <q>…invoking a method through a <code>Method</code> object is less efficient than
-        invoking it directly.</q>
+      <p>The method represented by a <code>Method</code> object can be invoked
+      with <code>Method#call</code> or its alias <code>Method#[]</code>. The
+      semantics are the same as for standard method invocation. <a
+        class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> caution, however:
+      <q>…invoking a method through a <code>Method</code> object is less
+        efficient than invoking it directly.</q>
 
     <h4>Converting to a <code>Proc</code></h4>
       
-      <p>A method object can be converted to a <code>Proc</code> by prefixing it with an ampersand
-      (<code>&amp;</code>). Therefore it can be passed to a method expecting a block. <!-- TODO: Note
-      availability of Symbol:to_proc; use with define_method -->
+      <p>A method object can be converted to a <code>Proc</code> by prefixing
+      it with an ampersand (<code>&amp;</code>). Therefore it can be passed to
+      a method expecting a block. <!-- TODO: Note availability of
+      Symbol:to_proc; use with define_method -->
     
     <h4>Equality</h4>
 
-      <!-- Bug: #1898 -->
-      <p><code>Method#==</code> returns true if both methods are bound to the same object and have
-      the same body. The first requirement means that the objects must be identical in the sense of
+      <!-- Bug: #1898 --> <p><code>Method#==</code> returns true if both
+      methods are bound to the same object and have the same body. The first
+      requirement means that the objects must be identical in the sense of
       <code>Object.equal?</code>. The second encompasses methods defined with
-      <code>Object#define_method</code> using the same <code>Proc</code>/block, aliases created
-      with <code>alias</code>, and core method aliases. <!-- TODO: clarify situation with
+      <code>Object#define_method</code> using the same
+      <code>Proc</code>/block, aliases created with <code>alias</code>, and
+      core method aliases. <!-- TODO: clarify situation with
       #respond_to_missing? -->
       
       <!-- Example which uses equality to determine if a method is an alias,
@@ -1547,10 +1550,11 @@
 
     <h4>Source Location</h4>
 
-      <p>The filename and line number where a method was defined is returned as an <code>Array</code>
-      by <code>Method#source_location</code>. If the method is core, i.e. implemented in C, it returns
-      <code>nil</code>. This is primarily useful for extracting a method’s signature and any preceding
-      documentation.
+      <p>The filename and line number where a method was defined is returned
+      as an <code>Array</code> by <code>Method#source_location</code>. If the
+      method is core, i.e. implemented in C, it returns <code>nil</code>. This
+      is primarily useful for extracting a method’s signature and any
+      preceding documentation.
 
       <!-- Example using the fact that no source location indicates a non-Ruby
       implementation. #ruby? #c? #core? The latter would need addition heuristics, in
@@ -1559,17 +1563,19 @@
 
       <!-- [ruby-core:19759] Proposal: Method#get_args -->   
         
-      <p><code>Method#parameters</code> returns an <code>Array</code>, each element of which is a
-      sub-<code>Array</code> of <code>Symbol</code>s that describe the corresponding parameter
-      expected by the method. The first <code>Symbol</code> is <code>:req</code> for a required
-      parameter, <code>:opt</code> if it is optional, <code>:rest</code> if its of variable length,
-      or <code>:block</code> if it corresponds to a block. The last <code>Symbol</code> is the name
-      of the parameter. An empty <code>Array</code> is returned for method’s expecting no arguments.
+      <p><code>Method#parameters</code> returns an <code>Array</code>, each
+      element of which is a sub-<code>Array</code> of <code>Symbol</code>s
+      that describe the corresponding parameter expected by the method. The
+      first <code>Symbol</code> is <code>:req</code> for a required parameter,
+      <code>:opt</code> if it is optional, <code>:rest</code> if its of
+      variable length, or <code>:block</code> if it corresponds to a block.
+      The last <code>Symbol</code> is the name of the parameter. An empty
+      <code>Array</code> is returned for method’s expecting no arguments.
 
   <h3><code>UnboundMethod</code> Objects</h3>
 
-    <p>An <code>UnboundMethod</code> object is a <code>Method</code> object disassociated from the
-    object on which it was defined.     
+    <p>An <code>UnboundMethod</code> object is a <code>Method</code> object
+    disassociated from the object on which it was defined.     
      
     <p>A <code>Method</code> object may converted to an
     <code>UnboundMethod</code> object with <code>Method#unbind</code>.
@@ -1581,15 +1587,19 @@
     raises a <code>NameError</code> if the given method is private or
     protected. 
       
-    <p>Before an <code>UnboundMethod</code> is invoked it must be re-associated with, or <dfn
-      id=method-bind>bound</a> to, to an object which is a <code>Object#kind_of?</code> its original
-    class. This is achieved by passing an object reference to <code>UnboundMethod#bind</code>.
+    <p>Before an <code>UnboundMethod</code> is invoked it must be
+    re-associated with, or <dfn id=method-bind>bound</a> to, to an object
+    which is a <code>Object#kind_of?</code> its original class. This is
+    achieved by passing an object reference to
+    <code>UnboundMethod#bind</code>.
 
-    <p>With the exception of <code>#call</code>, for the reason described above,
-    <code>UnboundMethod</code> objects support the same method’s as <code>Method</code> objects.
+    <p>With the exception of <code>#call</code>, for the reason described
+    above, <code>UnboundMethod</code> objects support the same method’s as
+    <code>Method</code> objects.
 
-    <p><a href=#refBLACK09>Black</a> (pp. 418-420) provides the following example (with minor
-    adjustments for formating) of using <code>UnboundMethod</code> objects:
+    <p><a href=#refBLACK09>Black</a> (pp. 418-420) provides the following
+    example (with minor adjustments for formating) of using
+    <code>UnboundMethod</code> objects:
       
     <blockquote>
         
