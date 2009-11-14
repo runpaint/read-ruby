@@ -1085,6 +1085,16 @@
     <code>undef</code> to be used in the context of the corresponding
     eigenclass.
 
+    <p>Undefining a method prevents the current class from responding to it.
+    If the method was defined in a superclass, that copy is unaffected. For
+    example, consider a <code>Rectangle</code> class which defines
+    <code>:height</code> and <code>:width</code> methods.  A
+    <code>Square</code> class inherits from it, but it doesn’t make sense for
+    <code>Square</code> to have both <code>:height</code> <i>and</i>
+    <code>:width</code> methods. <code>Square</code> can <code>undef</code>
+    <code>:height</code>, preventing <code>Square#height</code> from being
+    called without affecting <code>Rectangle#height</code>.
+
     <figure id=undef-method>
     <dt>Undefining a method with <code>undef</code>.
       <dd>
@@ -1099,16 +1109,7 @@
       </dd>
     </figure>
 
-    <p>Undefining a method defined in a superclass does not affect the
-    superclass’s definition. For example, consider a <code>Rectangle</code>
-    class which defines <code>:height</code> and <code>:width</code> methods.
-    A <code>Square</code> class inherits from it, but it doesn't make sense
-    for <code>Square</code> to have both <code>:height</code> <i>and</i>
-    <code>:width</code> methods.  <code>Square</code> can <code>undef</code>
-    <code>:height</code>, preventing <code>Square#height</code> from being
-    called without affecting <code>Rectangle#height</code>.
-
-    <!-- Mention Class#undef_method -->
+    <!-- Mention Module#undef_method? Does it offer any advantages? -->
   <h3>Visibility</h3>
 
     <p>An instance method is either <i>public</i>, <i>private</i>, or <i>protected</i>. It is declared
