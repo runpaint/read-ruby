@@ -1079,9 +1079,11 @@
 
     <!-- Distinguish between undefining and removing -->
 
-    <p>The <code>undef</code> statement takes one or more <code>Symbol</code>s
-    as arguments, then undefines the corresponding instance methods. It does
-    not work with singleton methods.
+    <p>The <code>undef</code> statement takes one or more
+    <code>Symbol</code>s/identifiers as arguments, then undefines the
+    corresponding instance methods. Undefining singleton methods requires
+    <code>undef</code> to be used in the context of the corresponding
+    eigenclass.
 
     <figure id=undef-method>
     <dt>Undefining a method with <code>undef</code>.
