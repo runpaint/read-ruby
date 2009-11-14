@@ -1077,20 +1077,18 @@
 
   <h3>Undefining</h3>
 
-    <!-- Distinguish between undefining and removing -->
-
     <p>The <code>undef</code> statement takes one or more
     <code>Symbol</code>s/identifiers as arguments, then undefines the
     corresponding instance methods. Undefining singleton methods requires
     <code>undef</code> to be used in the context of the corresponding
     eigenclass.
 
-    <p>Undefining a method prevents the current class from responding to it.
-    If the method was defined in a superclass, that copy is unaffected. For
-    example, consider a <code>Rectangle</code> class which defines
-    <code>:height</code> and <code>:width</code> methods.  A
-    <code>Square</code> class inherits from it, but it doesn’t make sense for
-    <code>Square</code> to have both <code>:height</code> <i>and</i>
+    <p><dfn id=undef-method>Undefining</dfn> a method prevents the current
+    class from responding to it. If the method was defined in a superclass,
+    that copy is unaffected. For example, consider a <code>Rectangle</code>
+    class which defines <code>:height</code> and <code>:width</code> methods.
+    A <code>Square</code> class inherits from it, but it doesn’t make sense
+    for <code>Square</code> to have both <code>:height</code> <i>and</i>
     <code>:width</code> methods. <code>Square</code> can <code>undef</code>
     <code>:height</code>, preventing <code>Square#height</code> from being
     called without affecting <code>Rectangle#height</code>.
@@ -1109,7 +1107,40 @@
       </dd>
     </figure>
 
-    <!-- Mention Module#undef_method? Does it offer any advantages? -->
+    <!-- Mention Module#undef_method? Does it offer any advantages? Better
+    symetry with remove_method? -->
+
+  <h3>Removing</h3>
+  
+    <p><code>Module#remove_method <var>name</var></code> removes the method
+    named <var>name</var> from the current class only. A <dfn
+      id=remove-method>removed method</dfn> differs from an undefined method
+    in that the former delegates the request to its superclass, whereas the
+    latter doesn’t.
+    
+    <!-- Use same example for undef_method so they can be contrasted -->
+    <pre><code>
+    class Parent
+      def says
+        "Tidy your room!"
+      end
+    end
+
+    class Child &lt; Parent
+      def says
+        "In a minute..."
+      end
+    end
+    
+    Child.new.says #=&gt; "In a minute..."
+    
+    class Child
+      remove_method :says
+    end
+    
+    Child.new.says #=&gt; "Tidy your room!"
+    </code></pre>
+
   <h3>Visibility</h3>
 
     <p>An instance method is either <i>public</i>, <i>private</i>, or <i>protected</i>. It is declared
