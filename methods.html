@@ -467,11 +467,6 @@
       </tr>
     </table>
 
-  <h3>Arity</h3>
-    <!-- TODO: Link with Method#arity, Proc#arity -->
-    <h4>Classification by Arity</h4>
-    <!-- TODO: binary, unary, etc. -->
-
   <h3>Defining</h3>
     
     <p>A method consists of a name, an optional parameter list, and a body.
@@ -1057,6 +1052,28 @@
         </dd>
       </figure>
 
+  <h3>Arity</h3>
+    
+    <p>The arity of a method is the number of arguments it takes. If the
+    method expects a fixed number of arguments, this number is its arity.  If
+    the method expects a variable number of arguments, its arity is the
+    additive inverse of its parameter count. Methods implemented in C, i.e.
+    most core methods, have an arity of <code>-1</code> if they accept a
+    variable number of parameters. It follows, then, that an arity ≥ 0
+    indicates a fixed number of parameters; a negative value, a variable
+    number. <code>Method#arity</code> returns the arity for the method it
+    objectifies. <!-- TODO: Link with Proc#arity -->
+
+    <h4>Classification by Arity</h4>
+
+      <p>Methods with fixed arities can be classified as follows: A <dfn
+        id=unary-method>unary method</dfn> expects exactly one operand (its
+      receiver), a <dfn id=binary-method>binary method</dfn> requires two (its
+      receiver and one argument), <dfn id=ternary-method>ternary-method</dfn>
+      requires exactly three (its receiver and two arguments), an <dfn
+        id=n-ary-method><var>n</var>-ary method</dfn> requires <var>n</var>
+      operands (its receiver, and <var>n</var>-1 arguments).
+
   <h3>Undefining</h3>
 
     <!-- Distinguish between undefining and removing -->
@@ -1413,14 +1430,7 @@ private can be. -->
     <h4>Arity</h4>
 
       <p><code>Method#arity</code> returns an <code>Integer</code>
-      corresponding to the method’s arity. If the method expects a fixed
-      number of arguments, this number will be returned.  If the method
-      expects a variable number of arguments, the additive inverse of its
-      parameter count will be returned. Methods implemented in C, i.e.  most
-      core methods, have an arity of <code>-1</code> if they accept a variable
-      number of parameters. It follows, then, that a return value ≥ 0
-      indicates a fixed number of parameters; a negative value, a variable
-      number. 
+      corresponding to the method’s arity.
 
     <h4>Calling</h4>
 
