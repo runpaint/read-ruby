@@ -1143,13 +1143,17 @@
 
   <h3>Visibility</h3>
 
-    <p>An instance method is either <i>public</i>, <i>private</i>, or <i>protected</i>. It is declared
-    as such with <code>Module#public</code>, <code>Module#private</code>, and
-    <code>Module#protected</code> (hereafter: <i>visibility
-      specifiers</i>), respectively.
+    <!-- Clarify that its the binding of a method to a class that has a
+    visibility? c.f. matz -->
 
-    <p>A visibility specifier invoked without arguments affects every method subsequently defined in the
-    same class definition until another visibility specifier is encountered.
+    <p>An instance method is either <i>public</i>, <i>private</i>, or
+    <i>protected</i>. It is declared as such with <code>Module#public</code>,
+    <code>Module#private</code>, and <code>Module#protected</code> (hereafter:
+    <i>visibility specifiers</i>), respectively. 
+    
+    <p>A visibility specifier invoked without arguments affects every method
+    subsequently defined in the same class definition until another visibility
+    specifier is encountered.
 
     <figure id=visibility-specifiers>
       <dt>Declaring the visibility of methods with visibility specifiers
@@ -1190,11 +1194,13 @@
       </dd>
     </figure>
 
-    <p>A visibility specifier with one or more method names (given as <code>Symbol</code>s or
-    <code>String</code>s) affects only the named methods, which must have already been defined.
+    <p>A visibility specifier with one or more method names (given as
+    <code>Symbol</code>s or <code>String</code>s) affects only the named
+    methods, which must have already been defined.
 
     <figure id=visibility-specifiers-args>
-      <dt>Declaring the visibility of methods with visibility specifiers that take arguments
+      <dt>Declaring the visibility of methods with visibility specifiers that
+      take arguments
       <dd>
         <pre><code>
         class C                
@@ -1231,90 +1237,103 @@
 
     <h4>Advisory Privacy</h4>
 
-      <p>Method visibility is merely an advisory construct. Ruby does not <i>prohibit</i> the invocation
-      of private methods; she ensures that they will not be called accidentally as follows:
+      <p>Method visibility is merely an advisory construct. Ruby does not
+      <i>prohibit</i> the invocation of private methods; she ensures that they
+      will not be called accidentally as follows:
 
       <ul>
-        <li>Standard method invocation syntax (<code>obj.method</code>) raises a
-        <code>NoMethodError</code>, signaling that the programmer's intent is ill-advised. The caviller
-        programmer must use a technique such as <code>Object#send</code> to explicitly ignore the privacy
-        advice.
+        <li>Standard method invocation syntax (<code>obj.method</code>) raises
+        a <code>NoMethodError</code>, signaling that the programmer's intent
+        is ill-advised. The caviller programmer must use a technique such as
+        <code>Object#send</code> to explicitly ignore the privacy advice.
         <li>The method introspection API (e.g.
         <code>Object#private_methods</code>,
         <code>Object#protected_methods</code>, and
-        <code>Object#public_methods</code>) delineates methods by their visibility, allowing private and
-        protected methods to be determined automatically.
+        <code>Object#public_methods</code>) delineates methods by their
+        visibility, allowing private and protected methods to be determined
+        automatically.
         <li>RDoc/<code>ri</code> only displays public methods by default.
       </ul>
 
     <h4>Public Methods</h4>
 
-      <p>A method is public unless explicitly declared otherwise, or declared outside of a class
-      definition. The <code>initialize</code> method is private by default.
+      <p>A method is public unless explicitly declared otherwise, or declared
+      outside of a class definition. The <code>initialize</code> method is
+      private by default.
 
     <h4>Private Methods</h4>
 
-      <p>A <dfn id=private-method>private method</dfn> cannot be invoked with an explicit receiver.
-      Therefore it can only be called by other instance methods of the class in which defined,
-      or a subclass thereof. 
+      <p>A <dfn id=private-method>private method</dfn> cannot be invoked with
+      an explicit receiver: it can only be called by other instance methods of
+      the class in which defined, or a subclass thereof. 
 
-      <p><code>self</code> is also regarded as an explicit receiver so a method invocation of the form
-      <code>self.<var>private</var></code>, where <var>private</var> is a private instance method in the
-      same class, is disallowed.
+      <p><code>self</code> is also regarded as an explicit receiver so a
+      method invocation of the form <code>self.<var>private</var></code>,
+      where <var>private</var> is a private instance method in the same class,
+      is disallowed.
 
       <aside class=note>
-      Methods created outside of a class or module definition, i.e. at the top level, are private by
-      default The <code>:initialize</code> method is, too, because it is only intended to be invoked
-      from the object’s <code>:new</code> method.
+        Methods created outside of a class or module definition, i.e. at the
+        top level, are private by default The <code>:initialize</code> method
+        is, too, because it is only intended to be invoked from the object’s
+        <code>:new</code> method.
       </aside>
 
     <h4>Protected Methods</h4>
 
-      <p>Protected methods can invoked only from the class in which they were defined or a subclass
-      thereof, that is they behave the same as private methods. However, unlike private methods they can
-      be explicitly invoked on any instance of their class.
+      <p>Protected methods can invoked only from the class in which they were
+      defined or a subclass thereof, that is they behave the same as private
+      methods. However, unlike private methods they can be explicitly invoked
+      on any instance of their class.
 
       <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, p.
-        232)</a> suggest that <q>A protected method can be used, for example, to define an accessor that
-        allows instances of a class to share internal state with each other, but does not allow users of
-        the class to access that state.</q>
+        232)</a> suggest that <q>A protected method can be used, for example,
+        to define an accessor that allows instances of a class to share
+        internal state with each other, but does not allow users of the class
+        to access that state.</q>
 
-      <!-- Discuss class method visibility:
-      Occasionally, it is useful to specify that a class method should be private. If your class
-  defines factory methods, for example, you might want to make the new method private.
-To do this, use the private_class_method method, specifying one or more method
-names as symbols:
-    private_class_method :new
-You can make a private class method public again with public_class_method. Neither
-method can be invoked without arguments in the way that public, protected, and
-private can be. -->
+    <h4>Class Methods</h4>
+
+    <p>A class <!-- "Singleton"? --> method named <var>name</var> can be
+    privatised with <code>Module#private_class_method <var>name</var></code>.
+    Private class methods can be made public with
+    <code>Module#public_class_method <var>name</var></code>. It is nonsensical
+    to deign a class method protected, so there is not a corresponding
+    visibility specifier.
 
   <h3>Aliases</h3>
 
-    <p>An <dfn id=method-alias>alias</dfn> of a method is an alternate name by which it can be referred.
-    For a method, <var>m</var>, and its alias, <var>a</var>, invoking <var>m</var> is equivalent to
-    invoking <var>a</var>.
+    <p>An <dfn id=method-alias>alias</dfn> of a method is an alternate name by
+    which it can be referred.  For a method, <var>m</var>, and its alias,
+    <var>a</var>, invoking <var>m</var> is equivalent to invoking
+    <var>a</var>.
 
-    <p>The alias refers to a copy of the existing method’s body. If the existing method is redefined
-    after being aliased, the alias will continue to refer to the method’s original definition.
+    <p>The alias refers to a copy of the existing method’s body. If the
+    existing method is redefined after being aliased, the alias will continue
+    to refer to the method’s original definition.
 
-    <p>Aliases are often used to provide synonyms for method names. For instance, <code>:size</code> may
-    be aliased to <code>:length</code>.  This allows the programmer to use method names which “read”
-    more naturally in a given context. <!-- TODO: example from FLAN09 about Range#include? ? -->
+    <p>Aliases are often used to provide synonyms for method names. For
+    instance, <code>:size</code> may be aliased to <code>:length</code>.  This
+    allows the programmer to use method names which “read” more naturally in a
+    given context. <!-- TODO: example from FLAN09 about Range#include? ? -->
 
-    <p>An alias is created with the <code>alias</code> keyword from inside the class of the existing
-    method. The syntax is <code>alias <var>new_name</var>
-      <var>current_name</var></code>, where both <var>new_name</var> and <var>current_name</var> are
-    <code>Symbol</code>s or identifiers. A method named <var>current_name</var> must already be defined.
-    If a method named <var>new_name</var> already exists it is overwritten.
+    <p>An alias is created with the <code>alias</code> keyword from inside the
+    class of the existing method. The syntax is <code>alias
+      <var>new_name</var> <var>current_name</var></code>, where both
+    <var>new_name</var> and <var>current_name</var> are <code>Symbol</code>s
+    or identifiers. A method named <var>current_name</var> must already be
+    defined.  If a method named <var>new_name</var> already exists it is
+    overwritten.
 
     <!-- TODO: Mention alias_method_chain ? -->
     <!-- TODO: Mention alias_method ? -->
 
-    <p>Aliasing is also used to create a method which wraps the method of the same name by performing
-    its own computations then calling the original method. For example, in the example below we wrap
-    <code>String#to_i</code> such that it raises an exception if the string doesn't contain digits.
-    (Normally, <code>String#to_i</code> returns <code>0</code> for such strings).
+    <p>Aliasing is also used to create a method which wraps the method of the
+    same name by performing its own computations then calling the original
+    method. For example, in the example below we wrap <code>String#to_i</code>
+    such that it raises an exception if the string doesn't contain digits.
+    (Normally, <code>String#to_i</code> returns <code>0</code> for such
+    strings).
 
     <figure id=alias-for-wraping>
     <dt>Using <code>alias</code> in order to wrap a method
