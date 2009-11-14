@@ -223,6 +223,7 @@
       <li>The method names enumerated in the Operator Methods table are all
       exceptions to this rule, representing the only permissible permutations
       of these characters.
+      <!-- TODO: Mention += and friends -->
     </ul>
 
     <aside>
@@ -288,22 +289,12 @@
     <!-- Note derision of this concept; that it runs counter to normal
     precedence rules (does it?) -->    
     
-    <p>Classes can implement their own
-    operator methods by defining a method with the corresponding name, which
-    is listed in the <i>Method</i> column below. This name is generally the
-    same as the operator symbol, e.g.  <code>+</code> implies a method named
-    <code>:+</code>, but in the case of unary methods, e.g. the <code>-</code>
-    in <code>-2</code>, the method name consists of the operator with an
-    <code>@</code> suffix.
-
-
-    <aside class=note>
-    <p>The method names detailed in the table are the only examples of legal
-    names which consist solely of punctuation. That <code>^</code> and
-    <code>~</code>, for example, are legal characters, does not imply that a
-    method named <code>^~</code> is also legal.
-    <!-- TODO: Mention += and friends -->
-    </aside>
+    <p>Classes can implement their own operator methods by defining a method
+    with the corresponding name, which is listed in the <i>Method</i> column
+    below. This name is generally the same as the operator symbol, e.g.
+    <code>+</code> implies a method named <code>:+</code>, but in the case of
+    unary methods, e.g. the <code>-</code> in <code>-2</code>, the method name
+    consists of the operator with an <code>@</code> suffix.
 
     <table id=operator-methods>
       <tr> <th>Method</th> <th>Operator</th> <th>Description</th> </tr>
