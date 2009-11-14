@@ -48,18 +48,8 @@
     </aside>
 
     <figure id=def-instance-method>
-    <dt>Defining an instance method named <code>bark</code> for the <code>Dog</code> class
+      <dt>Defining an instance method named <code>bark</code> for the <code>Dog</code> class
       with the <code>def</code> keyword.
-      <dd>
-        <pre><code>
-          class Dog
-            def bark
-              :woof
-            end
-          end
-          Dog.new.bark #=&gt; :woof
-        </code></pre>  
-      </dd>
     </figure>
 
   <h3>Singleton Methods</h3>
@@ -129,25 +119,10 @@
 
     <figure id=def-implicit-return>
       <dt>A method which returns the Symbol <code>:to_sender</code>
-      <dd>
-        <pre><code>
-          def elvis
-            :to_sender
-          end
-        </code></pre>
-      </dd>
     </figure>
 
     <figure id=def-implicit-return-multiple>
-    <dt>A method which returns multiple values as an <code>Array</code>.
-      <dd>
-        <pre><code>
-          def elvis
-            [:to_sender, :hound_dog]
-          end
-          elvis #=&gt; [:to_sender, :hound_dog]
-        </code></pre>
-      </dd>
+      <dt>A method which returns multiple values as an <code>Array</code>.
     </figure>
 
     <p>A <code>return</code> statement causes the method to terminate
@@ -157,16 +132,7 @@
     an <code>Array</code>. 
 
     <figure id=def-explicit-return-multiple>
-    <dt>A method which explicitly returns multiple values.
-      <dd>
-        <pre><code>
-          def elvis
-            return :to_sender, :hound_dog
-            # Not reached
-          end
-          elvis #=&gt; [:to_sender, :hound_dog]
-        </code></pre>
-      </dd>
+      <dt>A method which explicitly returns multiple values.
     </figure>
 
     <p>This gives rise to two conventions:
@@ -239,13 +205,9 @@
     <p>By implication, any other character legal in the source encoding is
     valid in a method name. 
 
-    <pre><code>
-    # coding: utf-8
-    def Π
-      Math::PI
-    end
-    Π #=&gt; 3.141592653589793
-    </code></pre>
+    <figure id=def-non-ascii-name>
+      <dt>Defining a method with a non-ASCII name
+    </figure>
 
       <!-- TODO: Unite this with section on attribute setters -->
     <h4>The <code>=</code> Suffix</h4>
@@ -477,7 +439,7 @@
     before they are called? -->
     
     <figure id=def-syntax>
-    <dt>The syntax of a method definition.
+      <dt>The syntax of a method definition.
       <dd>
         <pre><code>
           def <var>name</var> (<var>parameters</var>)
@@ -500,24 +462,14 @@
     <var>Class</var>.
 
     <aside class=warn>
-    Singleton methods cannot be defined on immediate values such as
-    <code>Numeric</code>s and <code>Symbol</code>s. Attempting to do so raises
-    a <code>TypeError</code>.
+      Singleton methods cannot be defined on immediate values such as
+      <code>Numeric</code>s and <code>Symbol</code>s. Attempting to do so raises
+      a <code>TypeError</code>.
     </aside>
     
     <figure id=def-singleton-method>
-    <dt>Defining a singleton method named <code>breed</code> for the <code>Dog</code> class with the
-    <code>def</code> keyword.
-      <dd>
-        <pre><code>
-          class Dog
-            def self.breed
-              [new, new]
-            end
-          end
-          Dog.breed #=&gt; [#<Dog:0x95cb530>, #<Dog:0x95cb508>]
-        </code></pre>  
-      </dd>
+      <dt>Defining a singleton method named <code>breed</code> for the
+      <code>Dog</code> class with the <code>def</code> keyword.
     </figure>
 
     <!-- Link with define_singleton_method -->
@@ -551,37 +503,14 @@
         it receives the caller’s copy is modified, too.
 
         <figure id=pass-by-reference>
-          <dt>The effect of a method’s modification of an argument on its caller</dt>
-          <dd>
-            <pre>
-              <code>
-                def llama_sans_l(llama)
-                  llama.gsub!(/l/i,'')
-                end
-                llama = 'Larry'
-                llama_sans_l(llama) #=&amp; 'arry'
-                llama #=&gt; 'arry'
-              </code>
-            </pre>
-          </dd>
+          <dt>The effect of a method’s modification of an argument on its caller
         </figure>
 
         <p>Methods may <i>dup</i> (<code>Object#dup</code>) their arguments to avoid this situation.    
 
         <figure id=pass-by-reference-dup>
-        <dt>The effect of a method’s modification of a <code>dup</code>’d argument on its caller</dt>
-          <dd>
-            <pre>
-              <code>
-                def llama_sans_l(llama)
-                  llama.dup.gsub!(/l/i,'')
-                end
-                llama = 'Larry'
-                llama_sans_l(llama) #=&amp; 'arry'
-                <mark>llama #=&gt; 'Larry'</mark>
-              </code>
-            </pre>
-          </dd>
+          <dt>The effect of a method’s modification of a <code>dup</code>’d
+          argument on its caller</dt>
         </figure>
 
       <h5>Required Arguments</h5>
@@ -602,23 +531,7 @@
         parameter names. Each parameter represents a mandatory argument.
 
         <figure id=required-arguments>
-        <dt>Defining a method which requires exactly two arguments.</dt>
-          <dd>
-            <pre>
-              <code>
-                class Llama
-                  def laugh(how, volume)
-                    puts volume == :loudly ? how.upcase : how
-                  end
-                end
-                Llama.new.laugh #=&gt; ArgumentError: wrong number of arguments (0 for 2)
-                Llama.new.laugh(:snicker) #=&gt; ArgumentError: wrong number of arguments (1 for 2)
-                Llama.new.laugh(:chortle,:softly) #=&gt; chortle
-                Llama.new.laugh(:guffaw,:loudly) #=&gt; GUFFAW
-                Llama.new.laugh(:ho, :ho, :ho) #=&gt; ArgumentError: wrong number of arguments (3 for 2)
-              </code>
-            </pre>
-          </dd>
+          <dt>Defining a method which requires exactly two arguments.
         </figure>
 
       <h5>Optional Arguments and Default Values</h5>
@@ -636,21 +549,7 @@
         instantiate an object on every invocation. 
 
         <figure id=optional-arguments>
-        <dt>Defining a method which takes an optional argument.</dt>
-          <dd>
-            <pre>
-              <code>
-                class Llama
-                  def name(name='Larry')
-                    name + ' the llama (beast of burden)'
-                  end
-                end
-                Llama.new.name #=&gt; "Larry the llama (beast of burden)"
-                Llama.new.name('Lyle Jr.') #=&gt; "Lyle Jr. the llama (beast of burden)"
-                Llama.new.name('Lama', 'glama') #=&gt; ArgumentError: wrong number of arguments (2 for 1)
-              </code>
-            </pre>
-          </dd>
+          <dt>Defining a method which takes an optional argument.
         </figure>
 
         <p>Optional and required arguments can be specified alongside each
@@ -659,19 +558,8 @@
         both precede and follow a required argument with optional arguments.
 
         <figure id=required-arguments-with-optional-arguments>
-        <dt>Defining a method which takes both optional and required arguments.</dt>
-          <dd>
-            <pre>
-              <code>
-                def required_optional(a,b=1) end
-                def required_required_optional(a,b,c=1) end
-                def optional_required(a=1,b) end
-                def optional_optional_required(a=1,b=2,c) end
-                <mark>def optional_required_optional(a=1,b,c=2) end #=&gt;
-                SyntaxError</mark>
-              </code>
-            </pre>
-          </dd>
+          <dt>Defining a method which takes both optional and required
+          arguments.
         </figure>
 
       <h5>Variable-Length Argument Lists</h5>
@@ -688,8 +576,8 @@
 
         <aside class=note>
           Rest parameters do not <em>require</em> any arguments, so a method
-          whose parameter list consists solely of a rest parameter, for example,
-          may be invoked with zero or more arguments.
+          whose parameter list consists solely of a rest parameter, for
+          example, may be invoked with zero or more arguments.
         </aside>
 
         <p>A rest parameter is specified by preceding a parameter name with an
@@ -697,54 +585,33 @@
         in a parameter list, and any optional parameters must precede it.
 
         <figure id=rest-arguments>
-        <dt>Defining a method which takes a variable number of arguments.</dt>
-          <dd>
-            <pre>
-              <code>
-              def zero_or_more(*rest)
-                rest.join(', ')
-              end
-              zero_or_more #=&gt; ""
-              zero_or_more(1) #=&gt; "1"
-              zero_or_more(1,2,3) #=&gt; "1, 2, 3"
-              </code>
-            </pre>
-          </dd>
+          <dt>Defining a method which takes a variable number of arguments.
         </figure>
 
         <!-- TODO: Cut this section? We now state above that any optional
         arguments must precede the _rest_ -->
 
         <aside class=note>
-          The following syntax rules are complex, but do not be deterred.  They are unlikely to ever be
-          relevant in practice.
+          The following syntax rules are complex, but do not be deterred.
+          They are unlikely to ever be relevant in practice.
         </aside>
 
         <!-- FIXME: Clarify this explanation; derive a general principle
         which better expresses the rule -->
 
-        <p>A rest parameter must not be followed by an optional parameter because of the resulting
-        ambiguity: if two or more arguments were supplied for the former, should the latter be assigned its
-        default value or take one of the aforementioned? However, there is no ambiguity when optional
-        parameters precede the rest parameter, so this arrangement is legal.
+        <p>A rest parameter must not be followed by an optional parameter
+        because of the resulting ambiguity: if two or more arguments were
+        supplied for the former, should the latter be assigned its default
+        value or take one of the aforementioned? However, there is no
+        ambiguity when optional parameters precede the rest parameter, so this
+        arrangement is legal.
 
-        <p>Conversely, a rest parameter may be either followed or preceded by one or more required
-        parameters
+        <p>Conversely, a rest parameter may be either followed or preceded by
+        one or more required parameters
 
         <figure id=required-arguments-with-optional-arguments>
-        <dt>Defining a method which takes both optional and required arguments.</dt>
-          <dd>
-            <pre>
-              <code>
-                def required_optional(a,b=1) end
-                def required_required_optional(a,b,c=1) end
-                def optional_required(a=1,b) end
-                def optional_optional_required(a=1,b=2,c) end
-                <mark>def optional_required_optional(a=1,b,c=2) end #=&gt;
-                SyntaxError</mark>
-              </code>
-            </pre>
-          </dd>
+          <dt>Defining a method which takes both optional and required
+          arguments.
         </figure>
 
         <p>A rest parameter may be supplied as a sole asterisk, omitting the corresponding parameter name.
@@ -757,21 +624,10 @@
         arguments then passes them all to its superclass.
 
         <figure id=rest-parameter-with-super>
-        <dt>A method which accepts a variable number of arguments then passes them to its superclass
-        (<code>Parent</code>) with the implicit-argument form of <code>super</code>. (<a
-          href=#refTHOM09>[THOM09]</a>).
-          <dd>
-            <pre>
-              <code>
-                class Child &lt; Parent
-                  def do_something(*)
-                    # our processing
-                    super
-                  end
-                end
-              </code>
-            </pre>
-          </dd>
+          <dt>A method which accepts a variable number of arguments then
+          passes them to its superclass (<code>Parent</code>) with the
+          implicit-argument form of <code>super</code>. (<a
+            href=#refTHOM09>[THOM09]</a>).
         </figure>
 
       <h5>Named Arguments</h5>
@@ -788,30 +644,9 @@
 
         <!-- TODO: Mention that File/IO, String#encode use this technique -->
 
-        <figure id=named-arguments>
-        <dt>A method which uses a <code>Hash</code> argument to simulate named arguments.
-          <dd>
-            <pre>
-              <code>
-                class Chair
-                  def initialize(args)
-                    @legs = args[:legs] or raise ArgumentError
-                    @style = args[:style] || :victorian
-                    @height = args[:height] || :average
-                    @colour = args[:colour] || args[:color] || :brown
-                  end
-                end
-              Chair.new legs: 4, height: :tall #=&gt; 
-                #&lt;Chair:0x8249908 @legs=4, @style=:victorian,
-                @height=:tall, @colour=:brown&gt;
-              Chair.new(:color =&gt; :fuschia, :legs =&gt; 7) #=&gt;
-                #&lt;Chair:0x86958f4 @legs=7, @style=:victorian,
-                @height=:average, @colour=:fuschia&gt;
-              Chair.new(height: :childs, color: :fuschia) #=&gt;
-              ArgumentError 
-              </code>
-            </pre>
-          </dd>
+        <figure id=named-arguments-with-hash>
+          <dt>A method which uses a <code>Hash</code> argument to simulate
+          named arguments.
         </figure>
 
         <p>If the <code>Hash</code> is the final argument, other than a block,
@@ -829,30 +664,8 @@
           </ul>
 
         <figure id=named-arguments-with-defaults>
-        <dt>A method which uses a <code>Hash</code> argument to simulate named arguments with default
-        values.
-          <dd>
-            <pre>
-              <code>
-                class Chair
-                  DEFAULT_ARGS = {legs: 2, style: :victorian, height: :average, colour: :brown}
-                  def initialize(args)
-                    @attributes = DEFAULT_ARGS.merge args
-                  end
-                end
-                Chair.new legs: 4, height: :tall #=&gt;
-                  #&lt;Chair:0x9039af4 @attributes={
-                  :legs=&gt;4,       :style=&gt;:victorian, 
-                  :height=&gt;:tall, :colour=&gt;:brown
-                  }&gt;
-                Chair.new(:color =&gt; :fuschia, :legs =&gt; 7) #=&gt;
-                  #&gt;Chair:0x998a9dc @attributes={
-                  :legs=&gt;7, :style=&gt;:victorian, 
-                  :height=&gt;:average, :colour=&gt;:fuschia
-                  }&gt;
-              </code>
-            </pre>
-          </dd>
+          <dt>A method which uses a <code>Hash</code> argument to simulate
+          named arguments with default values.
         </figure>
 
         <p>The primary shortcoming is that Ruby can not determine
@@ -870,51 +683,28 @@
         expression instead of method invocation? -->
 
         <aside class=note>
-        <a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, pp.
-          130-131)</a> insist on <q>[using] the term iterator…to mean any
-          method that uses the <code>yield</code> statement</q>, despite
-        admitting that this doesn't make sense if the method doesn’t actually
-        <i>iterate</i> over the block it has been given. We will not
-        perpetuate this confusion: an <i>iterator method</i> iterates over the
-        block it has been given; a method which expects a block but does not
-        iterate over it is simply <i>a method that expects a block</i>.
+          <a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, pp.
+            130-131)</a> insist on <q>[using] the term iterator…to mean any
+            method that uses the <code>yield</code> statement</q>, despite
+          admitting that this doesn't make sense if the method doesn’t
+          actually <i>iterate</i> over the block it has been given. We will
+          not perpetuate this confusion: an <i>iterator method</i> iterates
+          over the block it has been given; a method which expects a block but
+          does not iterate over it is simply <i>a method that expects a
+            block</i>.
         </aside>
 
         <figure id=method-invocation-with-block-literal>
-        <dt>A method which receives, and ignores, a block specified with either of the block literal
-        constructs.
-          <dd>
-            <pre>
-              <code>
-              def m
-                :m
-              end
-              m { 1 + 2 }
-              m do
-                1 + 2
-              end
-              </code>
-            </pre>
-          </dd>
+          <dt>A method which receives, and ignores, a block specified with
+          either of the block literal constructs.
         </figure>
          
         <p>A method may determine whether it has received a block with the
         <code>block_given?</code> predicate.
 
         <figure id=method-using-block_given>
-        <dt>A method which uses the <code>block_given?</code> predicate to determine whether it has been
-        passed a block.
-          <dd>
-            <pre>
-              <code>
-              def m
-                puts "Thanks" if block_given?
-              end
-              m { 1 + 2 } #=&gt; "Thanks"
-              m #=&gt; nil
-              </code>
-            </pre>
-          </dd>
+          <dt>A method which uses the <code>block_given?</code> predicate to
+          determine whether it has been passed a block.
         </figure>
 
         <p>A block passed to a method in this way is not automatically called;
@@ -924,20 +714,9 @@
 
         <!-- TODO: Mention that yield takes arguments -->
 
-        <figure id=method-using-block_given-yield>
-        <dt>A method which uses the <code>block_given?</code> predicate to determine whether it has been
-        passed a block, and if so calls it.
-          <dd>
-            <pre>
-              <code>
-              def m
-                puts "This block returns: #{yield}" if block_given?
-              end
-              m { 1 + 2 } #=&gt; This block returns: 3
-              m #=&gt; nil
-              </code>
-            </pre>
-          </dd>
+        <figure id=method-using-block-given-yield>
+          <dt>A method which uses the <code>block_given?</code> predicate to
+          determine whether it has been passed a block, and if so calls it.
         </figure>
 
         <p>A method needing a reference to the block it was given, perhaps to
@@ -952,18 +731,8 @@
         <!-- Example with instance_eval ? -->
 
         <figure id=method-using-block-argument>
-        <dt>A method which uses a <code>&amp;block</code> parameter to refer to the block it is given.
-          <dd>
-            <pre>
-              <code>
-              def m(&amp;block)
-                puts "This block returns: #{block.call}" if block_given?
-              end
-              m { 1 + 2 } #=&gt; This block returns: 3
-              m #=&gt; nil
-              </code>
-            </pre>
-          </dd>
+          <dt>A method which uses a <code>&amp;block</code> parameter to refer
+          to the block it is given.
         </figure>
 
         <aside class=note>
@@ -973,83 +742,44 @@
           precisely the same parameter list as in the previous sections.
 
           <figure id=method-receiving-block-ref>
-          <dt>A method which expects a reference to a block uses the same
-          parameter list as it would if expecting any other type of variable.
-            <dd>
-              <pre>
-                <code>
-                def m(b)
-                  b.call
-                end
-                m -&gt;{ "I am a \u{3bb}!" } #=&gt; "I am a λ!"
-                </code>
-              </pre>
-            </dd>
+            <dt>A method which expects a reference to a block uses the same
+            parameter list as it would if expecting any other type of
+            variable.
           </figure>
         </aside>
 
     <h4>Dynamic Method Definition</h4>
 
       <p>An instance method can be defined dynamically with
-      <code>Module#define_method(<var>name</var>, <var>body</var>)</code>, where <var>name</var> is the
-        method’s name given as a <code>Symbol</code>, and <var>body</var> is its body given as a
-        <code>Proc</code>, <code>Method</code>, <code>UnboundMethod</code>, or literal block. This
-        allows methods to be defined at runtime, in contrast to <code>def</code> which requires the
-        method name and body to appear literally in the source code.
+      <code>Module#define_method(<var>name</var>, <var>body</var>)</code>,
+      where <var>name</var> is the method’s name given as a
+      <code>Symbol</code>, and <var>body</var> is its body given as a
+      <code>Proc</code>, <code>Method</code>, <code>UnboundMethod</code>, or
+      literal block. This allows methods to be defined at runtime, in contrast
+      to <code>def</code> which requires the method name and body to appear
+      literally in the source code.
 
       <figure id=define-method>
-      <dt>Using <code>define_method</code> to dynamically create a method with a user-supplied
-      name and body.
-        <dd>
-          <pre>
-            <code>
-            class Conjure
-              def self.conjure(name, lamb)
-                define_method(name, lamb)
-              end
-            end
-            # Define a new instance method with a lambda as its body
-            Conjure.conjure(:glark, -&gt;{ (3..5).to_a * 2 })
-            Conjure.new.glark #=&gt; [3, 4, 5, 3, 4, 5]         
-            </code>
-          </pre>
-        </dd>
+        <dt>Using <code>define_method</code> to dynamically create a method
+        with a user-supplied name and body.
       </figure>
 
-      <p><code>Module#define_method</code> is a private method so must be called from within the class
-      the method is being defined on. Alternatively, it can be invoked inside
-      <code>class_eval</code> like so:
+      <p><code>Module#define_method</code> is a private method so must be
+      called from within the class the method is being defined on.
+      Alternatively, it can be invoked inside <code>class_eval</code> like so:
   
       <figure id=define-method-class-eval>
-      <dt>Using <code>define_method</code> inside <code>class_eval</code> to dynamically create
-      a method with a user-supplied name and body.
-        <dd>
-          <pre>
-            <code>
-            Array.class_eval do
-              define_method(:second, -&gt;{ self.[](1) })
-            end
-            [3, 4, 5].second #=&gt; 4
-            </code>
-          </pre>
-        </dd>
+        <dt>Using <code>define_method</code> inside <code>class_eval</code> to
+        dynamically create a method with a user-supplied name and body.
       </figure>
         
-      <p><code>Object#define_singleton_method</code> is called with a class name as the receiver and
-      the same arguments as <code>Module#define_method</code> for the obvious purpose. 
+      <p><code>Object#define_singleton_method</code> is called with a class
+      name as the receiver and the same arguments as
+      <code>Module#define_method</code> for the obvious purpose. 
 
       <figure id=define-singleton-method>
-      <dt>Using <code>define_singleton_method</code> to dynamically create a method.
-        <dd>
-          <pre>
-            <code>
-            File.define_singleton_method(:match) do |file, pattern|
-              File.read(file).match(pattern)
-            end
-            File.match('/etc/passwd',/root/) #=&gt; #&lt;MatchData "root"&gt;
-            </code>
-          </pre>
-        </dd>
+        <dt>Using <code>define_singleton_method</code> to dynamically create a
+        method.
       </figure>
 
   <h3>Arity</h3>
@@ -1094,17 +824,7 @@
     called without affecting <code>Rectangle#height</code>.
 
     <figure id=undef-method>
-    <dt>Undefining a method with <code>undef</code>.
-      <dd>
-        <pre><code>
-        def boo!
-          "(goose)"
-        end
-        boo! #=&gt; "(goose)"              
-        undef :boo!
-        boo! #=&gt; NoMethodError: undefined method `boo!' for main:Object 
-        </code></pre>
-      </dd>
+      <dt>Undefining a method with <code>undef</code>.
     </figure>
 
     <!-- Mention Module#undef_method? Does it offer any advantages? Better
@@ -1119,27 +839,10 @@
     latter doesn’t.
     
     <!-- Use same example for undef_method so they can be contrasted -->
-    <pre><code>
-    class Parent
-      def says
-        "Tidy your room!"
-      end
-    end
-
-    class Child &lt; Parent
-      def says
-        "In a minute..."
-      end
-    end
-    
-    Child.new.says #=&gt; "In a minute..."
-    
-    class Child
-      remove_method :says
-    end
-    
-    Child.new.says #=&gt; "Tidy your room!"
-    </code></pre>
+    <figure id=remove-method>
+      <dt>Using <code>remove_method</code> to remove a method definition from
+      a class, causing the superclass method to be invoked in its place.
+    </figure>
 
   <h3>Visibility</h3>
 
@@ -1157,41 +860,6 @@
 
     <figure id=visibility-specifiers>
       <dt>Declaring the visibility of methods with visibility specifiers
-      <dd>
-        <pre><code>
-        class C                
-          # This method is public because it hasn't been specified
-          # otherwise
-          def pub
-          end
-          
-          private
-          # This method is private because it appears after the
-          #'private' visibility specifier
-          def pri
-          end
-
-          # This method is also private because the previous visibility
-          # specifier has not been overridden
-          def pri2
-          end
-
-          protected
-          # This method is protected because it appears after the
-          #'protected' visibility specifier
-          def pro
-          end
-          
-          public
-          # This method is public because the protected visibility
-          # specifier has been explicitly overridden. Typically this would
-          # have been defined after 'pub', removing the need for a
-          # visibility specifier
-          def pub2
-          end  
-        end  
-        </code></pre>
-      </dd>
     </figure>
 
     <p>A visibility specifier with one or more method names (given as
@@ -1201,38 +869,6 @@
     <figure id=visibility-specifiers-args>
       <dt>Declaring the visibility of methods with visibility specifiers that
       take arguments
-      <dd>
-        <pre><code>
-        class C                
-          # This method is public because it hasn't been specified
-          # otherwise
-          def pub
-          end
-          
-          def pri
-          end
-
-          def pri2
-          end
-
-          # Both :pri and :pri2 are made private because their names are
-          # given as arguments to the 'private' visibility specifier
-          private :pri, :pri2
-
-          def pro
-          end
-          # This method is made protected because its name is given to
-          # the 'protected' visibility specifier
-          protected 'pro'
-          
-          # This method is public because it hasn't been declared
-          # otherwise; the previous 'protected' specifier only affects the
-          # method it was called for
-          def pub2
-          end  
-        end  
-        </code></pre>
-      </dd>
     </figure>
 
     <h4>Advisory Privacy</h4>
@@ -1349,19 +985,8 @@
     strings). <!-- Note that super is preferred when the method is defined in
     a superclass -->
 
-    <figure id=alias-for-wraping>
-    <dt>Using <code>alias</code> in order to wrap a method
-      <dd>
-        <pre><code>
-        class String
-          alias :old_to_i :to_i
-          def to_i
-            raise "No digits found" unless match(/\d/)
-            old_to_i
-          end
-        end
-        </code></pre>
-      </dd>
+    <figure id=alias-for-wrapping>
+      <dt>Using <code>alias</code> to wrap a method
     </figure>
 
     <!-- TODO: Link with example of using method objects to wrap methods
@@ -1427,16 +1052,7 @@
     </aside>
 
     <figure id=basicobject-method_missing>
-    <dt>A demonstration of <code>BasicObject#method_missing</code>
-    <dd>
-        <pre><code>
-        class BasicObject
-          public :method_missing
-        end
-        b = BasicObject.new
-        b.method_missing :glark #=&gt; NoMethodError: undefined method `glark' for #<BasicObject:0x93ace0c>
-        </code></pre>
-      </dd>
+      <dt>A demonstration of <code>BasicObject#method_missing</code>
     </figure>
     
     <p>If <code>method_missing</code> is invoked with a message it
@@ -1466,7 +1082,7 @@
       class=ref>Buck</a>, 2006). He identifies a variation on this idea where
     a <q>a sequence of Dynamic Receptions</q> are chained together, such that
     each method returns an “Expression Builder”, e.g.
-    <code>find_by.firstname("martin").and.lastname("fowler)<code>.
+    <code>find_by.firstname("martin").and.lastname("fowler)</code>.
 
   <h3><code>Kernel#respond_to_missing?</code></h3>
 
@@ -1608,31 +1224,23 @@
       <blockquote>
         <p>Suppose I’ve got a class hierarchy where a method gets redefined:
           
-        <pre><code>
-         class A
-          def a_method
-            puts "Definition in class A"
-          end
-         end
-         class B &lt; A
-          def a_method
-            puts "Definition in class B (subclass of A)"
-          end
-         end
-         class C &lt; B
-         end
-         </code></pre>
-          
-        <p>And I’ve got an instance of the subclass (<code>c = C.new</code>). Is there any way to
-        get that instance of the lowest class to respond to the message (<code>a_method</code>) by
-        executing the version of the method in the class two classes up the chain?
+        <figure id=unboundmethod-black>
+          <dt>A class hierarchy where a method is redefined
+        </figure>
+
+        <p>And I’ve got an instance of the subclass (<code>c = C.new</code>).
+        Is there any way to get that instance of the lowest class to respond
+        to the message (<code>a_method</code>) by executing the version of the
+        method in the class two classes up the chain?
         
       </blockquote>
         
-      <p>By default, of course, the instance doesn’t do that; it executes the first matching method
-      it finds as it traverses the method search path: <code>c.a_method</code>. The output is
-      <samp>Definition in class B (subclass of A)</samp>. But you can force the issue through an
-      unbind and bind operation: <code>A.instance_method(:a_method).bind(c).call</code>. Here the
+      <p>By default, of course, the instance doesn’t do that; it executes the
+      first matching method it finds as it traverses the method search path:
+      <code>c.a_method</code>. The output is <samp>Definition in class B
+        (subclass of A)</samp>. But you can force the issue through an unbind
+      and bind operation:
+      <code>A.instance_method(:a_method).bind(c).call</code>. Here the
       output is <samp>Definition in class A</samp>.
       
     </blockquote>
