@@ -1388,13 +1388,14 @@
       <li>Search the singleton methods of the superclass, and ancestors, of
       <var>class</var>’s eigenclass.
       <li>Search the instance methods of <var>class</var>.
-      <li>Search the instance methods of modules included by <var>class</var>. (Modules
-      are searched in reverse order of inclusion).
+      <li>Search the instance methods of modules included by <var>class</var>.
+      (Modules are searched in reverse order of inclusion).
       <li>If <var>class</var> has a superclass, assign it to <var>class</var>
       then go to step three. (<code>BasicObject</code> doesn't have a superclass,
       so at that point this step will terminate).
-      <li>Set <var>selector</var> to <code>:method_missing</code>, 
-      <var>class</var> back to the receiver’s class, and go to step one.
+      <li>Set <var>selector</var> to <code>:method_missing</code>, prepend the
+      original selector to the argument list, set <var>class</var> back to the
+      receiver’s class, and go to step one.
     </ol>
 
     <p><a href=#refTHOM09 class=ref>Thomas et al.</a> describe this
@@ -1405,19 +1406,15 @@
 
   <h3>Missing Methods</h3>
 
-    <p>By default a <code>NoMethodError</code> is raised when an object
-    receives a message for which a corresponding method is not defined.
-    Beforehand the object tries to send itself a <code>:method_missing</code>
-    message, with a <code>Symbol</code> of the original message selector as
-    the first argument, followed by the original message’s arguments. So, by
-    defining a method named <code>method_missing</code> an object is able to
-    override the default behaviour, providing its own response to the message.
-
-    <p>If the object does not define <code>method_missing</code> it is
-    searched for along the usual search path. At the top of the class
-    hierarchy, <code>BasicObject</code>, <code>method_missing</code> is
-    defined to raise a <code>NoMethodError</code> for the original message.
-    This terminates the search and provides the default behaviour.
+    <p>The exposition above shows that sending an object a message for which a
+    corresponding method is not defined causes each object on the search path
+    to be sent <code>:method_missing</code> with the original selector as the
+    first argument, and the original arguments as the remainder.
+    <code>BasicObject</code> defines <code>:method_missing</code> to provide
+    the default behaviour of raising <code>NoMethodError</code> for
+    non-existent methods. However, if another object defines
+    <code>:method_missing</code> they can intervene, averting the exception
+    and responding to the message themselves. 
 
     <figure id=basicobject-method_missing>
     <dt>A demonstration of <code>BasicObject#method_missing</code>
@@ -1432,7 +1429,7 @@
       </dd>
     </figure>
     
-    <p>Therefore, if <code>method_missing</code> is invoked with a message it
+    <p>If <code>method_missing</code> is invoked with a message it
     does not wish to respond to, it should use the implicit-argument form of
     <code>super</code> to delegate to its parent. This gives the parent the
     option of responding to the message, or otherwise triggers the default
