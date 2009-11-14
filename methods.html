@@ -1416,6 +1416,7 @@
     <code>:method_missing</code> they can intervene, averting the exception
     and responding to the message themselves. 
 
+
     <aside class=note>
       The <code>NoMethodError</code> exception has an <code>#args</code>
       method which returns the arguments sent to the original method as an
@@ -1453,8 +1454,19 @@
       second time, and so the loop continues.
     </aside>
 
-    <!-- TODO: Mention "Dynamic Reception" idea of Fowler -->
-    <!-- TODO: Link with #respond_to_missing? -->
+    <p><a class=ref href=#FOWLER08>Fowler</a> describes the use of
+    <code>method_missing</code> to <q>respond differently to an unknown
+      message.</q> as “Dynamic Reception”. One use he suggests is to
+    <q>convert what might otherwise be method parameters into the name of the
+      method.</q>, contrasting <code>find_by("firstname", "martin",
+      "lastname", "fowler")</code> with the
+    <code>method_missing</code>-supported
+    <code>find_by_firstname_and_lastname("martin", "fowler")</code>. (The
+    example was derived from a feature of Ruby on Rails (<a href=#refBUCK06
+      class=ref>Buck</a>, 2006). He identifies a variation on this idea where
+    a <q>a sequence of Dynamic Receptions</q> are chained together, such that
+    each method returns an “Expression Builder”, e.g.
+    <code>find_by.firstname("martin").and.lastname("fowler)<code>.
 
   <h3><code>Kernel#respond_to_missing?</code></h3>
 
