@@ -1304,7 +1304,7 @@
   <h3>Aliases</h3>
 
     <p>An <dfn id=method-alias>alias</dfn> of a method is an alternate name by
-    which it can be referred.  For a method, <var>m</var>, and its alias,
+    which it can be referred. For a method, <var>m</var>, and its alias,
     <var>a</var>, invoking <var>m</var> is equivalent to invoking
     <var>a</var>.
 
@@ -1325,15 +1325,29 @@
     defined.  If a method named <var>new_name</var> already exists it is
     overwritten.
 
-    <!-- TODO: Mention alias_method_chain ? -->
-    <!-- TODO: Mention alias_method ? -->
+    <p><code>Module#alias_method <var>new_name</var>,
+      <var>current_name</var></code> can be used to the same effect, the
+    difference being that it uses standard method semantics to interpret
+    identifier arguments: treating them as expressions; not literal method
+    names. This allows methods to be aliased dynamically. For example,
+    <code>alias new old</code> interprets its arguments as literal
+    identifiers, whereas <code>alias_method <var>new</var>,
+      <var>old</var></code> sees them as variables, whose values are the
+    method names. By implication, if the arguments to
+    <code>Module#alias_method</code> <i>should</i> be interpreted as literal
+    identifiers they must be supplied as <code>String</code> or
+    <code>Symbol</code> literals, e.g. <code>alias_method :new, :old</code>.
+
+    <!-- TODO: Mention alias_method_chain ?
+    http://yehudakatz.com/2009/03/06/alias_method_chain-in-models/ -->
 
     <p>Aliasing is also used to create a method which wraps the method of the
     same name by performing its own computations then calling the original
     method. For example, in the example below we wrap <code>String#to_i</code>
     such that it raises an exception if the string doesn't contain digits.
     (Normally, <code>String#to_i</code> returns <code>0</code> for such
-    strings).
+    strings). <!-- Note that super is preferred when the method is defined in
+    a superclass -->
 
     <figure id=alias-for-wraping>
     <dt>Using <code>alias</code> in order to wrap a method
@@ -1358,6 +1372,7 @@
   <!-- TODO: Discuss method overloading? -->
 
   <!-- TODO: Algo. for determining a method's aliases -->
+
   <h3>Lookup Algorithm</h3>
   
     <p>Evaluating a message expression requires the corresponding method
