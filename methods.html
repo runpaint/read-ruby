@@ -1416,6 +1416,15 @@
     <code>:method_missing</code> they can intervene, averting the exception
     and responding to the message themselves. 
 
+    <aside class=note>
+      The <code>NoMethodError</code> exception has an <code>#args</code>
+      method which returns the arguments sent to the original method as an
+      <code>Array</code>, and <code>#name</code> which returns the original
+      method name as a <code>Symbol</code>. This information can be used to
+      perform introspection on the caught exception and enhance error
+      messages.
+    </aside>
+
     <figure id=basicobject-method_missing>
     <dt>A demonstration of <code>BasicObject#method_missing</code>
     <dd>
@@ -1446,7 +1455,6 @@
 
     <!-- TODO: Mention "Dynamic Reception" idea of Fowler -->
     <!-- TODO: Link with #respond_to_missing? -->
-    <!-- TODO: Mention NoMethodError#args and #name -->
 
   <h3><code>Kernel#respond_to_missing?</code></h3>
 
