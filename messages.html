@@ -88,8 +88,8 @@
 
   <h3>Receivers</h3>
 
-    <p>Every message is sent to a receiver object, which may be explicit or
-    implicit.
+    <p>Every message is sent to a <dfn id=receiver>receiver</dfn> object,
+    which may be explicit or implicit.
 
     <h4>Implicit Receivers</h4>
 
@@ -122,6 +122,17 @@
       <p>An explicit receiver is an expression that evaluates to an object. It
       cannot be used when the message is private.
 
+      <p>The expression is typically an identifier. For example,
+      <code>house.build(floors: 2, style: :victorian)</code> sends the message
+      with the selector <code>:build</code> to the object <code>house</code>.
+      If the expression is itself a message expression, we say the messages
+      are <a href=#message-chaining>chained</a>.
+
+      <p>However, the receiver may be any expression, parenthesised if
+      necessary to force precedence. For example, <code>(10 **
+        10).to_s</code> evaluates the parenthetical, then sends its value
+      (<code>100</code>) the <code>:to_s</code> message.
+
   <h3>Message Selectors</h3>
 
     <!-- TODO: Clarify that we referto the selector as a Symbol subsequently
@@ -130,66 +141,85 @@
     <!-- TODO: Talk here about "significant names"? Decide what material moves
     from the Method > Names section to here -->
 
-    <p>The message selector is the name of the operation the receiver should
-    perform. It is unique to a given object. <!-- What does this last sentence
-    mean? -->
+    <p>The message <dfn id=selector>selector</dfn> is the name of the
+    operation the receiver should perform in response to message.
 
     <p>The selector is assumed to be the name of a method defined upon the
-    receiver. If a corresponding method is not found in the receiver or its
-    parents, the receiver is sent a <code>method_missing</code> message, whose
-    arguments are the original message selector and its arguments. <!-- Cut
-    this sentence; link to method_missing section? -->
+    receiver or one of its superclasses. If a corresponding method is not
+    found in the receiver, the <a href=#method-missing>Method Missing</a>
+    protocol is initiated.
 
-    <p>A message selector may consist of any <code>Symbol</code>, even those
-    which are illegal when defining a method with the <code>def</code>
-    keyword. Methods with corresponding names can be defined with
-    <code>Object#define_method</code>, or such messages can be handled by
-    <code>method_missing</code>
+    <aside>
+      <p>A message selector may consist of any <code>Symbol</code>, even those
+      which are illegal when defining a method with the <code>def</code>
+      keyword. Methods with corresponding names can be defined with
+      <code>Object#define_method</code>, or such messages can be handled by <a
+        href=#method-missing>Method Missing</a>.
+    </aside>
 
     <figure id=sending-a-message>
-    <dt>Sending the message <code>:size</code> to a <code>String</code> object. The first example uses
-    the standard message sending syntax; the second uses <code>Object#send</code>.
-      <dd>
-        <pre><code>
-          "wool".size #=&gt; 4
-          "wool".send(:size) #=&gt; 4
-        </code></pre>  
-      </dd>
+      <dt>Sending the message <code>:size</code> to a <code>String</code>
+      object. The first example uses the standard message sending syntax; the
+      second uses <code>Object#send</code>.
     </figure>
-
 
     <h4>Conventions</h4>
 
     <!-- The concept of #[] as selecting a value given a virtual key -->
-  <section>
-  <h3>Tone</h3>
 
-    <p>By convention, a selector with a question mark (<code>?</code>) suffix
-    denotes that the message poses a polar question to the receiver. For example,
-    <code>Fixnum#odd?</code> asks the receiver whether it is odd, returning
-    <code>true</code> if it is; <code>false</code> otherwise. Such messages
-    are referred to as <dfn title="predicate message">predicates</dfn>.
+      <section>
+        <h1>Tone</h1>
 
-    <p>Following similar convention, a selector with an exclamation mark
-    (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
-      mark a method as special. It doesn’t necessarily mean that it will be
-      destructive or dangerous, but it means that it will require more
-      attention than its alternative.</q> <a class=ref
-      href=#refBROWN09>[Brown, 2009, p. 52]</a>. <q>Usually, the method
-      without the exclamation mark returns a modified copy of the object it is
-      invoked on, and the one with the exclamation mark is a mutator method
-      that alters the object in place.</q> <a class=ref
-      href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a> 
+          <p>By convention, a selector with a question mark (<code>?</code>) suffix
+          denotes that the message poses a polar question to the receiver. For example,
+          <code>Fixnum#odd?</code> asks the receiver whether it is odd, returning
+          <code>true</code> if it is; <code>false</code> otherwise. Such messages
+          are referred to as <dfn title="predicate message">predicates</dfn>.
 
-      <p>Both suffixes are merely <i>conventional</i>, however; they do not
-      guarantee that the receiver will respond in the aforementioned manner. For
-      example, <code>Float#infinite?</code> returns <code>nil</code> for finite
-      numbers, <code>-1</code> for negative infinity, or <code>+1</code> for
-      positive infinity. <!-- TODO: Use infinity symbols -->
+          <p>Following similar convention, a selector with an exclamation mark
+          (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
+            mark a method as special. It doesn’t necessarily mean that it will be
+            destructive or dangerous, but it means that it will require more
+            attention than its alternative.</q> <a class=ref
+            href=#refBROWN09>[Brown, 2009, p. 52]</a>. <q>Usually, the method
+            without the exclamation mark returns a modified copy of the object it is
+            invoked on, and the one with the exclamation mark is a mutator method
+            that alters the object in place.</q> <a class=ref
+            href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a> 
 
-    </section>
+            <p>Both suffixes are merely <i>conventional</i>, however; they do not
+            guarantee that the receiver will respond in the aforementioned manner. For
+            example, <code>Float#infinite?</code> returns <code>nil</code> for finite
+            numbers, <code>-1</code> for negative infinity, or <code>+1</code> for
+            positive infinity. <!-- TODO: Use infinity symbols -->
+      </section>
     
-   <section>  
+      <section>
+        <h1>Plurality</h1>
+
+        <p>Messages whose selectors are plural generally return an
+        <code>Enumerable</code> collection of objects. For example,
+        <code>String#bytes</code>, <code>String#chars</code>, and
+        <code>String#codepoints</code> return <code>Enumerators</code> which
+        yield each byte, character, or codepoint, respectively, in turn.
+        Similarly, <code>Object#methods</code>,
+        <code>Object#instance_methods</code>,
+        <code>Object#instance_variables</code>, and similar methods, return
+        <code>Array</code>s of <code>Symbol</code>s.
+
+        <figure id=plural-selector-splat>
+          <dt>Idiomatically create an <code>Array</code> from a plural method
+          with the splat operator
+        </figure>
+
+        <p>The plurality of the selector does not imply anything about the
+        size of the collection returned, however. For instance, if a
+        <code>String</code> is empty <code>String#chars</code> returns an
+        empty <code>Enumerator</code>. This property is desirable because it
+        allows the returned value to be treated as <code>Enumerable</code>
+        regardless of its size.
+      <section>  
+
     <h4>Significant Names</h4>
     <ol>
       <li>each
@@ -372,7 +402,7 @@
       <!-- Point to Symbol#to_proc here? -->
     </aside>
 
-    <h4>Chaining</h4>
+    <h4 id=message-chaining>Chaining</h4>
 
       <p>A message expression returns an object, which may in turn receive
       messages, i.e.
