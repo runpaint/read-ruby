@@ -14,45 +14,48 @@
 
   <!-- List messages objects _should_ respond to, and those messages that are
   useful to define methods for -->
+  
+  <section>
+    <blockquote cite=#refKAY98>  
+      <p>…Smalltalk is not only NOT its syntax or the class library, it is not
+      even about classes. I'm sorry that I long ago coined the term “objects”
+      for this topic because it gets many people to focus on the lesser idea.
 
-  <blockquote cite=#refKAY98>  
-    <p>…Smalltalk is not only NOT its syntax or the class library, it is not
-    even about classes. I'm sorry that I long ago coined the term “objects”
-    for this topic because it gets many people to focus on the lesser idea.
-
-    <p>The big idea is “messaging” -- that is what the kernal[<i>sic</i>] of
-    Smalltalk/Squeak is all about (and it’s something that was never quite
-    completed in our Xerox PARC phase). The Japanese have a small
-    word—<i>ma</i>—for “that which is in between”—perhaps the nearest English
-    equivalent is “interstitial”. The key in making great and growable systems
-    is much more to design how its modules communicate rather than what their
-    internal properties and behaviors should be. 
-    <cite><a href=#refKAY98 class=ref>Dr Alan Kay</a>, 1998</cite>
-  </blockquote>
-
-  <p>A message is a <q>request for an object to perform some operation</q> (<a
-    href=#refBUDD87 class=ref>Budd</a>, p. 6). It consists of <q>a
-    <i>receiver</i>, a message <i>selector</i>, and zero or more
-    <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, p. 16). We
-  use the term <i>send</i> to describe the action of making the request: an
-  object <i>sends</i> a message to another object. 
-
-  <aside>
-    <p><a href=#refLIU99 class=ref>Liu</a> (p. 2) suggests that it can be
-    helpful to envisage messages as telegrams:
-    
-    <blockquote cite=#refLIU99>
-      “Message” is too abstract a word. A better word is <i>telegram</i>. A
-      “telegram” is tangible: I can touch it, I can see the information it
-      carries, and I can picture the moment it arrives at the door of its
-      addressee. It is not some vague electronic-sounding thing like a
-      “message”. Therefore, I encourage you to think of an old-fashioned
-      telegram whenever you see the term “message”.
-      <cite><a href=#refLIU99>C. Liu</a>, 1999</cite> 
+      <p>The big idea is “messaging” -- that is what the kernal[<i>sic</i>] of
+      Smalltalk/Squeak is all about (and it’s something that was never quite
+      completed in our Xerox PARC phase). The Japanese have a small
+      word—<i>ma</i>—for “that which is in between”—perhaps the nearest English
+      equivalent is “interstitial”. The key in making great and growable systems
+      is much more to design how its modules communicate rather than what their
+      internal properties and behaviors should be. 
+      <cite><a href=#refKAY98 class=ref>Dr Alan Kay</a>, 1998</cite>
     </blockquote>
-  </aside>
 
-  <h3>The Distinction Between Messages and Methods</h3>
+    <p>A message is a <q>request for an object to perform some operation</q> (<a
+      href=#refBUDD87 class=ref>Budd</a>, p. 6). It consists of <q>a
+      <i>receiver</i>, a message <i>selector</i>, and zero or more
+      <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, p. 16). We
+    use the term <i>send</i> to describe the action of making the request: an
+    object <i>sends</i> a message to another object. 
+
+    <aside>
+      <p><a href=#refLIU99 class=ref>Liu</a> (p. 2) suggests that it can be
+      helpful to envisage messages as telegrams:
+      
+      <blockquote cite=#refLIU99>
+        “Message” is too abstract a word. A better word is <i>telegram</i>. A
+        “telegram” is tangible: I can touch it, I can see the information it
+        carries, and I can picture the moment it arrives at the door of its
+        addressee. It is not some vague electronic-sounding thing like a
+        “message”. Therefore, I encourage you to think of an old-fashioned
+        telegram whenever you see the term “message”.
+        <cite><a href=#refLIU99>C. Liu</a>, 1999</cite> 
+      </blockquote>
+    </aside>
+  </section>
+
+  <section>
+    <h1>The Distinction Between Messages and Methods</h1>
 
     <p>A message selector often corresponds to the name of a method in the
     receiver. That is, sending the message <var>s</var> to receiver
@@ -82,16 +85,20 @@
     by Budd's use of the term <i>operation</i>: a method must perform the
     requested operation, invoking whatever method is most appropriate to do so.
 
-    <!-- Expand on this idea: shared vocabulary? -->
+    <!-- Expand on this idea: shared vocabulary? Discussed in different
+    chapter. -->
     <p>Defining messages in terms of operations also provides the framework for
     our discussion of <i>duck typing</i> later in this chapter.
+  </section>
 
-  <h3>Receivers</h3>
+  <section>
+    <h1>Receivers</h1>
 
     <p>Every message is sent to a <dfn id=receiver>receiver</dfn> object,
     which may be explicit or implicit.
 
-    <h4>Implicit Receivers</h4>
+    <section>
+      <h1>Implicit Receivers</h1>
 
       <p>If a receiver is not specified an <i>implicit receiver</i> of
       <code>self</code> is assumed. <code>self</code> always refers
@@ -116,8 +123,10 @@
       <p>By contrast, the implicit receiver must be used when the message is
       private. <!-- Are _messages_ private? -->
        <!-- TODO: Explain how 'puts "glark"' works in this context? -->
+    </section>
 
-    <h4>Explicit Receivers</h4>
+    <section>
+      <h1>Explicit Receivers</h1>
 
       <p>An explicit receiver is an expression that evaluates to an object. It
       cannot be used when the message is private.
@@ -132,8 +141,11 @@
       necessary to force precedence. For example, <code>(10 **
         10).to_s</code> evaluates the parenthetical, then sends its value
       (<code>100</code>) the <code>:to_s</code> message.
+    </section>
+  </section>
 
-  <h3>Message Selectors</h3>
+  <section>
+    <h1>Selectors</h1>
 
     <!-- TODO: Clarify that we referto the selector as a Symbol subsequently
     -->
@@ -157,14 +169,246 @@
         href=#method-missing>Method Missing</a>.
     </aside>
 
+    <!-- Premature to introduce syntax here? -->
     <figure id=sending-a-message>
       <dt>Sending the message <code>:size</code> to a <code>String</code>
       object. The first example uses the standard message sending syntax; the
       second uses <code>Object#send</code>.
     </figure>
+  </section>
 
-    <h4>Conventions</h4>
-      <!-- Preamble: Just conventions; not rules, etc. -->
+  <!-- Arguments section? -->
+
+  <section>
+    <h1>Message Expression Syntax</h1>
+
+    <!-- We're using _message expression_ to describe this syntax... (dfn it?) -->
+
+    <p>The simplest expression for sending a message is
+    <code><var>s</var></code>, where <var>s</var> is the message selector.
+    Omitting the name of the receiver to which <var>s</var> should be sent
+    causes an implicit receiver of <code>self</code> to be assumed. <!-- TODO:
+    Link to implicit receiver section -->
+
+    <aside class=note>
+      The syntax explained above is potentially ambiguous. If Ruby sees a bare
+      identifier, e.g. <code>glark</code>, is that a reference to a local
+      variable or an attempt to send a message to <code>self</code>? If Ruby
+      has previously seen the identifier being assigned to, e.g. <code>glark =
+        2</code>, it is treated as a variable reference; otherwise it is a
+      message.
+    </aside>
+
+    <p>The receiver can be specified explicitly with the
+    <code><var>receiver</var>.<var>selector</var></code> syntax, i.e. the
+    message selector is prefixed with the receiver name followed by a period
+    (U+002E: <code>.</code>). <var>receiver</var> is an expression which
+    evaluates to an object. <!-- TODO: Link to explicit receiver section --> For
+    example, <code>"esrever".reverse</code> sends the message
+    <code>:reverse</code> to the <code>String</code> <code>"esrever"</code>.
+    <code>(1 + 2).odd?</code> sends <code>:odd?</code> to the
+    <code>Fixnum</code> <code>3</code>.
+
+    <aside class=note>
+      An alternative to the <code><var>receiver</var>.<var>selector</var></code>
+      syntax is <code><var>receiver</var>::<var>selector</var></code>, where the
+      period (<code>.</code>) is replaced with a double colon (<code>::</code>).
+      However, the latter syntax has fallen out of favour due to the confusion
+      it creates between message sending and constant reference expressions.
+      It is not recommended for use in new code.
+    </aside>
+
+    <p>In either case a <code>NoMethodError</code> is raised if the receiver
+    neither defines a corresponding method nor defines a
+    <code>method_missing</code> method that handles the message.
+
+    <section>
+      <h1>Arguments</h1>
+      
+      <p>A message may be accompanied by one or more <dfn
+        id=method-arguments>arguments</var>: variables to be used in the
+      resulting computations. Arguments are supplied as a
+      parenthesized list of variables separated by commas:
+      <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.
+      For example, to send the <code>String</code> <code>"haystack"</code> the
+      <code>:include?</code> message with the argument <code>"needle"</code>:
+      <code>"haystack".include?("needle")</code>.
+
+      <p>If a message is sent with an unexpected argument list an
+      <code>ArgumentError</code> is raised.
+
+      <aside class=note> 
+        <p>It is often the case that a message needs to be sent with multiple
+        arguments, yet those arguments are stored in an <code>Enumerable</code>
+        such as <code>Array</code>. If the message is sent with just the
+        <code>Enumerable</code> argument it will receive a single argument (a
+        reference to the <code>Enumerable</code>) rather than the constituent
+        elements thereof. The solution is to prefix the <code>Enumerable</code>
+        argument with an asterisk (U+002A: <code>*</code>), which in this context
+        is termed a <dfn id=splat-operator>splat operator</dfn>, thus expanding
+        the <code>Enumerable</code> into its individual elements.
+
+        <!-- TODO: Example -->
+        <p>This technique works by sending <code>:to_a</code> to the prefixed
+        object, so any object that responds to this message with an
+        <code>Array</code> can be used in the same fashion.  
+      </aside>
+
+      <p>A message expression followed by a block literal causes the block to be
+      sent along with the message. A block literal may be enclosed in curly
+      braces (<code>{</code>…<code>}</code>) or a <code>do</code>…<code>end</code>
+      construct. These forms are semantically equivalent, however it is
+      conventional to use the former for short blocks that fit on a single line,
+      and the latter for multi-line blocks.
+
+      <!-- Suggest here that Enumerators are returned when no block is given?
+      -->
+
+      <aside class=note>
+        <!-- FIXME: Reword in terms of messages -->
+        <p>To pass a <code>Proc</code> object to a method expecting an anonymous
+        block, prefix the object name with an ampersand ((U+0026:
+        <code>&amp;</code>). If the message is sent with multiple arguments this
+        <code>Proc</code> must be specified last.
+
+        <p>This technique works by sending <code>:to_proc</code> to the object,
+        and using the <code>Proc</code> returned as the block. By extension, any
+        object that responds to <code>:to_proc</code> in this manner can be used
+        in the same fashion.
+        <!-- Point to Symbol#to_proc here? -->
+      </aside>
+
+      <section>
+        <h1>Parentheses</h1>
+
+          <p>Parentheses may be omitted from message expressions when doing so does
+          not introduce syntactic ambiguity.
+
+          <p>Parentheses are rarely used in message expressions that don't involve
+          arguments. For example, <code>'briefcase'.upcase</code> is equivalent to
+          <code>'briefcase'.upcase()</code>; the former is the recommended style.
+          <!-- TODO: What about if doing so disambiguates the method from a
+          variable?  -->
+
+          <p>Parentheses may usually be omitted even when arguments are involved.
+          This is mostly a matter of taste.
+
+          <p>A common case when parentheses are <i>required</i> to disambiguate is
+          nested message expressions where multiple arguments are involved, such as
+          <code><var>a</var> <var>b</var> <var>c</var>, <var>d</var></code>, where
+          <var>a</var> and <var>b</var> are selectors. To whom do the arguments,
+          <var>c</var> and <var>d</var> belong? Does the programmer mean
+          <code><var>a</var>(<var>b</var>(<var>c</var>, <var>d</var>))</code> or
+          <code><var>a</var>(<var>b</var>(<var>c</var>), <var>d</var>)</code>? Ruby
+          assumes the former. However, even if the programmer agrees with Ruby's
+          interpretation, these forms of expressions are seldom as clear to others.
+          Therefore, it is recommended to employ parentheses in such cases, even if
+          unnecessary, as an aid to legibility.
+
+          <p>When parentheses are used to enclose a message’s arguments, the opening
+          parenthesis must immediately follow the selector like so:
+          <code><var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg<sub>n</sub></var>)</code>.
+          Whitespace between <var>selector</var> and <code>(</code> will result in a
+          <code>SyntaxError</code>. This is due to a quirk in Ruby’s syntax inasmuch
+          as parentheses serve two distinct functions—grouping of expressions and
+          associating an argument list with a message expression—so the above form
+          represents an ambiguity.
+      </section>
+    </section>
+    
+    <section>
+      <h1 id=message-chaining>Chaining</h1>
+
+      <p>A message expression returns an object, which may in turn receive
+      messages, i.e.
+      <code><var>receiver</var>.<var>selector<sub>0</sub></var>.<var>selector<sub>1</sub></var></code>.
+      <var>receiver</var> is sent <var>selector<sub>0</sub></var> which
+      returns an object; that object is sent <var>selector<sub>1</sub></var>.
+      Message expressions can be arbitrarily <dfn title="message
+        chaining">chained</dfn> in this fashion.
+      <!-- Example with arguments -->
+
+      <p>This technique relies on the composite receiver consistently returning an
+      object responding to the selector; otherwise a
+      <code>NoMethodError</code> will break the chain. It is unsuitable when
+      the receiver may return a materially different object for certain
+      arguments. For instance, <code>Array#select</code> <!-- Footnote that
+      this method is provided by Enumerable but we haven't introduced modules
+      yet? --> always returns an <code>Array</code> even when it doesn’t
+      select any elements, allowing it to receive any <code>Array</code>
+      selector. Conversely, methods such as <code>Array#[]</code>, which return
+      either the specified element or <code>nil</code> if it does not exist,
+      make awkward links in chains because of their inconsistency.
+
+        <!-- Mention andand -->
+
+      <p>Messages sent purely for their side effects should, and often do,
+      return <code>self</code> so as to receive any message understood by
+      their receiver. For instance, <code>String#strip</code> and
+      <code>String#capitalize</code> both return <code>self</code>, allowing
+      <code>" wittgenstein \n".strip.capitalize #=&gt; "Wittgenstein"</code>.
+    </section>
+      
+    <section>
+      <!-- Better phrase than "dynamic sending"? -->
+      <h1>Dynamic Sending with <code>Object#send</code></h1>
+  
+      <!-- Explain that arguments can be sent along with the message. -->
+      <p>A message can also be sent to an object with <code>Object#send</code>,
+      i.e. <code><var>receiver</var>.send(<var>selector</var>)</code>. This
+      allows the message selector to be determined dynamically, at runtime, as
+      opposed to the syntax described above which requires the selector to be a
+      literal, embedded in the source. For example: <code>[1, 2,
+        3].send(:first)</code> or <code>23.send(:to_s, 16)</code>.
+
+      <figure id=object-send>
+      <dt><code>Object#send</code> sends an object a message whose name can be determined at runtime.
+      <dd>
+        <pre><code>
+          name = :size
+          # Sends "wool" the :name message
+          "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
+          # Sends "wool" the :size message
+          "wool".send(name) #=&gt; 4
+        </code></pre>  
+      </dd>
+      </figure>
+
+      <p><code>Object#public_send</code> performs the same function, but
+      raises a <code>NoMethodError</code> if the method is private or
+      protected.
+      
+      <p><!-- __send__ -->
+    </section>
+  </section>
+
+  <section>
+    <h1>Attribute Accessors and Setters</h1>
+
+    <!-- TODO: Note use of term 'unary' message --> 
+    <p>A message without arguments that returns the value of the corresponding
+    instance variable, or <dfn id=attribute>attribute</dfn>, in the receiver is
+    sometimes referred to as an <dfn id=attribute-accessor>attribute
+      accessor</dfn>. For example, <code>person.name</code> is said to return
+    the <code>name</code> attribute of the <code>person</code> object.
+
+      <!-- TODO: Link with discussion of _attr_ in Objects -->
+
+    <p>There is not necessarily a correspondence between the accessor’s name
+    and that of the corresponding instance variable. There is not, for that
+    matter, necessarily a corresponding instance variable at all: the
+    attribute value might have been computed dynamically, for example. 
+
+    <p>An message with an argument whose selector comprises an
+    attribute accessor’s name suffixed with an equals sign (<code>=</code>),
+    is called an <dfn id=attribute-setter>attribute setter</dfn>. It sets the
+    attribute to the value supplied.
+  </section>
+
+  <section>
+    <h1>Conventions</h1>
+    <!-- Preamble: Just conventions; not rules, etc. -->
+    <section>
       <dl>
         <dt><code>:each</code> / <code>:each_</code>*
         <dd>
@@ -335,61 +579,62 @@
         <!-- String#/ http://redmine.ruby-lang.org/issues/show/2017 -->
         <!-- empty? include?, rewind, initialize, new, coerce -->
       </dl>
-
-      <section>
-        <h1>Tone</h1>
-
-          <p>By convention, a selector with a question mark (<code>?</code>) suffix
-          denotes that the message poses a polar question to the receiver. For example,
-          <code>Fixnum#odd?</code> asks the receiver whether it is odd, returning
-          <code>true</code> if it is; <code>false</code> otherwise. Such messages
-          are referred to as <dfn title="predicate message">predicates</dfn>.
-          <!-- Mention situation when a selector is mirrored by a predicate
-          alternative? Lots of File methods fit this pattern. -->
-
-          <p>Following similar convention, a selector with an exclamation mark
-          (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
-            mark a method as special. It doesn’t necessarily mean that it will be
-            destructive or dangerous, but it means that it will require more
-            attention than its alternative.</q> <a class=ref
-            href=#refBROWN09>[Brown, 2009, p. 52]</a>. <q>Usually, the method
-            without the exclamation mark returns a modified copy of the object it is
-            invoked on, and the one with the exclamation mark is a mutator method
-            that alters the object in place.</q> <a class=ref
-            href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a> 
-
-            <p>Both suffixes are merely <i>conventional</i>, however; they do not
-            guarantee that the receiver will respond in the aforementioned manner. For
-            example, <code>Float#infinite?</code> returns <code>nil</code> for finite
-            numbers, <code>-1</code> for negative infinity, or <code>+1</code> for
-            positive infinity. <!-- TODO: Use infinity symbols -->
-      </section>
+    </section>
     
-      <section>
-        <h1>Plurality</h1>
+    <section>
+      <h1>Tone</h1>
 
-        <p>Messages whose selectors are plural generally return an
-        <code>Enumerable</code> collection of objects. For example,
-        <code>String#bytes</code>, <code>String#chars</code>, and
-        <code>String#codepoints</code> return <code>Enumerators</code> which
-        yield each byte, character, or codepoint, respectively, in turn.
-        Similarly, <code>Object#methods</code>,
-        <code>Object#instance_methods</code>,
-        <code>Object#instance_variables</code>, and similar methods, return
-        <code>Array</code>s of <code>Symbol</code>s.
+      <p>By convention, a selector with a question mark (<code>?</code>) suffix
+      denotes that the message poses a polar question to the receiver. For example,
+      <code>Fixnum#odd?</code> asks the receiver whether it is odd, returning
+      <code>true</code> if it is; <code>false</code> otherwise. Such messages
+      are referred to as <dfn title="predicate message">predicates</dfn>.
+      <!-- Mention situation when a selector is mirrored by a predicate
+      alternative? Lots of File methods fit this pattern. -->
 
-        <figure id=plural-selector-splat>
-          <dt>Idiomatically create an <code>Array</code> from a plural method
-          with the splat operator
-        </figure>
+      <p>Following similar convention, a selector with an exclamation mark
+      (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
+        mark a method as special. It doesn’t necessarily mean that it will be
+        destructive or dangerous, but it means that it will require more
+        attention than its alternative.</q> <a class=ref
+        href=#refBROWN09>[Brown, 2009, p. 52]</a>. <q>Usually, the method
+        without the exclamation mark returns a modified copy of the object it is
+        invoked on, and the one with the exclamation mark is a mutator method
+        that alters the object in place.</q> <a class=ref
+        href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a> 
 
-        <p>The plurality of the selector does not imply anything about the
-        size of the collection returned, however. For instance, if a
-        <code>String</code> is empty <code>String#chars</code> returns an
-        empty <code>Enumerator</code>. This property is desirable because it
-        allows the returned value to be treated as <code>Enumerable</code>
-        regardless of its size.
-      <section>  
+        <p>Both suffixes are merely <i>conventional</i>, however; they do not
+        guarantee that the receiver will respond in the aforementioned manner. For
+        example, <code>Float#infinite?</code> returns <code>nil</code> for finite
+        numbers, <code>-1</code> for negative infinity, or <code>+1</code> for
+        positive infinity. <!-- TODO: Use infinity symbols -->
+    </section>
+    
+    <section>
+      <h1>Plurality</h1>
+
+      <p>Messages whose selectors are plural generally return an
+      <code>Enumerable</code> collection of objects. For example,
+      <code>String#bytes</code>, <code>String#chars</code>, and
+      <code>String#codepoints</code> return <code>Enumerators</code> which
+      yield each byte, character, or codepoint, respectively, in turn.
+      Similarly, <code>Object#methods</code>,
+      <code>Object#instance_methods</code>,
+      <code>Object#instance_variables</code>, and similar methods, return
+      <code>Array</code>s of <code>Symbol</code>s.
+
+      <figure id=plural-selector-splat>
+        <dt>Idiomatically create an <code>Array</code> from a plural method
+        with the splat operator
+      </figure>
+
+      <p>The plurality of the selector does not imply anything about the
+      size of the collection returned, however. For instance, if a
+      <code>String</code> is empty <code>String#chars</code> returns an
+      empty <code>Enumerator</code>. This property is desirable because it
+      allows the returned value to be treated as <code>Enumerable</code>
+      regardless of its size.
+    <section>  
 
    <!--
    <h4>A Survey of Selectors</h4>
@@ -447,10 +692,13 @@
      <li>Nouns imply attribute accessor; don't take block?
    </ol>
    -->
-   <h3>Responding to Messages</h3>
+  </section>
 
-   <!-- Is this definition sane? -->
-   <p>An object is said to <i>respond to</i> a given message if it expects to
+  <section>
+    <h1>Responding to Messages</h1>
+
+    <!-- Is this definition sane? -->
+    <p>An object is said to <i>respond to</i> a given message if it expects to
     receive it. The <code>Kernel#respond_to?(<var>selector</var>)</code>
     predicate returns <code>true</code> if a method is defined with the same
     name as the selector; <code>false</code> otherwise. However, by defining
@@ -466,216 +714,8 @@
     
     <!-- Clarify difference between #respond_to? and
     #instance_methods.include? -->
-  <h3>Message Expression Syntax</h3>
+  </section>
 
-    <!-- We're using _message expression_ to describe this syntax... (dfn it?) -->
-
-    <p>The simplest expression for sending a message is
-    <code><var>s</var></code>, where <var>s</var> is the message selector.
-    Omitting the name of the receiver to which <var>s</var> should be sent
-    causes an implicit receiver of <code>self</code> to be assumed. <!-- TODO:
-    Link to implicit receiver section -->
-
-    <aside class=note>
-      The syntax explained above is potentially ambiguous. If Ruby sees a bare
-      identifier, e.g. <code>glark</code>, is that a reference to a local
-      variable or an attempt to send a message to <code>self</code>? If Ruby
-      has previously seen the identifier being assigned to, e.g. <code>glark =
-        2</code>, it is treated as a variable reference; otherwise it is a
-      message.
-    </aside>
-
-    <p>The receiver can be specified explicitly with the
-    <code><var>receiver</var>.<var>selector</var></code> syntax, i.e. the
-    message selector is prefixed with the receiver name followed by a period
-    (U+002E: <code>.</code>). <var>receiver</var> is an expression which
-    evaluates to an object. <!-- TODO: Link to explicit receiver section --> For
-    example, <code>"esrever".reverse</code> sends the message
-    <code>:reverse</code> to the <code>String</code> <code>"esrever"</code>.
-    <code>(1 + 2).odd?</code> sends <code>:odd?</code> to the
-    <code>Fixnum</code> <code>3</code>.
-
-    <aside class=note>
-      An alternative to the <code><var>receiver</var>.<var>selector</var></code>
-      syntax is <code><var>receiver</var>::<var>selector</var></code>, where the
-      period (<code>.</code>) is replaced with a double colon (<code>::</code>).
-      However, the latter syntax has fallen out of favour due to the confusion
-      it creates between message sending and constant reference expressions.
-      It is not recommended for use in new code.
-    </aside>
-
-    <p>In either case a <code>NoMethodError</code> is raised if the receiver
-    neither defines a corresponding method nor defines a
-    <code>method_missing</code> method that handles the message.
-
-    <p>A message may be accompanied by one or more <dfn
-      id=method-arguments>arguments</var>: variables to be used in the
-    resulting computations. Arguments are supplied as a
-    parenthesized list of variables separated by commas:
-    <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.
-    For example, to send the <code>String</code> <code>"haystack"</code> the
-    <code>:include?</code> message with the argument <code>"needle"</code>:
-    <code>"haystack".include?("needle")</code>.
-
-    <p>If a message is sent with an unexpected argument list an
-    <code>ArgumentError</code> is raised.
-
-    <aside class=note> 
-      <p>It is often the case that a message needs to be sent with multiple
-      arguments, yet those arguments are stored in an <code>Enumerable</code>
-      such as <code>Array</code>.  If the message is sent with just the
-      <code>Enumerable</code> argument it will receive a single argument (a
-      reference to the <code>Enumerable</code>) rather than the constituent
-      elements thereof. The solution is to prefix the <code>Enumerable</code>
-      argument with an asterisk (U+002A: <code>*</code>), which in this context
-      is termed a <dfn id=splat-operator>splat operator</dfn>, thus expanding
-      the <code>Enumerable</code> into its individual elements.
-
-      <!-- TODO: Example -->
-      <p>This technique works by sending <code>:to_a</code> to the prefixed
-      object, so any object that responds to this message with an
-      <code>Array</code> can be used in the same fashion.  
-    </aside>
-
-    <p>A message expression followed by a block literal causes the block to be
-    sent along with the message. A block literal may be enclosed in curly
-    braces (<code>{</code>…<code>}</code>) or a <code>do</code>…<code>end</code>
-    construct. These forms are semantically equivalent, however it is
-    conventional to use the former for short blocks that fit on a single line,
-    and the latter for multi-line blocks.
-
-    <!-- Suggest here that Enumerators are returned when no block is given?
-    -->
-
-    <aside class=note>
-      <!-- FIXME: Reword in terms of messages -->
-      <p>To pass a <code>Proc</code> object to a method expecting an anonymous
-      block, prefix the object name with an ampersand ((U+0026:
-      <code>&amp;</code>). If the message is sent with multiple arguments this
-      <code>Proc</code> must be specified last.
-
-      <p>This technique works by sending <code>:to_proc</code> to the object,
-      and using the <code>Proc</code> returned as the block. By extension, any
-      object that responds to <code>:to_proc</code> in this manner can be used
-      in the same fashion.
-      <!-- Point to Symbol#to_proc here? -->
-    </aside>
-
-    <h4 id=message-chaining>Chaining</h4>
-
-      <p>A message expression returns an object, which may in turn receive
-      messages, i.e.
-      <code><var>receiver</var>.<var>selector<sub>0</sub></var>.<var>selector<sub>1</sub></var></code>.
-      <var>receiver</var> is sent <var>selector<sub>0</sub></var> which
-      returns an object; that object is sent <var>selector<sub>1</sub></var>.
-      Message expressions can be arbitrarily <dfn title="message
-        chaining">chained</dfn> in this fashion.
-      <!-- Example with arguments -->
-
-      <p>This technique relies on the composite receiver consistently returning an
-      object responding to the selector; otherwise a
-      <code>NoMethodError</code> will break the chain. It is unsuitable when
-      the receiver may return a materially different object for certain
-      arguments. For instance, <code>Array#select</code> <!-- Footnote that
-      this method is provided by Enumerable but we haven't introduced modules
-      yet? --> always returns an <code>Array</code> even when it doesn’t
-      select any elements, allowing it to receive any <code>Array</code>
-      selector. Conversely, methods such as <code>Array#[]</code>, which return
-      either the specified element or <code>nil</code> if it does not exist,
-      make awkward links in chains because of their inconsistency.
-
-      <!-- Mention andand -->
-
-      <p>Messages sent purely for their side effects should, and often do,
-      return <code>self</code> so as to receive any message understood by
-      their receiver. For instance, <code>String#strip</code> and
-      <code>String#capitalize</code> both return <code>self</code>, allowing
-      <code>" wittgenstein \n".strip.capitalize #=&gt; "Wittgenstein"</code>.
-
-    <h4>Dynamic Invocation with <code>Object#send</code></h4>
-      
-    <!-- Explain that arguments can be sent along with the message. -->
-      <p>A message can also be sent to an object with <code>Object#send</code>,
-      i.e. <code><var>receiver</var>.send(<var>selector</var>)</code>. This
-      allows the message selector to be determined dynamically, at runtime, as
-      opposed to the syntax described above which requires the selector to be a
-      literal, embedded in the source. For example: <code>[1, 2,
-        3].send(:first)</code> or <code>23.send(:to_s, 16)</code>.
-
-      <figure id=object-send>
-      <dt><code>Object#send</code> sends an object a message whose name can be determined at runtime.
-      <dd>
-        <pre><code>
-          name = :size
-          # Sends "wool" the :name message
-          "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
-          # Sends "wool" the :size message
-          "wool".send(name) #=&gt; 4
-        </code></pre>  
-      </dd>
-      </figure>
-
-      <p><code>Object#public_send</code> performs the same function, but
-      raises a <code>NoMethodError</code> if the method is private or
-      protected.
-      
-      <p><!-- __send__ -->
-    <h4>Parentheses</h4>
-
-      <p>Parentheses may be omitted from message expressions when doing so does
-      not introduce syntactic ambiguity.
-
-      <p>Parentheses are rarely used in message expressions that don't involve
-      arguments. For example, <code>'briefcase'.upcase</code> is equivalent to
-      <code>'briefcase'.upcase()</code>; the former is the recommended style.
-      <!-- TODO: What about if doing so disambiguates the method from a
-      variable?  -->
-
-      <p>Parentheses may usually be omitted even when arguments are involved.
-      This is mostly a matter of taste.
-
-      <p>A common case when parentheses are <i>required</i> to disambiguate is
-      nested message expressions where multiple arguments are involved, such as
-      <code><var>a</var> <var>b</var> <var>c</var>, <var>d</var></code>, where
-      <var>a</var> and <var>b</var> are selectors. To whom do the arguments,
-      <var>c</var> and <var>d</var> belong? Does the programmer mean
-      <code><var>a</var>(<var>b</var>(<var>c</var>, <var>d</var>))</code> or
-      <code><var>a</var>(<var>b</var>(<var>c</var>), <var>d</var>)</code>? Ruby
-      assumes the former. However, even if the programmer agrees with Ruby's
-      interpretation, these forms of expressions are seldom as clear to others.
-      Therefore, it is recommended to employ parentheses in such cases, even if
-      unnecessary, as an aid to legibility.
-
-      <p>When parentheses are used to enclose a message’s arguments, the opening
-      parenthesis must immediately follow the selector like so:
-      <code><var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg<sub>n</sub></var>)</code>.
-      Whitespace between <var>selector</var> and <code>(</code> will result in a
-      <code>SyntaxError</code>. This is due to a quirk in Ruby’s syntax inasmuch
-      as parentheses serve two distinct functions—grouping of expressions and
-      associating an argument list with a message expression—so the above form
-      represents an ambiguity.
-
-    
-    <h4>Attribute Accessors and Setters</h4>
-
-    <!-- TODO: Note use of term 'unary' message --> 
-    <p>A message without arguments that returns the value of the corresponding
-    instance variable, or <dfn id=attribute>attribute</dfn>, in the receiver is
-    sometimes referred to as an <dfn id=attribute-accessor>attribute
-      accessor</dfn>. For example, <code>person.name</code> is said to return
-    the <code>name</code> attribute of the <code>person</code> object.
-
-      <!-- TODO: Link with discussion of _attr_ in Objects -->
-
-      <p>There is not necessarily a correspondence between the accessor’s name
-      and that of the corresponding instance variable. There is not, for that
-      matter, necessarily a corresponding instance variable at all: the
-      attribute value might have been computed dynamically, for example. 
-
-      <p>An message with an argument whose selector comprises an
-      attribute accessor’s name suffixed with an equals sign (<code>=</code>),
-      is called an <dfn id=attribute-setter>attribute setter</dfn>. It sets the
-      attribute to the value supplied.
-    </body>
-  </html>    
+  </body>
+</html>    
 
