@@ -164,8 +164,177 @@
     </figure>
 
     <h4>Conventions</h4>
+      <!-- Preamble: Just conventions; not rules, etc. -->
+      <dl>
+        <dt><code>:each</code> / <code>:each_</code>*
+        <dd>
+        <!-- We're duplicating the description of #each and Enumerable with
+        the _enumerables_ section... -->
+          <p>Classes mixing-in the <a
+            href=#enumerables><code>Enumerable</code></a> module are expected,
+          by default, to respond to <code>:each</code> by yielding the next
+          element of the sequence. Conventionally, it returns an
+          <code>Enumerator</code> when the block is omitted. 
 
-    <!-- The concept of #[] as selecting a value given a virtual key -->
+          <p>Messages with selectors of the form
+          <code>:each_<var>attribute</var></code> request their receiver
+          enumerates the collection in terms of <var>attribute</var>, that is
+          yielding each successive <var>attribute</var>; as opposed to <code>:each</code>
+          which presumably yields a different sort of attribute. For example,
+          <code>String#each_codepoint</code> interprets the string as a
+          collection of codepoints, yielding each in turn.
+          <code>String#each_char</code>, however, interprets the string as a
+          collection of characters, so will yield a different sequence of
+          objects. An object need only respond to such messages if it already
+          responds to <code>:each</code>, and can sensibly be enumerated in
+          another fashion. It is common to provide an alias for a selector of
+          this form named with the plural of <var>attribute</var>, e.g.
+          <code>String#each_byte</code> is aliased to
+          <code>String#bytes</code>; <code>IO#each_line</code> is aliased to
+          <code>IO#lines</code>. <!-- Enumerable doesn't provide this alias.
+          Bug? -->
+        </dd>
+        <dt><code>:size</code> / <code>:length</code>
+        <dd><code>:size</code> and <code>:length</code>, which are typically
+        aliases of each other, return an <code>Integer</code> representing the
+        magnitude of the receiver. For example, <code>Array#size</code>
+        returns the number of elements the receiver contains;
+        <code>File#size</code> returns the receiver’s size in bytes.
+        <dt><code>:</code>*<code>_by</code>
+        <dd>The <code>_by</code> suffix typically implies that the method
+        expects a block, the results of which constrain the computation. For
+        example, <code>Enumerable#group_by</code>,
+        <code>Enumerable#sort_by</code>, and
+        <code>Enumerable#minmax_by</code>. <!-- Non-Enumerable examples?
+        Worked example of how they use the block? --> 
+        <dt><code>:to_</code>*
+        <dd><a href=#conversion>Converts</a> the receiver into an object of
+        the corresponding core type.
+        <dt><code>:try_convert</code>
+        <dd>Class method which <a href=#try-convert>implicitly converts</a>
+        the argument to the receiver.
+        <dt><code>:&lt;=&gt;</code>
+        <dd><a href=#comparison>Compares</a> the operands.
+        <dt><code>:&lt;</code>
+        <dd>Determines whether the receiver is <i>less than</i> the argument.
+        Normally implemented in terms of <a
+          href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&lt;</code>
+        creatively uses this selector to test whether the receiver is a
+        <i>kind of</i> the argument because it mirrors the syntax for defining
+        a class with a superclass, i.e. <code>class <var>name</var> &lt;
+          <var>superclass</var>…end</code>.
+        <dt><code>:&gt;</code>
+        <dd>Determines whether the receiver is <i>greater than</i> the argument.
+        Normally implemented in terms of <a
+          href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
+        provides symetery to <code>Class#&lt;</code> by testing whether the
+        argument is a <i>kind of</i> the receiver.
+        <dt><code>:==</code>
+        <dd>Determines whether the operands are <a
+          href=#equivalence>equivalent</a>.
+        <dt><code>:[]</code>
+        <dd>
+          <!-- Needs to follow message expression syntax -->
+          <p><dfn title="element reference">Element reference</dfn> syntax:
+          indexes the receiver by the “key” supplied as the argument(s),
+          returning the requested slice or <code>nil</code>/<code>[]</code> if
+          no corresponding data was found. It is a special case of the message
+          expression syntax because it sends a selector named <code>:[]</code>
+          to the receiver, passing in the contents of
+          <code>[</code>…<code>]</code> as arguments, i.e.
+          <code><var>receiver</var>[<var>argument<sub>0</sub></var>,…,<var>argument<sub>n</sub></var>]</code>
+          is equivalent to
+          <code><var>receiver</var>.[](<var>argument<sub>0</sub></var>,…,<var>argument<sub>n</sub></var>)</code>
+
+          <p>The simplest example is <code>Array#[]</code>, which returns the
+          element stored at the given <code>Integer</code> index. Similarly,
+          <code>Hash#[]</code> returns the value corresponding to the given
+          key object. In this role, <code>:[]</code> acts as an interface to a
+          pre-computed lookup table.
+          
+          <p>However, this abstraction conveniently extends to virtual slices,
+          where the values are computed dynamically, shielding the user from
+          these unnecessary details: he need not concern himself with
+          <i>how</i> the data are derived, merely that they satisfy the key.
+          For example, <code>Array#[]</code> also accepts a <code>Range</code>
+          argument, for which it returns a sub-<code>Array</code> of elements
+          whose indexes are members of the <code>Range</code>. This is
+          computationally quite a different operation to the case with
+          <code>Integer</code> arguments, yet the API makes no distinction. A
+          clearer case is <code>Dir.[]</code> which interprets its arguments
+          as shell globs against the current working directory, returning an
+          <code>Array</code> of the matching entries. In this way
+          <code>Dir</code> behaves as if it maintains a
+          <code>Hash</code>-style mapping from glob to files.
+
+          <p>As alluded to with <code>Array#[<var>range</var>]</code>, it is
+          common for <code>:[]</code> to accept arguments of wildly different
+          types and try to produce a sensible result. For example,
+          <code>String#[]</code> accepts either an <code>Integer</code>, a
+          pair of <code>Integer</code>s, a <code>Range</code>, a
+          <code>Regexp</code>, a <code>Regexp</code> and an
+          <code>Integer</code>, or a <code>String</code>.
+
+          <figure id=aref-music>
+            <dt>Examples of how different objects respond to the
+            <code>:[]</code> message.
+          </figure>
+        </dl>
+        <dt><code>:[]=</code>
+        <dd>
+          <p>The assignment counterpart to <code>:[]</code>: the first argument(s)
+          describe the slice, and the final argument its new value. It
+          is expected that <code><var>obj</var>[<var>key</var>] =
+            <var>value</var></code> then <code><var>obj</var>[<var>key</var>] ==
+            <var>value</var></code>. For this equivalency to hold,
+          <code>:[]=</code> may need to be more restrictive in the arguments it
+          accepts than its counterpart because some key forms make unsuitable
+          assignment targets. For example, <code>Method#[]</code> calls the
+          objectified method with the supplied arguments, but it is unclear what
+          it would mean to assign to such a slice, so <code>Method#[]=</code> is
+          not defined.
+
+          <p>For example, <code>String#[<var>regexp</var>]=
+            <var>value</var></code> assigns <var>value</var> to the portion of
+          the <code>String</code> matched by <var>regexp</var>;
+          <code>Array#[<var>range</var>]= <var>value</var></code> replaces the
+          elements in <var>range</var> with <var>value</var>.  
+        </dd>
+        <dt><code>:=~</code>         
+        <dd>Matches the receiver with the argument. One of the operands is
+        typically a <code>Regexp</code>. This operator is commutative, i.e.
+        <code>(<var>a</var> =~ <var>b</var>) == (<var>b</var> =~
+          <var>a</var></code>. For example, <code>String#=~</code>,
+        <code>Regexp#=~</code>, and <code>Symbol#=~</code>.
+        <dt><code>:&lt;&lt;</code> <!-- Mutates; behaves differently with
+        numerics -->
+        <dd>When the receiver is an <code>Integer</code> it is shifted left
+        the amount of places specified by the argument. Otherwise, the sole
+        argument is appended to the receiver, and the mutated receiver
+        returned. For example, <code>Array#&lt;&lt;</code>,
+        <code>String#&lt;&lt;</code>, <code>IO#&lt;&lt;</code>, and
+        <code>Enumerator::Yielder#&lt;&lt;</code> <!-- Last example doesn't
+        return mutated receiver -->.
+        <dt><code>:+</code>
+        <dd>
+          <p>Sum the receiver with the sole argument, which should be of the
+          same class, returning a new object. Whereas <code>:&lt;&lt;</code>
+          appends the argument to the receiver, <code>:+</code> combines the
+          operands into a new object. For example, <code>Fixnum#+</code>,
+          <code>String#+</code>, <code>Array#+</code>.
+          
+          <p>Addition in this manner is not necessarily commutative when the
+          operands are non-numeric. For example, <code>'a' + 'b' != 'b' +
+            'a'</code>.
+        </dd>  
+        <dt><code>:*</code>
+        <dd>Multiples the receiver by a sole numeric argument, returning the
+        result. For example: <code>Fixnum#*</code>, <code>String#*</code>, and
+        <code>Array#*</code>.
+        <!-- :/ - only used by Numerics -->
+        <!-- String#/ http://redmine.ruby-lang.org/issues/show/2017 -->
+        <!-- empty? include?, rewind, initialize, new, coerce -->
+      </dl>
 
       <section>
         <h1>Tone</h1>
@@ -175,6 +344,8 @@
           <code>Fixnum#odd?</code> asks the receiver whether it is odd, returning
           <code>true</code> if it is; <code>false</code> otherwise. Such messages
           are referred to as <dfn title="predicate message">predicates</dfn>.
+          <!-- Mention situation when a selector is mirrored by a predicate
+          alternative? Lots of File methods fit this pattern. -->
 
           <p>Following similar convention, a selector with an exclamation mark
           (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
@@ -219,19 +390,6 @@
         allows the returned value to be treated as <code>Enumerable</code>
         regardless of its size.
       <section>  
-
-    <h4>Significant Names</h4>
-    <ol>
-      <li>each
-      <li>each_: Implies enumerator
-      <li>rewind
-      <li>initialize
-      <li>new
-      <li>to_*
-      <li>coerce
-      <li>&lt;=&gt;
-    </ol>
-   </section>
 
    <!--
    <h4>A Survey of Selectors</h4>
@@ -286,9 +444,7 @@
    <ol>
      <li>Typically verbs. If message has multiple senses, verbal is most
      likely.
-     <li>Plurals return Enumerables
      <li>Nouns imply attribute accessor; don't take block?
-     <li>each_* returns Enumerator
    </ol>
    -->
    <h3>Responding to Messages</h3>
@@ -387,6 +543,9 @@
     construct. These forms are semantically equivalent, however it is
     conventional to use the former for short blocks that fit on a single line,
     and the latter for multi-line blocks.
+
+    <!-- Suggest here that Enumerators are returned when no block is given?
+    -->
 
     <aside class=note>
       <!-- FIXME: Reword in terms of messages -->
@@ -496,25 +655,6 @@
       associating an argument list with a message expression—so the above form
       represents an ambiguity.
 
-    <h4>Element Reference</h4>
-
-      <p>The <code>[<var>subscript</var>]</code> notation for referring to an
-      element of an <code>Array</code> or <code>Hash</code> is called <dfn
-        id=element-reference>element reference</dfn> syntax. It is a special
-      case of the message expression syntax because it sends a selector named
-      <code>:[]</code> to the receiver, passing in the contents of
-      <code>[</code>…<code>]</code> as arguments. For example,
-      <code>[1,2,3][0]</code> is equivalent to <code>[1,2,3].[](0)</code>.
-
-      <p>Indeed, any object that responds to <code>:[]</code> may be used in
-      this fashion. 
-
-      <!-- TODO: Example of a #[] method -->
-
-      <p>Similarly, assignment to an element reference sends the
-      <code>:[]=</code> selector. For example, where <code>fruit</code> is a
-      <code>Hash</code>, <code>fruit[:apple] = :red</code> is equivalent to
-      <code>fruit.[]=(:apple, :red)</code>.
     
     <h4>Attribute Accessors and Setters</h4>
 

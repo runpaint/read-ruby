@@ -1,2 +1,2 @@
-          "wool".size #=&gt; 4
-          "wool".send(:size) #=&gt; 4
+"wool".size #=> 4
+"wool".send(:size) #=> 4
