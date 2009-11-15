@@ -41,16 +41,15 @@
     <p><a href=#refLIU99 class=ref>Liu</a> (p. 2) suggests that it can be
     helpful to envisage messages as telegrams:
     
-    <blockquote>
+    <blockquote cite=#refLIU99>
       “Message” is too abstract a word. A better word is <i>telegram</i>. A
       “telegram” is tangible: I can touch it, I can see the information it
       carries, and I can picture the moment it arrives at the door of its
       addressee. It is not some vague electronic-sounding thing like a
       “message”. Therefore, I encourage you to think of an old-fashioned
       telegram whenever you see the term “message”.
+      <cite><a href=#refLIU99>C. Liu</a>, 1999</cite> 
     </blockquote>
-    <!-- How do we markup the source of the blockquote? We could use the cite
-    attribute to link to the reference section of this document. -->
   </aside>
 
   <h3>The Distinction Between Messages and Methods</h3>
@@ -105,10 +104,13 @@
       <p>There are three situations where the implicit receiver can not be used:
 
       <ol>
-        <li>The message is also a keyword such as <code>class</code>
-        <li>The message is used as an lvalue.
-        <li>The message name is identical to a local variable. There are other ways
-        to disambiguate this case.
+        <li>The selector is also a keyword such as <code>class</code>. (An
+        implicit receiver would create syntactical ambiguity).
+        <li>The selector is used as an <a
+          href=#ambiguous-lvalue-syntax>lvalue</a>.
+        <li>The message name is identical to a local variable. (This case can
+        also be disambiguated by immediately following the selector with a
+        pair of parentheses, i.e. <code><var>selector</var>()</code>).
       </ol>
 
       <p>By contrast, the implicit receiver must be used when the message is
