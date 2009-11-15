@@ -15,6 +15,21 @@
   <!-- List messages objects _should_ respond to, and those messages that are
   useful to define methods for -->
 
+  <blockquote cite=#refKAY98>  
+    <p>…Smalltalk is not only NOT its syntax or the class library, it is not
+    even about classes. I'm sorry that I long ago coined the term “objects”
+    for this topic because it gets many people to focus on the lesser idea.
+
+    <p>The big idea is “messaging” -- that is what the kernal[<i>sic</i>] of
+    Smalltalk/Squeak is all about (and it’s something that was never quite
+    completed in our Xerox PARC phase). The Japanese have a small
+    word—<i>ma</i>—for “that which is in between”—perhaps the nearest English
+    equivalent is “interstitial”. The key in making great and growable systems
+    is much more to design how its modules communicate rather than what their
+    internal properties and behaviors should be. 
+    <cite><a href=#refKAY98 class=ref>Dr Alan Kay</a>, 1998</cite>
+  </blockquote>
+
   <p>A message is a <q>request for an object to perform some operation</q> (<a
     href=#refBUDD87 class=ref>Budd</a>, p. 6). It consists of <q>a
     <i>receiver</i>, a message <i>selector</i>, and zero or more
@@ -37,25 +52,6 @@
     <!-- How do we markup the source of the blockquote? We could use the cite
     attribute to link to the reference section of this document. -->
   </aside>
-
-  <!-- Integrate this into the text -->
-  <p>Dr Alan Kay (1998) explains why messages, not objects, are the <q>big
-    idea</q>:
-
-  <blockquote
-    cite="http://lists.squeakfoundation.org/pipermail/squeak-dev/1998-October/017019.html">  
-    <p>…Smalltalk is not only NOT its syntax or the class library, it is not
-    even about classes. I'm sorry that I long ago coined the term “objects”
-    for this topic because it gets many people to focus on the lesser idea.
-
-    <p>The big idea is “messaging” -- that is what the kernal[<i>sic</i>] of
-    Smalltalk/Squeak is all about (and it’s something that was never quite
-    completed in our Xerox PARC phase). The Japanese have a small
-    word—<i>ma</i>—for “that which is in between”—perhaps the nearest English
-    equivalent is “interstitial”. The key in making great and growable systems
-    is much more to design how its modules communicate rather than what their
-    internal properties and behaviors should be. 
-  </blockquote>
 
   <h3>The Distinction Between Messages and Methods</h3>
 
@@ -162,6 +158,7 @@
 
     <h4>Conventions</h4>
 
+    <!-- The concept of #[] as selecting a value given a virtual key -->
   <section>
   <h3>Tone</h3>
 
