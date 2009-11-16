@@ -283,9 +283,13 @@
             elements thereof. The solution is to prefix the <code>Enumerable</code>
             argument with an asterisk (U+002A: <code>*</code>), which in this context
             is termed a <dfn id=splat-operator>splat operator</dfn>, thus expanding
-            the <code>Enumerable</code> into its individual elements.
+            the <code>Enumerable</code> into its individual elements.</p>
 
-            <!-- TODO: Example -->
+            <figure id=splat-arguments>
+              <dt>Prefixing an <code>Enumerable</code> argument with an
+              asterisk explodes it into its constituent elements.
+            </figure>
+
             <p>This technique works by sending <code>:to_a</code> to the prefixed
             object, so any object that responds to this message with an
             <code>Array</code> can be used in the same fashion.  
