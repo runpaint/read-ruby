@@ -33,13 +33,13 @@
           <cite><a href=#refKAY98 class=ref>Dr Alan Kay</a>, 1998</cite>
         </blockquote>
 
-        <p>A message is a <q>request for an object to perform some operation</q> (<a
-          href=#refBUDD87 class=ref>Budd</a>, p. 6). It consists of <q>a
-          <i>receiver</i>, a message <i>selector</i>, and zero or more
-          <i>arguments</i>.</q> (<a href=#refBUDD87 class=ref>Budd</a>, p. 16). We
-        use the term <i>send</i> to describe the action of making the request: an
-        object <i>sends</i> a message to another object. 
-
+        <p>A message is a <q>request for an object to perform some
+          operation</q> (<a href=#refBUDD87 class=ref>Budd</a>, p. 6). It
+        consists of <q>a <i>receiver</i>, a message <i>selector</i>, and zero
+          or more <i>arguments</i>.</q> (<a href=#refBUDD87
+          class=ref>Budd</a>, p. 16). 
+        
+        <!-- Diagram a message send -->
         <aside>
           <p><a href=#refLIU99 class=ref>Liu</a> (p. 2) suggests that it can be
           helpful to envisage messages as telegrams:
@@ -54,6 +54,39 @@
             <cite><a href=#refLIU99>C. Liu</a>, 1999</cite> 
           </blockquote>
         </aside>
+      </section>
+
+      <section>
+        <h1>Purpose</h1>
+
+        <p>A message is <i>sent</i> to a receiver for the value it will
+        return, and/or the side effects, if any, that result. 
+        
+        <p>A message expression always returns a value. It may also result in
+        side effects: alteration of the receiver’s state. For instance,
+        <code>3.odd?</code> has a return value of <code>true</code>, but no
+        side effects; <code>Array#&lt;&lt;</code> appends its argument to the
+        receiver (the side effect), which it returns (the return value). 
+
+        <p>If a message is sent purely for the side effects, its return value
+        can be ignored by not using in further computations. If the side
+        effects are undesirable, the message should not be sent; they are its
+        inevitable consequence.
+
+        <p>A message that does not have any side effects is <dfn
+          title="idempotent message">idempotent</code>. For example,
+        <code>Array#size</code> does not have any side effects; it is sent
+        solely for the value it returns (the receiver’s size). 
+
+        <p>A sub-category of messages being sent for their side effects are
+        those sent to notify an object of an event, where the sender has no
+        interest in the return value or whether the receiver even responds to
+        the message. The sender is obligated only to notify the recipient; it
+        is the responsibility of the recipient to handle the notification.  <a
+          href=#object-send-p><code>Object#send?</code></a>, or the
+        accompanying manual approach, may be used in this case.
+
+        <!-- Cascades -->
       </section>
 
       <section>
@@ -94,29 +127,6 @@
       </section>
 
       <section>
-        <h1>Responding to Messages</h1>
-
-        <!-- Is this definition sane? -->
-        <p>An object is said to <i>respond to</i> a given message if it expects to
-        receive it. The <code>Kernel#respond_to?(<var>selector</var>)</code>
-        predicate returns <code>true</code> if a method is defined with the same
-        name as the selector; <code>false</code> otherwise. However, by defining
-        <code>method_missing</code> an object may respond to a message without
-        having a corresponding method defined, making the behaviour of
-        <code>Kernel#respond_to?</code> insufficient. The solution is
-        <code>Kernel#respond_to_missing?</code>, which is explained later. <!--
-        TODO: Link -->
-
-        <p><code>Kernel#respond_to?</code> ignores private methods by default. If it
-        is sent with a second argument of <code>true</code>, private methods are
-        included in its search.  
-        
-        <!-- Clarify difference between #respond_to? and
-        #instance_methods.include? -->
-        <!-- http://redmine.ruby-lang.org/issues/show/1122 -->
-      </section>
-
-      <section>
         <h1>Receivers</h1>
 
         <p>Every message is sent to a <dfn id=receiver>receiver</dfn> object,
@@ -153,7 +163,8 @@
         <section>
           <h1>Explicit Receivers</h1>
 
-          <p>An explicit receiver is an expression that evaluates to an object. It
+          <p>An explicit receiver is an expression that evaluates to an
+          object. <!-- don't all expressions have this quality --> It
           cannot be used when the message is private.
 
           <p>The expression is typically an identifier. For example,
@@ -353,17 +364,18 @@
             chaining">chained</dfn> in this fashion.
           <!-- Example with arguments -->
 
-          <p>This technique relies on the composite receiver consistently returning an
-          object responding to the selector; otherwise a
-          <code>NoMethodError</code> will break the chain. It is unsuitable when
-          the receiver may return a materially different object for certain
-          arguments. For instance, <code>Array#select</code> <!-- Footnote that
-          this method is provided by Enumerable but we haven't introduced modules
-          yet? --> always returns an <code>Array</code> even when it doesn’t
-          select any elements, allowing it to receive any <code>Array</code>
-          selector. Conversely, methods such as <code>Array#[]</code>, which return
-          either the specified element or <code>nil</code> if it does not exist,
-          make awkward links in chains because of their inconsistency.
+          <p>This technique relies on the composite receiver consistently
+          returning an object responding to the selector; otherwise a
+          <code>NoMethodError</code> will break the chain. It is unsuitable
+          when the receiver may return a materially different object for
+          certain arguments. For instance, <code>Array#select</code> <!--
+          Footnote that this method is provided by Enumerable but we haven't
+          introduced modules yet? --> always returns an <code>Array</code>
+          even when it doesn’t select any elements, allowing it to receive any
+          <code>Array</code> selector. Conversely, methods such as
+          <code>Array#[]</code>, which return either the specified element or
+          <code>nil</code> if it does not exist, make awkward links in chains
+          because of their inconsistency.
 
             <!-- Mention andand -->
 
@@ -372,6 +384,7 @@
           their receiver. For instance, <code>String#strip</code> and
           <code>String#capitalize</code> both return <code>self</code>, allowing
           <code>" wittgenstein \n".strip.capitalize #=&gt; "Wittgenstein"</code>.
+          <!-- Object#tap -->
         </section> 
           
         <section>
@@ -384,19 +397,20 @@
           allows the message selector to be determined dynamically, at runtime, as
           opposed to the syntax described above which requires the selector to be a
           literal, embedded in the source. For example: <code>[1, 2,
-            3].send(:first)</code> or <code>23.send(:to_s, 16)</code>.
+            3].send(:first)</code> or <code>23.send(:to_s, 16)</code>.</p>
 
           <figure id=object-send>
-          <dt><code>Object#send</code> sends an object a message whose name can be determined at runtime.
-          <dd>
-            <pre><code>
-              name = :size
-              # Sends "wool" the :name message
-              "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
-              # Sends "wool" the :size message
-              "wool".send(name) #=&gt; 4
-            </code></pre>  
-          </dd>
+            <dt><code>Object#send</code> sends an object a message whose name
+            can be determined at runtime.
+            <dd>
+              <pre><code>
+                name = :size
+                # Sends "wool" the :name message
+                "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
+                # Sends "wool" the :size message
+                "wool".send(name) #=&gt; 4
+              </code></pre>  
+            </dd>
           </figure>
 
           <p><code>Object#public_send</code> performs the same function, but
@@ -429,6 +443,7 @@
         is called an <dfn id=attribute-setter>attribute setter</dfn>. It sets the
         attribute to the value supplied.
       </section>
+
 
       <section>
         <h1>Conventions</h1>
@@ -496,7 +511,7 @@
             <dd>Determines whether the receiver is <i>greater than</i> the argument.
             Normally implemented in terms of <a
               href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
-            provides symetery to <code>Class#&lt;</code> by testing whether the
+            provides symmetry to <code>Class#&lt;</code> by testing whether the
             argument is a <i>kind of</i> the receiver.
             <dt><code>:==</code>
             <dd>Determines whether the operands are <a
@@ -542,13 +557,13 @@
               <code>String#[]</code> accepts either an <code>Integer</code>, a
               pair of <code>Integer</code>s, a <code>Range</code>, a
               <code>Regexp</code>, a <code>Regexp</code> and an
-              <code>Integer</code>, or a <code>String</code>.
+              <code>Integer</code>, or a <code>String</code>.</p>
 
+            </dd>
               <figure id=aref-music>
                 <dt>Examples of how different objects respond to the
-                <code>:[]</code> message.
+                <code>:[]</code> message.</dt>
               </figure>
-            </dl>
             <dt><code>:[]=</code>
             <dd>
               <p>The assignment counterpart to <code>:[]</code>: the first argument(s)
@@ -615,7 +630,7 @@
           <code>true</code> if it is; <code>false</code> otherwise. Such messages
           are referred to as <dfn title="predicate message">predicates</dfn>.
           <!-- Mention situation when a selector is mirrored by a predicate
-          alternative? Lots of File methods fit this pattern. -->
+          alternative? Lots of File methods fit this pattern. http://groups.google.com/group/ruby-talk-google/msg/cfdd0dca7f70c87e -->
 
           <p>Following similar convention, a selector with an exclamation mark
           (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
@@ -646,7 +661,7 @@
           Similarly, <code>Object#methods</code>,
           <code>Object#instance_methods</code>,
           <code>Object#instance_variables</code>, and similar methods, return
-          <code>Array</code>s of <code>Symbol</code>s.
+          <code>Array</code>s of <code>Symbol</code>s.</p>
 
           <figure id=plural-selector-splat>
             <dt>Idiomatically create an <code>Array</code> from a plural method
@@ -719,6 +734,88 @@
        -->
       </section>
 
+      <section>
+        <h1 id=responding-messages>Responding to Messages</h1>
+
+        <!-- Is this definition sane? --> <p>An object is said to <i>respond
+          to</i> a given message if it expects to receive it. The
+        <code>Kernel#respond_to?(<var>selector</var>)</code> predicate returns
+        <code>true</code> if a method is defined with the same name as the
+        selector; <code>false</code> otherwise. However, by defining
+        <code>method_missing</code> an object may respond to a message without
+        having a corresponding method defined, making the behaviour of
+        <code>Kernel#respond_to?</code> insufficient. The solution is
+        <code>Kernel#respond_to_missing?</code>, which is explained later.
+        <!-- TODO: Link -->
+
+        <p><code>Kernel#respond_to?</code> ignores private methods by default.
+        If it is sent with a second argument of <code>true</code>, private
+        methods are included in its search.  
+        
+        <!-- Object#understand? -->
+
+        <p><code>Kernel#respond_to?</code> is often used to condition a
+        message expression on the receiver understanding it:</p>
+
+        <figure id=send-if-respond-to>
+          <dd>
+            <pre class=syntax><code><var>receiver</var>.<var>selector</var> if <var>receiver</var>.respond_to?(:<var>selector</var>)</code></pre>
+          </dd>
+          <dt>Sending a message only if the receiver responds to it.
+        </figure> 
+        
+        <p>The following example suggests a simplification of this idiom by
+        defining <code>Object#send?</code> which returns <code>nil</code> if
+        the named method does not exist. In addition to the brevity it
+        affords, this approach avoids the aforementioned weakness of
+        <code>Kernel#respond_to?</code> with respect to messages handled by <a
+          href=#method-missing>Method Missing</a>, by rescuing
+        <code>NoMethodError</code> if it occurs.</p>
+
+        <figure id=object-send-p>
+          <dt>An implementation of <code>Object#send?</code>, which returns
+          <code>nil</code> if the named method does not exist.
+        </figure>
+        
+        <p>A closely related related scenario involves wanting to send a
+        message unless the receiver is <code>nil</code>. It transpires when
+        working with values which shouldn’t be <code>nil</code>, but might be.
+        The general solution is one of the following constructs:</p> 
+        
+        <figure id=ternary-nil-receiver>
+          <dd>
+          <pre class=syntax><code><var>receiver</var> ? <var>receiver</var>.<var>selector</var> : nil</code></pre>
+          </dd>
+          <dt>Using the ternary operator to send a receiver a message only if it is true; otherwise
+          return <code>nil</code>.    
+        </figure>
+
+        <figure id=and-and-nil-receiver>
+          <dd>
+          <pre class=syntax><code><var>receiver</var> &amp;&amp; <var>receiver</var>.<var>selector</var></code></pre>
+          <dt>Using the logical and operator to send a receiver a message only
+          if it is true. 
+        </figure>
+
+        <p>Ruby on Rails defines for this purpose
+        <code>Object#try(<var>selector</var>,
+          <var>arg<sub>0</sub></var>,…,<var>arg<sub>n</sub></var>)</code>,
+        which functions as <code>Object#send</code>, but returns
+        <code>nil</code> when the receiver is <code>nil</code>, rather than
+        raising a <code>NoMethodError</code>.</p>
+
+        <figure id=object-try>
+          <dt>An implementation of <code>Object#try</code> derived from <a
+  href=http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/object/try.rb>Ruby
+  on Rails: Active Support</a>.
+        </figure>
+
+        <p><!-- Object#try proxy -->
+
+        <!-- Clarify difference between #respond_to? and
+        #instance_methods.include? -->
+        <!-- Object#try ticket: http://redmine.ruby-lang.org/issues/show/1122 -->
+      </section>
   </section>
   </body>
 </html>    
