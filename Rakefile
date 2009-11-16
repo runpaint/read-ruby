@@ -21,7 +21,7 @@ task :embed_figures => ['out', :css] do
         sub(/^<div.+pre>/, '<pre class=syntax><code>').
         sub(/<\/pre><\/div>/,'</code></pre>').
         gsub(/<span class="([^"]+)">/,'<span class=\1>') #undone by Nokogiri
-      figure.at('dt').after "<dd>#{highlighted}</dd>"
+      figure.at('dt').before "<dd>#{highlighted}</dd>"
       has_figures = true
     end
     nok.at('title').after("<link href=pygments.css rel=stylesheet>") if has_figures

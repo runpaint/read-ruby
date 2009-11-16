@@ -27,6 +27,16 @@ scrolling, or just the ToC for non-JS clients -->
 <!-- http://pennysmalls.com/2007/10/01/why-ruby-is-not-my-favourite-programming-language/ -->
 <!-- http://www.ethelred.org/articles/2006/09/17/railsconf-playing-it-safe/
 -->
+
+<!-- Object#swallow(Exception) {}
+class Object
+  def swallow(*exceptions)
+    begin
+      yield
+    rescue *exceptions
+  end
+  end
+  -->
 <h2>Preface</h2>
   <p>This book boldly assumes that its reader is: neither a dummy nor an idiot
   <!-- http://diveintomark.org/archives/2003/10/09/aaaaugh -->; aware of the
