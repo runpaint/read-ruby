@@ -264,10 +264,12 @@
             id=method-arguments>arguments</var>: variables to be used in the
           resulting computations. Arguments are supplied as a
           parenthesized list of variables separated by commas:
-          <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.
-          For example, to send the <code>String</code> <code>"haystack"</code> the
-          <code>:include?</code> message with the argument <code>"needle"</code>:
-          <code>"haystack".include?("needle")</code>.
+          <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.</p>
+          
+          <figure id=receiver-selector-arguments-syntax>
+            <dt>The selector may be followed by a parenthesised list of zero
+            or more arguments.
+          </figure>
 
           <p>If a message is sent with an unexpected argument list an
           <code>ArgumentError</code> is raised.
