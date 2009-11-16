@@ -420,22 +420,12 @@
           <p>A message can also be sent to an object with <code>Object#send</code>,
           i.e. <code><var>receiver</var>.send(<var>selector</var>)</code>. This
           allows the message selector to be determined dynamically, at runtime, as
-          opposed to the syntax described above which requires the selector to be a
-          literal, embedded in the source. For example: <code>[1, 2,
-            3].send(:first)</code> or <code>23.send(:to_s, 16)</code>.</p>
+          opposed to the syntax described previously which requires the selector to be a
+          literal, embedded in the source.</p>
 
           <figure id=object-send>
             <dt><code>Object#send</code> sends an object a message whose name
             can be determined at runtime.
-            <dd>
-              <pre><code>
-                name = :size
-                # Sends "wool" the :name message
-                "wool".name #=&gt; NoMethodError: undefined method `name' for "wool":String
-                # Sends "wool" the :size message
-                "wool".send(name) #=&gt; 4
-              </code></pre>  
-            </dd>
           </figure>
 
           <p><code>Object#public_send</code> performs the same function, but
