@@ -272,7 +272,7 @@
           </figure>
 
           <p>If a message is sent with an unexpected number of arguments an
-          <code>ArgumentError</code> is raised.
+          <code>ArgumentError</code> is raised.</p>
 
           <aside class=note> 
             <p>It is often the case that a message needs to be sent with multiple
@@ -301,6 +301,11 @@
           construct. These forms are semantically equivalent, however it is
           conventional to use the former for short blocks that fit on a single line,
           and the latter for multi-line blocks.</p>
+
+          <figure id=message-expression-with-block>
+            <dt>A message expression followed by a block literal causes the
+            block to be passed to the method.
+          </figure>
 
           <!-- Suggest here that Enumerators are returned when no block is given?
           -->
