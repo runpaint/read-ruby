@@ -161,7 +161,7 @@
         </section>
 
         <section>
-          <h1>Explicit Receivers</h1>
+          <h1 id=explicit-receiver>Explicit Receivers</h1>
 
           <p>An explicit receiver is an expression that evaluates to an
           object. <!-- don't all expressions have this quality --> It
@@ -234,14 +234,15 @@
         </figure>
 
         <p>The receiver can be specified explicitly with the
-        <code><var>receiver</var>.<var>selector</var></code> syntax, i.e. the
-        message selector is prefixed with the receiver name followed by a period
-        (U+002E: <code>.</code>). <var>receiver</var> is an expression which
-        evaluates to an object. <!-- TODO: Link to explicit receiver section --> For
-        example, <code>"esrever".reverse</code> sends the message
-        <code>:reverse</code> to the <code>String</code> <code>"esrever"</code>.
-        <code>(1 + 2).odd?</code> sends <code>:odd?</code> to the
-        <code>Fixnum</code> <code>3</code>.</p>
+        <code><var>receiver</var>.<var>selector</var></code> syntax, where
+        <var>receiver</var> is an <a href=#explicit-receiver>explicit
+        receiver</a> separated from the
+        <var>selector</var> with a full stop (U+002E: <code>.</code>).</p>
+
+        <figure id=receiver-dot-selector-syntax>
+        <dt>A message can be explicitly sent to an object by concatenating an
+        explicit receiver, a full stop, and a selector.
+        </figure>
 
         <aside class=note>
           An alternative to the <code><var>receiver</var>.<var>selector</var></code>
