@@ -136,12 +136,18 @@
           <h1>Implicit Receivers</h1>
 
           <p>If a receiver is not specified an <i>implicit receiver</i> of
-          <code>self</code> is assumed. <code>self</code> always refers
-          to the current object. Outside of any class definition, i.e. at the top-level,
-          the current object is an instance of <code>Object</code>. Inside a class
-          definition, but outside of a method definition, the current object is an
-          instance of <code>Class</code>. Within a method definition the current object
-          is the instance of the containing class.
+          <code>self</code> is assumed. <code>self</code> always refers to the
+          current object. Outside of any class definition, i.e. at the
+          top-level, the current object is an instance of <code>Object</code>
+          called <code>main</code>. Inside a class definition, but outside of
+          a method definition, the current object is an instance of
+          <code>Class</code>. Within a method definition the current object is
+          the instance of the containing class.</p>
+
+          <figure id=self-as-the-implicit-receiver>
+          <dt><code>self</code> is always defined; its value depends on the enclosing
+          context.
+          </figure>
 
           <p>There are three situations where the implicit receiver can not be used:
 
