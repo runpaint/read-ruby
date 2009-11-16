@@ -315,7 +315,12 @@
             <p>To pass a <code>Proc</code> object to a method expecting an anonymous
             block, prefix the object name with an ampersand ((U+0026:
             <code>&amp;</code>). If the message is sent with multiple arguments this
-            <code>Proc</code> must be specified last.
+            <code>Proc</code> must be specified last.</p>
+
+            <figure id=ampersand-prefix-with-argument>
+              <dt>Prefix the final argument with an ampersand to convert it to
+              a block literal.
+            </figure>
 
             <p>This technique works by sending <code>:to_proc</code> to the object,
             and using the <code>Proc</code> returned as the block. By extension, any
