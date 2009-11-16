@@ -348,7 +348,8 @@
     evaluates in the receiver’s context, setting <code>self</code> to the
     receiver. The evaluated code can access the class’s state, invoke its
     singleton methods, and define instance or singleton methods. <!-- Needs
-    examples of all three -->
+    examples of all three --> <!-- Numeric.class_eval{ define_method(:squared)
+    { self ** 2} } -->
 
     <p><code>Class#instance_exec</code> is similar, but accepts
     any number of arguments which it passes to the required block.
