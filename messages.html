@@ -691,10 +691,13 @@
             href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a> 
 
             <p>Both suffixes are merely <i>conventional</i>, however; they do not
-            guarantee that the receiver will respond in the aforementioned manner. For
-            example, <code>Float#infinite?</code> returns <code>nil</code> for finite
-            numbers, <code>-1</code> for negative infinity, or <code>+1</code> for
-            positive infinity. <!-- TODO: Use infinity symbols -->
+            guarantee that the receiver will respond in the aforementioned
+            manner.</p>
+
+            <figure id=question-mark-suffix-non-predicate>
+            <dt>Selectors with a <code>?</code> suffix need not return
+            <code>true</code> or <code>false</code>.
+            </figure>
         </section>
         
         <section>
