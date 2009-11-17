@@ -427,19 +427,21 @@
           <code>nil</code> if it does not exist, make awkward links in chains
           because of their inconsistency.</p>
 
-          <figure id=message-chaining-consistent-return-value>
-          <dt>Message chaining relies on each link consistently returning an
-          object of the same type.
+          <figure id=message-chaining-inconsistent-return-value>
+          <dt>Messages cannot be usefully chained if they have inconsistent
+          return values.
           </figure>
 
           <!-- Mention andand -->
 
           <p>Messages sent purely for their side effects should, and often do,
           return <code>self</code> so as to receive any message understood by
-          their receiver. For instance, <code>String#strip</code> and
-          <code>String#capitalize</code> both return <code>self</code>, allowing
-          <code>" wittgenstein \n".strip.capitalize #=&gt; "Wittgenstein"</code>.
-          <!-- Object#tap -->
+          their receiver. </p>
+
+          <figure id=message-chaining-return-self>
+          <dt>Message chaining relies on each link consistently returning an
+          object of the same type.
+          </figure>
         </section> 
           
         <section>
