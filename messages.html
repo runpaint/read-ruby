@@ -795,15 +795,26 @@
         <h1 id=responding-messages>Responding to Messages</h1>
 
         <!-- Is this definition sane? --> <p>An object is said to <i>respond
-          to</i> a given message if it expects to receive it. The
+          to</i> a given selector if it expects to receive it as a message. The
         <code>Kernel#respond_to?(<var>selector</var>)</code> predicate returns
         <code>true</code> if a method is defined with the same name as the
-        selector; <code>false</code> otherwise. However, by defining
-        <code>method_missing</code> an object may respond to a message without
-        having a corresponding method defined, making the behaviour of
-        <code>Kernel#respond_to?</code> insufficient. The solution is
-        <code>Kernel#respond_to_missing?</code>, which is explained later.
-        <!-- TODO: Link -->
+        selector; <code>false</code> otherwise.</p>
+
+        <figure id=respond-to>
+        <dt>An object <i>responds to</i> selectors for which a corresponding
+        method is defined.
+        </figure>
+
+        <p>However, by defining <code>method_missing</code> an object may
+        respond to a message without having a corresponding method defined,
+        making the behaviour of <code>Kernel#respond_to?</code> insufficient.
+        The solution is <code>Kernel#respond_to_missing?</code>, which is
+        explained later.</p>
+
+        <figure id=respond-to-method-missing>
+        <dt><code>#respond_to?</code> is not necessarily accurate when
+        <code>method_missing</code> has been used.
+        </figure>
 
         <p><code>Kernel#respond_to?</code> ignores private methods by default.
         If it is sent with a second argument of <code>true</code>, private
