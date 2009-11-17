@@ -379,7 +379,12 @@
               assumes the former. However, even if the programmer agrees with Ruby's
               interpretation, these forms of expressions are seldom as clear to others.
               Therefore, it is recommended to employ parentheses in such cases, even if
-              unnecessary, as an aid to legibility.
+              unnecessary, as an aid to legibility.</p>
+
+              <figure id=message-expressions-omit-parentheses-syntaxerror>
+              <dt>It is illegal to omit parentheses in nested message
+              expressions when doing so introduces ambiguity.
+              </figure>
 
               <p>When parentheses are used to enclose a message’s arguments, the opening
               parenthesis must immediately follow the selector like so:
