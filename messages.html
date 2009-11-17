@@ -404,10 +404,15 @@
           messages, i.e.
           <code><var>receiver</var>.<var>selector<sub>0</sub></var>.<var>selector<sub>1</sub></var></code>.
           <var>receiver</var> is sent <var>selector<sub>0</sub></var> which
-          returns an object; that object is sent <var>selector<sub>1</sub></var>.
-          Message expressions can be arbitrarily <dfn title="message
-            chaining">chained</dfn> in this fashion.
-          <!-- Example with arguments -->
+          returns an object; that object is sent
+          <var>selector<sub>1</sub></var>.  Message expressions can be
+          arbitrarily <dfn title="message chaining">chained</dfn> in this
+          fashion.</p>
+
+          <figure id=message-chaining>
+          <dt>The receiver of a message may itself be a message expression,
+          allowing messages to be chained.
+          </figure>
 
           <p>This technique relies on the composite receiver consistently
           returning an object responding to the selector; otherwise a
@@ -420,9 +425,14 @@
           <code>Array</code> selector. Conversely, methods such as
           <code>Array#[]</code>, which return either the specified element or
           <code>nil</code> if it does not exist, make awkward links in chains
-          because of their inconsistency.
+          because of their inconsistency.</p>
 
-            <!-- Mention andand -->
+          <figure id=message-chaining-consistent-return-value>
+          <dt>Message chaining relies on each link consistently returning an
+          object of the same type.
+          </figure>
+
+          <!-- Mention andand -->
 
           <p>Messages sent purely for their side effects should, and often do,
           return <code>self</code> so as to receive any message understood by
