@@ -345,11 +345,20 @@
               <p>Parentheses may be omitted from message expressions when doing so does
               not introduce syntactic ambiguity.
 
-              <p>Parentheses are rarely used in message expressions that don't involve
+              <p>They are rarely used in message expressions that don't involve
               arguments. For example, <code>'briefcase'.upcase</code> is equivalent to
-              <code>'briefcase'.upcase()</code>; the former is the recommended style.
-              <!-- TODO: What about if doing so disambiguates the method from a
-              variable?  -->
+              <code>'briefcase'.upcase()</code>; the former is the recommended
+              style. 
+
+              <p>However, they do disambiguate a selector from a local
+              variable when the message has an implicit receiver and both
+              variable and selector share the same name.</p>
+
+              <figure id=parentheses-disambiguate-bare-identifiers>
+                <dt>Parentheses are required to disambiguate an
+                implicitly-received message’s selector from a local variable
+                with the same name.
+              </figure>
 
               <p>Parentheses may usually be omitted even when arguments are involved.
               This is mostly a matter of taste.
