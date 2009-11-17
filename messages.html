@@ -673,8 +673,7 @@
 
           <p>By convention, a selector with a question mark (<code>?</code>) suffix
           denotes that the message poses a polar question to the receiver. Such messages
-          are referred to as <dfn title="predicate
-          message">predicates</dfn>.</p>
+          are referred to as <dfn title="predicate message">predicates</dfn>.</p>
           <!-- Mention situation when a selector is mirrored by a predicate
           alternative? Lots of File methods fit this pattern. http://groups.google.com/group/ruby-talk-google/msg/cfdd0dca7f70c87e -->
 
@@ -682,7 +681,6 @@
           <dt>The <code>?</code> suffix often indicates that a message is a predicate.
           </figure>
 
-          
           <p>Following similar convention, a selector with an exclamation mark
           (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
             mark a method as special. It doesn’t necessarily mean that it will be
@@ -692,7 +690,12 @@
             without the exclamation mark returns a modified copy of the object it is
             invoked on, and the one with the exclamation mark is a mutator method
             that alters the object in place.</q> <a class=ref
-            href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a> 
+            href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a></p>
+
+            <figure id=bang-messages>
+            <dt>The <code>!</code> suffix often indicates that a message will
+            modify the receiver in place, or is otherwise “dangerous”.
+            </figure>
 
             <p>Both suffixes are merely <i>conventional</i>, however; they do not
             guarantee that the receiver will respond in the aforementioned
