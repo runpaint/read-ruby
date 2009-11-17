@@ -827,7 +827,12 @@
         <!-- Object#understand? -->
 
         <p><code>Kernel#respond_to?</code> is often used to condition a
-        message expression on the receiver understanding it:</p>
+        message expression on the receiver understanding it. That is, before
+        an object is told to perform an operation it is asked whether it is
+        able. Normally this procedure is unnecessary because it is known, <i>a
+        priori</i>, what messages the object will respond to; however, methods
+        that are particularly permissive in their argument handling may find
+        it necessary.</p>
 
         <figure id=send-if-respond-to>
           <dd>
