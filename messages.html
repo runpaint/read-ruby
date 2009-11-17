@@ -672,13 +672,17 @@
           <h1>Tone</h1>
 
           <p>By convention, a selector with a question mark (<code>?</code>) suffix
-          denotes that the message poses a polar question to the receiver. For example,
-          <code>Fixnum#odd?</code> asks the receiver whether it is odd, returning
-          <code>true</code> if it is; <code>false</code> otherwise. Such messages
-          are referred to as <dfn title="predicate message">predicates</dfn>.
+          denotes that the message poses a polar question to the receiver. Such messages
+          are referred to as <dfn title="predicate
+          message">predicates</dfn>.</p>
           <!-- Mention situation when a selector is mirrored by a predicate
           alternative? Lots of File methods fit this pattern. http://groups.google.com/group/ruby-talk-google/msg/cfdd0dca7f70c87e -->
 
+          <figure id=predicate-messages>
+          <dt>The <code>?</code> suffix often indicates that a message is a predicate.
+          </figure>
+
+          
           <p>Following similar convention, a selector with an exclamation mark
           (<code>!</code>) suffix (colloquially called a <i>bang</i>) is used <q>…to
             mark a method as special. It doesn’t necessarily mean that it will be
