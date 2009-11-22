@@ -542,11 +542,22 @@
             expects a block, the results of which constrain the computation. For
             example, <code>Enumerable#group_by</code>,
             <code>Enumerable#sort_by</code>, and
-            <code>Enumerable#minmax_by</code>. <!-- Non-Enumerable examples?
-            Worked example of how they use the block? --> 
+            <code>Enumerable#minmax_by</code>.
+            
+            <figure id=_by-selector>
+            <dt class=figure-dt>Selectors with a <code>_by</code> suffix
+            accept a block which constrains their computation.
+            </figure>
+
             <dt><code>:to_</code>*
             <dd><a href=#conversion>Converts</a> the receiver into an object of
             the corresponding core type.
+
+            <figure id=to_-selector>            
+            <dt class=figure-dt>Selectors with a <code>to_</code> prefix
+            return the receiver as an object of the given type.
+            </figure>
+
             <dt><code>:try_convert</code>
             <dd>Class method which <a href=#try-convert>implicitly converts</a>
             the argument to the receiver.
