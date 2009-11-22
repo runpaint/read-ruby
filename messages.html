@@ -165,7 +165,7 @@
           private.</p> <!-- Are _messages_ private? -->
           
           <figure id=implicit-receiver-for-private-method>
-            <dt>Private messages must be sent with an implicit receiver.
+            <dt>Private messages must be sent with an implicit receiver.</dt>
           </figure>
 
            <!-- TODO: Explain how 'puts "glark"' works in this context? -->
@@ -531,6 +531,12 @@
             magnitude of the receiver. For example, <code>Array#size</code>
             returns the number of elements the receiver contains;
             <code>File#size</code> returns the receiver’s size in bytes.
+
+            <figure id=size-selector>
+            <dt class=figure-dt>The <code>:size</code> selector returns the
+            receiver’s magnitude as an <code>Integer</code>.
+            </figure>
+
             <dt><code>:</code>*<code>_by</code>
             <dd>The <code>_by</code> suffix typically implies that the method
             expects a block, the results of which constrain the computation. For
