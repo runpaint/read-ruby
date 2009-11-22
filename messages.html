@@ -692,8 +692,14 @@
             <dd>Matches the receiver with the argument. One of the operands is
             typically a <code>Regexp</code>. This operator is commutative, i.e.
             <code>(<var>a</var> =~ <var>b</var>) == (<var>b</var> =~
-              <var>a</var></code>. For example, <code>String#=~</code>,
+              <var>a</var>)</code>. For example, <code>String#=~</code>,
             <code>Regexp#=~</code>, and <code>Symbol#=~</code>.
+
+            <figure id=equal-tilde-selector>
+            <dt class=figure-dt>The <code>:=~</code> selector matches its
+            receiver with its argument.
+            </figure>
+
             <dt><code>:&lt;&lt;</code> <!-- Mutates; behaves differently with
             numerics -->
             <dd>When the receiver is an <code>Integer</code> it is shifted left
