@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>Messages</title>
-    <meta charset="utf-8"/>
+    <meta charset=utf-8>
     <!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
     <script src="http://html5-now.appspot.com/html5-now.js"></script>
     -->
@@ -18,6 +18,7 @@
       useful to define methods for -->
       
       <section>
+        <!-- Enclose in <header> ? -->
         <blockquote cite=#refKAY98>  
           <p>…Smalltalk is not only NOT its syntax or the class library, it is not
           even about classes. I'm sorry that I long ago coined the term “objects”
@@ -37,12 +38,12 @@
           operation</q> (<a href=#refBUDD87 class=ref>Budd</a>, p. 6). It
         consists of <q>a <i>receiver</i>, a message <i>selector</i>, and zero
           or more <i>arguments</i>.</q> (<a href=#refBUDD87
-          class=ref>Budd</a>, p. 16). 
+          class=ref>Budd</a>, p. 16).</p>
         
         <!-- Diagram a message send -->
         <aside>
           <p><a href=#refLIU99 class=ref>Liu</a> (p. 2) suggests that it can be
-          helpful to envisage messages as telegrams:
+          helpful to envisage messages as telegrams:</p>
           
           <blockquote cite=#refLIU99>
             “Message” is too abstract a word. A better word is <i>telegram</i>. A
@@ -74,7 +75,7 @@
         inevitable consequence.
 
         <p>A message that does not have any side effects is <dfn
-          title="idempotent message">idempotent</code>. For example,
+          title="idempotent message">idempotent</dfn>. For example,
         <code>Array#size</code> does not have any side effects; it is sent
         solely for the value it returns (the receiver’s size). 
 
@@ -84,7 +85,7 @@
         the message. The sender is obligated only to notify the recipient; it
         is the responsibility of the recipient to handle the notification.  <a
           href=#object-send-p><code>Object#send?</code></a>, or the
-        accompanying manual approach, may be used in this case.
+        accompanying manual approach, may be used in this case.</p>
 
         <!-- Cascades -->
       </section>
@@ -146,7 +147,7 @@
 
           <figure id=self-as-the-implicit-receiver>
           <dt><code>self</code> is always defined; its value depends on the enclosing
-          context.
+          context.</dt>
           </figure>
 
           <p>There are three situations where the implicit receiver can not be used:
