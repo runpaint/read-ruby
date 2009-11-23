@@ -179,8 +179,13 @@
     modified by the method, their modified forms are sent. To explicitly
     invoke the superclass method without any arguments use
     <code>super()</code>. A <code>NoMethodError</code> is raised if a
-    corresponding method is not defined in the superclass. 
+    corresponding method is not defined in the superclass.</p>
     
+    <figure id=super>
+      <dt><code>super</code> invokes the corresponding superclass method with
+      the current method’s arguments.
+    </figure>
+
     <!-- Suggest if
     self.class.superclass.instance_methods.include?(__method__) for testing
     whether such a method is defined -->
