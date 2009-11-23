@@ -398,14 +398,16 @@
               expressions when doing so introduces ambiguity.
               </figure>
 
-              <p>When parentheses are used to enclose a message’s arguments, the opening
-              parenthesis must immediately follow the selector like so:
+              <p>When parentheses are used to enclose a message’s arguments,
+              the opening parenthesis must immediately follow the selector
+              like so:
               <code><var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg<sub>n</sub></var>)</code>.
-              Whitespace between <var>selector</var> and <code>(</code> will result in a
-              <code>SyntaxError</code>. This is due to a quirk in Ruby’s syntax inasmuch
-              as parentheses serve two distinct functions—grouping of expressions and
-              associating an argument list with a message expression—so the above form
-              represents an ambiguity.</p>
+              Whitespace between <var>selector</var> and <code>(</code> will
+              result in a <code>SyntaxError</code>. This is due to a quirk in
+              Ruby’s syntax inasmuch as parentheses serve two distinct
+              functions—grouping of expressions and associating an argument
+              list with a message expression—so the above form represents an
+              ambiguity.</p>
           </section>
         </section>
         
@@ -417,7 +419,7 @@
           <code><var>receiver</var>.<var>selector<sub>0</sub></var>.<var>selector<sub>1</sub></var></code>.
           <var>receiver</var> is sent <var>selector<sub>0</sub></var> which
           returns an object; that object is sent
-          <var>selector<sub>1</sub></var>.  Message expressions can be
+          <var>selector<sub>1</sub></var>. Message expressions can be
           arbitrarily <dfn title="message chaining">chained</dfn> in this
           fashion.</p>
 
@@ -460,12 +462,13 @@
           <!-- Better phrase than "dynamic sending"? -->
           <h1>Dynamic Sending with <code>Object#send</code></h1>
       
-          <!-- Explain that arguments can be sent along with the message. -->
-          <p>A message can also be sent to an object with <code>Object#send</code>,
-          i.e. <code><var>receiver</var>.send(<var>selector</var>)</code>. This
-          allows the message selector to be determined dynamically, at runtime, as
-          opposed to the syntax described previously which requires the selector to be a
-          literal, embedded in the source.</p>
+          <p>A message can also be sent to an object with
+          <code>Object#send</code>, i.e.
+          <code><var>receiver</var>.send(<var>selector</var>,
+          <var>arg<sub>0</sub></var>,…,<var>arg<sub>n</sub></var>)</code>.
+          This allows the message selector to be determined dynamically, at
+          runtime, as opposed to the syntax described previously which
+          requires the selector to be a literal, embedded in the source.</p>
 
           <figure id=object-send>
             <dt><code>Object#send</code> sends an object a message whose name
