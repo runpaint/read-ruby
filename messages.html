@@ -296,32 +296,34 @@
           <code>ArgumentError</code> is raised.</p>
 
           <aside class=note> 
-            <p>It is often the case that a message needs to be sent with multiple
-            arguments, yet those arguments are stored in an <code>Enumerable</code>
-            such as <code>Array</code>. If the message is sent with just the
-            <code>Enumerable</code> argument it will receive a single argument (a
-            reference to the <code>Enumerable</code>) rather than the constituent
-            elements thereof. The solution is to prefix the <code>Enumerable</code>
-            argument with an asterisk (U+002A: <code>*</code>), which in this context
-            is termed a <dfn id=splat-operator>splat operator</dfn>, thus expanding
-            the <code>Enumerable</code> into its individual elements.</p>
+            <p>It is often the case that a message needs to be sent with
+            multiple arguments, yet those arguments are stored in an
+            <code>Enumerable</code> such as <code>Array</code>. If the message
+            is sent with just the <code>Enumerable</code> argument it will
+            receive a single argument (a reference to the
+            <code>Enumerable</code>) rather than the constituent elements
+            thereof. The solution is to prefix the <code>Enumerable</code>
+            argument with an asterisk (U+002A: <code>*</code>), which in this
+            context is termed a <dfn>splat operator</dfn>, thus expanding the
+            <code>Enumerable</code> into its individual elements.</p>
 
             <figure id=splat-arguments>
               <dt>Prefixing an <code>Enumerable</code> argument with an
               asterisk explodes it into its constituent elements.
             </figure>
 
-            <p>This technique works by sending <code>:to_a</code> to the prefixed
-            object, so any object that responds to this message with an
-            <code>Array</code> can be used in the same fashion.  
+            <p>This technique works by sending <code>:to_a</code> to the
+            prefixed object, so any object that responds to this message with
+            an <code>Array</code> can be used in the same fashion.  
           </aside>
 
-          <p>A message expression followed by a block literal causes the block to be
-          sent along with the message. A block literal may be enclosed in curly
-          braces (<code>{</code>…<code>}</code>) or a <code>do</code>…<code>end</code>
-          construct. These forms are semantically equivalent, however it is
-          conventional to use the former for short blocks that fit on a single line,
-          and the latter for multi-line blocks.</p>
+          <p>A message expression followed by a block literal causes the block
+          to be sent along with the message. A block literal may be enclosed
+          in curly braces (<code>{</code>…<code>}</code>) or a
+          <code>do</code>…<code>end</code> construct. These forms are
+          semantically equivalent, however it is conventional to use the
+          former for short blocks that fit on a single line, and the latter
+          for multi-line blocks.</p>
 
           <figure id=message-expression-with-block>
             <dt>A message expression followed by a block literal causes the
@@ -334,7 +336,7 @@
           <aside class=note>
             <p>To send a <code>Proc</code> object along with a message
             expecting an anonymous block, prefix the object name with an
-            ampersand ((U+0026: <code>&amp;</code>). If multiple arguments are
+            ampersand (U+0026: <code>&amp;</code>). If multiple arguments are
             given the <code>Proc</code> must be specified last.</p>
 
             <figure id=ampersand-prefix-with-argument>
