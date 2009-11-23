@@ -15,7 +15,7 @@
   <h1>Methods</h1>
   <!-- Mention __method__ -->
 
-  <q>A <dfn id=method>method</dfn> is a named block of parameterized code
+  <q>A <dfn>method</dfn> is a named block of parameterized code
     associated with one or more objects.</q> (<a class=ref
     href=#refFLAN08>Flanagan &amp; Matsumoto (p 176)</a>. It is the <q>code
     found in a class <i>for responding to a message</i></q> (<a class=ref
@@ -23,7 +23,7 @@
   emphasis mine. 
 
   <p>Having received a message, an object <dfn
-    id=invoking-method>invokes</dfn> a method in response. <i>Invoke</i>
+    title="invoking a method">invokes</dfn> a method in response. <i>Invoke</i>
   describes the calling of a specific method, in contrast to <i>send</i>,
   which is used at a higher level to describe a request for an object to
   perform a certain operation.
@@ -39,7 +39,7 @@
   <section>
     <h1>Instance Methods</h1>
 
-    <p>An <dfn id=instance-method>instance method</dfn> is a method defined,
+    <p>An <dfn>instance method</dfn> is a method defined,
     without an explicit receiver, in the context of a class. Instances of this
     class invoke the method when sent a message with its name as the selector.
     Therefore, an object’s instance methods determine its behaviour.</p>
@@ -68,7 +68,7 @@
       <h4>Class Methods</h4>
 
         <p>Singleton methods defined on <code>Class</code> objects are known
-        as <dfn id=class-method>class methods</dfn>. For example,
+        as <dfn title="class method">class methods</dfn>. For example,
         <code>File.absolute_path</code> is a class method defined on the
         <code>File</code> class. <a href=#refBLACK09>Black</a> (pp. 384–385)
         remarks that class methods are further distinguished from singleton
@@ -77,7 +77,7 @@
         methods are considered by the method lookup algorithm so, unlike other
         singleton methods, they are inherited. 
         
-        <p>Class methods are typically <dfn id=factory-method>factory
+        <p>Class methods are typically <dfn title="factory method">factory
           methods</dfn> in that they are constructors (<i>manufacturers</i>)
         of the class’ instances.
     </section>
@@ -162,15 +162,14 @@
     a method defined in the superclass, or an ancestor thereof (collectively
     hereafter: the <i>superclass</i> <!-- Clumsy phrasing? -->), with the same
     name. If called without arguments it invokes the superclass method with
-    the arguments received by the current method (this is known as the <dfn
-      title="implicit argument form of <code>super</code>">implicit argument
-      form of <code>super</code></dfn>).  Otherwise, it passes the arguments
-    it has been given to the superclass method. In either case, the arguments
-    are sent as they currently exist: if they have been modified by the
-    method, their modified forms are sent. To explicitly invoke the superclass
-    method without any arguments use <code>super()</code>. A
-    <code>NoMethodError</code> is raised if a corresponding method is not
-    defined in the superclass. 
+    the arguments received by the current method (this is known as the
+    <dfn>implicit argument form of <code>super</code></dfn>).  Otherwise, it
+    passes the arguments it has been given to the superclass method. In either
+    case, the arguments are sent as they currently exist: if they have been
+    modified by the method, their modified forms are sent. To explicitly
+    invoke the superclass method without any arguments use
+    <code>super()</code>. A <code>NoMethodError</code> is raised if a
+    corresponding method is not defined in the superclass. 
     
     <!-- Suggest if
     self.class.superclass.instance_methods.include?(__method__) for testing
@@ -249,9 +248,9 @@
       <h1 id=operator-methods>Operator Methods</h1>
 
       <p>Many <i>operators</i> of conventional programming languages are
-      implemented as <dfn id=operator-methods>operator methods</dfn> in Ruby,
-      allowing them to be <i>overloaded</i> by defining a corresponding method.
-      Logical operators such as <code>not</code>/<code>!</code>,
+      implemented as <dfn title="operator method">operator methods</dfn> in
+      Ruby, allowing them to be <i>overloaded</i> by defining a corresponding
+      method.  Logical operators such as <code>not</code>/<code>!</code>,
       <code>or</code>/<code>||</code>, and
       <code>and</code>/<code>&amp;&amp;</code>, are an exception to this rule,
       so cannot be overridden.
@@ -452,7 +451,7 @@
     
     <p>A method consists of a name, an optional parameter list, and a body.
     Names have already been discussed, the parameter list is explained in
-    <i>Arguments</i> below. The <dfn id=method-body>body</dfn> is a sequence
+    <i>Arguments</i> below. The <dfn title="method body">body</dfn> is a sequence
     of statements terminated with the <code>end</code> keyword.</p> <!-- TODO:
     Clarify here that due to method_missing method’s need not be defined
     before they are called? -->
@@ -507,7 +506,8 @@
 
       <p>The parameter list specifies:
       <ul>
-        <li>The local variable names (hereafter: <dfn id=parameters>parameters</dfn>) to which the
+        <li>The local variable names (hereafter: <dfn title="method
+          parameters">parameters</dfn>) to which the
         corresponding argument will be aliased to inside the method.
         <li>Whether the arguments are required or optional.
         <li>Whether a fixed or variable number of arguments are allowed.
@@ -540,7 +540,7 @@
       <section>
         <h1>Required Arguments</h1>
 
-        <p>A <dfn id=required-argument>required argument</dfn> <em>must</em>
+        <p>A <dfn>required argument</dfn> <em>must</em>
         be supplied by the caller. A method which requires exactly 4 arguments
         must receive them all, otherwise it raises an
         <code>ArgumentError</code>.</p>
@@ -563,7 +563,7 @@
       <section>
         <h1>Optional Arguments and Default Values</h1>
 
-        <p>An <dfn id=optional-argument>optional argument</dfn> <em>may</em>
+        <p>An <dfn>optional argument</dfn> <em>may</em>
         be supplied by the caller. If it is not, the corresponding parameter
         will be assigned the value given as its default.
 
@@ -596,8 +596,7 @@
 
         <!-- TODO: Standardise on terms: 'rest' or 'splat' -->
 
-        <p>A <dfn id=rest-parameter>rest parameter</dfn> (or <dfn
-          id=splat-parameter>splat parameter</dfn>) consumes every argument
+        <p>A <dfn>rest parameter</dfn> (or <dfn>splat parameter</dfn>) consumes every argument
         that follows it while still allowing subsequent required parameters to
         receive their corresponding arguments. Put simply: it takes an
         arbitrary number of arguments from its position onward. It is passed
@@ -666,7 +665,7 @@
 
         <p>The parameter forms described above are positional in nature.  They depend on the argument’s
         location in the parameter list to marry it with the correct parameter. An alternative approach, that
-        can aid the readability of otherwise ungainly parameter lists, is <dfn id=named-arguments>named
+        can aid the readability of otherwise ungainly parameter lists, is <dfn>named
           arguments</dfn>. Named arguments allow the method to be invoked with a series of key-value pairs,
         arranged in an arbitrary order.
 
@@ -837,13 +836,13 @@
         <section>
           <h1>Classification by Arity</h1>
 
-          <p>Methods with fixed arities can be classified as follows: A <dfn
-            id=unary-method>unary method</dfn> expects exactly one operand (its
-          receiver), a <dfn id=binary-method>binary method</dfn> requires two (its
-          receiver and one argument), <dfn id=ternary-method>ternary-method</dfn>
-          requires exactly three (its receiver and two arguments), an <dfn
-            id=n-ary-method><var>n</var>-ary method</dfn> requires <var>n</var>
-          operands (its receiver, and <var>n</var>-1 arguments).</p>
+          <p>Methods with fixed arities can be classified as follows: A
+          <dfn>unary method</dfn> expects exactly one operand (its receiver),
+          a <dfn>binary method</dfn> requires two (its receiver and one
+          argument), <dfn>ternary-method</dfn> requires exactly three (its
+          receiver and two arguments), an <dfn><var>n</var>-ary method</dfn>
+          requires <var>n</var> operands (its receiver, and <var>n</var>-1
+          arguments).</p>
         </section>
       </section>
     </section>
@@ -857,7 +856,7 @@
       <code>undef</code> to be used in the context of the corresponding
       eigenclass.
 
-      <p><dfn id=undef-method>Undefining</dfn> a method prevents the current
+      <p><dfn title="undefining a method">Undefining</dfn> a method prevents the current
       class from responding to it. If the method was defined in a superclass,
       that copy is unaffected. For example, consider a <code>Rectangle</code>
       class which defines <code>:height</code> and <code>:width</code> methods.
@@ -879,10 +878,9 @@
       <h1>Removing</h1>
     
       <p><code>Module#remove_method <var>name</var></code> removes the method
-      named <var>name</var> from the current class only. A <dfn
-        id=remove-method>removed method</dfn> differs from an undefined method
-      in that the former delegates the request to its superclass, whereas the
-      latter doesn’t.</p>
+      named <var>name</var> from the current class only. A <dfn>removed
+        method</dfn> differs from an undefined method in that the former
+      delegates the request to its superclass, whereas the latter doesn’t.</p>
       
       <!-- Use same example for undef_method so they can be contrasted -->
       <figure id=remove-method>
@@ -952,7 +950,7 @@
       <section>
         <h1>Private Methods</h1>
 
-        <p>A <dfn id=private-method>private method</dfn> cannot be invoked with
+        <p>A <dfn>private method</dfn> cannot be invoked with
         an explicit receiver: it can only be called by other instance methods of
         the class in which defined, or a subclass thereof. 
 
@@ -1001,7 +999,7 @@
     <section>
       <h1>Aliases</h1>
 
-      <p>An <dfn id=method-alias>alias</dfn> of a method is an alternate name by
+      <p>An <dfn title="method alias">alias</dfn> of a method is an alternate name by
       which it can be referred. For a method, <var>m</var>, and its alias,
       <var>a</var>, invoking <var>m</var> is equivalent to invoking
       <var>a</var>.
@@ -1183,7 +1181,7 @@
       <h1><code>Method</code> Objects</h1>
 
       <p>An instance of the <code>Method</code> class represents a method bound
-      to an object. This <dfn id=method-object>method object</dfn> enables you
+      to an object. This <dfn>method object</dfn> enables you
       to store a reference to a method in a variable, as you would any other
       object, query the method’s metadata, and manipulate it. This is quite
       distinct from capturing the return value of a method. <!-- TODO: Note that
@@ -1294,7 +1292,7 @@
       protected. 
         
       <p>Before an <code>UnboundMethod</code> is invoked it must be
-      re-associated with, or <dfn id=method-bind>bound</a> to, to an object
+      re-associated with, or <dfn title="bound method">bound</a> to, to an object
       which is a <code>Object#kind_of?</code> its original class. This is
       achieved by passing an object reference to
       <code>UnboundMethod#bind</code>.
