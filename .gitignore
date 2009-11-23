@@ -1,2 +1,3 @@
 *.swp
 out/
+figures/*.html
