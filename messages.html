@@ -112,11 +112,12 @@
           terminology</q> because it is well established in the literature, and the
         basis for Ruby’s misappropriation.
 
-        <p>Further, there is not necessarily a one-to-one correspondence between
-        message selector and method name. If the named method does not exist, the
-        receiver may respond by sending itself a <code>method_missing</code> message,
-        which would contradict this simplistic assertion, but still fulfil the
-        request the message represented.
+        <p>Further, there is not necessarily a one-to-one correspondence
+        between message selector and method name. If the named method does not
+        exist, the receiver may respond by sending itself a
+        <code>:method_missing</code> message, which would contradict this
+        simplistic assertion, but still fulfil the request the message
+        represented.
 
         <p>The proper relation of <i>message</i> to <i>method</i> can be understood
         by Budd's use of the term <i>operation</i>: a method must perform the
