@@ -149,15 +149,18 @@
           the instance of the containing class.</p>
 
           <figure id=self-as-the-implicit-receiver>
-          <dt><code>self</code> is always defined; its value depends on the enclosing
-          context.</dt>
+          <dt><code>self</code> is always defined; its value depends on the
+          enclosing context.</dt>
           </figure>
 
-          <p>There are three situations where the implicit receiver can not be used:
+          <p>There are four situations where the implicit receiver can not be
+          used:
 
           <ol>
             <li>The selector is also a keyword such as <code>class</code>. (An
             implicit receiver would create syntactical ambiguity).
+            <li>The selector is that of a non-unary <a
+            href=#operator-methods>operator method</a>. 
             <li>The selector is used as an <a
               href=#ambiguous-lvalue-syntax>lvalue</a>.
             <li>The message name is identical to a local variable. (This case can
