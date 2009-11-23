@@ -240,12 +240,12 @@
         href=#implicit-receiver>implicit receiver</a> to be assumed.</p>
 
         <aside class=note>
-          The syntax explained above is potentially ambiguous. If Ruby sees a bare
-          identifier, e.g. <code>glark</code>, is that a reference to a local
-          variable or an attempt to send a message to <code>self</code>? If Ruby
-          has previously seen the identifier being assigned to, e.g. <code>glark =
-            2</code>, it is treated as a variable reference; otherwise it is a
-          message.
+          The syntax explained above is potentially ambiguous. If Ruby sees a
+          bare identifier, e.g. <code>glark</code>, is that a reference to a
+          local variable or an attempt to send a message to <code>self</code>?
+          If Ruby has previously seen the identifier being assigned to, e.g.
+          <code>glark = 2</code>, it is treated as a variable reference;
+          otherwise it is a message.
         </aside>
 
         <figure id=bare-selector-syntax>
@@ -265,25 +265,26 @@
         </figure>
 
         <aside class=note>
-          An alternative to the <code><var>receiver</var>.<var>selector</var></code>
-          syntax is <code><var>receiver</var>::<var>selector</var></code>, where the
+          An alternative to the
+          <code><var>receiver</var>.<var>selector</var></code> syntax is
+          <code><var>receiver</var>::<var>selector</var></code>, where the
           full stop is replaced with a double colon (U+003A: <code>::</code>).
-          However, the latter syntax has fallen out of favour due to the confusion
-          it creates between message sending and constant reference expressions.
-          It is not recommended for use in new code.
+          However, the latter syntax has fallen out of favour due to the
+          confusion it creates between message sending and constant reference
+          expressions.  It is not recommended for use in new code.
         </aside>
 
-        <p>In either case a <code>NoMethodError</code> is raised if the receiver
-        neither defines a corresponding method nor defines a
+        <p>In either case, a <code>NoMethodError</code> is raised if the
+        receiver neither defines a corresponding method nor defines a
         <code>method_missing</code> method that handles the message.</p>
 
         <section>
           <h1>Arguments</h1>
           
-          <p>A message may be accompanied by one or more <dfn
-            id=method-arguments>arguments</var>: variables to be used in the
-          resulting computations. Arguments are supplied as a
-          parenthesized list of variables separated by commas:
+          <p>A message may be accompanied by one or more <dfn title="message
+          arguments">arguments</var>: variables to be used in the resulting
+          computations. Arguments are supplied as a parenthesized list of
+          variables separated by commas:
           <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.</p>
           
           <figure id=receiver-selector-arguments-syntax>
