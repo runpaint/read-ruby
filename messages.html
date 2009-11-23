@@ -185,10 +185,11 @@
           receives the message. It cannot be used when the message is private.
 
           <p>The expression is typically an identifier. For example,
-          <code>house.build(floors: 2, style: :victorian)</code> sends the message
-          with the selector <code>:build</code> to the object <code>house</code>.
-          If the expression is itself a message expression, we say the messages
-          are <a href=#message-chaining>chained</a>.
+          <code>house.build(floors: 2, style: :victorian)</code> sends the
+          message with the selector <code>:build</code> to the object
+          <code>house</code>.  If the expression is itself a message
+          expression, we say the messages are <a
+          href=#message-chaining>chained</a>.
 
           <p>However, the receiver may be any expression, parenthesised if
           necessary to force precedence. For example, <code>(10 **
@@ -206,8 +207,9 @@
         <!-- TODO: Talk here about "significant names"? Decide what material moves
         from the Method > Names section to here -->
 
-        <p>The message <dfn id=selector>selector</dfn> is the name of the
-        operation the receiver should perform in response to message.
+        <p>The message <dfn title="message selector">selector</dfn> is the
+        name of the operation the receiver should perform in response to
+        message.
 
         <p>The selector is assumed to be the name of a method defined upon the
         receiver or one of its superclasses. If a corresponding method is not
