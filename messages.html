@@ -475,11 +475,13 @@
             can be determined at runtime.
           </figure>
 
+          <p><code>Object#send</code> is aliased to <code>__send__</code>, so
+          even if the former is overidden, the alias can be used in its place.
+          A warning is issued if the user overrides <code>__send__</code>.
+
           <p><code>Object#public_send</code> performs the same function, but
           raises a <code>NoMethodError</code> if the method is private or
           protected.
-          
-          <p><!-- __send__ -->
         </section>
       </section>
 
