@@ -233,11 +233,12 @@
 
         <!-- We're using _message expression_ to describe this syntax... (dfn it?) -->
 
-        <p>The simplest expression for sending a message is
-        <code><var>s</var></code>, where <var>s</var> is the message selector.
-        Omitting the name of the receiver to which <var>s</var> should be sent
-        causes an implicit receiver of <code>self</code> to be assumed.</p> <!-- TODO:
-        Link to implicit receiver section -->
+        <p>The simplest <dfn title="message expression">expression for sending
+        a message</dfn> is <code><var>s</var></code>, where <var>s</var> is
+        the message selector.  Omitting the name of the receiver to which
+        <var>s</var> should be sent causes an implicit receiver of
+        <code>self</code> to be assumed.</p> <!-- TODO: Link to implicit
+        receiver section -->
 
         <aside class=note>
           The syntax explained above is potentially ambiguous. If Ruby sees a bare
