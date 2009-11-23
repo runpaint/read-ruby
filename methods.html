@@ -7,11 +7,12 @@
     <!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
     <script src="http://html5-now.appspot.com/html5-now.js"></script>
     -->
+    <link href=main.css rel=stylesheet>
   </head>
   <body>
 
-<h2>Methods</h2>
-
+<section>
+  <h1>Methods</h1>
   <!-- Mention __method__ -->
 
   <q>A <dfn id=method>method</dfn> is a named block of parameterized code
@@ -29,17 +30,19 @@
 
   <p>A method is invoked for its side-effects, the value it returns, or a
   combination of the two.  Note that this definition encompasses
-  <i>accessor</i> and <i>mutator</i> methods; Ruby makes no such distinction.
+  <i>accessor</i> and <i>mutator</i> methods; Ruby makes no such
+  distinction.</p>
 
     <!-- TODO: Move instructions for _creating_ these methods out of these
     sections -->
-
-  <h3>Instance Methods</h3>
+  
+  <section>
+    <h1>Instance Methods</h1>
 
     <p>An <dfn id=instance-method>instance method</dfn> is a method defined,
     without an explicit receiver, in the context of a class. Instances of this
     class invoke the method when sent a message with its name as the selector.
-    Therefore, an object’s instance methods determine its behaviour.
+    Therefore, an object’s instance methods determine its behaviour.</p>
      
     <aside> 
       It is conventional to employ the <code>Class#method</code> notation when
@@ -51,13 +54,15 @@
       <dt>Defining an instance method named <code>bark</code> for the <code>Dog</code> class
       with the <code>def</code> keyword.
     </figure>
+  </section>
 
-  <h3>Singleton Methods</h3>
+  <section>
+    <h1>Singleton Methods</h1>
 
-    <p>A <dfn id=singleton-method>singleton method</dfn> is a method defined
+    <p>A <dfn>singleton method</dfn> is a method defined
     in the context of an object’s eigenclass. It is commonly described as a
     method defined on a specific object, rather than all instances of a
-    certain class.
+    certain class.</p>
 
     <section>
       <h4>Class Methods</h4>
@@ -100,7 +105,7 @@
       possible to provide a method for an individual object; rather every
       object must be associated with some class, and the behaviour of the
       object in response to messages will be dictated by the methods
-      associated with that class.</q> (pp. 5–9).
+      associated with that class.</q> (pp. 5–9).</p>
     
     <aside>
       It is conventional to employ the
@@ -110,12 +115,15 @@
     </aside>
 
     <!-- Link to Defining where singleton methods are explained -->
-
-  <h3>Return Values</h3>
+  </section>
+  
+  <section>
+    <h1>Return Values</h1>
 
     <p>A method is a expression so always returns a value: the last statement
     executed, or <code>nil</code> if the method body is empty. If this value
-    is an <code>Array</code> the method effectively returns multiple values. 
+    is an <code>Array</code> the method effectively returns multiple
+    values.</p>
 
     <figure id=def-implicit-return>
       <dt>A method which returns the Symbol <code>:to_sender</code>
@@ -129,7 +137,7 @@
     prematurely, immediately passing control back to the caller. The value
     returned is that of <code>return</code>’s arguments, or <code>nil</code>
     if it has none. If multiple arguments are given they will be returned as
-    an <code>Array</code>. 
+    an <code>Array</code>.</p> 
 
     <figure id=def-explicit-return-multiple>
       <dt>A method which explicitly returns multiple values.
@@ -145,8 +153,10 @@
     </p>
 
     <!-- TODO: Mention Object#tap -->
+  </section>
 
-  <h3><code>super</code></h3>
+  <section>
+    <h1><code>super</code></h1>
   
     <p>The <code>super</code> keyword is used in method definitions to invoke
     a method defined in the superclass, or an ancestor thereof (collectively
@@ -165,8 +175,10 @@
     <!-- Suggest if
     self.class.superclass.instance_methods.include?(__method__) for testing
     whether such a method is defined -->
+  </section>
 
-  <h3>Names</h3>
+  <section>
+    <h1>Names</h1>
 
       <!-- TODO: Talk about "significant" names here? e.g. to_*,
       inspect, etc.? -->
@@ -203,14 +215,15 @@
     </aside>
 
     <p>By implication, any other character legal in the source encoding is
-    valid in a method name. 
+    valid in a method name.</p> 
 
     <figure id=def-non-ascii-name>
       <dt>Defining a method with a non-ASCII name
     </figure>
 
+    <section>
       <!-- TODO: Unite this with section on attribute setters -->
-    <h4>The <code>=</code> Suffix</h4>
+      <h1>The <code>=</code> Suffix</h1>
 
       <p>Methods named with a <code>=</code> suffix can be used in assignment
       statements as <i>lvalues</i>. That is, a method defined as
@@ -230,211 +243,217 @@
         make it explicit that you are invoking a method with the
         <code>name=(value)</code> syntax.  
       </aside>
+    </section>
 
-  <h3 id=operator-methods>Operator Methods</h3>
+    <section>
+      <h1 id=operator-methods>Operator Methods</h1>
 
-    <p>Many <i>operators</i> of conventional programming languages are
-    implemented as <dfn id=operator-methods>operator methods</dfn> in Ruby,
-    allowing them to be <i>overloaded</i> by defining a corresponding method.
-    Logical operators such as <code>not</code>/<code>!</code>,
-    <code>or</code>/<code>||</code>, and
-    <code>and</code>/<code>&amp;&amp;</code>, are an exception to this rule,
-    so cannot be overridden.
+      <p>Many <i>operators</i> of conventional programming languages are
+      implemented as <dfn id=operator-methods>operator methods</dfn> in Ruby,
+      allowing them to be <i>overloaded</i> by defining a corresponding method.
+      Logical operators such as <code>not</code>/<code>!</code>,
+      <code>or</code>/<code>||</code>, and
+      <code>and</code>/<code>&amp;&amp;</code>, are an exception to this rule,
+      so cannot be overridden.
 
-    <p>For example, an expression such as <code>3 + 2 * 10</code> is evaluated as
-    <code>3.+(2.*(10))</code>, i.e. <code>2</code> is sent the message
-    <code>:*</code> with <code>10</code> as the argument, which returns
-    <code>20</code>, then <code>3</code>
-    is sent the message <code>:+</code> with <code>20</code> as its argument.
-    An implication is that even the fundamental arithmetical operations are
-    implemented as operator methods defined on <code>Numeric</code> objects.
-    <!-- Note derision of this concept; that it runs counter to normal
-    precedence rules (does it?) -->    
-    
-    <p>Classes can implement their own operator methods by defining a method
-    with the corresponding name, which is listed in the <i>Method</i> column
-    below. This name is generally the same as the operator symbol, e.g.
-    <code>+</code> implies a method named <code>:+</code>, but in the case of
-    unary methods, e.g. the <code>-</code> in <code>-2</code>, the method name
-    consists of the operator with an <code>@</code> suffix.
+      <p>For example, an expression such as <code>3 + 2 * 10</code> is evaluated as
+      <code>3.+(2.*(10))</code>, i.e. <code>2</code> is sent the message
+      <code>:*</code> with <code>10</code> as the argument, which returns
+      <code>20</code>, then <code>3</code>
+      is sent the message <code>:+</code> with <code>20</code> as its argument.
+      An implication is that even the fundamental arithmetical operations are
+      implemented as operator methods defined on <code>Numeric</code> objects.
+      <!-- Note derision of this concept; that it runs counter to normal
+      precedence rules (does it?) -->    
+      
+      <p>Classes can implement their own operator methods by defining a method
+      with the corresponding name, which is listed in the <i>Method</i> column
+      below. This name is generally the same as the operator symbol, e.g.
+      <code>+</code> implies a method named <code>:+</code>, but in the case of
+      unary methods, e.g. the <code>-</code> in <code>-2</code>, the method name
+      consists of the operator with an <code>@</code> suffix.
 
-    <table>
-      <tr> <th>Method</th> <th>Operator</th> <th>Description</th> </tr>
+      <table>
+        <tr> <th>Method</th> <th>Operator</th> <th>Description</th> </tr>
 
-      <tr>
-        <td><code>[]</code></td>
-        <td><code>[</code>…<code>]</code></td>
-        <td>Element reference, e.g. <code>[1,2,3][1]</code> subscripting</td>
-        <!-- TODO: Link with element reference writeup -->
-      </tr>
+        <tr>
+          <td><code>[]</code></td>
+          <td><code>[</code>…<code>]</code></td>
+          <td>Element reference, e.g. <code>[1,2,3][1]</code> subscripting</td>
+          <!-- TODO: Link with element reference writeup -->
+        </tr>
 
-      <tr>
-        <td><code>[]=</code></td>
-        <td><code>[</code>…<code>]=</code></td>
-        <td>Element set, e.g. <code>{foo: :bar}[:glark] = :quark</code></td>
-        <!-- TODO: Link with element reference writeup -->
-      </tr>
+        <tr>
+          <td><code>[]=</code></td>
+          <td><code>[</code>…<code>]=</code></td>
+          <td>Element set, e.g. <code>{foo: :bar}[:glark] = :quark</code></td>
+          <!-- TODO: Link with element reference writeup -->
+        </tr>
 
-      <tr>
-        <td><code>**</code></td>
-        <td><code>**</code></td>
-        <td>Exponentiation, e.g. <code>3 ** 2</code></td>
-      </tr>
+        <tr>
+          <td><code>**</code></td>
+          <td><code>**</code></td>
+          <td>Exponentiation, e.g. <code>3 ** 2</code></td>
+        </tr>
 
-      <tr>
-        <td><code>!</code></td>
-        <td><code>!</code></td>
-        <td>Not, e.g. <code>!pregnant</code></td>
-      </tr>
+        <tr>
+          <td><code>!</code></td>
+          <td><code>!</code></td>
+          <td>Not, e.g. <code>!pregnant</code></td>
+        </tr>
 
-      <tr>
-        <td><code>~</code></td>
-        <td><code>~</code></td>
-        <td>Complement, e.g. <code>~23</code></td>
-      </tr>
+        <tr>
+          <td><code>~</code></td>
+          <td><code>~</code></td>
+          <td>Complement, e.g. <code>~23</code></td>
+        </tr>
 
-      <tr>
-        <td><code>-@</code></td>
-        <td><code>-</code></td>
-        <td>Unary minus (negate), e.g. <code>-42</code></td>
-      </tr>
+        <tr>
+          <td><code>-@</code></td>
+          <td><code>-</code></td>
+          <td>Unary minus (negate), e.g. <code>-42</code></td>
+        </tr>
 
-      <tr>
-        <td><code>+@</code></td>
-        <td><code>+</code></td>
-        <td>Unary plus, e.g. <code>+(10-20)</code></td>
-      </tr>
+        <tr>
+          <td><code>+@</code></td>
+          <td><code>+</code></td>
+          <td>Unary plus, e.g. <code>+(10-20)</code></td>
+        </tr>
 
-      <tr>
-        <td><code>*</code></td>
-        <td><code>*</code></td>
-        <td>Multiplication, e.g. <code>10 * 2</code></td>
-      </tr>
+        <tr>
+          <td><code>*</code></td>
+          <td><code>*</code></td>
+          <td>Multiplication, e.g. <code>10 * 2</code></td>
+        </tr>
 
-      <tr>
-        <td><code>/</code></td>
-        <td><code>/</code></td>
-        <td>Division, e.g. <code>20 / 10</code></td>
-      </tr>
+        <tr>
+          <td><code>/</code></td>
+          <td><code>/</code></td>
+          <td>Division, e.g. <code>20 / 10</code></td>
+        </tr>
 
-      <tr>
-        <td><code>%</code></td>
-        <td><code>%</code></td>
-        <td>Modulo, e.g. <code>20.5 % 16</code></td>
-      </tr>
+        <tr>
+          <td><code>%</code></td>
+          <td><code>%</code></td>
+          <td>Modulo, e.g. <code>20.5 % 16</code></td>
+        </tr>
 
-      <tr>
-        <td><code>+</code></td>
-        <td><code>+</code></td>
-        <td>Addition, e.g. <code>20.5 + 5.2</code></td>
-      </tr>
+        <tr>
+          <td><code>+</code></td>
+          <td><code>+</code></td>
+          <td>Addition, e.g. <code>20.5 + 5.2</code></td>
+        </tr>
 
-      <tr>
-        <td><code>-</code></td>
-        <td><code>-</code></td>
-        <td>Subtraction, e.g. <code>20.5 - 5.2</code></td>
-      </tr>
+        <tr>
+          <td><code>-</code></td>
+          <td><code>-</code></td>
+          <td>Subtraction, e.g. <code>20.5 - 5.2</code></td>
+        </tr>
 
-      <tr>
-        <td><code>&gt;&gt;</code></td>
-        <td><code>&gt;&gt;</code></td>
-        <td>Right shift, e.g. <code>16 &gt;&gt; 1</code></td>
-      </tr>
+        <tr>
+          <td><code>&gt;&gt;</code></td>
+          <td><code>&gt;&gt;</code></td>
+          <td>Right shift, e.g. <code>16 &gt;&gt; 1</code></td>
+        </tr>
 
-      <tr>
-        <td><code>&lt;&lt;</code></td>
-        <td><code>&lt;&lt;</code></td>
-        <td>Left shift, e.g. <code>16 &lt;&lt; 1</code></td>
-      </tr>
+        <tr>
+          <td><code>&lt;&lt;</code></td>
+          <td><code>&lt;&lt;</code></td>
+          <td>Left shift, e.g. <code>16 &lt;&lt; 1</code></td>
+        </tr>
 
-      <tr>
-        <td><code>&amp;</code></td>
-        <td><code>&amp;</code></td>
-        <td>Bitwise AND, e.g. <code>2 &amp; 1</code></td>
-      </tr>
+        <tr>
+          <td><code>&amp;</code></td>
+          <td><code>&amp;</code></td>
+          <td>Bitwise AND, e.g. <code>2 &amp; 1</code></td>
+        </tr>
 
-      <tr>
-        <td><code>^</code></td>
-        <td><code>^</code></td>
-        <td>Bitwise XOR, e.g. <code>2 ^ 1</code></td>
-      </tr>
+        <tr>
+          <td><code>^</code></td>
+          <td><code>^</code></td>
+          <td>Bitwise XOR, e.g. <code>2 ^ 1</code></td>
+        </tr>
 
-      <tr>
-        <td><code>|</code></td>
-        <td><code>|</code></td>
-        <td>Bitwise OR, e.g. <code>2 | 1</code></td>
-      </tr>
+        <tr>
+          <td><code>|</code></td>
+          <td><code>|</code></td>
+          <td>Bitwise OR, e.g. <code>2 | 1</code></td>
+        </tr>
 
-      <!-- TODO: Link the following with Comparable explanation -->
-      <tr>
-        <td><code>&lt;=</code></td>
-        <td><code>&lt;=</code></td>
-        <td>Less than or equal to (≤), e.g. <code>10 &lt;= 12</code></td>
-      </tr>
+        <!-- TODO: Link the following with Comparable explanation -->
+        <tr>
+          <td><code>&lt;=</code></td>
+          <td><code>&lt;=</code></td>
+          <td>Less than or equal to (≤), e.g. <code>10 &lt;= 12</code></td>
+        </tr>
 
-      <tr>
-        <td><code>&lt;</code></td>
-        <td><code>&lt;</code></td>
-        <td>Less than, e.g. <code>10 &lt; 12</code></td>
-      </tr>
+        <tr>
+          <td><code>&lt;</code></td>
+          <td><code>&lt;</code></td>
+          <td>Less than, e.g. <code>10 &lt; 12</code></td>
+        </tr>
 
-      <tr>
-        <td><code>=&gt;</code></td>
-        <td><code>=&gt;</code></td>
-        <td>Greater than or equal to (≥), e.g. <code>12 =&gt; 10</code></td>
-      </tr>
+        <tr>
+          <td><code>=&gt;</code></td>
+          <td><code>=&gt;</code></td>
+          <td>Greater than or equal to (≥), e.g. <code>12 =&gt; 10</code></td>
+        </tr>
 
-      <tr>
-        <td><code>&gt;</code></td>
-        <td><code>&gt;</code></td>
-        <td>Greater than, e.g. <code>12 &gt; 10</code></td>
-      </tr>
+        <tr>
+          <td><code>&gt;</code></td>
+          <td><code>&gt;</code></td>
+          <td>Greater than, e.g. <code>12 &gt; 10</code></td>
+        </tr>
 
-      <tr>
-        <td><code>&lt;=&gt;</code></td>
-        <td><code>&lt;=&gt;</code></td>
-        <td><i>Spaceship</i> operator, e.g. <code>12 &lt;=&gt; 10</code></td>
-      </tr>
+        <tr>
+          <td><code>&lt;=&gt;</code></td>
+          <td><code>&lt;=&gt;</code></td>
+          <td><i>Spaceship</i> operator, e.g. <code>12 &lt;=&gt; 10</code></td>
+        </tr>
 
-      <tr>
-        <td><code>==</code></td>
-        <td><code>==</code></td>
-        <td>Equality, e.g. <code>"wool" == "wool"</code></td>
-      </tr>
+        <tr>
+          <td><code>==</code></td>
+          <td><code>==</code></td>
+          <td>Equality, e.g. <code>"wool" == "wool"</code></td>
+        </tr>
 
-      <tr>
-        <td><code>===</code></td>
-        <td><code>===</code></td>
-        <td>Case equality, e.g. <code>Array === [1]</code></td>
-      </tr>
+        <tr>
+          <td><code>===</code></td>
+          <td><code>===</code></td>
+          <td>Case equality, e.g. <code>Array === [1]</code></td>
+        </tr>
 
-      <!-- TODO: Mention this inverts == unless defined explicitly -->
-      <tr>
-        <td><code>!=</code></td>
-        <td><code>!=</code></td>
-        <td>Not equal, e.g. <code>"bark! != "bite"</code></td>
-      </tr>
+        <!-- TODO: Mention this inverts == unless defined explicitly -->
+        <tr>
+          <td><code>!=</code></td>
+          <td><code>!=</code></td>
+          <td>Not equal, e.g. <code>"bark! != "bite"</code></td>
+        </tr>
 
-      <tr>
-        <td><code>=~</code></td>
-        <td><code>=~</code></td>
-        <td>Pattern match, e.g. <code>/\d/ =~ "99"</code></td>
-      </tr>
+        <tr>
+          <td><code>=~</code></td>
+          <td><code>=~</code></td>
+          <td>Pattern match, e.g. <code>/\d/ =~ "99"</code></td>
+        </tr>
 
-      <!-- TODO: Mention this inverts =~ unless defined explicitly -->
-      <tr>
-        <td><code>!~</code></td>
-        <td><code>!~</code></td>
-        <td>Inverted pattern match, e.g. <code>/\d/ !~ "d"</code></td>
-      </tr>
-    </table>
+        <!-- TODO: Mention this inverts =~ unless defined explicitly -->
+        <tr>
+          <td><code>!~</code></td>
+          <td><code>!~</code></td>
+          <td>Inverted pattern match, e.g. <code>/\d/ !~ "d"</code></td>
+        </tr>
+      </table>
 
-  <h3>Defining</h3>
+    </section>
+  </section>
+  
+  <section>
+    <h1>Defining</h1>
     
     <p>A method consists of a name, an optional parameter list, and a body.
     Names have already been discussed, the parameter list is explained in
     <i>Arguments</i> below. The <dfn id=method-body>body</dfn> is a sequence
-    of statements terminated with the <code>end</code> keyword. <!-- TODO:
+    of statements terminated with the <code>end</code> keyword.</p> <!-- TODO:
     Clarify here that due to method_missing method’s need not be defined
     before they are called? -->
     
@@ -459,7 +478,7 @@
     <p>Therefore, <code>def self.<var>name</var></code> defines a class method
     for the current class. <code>def <var>Class</var>.<var>name</var></code>
     defines a method named <var>name</var> on the class named
-    <var>Class</var>.
+    <var>Class</var>.</p>
 
     <aside class=warn>
       Singleton methods cannot be defined on immediate values such as
@@ -471,10 +490,11 @@
       <dt>Defining a singleton method named <code>breed</code> for the
       <code>Dog</code> class with the <code>def</code> keyword.
     </figure>
-
+  </section>
     <!-- Link with define_singleton_method -->
 
-    <h4>Arguments</h4> 
+  <section>  
+    <h1>Arguments</h1> 
     
       <p>A method may accept one or more arguments, variables passed in from the caller.
 
@@ -495,30 +515,35 @@
         <li>Whether an argument is expected to be a block.
       </ul>
 
-      <p>Each parameter name must be unique in the parameter list.
-      
-      <h5>Pass By Reference</h5>
+      <p>Each parameter name must be unique in the parameter list.</p>
 
-        <p>Arguments are passed to methods by reference instead of value.  If the method modifies an object
-        it receives the caller’s copy is modified, too.
+      <section>
+        <h1>Pass By Reference</h1>
+
+        <p>Arguments are passed to methods by reference instead of value.  If
+        the method modifies an object it receives the caller’s copy is
+        modified, too.</p>
 
         <figure id=pass-by-reference>
           <dt>The effect of a method’s modification of an argument on its caller
         </figure>
 
-        <p>Methods may <i>dup</i> (<code>Object#dup</code>) their arguments to avoid this situation.    
+        <p>Methods may <i>dup</i> (<code>Object#dup</code>) their arguments to
+        avoid this situation.</p>
 
         <figure id=pass-by-reference-dup>
           <dt>The effect of a method’s modification of a <code>dup</code>’d
           argument on its caller</dt>
         </figure>
-
-      <h5>Required Arguments</h5>
+      </section>
+      
+      <section>
+        <h1>Required Arguments</h1>
 
         <p>A <dfn id=required-argument>required argument</dfn> <em>must</em>
         be supplied by the caller. A method which requires exactly 4 arguments
         must receive them all, otherwise it raises an
-        <code>ArgumentError</code>.
+        <code>ArgumentError</code>.</p>
 
         <aside class=note>
           <code>nil</code> and <code>false</code> are as valid an argument any
@@ -528,13 +553,15 @@
         </aside>
 
         <p>Required arguments are specified with a comma-separated list of
-        parameter names. Each parameter represents a mandatory argument.
+        parameter names. Each parameter represents a mandatory argument.</p>
 
         <figure id=required-arguments>
           <dt>Defining a method which requires exactly two arguments.
         </figure>
+      </section>
 
-      <h5>Optional Arguments and Default Values</h5>
+      <section>
+        <h1>Optional Arguments and Default Values</h1>
 
         <p>An <dfn id=optional-argument>optional argument</dfn> <em>may</em>
         be supplied by the caller. If it is not, the corresponding parameter
@@ -546,7 +573,7 @@
         default value. The <var>value</var> may be any Ruby expression, and is
         permitted to refer to previous parameters. The default value is
         evaluated each time the method is invoked, so may, for example,
-        instantiate an object on every invocation. 
+        instantiate an object on every invocation.</p>
 
         <figure id=optional-arguments>
           <dt>Defining a method which takes an optional argument.
@@ -555,14 +582,17 @@
         <p>Optional and required arguments can be specified alongside each
         other in a reasonably natural fashion. However, all optional arguments
         must be adjacent. For instance, it is a <code>SyntaxError</code> to
-        both precede and follow a required argument with optional arguments.
+        both precede and follow a required argument with optional
+        arguments.</p>
 
         <figure id=required-arguments-with-optional-arguments>
           <dt>Defining a method which takes both optional and required
           arguments.
         </figure>
-
-      <h5>Variable-Length Argument Lists</h5>
+      </section>
+      
+      <section>
+        <h1>Variable-Length Argument Lists</h1>
 
         <!-- TODO: Standardise on terms: 'rest' or 'splat' -->
 
@@ -572,7 +602,7 @@
         receive their corresponding arguments. Put simply: it takes an
         arbitrary number of arguments from its position onward. It is passed
         to the method as an <code>Array</code> containing one argument per
-        element.
+        element.</p>
 
         <aside class=note>
           Rest parameters do not <em>require</em> any arguments, so a method
@@ -582,7 +612,7 @@
 
         <p>A rest parameter is specified by preceding a parameter name with an
         asterisk (U+002A: <code>*</code>). Only one rest parameter may appear
-        in a parameter list, and any optional parameters must precede it.
+        in a parameter list, and any optional parameters must precede it.</p>
 
         <figure id=rest-arguments>
           <dt>Defining a method which takes a variable number of arguments.
@@ -607,7 +637,7 @@
         arrangement is legal.
 
         <p>Conversely, a rest parameter may be either followed or preceded by
-        one or more required parameters
+        one or more required parameters.</p>
 
         <figure id=required-arguments-with-optional-arguments>
           <dt>Defining a method which takes both optional and required
@@ -621,7 +651,7 @@
 
         <p>Thomas et al. (<a href=#refTHOM09>[THOM09]</a>) suggest that this technique can used in
         conjunction with <code>super</code> to define a method which accepts an arbitrary number of
-        arguments then passes them all to its superclass.
+        arguments then passes them all to its superclass.</p>
 
         <figure id=rest-parameter-with-super>
           <dt>A method which accepts a variable number of arguments then
@@ -629,8 +659,10 @@
           implicit-argument form of <code>super</code>. (<a
             href=#refTHOM09>[THOM09]</a>).
         </figure>
+      </section>
 
-      <h5>Named Arguments</h5>
+      <section>
+        <h1>Named Arguments</h1>
 
         <p>The parameter forms described above are positional in nature.  They depend on the argument’s
         location in the parameter list to marry it with the correct parameter. An alternative approach, that
@@ -640,7 +672,7 @@
 
         <p>Ruby does not offer explicit support for this style of argument passing, but it can be ably
         approximated by defining methods that expect a <code>Hash</code> argument: the keys of which become
-        the parameter names; and the values, the arguments.
+        the parameter names; and the values, the arguments.</p>
 
         <!-- TODO: Mention that File/IO, String#encode use this technique -->
 
@@ -675,12 +707,14 @@
         expecting a variable number of arguments would otherwise use rest
         arguments, which would also render it unable to perform this
         validation.
-
-      <h5>Block Arguments</h5>
+      </section>
+      
+      <section>
+        <h1>Block Arguments</h1>
         
         <p>Any method may be invoked with a block literal as an argument by
         specifying the block after the method invocation. <!-- message
-        expression instead of method invocation? -->
+        expression instead of method invocation? --></p>
 
         <aside class=note>
           <a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, pp.
@@ -700,9 +734,9 @@
         </figure>
          
         <p>A method may determine whether it has received a block with the
-        <code>block_given?</code> predicate.
+        <code>block_given?</code> predicate.</p>
 
-        <figure id=method-using-block_given>
+        <figure id=method-using-block-given>
           <dt>A method which uses the <code>block_given?</code> predicate to
           determine whether it has been passed a block.
         </figure>
@@ -710,7 +744,7 @@
         <p>A block passed to a method in this way is not automatically called;
         the method must use the <code>yield</code> keyword to do so. An
         implication of this is that methods not expecting blocks will ignore
-        them. The return value of <code>yield</code> is that of the block.
+        them. The return value of <code>yield</code> is that of the block.</p>
 
         <!-- TODO: Mention that yield takes arguments -->
 
@@ -726,7 +760,7 @@
         the block as a <code>Proc</code> object named after the parameter
         (sans ampersand). It may invoke the block via its
         <code>Proc#call</code> method, or <code>yield</code> to it. In either
-        case, the method is invoked in precisely the same way as before.
+        case, the method is invoked in precisely the same way as before.</p>
 
         <!-- Example with instance_eval ? -->
 
@@ -739,7 +773,7 @@
           <p>The discussion above applies only to block <i>literals</i>; a method
           expecting a <em>reference</em> to a block, i.e. a <code>proc</code>
           or <code>lambda</code>, need not pay heed. Such a method employs
-          precisely the same parameter list as in the previous sections.
+          precisely the same parameter list as in the previous sections.</p>
 
           <figure id=method-receiving-block-ref>
             <dt>A method which expects a reference to a block uses the same
@@ -747,507 +781,561 @@
             variable.
           </figure>
         </aside>
-
-    <h4>Dynamic Method Definition</h4>
-
-      <p>An instance method can be defined dynamically with
-      <code>Module#define_method(<var>name</var>, <var>body</var>)</code>,
-      where <var>name</var> is the method’s name given as a
-      <code>Symbol</code>, and <var>body</var> is its body given as a
-      <code>Proc</code>, <code>Method</code>, <code>UnboundMethod</code>, or
-      literal block. This allows methods to be defined at runtime, in contrast
-      to <code>def</code> which requires the method name and body to appear
-      literally in the source code.
-
-      <figure id=define-method>
-        <dt>Using <code>define_method</code> to dynamically create a method
-        with a user-supplied name and body.
-      </figure>
-
-      <p><code>Module#define_method</code> is a private method so must be
-      called from within the class the method is being defined on.
-      Alternatively, it can be invoked inside <code>class_eval</code> like so:
-  
-      <figure id=define-method-class-eval>
-        <dt>Using <code>define_method</code> inside <code>class_eval</code> to
-        dynamically create a method with a user-supplied name and body.
-      </figure>
-        
-      <p><code>Object#define_singleton_method</code> is called with a class
-      name as the receiver and the same arguments as
-      <code>Module#define_method</code> for the obvious purpose. 
-
-      <figure id=define-singleton-method>
-        <dt>Using <code>define_singleton_method</code> to dynamically create a
-        method.
-      </figure>
-
-  <h3>Arity</h3>
-    
-    <p>The arity of a method is the number of arguments it takes. If the
-    method expects a fixed number of arguments, this number is its arity.  If
-    the method expects a variable number of arguments, its arity is the
-    additive inverse of its parameter count. Methods implemented in C, i.e.
-    most core methods, have an arity of <code>-1</code> if they accept a
-    variable number of parameters. It follows, then, that an arity ≥ 0
-    indicates a fixed number of parameters; a negative value, a variable
-    number. <code>Method</code> and <code>Proc</code> objects have
-    <code>#arity</code> methods which return the arity for the method/proc it
-    objectifies.
-
-    <h4>Classification by Arity</h4>
-
-      <p>Methods with fixed arities can be classified as follows: A <dfn
-        id=unary-method>unary method</dfn> expects exactly one operand (its
-      receiver), a <dfn id=binary-method>binary method</dfn> requires two (its
-      receiver and one argument), <dfn id=ternary-method>ternary-method</dfn>
-      requires exactly three (its receiver and two arguments), an <dfn
-        id=n-ary-method><var>n</var>-ary method</dfn> requires <var>n</var>
-      operands (its receiver, and <var>n</var>-1 arguments).
-
-  <h3>Undefining</h3>
-
-    <p>The <code>undef</code> statement takes one or more
-    <code>Symbol</code>s/identifiers as arguments, then undefines the
-    corresponding instance methods. Undefining singleton methods requires
-    <code>undef</code> to be used in the context of the corresponding
-    eigenclass.
-
-    <p><dfn id=undef-method>Undefining</dfn> a method prevents the current
-    class from responding to it. If the method was defined in a superclass,
-    that copy is unaffected. For example, consider a <code>Rectangle</code>
-    class which defines <code>:height</code> and <code>:width</code> methods.
-    A <code>Square</code> class inherits from it, but it doesn’t make sense
-    for <code>Square</code> to have both <code>:height</code> <i>and</i>
-    <code>:width</code> methods. <code>Square</code> can <code>undef</code>
-    <code>:height</code>, preventing <code>Square#height</code> from being
-    called without affecting <code>Rectangle#height</code>.
-
-    <figure id=undef-method>
-      <dt>Undefining a method with <code>undef</code>.
-    </figure>
-
-    <!-- Mention Module#undef_method? Does it offer any advantages? Better
-    symetry with remove_method? -->
-
-  <h3>Removing</h3>
-  
-    <p><code>Module#remove_method <var>name</var></code> removes the method
-    named <var>name</var> from the current class only. A <dfn
-      id=remove-method>removed method</dfn> differs from an undefined method
-    in that the former delegates the request to its superclass, whereas the
-    latter doesn’t.
-    
-    <!-- Use same example for undef_method so they can be contrasted -->
-    <figure id=remove-method>
-      <dt>Using <code>remove_method</code> to remove a method definition from
-      a class, causing the superclass method to be invoked in its place.
-    </figure>
-
-  <h3>Visibility</h3>
-
-    <!-- Clarify that its the binding of a method to a class that has a
-    visibility? c.f. matz -->
-
-    <p>An instance method is either <i>public</i>, <i>private</i>, or
-    <i>protected</i>. It is declared as such with <code>Module#public</code>,
-    <code>Module#private</code>, and <code>Module#protected</code> (hereafter:
-    <i>visibility specifiers</i>), respectively. 
-    
-    <p>A visibility specifier invoked without arguments affects every method
-    subsequently defined in the same class definition until another visibility
-    specifier is encountered.
-
-    <figure id=visibility-specifiers>
-      <dt>Declaring the visibility of methods with visibility specifiers
-    </figure>
-
-    <p>A visibility specifier with one or more method names (given as
-    <code>Symbol</code>s or <code>String</code>s) affects only the named
-    methods, which must have already been defined.
-
-    <figure id=visibility-specifiers-args>
-      <dt>Declaring the visibility of methods with visibility specifiers that
-      take arguments
-    </figure>
-
-    <h4>Advisory Privacy</h4>
-
-      <p>Method visibility is merely an advisory construct. Ruby does not
-      <i>prohibit</i> the invocation of private methods; she ensures that they
-      will not be called accidentally as follows:
-
-      <ul>
-        <li>Standard method invocation syntax (<code>obj.method</code>) raises
-        a <code>NoMethodError</code>, signaling that the programmer's intent
-        is ill-advised. The caviller programmer must use a technique such as
-        <code>Object#send</code> to explicitly ignore the privacy advice.
-        <li>The method introspection API (e.g.
-        <code>Object#private_methods</code>,
-        <code>Object#protected_methods</code>, and
-        <code>Object#public_methods</code>) delineates methods by their
-        visibility, allowing private and protected methods to be determined
-        automatically.
-        <li>RDoc/<code>ri</code> only displays public methods by default.
-      </ul>
-
-    <h4>Public Methods</h4>
-
-      <p>A method is public unless explicitly declared otherwise, or declared
-      outside of a class definition. The <code>initialize</code> method is
-      private by default.
-
-    <h4>Private Methods</h4>
-
-      <p>A <dfn id=private-method>private method</dfn> cannot be invoked with
-      an explicit receiver: it can only be called by other instance methods of
-      the class in which defined, or a subclass thereof. 
-
-      <p><code>self</code> is also regarded as an explicit receiver so a
-      method invocation of the form <code>self.<var>private</var></code>,
-      where <var>private</var> is a private instance method in the same class,
-      is disallowed.
-
-      <aside class=note>
-        Methods created outside of a class or module definition, i.e. at the
-        top level, are private by default The <code>:initialize</code> method
-        is, too, because it is only intended to be invoked from the object’s
-        <code>:new</code> method.
-      </aside>
-
-    <h4>Protected Methods</h4>
-
-      <p>Protected methods can invoked only from the class in which they were
-      defined or a subclass thereof, that is they behave the same as private
-      methods. However, unlike private methods they can be explicitly invoked
-      on any instance of their class.
-
-      <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, p.
-        232)</a> suggest that <q>A protected method can be used, for example,
-        to define an accessor that allows instances of a class to share
-        internal state with each other, but does not allow users of the class
-        to access that state.</q>
-
-      <!-- http://redmine.ruby-lang.org/issues/show/2375 -->
+      </section>
       
-    <h4>Class Methods</h4>
+      <section>
+        <h1>Dynamic Method Definition</h1>
 
-    <p>A class <!-- "Singleton"? --> method named <var>name</var> can be
-    privatised with <code>Module#private_class_method <var>name</var></code>.
-    Private class methods can be made public with
-    <code>Module#public_class_method <var>name</var></code>. It is nonsensical
-    to deign a class method protected, so there is not a corresponding
-    visibility specifier.
+        <p>An instance method can be defined dynamically with
+        <code>Module#define_method(<var>name</var>, <var>body</var>)</code>,
+        where <var>name</var> is the method’s name given as a
+        <code>Symbol</code>, and <var>body</var> is its body given as a
+        <code>Proc</code>, <code>Method</code>, <code>UnboundMethod</code>, or
+        literal block. This allows methods to be defined at runtime, in contrast
+        to <code>def</code> which requires the method name and body to appear
+        literally in the source code.</p>
 
-  <h3>Aliases</h3>
-
-    <p>An <dfn id=method-alias>alias</dfn> of a method is an alternate name by
-    which it can be referred. For a method, <var>m</var>, and its alias,
-    <var>a</var>, invoking <var>m</var> is equivalent to invoking
-    <var>a</var>.
-
-    <p>The alias refers to a copy of the existing method’s body. If the
-    existing method is redefined after being aliased, the alias will continue
-    to refer to the method’s original definition.
-
-    <p>Aliases are often used to provide synonyms for method names. For
-    instance, <code>:size</code> may be aliased to <code>:length</code>.  This
-    allows the programmer to use method names which “read” more naturally in a
-    given context. <!-- TODO: example from FLAN09 about Range#include? ? -->
-
-    <p>An alias is created with the <code>alias</code> keyword from inside the
-    class of the existing method. The syntax is <code>alias
-      <var>new_name</var> <var>current_name</var></code>, where both
-    <var>new_name</var> and <var>current_name</var> are <code>Symbol</code>s
-    or identifiers. A method named <var>current_name</var> must already be
-    defined.  If a method named <var>new_name</var> already exists it is
-    overwritten.
-
-    <p><code>Module#alias_method <var>new_name</var>,
-      <var>current_name</var></code> can be used to the same effect, the
-    difference being that it uses standard method semantics to interpret
-    identifier arguments: treating them as expressions; not literal method
-    names. This allows methods to be aliased dynamically. For example,
-    <code>alias new old</code> interprets its arguments as literal
-    identifiers, whereas <code>alias_method <var>new</var>,
-      <var>old</var></code> sees them as variables, whose values are the
-    method names. By implication, if the arguments to
-    <code>Module#alias_method</code> <i>should</i> be interpreted as literal
-    identifiers they must be supplied as <code>String</code> or
-    <code>Symbol</code> literals, e.g. <code>alias_method :new, :old</code>.
-
-    <!-- TODO: Mention alias_method_chain ?
-    http://yehudakatz.com/2009/03/06/alias_method_chain-in-models/
-    http://209.85.229.132/search?q=cache:ii7cIdoy5DUJ:errtheblog.com/posts/48-aliasmethodbling+alias_method_chain&cd=3&hl=en&ct=clnk&gl=uk-->
-
-    <p>Aliasing is also used to create a method which wraps the method of the
-    same name by performing its own computations then calling the original
-    method. For example, in the example below we wrap <code>String#to_i</code>
-    such that it raises an exception if the string doesn't contain digits.
-    (Normally, <code>String#to_i</code> returns <code>0</code> for such
-    strings). <!-- Note that super is preferred when the method is defined in
-    a superclass -->
-
-    <figure id=alias-for-wrapping>
-      <dt>Using <code>alias</code> to wrap a method
-    </figure>
-
-    <!-- TODO: Link with example of using method objects to wrap methods
-    (c.f.
-    http://blog.jayfields.com/2006/12/ruby-alias-method-alternative.html);
-    explain pros/cons -->
-
-  <!-- TODO: Discuss method overloading? -->
-
-  <!-- TODO: Algo. for determining a method's aliases -->
-
-  <h3>Lookup Algorithm</h3>
-  
-    <p>Evaluating a message expression requires the corresponding method
-    definition be located in the receiver. The steps below illustrate the
-    lookup algorithm for a message with a selector of <var>selector</var>, where
-    <var>class</var> is set to that of the receiver. When a method is found
-    whose name is equal to <var>selector</var> the process terminates. It will
-    always ultimately succeed because <code>BasicObject</code> defines a
-    <code>:method_missing</code> method.
-
-    <ol>
-      <li>Search the singleton methods of <var>class</var>’s eigenclass.
-      <li>Search the singleton methods of the superclass, and ancestors, of
-      <var>class</var>’s eigenclass.
-      <li>Search the instance methods of <var>class</var>.
-      <li>Search the instance methods of modules included by <var>class</var>.
-      (Modules are searched in reverse order of inclusion).
-      <li>If <var>class</var> has a superclass, assign it to <var>class</var>
-      then go to step three. (<code>BasicObject</code> doesn't have a superclass,
-      so at that point this step will terminate).
-      <li>Set <var>selector</var> to <code>:method_missing</code>, prepend the
-      original selector to the argument list, set <var>class</var> back to the
-      receiver’s class, and go to step one.
-    </ol>
-
-    <p><a href=#refTHOM09 class=ref>Thomas et al.</a> describe this
-    algorithm as <q>Ruby looks first in the immediate class of an object, then
-      in the mixins included into that class, and then in superclasses and
-      their mixins. If a class has multiple modules mixed in, the last one
-      included is searched first.</q>
-
-  <h3 id=method-missing>Missing Methods</h3>
-
-    <p>The exposition above shows that sending an object a message for which a
-    corresponding method is not defined causes each object on the search path
-    to be sent <code>:method_missing</code> with the original selector as the
-    first argument, and the original arguments as the remainder.
-    <code>BasicObject</code> defines <code>:method_missing</code> to provide
-    the default behaviour of raising <code>NoMethodError</code> for
-    non-existent methods. However, if another object defines
-    <code>:method_missing</code> they can intervene, averting the exception
-    and responding to the message themselves. 
-
-
-    <aside class=note>
-      The <code>NoMethodError</code> exception has an <code>#args</code>
-      method which returns the arguments sent to the original method as an
-      <code>Array</code>, and <code>#name</code> which returns the original
-      method name as a <code>Symbol</code>. This information can be used to
-      perform introspection on the caught exception and enhance error
-      messages.
-    </aside>
-
-    <figure id=basicobject-method_missing>
-      <dt>A demonstration of <code>BasicObject#method_missing</code>
-    </figure>
-    
-    <p>If <code>method_missing</code> is invoked with a message it
-    does not wish to respond to, it should use the implicit-argument form of
-    <code>super</code> to delegate to its parent. This gives the parent the
-    option of responding to the message, or otherwise triggers the default
-    behaviour. 
-
-    <aside class=warn>
-      Logic errors inside <code>method_missing</code> can easily lead to
-      infinite loops, which can be troublesome to debug. The typical mistake
-      is for a statement in the body of <code>method_missing</code> to send a
-      non-existent message to the same object. The object does not respond to
-      that message, so the <code>method_missing</code> method is invoked a
-      second time, and so the loop continues.
-    </aside>
-
-    <p><a class=ref href=#FOWLER08>Fowler</a> describes the use of
-    <code>method_missing</code> to <q>respond differently to an unknown
-      message.</q> as “Dynamic Reception”. One use he suggests is to
-    <q>convert what might otherwise be method parameters into the name of the
-      method.</q>, contrasting <code>find_by("firstname", "martin",
-      "lastname", "fowler")</code> with the
-    <code>method_missing</code>-supported
-    <code>find_by_firstname_and_lastname("martin", "fowler")</code>. (The
-    example was derived from a feature of Ruby on Rails (<a href=#refBUCK06
-      class=ref>Buck</a>, 2006). He identifies a variation on this idea where
-    a <q>a sequence of Dynamic Receptions</q> are chained together, such that
-    each method returns an “Expression Builder”, e.g.
-    <code>find_by.firstname("martin").and.lastname("fowler)</code>.
-
-  <h3><code>Kernel#respond_to_missing?</code></h3>
-
-    <p>A consequence of defining methods dynamically with
-    <code>Kernel#method_missing</code> is that an object may respond to a given
-    message, yet return <code>false</code> for
-    <code>Kernel#respond_to?(<var>selector</var>)</code>.
-    
-    <p>Before <code>Kernel#respond_to?</code> returns <code>false</code> it
-    tries to send itself a message named <code>:respond_to_missing?</code> with
-    a first argument of the selector in question, and the second the value of
-    <var>include_private</var>. (If <code>#respond_to?</code> is called with a
-    second argument of <code>true</code>, <var>include_private</var> is
-    <code>true</code> and private methods should be considered; otherwise its
-    <code>false</code> and they shouldn’t). If
-    <code>#respond_to_missing?</code> is defined and returns a true value,
-    <code>#respond_to?</code> returns <code>true</code>; otherwise
-    <code>#respond_to?</code> returns <code>false</code>. 
-    
-    <p>Therefore, <code>#respond_to?</code> can be made to work with methods
-    defined with <code>method_missing</code> by defining a
-    <code>#respond_to_missing?</code> method which returns <code>true</code>
-    when passed the name of such a method.
-
-  <h3><code>Method</code> Objects</h3>
-
-    <p>An instance of the <code>Method</code> class represents a method bound
-    to an object. This <dfn id=method-object>method object</dfn> enables you
-    to store a reference to a method in a variable, as you would any other
-    object, query the method’s metadata, and manipulate it. This is quite
-    distinct from capturing the return value of a method. <!-- TODO: Note that
-    unlike procs, method objects aren't closures -->
-
-    <p>Method objects can be created with <code>Kernel#method</code>:
-    <code><var>receiver</var>.method(<var>name</var>)</code>, where
-    <var>name</var> is the method name as a <code>Symbol</code> or
-    <code>String</code>. For example, <code>method(:eval)</code> returns a
-    <code>Method</code> object for <code>Kernel#eval</code>. If the object
-    does not <code>respond_to?</code> the given method a
-    <code>NameError</code> will be raised. (Therefore, if the object’s
-    <code>respond_to_missing?</code> method returns <code>true</code> for the
-    method in question the method object will be created successfully).
-
-    <p><code>Kernel#public_method</code> works in the same way, but raises a
-    <code>NameError</code> if the given method is private or protected.
-
-    <h4>Arity</h4>
-
-      <p><code>Method#arity</code> returns an <code>Integer</code>
-      corresponding to the method’s arity.
-
-    <h4>Calling</h4>
-
-      <p>The method represented by a <code>Method</code> object can be invoked
-      with <code>Method#call</code> or its alias <code>Method#[]</code>. <!--
-      #[] implies a "method dictionary": selecting the named method from the
-      dictionary --> The
-      semantics are the same as for standard method invocation. <a
-        class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> caution, however:
-      <q>…invoking a method through a <code>Method</code> object is less
-        efficient than invoking it directly.</q>
-
-    <h4>Converting to a <code>Proc</code></h4>
-      
-      <p>A method object can be converted to a <code>Proc</code> by prefixing
-      it with an ampersand (<code>&amp;</code>). Therefore it can be passed to
-      a method expecting a block. <!-- TODO: Note availability of
-      Symbol:to_proc; use with define_method -->
-    
-    <h4>Equality</h4>
-
-      <!-- Bug: #1898 --> <p><code>Method#==</code> returns true if both
-      methods are bound to the same object and have the same body. The first
-      requirement means that the objects must be identical in the sense of
-      <code>Object.equal?</code>. The second encompasses methods defined with
-      <code>Object#define_method</code> using the same
-      <code>Proc</code>/block, aliases created with <code>alias</code>, and
-      core method aliases. <!-- TODO: clarify situation with
-      #respond_to_missing? -->
-      
-      <!-- Example which uses equality to determine if a method is an alias,
-      or find all aliases for a given class -->
-
-    <h4>Source Location</h4>
-
-      <p>The filename and line number where a method was defined is returned
-      as an <code>Array</code> by <code>Method#source_location</code>. If the
-      method is core, i.e. implemented in C, it returns <code>nil</code>. This
-      is primarily useful for extracting a method’s signature and any
-      preceding documentation.
-
-      <!-- Example using the fact that no source location indicates a non-Ruby
-      implementation. #ruby? #c? #core? The latter would need addition heuristics, in
-      theory. -->
-    <h4>Parameters</h4>
-
-      <!-- [ruby-core:19759] Proposal: Method#get_args -->   
-        
-      <p><code>Method#parameters</code> returns an <code>Array</code>, each
-      element of which is a sub-<code>Array</code> of <code>Symbol</code>s
-      that describe the corresponding parameter expected by the method. The
-      first <code>Symbol</code> is <code>:req</code> for a required parameter,
-      <code>:opt</code> if it is optional, <code>:rest</code> if its of
-      variable length, or <code>:block</code> if it corresponds to a block.
-      The last <code>Symbol</code> is the name of the parameter. An empty
-      <code>Array</code> is returned for method’s expecting no arguments.
-
-  <h3><code>UnboundMethod</code> Objects</h3>
-
-    <p>An <code>UnboundMethod</code> object is a <code>Method</code> object
-    disassociated from the object on which it was defined.     
-     
-    <p>A <code>Method</code> object may converted to an
-    <code>UnboundMethod</code> object with <code>Method#unbind</code>.
-    Alternatively, they can be created with
-    <code>Module#instance_method</code>. For example,
-    <code>String.instance_method(:downcase)</code> creates an
-    <code>UnboundMethod</code> object for <code>String#downcase</code>.
-    <code>Module#public_instance_method</code> works in the same way, but
-    raises a <code>NameError</code> if the given method is private or
-    protected. 
-      
-    <p>Before an <code>UnboundMethod</code> is invoked it must be
-    re-associated with, or <dfn id=method-bind>bound</a> to, to an object
-    which is a <code>Object#kind_of?</code> its original class. This is
-    achieved by passing an object reference to
-    <code>UnboundMethod#bind</code>.
-
-    <p>With the exception of <code>#call</code>, for the reason described
-    above, <code>UnboundMethod</code> objects support the same method’s as
-    <code>Method</code> objects.
-
-    <p><a href=#refBLACK09>Black</a> (pp. 418-420) provides the following
-    example (with minor adjustments for formating) of using
-    <code>UnboundMethod</code> objects:
-      
-    <blockquote>
-        
-      <p>The following question comes up periodically in Ruby forums:
-        
-      <blockquote>
-        <p>Suppose I’ve got a class hierarchy where a method gets redefined:
-          
-        <figure id=unboundmethod-black>
-          <dt>A class hierarchy where a method is redefined
+        <figure id=define-method>
+          <dt>Using <code>define_method</code> to dynamically create a method
+          with a user-supplied name and body.
         </figure>
 
-        <p>And I’ve got an instance of the subclass (<code>c = C.new</code>).
-        Is there any way to get that instance of the lowest class to respond
-        to the message (<code>a_method</code>) by executing the version of the
-        method in the class two classes up the chain?
+        <p><code>Module#define_method</code> is a private method so must be
+        called from within the class the method is being defined on.
+        Alternatively, it can be invoked inside <code>class_eval</code> like
+        so:</p>
+    
+        <figure id=define-method-class-eval>
+          <dt>Using <code>define_method</code> inside <code>class_eval</code> to
+          dynamically create a method with a user-supplied name and body.
+        </figure>
+          
+        <p><code>Object#define_singleton_method</code> is called with a class
+        name as the receiver and the same arguments as
+        <code>Module#define_method</code> for the obvious purpose.</p>
+
+        <figure id=define-singleton-method>
+          <dt>Using <code>define_singleton_method</code> to dynamically create a
+          method.
+        </figure>
+      </section>
+
+      <section>
+        <h1>Arity</h1>
+    
+        <p>The arity of a method is the number of arguments it takes. If the
+        method expects a fixed number of arguments, this number is its arity.  If
+        the method expects a variable number of arguments, its arity is the
+        additive inverse of its parameter count. Methods implemented in C, i.e.
+        most core methods, have an arity of <code>-1</code> if they accept a
+        variable number of parameters. It follows, then, that an arity ≥ 0
+        indicates a fixed number of parameters; a negative value, a variable
+        number. <code>Method</code> and <code>Proc</code> objects have
+        <code>#arity</code> methods which return the arity for the method/proc it
+        objectifies.</p>
+
+        <section>
+          <h1>Classification by Arity</h1>
+
+          <p>Methods with fixed arities can be classified as follows: A <dfn
+            id=unary-method>unary method</dfn> expects exactly one operand (its
+          receiver), a <dfn id=binary-method>binary method</dfn> requires two (its
+          receiver and one argument), <dfn id=ternary-method>ternary-method</dfn>
+          requires exactly three (its receiver and two arguments), an <dfn
+            id=n-ary-method><var>n</var>-ary method</dfn> requires <var>n</var>
+          operands (its receiver, and <var>n</var>-1 arguments).</p>
+        </section>
+      </section>
+    </section>
+    
+    <section>
+      <h1>Undefining</h1>
+
+      <p>The <code>undef</code> statement takes one or more
+      <code>Symbol</code>s/identifiers as arguments, then undefines the
+      corresponding instance methods. Undefining singleton methods requires
+      <code>undef</code> to be used in the context of the corresponding
+      eigenclass.
+
+      <p><dfn id=undef-method>Undefining</dfn> a method prevents the current
+      class from responding to it. If the method was defined in a superclass,
+      that copy is unaffected. For example, consider a <code>Rectangle</code>
+      class which defines <code>:height</code> and <code>:width</code> methods.
+      A <code>Square</code> class inherits from it, but it doesn’t make sense
+      for <code>Square</code> to have both <code>:height</code> <i>and</i>
+      <code>:width</code> methods. <code>Square</code> can <code>undef</code>
+      <code>:height</code>, preventing <code>Square#height</code> from being
+      called without affecting <code>Rectangle#height</code>.</p>
+
+      <figure id=undef-method>
+        <dt>Undefining a method with <code>undef</code>.
+      </figure>
+
+      <!-- Mention Module#undef_method? Does it offer any advantages? Better
+      symetry with remove_method? -->
+    </section>
+    
+    <section>
+      <h1>Removing</h1>
+    
+      <p><code>Module#remove_method <var>name</var></code> removes the method
+      named <var>name</var> from the current class only. A <dfn
+        id=remove-method>removed method</dfn> differs from an undefined method
+      in that the former delegates the request to its superclass, whereas the
+      latter doesn’t.</p>
+      
+      <!-- Use same example for undef_method so they can be contrasted -->
+      <figure id=remove-method>
+        <dt>Using <code>remove_method</code> to remove a method definition from
+        a class, causing the superclass method to be invoked in its place.
+      </figure>
+    </section>
+
+    <section>
+      <h1>Visibility</h1>
+
+      <!-- Clarify that its the binding of a method to a class that has a
+      visibility? c.f. matz -->
+
+      <p>An instance method is either <i>public</i>, <i>private</i>, or
+      <i>protected</i>. It is declared as such with <code>Module#public</code>,
+      <code>Module#private</code>, and <code>Module#protected</code> (hereafter:
+      <i>visibility specifiers</i>), respectively. 
+      
+      <p>A visibility specifier invoked without arguments affects every method
+      subsequently defined in the same class definition until another visibility
+      specifier is encountered.</p>
+
+      <figure id=visibility-specifiers>
+        <dt>Declaring the visibility of methods with visibility specifiers
+      </figure>
+
+      <p>A visibility specifier with one or more method names (given as
+      <code>Symbol</code>s or <code>String</code>s) affects only the named
+      methods, which must have already been defined.</p>
+
+      <figure id=visibility-specifiers-args>
+        <dt>Declaring the visibility of methods with visibility specifiers that
+        take arguments
+      </figure>
+
+      <section>
+        <h1>Advisory Privacy</h1>
+
+        <p>Method visibility is merely an advisory construct. Ruby does not
+        <i>prohibit</i> the invocation of private methods; she ensures that they
+        will not be called accidentally as follows:
+
+        <ul>
+          <li>Standard method invocation syntax (<code>obj.method</code>) raises
+          a <code>NoMethodError</code>, signaling that the programmer's intent
+          is ill-advised. The caviller programmer must use a technique such as
+          <code>Object#send</code> to explicitly ignore the privacy advice.
+          <li>The method introspection API (e.g.
+          <code>Object#private_methods</code>,
+          <code>Object#protected_methods</code>, and
+          <code>Object#public_methods</code>) delineates methods by their
+          visibility, allowing private and protected methods to be determined
+          automatically.
+          <li>RDoc/<code>ri</code> only displays public methods by default.
+        </ul>
+      </section>
+      
+      <section>
+        <h1>Public Methods</h1>
+
+        <p>A method is public unless explicitly declared otherwise, or declared
+        outside of a class definition. The <code>initialize</code> method is
+        private by default.
+      </section>
+
+      <section>
+        <h1>Private Methods</h1>
+
+        <p>A <dfn id=private-method>private method</dfn> cannot be invoked with
+        an explicit receiver: it can only be called by other instance methods of
+        the class in which defined, or a subclass thereof. 
+
+        <p><code>self</code> is also regarded as an explicit receiver so a
+        method invocation of the form <code>self.<var>private</var></code>,
+        where <var>private</var> is a private instance method in the same class,
+        is disallowed.</p>
+
+        <aside class=note>
+          Methods created outside of a class or module definition, i.e. at the
+          top level, are private by default The <code>:initialize</code> method
+          is, too, because it is only intended to be invoked from the object’s
+          <code>:new</code> method.
+        </aside>
+      </section>
+      
+      <section>
+        <h1>Protected Methods</h1>
+
+        <p>Protected methods can invoked only from the class in which they were
+        defined or a subclass thereof, that is they behave the same as private
+        methods. However, unlike private methods they can be explicitly invoked
+        on any instance of their class.
+
+        <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, p.
+          232)</a> suggest that <q>A protected method can be used, for example,
+          to define an accessor that allows instances of a class to share
+          internal state with each other, but does not allow users of the class
+          to access that state.</q>
+
+        <!-- http://redmine.ruby-lang.org/issues/show/2375 -->
+      </section>
+      
+      <section>
+        <h1>Class Methods</h1>
+
+        <p>A class <!-- "Singleton"? --> method named <var>name</var> can be
+        privatised with <code>Module#private_class_method <var>name</var></code>.
+        Private class methods can be made public with
+        <code>Module#public_class_method <var>name</var></code>. It is nonsensical
+        to deign a class method protected, so there is not a corresponding
+        visibility specifier.
+      </section>
+    </section>
+
+    <section>
+      <h1>Aliases</h1>
+
+      <p>An <dfn id=method-alias>alias</dfn> of a method is an alternate name by
+      which it can be referred. For a method, <var>m</var>, and its alias,
+      <var>a</var>, invoking <var>m</var> is equivalent to invoking
+      <var>a</var>.
+
+      <p>The alias refers to a copy of the existing method’s body. If the
+      existing method is redefined after being aliased, the alias will continue
+      to refer to the method’s original definition.
+
+      <p>Aliases are often used to provide synonyms for method names. For
+      instance, <code>:size</code> may be aliased to <code>:length</code>.  This
+      allows the programmer to use method names which “read” more naturally in a
+      given context. <!-- TODO: example from FLAN09 about Range#include? ? -->
+
+      <p>An alias is created with the <code>alias</code> keyword from inside the
+      class of the existing method. The syntax is <code>alias
+        <var>new_name</var> <var>current_name</var></code>, where both
+      <var>new_name</var> and <var>current_name</var> are <code>Symbol</code>s
+      or identifiers. A method named <var>current_name</var> must already be
+      defined.  If a method named <var>new_name</var> already exists it is
+      overwritten.
+
+      <p><code>Module#alias_method <var>new_name</var>,
+        <var>current_name</var></code> can be used to the same effect, the
+      difference being that it uses standard method semantics to interpret
+      identifier arguments: treating them as expressions; not literal method
+      names. This allows methods to be aliased dynamically. For example,
+      <code>alias new old</code> interprets its arguments as literal
+      identifiers, whereas <code>alias_method <var>new</var>,
+        <var>old</var></code> sees them as variables, whose values are the
+      method names. By implication, if the arguments to
+      <code>Module#alias_method</code> <i>should</i> be interpreted as literal
+      identifiers they must be supplied as <code>String</code> or
+      <code>Symbol</code> literals, e.g. <code>alias_method :new, :old</code>.
+
+      <!-- TODO: Mention alias_method_chain ?
+      http://yehudakatz.com/2009/03/06/alias_method_chain-in-models/
+      http://209.85.229.132/search?q=cache:ii7cIdoy5DUJ:errtheblog.com/posts/48-aliasmethodbling+alias_method_chain&cd=3&hl=en&ct=clnk&gl=uk-->
+
+      <p>Aliasing is also used to create a method which wraps the method of the
+      same name by performing its own computations then calling the original
+      method. For example, in the example below we wrap <code>String#to_i</code>
+      such that it raises an exception if the string doesn't contain digits.
+      (Normally, <code>String#to_i</code> returns <code>0</code> for such
+      strings). <!-- Note that super is preferred when the method is defined in
+      a superclass --></p>
+
+      <figure id=alias-for-wrapping>
+        <dt>Using <code>alias</code> to wrap a method
+      </figure>
+
+      <!-- TODO: Link with example of using method objects to wrap methods
+      (c.f.
+      http://blog.jayfields.com/2006/12/ruby-alias-method-alternative.html);
+      explain pros/cons -->
+
+    <!-- TODO: Discuss method overloading? -->
+
+    <!-- TODO: Algo. for determining a method's aliases -->
+
+    </section>
+    
+    <section>
+      <h1>Lookup Algorithm</h1>
+    
+      <p>Evaluating a message expression requires the corresponding method
+      definition be located in the receiver. The steps below illustrate the
+      lookup algorithm for a message with a selector of <var>selector</var>, where
+      <var>class</var> is set to that of the receiver. When a method is found
+      whose name is equal to <var>selector</var> the process terminates. It will
+      always ultimately succeed because <code>BasicObject</code> defines a
+      <code>:method_missing</code> method.
+
+      <ol>
+        <li>Search the singleton methods of <var>class</var>’s eigenclass.
+        <li>Search the singleton methods of the superclass, and ancestors, of
+        <var>class</var>’s eigenclass.
+        <li>Search the instance methods of <var>class</var>.
+        <li>Search the instance methods of modules included by <var>class</var>.
+        (Modules are searched in reverse order of inclusion).
+        <li>If <var>class</var> has a superclass, assign it to <var>class</var>
+        then go to step three. (<code>BasicObject</code> doesn't have a superclass,
+        so at that point this step will terminate).
+        <li>Set <var>selector</var> to <code>:method_missing</code>, prepend the
+        original selector to the argument list, set <var>class</var> back to the
+        receiver’s class, and go to step one.
+      </ol>
+
+      <p><a href=#refTHOM09 class=ref>Thomas et al.</a> describe this
+      algorithm as <q>Ruby looks first in the immediate class of an object, then
+        in the mixins included into that class, and then in superclasses and
+        their mixins. If a class has multiple modules mixed in, the last one
+        included is searched first.</q>
+
+    </section>
+    
+    <section>
+      <h1 id=method-missing>Missing Methods</h1>
+
+      <p>The exposition above shows that sending an object a message for which a
+      corresponding method is not defined causes each object on the search path
+      to be sent <code>:method_missing</code> with the original selector as the
+      first argument, and the original arguments as the remainder.
+      <code>BasicObject</code> defines <code>:method_missing</code> to provide
+      the default behaviour of raising <code>NoMethodError</code> for
+      non-existent methods. However, if another object defines
+      <code>:method_missing</code> they can intervene, averting the exception
+      and responding to the message themselves.</p>
+
+      <aside class=note>
+        The <code>NoMethodError</code> exception has an <code>#args</code>
+        method which returns the arguments sent to the original method as an
+        <code>Array</code>, and <code>#name</code> which returns the original
+        method name as a <code>Symbol</code>. This information can be used to
+        perform introspection on the caught exception and enhance error
+        messages.
+      </aside>
+
+      <figure id=basicobject-method-missing>
+        <dt>A demonstration of <code>BasicObject#method_missing</code>
+      </figure>
+      
+      <p>If <code>method_missing</code> is invoked with a message it
+      does not wish to respond to, it should use the implicit-argument form of
+      <code>super</code> to delegate to its parent. This gives the parent the
+      option of responding to the message, or otherwise triggers the default
+      behaviour.</p> 
+
+      <aside class=warn>
+        Logic errors inside <code>method_missing</code> can easily lead to
+        infinite loops, which can be troublesome to debug. The typical mistake
+        is for a statement in the body of <code>method_missing</code> to send a
+        non-existent message to the same object. The object does not respond to
+        that message, so the <code>method_missing</code> method is invoked a
+        second time, and so the loop continues.
+      </aside>
+
+      <p><a class=ref href=#FOWLER08>Fowler</a> describes the use of
+      <code>method_missing</code> to <q>respond differently to an unknown
+        message.</q> as “Dynamic Reception”. One use he suggests is to
+      <q>convert what might otherwise be method parameters into the name of the
+        method.</q>, contrasting <code>find_by("firstname", "martin",
+        "lastname", "fowler")</code> with the
+      <code>method_missing</code>-supported
+      <code>find_by_firstname_and_lastname("martin", "fowler")</code>. (The
+      example was derived from a feature of Ruby on Rails (<a href=#refBUCK06
+        class=ref>Buck</a>, 2006). He identifies a variation on this idea where
+      a <q>a sequence of Dynamic Receptions</q> are chained together, such that
+      each method returns an “Expression Builder”, e.g.
+      <code>find_by.firstname("martin").and.lastname("fowler)</code>.</p>
+
+      <section>
+        <h1><code>Kernel#respond_to_missing?</code></h1>
+
+        <p>A consequence of defining methods dynamically with
+        <code>Kernel#method_missing</code> is that an object may respond to a given
+        message, yet return <code>false</code> for
+        <code>Kernel#respond_to?(<var>selector</var>)</code>.
+        
+        <p>Before <code>Kernel#respond_to?</code> returns <code>false</code> it
+        tries to send itself a message named <code>:respond_to_missing?</code> with
+        a first argument of the selector in question, and the second the value of
+        <var>include_private</var>. (If <code>#respond_to?</code> is called with a
+        second argument of <code>true</code>, <var>include_private</var> is
+        <code>true</code> and private methods should be considered; otherwise its
+        <code>false</code> and they shouldn’t). If
+        <code>#respond_to_missing?</code> is defined and returns a true value,
+        <code>#respond_to?</code> returns <code>true</code>; otherwise
+        <code>#respond_to?</code> returns <code>false</code>. 
+        
+        <p>Therefore, <code>#respond_to?</code> can be made to work with methods
+        defined with <code>method_missing</code> by defining a
+        <code>#respond_to_missing?</code> method which returns <code>true</code>
+        when passed the name of such a method.
+
+      </section>
+    </section>
+    
+    <section>
+      <h1><code>Method</code> Objects</h1>
+
+      <p>An instance of the <code>Method</code> class represents a method bound
+      to an object. This <dfn id=method-object>method object</dfn> enables you
+      to store a reference to a method in a variable, as you would any other
+      object, query the method’s metadata, and manipulate it. This is quite
+      distinct from capturing the return value of a method. <!-- TODO: Note that
+      unlike procs, method objects aren't closures -->
+
+      <p>Method objects can be created with <code>Kernel#method</code>:
+      <code><var>receiver</var>.method(<var>name</var>)</code>, where
+      <var>name</var> is the method name as a <code>Symbol</code> or
+      <code>String</code>. For example, <code>method(:eval)</code> returns a
+      <code>Method</code> object for <code>Kernel#eval</code>. If the object
+      does not <code>respond_to?</code> the given method a
+      <code>NameError</code> will be raised. (Therefore, if the object’s
+      <code>respond_to_missing?</code> method returns <code>true</code> for the
+      method in question the method object will be created successfully).
+
+      <p><code>Kernel#public_method</code> works in the same way, but raises a
+      <code>NameError</code> if the given method is private or protected.</p>
+
+      <section>
+        <h1>Arity</h1>
+
+        <p><code>Method#arity</code> returns an <code>Integer</code>
+        corresponding to the method’s arity.
+      </section>
+
+      <section>
+        <h1>Calling</h1>
+
+        <p>The method represented by a <code>Method</code> object can be invoked
+        with <code>Method#call</code> or its alias <code>Method#[]</code>. <!--
+        #[] implies a "method dictionary": selecting the named method from the
+        dictionary --> The
+        semantics are the same as for standard method invocation. <a
+          class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> caution, however:
+        <q>…invoking a method through a <code>Method</code> object is less
+          efficient than invoking it directly.</q>
+      </section>
+
+      <section>
+        <h1>Converting to a <code>Proc</code></h1>
+        
+        <p>A method object can be converted to a <code>Proc</code> by prefixing
+        it with an ampersand (<code>&amp;</code>). Therefore it can be passed to
+        a method expecting a block. <!-- TODO: Note availability of
+        Symbol:to_proc; use with define_method -->
+      </section>
+
+      <section>
+        <h1>Equality</h1>
+
+        <!-- Bug: #1898 --> <p><code>Method#==</code> returns true if both
+        methods are bound to the same object and have the same body. The first
+        requirement means that the objects must be identical in the sense of
+        <code>Object.equal?</code>. The second encompasses methods defined with
+        <code>Object#define_method</code> using the same
+        <code>Proc</code>/block, aliases created with <code>alias</code>, and
+        core method aliases. <!-- TODO: clarify situation with
+        #respond_to_missing? -->
+        
+        <!-- Example which uses equality to determine if a method is an alias,
+        or find all aliases for a given class -->
+      </section>
+
+      <section>
+        <h1>Source Location</h1>
+
+        <p>The filename and line number where a method was defined is returned
+        as an <code>Array</code> by <code>Method#source_location</code>. If the
+        method is core, i.e. implemented in C, it returns <code>nil</code>. This
+        is primarily useful for extracting a method’s signature and any
+        preceding documentation.
+
+        <!-- Example using the fact that no source location indicates a non-Ruby
+        implementation. #ruby? #c? #core? The latter would need addition heuristics, in
+        theory. -->
+      </section>
+
+      <section>
+        <h1>Parameters</h1>
+
+        <!-- [ruby-core:19759] Proposal: Method#get_args -->   
+          
+        <p><code>Method#parameters</code> returns an <code>Array</code>, each
+        element of which is a sub-<code>Array</code> of <code>Symbol</code>s
+        that describe the corresponding parameter expected by the method. The
+        first <code>Symbol</code> is <code>:req</code> for a required parameter,
+        <code>:opt</code> if it is optional, <code>:rest</code> if its of
+        variable length, or <code>:block</code> if it corresponds to a block.
+        The last <code>Symbol</code> is the name of the parameter. An empty
+        <code>Array</code> is returned for method’s expecting no arguments.
+      </section>
+    </section>
+    
+    <section>
+      <h1><code>UnboundMethod</code> Objects</h1>
+
+      <p>An <code>UnboundMethod</code> object is a <code>Method</code> object
+      disassociated from the object on which it was defined.     
+       
+      <p>A <code>Method</code> object may converted to an
+      <code>UnboundMethod</code> object with <code>Method#unbind</code>.
+      Alternatively, they can be created with
+      <code>Module#instance_method</code>. For example,
+      <code>String.instance_method(:downcase)</code> creates an
+      <code>UnboundMethod</code> object for <code>String#downcase</code>.
+      <code>Module#public_instance_method</code> works in the same way, but
+      raises a <code>NameError</code> if the given method is private or
+      protected. 
+        
+      <p>Before an <code>UnboundMethod</code> is invoked it must be
+      re-associated with, or <dfn id=method-bind>bound</a> to, to an object
+      which is a <code>Object#kind_of?</code> its original class. This is
+      achieved by passing an object reference to
+      <code>UnboundMethod#bind</code>.
+
+      <p>With the exception of <code>#call</code>, for the reason described
+      above, <code>UnboundMethod</code> objects support the same method’s as
+      <code>Method</code> objects.
+
+      <p><a href=#refBLACK09>Black</a> (pp. 418-420) provides the following
+      example (with minor adjustments for formating) of using
+      <code>UnboundMethod</code> objects:</p>
+        
+      <blockquote>
+          
+        <p>The following question comes up periodically in Ruby forums:
+          
+        <blockquote>
+          <p>Suppose I’ve got a class hierarchy where a method gets
+          redefined:</p>
+            
+          <figure id=unboundmethod-black>
+            <dt>A class hierarchy where a method is redefined
+          </figure>
+
+          <p>And I’ve got an instance of the subclass (<code>c = C.new</code>).
+          Is there any way to get that instance of the lowest class to respond
+          to the message (<code>a_method</code>) by executing the version of the
+          method in the class two classes up the chain?
+          
+        </blockquote>
+          
+        <p>By default, of course, the instance doesn’t do that; it executes the
+        first matching method it finds as it traverses the method search path:
+        <code>c.a_method</code>. The output is <samp>Definition in class B
+          (subclass of A)</samp>. But you can force the issue through an unbind
+        and bind operation:
+        <code>A.instance_method(:a_method).bind(c).call</code>. Here the
+        output is <samp>Definition in class A</samp>.
         
       </blockquote>
-        
-      <p>By default, of course, the instance doesn’t do that; it executes the
-      first matching method it finds as it traverses the method search path:
-      <code>c.a_method</code>. The output is <samp>Definition in class B
-        (subclass of A)</samp>. But you can force the issue through an unbind
-      and bind operation:
-      <code>A.instance_method(:a_method).bind(c).call</code>. Here the
-      output is <samp>Definition in class A</samp>.
-      
-    </blockquote>
+    </section>
+  </section>
   </body>
 </html>
