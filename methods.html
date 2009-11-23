@@ -22,12 +22,13 @@
   href=#refMITCHELL04>Mitchell</a>, p. 523)</a>,
   emphasis mine. 
 
-  <p>Having received a message, an object <dfn
-    title="invoking a method">invokes</dfn> a method in response. <i>Invoke</i>
-  describes the calling of a specific method, in contrast to <i>send</i>,
-  which is used at a higher level to describe a request for an object to
-  perform a certain operation.
+  <p>Having received a message, an object <dfn title="invoking a
+    method">invokes</dfn> a method in response. <i>Invoke</i> describes the
+  calling of a specific method, in contrast to <i>send</i>, which is used at a
+  higher level to describe a request for an object to perform a certain
+  operation.
 
+  <!-- This duplicates the text in messages -->
   <p>A method is invoked for its side-effects, the value it returns, or a
   combination of the two.  Note that this definition encompasses
   <i>accessor</i> and <i>mutator</i> methods; Ruby makes no such
@@ -39,10 +40,10 @@
   <section>
     <h1>Instance Methods</h1>
 
-    <p>An <dfn>instance method</dfn> is a method defined,
-    without an explicit receiver, in the context of a class. Instances of this
-    class invoke the method when sent a message with its name as the selector.
-    Therefore, an object’s instance methods determine its behaviour.</p>
+    <p>An <dfn>instance method</dfn> is a method defined, without an explicit
+    receiver, in the context of a class. Instances of this class invoke the
+    method when sent a message with its name as the selector.  Therefore, an
+    object’s instance methods determine its behaviour.</p>
      
     <aside> 
       It is conventional to employ the <code>Class#method</code> notation when
@@ -51,8 +52,8 @@
     </aside>
 
     <figure id=def-instance-method>
-      <dt>Defining an instance method named <code>bark</code> for the <code>Dog</code> class
-      with the <code>def</code> keyword.
+      <dt>Defining an instance method named <code>bark</code> for the
+      <code>Dog</code> class with the <code>def</code> keyword.
     </figure>
   </section>
 
@@ -70,12 +71,12 @@
         <p>Singleton methods defined on <code>Class</code> objects are known
         as <dfn title="class method">class methods</dfn>. For example,
         <code>File.absolute_path</code> is a class method defined on the
-        <code>File</code> class. <a href=#refBLACK09>Black</a> (pp. 384–385)
-        remarks that class methods are further distinguished from singleton
-        methods in that <q>a method defined as a singleton method of a class
-          object can also be called on subclasses of that class.</q>: class
-        methods are considered by the method lookup algorithm so, unlike other
-        singleton methods, they are inherited. 
+        <code>File</code> class. <a class=ref href=#refBLACK09>Black</a> (pp.
+        384–385) remarks that class methods are further distinguished from
+        singleton methods in that <q>a method defined as a singleton method of
+          a class object can also be called on subclasses of that class.</q>:
+        class methods are considered by the method lookup algorithm so, unlike
+        other singleton methods, they are inherited. 
         
         <p>Class methods are typically <dfn title="factory method">factory
           methods</dfn> in that they are constructors (<i>manufacturers</i>)
@@ -85,8 +86,8 @@
     <p><q>In [the] prototype-based [programming] paradigm…there are no
       classes. Rather, new kinds of objects are formed more directly by
       composing concrete, full-fledged objects, which are often referred to as
-      prototypes.</q> (<a href=#refTAIVALSAARI96>Taivalsaari</a>, p. 1).
-    Taivalsaari contrasts these paradigms by remarking that <q>…unlike in
+      prototypes.</q> (<a class=ref href=#refTAIVALSAARI96>Taivalsaari</a>, p.
+    1).  Taivalsaari contrasts these paradigms by remarking that <q>…unlike in
       class-based languages in which the structure of an instance is dictated
       by its class, in prototype-based languages it is usually possible to add
       or remove methods and variables at the level of individual objects.</q>
@@ -101,7 +102,7 @@
    
     <p>The ability to specify per-object behaviour is an improvement Ruby made
     on her predecessors. For example, in the context of Smalltalk <a
-      href=refBUDD87>Budd</a> remarked that <q>It is not
+      class=ref href=refBUDD87>Budd</a> remarked that <q>It is not
       possible to provide a method for an individual object; rather every
       object must be associated with some class, and the behaviour of the
       object in response to messages will be dictated by the methods
@@ -648,30 +649,33 @@
         assigning them to a local variable. The arguments are ignored.  This allows methods to accept an
         arbitrary number of arguments, but discard, say, all but the last. 
 
-        <p>Thomas et al. (<a href=#refTHOM09>[THOM09]</a>) suggest that this technique can used in
-        conjunction with <code>super</code> to define a method which accepts an arbitrary number of
-        arguments then passes them all to its superclass.</p>
+        <p>Thomas et al. (<a class=ref href=#refTHOM09>[THOM09]</a>) suggest
+        that this technique can used in conjunction with <code>super</code> to
+        define a method which accepts an arbitrary number of arguments then
+        passes them all to its superclass.</p>
 
         <figure id=rest-parameter-with-super>
           <dt>A method which accepts a variable number of arguments then
           passes them to its superclass (<code>Parent</code>) with the
           implicit-argument form of <code>super</code>. (<a
-            href=#refTHOM09>[THOM09]</a>).
+            class=ref href=#refTHOM09>[THOM09]</a>).
         </figure>
       </section>
 
       <section>
         <h1>Named Arguments</h1>
 
-        <p>The parameter forms described above are positional in nature.  They depend on the argument’s
-        location in the parameter list to marry it with the correct parameter. An alternative approach, that
-        can aid the readability of otherwise ungainly parameter lists, is <dfn>named
-          arguments</dfn>. Named arguments allow the method to be invoked with a series of key-value pairs,
-        arranged in an arbitrary order.
+        <p>The parameter forms described above are positional in nature.  They
+        depend on the argument’s location in the parameter list to marry it
+        with the correct parameter. An alternative approach, that can aid the
+        readability of otherwise ungainly parameter lists, is <dfn>named
+          arguments</dfn>. Named arguments allow the method to be invoked with
+        a series of key-value pairs, arranged in an arbitrary order.
 
-        <p>Ruby does not offer explicit support for this style of argument passing, but it can be ably
-        approximated by defining methods that expect a <code>Hash</code> argument: the keys of which become
-        the parameter names; and the values, the arguments.</p>
+        <p>Ruby does not offer explicit support for this style of argument
+        passing, but it can be ably approximated by defining methods that
+        expect a <code>Hash</code> argument: the keys of which become the
+        parameter names; and the values, the arguments.</p>
 
         <!-- TODO: Mention that File/IO, String#encode use this technique -->
 
@@ -790,9 +794,9 @@
         where <var>name</var> is the method’s name given as a
         <code>Symbol</code>, and <var>body</var> is its body given as a
         <code>Proc</code>, <code>Method</code>, <code>UnboundMethod</code>, or
-        literal block. This allows methods to be defined at runtime, in contrast
-        to <code>def</code> which requires the method name and body to appear
-        literally in the source code.</p>
+        literal block. This allows methods to be defined at runtime, in
+        contrast to <code>def</code> which requires the method name and body
+        to appear literally in the source code.</p>
 
         <figure id=define-method>
           <dt>Using <code>define_method</code> to dynamically create a method
@@ -1301,8 +1305,8 @@
       above, <code>UnboundMethod</code> objects support the same method’s as
       <code>Method</code> objects.
 
-      <p><a href=#refBLACK09>Black</a> (pp. 418-420) provides the following
-      example (with minor adjustments for formating) of using
+      <p><a class=ref href=#refBLACK09>Black</a> (pp. 418-420) provides the
+      following example (with minor adjustments for formating) of using
       <code>UnboundMethod</code> objects:</p>
         
       <blockquote>
