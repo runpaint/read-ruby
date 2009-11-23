@@ -130,6 +130,40 @@
       </section>
 
       <section>
+        <h1>Selectors</h1>
+
+        <!-- TODO: Talk here about "significant names"? Decide what material moves
+        from the Method > Names section to here -->
+
+        <p>The message <dfn title="message selector">selector</dfn> is the
+        name of the operation the receiver should perform in response to
+        message.</p>
+
+        <aside class=note>
+          Subsequently we will refer to a specific selector with the <a
+          href=#symbols><code>Symbol</code> literal syntax</a>, i.e.
+          <code>:<var>selector</var></code>: the selector name prefixed with a
+          colon. This is consistent with Ruby’s general use of
+          <code>Symbol</code>s, and distinguishes a selector from a bare
+          identifier.
+        </aside>
+
+        <p>The selector is assumed to be the name of a method defined upon the
+        receiver or one of its superclasses. If a corresponding method is not
+        found in the receiver, the <a href=#method-missing>Method Missing</a>
+        protocol is initiated.</p>
+
+        <aside>
+          <p>A message selector may consist of any <code>Symbol</code>, even
+          those which are illegal when defining a method with the
+          <code>def</code> keyword. Methods with corresponding names can be
+          defined with <code>Object#define_method</code>, or such messages can
+          be handled by <a
+          href=#method-missing><code>:method_missing</code></a>.
+        </aside>
+      </section>
+
+      <section>
         <h1>Receivers</h1>
 
         <p>Every message is sent to a <dfn title="message
@@ -196,34 +230,6 @@
             10).to_s</code> evaluates the parenthetical, then sends its value
           (<code>100</code>) the <code>:to_s</code> message.
         </section>
-      </section>
-
-      <section>
-        <h1>Selectors</h1>
-
-        <!-- TODO: Clarify that we referto the selector as a Symbol subsequently
-        -->
-
-        <!-- TODO: Talk here about "significant names"? Decide what material moves
-        from the Method > Names section to here -->
-
-        <p>The message <dfn title="message selector">selector</dfn> is the
-        name of the operation the receiver should perform in response to
-        message.
-
-        <p>The selector is assumed to be the name of a method defined upon the
-        receiver or one of its superclasses. If a corresponding method is not
-        found in the receiver, the <a href=#method-missing>Method Missing</a>
-        protocol is initiated.</p>
-
-        <aside>
-          <p>A message selector may consist of any <code>Symbol</code>, even
-          those which are illegal when defining a method with the
-          <code>def</code> keyword. Methods with corresponding names can be
-          defined with <code>Object#define_method</code>, or such messages can
-          be handled by <a
-          href=#method-missing><code>:method_missing</code></a>.
-        </aside>
       </section>
 
       <!-- Arguments section? -->
