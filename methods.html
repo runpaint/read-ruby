@@ -62,7 +62,7 @@
     certain class.</p>
 
     <section>
-      <h1>Class Methods</h1>
+      <h1 id=class-method>Class Methods</h1>
 
         <!-- This duplicates slightly material in Classes: Eigenclasses -->
         <p>Singleton methods defined on <code>Class</code> objects are known
@@ -469,10 +469,10 @@ end</code></pre>
 
     <!-- TODO: Returns value which is not a method object -->
 
-    <p>Therefore, <code>def self.<var>name</var></code> defines a class method
-    for the current class. <code>def <var>Class</var>.<var>name</var></code>
-    defines a method named <var>name</var> on the class named
-    <var>Class</var>.</p>
+    <p>Therefore, <code>def self.<var>name</var></code> defines a <a
+      href=#class-method>class method</a> for the enclosing class. <code>def
+      <var>class</var>.<var>name</var></code> defines a method named
+    <var>name</var> on the class named <var>class</var>.</p>
 
     <aside class=warn>
       Singleton methods cannot be defined on immediate values such as
