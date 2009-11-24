@@ -508,12 +508,27 @@
         matter, necessarily a corresponding instance variable at all: the
         attribute value might have been computed dynamically, for example. 
 
-        <p>An message with an argument whose selector comprises an
-        attribute accessor’s name suffixed with an equals sign (<code>=</code>),
-        is called an <dfn>attribute setter</dfn>. It sets the
-        attribute to the value supplied.
-      </section>
+        <p>A message with an argument whose selector comprises an attribute
+        accessor’s name suffixed with an equals sign (<code>=</code>), is
+        called an <dfn>attribute setter</dfn>. It sets the attribute to the
+        value supplied. A message with a selector
+        <code><var>selector</var>=</code> can be used as an lvalue, i.e.
+        <code><var>receiver</var>.<var>selector</var> =
+        <var>value</var></code> is equivalent to
+        <code><var>receiver</var>.<var>selector</var>=(<var>value</var>).</code></p>
 
+        <aside id=ambiguous-lvalue-syntax class=warning>
+          <p>The syntax <code>name = value</code> is therefore ambiguous. Is
+          the intent to assign the value <code>value</code> to the local
+          variable <code>name</code> or to send the message <code>name=</code>
+          with <code>value</code> as the argument?
+
+          <p>The resolution is to always invoke a <code>=</code>-suffixed
+          method with an explicit receiver. Alternatively, make it explicit
+          that you are invoking a method with the <code>name=(value)</code>
+          syntax.  
+        </aside>
+      </section>
 
       <section>
         <h1>Conventions</h1>

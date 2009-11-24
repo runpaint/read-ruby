@@ -232,30 +232,6 @@
     </figure>
 
     <section>
-      <!-- TODO: Unite this with section on attribute setters -->
-      <h1>The <code>=</code> Suffix</h1>
-
-      <p>Methods named with a <code>=</code> suffix can be used in assignment
-      statements as <i>lvalues</i>. That is, a method defined as
-      <code><var>name</var>=(<var>value</var>)</code> on object <var>obj</var>
-      can be invoked as <code><var>obj</var>.<var>name</var> =
-        <var>value</var></code> or
-      <code><var>obj</var>.<var>name</var>=(<var>value</var>)</code>.     
-
-      <aside id=ambiguous-lvalue-syntax class=warning>
-        <p>The syntax <code>name = value</code> is therefore ambiguous. Is the
-        intent to assign the value <code>value</code> to the local variable
-        <code>name</code> or to invoke the method named <code>name=</code>
-        with <code>value</code> as the argument?
-
-        <p>The resolution is to always invoke a <code>=</code>-suffixed method
-        with an explicit receiver, such as <code>self</code>. Alternatively,
-        make it explicit that you are invoking a method with the
-        <code>name=(value)</code> syntax.  
-      </aside>
-    </section>
-
-    <section>
       <h1 id=operator-methods>Operator Methods</h1>
 
       <p>Many <i>operators</i> of conventional programming languages are
