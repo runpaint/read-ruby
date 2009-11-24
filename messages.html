@@ -523,10 +523,9 @@
           variable <code>name</code> or to send the message <code>name=</code>
           with <code>value</code> as the argument?
 
-          <p>The resolution is to always invoke a <code>=</code>-suffixed
-          method with an explicit receiver. Alternatively, make it explicit
-          that you are invoking a method with the <code>name=(value)</code>
-          syntax.  
+          <p>The resolution is to either send the message with an explicit
+          receiver, or make it explicit that you are sending a message with
+          the <code><var>selector</var>=(<var>value</var>)</code> syntax.  
         </aside>
       </section>
 
