@@ -38,7 +38,7 @@
     sections -->
   
   <section>
-    <h1>Instance Methods</h1>
+    <h1 id=instance-method>Instance Methods</h1>
 
     <p>An <dfn>instance method</dfn> is a method defined, without an explicit
     receiver, in the context of a class. Instances of this class invoke the
@@ -54,7 +54,7 @@
   </section>
 
   <section>
-    <h1>Singleton Methods</h1>
+    <h1 id=singleton-method>Singleton Methods</h1>
 
     <p>A <dfn>singleton method</dfn> is a method defined in the context of an
     object’s <a href=#eigenclass>eigenclass</a>. It is commonly described as a
@@ -455,17 +455,19 @@ end</code></pre>
       <dt>The syntax of a method definition.
     </figure>
     
+    <p>If <var>name</var> does not include a full stop, an <a
+      href=#instance-method>instance method</a> is
+    defined on the enclosing class; if it takes the form
+    <code><var>object</var>.<var>selector</var></code>, a <a
+      href=#singleton-method>singleton method</a>
+    named <var>selector</var> is defined on <var>object</var>.</p>
+
     <figure id=def-instance-method>
       <dt>Defining an instance method named <code>bark</code> for the
       <code>Dog</code> class with the <code>def</code> keyword.
     </figure>
 
     <!-- TODO: Returns value which is not a method object -->
-    
-    <!-- Describe instance methods before singletons -->
-    <p>A singleton method is defined by specifying a method name of the form
-    <code><var>object</var>.<var>name</var></code>, where <var>object</var> is
-    a reference to the object on which the method is being defined.
 
     <p>Therefore, <code>def self.<var>name</var></code> defines a class method
     for the current class. <code>def <var>Class</var>.<var>name</var></code>
