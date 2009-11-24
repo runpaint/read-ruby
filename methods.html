@@ -188,7 +188,7 @@
   </section>
 
   <section>
-    <h1>Names</h1>
+    <h1 id=method-names>Names</h1>
 
       <!-- TODO: Talk about "significant" names here? e.g. to_*,
       inspect, etc.? -->
@@ -438,11 +438,12 @@
     <h1>Defining</h1>
     
     <p>A method consists of a name, an optional parameter list, and a body.
-    Names have already been discussed, the parameter list is explained in
-    <a href=#method-arguments><i>Arguments</i></a> below. The <dfn title="method body">body</dfn> is a sequence
-    of statements terminated with the <code>end</code> keyword.</p> <!-- TODO:
-    Clarify here that due to method_missing method’s need not be defined
-    before they are called? -->
+    <a href=#method-names>Names</a> have already been discussed, the parameter
+    list is explained in <a href=#method-arguments><i>Arguments</i></a> below.
+    The <dfn title="method body">body</dfn> is a sequence of statements
+    terminated with the <code>end</code> keyword.</p> <!-- TODO: Clarify here
+    that due to method_missing method’s need not be defined before they are
+    called? -->
     
     <figure id=def-syntax>
       <dd>
