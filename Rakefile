@@ -8,10 +8,9 @@ HIGHLIGHTED_FIGURES = FileList['figures/*.rb'].map{|f| f.sub(/rb$/, 'html')}
 
 rule(/figures\/.+\.html/ => '.rb') do |t|
   sh "pygmentize -f html -O encoding=utf-8 -o #{t.name} #{t.source}"
-  File.open(t.name,'w') do |f|
-    f.print File.read(t.name).sub(/^<div.+pre>/, '<pre class=syntax><code>').
-                              sub(/<\/pre><\/div>/,'</code></pre>')
-  end
+  munged = File.read(t.name).sub(/^<div.+pre>/, '<pre class=syntax><code>').
+                             sub(/<\/pre><\/div>/,'</code></pre>')
+  File.open(t.name,'w') {|f| f.print munged}
 end
 
 source_lambda = ->(t){ t.sub(/out\//, '') }
@@ -33,6 +32,22 @@ end
 
 rule(/out\/.+css/ => [source_lambda] << 'out') do |t|
   cp t.source, t.name
+end
+
+def headings(s)
+  titles = [s.xpath('./h1').inner_html, 
+            s.xpath('./section').map{|s2| headings(s2)}.compact
+           ].reject(&:empty?)
+  return if titles.empty?
+  titles.size == 1 ? titles.first : titles
+end
+
+task :toc => FileList['*.html'] do |t|
+  toc = t.prerequisites.map do |chapter|
+    headings(Nokogiri::HTML(File.read chapter).css('body > section'))
+  end
+  require 'pp'
+  pp toc
 end
 
 task :default => FileList['*.css', '*.html'].map{|f| "out/#{f}" } << 'out'
