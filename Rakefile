@@ -42,12 +42,17 @@ def headings(s)
   titles.size == 1 ? titles.first : titles
 end
 
+def toc(toc)
+  '<ol>' + toc.map do |e|
+    '<li>' + (e.is_a?(Array) ? e.first + toc(e.last) : e) + '</li>'
+   end.join + '</ol>'
+end
+
 task :toc => FileList['*.html'] do |t|
-  toc = t.prerequisites.map do |chapter|
-    headings(Nokogiri::HTML(File.read chapter).css('body > section'))
-  end
-  require 'pp'
-  pp toc
+  chapters = t.prerequisites.map do |p| 
+    headings(Nokogiri::HTML(File.read p).css('body > section'))
+  end.compact
+  puts toc(chapters)
 end
 
 task :default => FileList['*.css', '*.html'].map{|f| "out/#{f}" } << 'out'
