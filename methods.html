@@ -587,7 +587,7 @@ end</code></pre>
       </section>
       
       <section>
-        <h1>Variable-Length Argument Lists</h1>
+        <h1 id=rest-parameters>Variable-Length Argument Lists</h1>
 
         <!-- TODO: Standardise on terms: 'rest' or 'splat' -->
 
@@ -663,8 +663,8 @@ end</code></pre>
           <ul>
             <li>Arguments can be specified in any order.
             <li>Arguments with default values can be omitted.
-            <li>If <code>Symbol</code>s are used for the <code>Hash</code> keys the invocation is
-            particularly readable.
+            <li>If <code>Symbol</code>s are used for the <code>Hash</code>
+            keys the invocation is particularly readable.
             <li>Variable-length argument lists are supported.
           </ul>
 
@@ -677,9 +677,9 @@ end</code></pre>
         automatically whether an invalid number of arguments have been
         supplied; the programmer must validate the arguments instead. This is
         unlikely to be particularly significant, however, because a method
-        expecting a variable number of arguments would otherwise use rest
-        arguments, which would also render it unable to perform this
-        validation.
+        expecting a variable number of arguments would otherwise use a <a
+          href=#rest-parameters>rest parameter</a>, which also precludes
+        automatic validation.
       </section>
       
       <section>
