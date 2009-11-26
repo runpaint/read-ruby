@@ -8,10 +8,10 @@ class King
   end
 
   def name
-    "#@name #{King.numeral[@name]}".delete " Ⅰ"
+    "#@name #{King.numeral[@name]}".sub(/ Ⅰ$/, '')
   end
 end
 %w{Henry Stephen Henry Richard John Henry Edward Edward 
-   Edward Richard}.map {|name| King.new(name).name}.join(', ')
-#=> Henry, Stephen, Henry Ⅱ, Richard, John, Henry Ⅲ, Edward, Edward Ⅱ, Edward Ⅲ, Richard Ⅱ
-
+   Edward Richard Henry}.map {|name| King.new(name).name}.join(', ')
+#=> Henry, Stephen, Henry Ⅱ, Richard, John, Henry Ⅲ, Edward, 
+#   Edward Ⅱ, Edward Ⅲ, Richard Ⅱ, Henry Ⅳ
