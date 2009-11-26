@@ -16,11 +16,11 @@
   <!-- Mention __method__ -->
 
   <q>A <dfn>method</dfn> is a named block of parameterized code associated
-    with one or more objects.</q> (<a class=ref href=#refFLAN08>Flanagan &amp;
-    Matsumoto</a>, p. 176)</a>. It is the <q>code found in a class <i>for
-    responding to a message</i></q> (<a class=ref
-  href=#refMITCHELL04>Mitchell</a>, p. 523)</a>,
-  emphasis mine. 
+  with one or more objects.</q> (<a class=ref
+  href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, p. 176)</a>. It is
+  the <q>code found in a class <i>for responding to a message</i></q> (<a
+  class=ref href=/references#refMITCHELL04>Mitchell</a>, p. 523)</a>, emphasis
+  mine. 
 
   <p>Having received a message, an object <dfn title="invoking a
     method">invokes</dfn> a method in response. <i>Invoke</i> describes the
@@ -68,7 +68,7 @@
         <p>Singleton methods defined on <code>Class</code> objects are known
         as <dfn title="class method">class methods</dfn>. For example,
         <code>File.absolute_path</code> is a class method defined on the
-        <code>File</code> class. <a class=ref href=#refBLACK09>Black</a> (pp.
+        <code>File</code> class. <a class=ref href=/references#refBLACK09>Black</a> (pp.
         384–385) remarks that class methods are further distinguished from
         singleton methods in that <q>a method defined as a singleton method of
           a class object can also be called on subclasses of that class.</q>:
@@ -84,14 +84,15 @@
       <h1>Per-Object Behaviour</h1>
 
         <p><q>In [the] prototype-based [programming] paradigm…there are no
-          classes. Rather, new kinds of objects are formed more directly by
-          composing concrete, full-fledged objects, which are often referred to as
-          prototypes.</q> (<a class=ref href=#refTAIVALSAARI96>Taivalsaari</a>, p.
-        1).  Taivalsaari continues: <q cite=#refTAIVALSAARI96>…unlike in
-          class-based languages in which the structure of an instance is dictated
-          by its class, in prototype-based languages it is usually possible to add
-          or remove methods and variables at the level of individual objects.</q>
-        (<i>ibid.</i>, pp. 8–10).
+        classes. Rather, new kinds of objects are formed more directly by
+        composing concrete, full-fledged objects, which are often referred to
+        as prototypes.</q> (<a class=ref
+        href=/references#refTAIVALSAARI96>Taivalsaari</a>, p.  1).
+        Taivalsaari continues: <q cite=/references#refTAIVALSAARI96>…unlike in
+        class-based languages in which the structure of an instance is
+        dictated by its class, in prototype-based languages it is usually
+        possible to add or remove methods and variables at the level of
+        individual objects.</q> (<i>ibid.</i>, pp. 8–10).
         
         <p>Singleton methods (along with
         <code>Object#instance_variable_set</code>) afford the same abilities
@@ -99,13 +100,13 @@
         to be created that specializes a more general class, singleton methods
         allow creation of an object that specializes on a more general object.
         (Ruby can also support Taivalsaari’s observation that <q
-          cite=#refTAIVALSAARI96>…in
+          cite=/references#refTAIVALSAARI96>…in
           prototype-based languages object creation usually takes place by
           copying…</q> (<i>ibid.</i>) through <code>Object#clone</code>). 
        
         <p>The ability to specify per-object behaviour is an improvement Ruby
         made on her predecessors. For example, in the context of Smalltalk <a
-          class=ref href=#refBUDD87>Budd</a> remarked that <q
+          class=ref href=/references#refBUDD87>Budd</a> remarked that <q
           cite=#refBUDD87>It is not possible to provide a method for an
           individual object; rather every object must be associated with some
           class, and the behaviour of the
@@ -619,7 +620,7 @@ end</code></pre>
         allows methods to accept an arbitrary number of arguments, but
         discard, say, all but the last. 
 
-        <p><a class=ref href=#refTHOM09>Thomas et al.</a> (pp. 138–139)
+        <p><a class=ref href=/references#refTHOM09>Thomas et al.</a> (pp. 138–139)
         suggest that this technique can used in conjunction with the
         implicit-argument form of <a href=#super><code>super</code></a> to
         define a method which accepts an arbitrary number of arguments then
@@ -685,15 +686,15 @@ end</code></pre>
       <section>
         <h1>Block Arguments</h1>
         
-        <p>Any method may be sent a <a href=#block-argument>block
+        <p>Any method may be sent a <a href=/messages#block-argument>block
           argument</a>. The block may be yielded to, allowing its return value
         to be captured, or objectified and assigned to a variable.</p>
 
         <aside class=note>
-          <a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, pp.
-            130-131)</a> insist on <q>[using] the term iterator…to mean any
-            method that uses the <code>yield</code> statement</q>, despite
-          admitting that this doesn't make sense if the method doesn’t
+          <a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto
+            (2008, pp.  130-131)</a> insist on <q>[using] the term iterator…to
+            mean any method that uses the <code>yield</code> statement</q>,
+          despite admitting that this doesn't make sense if the method doesn’t
           actually <i>iterate</i> over the block it has been given. We will
           not perpetuate this confusion: an <i>iterator method</i> iterates
           over the block it has been given; a method which expects a block but
@@ -949,7 +950,7 @@ end</code></pre>
         methods. However, unlike private methods they can be explicitly invoked
         on any instance of their class.
 
-        <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto (2008, p.
+        <p><a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto (2008, p.
           232)</a> suggest that <q>A protected method can be used, for example,
           to define an accessor that allows instances of a class to share
           internal state with each other, but does not allow users of the class
@@ -1061,7 +1062,7 @@ end</code></pre>
         receiver’s class, and go to step one.
       </ol>
 
-      <p><a href=#refTHOM09 class=ref>Thomas et al.</a> describe this
+      <p><a href=/references#refTHOM09 class=ref>Thomas et al.</a> describe this
       algorithm as <q>Ruby looks first in the immediate class of an object, then
         in the mixins included into that class, and then in superclasses and
         their mixins. If a class has multiple modules mixed in, the last one
@@ -1110,7 +1111,7 @@ end</code></pre>
         second time, and so the loop continues.
       </aside>
 
-      <p><a class=ref href=#FOWLER08>Fowler</a> describes the use of
+      <p><a class=ref href=/references#FOWLER08>Fowler</a> describes the use of
       <code>method_missing</code> to <q>respond differently to an unknown
         message.</q> as “Dynamic Reception”. One use he suggests is to
       <q>convert what might otherwise be method parameters into the name of the
@@ -1118,7 +1119,7 @@ end</code></pre>
         "lastname", "fowler")</code> with the
       <code>method_missing</code>-supported
       <code>find_by_firstname_and_lastname("martin", "fowler")</code>. (The
-      example was derived from a feature of Ruby on Rails (<a href=#refBUCK06
+      example was derived from a feature of Ruby on Rails (<a href=/references#refBUCK06
         class=ref>Buck</a>, 2006). He identifies a variation on this idea where
       a <q>a sequence of Dynamic Receptions</q> are chained together, such that
       each method returns an “Expression Builder”, e.g.
@@ -1184,14 +1185,14 @@ end</code></pre>
       <section>
         <h1>Calling</h1>
 
-        <p>The method represented by a <code>Method</code> object can be invoked
-        with <code>Method#call</code> or its alias <code>Method#[]</code>. <!--
-        #[] implies a "method dictionary": selecting the named method from the
-        dictionary --> The
-        semantics are the same as for standard method invocation. <a
-          class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> caution, however:
-        <q>…invoking a method through a <code>Method</code> object is less
-          efficient than invoking it directly.</q>
+        <p>The method represented by a <code>Method</code> object can be
+        invoked with <code>Method#call</code> or its alias
+        <code>Method#[]</code>. <!-- #[] implies a "method dictionary":
+        selecting the named method from the dictionary --> The semantics are
+        the same as for standard method invocation. <a class=ref
+          href=/references#refFLAN08>Flanagan &amp; Matsumoto</a> caution,
+        however: <q>…invoking a method through a <code>Method</code> object is
+          less efficient than invoking it directly.</q>
       </section>
 
       <section>
@@ -1275,7 +1276,7 @@ end</code></pre>
       above, <code>UnboundMethod</code> objects support the same method’s as
       <code>Method</code> objects.
 
-      <p><a class=ref href=#refBLACK09>Black</a> (pp. 418-420) provides the
+      <p><a class=ref href=/references#refBLACK09>Black</a> (pp. 418-420) provides the
       following example (with minor adjustments for formating) of using
       <code>UnboundMethod</code> objects:</p>
         
