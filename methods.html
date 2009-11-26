@@ -591,12 +591,12 @@ end</code></pre>
 
         <!-- TODO: Standardise on terms: 'rest' or 'splat' -->
 
-        <p>A <dfn>rest parameter</dfn> (or <dfn>splat parameter</dfn>) consumes every argument
-        that follows it while still allowing subsequent required parameters to
-        receive their corresponding arguments. Put simply: it takes an
-        arbitrary number of arguments from its position onward. It is passed
-        to the method as an <code>Array</code> containing one argument per
-        element.</p>
+        <p>A <dfn>rest parameter</dfn> (or <dfn>splat parameter</dfn>)
+        consumes every argument that follows it while still allowing
+        subsequent required parameters to receive their corresponding
+        arguments. Put simply: it takes an arbitrary number of arguments from
+        its position onward. It is passed to the method as an
+        <code>Array</code> containing one argument per element.</p>
 
         <aside class=note>
           Rest parameters do not <em>require</em> any arguments, so a method
@@ -611,27 +611,6 @@ end</code></pre>
         <figure id=rest-arguments>
           <dt>Defining a method which takes a variable number of arguments.
         </figure>
-
-        <!-- TODO: Cut this section? We now state above that any optional
-        arguments must precede the _rest_ -->
-
-        <aside class=note>
-          The following syntax rules are complex, but do not be deterred.
-          They are unlikely to ever be relevant in practice.
-        </aside>
-
-        <!-- FIXME: Clarify this explanation; derive a general principle
-        which better expresses the rule -->
-
-        <p>A rest parameter must not be followed by an optional parameter
-        because of the resulting ambiguity: if two or more arguments were
-        supplied for the former, should the latter be assigned its default
-        value or take one of the aforementioned? However, there is no
-        ambiguity when optional parameters precede the rest parameter, so this
-        arrangement is legal.
-
-        <p>Conversely, a rest parameter may be either followed or preceded by
-        one or more required parameters.</p>
 
         <figure id=required-arguments-with-optional-arguments>
           <dt>Defining a method which takes both optional and required
