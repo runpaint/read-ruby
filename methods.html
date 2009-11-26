@@ -612,15 +612,12 @@ end</code></pre>
           <dt>Defining a method which takes a variable number of arguments.
         </figure>
 
-        <figure id=required-arguments-with-optional-arguments>
-          <dt>Defining a method which takes both optional and required
-          arguments.
-        </figure>
-
-        <p>A rest parameter may be supplied as a sole asterisk, omitting the corresponding parameter name.
-        The effect is to consume the corresponding arguments as an ordinary rest parameter, without
-        assigning them to a local variable. The arguments are ignored.  This allows methods to accept an
-        arbitrary number of arguments, but discard, say, all but the last. 
+        <p>A rest parameter may be supplied as a sole asterisk, omitting the
+        corresponding parameter name.  The effect is to consume the
+        corresponding arguments as an ordinary rest parameter, without
+        assigning them to a local variable. The arguments are ignored.  This
+        allows methods to accept an arbitrary number of arguments, but
+        discard, say, all but the last. 
 
         <p>Thomas et al. (<a class=ref href=#refTHOM09>[THOM09]</a>) suggest
         that this technique can used in conjunction with <code>super</code> to
