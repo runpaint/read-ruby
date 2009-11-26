@@ -642,11 +642,11 @@ end</code></pre>
           arguments</dfn>. Named arguments allow the method to be invoked with
         a series of key-value pairs, arranged in an arbitrary order.
 
-        <p>Ruby does not offer explicit support for this style of argument
-        passing, but it can be ably approximated by defining methods that
-        expect a <code>Hash</code> argument: the keys of which become the
-        parameter names; and the values, the arguments.</p>
-
+        <p>This style of argument passing is not supported explicitly, but can
+        be ably approximated by defining methods that expect a
+        <code>Hash</code> argument: the keys of which become the parameter
+        names; and the values, the arguments.</p>         
+        
         <!-- TODO: Mention that File/IO, String#encode use this technique -->
 
         <figure id=named-arguments-with-hash>
