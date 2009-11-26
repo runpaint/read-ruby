@@ -475,11 +475,11 @@
         false</code> because <code>Object#eql?</code> does not perform type
       conversion.
       
-      <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (pp. 77–78)
-      state that <q>If two objects are <code>eql?</code>, their
-        <code>hash</code> methods must also return the same value.</q>, going on
-      to recommend that classes implement <code>#eql?</code> in terms of
-      <code>#hash</code>.
+      <p><a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>
+      (pp. 77–78) state that <q>If two objects are <code>eql?</code>, their
+        <code>hash</code> methods must also return the same value.</q>, going
+      on to recommend that classes implement <code>#eql?</code> in terms of
+      <code>#hash</code>.</p>
       
       <!-- Cover === and =~ ? -->
 
@@ -513,17 +513,18 @@
     <h3>Attributes</h3>
         
       <p>An attribute, <var>a</var>, is a pair (<a class=ref
-        href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 94–95) of public
-      methods—an accessor (<var>a</var>) and a writer (<var>a=</var>)—exposing a
-      property of an object’s state to other objects. They can be created
-      automatically by supplying their names to
+        href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 94–95) of
+      public methods—an accessor (<var>a</var>) and a writer
+      (<var>a=</var>)—exposing a property of an object’s state to other
+      objects. They can be created automatically by supplying their names to
       <code>Module#attr_accessor</code> or <code>Module#attr_writer</code>
-      inside a class definition. This assumes, as is typical, that an attribute
-      corresponds to an instance variable of the same name, i.e. <var>a</var>
-      returns <var>@a</var>; <var>a=</var> sets <var>@a</var>. If the attribute
-      value is not backed by an instance variable, it should be exposed in the
-      same way (<a href=#refMEYER00 class=ref>Meyer</a>, pp. 55–57) by defining
-      the methods manually. <!-- In the Ruby cookbook these are called
+      inside a class definition. This assumes, as is typical, that an
+      attribute corresponds to an instance variable of the same name, i.e.
+      <var>a</var> returns <var>@a</var>; <var>a=</var> sets <var>@a</var>. If
+      the attribute value is not backed by an instance variable, it should be
+      exposed in the same way (<a href=/references#refMEYER00
+        class=ref>Meyer</a>, pp. 55–57) by defining the methods manually.</p>
+      <!-- In the Ruby cookbook these are called
       "virtual attributes" --> 
       
       <!-- http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/class/attribute_accessors.rb
@@ -567,12 +568,12 @@
 
     <p><code>BasicObject</code> is the root of the class hierarchy: from this
     all other classes ultimately inherit. Its superclass is <code>nil</code>.
-    It defines the bare minimum of methods so as to be a “blank
-    slate”: <q>…useful as the superclass of delegating wrapper classes…</q>
-    (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, p 235). (A
-    thorough explanation of “blank slate” classes in Ruby is found in <a
-      href=#refBROWN09 class=ref>Brown</a>, pp. 57–62). <!-- Footnote this
-    remark? -->
+    It defines the bare minimum of methods so as to be a “blank slate”:
+    <q>…useful as the superclass of delegating wrapper classes…</q> (<a
+      class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, p
+    235). (A thorough explanation of “blank slate” classes in Ruby is found in
+    <a href=/references#refBROWN09 class=ref>Brown</a>, pp. 57–62). <!--
+    Footnote this remark? -->
 
     <!-- Clarify that by default classes inherit from Object? -->
     <!-- Note implications of having so few methods? In irb? -->
@@ -600,7 +601,8 @@
 
     <p>Objects that shouldn’t be duplicated can privatise their
     <code>#dup</code> method or define it to raise an informative exception
-    (<a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 243–245).
+    (<a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, pp.
+    243–245).
 
   <h2>Cloning</h2>
   
@@ -718,9 +720,10 @@
       must send the argument <code>:to_a</code> himself if he requires the
       conversion.
 
-      <p><a class=ref href=#refFLAN08>Flanagan &amp; Matsumoto</a> (p. 80)
-      suggest that objects should implement an implicit conversion protocol
-      if they have <q>strong characteristics</q> of the target class. 
+      <p><a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>
+      (p. 80) suggest that objects should implement an implicit conversion
+      protocol if they have <q>strong characteristics</q> of the target
+      class.</p>
 
       <section>
         <h4 id=try-convert><code>try_convert</code></h4>
