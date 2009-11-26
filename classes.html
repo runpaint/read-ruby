@@ -416,13 +416,12 @@
 
           <p>Accessor methods can be created for class instance variables by using
           <code>Module#attr_accessor</code> and <code>Module#attr_writer</code>
-          inside the class’s singleton class.
+          inside the class’s singleton class.</p>
 
-          <pre><code>
-            class &lt;&lt; self
-              attr_accessor :class_instance_variable
-            end
-          </code></pre>
+          <figure id=module-attr-accessor>
+            <dt>Accessors for a class’s class instance variables are created
+            inside its eigenclass with <code>attr_accessor</code>.
+          </figure>
         </section>
       </section>
 
