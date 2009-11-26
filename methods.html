@@ -162,14 +162,14 @@
   </section>
 
   <section>
-    <h1><code>super</code></h1>
+    <h1 id=super><code>super</code></h1>
   
     <p>The <code>super</code> keyword is used in method definitions to invoke
     a method defined in the superclass, or an ancestor thereof (collectively
     hereafter: the <i>superclass</i> <!-- Clumsy phrasing? -->), with the same
     name. If called without arguments it invokes the superclass method with
     the arguments received by the current method (this is known as the
-    <dfn>implicit argument form of <code>super</code></dfn>).  Otherwise, it
+    <dfn>implicit argument form of <code>super</code></dfn>). Otherwise, it
     passes the arguments it has been given to the superclass method. In either
     case, the arguments are sent as they currently exist: if they have been
     modified by the method, their modified forms are sent. To explicitly
@@ -619,16 +619,16 @@ end</code></pre>
         allows methods to accept an arbitrary number of arguments, but
         discard, say, all but the last. 
 
-        <p><a class=ref href=#refTHOM09>Thomas et al.</a> suggest
-        that this technique can used in conjunction with <code>super</code> to
-        define a method which accepts an arbitrary number of arguments then
-        passes them all to its superclass.</p>
+        <p><a class=ref href=#refTHOM09>Thomas et al.</a> suggest that this
+        technique can used in conjunction with the implicit-argument form of
+        <a href=#super><code>super</code></a> to define a method which accepts
+        an arbitrary number of arguments then passes them all to its
+        superclass.</p>
 
         <figure id=rest-parameter-with-super>
           <dt>A method which accepts a variable number of arguments then
-          passes them to its superclass (<code>Parent</code>) with the
-          implicit-argument form of <code>super</code>. (<a
-            class=ref href=#refTHOM09>[THOM09]</a>).
+          passes them to its superclass (<code>Parent</code>) with
+          <code>super</code>.
         </figure>
       </section>
 
