@@ -7,888 +7,991 @@
     <!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
     <script src="http://html5-now.appspot.com/html5-now.js"></script>
     -->
+    <link href=main.css rel=stylesheet>
   </head>
   <body>
-  
-<h1>Objects</h1>
 
-  <!-- Discuss immediate values: objects can be constructed via message
-  sending (constructors), which may be instance or singleton methods, or via
-  literals -->
+    <section>  
+      <h1>Objects</h1>
 
-  <!-- cite source of object definition --> <p>An <dfn id=object>object</dfn>
-  is a compilation of data (attributes) and behaviour (methods) which
-  encapsulate a specific <i>instance</i> of a <i>class</i>. The String
-  <code>"hello"</code> and the Integer <code>3</code> are both examples of
-  objects, and instances of the <i>String</i> and <i>Integer</i> classes,
-  respectively. They constitute data (<q>hello</q> and <q>3</q>, respectively)
-  and behaviour relevant to that data.
+        <!-- Discuss immediate values: objects can be constructed via message
+        sending (constructors), which may be instance or singleton methods, or via
+        literals -->
 
-  <h2>Instantiation</h2>
-    <!-- There are 3½ ways to instantiate an object...-->
-    <p>An object is instantiated by either sending an appropriate message to
-    an existing object or using a <i>literal</i>. 
-    
-    <!-- Marshal.load also creates an object -->
-    
-    <aside>
-      <p>This may seem to imply that, ultimately, all objects are instantiated
-      by means of literals, because a message cannot be sent to an object
-      unless that object already exists. This is not so. Certain objects
-      always exist. They come into being with the Ruby interpreter. 
-    </aside>
+        <!-- cite source of object definition --> <p>An <dfn id=object>object</dfn>
+        is a compilation of data (attributes) and behaviour (methods) which
+        encapsulate a specific <i>instance</i> of a <i>class</i>. The String
+        <code>"hello"</code> and the Integer <code>3</code> are both examples of
+        objects, and instances of the <i>String</i> and <i>Integer</i> classes,
+        respectively. They constitute data (<q>hello</q> and <q>3</q>, respectively)
+        and behaviour relevant to that data.</p>
 
-    <h3>Literals</h3>
-
-    <!-- Discuss &:sym as a literal? -->
-    <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
-    for the instantiation of a particular core object.
-      <!-- Doesn’t call initialize; Performance pips pedagogy -->
-      <!-- Cover block literals? -->
-
-      <h4>Strings</h4>
-
-        <p><code>String</code>s are mutable sequences of characters with an
-        associated encoding.
-
-        <p>A <code>String</code> literal delimited by apostrophes (<code>'</code>)
-        is not subject to interpolation or escape sequences; whereas one delimited
-        by quotation marks (<code>"</code>) is. <!--alternative delimiters?-->
-        
-        <p>A single character prefixed with a question mark
-        (<code>?<var>char</var></code>) instantiates a <code>String</code>
-        containing the character.
-
-        <p><dfn title="string interpolation">Interpolation</dfn> is the embedding
-        of the value of an expression within a string. It is achieved with the
-        syntax <code>#{<var>expression</var>}</code>, where <var>expression</var>
-        is an arbitrary expression. It is common for <var>expression</var> to be
-        simply the name of variable which is to be substituted for its value.
-        
-        <p><dfn title="backslash escape">Escape sequences</dfn> are character
-        sequences prefixed with a reverse solidus (“backslash”) that have a
-        meaning other than their constituent characters. <code>\n</code> is a
-        newline (U+000A); <code>\t</code> a tab (U+0009); <code>\r</code> a
-        carriage return (U+000D); <code>\s</code> a space (U+0020);
-        <code>\\</code> a reverse solidus; <code>\n<var>octal</var></code> the
-        byte given by <var>octal</var>, a three digit octal number &lt; 377;
-        and <code>\u{<var>hex</var>}</code> the Unicode codepoint
-        <var>hex</var>, a hexadecimal number. To include a literal apostrophe
-        or quotation mark in a string literal delimited by the same, the
-        character must be preceded by a backlash.
-
-        <p>A string may be iterated over by Unicode codepoint with
-        <code>String#codepoints</code>, byte with <code>String#bytes</code>,
-        character with <code>String#chars</code>, or line with
-        <code>String#lines</code>.
-
-      <h4 id=symbols>Symbols</h4>
-
-        <p>A <code>Symbol</code> represents a name. <code>Symbol</code>s are
-        immutable immediates. Two symbols with the same content will always be
-        represented by the same object, e.g. <code>:glark.object_id ==
-          :glark.object_id</code>, so symbol comparisons are extremely efficient.
-        However, <code>Symbol</code> objects are not garbage collected, so are
-        unsuitable for storing data from unbounded collections; use
-        <code>String</code>s instead.
-        
-        <p><code>Symbol</code>s are used for unique identifiers, such as
-        <code>Hash</code> keys, as message selectors and method names, and as a
-        substitute for constants.
-
-        <p>A <code>Symbol</code> literal consists of a colon followed by an
-        identifier or <code>String</code> literal, e.g.
-        <code>:roland_barthes</code> or <code>:'887'</code>.
-        <!-- #to_sym -->
-
-      <h4>Numerics</h4>
-      <!-- Are immediates _instantiated_? -->
-
-        <p>An integer literal consists of one or more consecutive digits.
-        Implementation limits dictate whether its a <code>Fixnum</code> or
-        <code>Bignum</code>, but the distinction can be ignored by treating both
-        as <code>Integer</code>s.
-
-        <p>Hexadecimal and octal literals allow integers to be expressed in base
-        sixteen or eight, respectively. A hexadecimal literal begins with
-        <code>0x</code>, and is followed by one or more hex digits (0–9, a–f). An
-        octal literal begins with <code>0o</code>, and is followed by one or more
-        octal digits (0–7). Both forms ignore case and create <code>Integer</code>
-        objects.
-
-        <p>A floating-point literal consists of two integer literals separated
-        with a period, e.g. <code>3.14</code>. It is of class <code>Float</code>.
-        <!-- Notes on the inacuracy of floats -->
-
-        <p><code>Rational</code> numbers are expressed with the
-        <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
-        constructor. Similarly, <code>Complex(<var>real</var>,
-          <var>imaginary</var>)</code> creates a <code>Complex</code> object.
-
-    <!--        <li>Standard mathematical operations as methods
-              <li><code>/</code> performs integer division
-              <li>to_* -->
-
-      <h4>Arrays</h4>
-      
-        <!-- Mention #to_a? --> <p>An <code>Array</code> instance represents
-        an ordered collection of objects, which need not be homogeneous. It is
-        automatically resized as elements are added or removed.
-        
-        <p>An <code>Array</code> literal is a comma-separated list of objects
-        enclosed in square brackets (<code>[</code>, <code>]</code>). For example,
-        <code>[1, :two, 'three']</code> creates a three-element
-        <code>Array</code> object with <code>1</code> as the first element.
-        
-        <p>Arrays are indexed by integral subscripts, beginning with 0. If the
-        subscript is negative it counts backward from the last element (i.e.
-        <code>-1</code> refers to the last element).
-        An element with subscript <var>index</var> can be retrieved with
-        <code>Array#[<var>index</var>]</code>. If the index doesn’t exist,
-        <code>nil</code> is returned. The index can be assigned to with
-        <code>Array#[<var>index</var>]=</code>. 
-        
-        <p>Elements are appended to an array with <code>Array#&lt;&lt;</code>; and
-        prepended with <code>Array#unshift</code>.
-        <code>Array#include?(<var>element</var>)</code> tests whether the array
-        contains <var>element</var>. The total number of elements is returned by
-        <code>Array#size</code>. <code>Array#each</code> iterates over the array,
-        <code>yield</code>ing the next element each time.
-      
         <section>
-          <h5 id=enumerables>Enumerables</h5>
+          <h1>Instantiation</h1>
+          <!-- There are 3½ ways to instantiate an object...-->
+          <p>An object is instantiated by either sending an appropriate message to
+          an existing object or using a <i>literal</i>. 
+          
+          <!-- Marshal.load also creates an object -->
+          
+          <aside>
+            <p>This may seem to imply that, ultimately, all objects are instantiated
+            by means of literals, because a message cannot be sent to an object
+            unless that object already exists. This is not so. Certain objects
+            always exist. They come into being with the Ruby interpreter. 
+          </aside>
 
-            <!-- Mention #to_enum? -->
-            <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
-            <code>Range</code> mixin the <code>Enumerable</code> module. Any object
-            may do the same as long as its class defines an <code>#each</code> method
-            which <code>yield</code>s the next element in the collection on every
-            invocation.  In return, the class gains a staggering variety of methods
-            for working with collections such as the following.
+          <section>
+            <h1>Literals</h1>
 
-            <p><code>#map {|<var>element</var>| }</code> returns an
-            <code>Array</code> created by passing each element of the collection to
-            the block, then storing the result. For example, <code>[1,2,3].map{|n|
-              n**2} #=&gt; [1,4,9]</code>. <!-- Symbol#to_proc ? -->
+              <!-- Discuss &:sym as a literal? -->
+              <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
+              for the instantiation of a particular core object.</p>
+                <!-- Doesn’t call initialize; Performance pips pedagogy -->
+                <!-- Cover block literals? -->
 
-            <p><code>#reduce {|<var>element<sub>0</sub></var>,
-              <var>element<sub>n</sub></var>| }</code> passes the first two elements
-            to the block, then for each subsequent element the last result of the
-            block and the element itself. For example: <code>[2,3,5,7].reduce(&amp;:+)
-              =&gt; 17</code>.
+              <section>
+                <h1>Strings</h1>
 
-            <p><code>#select {|<var>element</var>| }</code> returns an
-            <code>Array</code> of elements for which the block returned
-            <code>true</code>.
+                <p><code>String</code>s are mutable sequences of characters with an
+                associated encoding.
 
-            <p>Lastly, <code>#any?</code>, <code>#all?</code>, and <code>#none?</code>
-            accept a block which is called with an element of the collection. The
-            determinative indicates how many elements of the collection the block must
-            return <code>true</code> for the method to return <code>true</code>. For
-            instance, <code>#any?</code> returns <code>true</code> as soon as a single
-            element in the collection satisfies the block. 
+                <p>A <code>String</code> literal delimited by apostrophes (<code>'</code>)
+                is not subject to interpolation or escape sequences; whereas one delimited
+                by quotation marks (<code>"</code>) is. <!--alternative delimiters?-->
+                
+                <p>A single character prefixed with a question mark
+                (<code>?<var>char</var></code>) instantiates a <code>String</code>
+                containing the character.
+
+                <p><dfn title="string interpolation">Interpolation</dfn> is the embedding
+                of the value of an expression within a string. It is achieved with the
+                syntax <code>#{<var>expression</var>}</code>, where <var>expression</var>
+                is an arbitrary expression. It is common for <var>expression</var> to be
+                simply the name of variable which is to be substituted for its value.
+                
+                <p><dfn title="backslash escape">Escape sequences</dfn> are character
+                sequences prefixed with a reverse solidus (“backslash”) that have a
+                meaning other than their constituent characters. <code>\n</code> is a
+                newline (U+000A); <code>\t</code> a tab (U+0009); <code>\r</code> a
+                carriage return (U+000D); <code>\s</code> a space (U+0020);
+                <code>\\</code> a reverse solidus; <code>\n<var>octal</var></code> the
+                byte given by <var>octal</var>, a three digit octal number &lt; 377;
+                and <code>\u{<var>hex</var>}</code> the Unicode codepoint
+                <var>hex</var>, a hexadecimal number. To include a literal apostrophe
+                or quotation mark in a string literal delimited by the same, the
+                character must be preceded by a backlash.
+
+                <p>A string may be iterated over by Unicode codepoint with
+                <code>String#codepoints</code>, byte with <code>String#bytes</code>,
+                character with <code>String#chars</code>, or line with
+                <code>String#lines</code>.</p>
+              </section>
+
+              <section>
+                <h1 id=symbols>Symbols</h1>
+
+                <p>A <code>Symbol</code> represents a name. <code>Symbol</code>s are
+                immutable immediates. Two symbols with the same content will always be
+                represented by the same object, e.g. <code>:glark.object_id ==
+                  :glark.object_id</code>, so symbol comparisons are extremely efficient.
+                However, <code>Symbol</code> objects are not garbage collected, so are
+                unsuitable for storing data from unbounded collections; use
+                <code>String</code>s instead.
+                
+                <p><code>Symbol</code>s are used for unique identifiers, such as
+                <code>Hash</code> keys, as message selectors and method names, and as a
+                substitute for constants.
+
+                <p>A <code>Symbol</code> literal consists of a colon followed by an
+                identifier or <code>String</code> literal, e.g.
+                <code>:roland_barthes</code> or <code>:'887'</code>.
+                <!-- #to_sym -->
+              </section>
+
+              <section>
+                <h1>Numerics</h1>
+              <!-- Are immediates _instantiated_? -->
+
+                <p>An integer literal consists of one or more consecutive digits.
+                Implementation limits dictate whether its a <code>Fixnum</code> or
+                <code>Bignum</code>, but the distinction can be ignored by treating both
+                as <code>Integer</code>s.
+
+                <p>Hexadecimal and octal literals allow integers to be expressed in base
+                sixteen or eight, respectively. A hexadecimal literal begins with
+                <code>0x</code>, and is followed by one or more hex digits (0–9, a–f). An
+                octal literal begins with <code>0o</code>, and is followed by one or more
+                octal digits (0–7). Both forms ignore case and create <code>Integer</code>
+                objects.
+
+                <p>A floating-point literal consists of two integer literals separated
+                with a period, e.g. <code>3.14</code>. It is of class <code>Float</code>.
+                <!-- Notes on the inacuracy of floats -->
+
+                <p><code>Rational</code> numbers are expressed with the
+                <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
+                constructor. Similarly, <code>Complex(<var>real</var>,
+                  <var>imaginary</var>)</code> creates a <code>Complex</code>
+                object.</p>
+
+            <!--        <li>Standard mathematical operations as methods
+                      <li><code>/</code> performs integer division
+                      <li>to_* -->
+              </section>
+
+              <section>
+                <h1>Arrays</h1>
             
-            <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
+                <!-- Mention #to_a? --> <p>An <code>Array</code> instance represents
+                an ordered collection of objects, which need not be homogeneous. It is
+                automatically resized as elements are added or removed.
+                
+                <p>An <code>Array</code> literal is a comma-separated list of objects
+                enclosed in square brackets (<code>[</code>, <code>]</code>). For example,
+                <code>[1, :two, 'three']</code> creates a three-element
+                <code>Array</code> object with <code>1</code> as the first element.
+                
+                <p>Arrays are indexed by integral subscripts, beginning with 0. If the
+                subscript is negative it counts backward from the last element (i.e.
+                <code>-1</code> refers to the last element).
+                An element with subscript <var>index</var> can be retrieved with
+                <code>Array#[<var>index</var>]</code>. If the index doesn’t exist,
+                <code>nil</code> is returned. The index can be assigned to with
+                <code>Array#[<var>index</var>]=</code>. 
+                
+                <p>Elements are appended to an array with <code>Array#&lt;&lt;</code>; and
+                prepended with <code>Array#unshift</code>.
+                <code>Array#include?(<var>element</var>)</code> tests whether the array
+                contains <var>element</var>. The total number of elements is returned by
+                <code>Array#size</code>. <code>Array#each</code> iterates over the array,
+                <code>yield</code>ing the next element each time.</p>
+
+                <aside>
+                  <h1 id=enumerables>Enumerables</h1>
+
+                    <!-- Mention #to_enum? -->
+                    <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
+                    <code>Range</code> mixin the <code>Enumerable</code> module. Any object
+                    may do the same as long as its class defines an <code>#each</code> method
+                    which <code>yield</code>s the next element in the collection on every
+                    invocation.  In return, the class gains a staggering variety of methods
+                    for working with collections such as the following.
+
+                    <p><code>#map {|<var>element</var>| }</code> returns an
+                    <code>Array</code> created by passing each element of the collection to
+                    the block, then storing the result. For example, <code>[1,2,3].map{|n|
+                      n**2} #=&gt; [1,4,9]</code>. <!-- Symbol#to_proc ? -->
+
+                    <p><code>#reduce {|<var>element<sub>0</sub></var>,
+                      <var>element<sub>n</sub></var>| }</code> passes the first two elements
+                    to the block, then for each subsequent element the last result of the
+                    block and the element itself. For example: <code>[2,3,5,7].reduce(&amp;:+)
+                      =&gt; 17</code>.
+
+                    <p><code>#select {|<var>element</var>| }</code> returns an
+                    <code>Array</code> of elements for which the block returned
+                    <code>true</code>.
+
+                    <p>Lastly, <code>#any?</code>, <code>#all?</code>, and <code>#none?</code>
+                    accept a block which is called with an element of the collection. The
+                    determinative indicates how many elements of the collection the block must
+                    return <code>true</code> for the method to return <code>true</code>. For
+                    instance, <code>#any?</code> returns <code>true</code> as soon as a single
+                    element in the collection satisfies the block. 
+                    
+                    <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
+                </aside>
+              </section>
+
+              <section>
+                <h1>Hashes</h1>
+
+                <!--<code>{phileas_fog: :jean_passepartout, bertie_wooster:
+                  :reginald_jeeves}</code>.-->
+
+                <!-- Mention Hash#[]? -->
+                <p>A <code>Hash</code> instance represents a collection of associations
+                between unique keys and values (<i>key-value</i> pairs), both of which may
+                be any object. It is indexed by key, and ordered by insertion. For
+                instance, a <code>Hash</code> mapping colours to corresponding fruits may
+                include a key-value pair of <code>:lemon =&gt; :yellow</code>:
+                <code>:lemon</code> is the key; <code>:yellow</code> is the value.
+
+                <p>A <code>Hash</code> literal consists of a comma-separated list of
+                key-value pairs enclosed in curly braces (<code>{</code>, <code>}</code>).
+                The key is separated from its value with <code>=&gt;</code>. For example:
+                <code>{:age =&gt; 30, :name =&gt; 'Marlo'}</code>. If the key is a
+                <code>Symbol</code> literal, the colon with which its prefixed may be
+                made its suffix, and <code>=&gt;</code> can be omitted. The previous
+                example can be rewritten as <code>{age: 30, name: 'Marlo'}</code>. (This
+                syntactical shortcut is one of the reasons <code>Symbol</code>s are
+                preferred for keys).
+                
+                <p>A value may be retrieved for a given key with
+                <code>Hash#[<var>key</var>]</code>. A value may be associated with a given
+                key with <code>Hash#[<var>key</var>] = <var>value</var></code>. Note that
+                as keys are unique, associating a value with an existing key will delete
+                its previous value. A key’s existence may be determined
+                with <code>Hash#key?(<var>key</var>)</code>.
+
+                <p>Hashes can be iterated over with <code>Hash#each</code>, which yields a
+                key and its associated value on each iteration. Alternatively,
+                <code>Hash#each_key</code> and <code>Hash#each_value</code> iterate over
+                the keys or values, respectively.
+
+                <p>Uses include a dictionary, allowing values to be looked up by key; a
+                dispatch table, where the values are <code>Proc</code>s identified by
+                their key; and a cache of unique values, taking advantage of the unique
+                keys property.
+
+                <p><code>Hash</code> is <code>Enumerable</code>, <!-- link --> so all
+                <code>Enumerable</code> methods are available as well.
+              </section>
+
+              <section>
+                <h1>Regexps</h1>
+
+                <p>A <code>Regexp</code> represents a pattern that describes a
+                <code>String</code>. It <i>matches</i> when contained by the former. The
+                literal is of the form
+                <code>/<var>pattern</var>/<var>options</var></code>: a pattern delimited
+                by solidi, followed by zero or more option specifiers.
+
+                <p>The pattern consists of literal characters and meta-characters. A
+                literal character is a non-meta-character; it matches itself. Prefixing a
+                meta-character with a reverse solidus causes it to match literally.
+                <!-- List the meta-characters explicitly? -->
+
+                <p>A balanced pair of parentheses are meta-characters which group and/or
+                capture the characters they enclose. Grouping allows the enclosed to be
+                treated as an atomic whole such that meta-characters directly following
+                the closing parenthesis act on the whole. Capturing is the extraction of
+                specific parts of the text being matched so it can be referred to later,
+                from within the pattern <!-- Mention backreferences? --> or the
+                surrounding program. Parentheses do not capture if the opening parenthesis
+                is directly followed by <code>?:</code>. Captures can be referred to by
+                name if the opening parenthesis is followed by
+                <code>?&lt;<var>name</var>&gt;</code>.  Alternatively, they can be
+                referred to by number, where the <var>n</var><sup>th</sup> group of
+                parentheses is numbered <var>n</var>.
+
+                <p>A literal character or parenthetical may be followed by a quantifier
+                meta-character which specifies how many consecutive occurrences are
+                required at that point in the pattern. <code>+</code> requires at least
+                one, <code>*</code> zero or more, and
+                <code>{<var>min</var>,<var>max</var>}</code> between <var>min</var> and
+                <var>max</var> times. <!-- Note that one of these can be omitted? -->
+
+                <p>A character class specifies a set of characters, one of which must
+                appear at that point in the pattern, enclosed within a pair of square
+                brackets. The characters are specified literally, one after the other. A
+                range of consecutive characters may be abbreviated with the notation
+                <code><var>start</var>-<var>end</var></code>: the first character in the
+                range separated from the last by a hyphen. Inside a character class the
+                hyphen is therefore a metacharacter, so to be matched literally must
+                appear immediately before the right square bracket.
+                
+                <p>There are pre-defined character classes to match alphabetical
+                characters (<code>[[:alpha:]]</code>), lowercase
+                (<code>[[:lower:]]</code>), uppercase (<code>[[:upper:]]</code>),
+                alphanumerics (<code>[[:alnum:]]</code>), digits
+                (<code>[[:digit:]]</code>), whitespace (<code>[[:space:]]</code>), and
+                punctuation (<code>[[:punct:]]</code>), among others. The period matches
+                any character except newline.
+
+                <p>A vertical line is a meta-character specifying that either the
+                expression to its right, or that to its left, must match. It is usually used
+                inside a parenthetical.
+
+                <p><code>String#match</code> returns a <code>MatchData</code> object if
+                the match succeeded; <code>nil</code> otherwise. <code>MatchData#[]</code>
+                returns the text captured by the capture group given as a
+                <code>Symbol</code>, for a named group, or an <code>Integer</code>.
+
+                <!-- String#gsub? -->
+              </section>
+
+              <section>
+                <h1>Ranges</h1>
+
+                <p>A <code>Range</code> represents a sequence between two
+                given values.  It is either <i>inclusive</i> or
+                <i>exclusive</i>: the former includes the endpoint; the latter
+                does not. For example, 0–9 is a range consisting of all
+                single-digit integers, expressed by specifying the start-point
+                and endpoint.
+
+                <p>A <code>Range</code> literal consists of two values
+                separated by two or three periods: the former range is
+                inclusive; the latter exclusive. For example,
+                <code>'a'...'z'</code> represents letters <i>a</i>–<i>y</i>.
+
+                <p>The start-point and endpoint must be comparable <!-- link
+                --> with <code>#&lt;=&gt;</code>. That is, for a range
+                <code><var>start</var>..<var>end</var></code>,
+                <code><var>start</var> &lt;=&gt; <var>end</var></code> must
+                return -1, 0, or 1.
+                <code>Range#include?(<var>object</var>)</code> allows ranges
+                to be used as intervals: returning <code>true</code> if
+                <var>object</var> is a member; <code>false</code> otherwise.  
+
+                <p>A range is <dfn title="discrete ranges">discrete</dfn> if
+                it begins with a value that responds to <code>#succ</code> by
+                returning the next element of the sequence. It is so called
+                because it represents a finite set of values that can be
+                iterated over with <code>Range#each</code>.  Alternatively,
+                <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
+                passes each <var>n</var><sup>th</sup></var> element to the
+              block. As <code>Range</code>s are <code>Enumerable</code>, they
+              can also be converted to an <code>Array</code> with
+              <code>Range#to_a</code>. 
+                
+                <p>A non-discrete range is <dfn title="continuous
+                  range">continuous</dfn>.  It represents an infinite set of
+                values, therefore a <code>TypeError</code> is raised when
+                attempting to iterate over it.
+              </section>
+
+              <section>
+                <h1>Lambdas</h1>
+
+                <p>A literal of the form
+                <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
+                  { <var>statements</var> }</code> instantiates a
+                <code>Proc</code> object with lambda characteristics. The
+                parameter list takes the same form as that used in method
+                definitions <!-- link -->. It may be omitted entirely.
+                <var>statements</var> is zero or more statements. For example,
+                <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a + b
+                  }</code>.
+              </section>
+
+              <section>
+                <h1>Immediates</h1> <!-- sidebar this? -->
+
+                <p><code>Symbol</code> and <code>Fixnum</code> literals are
+                <dfn title=immediates>immediate</dfn> values. They are stored
+                as values rather than object references so are immutable and
+                cannot have singleton methods defined on them.
+              </section>
+            </section>
+
+            <section>
+              <h1>Constructors</h1>
+
+              <section>
+                <h1><code>.new</code></h1>
+
+                <p>Sending the <code>:new</code> message to a class
+                instantiates that class. For example, <code>Array.new</code>
+                creates an <code>Array</code> object. A method that
+                instantiates a class is a <dfn
+                  title="constructor">constructor</dfn>: it allocates an
+                object then initializes its state.
+              </section>
+
+              <section>
+                <h1>Allocation</h1>
+
+                <p><code>Class#allocate</code> allocates memory for a new
+                object and returns a reference to it. It cannot be overridden.
+                If invoked manually, it returns an uninitialized instance of
+                the class. <!-- some classes forbid this; maybe this is an
+                idiom: privatise #allocate so as to prevent uninitialized
+                objects? -->
+              </section>
+
+              <section>
+                <h1>Initialization</h1>
+            
+                <p>The newly allocated object is sent an
+                <code>:initialize</code> message along with the arguments
+                passed to <code>.new</code>. The <code>#initialize</code>
+                method typically validates the constructor’s arguments then
+                assigns them to instance variables. It is a private method so
+                cannot be called from outside the class.
+
+                <p>The <code>.new</code> constructor ignores the return value
+                of <code>#initialize</code>, so as to return the initialized
+                object instead.
+
+                <p>A class that has a superclass other than
+                <code>Object</code> and defines an <code>#initialize</code>
+                method should call its parent’s <code>#initialize</code> with
+                <code>super</code>.
+              </section>
+            </section>
+              <!-- Pickaxe pp. 427: Hook for object creation -->
+          </section>
+
+          <section>
+            <h1>Vocabulary</h1>
+
+            <!-- Do we want to use this term? -->
+            <ol>
+              <li>Ask an object what it understands by sending it :methods /
+              :instance_methods
+            </ol>
+          </section>
+
+          <section>
+            <h1>Identity</h1>      
+            
+            <p>Every object has a numeric identifier that is unique among other
+            objects and constant for the object’s lifetime. It is returned as a
+            <code>Fixnum</code> by <code>Object#object_id</code>.
+
+            <p><code>ObjectSpace._id2ref</code> returns a reference to an object given
+            its ID. For example, <code>ObjectSpace._id2ref([1, 2].object_id) = [1,
+              2]</code>. <!--
+            http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/348859 -->
+
+            <p>An object’s ID should not be confused with its hash code as returned by
+            <code>Object#hash</code>. Logically identical objects should have the same
+            hash code, yet will have different object IDs if they are pointed to by
+            different references. For example, <code>[].object_id !=
+              [].object_id</code> yet <code>[].hash == [].hash</code>.
+
+            <!-- Hash#compare_by_identity -->
+          </section>
+
+          <section>
+            <h1>Class</h1> <!-- Is the class a component of identity? -->
+
+            <p>The class of an object is returned by
+            <code>Object#class</code>. To test whether an object is an
+            instance of a given class, use the
+            <code>Object#is_a?(<var>class</var>)</code> predicate, where
+            <var>class</var> is a <code>Class</code> object. <!-- === -->
+          </section>
+
+          <section>
+            <h1>Relations</h1>
+            <!-- Explain that as relational operators are method calls the LHS gets to
+            evaluate the relation -->
+            <!-- Look at wikipedia Relations article for this -->
+
+            <section>
+              <h1 id=order>Order</h1>
+                
+              <p>If instances of a class suggest an ordering relationship such that
+              one instance is either less than, greater than, or equal to, another,
+              they are said to be <dfn title="comparable class">comparable</dfn>. The
+              class can define a method named <code>&lt;=&gt;</code> (the <dfn
+                title="spaceship operator">spaceship operator</dfn>) expecting a
+              single argument and
+              following the <tt>qsort(3)</tt> convention <!-- reference this --> of
+              returning <code>-1</code> if <code>self</code> is less than the
+              argument, <code>0</code> if they are equal, or <code>1</code> if
+              <code>self</code> is greater. <!-- Describe returning nil for
+              incomparable argument; http://redmine.ruby-lang.org/issues/show/2276 -->
+
+              <p>The class then mixes in the <code>Comparable</code> module, which
+              provides <code>#&lt;</code>, <code>#==</code>, and <code>#&gt;</code>
+              methods implemented in terms of <code>#&lt;=&gt;</code>. 
+              
+              <!-- http://redmine.ruby-lang.org/repositories/diff/ruby-19/object.c?rev=25453
+              -->
+            </section>
+
+            <section>
+              <h1 id=equivalence>Equivalence</h1>
+
+              <!-- Link with Comparison section: <=> defines == --> 
+              <!-- Diagram showing equality on a strict..loose line, e.g. 
+              equal?    eql?  ==
+              Strictest <-> Loosest
+              --> 
+              <p>The means by which objects are compared for equality depend on the type
+              of equality desired.
+              
+              <p><code>Object#equal?</code> considers the receiver equal to the argument
+              if the two objects are identical, i.e. their object IDs are equal. For
+              example, <code>[].equal?([]) == false</code>. Classes are discouraged from
+              overriding this method, so its semantics should not change.
+              
+              <p><code>Object#==</code> is an alias of <code>Object#equal?</code>, but
+              <i>is</i> normally overridden in subclasses to denote <i>logical</i>
+              equivalence. For example, <code>Array#==</code> regards two
+              <code>Array</code> objects equal if they contain the same number of
+              elements and each element is <code>==</code> to its corresponding element.
+              So, <code>[O.new] == [O.new]</code> is <code>true</code> if <code>O.new ==
+                O.new</code>.
+              
+              <p><code>Object#!=</code> returns the inverse of <code>Object#==</code>,
+              so it does not normally need to be defined explicitly. It can be, however.
+              
+              <p><code>Object#eql?</code> is also an alias of
+              <code>Object#equal?</code> that subclasses often override. It differs
+              from <code>Object#==</code> in that it denotes <i>strict</i> logical
+              comparison without performing type conversion. For example, consider 1
+              and 1.0. The two are logically equivalent if converted to the same
+              class, so <code>1 == 1.0</code>.  However, <code>1.eql?(1.0) ==
+                false</code> because <code>Object#eql?</code> does not perform type
+              conversion.
+              
+              <p><a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>
+              (pp. 77–78) state that <q>If two objects are <code>eql?</code>, their
+                <code>hash</code> methods must also return the same value.</q>, going
+              on to recommend that classes implement <code>#eql?</code> in terms of
+              <code>#hash</code>.</p>
+              
+              <!-- Cover === and =~ ? -->
+            </section>
+          </section>
+
+          <section>
+            <h1>State</h1>
+
+            <section>
+              <h1>Instance Variables</h1>
+
+              <p>The state of an object is encapsulated in instance variables, whose
+              values are local to that particular object, hidden <!-- better word? -->
+              from others. An object will not respond to a message selecting one if its
+              instance variables unless a corresponding method has been defined, either
+              explicitly, or implicitly with <code>attr</code> <!-- link to section;
+              clarify the attr _familly_? -->.
+
+              <p>An instance variable is typically defined in an instance method. Its
+              name is an identifier prefixed with a commercial at sign (<code>@</code>).
+              
+              <!-- Use Object# instead of Kernel# ? --> <p>The names of an object’s
+              instance variables are returned as an <code>Array</code> of
+              <code>Symbol</code>s by <code>Kernel#instance_variables</code> in the
+              order they were assigned. <!--
+              http://redmine.ruby-lang.org/issues/show/2243 -->  Their
+              values may be retrieved and modified from another object with
+              <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
+              <code>Kernel#instance_variable_set(<var>ivar</var>,
+                <var>value</var>)</code>, respectively, where <var>ivar</var> is the
+              variable’s name as a <code>Symbol</code>, including the <code>@</code>
+              prefix. These methods should be used sparingly as they break
+              encapsulation.
+            </section>
+
+            <section>
+              <h1>Attributes</h1>
+              
+              <p>An attribute, <var>a</var>, is a pair (<a class=ref
+                href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, pp.
+              94–95) of public methods—an accessor (<var>a</var>) and a writer
+              (<var>a=</var>)—exposing a property of an object’s state to
+              other objects. They can be created automatically by supplying
+              their names to <code>Module#attr_accessor</code> or
+              <code>Module#attr_writer</code> inside a class definition. This
+              assumes, as is typical, that an attribute corresponds to an
+              instance variable of the same name, i.e.  <var>a</var> returns
+              <var>@a</var>; <var>a=</var> sets <var>@a</var>. If the
+              attribute value is not backed by an instance variable, it should
+              be exposed in the same way (<a href=/references#refMEYER00
+                class=ref>Meyer</a>, pp. 55–57) by defining the methods
+              manually.</p>
+              <!-- In the Ruby cookbook these are called "virtual attributes"
+              --> 
+              
+              <!-- http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/class/attribute_accessors.rb
+              -->
+              <!-- Module#attr ? -->
+            </section>
+        
+            <section>
+              <h1>Mutability</h1>
+            
+              <!-- Define _mutability_ -->
+              <p><code>Object#freeze</code> makes the receiver immutable: attempts to
+              change its state elicit a <code>RuntimeError</code>. The
+              <code>Object#frozen?</code> predicate returns <code>true</code> if the
+              receiver is frozen. There is not a <code>#thaw</code> method, so this
+              operation is not reversible. However, duplicating an object <!-- link #dup
+              --> removes its frozen state.</p>
+              
+              <aside class=note>
+                Freezing works on objects not variables, so it is permissible to assign
+                a new value to a “frozen variable”. <!-- explain why we're saying this?
+                -->
+              </aside> 
+              
+              <!-- Note that immediates can be frozen...; link to my bug report -->
+            </section>
+          </section>
+          
+          <section>
+            <h1>References &amp; Garbage Collection</h1> <!-- Lifespan / Lifetime ? -->
+
+            <p>Variables store references to objects. Assignment is,
+            therefore, the copying of the reference on the right-hand side to
+            the variable named on the left, leaving both sides referring to
+            the same object. However, a reference may not be dereferenced; it
+            is not a pointer.
+
+            <p>An object is deemed <dfn title="unreachable
+              object">unreachable</dfn> when there are no references to it, or
+            the sources of the remaining references are themselves
+            unreachable. Such objects are subject to garbage collection:
+            automatic destruction by Ruby. The lifetime of an object is
+            determined by its longest living reference. If an object is
+            intended to be temporal, its references must be likewise.
+
+            <!-- GC.start, GC.disable -->
+          </section>
+
+          <section>
+            <h1>BasicObject</h1>
+
+            <p><code>BasicObject</code> is the root of the class hierarchy: from this
+            all other classes ultimately inherit. Its superclass is <code>nil</code>.
+            It defines the bare minimum of methods so as to be a “blank slate”:
+            <q>…useful as the superclass of delegating wrapper classes…</q> (<a
+              class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, p
+            235). (A thorough explanation of “blank slate” classes in Ruby is found in
+            <a href=/references#refBROWN09 class=ref>Brown</a>, pp. 57–62). <!--
+            Footnote this remark? -->
+
+            <!-- Clarify that by default classes inherit from Object? -->
+            <!-- Note implications of having so few methods? In irb? -->
+          </section>
+
+          <section>
+            <h1 id=duplication>Duplication</h1>
+
+            <p><code>Object#dup</code> performs a shallow copy of the
+            receiver. A new instance of the receiver’s class is allocated,
+            tainted if the original object was, then populated with shallow
+            copies of the receiver’s instance variables. Neither singleton
+            methods nor frozen state are duplicated.  Corresponding instance
+            variables will refer to the same object because they are copied by
+            reference; not referent.
+
+            <p>If the duplicated object responds to
+            <code>:initialize_copy</code>, it will be sent this message with
+            the receiver as an argument. Its return value is ignored. A common
+            use is to perform a deep copy of instance variables by explicitly
+            duplicating them. If an object may only be duplicated under
+            certain circumstances, <code>#initialize_copy</code> may choose to
+            raise an exception.</p>
+
+            <aside class=note>
+              Another way to perform a deep copy of an object is:
+              <code>Marshal.load(Marshal.dump(<var>object</var>))</code>.
+            </aside>
+
+            <p>Objects that shouldn’t be duplicated can privatise their
+            <code>#dup</code> method or define it to raise an informative exception
+            (<a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, pp.
+            243–245).
+          </section>
+
+          <section>
+            <h1>Cloning</h1>
+          
+            <p><code>Object#clone</code> behaves like <code>Object#dup</code>
+            except it also copies singleton methods and frozen state.
+            Therefore, cloning creates a more faithful copy of the receiver
+            than duplication.
+          </section>
+
+          <section>
+            <h1>Marshaling</h1> <!-- Serialization? Make part of Instantiation? -->
+            
+            <p>An object may be serialized as a binary <code>String</code> by
+            supplying it to <code>Marshal.dump</code>. If an <code>IO</code> object is
+            supplied as the second argument, the marshaled object is written to it.
+            <code>Marshal.load</code> reverses this process by recreating the object
+            from its marshaled form, which may be a string <!-- Explain somewhere that
+            _string_ (or _string-y_) is an object that String.try_convert(obj) != nil
+            --> or <code>IO</code> object.
+
+            <p>The Marshal data format is versioned with a major and minor number,
+            which are stored in the first two bytes of marshaled data.
+            <code>Marshal.load</code> raises a <code>TypeError</code> unless the data
+            has the current major version and a minor version ≤ the current
+            minor version.
+
+            <!-- Investigate interaction between #_dump and #marshal_dump -->
+
+            <p>Objects may control how they’re dumped by responding to
+            <code>:marshal_dump</code> with another object to be serialized in their
+            place. If so, they must also respond to <code>:marshal_load</code>, which
+            is sent to an allocated, uninitialized instance of their class with the
+            recreated object as an argument. It is expected to initialize the state of
+            the receiver from that of its argument. The return value is ignored.
+          </section>
+
+          <section>
+            <h1>Taint</h1>
+
+            <!-- Clarify that every object is either tainted or not -->
+            <p>Taint checking is a security mechanism that blacklists objects
+            influenced by external input, propagating this trait to derivative
+            objects. Data read from <code>IO</code> streams and user input is
+            automatically tainted. An object can be explicitly tainted by
+            sending it <code>:taint</code>. The <code>#tainted?</code>
+            predicate returns <code>true</code> if the receiver, or an object
+            from which it derived, is tainted. Taintedness persists over
+            duplication and cloning. It can be removed with
+            <code>Object#untaint</code>.
+
+            <p>If <code>$SAFE &gt; 0</code> certain methods raise
+            <code>SecurityError</code>s when given tainted objects. <!-- How
+            do we handle this? Separate section for $SAFE? List a sampling of
+            methods? -->
+          </section>
+
+          <section>
+            <h1>Trust</h1>
+          
+            <p>Objects and running code are either trusted or untrusted. They
+            are trusted by default unless <code>$SAFE</code> ≥ 3, in which
+            case they are untrusted. Untrusted code is prohibited from
+            modifying trusted objects.
+
+            <p>An object may be explicitly trusted by sending it
+            <code>:trust</code> when <code>$SAFE &lt; 3</code>; a message of
+            <code>:untrust</code> does the converse when <code>$SAFE &lt;
+              4</code>. The <code>Object#untrusted?</code> predicate returns
+            <code>true</code> when the receiver is not trusted;
+            <code>false</code> otherwise.
+          </section>
+
+          <!--
+        <h2>Defining Methods On</h2>  Behaviour 
+
+        <h2>Listing Methods</h2>  Interrogating? / Under Behaviour?
+
+        <h2>Extending</h2> In Modules? 
+
+        <h2>ObjectSpace</h2>
+        [ruby-core:19600] 
+        ObjectSpace.each_object(o) do
+         if o.is_a?(IO)
+           o.close rescue nil
+         end
+        end
+        -->
+
+        <section>
+          <h1>Context</h1>
+          
+          <p><code>BasicObject#instance_eval</code> takes a string or block
+          which it evaluates in the receiver’s context, setting
+          <code>self</code> to the receiver. The evaluated code can access the
+          object’s instance variables, invoke its private and protected
+          methods, and define methods on its singleton class. <!-- Needs
+          examples of all three -->
+
+          <p><code>BasicObject#instance_exec</code> is similar, but accepts
+          any number of arguments which it passes to the required block.
         </section>
 
-      <h4>Hashes</h4>
+        <section>
+          <h1 id=conversion>Conversion</h1>
 
-        <!--<code>{phileas_fog: :jean_passepartout, bertie_wooster:
-          :reginald_jeeves}</code>.-->
+          <!-- Borrow from Ruby Cookbook, pp 287–291 --> <p>Selectors whose
+          names begin with <i>to_</i> are expected to return the receiver
+          converted to an object of the indicated class. A conversion is
+          either <i>implicit</i> or <i>explicit</i>, as explained below:</p>
+         
+          <section>
+            <h1>Implicit Conversion</h1>
+            
+            <p>A method may expect an argument of a particular class. If it
+            receives an object of another class it wishes to automatically
+            convert that object into one of the desired class. 
+            
+            <p>For example, <code>Array.new</code> may be called with an Array as
+            an argument, which is copied to produce a new Array. If the argument
+            is not of class <code>Array</code>, <code>Array.new</code> sends
+            <code>:to_ary</code> to the argument, implicitly converting it to an
+            <code>Array</code>.
 
-        <!-- Mention Hash#[]? -->
-        <p>A <code>Hash</code> instance represents a collection of associations
-        between unique keys and values (<i>key-value</i> pairs), both of which may
-        be any object. It is indexed by key, and ordered by insertion. For
-        instance, a <code>Hash</code> mapping colours to corresponding fruits may
-        include a key-value pair of <code>:lemon =&gt; :yellow</code>:
-        <code>:lemon</code> is the key; <code>:yellow</code> is the value.
+            <p><code>Array.new</code> sent <code>:to_ary</code> because it is part
+            of the implicit conversion protocol. By responding to this message
+            with an <code>Array</code>  objects are declaring that they may be
+            used in place of an <code>Array</code>. 
+             
+            <p>If the argument responds to <code>:to_a</code> it can also be
+            automatically converted to an <code>Array</code>. However,
+            <code>Array.new</code> does not send this message for it is part of
+            the <i>explicit</i> conversion protocol; the sender of the message
+            must send the argument <code>:to_a</code> himself if he requires the
+            conversion.
 
-        <p>A <code>Hash</code> literal consists of a comma-separated list of
-        key-value pairs enclosed in curly braces (<code>{</code>, <code>}</code>).
-        The key is separated from its value with <code>=&gt;</code>. For example:
-        <code>{:age =&gt; 30, :name =&gt; 'Marlo'}</code>. If the key is a
-        <code>Symbol</code> literal, the colon with which its prefixed may be
-        made its suffix, and <code>=&gt;</code> can be omitted. The previous
-        example can be rewritten as <code>{age: 30, name: 'Marlo'}</code>. (This
-        syntactical shortcut is one of the reasons <code>Symbol</code>s are
-        preferred for keys).
-        
-        <p>A value may be retrieved for a given key with
-        <code>Hash#[<var>key</var>]</code>. A value may be associated with a given
-        key with <code>Hash#[<var>key</var>] = <var>value</var></code>. Note that
-        as keys are unique, associating a value with an existing key will delete
-        its previous value. A key’s existence may be determined
-        with <code>Hash#key?(<var>key</var>)</code>.
+            <p><a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>
+            (p. 80) suggest that objects should implement an implicit conversion
+            protocol if they have <q>strong characteristics</q> of the target
+            class.</p>
 
-        <p>Hashes can be iterated over with <code>Hash#each</code>, which yields a
-        key and its associated value on each iteration. Alternatively,
-        <code>Hash#each_key</code> and <code>Hash#each_value</code> iterate over
-        the keys or values, respectively.
+            <section>
+              <h1 id=try-convert><code>try_convert</code></h1>
+            
+              <!-- Describe idioms that this implies, e.g
+              Array.try_convert(arg) or raise ArgumentError -->
+              <p><code>Array</code>, <code>Hash</code>, <code>IO</code>,
+              <code>Regexp</code>, and <code>String</code> define a class
+              method named <code>try_convert</code> which uses the appropriate
+              implicit conversion protocol to convert the argument to the
+              receiver’s class. If the argument does not respond to the
+              appropriate implicit conversion message,
+              <code>.try_convert</code> returns <code>nil</code>.
 
-        <p>Uses include a dictionary, allowing values to be looked up by key; a
-        dispatch table, where the values are <code>Proc</code>s identified by
-        their key; and a cache of unique values, taking advantage of the unique
-        keys property.
+              <p>For example,
+              <code>String.try_convert(<var>object</var>)</code> returns
+              <code><var>object</var>.to_str</code> if <var>object</var>
+              responds to <code>:to_str</code>; <code>nil</code> otherwise.
+            </section>
 
-        <p><code>Hash</code> is <code>Enumerable</code>, <!-- link --> so all
-        <code>Enumerable</code> methods are available as well.
+            <p>From the discussion above we can derive the following rules:
 
-      <h4>Regexps</h4>
+            <ol>
+              <li>A method may send implicit conversion messages to its
+              arguments. 
+              <li>Objects responding to such messages are declaring that they may
+              be used in this way.
+              <li>A method must not send explicit conversion messages to its
+              arguments.
+            </ol>
+          </section>
 
-        <p>A <code>Regexp</code> represents a pattern that describes a
-        <code>String</code>. It <i>matches</i> when contained by the former. The
-        literal is of the form
-        <code>/<var>pattern</var>/<var>options</var></code>: a pattern delimited
-        by solidi, followed by zero or more option specifiers.
+          <section>
+            <h1>Explicit Conversion</h1>
+            
+            <p>An object which can be represented as an object of another class
+            may implement the relevant explicit conversion protocol. It is
+            explicit because the user must explicitly send the conversion message
+            to the object to effect the conversion; the message should never be
+            sent automatically by another method.
 
-        <p>The pattern consists of literal characters and meta-characters. A
-        literal character is a non-meta-character; it matches itself. Prefixing a
-        meta-character with a reverse solidus causes it to match literally.
-        <!-- List the meta-characters explicitly? -->
+            <p>If an object implements an implicit conversion protocol that
+            corresponds with an explicit conversion protocol, it should implement
+            the explicit protocol, too. The implicit protocol is a superset of the
+            explicit protocol, so there will not exist a scenario where an object
+            would need to implement the former without the latter. This can be easily
+            achieved by aliasing the implicit method to the explicit method. For
+            example, if an object responds to <code>:to_ary</code> but not to
+            <code>:to_a</code> it should alias <code>:to_a</code> to
+            <code>:to_ary</code>.
 
-        <p>A balanced pair of parentheses are meta-characters which group and/or
-        capture the characters they enclose. Grouping allows the enclosed to be
-        treated as an atomic whole such that meta-characters directly following
-        the closing parenthesis act on the whole. Capturing is the extraction of
-        specific parts of the text being matched so it can be referred to later,
-        from within the pattern <!-- Mention backreferences? --> or the
-        surrounding program. Parentheses do not capture if the opening parenthesis
-        is directly followed by <code>?:</code>. Captures can be referred to by
-        name if the opening parenthesis is followed by
-        <code>?&lt;<var>name</var>&gt;</code>.  Alternatively, they can be
-        referred to by number, where the <var>n</var><sup>th</sup> group of
-        parentheses is numbered <var>n</var>.
+            <p>From the discussion above we can derive the following rules:
 
-        <p>A literal character or parenthetical may be followed by a quantifier
-        meta-character which specifies how many consecutive occurrences are
-        required at that point in the pattern. <code>+</code> requires at least
-        one, <code>*</code> zero or more, and
-        <code>{<var>min</var>,<var>max</var>}</code> between <var>min</var> and
-        <var>max</var> times. <!-- Note that one of these can be omitted? -->
+            <ol>
+              <li>A method should not send explicit conversion messages to its
+              arguments. 
+              <li>Objects responding to implicit conversion messages that have
+              explicit counterparts should respond to the latter, too. 
+            </ol>
+          </section>
 
-        <p>A character class specifies a set of characters, one of which must
-        appear at that point in the pattern, enclosed within a pair of square
-        brackets. The characters are specified literally, one after the other. A
-        range of consecutive characters may be abbreviated with the notation
-        <code><var>start</var>-<var>end</var></code>: the first character in the
-        range separated from the last by a hyphen. Inside a character class the
-        hyphen is therefore a metacharacter, so to be matched literally must
-        appear immediately before the right square bracket.
-        
-        <p>There are pre-defined character classes to match alphabetical
-        characters (<code>[[:alpha:]]</code>), lowercase
-        (<code>[[:lower:]]</code>), uppercase (<code>[[:upper:]]</code>),
-        alphanumerics (<code>[[:alnum:]]</code>), digits
-        (<code>[[:digit:]]</code>), whitespace (<code>[[:space:]]</code>), and
-        punctuation (<code>[[:punct:]]</code>), among others. The period matches
-        any character except newline.
-
-        <p>A vertical line is a meta-character specifying that either the
-        expression to its right, or that to its left, must match. It is usually used
-        inside a parenthetical.
-
-        <p><code>String#match</code> returns a <code>MatchData</code> object if
-        the match succeeded; <code>nil</code> otherwise. <code>MatchData#[]</code>
-        returns the text captured by the capture group given as a
-        <code>Symbol</code>, for a named group, or an <code>Integer</code>.
-
-        <!-- String#gsub? -->
-
-      <h4>Ranges</h4>
-
-        <p>A <code>Range</code> represents a sequence between two given values.
-        It is either <i>inclusive</i> or <i>exclusive</i>: the former includes the
-        endpoint; the latter does not. For example, 0–9 is a range consisting of
-        all single-digit integers, expressed by specifying the start-point and
-        endpoint.
-
-        <p>A <code>Range</code> literal consists of two values
-        separated by two or three periods: the former range is inclusive;
-        the latter exclusive. For example, <code>'a'...'z'</code> represents
-        letters <i>a</i>–<i>y</i>.
-
-        <p>The start-point and endpoint must be comparable <!-- link --> with
-        <code>#&lt;=&gt;</code>. That is,
-        for a range <code><var>start</var>..<var>end</var></code>,
-        <code><var>start</var> &lt;=&gt; <var>end</var></code> must return -1, 0,
-        or 1. <code>Range#include?(<var>object</var>)</code> allows ranges to be
-        used as intervals: returning <code>true</code> if <var>object</var> is a
-        member; <code>false</code> otherwise.  
-
-        <p>A range is <dfn title="discrete ranges">discrete</dfn> if it begins
-        with a value that responds to <code>#succ</code> by returning the next
-        element of the sequence. It is so called because it represents a finite
-        set of values that can be iterated over with <code>Range#each</code>.
-        Alternatively, <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
-        passes each <var>n</var><sup>th</sup></var> element to the block. As
-        <code>Range</code>s are <code>Enumerable</code>, they can also be converted
-        to an <code>Array</code> with <code>Range#to_a</code>. 
-        
-        <p>A non-discrete range is <dfn title="continuous range">continuous</dfn>.
-        It represents an infinite set of values, therefore a
-        <code>TypeError</code> is raised when attempting to iterate over it.
-
-      <h4>Lambdas</h4>
-
-        <p>A literal of the form
-        <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
-          { <var>statements</var> }</code> instantiates a <code>Proc</code>
-        object with lambda characteristics. The parameter list takes the same
-        form as that used in method definitions <!-- link -->. It may be omitted
-        entirely. <var>statements</var> is zero or more statements. For example,
-        <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a + b }</code>.
-
-      <h4>Immediates</h4> <!-- sidebar this? -->
-
-        <p><code>Symbol</code> and <code>Fixnum</code> literals are <dfn
-          title=immediates>immediate</dfn> values. They are stored as values
-        rather than object references so are immutable and cannot have singleton
-        methods defined on them.
-
-    <h3>Constructors</h3>
-
-      <h4><code>.new</code></h4>
-
-        <p>Sending the <code>:new</code> message to a class instantiates that
-        class. For example, <code>Array.new</code> creates an
-        <code>Array</code> object. A method that instantiates a class is a
-        <dfn title="constructor">constructor</dfn>: it allocates an object
-        then initializes its state.
-
-      <h4>Allocation</h4>
-
-        <p><code>Class#allocate</code> allocates memory for a new object and
-        returns a reference to it. It cannot be overridden. If invoked
-        manually, it returns an uninitialized instance of the class. <!-- some
-        classes forbid this; maybe this is an idiom: privatise #allocate so as
-        to prevent uninitialized objects? -->
-
-      <h4>Initialization</h4>
-      
-        <p>The newly allocated object is sent an <code>:initialize</code>
-        message along with the arguments passed to <code>.new</code>. The
-        <code>#initialize</code> method typically validates the constructor’s
-        arguments then assigns them to instance variables. It is a private
-        method so cannot be called from outside the class.
-
-        <p>The <code>.new</code> constructor ignores the return value of
-        <code>#initialize</code>, so as to return the initialized object
-        instead.
-
-        <p>A class that has a superclass other than <code>Object</code> and
-        defines an <code>#initialize</code> method should call its parent’s
-        <code>#initialize</code> with <code>super</code>.
-
-    <!-- Pickaxe pp. 427: Hook for object creation -->
-
-  <h2>Vocabulary</h2>
-  <!-- Do we want to use this term? -->
-  <ol>
-    <li>Ask an object what it understands by sending it :methods /
-    :instance_methods
-  </ol>
-
-  <h2>Identity</h2>      
-    
-    <p>Every object has a numeric identifier that is unique among other
-    objects and constant for the object’s lifetime. It is returned as a
-    <code>Fixnum</code> by <code>Object#object_id</code>.
-
-    <p><code>ObjectSpace._id2ref</code> returns a reference to an object given
-    its ID. For example, <code>ObjectSpace._id2ref([1, 2].object_id) = [1,
-      2]</code>. <!--
-    http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/348859 -->
-
-    <p>An object’s ID should not be confused with its hash code as returned by
-    <code>Object#hash</code>. Logically identical objects should have the same
-    hash code, yet will have different object IDs if they are pointed to by
-    different references. For example, <code>[].object_id !=
-      [].object_id</code> yet <code>[].hash == [].hash</code>.
-
-    <!-- Hash#compare_by_identity -->
-
-    <h3>Class</h3> <!-- Is the class a component of identity? -->
-
-      <p>The class of an object is returned by <code>Object#class</code>. To
-      test whether an object is an instance of a given class, use the
-      <code>Object#is_a?(<var>class</var>)</code> predicate, where
-      <var>class</var> is a <code>Class</code> object. <!-- === -->
-
-  <h2>Relations</h2>
-    <!-- Explain that as relational operators are method calls the LHS gets to
-    evaluate the relation -->
-    <!-- Look at wikipedia Relations article for this -->
-    <h3 id=order>Order</h3>
+          <p>The conversion protocol is summarised in the table below. The
+          <i>Target Class</i> column indicates the class of the object the
+          conversion method should return. The <i>Implicit</i> column specifies
+          the message, if any, that is part of the implicit conversion protocol
+          for the target class. Likewise, the <i>Explicit</i> column specifies
+          the message, if any, that is part of the explicit conversion protocol
+          for the target class. If a protocol is not defined for a class, it has a
+          value of <i>N/A</i> is given. 
           
-      <p>If instances of a class suggest an ordering relationship such that
-      one instance is either less than, greater than, or equal to, another,
-      they are said to be <dfn title="comparable class">comparable</dfn>. The
-      class can define a method named <code>&lt;=&gt;</code> (the <dfn
-        title="spaceship operator">spaceship operator</dfn>) expecting a
-      single argument and
-      following the <tt>qsort(3)</tt> convention <!-- reference this --> of
-      returning <code>-1</code> if <code>self</code> is less than the
-      argument, <code>0</code> if they are equal, or <code>1</code> if
-      <code>self</code> is greater. <!-- Describe returning nil for
-      incomparable argument; http://redmine.ruby-lang.org/issues/show/2276 -->
+          <p>Note that the absence of an implicit protocol for a class implies
+          that it should not be converted implicitly. Methods expecting arguments
+          of a non-convertible class should raise a <code>TypeError</code> if they
+          receive arguments of an unsuitable type.</p>
 
-      <p>The class then mixes in the <code>Comparable</code> module, which
-      provides <code>#&lt;</code>, <code>#==</code>, and <code>#&gt;</code>
-      methods implemented in terms of <code>#&lt;=&gt;</code>. 
-      
-      <!-- http://redmine.ruby-lang.org/repositories/diff/ruby-19/object.c?rev=25453
-      -->
-    
-    <h3 id=equivalence>Equivalence</h3>
+          <!-- Use spanning cell when an implicit message is given without an explicit
+          counterpart? -->
+          <table>
+            <tr>
+              <th>Target Class</th> 
+              <th>Implicit</th> 
+              <th>Explicit</th>
+              <th>Note</th>
+            </tr>
+            <tr>
+              <td><code>Array</code></td> 
+              <td><code>:to_ary</code></td>
+              <td><code>:to_a</code></td>
+            </tr>
+            <tr>
+              <td><code>Complex</code></td> 
+              <td><code>:to_c</code></td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td><code>Enumerator</code></td> 
+              <td>N/A</td>
+              <td><code>:to_enum</code></td>
+            </tr>
+            <tr>
+              <td><code>Float</code></td> 
+              <td><code>:to_f</code></td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td><code>Hash</code></td> 
+              <td><code>:to_hash</code></td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td><code>Integer</code></td> 
+              <td><code>:to_int</code></td>
+              <td><code>:to_i</code></td>
+            </tr>
+            <tr>
+              <td><code>IO</code></td> 
+              <td><code>:to_open</code></td>
+              <td>N/A</td>
+              <td>Sent by <code>Kernel#open</code> to its first argument</td>
+            </tr>
+            <tr>
+              <td><code>Proc</code></td> 
+              <td><code>:to_proc</code></td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td><code>Rational</code></td> 
+              <td><code>:to_r</code></td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td><code>Regexp</code></td> 
+              <td><code>:to_regexp</code></td>
+              <td>N/A</td>
+              <td>Sent by <code>Regexp.try_convert</code></td>
+            </tr>
+            <tr>
+              <td><code>String</code></td> 
+              <td><code>:to_str</code></td>
+              <td><code>:to_s</code></td>
+            </tr>
+            <tr>
+              <td><code>String</code></td> 
+              <td><code>:to_path</code></td>
+              <td>N/A</td>
+              <td>Sent by methods expecting a file path as an argument, such as
+                the class methods of <code>File</code></td>
+            </tr>
+            <tr>
+              <td><code>Symbol</code></td> 
+              <td><code>:to_sym</code></td>
+              <td>N/A</td>
+            </tr>
+          </table> 
 
-      <!-- Link with Comparison section: <=> defines == --> 
-      <!-- Diagram showing equality on a strict..loose line, e.g. 
-      equal?    eql?  ==
-      Strictest <-> Loosest
-      --> 
-      <p>The means by which objects are compared for equality depend on the type
-      of equality desired.
-      
-      <p><code>Object#equal?</code> considers the receiver equal to the argument
-      if the two objects are identical, i.e. their object IDs are equal. For
-      example, <code>[].equal?([]) == false</code>. Classes are discouraged from
-      overriding this method, so its semantics should not change.
-      
-      <p><code>Object#==</code> is an alias of <code>Object#equal?</code>, but
-      <i>is</i> normally overridden in subclasses to denote <i>logical</i>
-      equivalence. For example, <code>Array#==</code> regards two
-      <code>Array</code> objects equal if they contain the same number of
-      elements and each element is <code>==</code> to its corresponding element.
-      So, <code>[O.new] == [O.new]</code> is <code>true</code> if <code>O.new ==
-        O.new</code>.
-      
-      <p><code>Object#!=</code> returns the inverse of <code>Object#==</code>,
-      so it does not normally need to be defined explicitly. It can be, however.
-      
-      <p><code>Object#eql?</code> is also an alias of
-      <code>Object#equal?</code> that subclasses often override. It differs
-      from <code>Object#==</code> in that it denotes <i>strict</i> logical
-      comparison without performing type conversion. For example, consider 1
-      and 1.0. The two are logically equivalent if converted to the same
-      class, so <code>1 == 1.0</code>.  However, <code>1.eql?(1.0) ==
-        false</code> because <code>Object#eql?</code> does not perform type
-      conversion.
-      
-      <p><a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>
-      (pp. 77–78) state that <q>If two objects are <code>eql?</code>, their
-        <code>hash</code> methods must also return the same value.</q>, going
-      on to recommend that classes implement <code>#eql?</code> in terms of
-      <code>#hash</code>.</p>
-      
-      <!-- Cover === and =~ ? -->
+          <section>
+            <h1>Converting to “Boolean”</h1>
 
-  <h2>State</h2>
+            <p>It is rarely necessary to convert an object to a “Boolean” because Ruby
+            automatically treats <code>false</code> and <code>nil</code> as false, and
+            any other value as true. However, if a method wishes to return either
+            <code>true</code> or <code>false</code> it may use the
+            <code>!!<var>object</var></code> idiom. This returns <code>false</code> if
+            <var>object</var> is <code>false</code> or <code>nil</code>;
+            <code>true</code> otherwise.
+          </section>
+          <!-- Explain numeric coercion -->
+        </section>
 
-    <h3>Instance Variables</h3>
-
-      <p>The state of an object is encapsulated in instance variables, whose
-      values are local to that particular object, hidden <!-- better word? -->
-      from others. An object will not respond to a message selecting one if its
-      instance variables unless a corresponding method has been defined, either
-      explicitly, or implicitly with <code>attr</code> <!-- link to section;
-      clarify the attr _familly_? -->.
-
-      <p>An instance variable is typically defined in an instance method. Its
-      name is an identifier prefixed with a commercial at sign (<code>@</code>).
-      
-      <!-- Use Object# instead of Kernel# ? --> <p>The names of an object’s
-      instance variables are returned as an <code>Array</code> of
-      <code>Symbol</code>s by <code>Kernel#instance_variables</code> in the
-      order they were assigned. <!--
-      http://redmine.ruby-lang.org/issues/show/2243 -->  Their
-      values may be retrieved and modified from another object with
-      <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
-      <code>Kernel#instance_variable_set(<var>ivar</var>,
-        <var>value</var>)</code>, respectively, where <var>ivar</var> is the
-      variable’s name as a <code>Symbol</code>, including the <code>@</code>
-      prefix. These methods should be used sparingly as they break
-      encapsulation.
-
-    <h3>Attributes</h3>
-        
-      <p>An attribute, <var>a</var>, is a pair (<a class=ref
-        href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, pp. 94–95) of
-      public methods—an accessor (<var>a</var>) and a writer
-      (<var>a=</var>)—exposing a property of an object’s state to other
-      objects. They can be created automatically by supplying their names to
-      <code>Module#attr_accessor</code> or <code>Module#attr_writer</code>
-      inside a class definition. This assumes, as is typical, that an
-      attribute corresponds to an instance variable of the same name, i.e.
-      <var>a</var> returns <var>@a</var>; <var>a=</var> sets <var>@a</var>. If
-      the attribute value is not backed by an instance variable, it should be
-      exposed in the same way (<a href=/references#refMEYER00
-        class=ref>Meyer</a>, pp. 55–57) by defining the methods manually.</p>
-      <!-- In the Ruby cookbook these are called
-      "virtual attributes" --> 
-      
-      <!-- http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/class/attribute_accessors.rb
-      -->
-      <!-- Module#attr ? -->
-  
-    <h3>Mutability</h3>
-      
-      <!-- Define _mutability_ -->
-      <p><code>Object#freeze</code> makes the receiver immutable: attempts to
-      change its state elicit a <code>RuntimeError</code>. The
-      <code>Object#frozen?</code> predicate returns <code>true</code> if the
-      receiver is frozen. There is not a <code>#thaw</code> method, so this
-      operation is not reversible. However, duplicating an object <!-- link #dup
-      --> removes its frozen state.
-      
-      <aside class=note>
-        Freezing works on objects not variables, so it is permissible to assign
-        a new value to a “frozen variable”. <!-- explain why we're saying this?
-        -->
-      </aside> 
-      
-      <!-- Note that immediates can be frozen...; link to my bug report -->
-
-  <h2>References &amp; Garbage Collection</h2> <!-- Lifespan / Lifetime ? -->
-
-    <p>Variables store references to objects. Assignment is, therefore, the
-    copying of the reference on the right-hand side to the variable named on
-    the left, leaving both sides referring to the same object. However, a
-    reference may not be dereferenced; it is not a pointer.
-
-    <p>An object is deemed <dfn title="unreachable object">unreachable</dfn>
-    when there are no references to it, or the sources of the remaining
-    references are themselves unreachable. Such objects are subject to garbage
-    collection: automatic destruction by Ruby. The lifetime of an object is
-    determined by its longest living reference. If an object is intended to be
-    temporal, its references must be likewise.
-
-    <!-- GC.start, GC.disable -->
-  <h2>BasicObject</h2>
-
-    <p><code>BasicObject</code> is the root of the class hierarchy: from this
-    all other classes ultimately inherit. Its superclass is <code>nil</code>.
-    It defines the bare minimum of methods so as to be a “blank slate”:
-    <q>…useful as the superclass of delegating wrapper classes…</q> (<a
-      class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, p
-    235). (A thorough explanation of “blank slate” classes in Ruby is found in
-    <a href=/references#refBROWN09 class=ref>Brown</a>, pp. 57–62). <!--
-    Footnote this remark? -->
-
-    <!-- Clarify that by default classes inherit from Object? -->
-    <!-- Note implications of having so few methods? In irb? -->
-
-  <h2 id=duplication>Duplication</h2>
-
-    <p><code>Object#dup</code> performs a shallow copy of the receiver. A new
-    instance of the receiver’s class is allocated, tainted if the original
-    object was, then populated with shallow copies of the receiver’s instance
-    variables. Neither singleton methods nor frozen state are duplicated.
-    Corresponding instance variables will refer to the same object because
-    they are copied by reference; not referent.
-
-    <p>If the duplicated object responds to <code>:initialize_copy</code>, it
-    will be sent this message with the receiver as an argument. Its return
-    value is ignored. A common use is to perform a deep copy of instance
-    variables by explicitly duplicating them. If an object may only be
-    duplicated under certain circumstances, <code>#initialize_copy</code> may
-    choose to raise an exception.
-
-    <aside class=note>
-      Another way to perform a deep copy of an object is:
-      <code>Marshal.load(Marshal.dump(<var>object</var>))</code>.
-    </aside>
-
-    <p>Objects that shouldn’t be duplicated can privatise their
-    <code>#dup</code> method or define it to raise an informative exception
-    (<a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, pp.
-    243–245).
-
-  <h2>Cloning</h2>
-  
-    <p><code>Object#clone</code> behaves like <code>Object#dup</code> except
-    it also copies singleton methods and frozen state. Therefore, cloning
-    creates a more faithful copy of the receiver than duplication.
-
-  <h2>Marshaling</h2> <!-- Make part of Instantiation? -->
-    
-    <p>An object may be serialized as a binary <code>String</code> by
-    supplying it to <code>Marshal.dump</code>. If an <code>IO</code> object is
-    supplied as the second argument, the marshaled object is written to it.
-    <code>Marshal.load</code> reverses this process by recreating the object
-    from its marshaled form, which may be a string <!-- Explain somewhere that
-    _string_ (or _string-y_) is an object that String.try_convert(obj) != nil
-    --> or <code>IO</code> object.
-
-    <p>The Marshal data format is versioned with a major and minor number,
-    which are stored in the first two bytes of marshaled data.
-    <code>Marshal.load</code> raises a <code>TypeError</code> unless the data
-    has the current major version and a minor version ≤ the current
-    minor version.
-
-    <!-- Investigate interaction between #_dump and #marshal_dump -->
-
-    <p>Objects may control how they’re dumped by responding to
-    <code>:marshal_dump</code> with another object to be serialized in their
-    place. If so, they must also respond to <code>:marshal_load</code>, which
-    is sent to an allocated, uninitialized instance of their class with the
-    recreated object as an argument. It is expected to initialize the state of
-    the receiver from that of its argument. The return value is ignored.
-
-  <h2>Taint</h2>
-
-    <!-- Clarify that every object is either tainted or not -->
-    <p>Taint checking is a security mechanism that blacklists objects
-    influenced by external input, propagating this trait to derivative
-    objects. Data read from <code>IO</code> streams and user input is
-    automatically tainted. An object can be explicitly tainted by sending it
-    <code>:taint</code>. The <code>#tainted?</code> predicate returns
-    <code>true</code> if the receiver, or an object from which it derived, is
-    tainted. Taintedness persists over duplication and cloning. It can be
-    removed with <code>Object#untaint</code>.
-
-    <p>If <code>$SAFE &gt; 0</code> certain methods raise
-    <code>SecurityError</code>s when given tainted objects. <!-- How do we
-    handle this? Separate section for $SAFE? List a sampling of methods? -->
-
-  <h2>Trust</h2>
-  
-    <p>Objects and running code are either trusted or untrusted. They are
-    trusted by default unless <code>$SAFE</code> ≥ 3, in which case they are
-    untrusted. Untrusted code is prohibited from modifying trusted objects.
-
-    <p>An object may be explicitly trusted by sending it <code>:trust</code>
-    when <code>$SAFE &lt; 3</code>; a message of <code>:untrust</code> does the
-    converse when <code>$SAFE &lt; 4</code>. The <code>Object#untrusted?</code>
-    predicate returns <code>true</code> when the receiver is not trusted;
-    <code>false</code> otherwise.
-
-  <h2>Defining Methods On</h2> <!-- Behaviour -->
-
-  <h2>Listing Methods</h2> <!-- Interrogating? / Under Behaviour?-->
-
-  <h2>Extending</h2> <!-- In Modules? -->
-
-  <h2>ObjectSpace</h2>
-  <!-- [ruby-core:19600] -->
-  ObjectSpace.each_object(o) do
-   if o.is_a?(IO)
-     o.close rescue nil
-   end
-  end
-
-  <h2>Context</h2>
-    
-    <p><code>BasicObject#instance_eval</code> takes a string or block which it
-    evaluates in the receiver’s context, setting <code>self</code> to the
-    receiver. The evaluated code can access the object’s instance variables,
-    invoke its private and protected methods, and define methods on its
-    singleton class. <!-- Needs examples of all three -->
-
-    <p><code>BasicObject#instance_exec</code> is similar, but accepts
-    any number of arguments which it passes to the required block.
-
-  <h2 id=conversion>Conversion</h2>
-
-    <!-- Borrow from Ruby Cookbook, pp 287–291 -->
-    <p>Selectors whose names begin with <i>to_</i> are expected to return
-    the receiver converted to an object of the indicated class. A conversion
-    is either <i>implicit</i> or <i>explicit</i>, as explained below:
-   
-    <section>
-      <h3>Implicit Conversion</h3>
-      
-      <p>A method may expect an argument of a particular class. If it
-      receives an object of another class it wishes to automatically
-      convert that object into one of the desired class. 
-      
-      <p>For example, <code>Array.new</code> may be called with an Array as
-      an argument, which is copied to produce a new Array. If the argument
-      is not of class <code>Array</code>, <code>Array.new</code> sends
-      <code>:to_ary</code> to the argument, implicitly converting it to an
-      <code>Array</code>.
-
-      <p><code>Array.new</code> sent <code>:to_ary</code> because it is part
-      of the implicit conversion protocol. By responding to this message
-      with an <code>Array</code>  objects are declaring that they may be
-      used in place of an <code>Array</code>. 
-       
-      <p>If the argument responds to <code>:to_a</code> it can also be
-      automatically converted to an <code>Array</code>. However,
-      <code>Array.new</code> does not send this message for it is part of
-      the <i>explicit</i> conversion protocol; the sender of the message
-      must send the argument <code>:to_a</code> himself if he requires the
-      conversion.
-
-      <p><a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>
-      (p. 80) suggest that objects should implement an implicit conversion
-      protocol if they have <q>strong characteristics</q> of the target
-      class.</p>
-
-      <section>
-        <h4 id=try-convert><code>try_convert</code></h4>
-        
-          <!-- Describe idioms that this implies, e.g Array.try_convert(arg) or
-          raise ArgumentError -->
-          <p><code>Array</code>, <code>Hash</code>, <code>IO</code>,
-          <code>Regexp</code>, and <code>String</code> define a class method named
-          <code>try_convert</code> which uses the appropriate implicit conversion
-          protocol to convert the argument to the receiver’s class. If the
-          argument does not respond to the appropriate implicit conversion
-          message, <code>.try_convert</code> returns <code>nil</code>.
-
-          <p>For example, <code>String.try_convert(<var>object</var>)</code> returns
-          <code><var>object</var>.to_str</code> if <var>object</var> responds to
-          <code>:to_str</code>; <code>nil</code> otherwise.
-      </section>
-
-      <p>From the discussion above we can derive the following rules:
-
-      <ol>
-        <li>A method may send implicit conversion messages to its
-        arguments. 
-        <li>Objects responding to such messages are declaring that they may
-        be used in this way.
-        <li>A method must not send explicit conversion messages to its
-        arguments.
-      </ol>
+          <!-- Describe how #method_defined? differs from #respond_to? -->
     </section>
-
-    <section>
-      <h3>Explicit Conversion</h3>
-      
-      <p>An object which can be represented as an object of another class
-      may implement the relevant explicit conversion protocol. It is
-      explicit because the user must explicitly send the conversion message
-      to the object to effect the conversion; the message should never be
-      sent automatically by another method.
-
-      <p>If an object implements an implicit conversion protocol that
-      corresponds with an explicit conversion protocol, it should implement
-      the explicit protocol, too. The implicit protocol is a superset of the
-      explicit protocol, so there will not exist a scenario where an object
-      would need to implement the former without the latter. This can be easily
-      achieved by aliasing the implicit method to the explicit method. For
-      example, if an object responds to <code>:to_ary</code> but not to
-      <code>:to_a</code> it should alias <code>:to_a</code> to
-      <code>:to_ary</code>.
-
-      <p>From the discussion above we can derive the following rules:
-
-      <ol>
-        <li>A method should not send explicit conversion messages to its
-        arguments. 
-        <li>Objects responding to implicit conversion messages that have
-        explicit counterparts should respond to the latter, too. 
-      </ol>
-    </section>
-
-    <p>The conversion protocol is summarised in the table below. The
-    <i>Target Class</i> column indicates the class of the object the
-    conversion method should return. The <i>Implicit</i> column specifies
-    the message, if any, that is part of the implicit conversion protocol
-    for the target class. Likewise, the <i>Explicit</i> column specifies
-    the message, if any, that is part of the explicit conversion protocol
-    for the target class. If a protocol is not defined for a class, it has a
-    value of <i>N/A</i> is given. 
-    
-    <p>Note that the absence of an implicit protocol for a class implies
-    that it should not be converted implicitly. Methods expecting arguments
-    of a non-convertible class should raise a <code>TypeError</code> if they
-    receive arguments of an unsuitable type.
-
-    <!-- Use spanning cell when an implicit message is given without an explicit
-    counterpart? -->
-    <table>
-      <tr>
-        <th>Target Class</th> 
-        <th>Implicit</th> 
-        <th>Explicit</th>
-        <th>Note</th>
-      </tr>
-      <tr>
-        <td><code>Array</code></td> 
-        <td><code>:to_ary</code></td>
-        <td><code>:to_a</code></td>
-      </tr>
-      <tr>
-        <td><code>Complex</code></td> 
-        <td><code>:to_c</code></td>
-        <td>N/A</td>
-      </tr>
-      <tr>
-        <td><code>Enumerator</code></td> 
-        <td>N/A</td>
-        <td><code>:to_enum</code></td>
-      </tr>
-      <tr>
-        <td><code>Float</code></td> 
-        <td><code>:to_f</code></td>
-        <td>N/A</td>
-      </tr>
-      <tr>
-        <td><code>Hash</code></td> 
-        <td><code>:to_hash</code></td>
-        <td>N/A</td>
-      </tr>
-      <tr>
-        <td><code>Integer</code></td> 
-        <td><code>:to_int</code></td>
-        <td><code>:to_i</code></td>
-      </tr>
-      <tr>
-        <td><code>IO</code></td> 
-        <td><code>:to_open</code></td>
-        <td>N/A</td>
-        <td>Sent by <code>Kernel#open</code> to its first argument</td>
-      </tr>
-      <tr>
-        <td><code>Proc</code></td> 
-        <td><code>:to_proc</code></td>
-        <td>N/A</td>
-      </tr>
-      <tr>
-        <td><code>Rational</code></td> 
-        <td><code>:to_r</code></td>
-        <td>N/A</td>
-      </tr>
-      <tr>
-        <td><code>Regexp</code></td> 
-        <td><code>:to_regexp</code></td>
-        <td>N/A</td>
-        <td>Sent by <code>Regexp.try_convert</code></td>
-      </tr>
-      <tr>
-        <td><code>String</code></td> 
-        <td><code>:to_str</code></td>
-        <td><code>:to_s</code></td>
-      </tr>
-      <tr>
-        <td><code>String</code></td> 
-        <td><code>:to_path</code></td>
-        <td>N/A</td>
-        <td>Sent by methods expecting a file path as an argument, such as
-          the class methods of <code>File</code></td>
-      </tr>
-      <tr>
-        <td><code>Symbol</code></td> 
-        <td><code>:to_sym</code></td>
-        <td>N/A</td>
-      </tr>
-    </table> 
-
-    <h3>Converting to “Boolean”</h3>
-
-      <p>It is rarely necessary to convert an object to a “Boolean” because Ruby
-      automatically treats <code>false</code> and <code>nil</code> as false, and
-      any other value as true. However, if a method wishes to return either
-      <code>true</code> or <code>false</code> it may use the
-      <code>!!<var>object</var></code> idiom. This returns <code>false</code> if
-      <var>object</var> is <code>false</code> or <code>nil</code>;
-      <code>true</code> otherwise.
-
-    <!-- Describe how #method_defined? differs from #respond_to? -->
-    
-    <!-- Explain numeric coercion -->
   </body>
 </html>
