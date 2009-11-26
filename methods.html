@@ -522,8 +522,9 @@ end</code></pre>
           <dt>The effect of a method’s modification of an argument on its caller
         </figure>
 
-        <p>Methods may <i>dup</i> (<code>Object#dup</code>) their arguments to
-        avoid this situation.</p>
+        <p>Alternatively, an argument may be <a
+          href=#duplication>duplicated</a> to create a copy independent of the
+        caller’s.</p>
 
         <figure id=pass-by-reference-dup>
           <dt>The effect of a method’s modification of a <code>dup</code>’d
