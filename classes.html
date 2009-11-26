@@ -7,76 +7,88 @@
     <!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
     <script src="http://html5-now.appspot.com/html5-now.js"></script>
     -->
+    <link href=main.css rel=stylesheet>
   </head>
   <body>
-<h2>Classes</h2>
 
-  <!-- http://blog.rubybestpractices.com/posts/rklemme/018-Complete_Class.html -->
-  <!-- What does it mean to dup or clone a class? -->
+    <section>
+      <h1>Classes</h1>
 
-  <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It
-  constitutes a template from which such objects can be constructed. Hence
-  <code>3</code> and <code>198705</code> are both instances of the
-  <code>Integer</code> class. Their data (i.e. their numerical value) differs
-  but they behave as any other instance of their class. <!-- Not necessarily
-  true --> That is, by their nature as integers both objects can be multiplied
-  by another integer, and both are either odd or even, etc.
-  <!-- snip etc. -->
+      <!-- http://blog.rubybestpractices.com/posts/rklemme/018-Complete_Class.html -->
+      <!-- What does it mean to dup or clone a class? -->
 
-  <aside>
-    The term <i>class</i> is roughly analogous to its biological definition
-    where it denotes a taxonomic rank, however this analogy does not extend to
-    subclasses. That is, a subclass of a class is termed a <i>subclass</i>;
-    not an <i>order</i>.
-  </aside>
+      <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It
+      constitutes a template from which such objects can be constructed. Hence
+      <code>3</code> and <code>198705</code> are both instances of the
+      <code>Integer</code> class. Their data (i.e. their numerical value) differs
+      but they behave as any other instance of their class. <!-- Not necessarily
+      true --> That is, by their nature as integers both objects can be multiplied
+      by another integer, and both are either odd or even, etc.</p>
+      <!-- snip etc. -->
 
-  <h3>Names</h3>
+      <aside>
+        The term <i>class</i> is roughly analogous to its biological definition
+        where it denotes a taxonomic rank, however this analogy does not extend to
+        subclasses. That is, a subclass of a class is termed a <i>subclass</i>;
+        not an <i>order</i>.
+      </aside>
 
-    <!-- Mention the Class::Subclass name qualification here or in Constants
-    section? In same place mention Ruby's preference for flat hierarchies -->
+      <section>
+        <h1>Names</h1>
 
-    <p>A non-anonymous <!-- Does it make sense to introduce anonymous classes
-    here? --> class is named with a constant, i.e. an identifier
-    which begins with an ASCII capital letter. <!-- Class#name returns name as
-    String; nil for anonymous classes --> <!-- Explain that names are defined
-    by a blacklist -->
+        <!-- Mention the Class::Subclass name qualification here or in Constants
+        section? In same place mention Ruby's preference for flat hierarchies -->
 
-    <p><code>Class#name</code> returns the class’s name as a
-    <code>String</code>, or <code>nil</code> if the class is anonymous.
+        <p>A non-anonymous <!-- Does it make sense to introduce anonymous classes
+        here? --> class is named with a constant, i.e. an identifier
+        which begins with an ASCII capital letter. <!-- Class#name returns name as
+        String; nil for anonymous classes --> <!-- Explain that names are defined
+        by a blacklist -->
 
-    <h4>Rules</h4>
+        <p><code>Class#name</code> returns the class’s name as a
+        <code>String</code>, or <code>nil</code> if the class is
+        anonymous.</p>
 
-      <p>The name of class must: 
-        <ul>
-          <li>Begin with an uppercase ASCII letter (A-Z) (U+0041..U+005A).
-          <li>Not contain a colon (U+003A).
-          <li>Not contain an ASCII space character (U+0020)
-        </ul>
-        <!-- FIXME: Derive and enumerate rules -->
+        <section>
+          <h1>Rules</h1>
 
-      <p>More generally, a class name consists of an uppercase ASCII
-      character, optionally followed by a sequence of other alphanumeric
-      characters
+          <p>The name of class must: 
+            <ul>
+              <li>Begin with an uppercase ASCII letter (A-Z) (U+0041..U+005A).
+              <li>Not contain a colon (U+003A).
+              <li>Not contain an ASCII space character (U+0020)
+            </ul>
+            <!-- FIXME: Derive and enumerate rules -->
 
-      <aside class=warning>
-        Class names containing non-ASCII characters cannot be referred to from
-        source files using a different encoding. For example, a class name
-        containing character U+03BB (<i>GREEK SMALL LETTER LAMDA</i>) can only be
-        referenced from source files using the UTF-8 source encoding. <!-- FIXME:
-        What about other Unicode character sets? -->
-       </aside>
+          <p>More generally, a class name consists of an uppercase ASCII
+          character, optionally followed by a sequence of other alphanumeric
+          characters.</p>
 
-    <h4>Conventions</h4>
+          <aside class=warning>
+            Class names containing non-ASCII characters cannot be referred to from
+            source files using a different encoding. For example, a class name
+            containing character U+03BB (<i>GREEK SMALL LETTER LAMDA</i>) can only be
+            referenced from source files using the UTF-8 source encoding. <!-- FIXME:
+            What about other Unicode character sets? -->
+          </aside>
+        </section>
+        
+        <section>
+          <h1>Conventions</h1>
 
-      <p>Conventionally class names use camel-case capitalization: The initial
-      letter of each word is capitalized, and spaces between the words are
-      removed. For example: <code>RubyProgrammingLanguage</code> or
-      <code>NutsAndBolts</code>.</p>
+          <p>Conventionally class names use camel-case capitalization: The
+          initial letter of each word is capitalized, and spaces between the
+          words are removed. For example: <code>RubyProgrammingLanguage</code>
+          or <code>NutsAndBolts</code>.</p>
 
-      <p>A class name is a constant. The use of camel-case for class names and
-      uppercase for constant names ensures that the two don't clash.
+          <p>A class name is a constant. The use of camel-case for class names
+          and uppercase for constant names ensures that the two don't
+          clash.</p>
+        </section>
+      </section>
 
-  <h3>Inheritance</h3>
+      <section>
+        <h1>Inheritance</h1>
 
   <!--
      nil          }             General
@@ -95,444 +107,485 @@
    ---------                       |
    subclasses                    Specialised 
 
-    -->
-    <p>A class <dfn title=inheritance>inherits</dfn> behaviour and certain
-    state <!-- is state inherited? --> from another class called its <dfn
-      title=superclass>superclass</dfn>. The exception is
-    <code>BasicObject</code>, which sits at the top of the class hierarchy
-    <!-- Discuss this concept? --> so doesn’t have a superclass. The default
-    superclass is <code>Object</code>. Classes that inherit from a given class
-    are its <dfn title=subclasses>subclasses</dfn>.<!-- reword this --> A
-    subclass is, therefore, a specialisation of its superclass.
+   --> 
+        <p>A class <dfn title=inheritance>inherits</dfn> behaviour and certain
+        state <!-- is state inherited? --> from another class called its <dfn
+        title=superclass>superclass</dfn>. The exception is
+        <code>BasicObject</code>, which sits at the top of the class hierarchy
+        <!-- Discuss this concept? --> so doesn’t have a superclass. The
+        default superclass is <code>Object</code>. Classes that inherit from a
+        given class are its <dfn title=subclasses>subclasses</dfn>.<!-- reword
+        this --> A subclass is, therefore, a specialisation of its
+        superclass.</p>
 
-    <!-- Example: Ruby < Smalltalk...go on to explain multiple inheritance is
-    needed, i.e. mixins -->
-    <!-- Discuss multiple inheritance and mix-ins? --> 
+        <!-- Example: Ruby < Smalltalk...go on to explain multiple inheritance is
+        needed, i.e. mixins -->
+        <!-- Discuss multiple inheritance and mix-ins? --> 
     
-    <section>
-      <h4>Superclass</h4>
-        
-        <p>The superclass is a class object. It is typically specified as a
-        constant literal, but can be any expression evaluating to the same.
-        <code>Class#superclass</code> returns the receiver’s superclass as a
-        <code>Class</code> object, or <code>nil</code> if the receiver is
-        <code>BasicObject</code>. 
-        
-        <p>A class’s superclass is fixed for its lifetime. (A new class may be
-        created with the same name and a different a superclass, of course).
-    </section>
+        <section>
+          <h1>Superclass</h1>
+            
+          <p>The superclass is a class object. It is typically specified as a
+          constant literal, but can be any expression evaluating to the same.
+          <code>Class#superclass</code> returns the receiver’s superclass as a
+          <code>Class</code> object, or <code>nil</code> if the receiver is
+          <code>BasicObject</code>. 
+          
+          <p>A class’s superclass is fixed for its lifetime. (A new class may
+          be created with the same name and a different a superclass, of
+          course).
+        </section>
 
-    <section>
-      <h4>Ancestors</h4>
+        <section>
+          <h1>Ancestors</h1>
 
-        <p>The ancestors of a class are the classes and modules it inherits
-        from: its superclass and mixed-in modules, then their ancestors, and
-        so on up until the root of the inheritance hierarchy. They are
-        returned, in order, by <code>Module#ancestors</code> as an
-        <code>Array</code> of <code>Class</code> objects.
-    </section>
+          <p>The ancestors of a class are the classes and modules it
+          inherits from: its superclass and mixed-in modules, then their
+          ancestors, and so on up until the root of the inheritance
+          hierarchy. They are returned, in order, by
+          <code>Module#ancestors</code> as an <code>Array</code> of
+          <code>Class</code> objects.
+        </section>
 
-    <!-- http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/class/removal.rb
-    -->
+        <!-- http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/class/removal.rb
+        -->
 
-    <p>Inheritance merely determines the initial behaviour of a class; the
-    subclass can diverge by defining, redefining, or removing methods, and
-    modifying <!-- must we talk about the modification of constants? --> and
-    undefining or constants.
+        <p>Inheritance merely determines the initial behaviour of a class; the
+        subclass can diverge by defining, redefining, or removing methods, and
+        modifying <!-- must we talk about the modification of constants? --> and
+        undefining or constants.
 
-    <p>Inheritance occurs because the method— and constant—lookup  <!--
-    is this all? --> algorithms consider the superclass when unable to resolve
-    the given name against the current class. Methods and constants are not
-    copied to subclasses. 
+        <p>Inheritance occurs because the method— and constant—lookup  <!--
+        is this all? --> algorithms consider the superclass when unable to resolve
+        the given name against the current class. Methods and constants are not
+        copied to subclasses. 
 
-    <p>It is worth stating explicitly that instance variables and class
-    variables are <em>not</em> inherited. <a href=#refFLAN08
-      class=ref>Flanagan &amp; Matsumoto</a> (pp. 239–240) note a corollary:
-    <q>If a subclass uses an instance variable with the same name as a
-      variable used by one of its ancestors, it will overwrite the value of
-      its ancestor’s variable.</q> 
+        <p>It is worth stating explicitly that instance variables and class
+        variables are <em>not</em> inherited. <a href=#refFLAN08
+          class=ref>Flanagan &amp; Matsumoto</a> (pp. 239–240) note a corollary:
+        <q>If a subclass uses an instance variable with the same name as a
+          variable used by one of its ancestors, it will overwrite the value of
+          its ancestor’s variable.</q> 
 
-    <!-- Is this the right place to discuss constants? -->
+        <!-- Is this the right place to discuss constants? -->
 
-    <p>Constants are inherited in a similar way to methods. A subclass may
-    access his superclass’s constants by referring to them with either their
-    fully— or non—qualified name. If a subclass assigns to an unqualified
-    constant name defined in his superclass, a new constant with that name is
-    defined in the subclass. <!-- Refer to constant-lookup algorithm
-    description -->
+        <p>Constants are inherited in a similar way to methods. A subclass may
+        access his superclass’s constants by referring to them with either their
+        fully— or non—qualified name. If a subclass assigns to an unqualified
+        constant name defined in his superclass, a new constant with that name is
+        defined in the subclass.</p> <!-- Refer to constant-lookup algorithm
+        description -->
 
-    <h4>The <code>Class#inherited</code> hook</h4>  
+        <section>
+          <h1>The <code>Class#inherited</code> hook</h1>  
 
-      <p>If a class defines a singleton method named <code>:inherited</code>, it
-      is invoked when the class is inherited with the subclass as its argument.
-
-  <h3>Creation</h3>
-
-    <h4>The <code>class</code> Keyword</h4>
-
-      <p>The <code>class <var>name</var> &lt; <var>superclass</var>…end</code>
-      expression opens a class named <var>name</var>. If the constant
-      <var>name</var> is already defined it must refer to an existing class,
-      otherwise a <code>TypeError</code> is raised.  If <var>name</var> was
-      previously undefined, it is created as<!-- "to refer to"? --> a
-      <code>Class</code> object. The <code>&lt; <var>superclass</var></code>
-      portion may be omitted, in which case the <var>superclass</var> defaults
-      to <code>Object</code>.  <var>superclass</var> may be any expression
-      that evaluates to a <code>Class</code> object. 
-
-      <section>
-        <h5>Reopening Classes</h5>
-
-          <p>If <code>class</code> is used with the name of a pre-existing class
-          that class is <i>re-opened</i>. If a method is defined in a re-opened
-          class with the same name as a pre-existing method in the same class the
-          old method is overwritten with the new.
-
-          <figure id=reopened-class>
-            <dt>Re-defining a method in an existing class</dt>
-            <dd>
-              <pre><code>
-                'hello'.length #=&gt; 5
-                class String
-                  def length
-                    'How long is a piece of string?'
-                  end
-                end
-                'hello'.length #=&gt; 'How long is a piece of string?'
-              </code></pre>
-            </dd>
-          </figure>  
-
-          <p>Classes can be made immutable, effectively preventing them from
-          being reopened by freezing the class object. Frozen classes raise
-          <code>RuntimeError</code>s when methods are defined, or variables
-          manipulated, in their context. 
+          <p>If a class defines a singleton method named <code>:inherited</code>, it
+          is invoked when the class is inherited with the subclass as its argument.
+        </section>
       </section>
 
-      <p>The class body, which may be empty, is the elliptical region in the
-      expression. It introduces a new context in which <code>self</code> refers
-      to the class.
-
-      <figure id=class-keyword>
-        <dt>Usage of the <code>class</code> keyword to <i>open</i> a class named
-        <code>Dog</code></dt>
-        <dd>
-          <pre><code>
-          class Dog
-          end
-          </code></pre>
-        </dd>
-      </figure>
-
-    <h4><code>Class.new</code></h4>
-  
-      <p>The <code><var>name</var> = Class.new do…end</code> constructor may
-      be used to similar effect. The principle difference being that existing
-      classes are overwritten rather than reopened.
-
-      <figure id=class-new>
-        <dt>Usage of the <code>Class.new</code> constructor to create a class
-        named <code>Dog</code></dt>
-        <dd>
-          <pre><code>
-          Dog = Class.new
-          </code></pre>
-        </dd>
-      </figure>
-
       <section>
-        <h5>Anonymous Classes</h5> <!-- Is this term confusing w.r.t
-        eigenclasses also being described as anonymous? -->
+        <h1>Creation</h1>
 
-          <p>When a constant is used as a class name it has global <!-- This
-          word is problematic. How to better explain? --> scope. This
-          gives rise to the characteristic described above in <i>Reopening
-            Classes</i>. If this behaviour is not desirable, a class can be
-          made anonymous by assigning the value of <code>Class.new</code> to a
-          local variable, thus restricting the class to the local scope.
-          Subsequently assigning this variable to a constant, names the class.
-          <!-- Example -->
-          
-          
-          <figure id=anonymous-class>
-          <dt>Creating an anonymous class with <code>Class.new</code></dt>
+        <section>
+          <h1>The <code>class</code> Keyword</h1>
+
+          <p>The <code>class <var>name</var> &lt;
+            <var>superclass</var>…end</code> expression opens a class named
+          <var>name</var>. If the constant <var>name</var> is already defined
+          it must refer to an existing class, otherwise a
+          <code>TypeError</code> is raised.  If <var>name</var> was previously
+          undefined, it is created as<!-- "to refer to"? --> a
+          <code>Class</code> object. The <code>&lt;
+            <var>superclass</var></code> portion may be omitted, in which case
+          the <var>superclass</var> defaults to <code>Object</code>.
+          <var>superclass</var> may be any expression that evaluates to a
+          <code>Class</code> object.</p>
+
+          <section>
+            <h1>Reopening Classes</h1>
+
+            <p>If <code>class</code> is used with the name of a pre-existing
+            class that class is <i>re-opened</i>. If a method is defined in a
+            re-opened class with the same name as a pre-existing method in the
+            same class the old method is overwritten with the new.</p>
+
+            <figure id=reopened-class>
+              <dt>Re-defining a method in an existing class</dt>
+              <dd>
+                <pre><code>
+                  'hello'.length #=&gt; 5
+                  class String
+                    def length
+                      'How long is a piece of string?'
+                    end
+                  end
+                  'hello'.length #=&gt; 'How long is a piece of string?'
+                </code></pre>
+              </dd>
+            </figure>  
+
+            <p>Classes can be made immutable, effectively preventing them from
+            being reopened by freezing the class object. Frozen classes raise
+            <code>RuntimeError</code>s when methods are defined, or variables
+            manipulated, in their context. 
+          </section>
+
+          <p>The class body, which may be empty, is the elliptical region in the
+          expression. It introduces a new context in which <code>self</code> refers
+          to the class.
+
+          <figure id=class-keyword>
+            <dt>Usage of the <code>class</code> keyword to <i>open</i> a class named
+            <code>Dog</code></dt>
             <dd>
               <pre><code>
-                dog = Class.new
-                dog.class_eval do
-                  def bark
-                    :woof
-                  end
-                end
-                dog.new.bark #=&gt; :woof
+              class Dog
+              end
+              </code></pre>
+            </dd>
+          </figure>
+        </section>
+
+        <section>
+          <h1><code>Class.new</code></h1>
+      
+          <p>The <code><var>name</var> = Class.new do…end</code> constructor may
+          be used to similar effect. The principle difference being that existing
+          classes are overwritten rather than reopened.</p>
+
+          <figure id=class-new>
+            <dt>Usage of the <code>Class.new</code> constructor to create a class
+            named <code>Dog</code></dt>
+            <dd>
+              <pre><code>
+              Dog = Class.new
               </code></pre>
             </dd>
           </figure>
 
+          <section>
+            <h1>Anonymous Classes</h1> <!-- Is this term confusing w.r.t
+            eigenclasses also being described as anonymous? -->
+
+              <p>When a constant is used as a class name it has global <!-- This
+              word is problematic. How to better explain? --> scope. This
+              gives rise to the characteristic described above in <i>Reopening
+                Classes</i>. If this behaviour is not desirable, a class can be
+              made anonymous by assigning the value of <code>Class.new</code> to a
+              local variable, thus restricting the class to the local scope.
+              Subsequently assigning this variable to a constant, names the
+              class.</p>
+              <!-- Example -->
+              
+              <figure id=anonymous-class>
+              <dt>Creating an anonymous class with <code>Class.new</code></dt>
+                <dd>
+                  <pre><code>
+                    dog = Class.new
+                    dog.class_eval do
+                      def bark
+                        :woof
+                      end
+                    end
+                    dog.new.bark #=&gt; :woof
+                  </code></pre>
+                </dd>
+              </figure>
+          </section>
+        </section>
+        
+        <section>
+          <h1>Structs</h1>
+      
+          <p><code>Struct</code> is a class generator, particularly useful for
+          classes that only need to wrap data. It it instantiated with a list
+          of attribute names as <code>Symbol</code>s, and returns a
+          <code>Class</code> object with accessors and writers for each
+          attribute.  The generated class can be instantiated with a list of
+          arguments, which are assigned to the corresponding attributes. This
+          class is named by assigning it to an appropriate constant.</p>
+
+          <pre><code>
+            Element = Struct.new(:name, :symbol, :atomic_number, :mass)
+            as = Element.new(:Arsenic, :As, 33, 74.92)
+            as.mass #=&gt; 74.92
+          </code></pre>
+
+          <p>A popular idiom is to create a class that inherits from a
+          <code>Struct</code>: the <code>Struct</code> defines the simple
+          attributes, and the class body adds behaviour/customisations.</p>
+
+          <pre><code>
+            class Element &lt; Struct.new(:name, :symbol, :atomic_number, :mass)      
+              def initialize(*args)
+                super
+                @poisonous = false
+              end
+              
+              def poisonous?
+                @poisonous
+              end
+              
+              def poisonous=(bool)
+                @poisonous = !!bool
+              end
+            end
+          </code></pre>
+          <!-- OpenStruct -->   
+        </section>
+
+        <section>
+          <h1>Nesting</h1>
+     
+          <p>A class may be defined within the body of another class. The fully
+          qualified name of the inner class is
+          <code><var>outer</var>::<var>inner</var></code>, where <var>outer</var> is
+          the name of the enclosing class, and <var>inner</var> that of the
+          enclosed. This <dfn title=nesting>nesting</dfn> behaviour is primarily
+          used for namespacing. Modules are another alternative.
+
+          <p>Since class names are constants and constants are inherited, classes
+          defined at the top level, as core classes conventionally are, can be
+          referred to by their unqualified name throughout the inheritance
+          hierarchy. However, if the name is shadowed at an intervening level of
+          the hierarchy, the unqualified name refers to the shadowed class/module.
+          For example, if a class named <code>Products::String</code> was defined,
+          its subclasses that used the <code>String</code> class would be
+          referring to <code>Products::String</code>; not the core
+          <code>String</code> class (which would need referring to as
+          <code>::String</code>).
+      
+          <p>Classes may, therefore, re-purpose the names of their ancestors to
+          create materially different classes, as above, or to customise them
+          through inheritance.<!-- examples of both --> In either case their changes
+          will only affect themselves and their children; other classes using the
+          unqualified name will be unaffected. Regardless, re-using names in this
+          manner can obfuscate code, so should only be done intentionally with due
+          consideration of the implications.
+      
+          <p>A class’ nesting does not determine its superclass. A nested class
+          defined without an explicit superclass does not inherit from its
+          enclosing class; it inherits from <code>Object</code>, as normal.
+      
+          <p>The nesting of a class is returned as an <code>Array</code> of
+          <code>Class</code> objects by <code>Module#nesting</code>, where the
+          first element is the innermost class, and the last the outermost.
+        </section>
+      </section>
+      
+      <section>
+        <h1>Context</h1>
+
+        <p><code>Class#class_eval</code> takes a string or block which it
+        evaluates in the receiver’s context, setting <code>self</code> to the
+        receiver. The evaluated code can access the class’s state, invoke its
+        singleton methods, and define instance or singleton methods. <!-- Needs
+        examples of all three --> <!-- Numeric.class_eval{ define_method(:squared)
+        { self ** 2} } -->
+
+        <p><code>Class#instance_exec</code> is similar, but accepts
+        any number of arguments which it passes to the required block.
+
+        <!-- TODO: Track
+        http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26774 in
+        case this changes -->
       </section>
 
-    <h4>Structs</h4>
+      <section>
+        <h1 id=eigenclass>Eigenclasses</h1> <!-- "singleton class"? -->
       
-      <p><code>Struct</code> is a class generator, particularly useful for
-      classes that only need to wrap data. It it instantiated with a list of
-      attribute names as <code>Symbol</code>s, and returns a <code>Class</code>
-      object with accessors and writers for each attribute.  The generated class
-      can be instantiated with a list of arguments, which are assigned to the
-      corresponding attributes. This class is named by assigning it to an
-      appropriate constant.
+        <p>Every object is associated with two classes: that with which it was
+        instantiated, and an anonymous class specific to the object: its
+        <dfn title=eigenclass>eigenclass</dfn>. It is the eigenclass that holds
+        the object’s singleton methods. Class methods are, therefore, methods
+        defined in the eigenclass of a <code>Class</code> object.
 
-      <pre><code>
-        Element = Struct.new(:name, :symbol, :atomic_number, :mass)
-        as = Element.new(:Arsenic, :As, 33, 74.92)
-        as.mass #=&gt; 74.92
-      </code></pre>
+        <p>The eigenclass of an object is opened with the <code>class &lt;&lt;
+          <var>object</var>…end</code> construct: the <code>class</code> keyword
+        followed by two less-than signs, an expression evaluating to an object,
+        then the class body. Methods defined within the body are defined on
+        <var>object</var>. Within a standard class definition, the class’s
+        eigenclass can be opened by supplying <code>self</code> as the value for
+        <var>object</var>.
 
-      <p>A popular idiom is to create a class that inherits from a
-      <code>Struct</code>: the <code>Struct</code> defines the simple
-      attributes, and the class body adds behaviour/customisations. 
+        <p>It is usually clearer to define singleton methods with the <code>def
+          <var>object</var>.<var>method</var></code> syntax rather than
+        explicitly opening <var>object</var>’s eigenclass.
+      </section>
 
-      <pre><code>
-        class Element &lt; Struct.new(:name, :symbol, :atomic_number, :mass)      
-          def initialize(*args)
-            super
-            @poisonous = false
-          end
+      <section>
+        <h1>State</h1>  
+
+        <section>
+          <h1>Class Variables</h1>
+
+          <p><dfn title="class variables">Class variables</dfn> are variables local
+          to a class, typically used to share state between instances. They are
+          named with two commercial at signs followed by an identifier, i.e.
+          <code>@@<var>identifier</var></code>.
+
+          <p>They are encapsulated: inaccessible <!-- more accurate term? -->
+          outside of the class and its child classes. However, the encapsulation can
+          be broken with <code>Class#class_variable_get(<var>name</var>)</code> or
+          <code>Class#class_variable_set(<var>name</var>, <var>value</var>)</code>,
+          where <var>name</var> is the class variable name as a <code>Symbol</code>. 
           
-          def poisonous?
-            @poisonous
-          end
-          
-          def poisonous=(bool)
-            @poisonous = !!bool
-          end
-        end
-      </code></pre>
-      <!-- OpenStruct -->   
+          <p>Class variables are not subject to inheritance, but are <i>shared</i>
+          between subclasses: the same variable is accessed by all; it is neither
+          duplicated nor shadowed.  Therefore, the modification of a class variable
+          defined in a superclass affects the superclass along with any sibling
+          classes.
+
+          <p><code>Class#class_variables</code> returns an <code>Array</code> of the
+          class’s class variables as <code>Symbol</code>s, sans their
+          <code>@@</code> prefixes.
+        </section>
+
+        <section>
+          <h1>Class Instance Variables</h1>
+
+          <p>An instance variable used within a class definition, outside of an
+          instance method, is a <dfn title="class instance variable">class instance
+            variable</dfn>. It is not to be confused with a class variable. <!--
+          Note that if instance variables are "declared" outside of an instance
+          method, this will not affect their use as instance variables? -->
+
+          <p>Both kinds of variables are associated with the class, as opposed to
+          its instances. The primary advantage of class instance variables over
+          class variables is that they don't exhibit the latter’s awkward sharing
+          semantics: class instance variables are not shared with subclasses.
+
+          <p>Class instance variables can be used within class methods but not
+          instance methods—as in that context they are normal instance variables—so
+          are not necessarily appropriate substitutes.
+
+          <p>Accessor methods can be created for class instance variables by using
+          <code>Module#attr_accessor</code> and <code>Module#attr_writer</code>
+          inside the class’s singleton class.
+
+          <pre><code>
+            class &lt;&lt; self
+              attr_accessor :class_instance_variable
+            end
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <h1>Instances</h1>
+
+        <p><code>ObjectSpace.each_object(<var>class</var>)</code> returns an
+        <code>Enumerator</code> of a <var>class</var>’s instances.
+      </section>
       
-    <h3>Nesting</h3>
- 
-      <p>A class may be defined within the body of another class. The fully
-      qualified name of the inner class is
-      <code><var>outer</var>::<var>inner</var></code>, where <var>outer</var> is
-      the name of the enclosing class, and <var>inner</var> that of the
-      enclosed. This <dfn title=nesting>nesting</dfn> behaviour is primarily
-      used for namespacing. Modules are another alternative.
+      <section>
+        <h1>Methods</h1>
 
-      <p>Since class names are constants and constants are inherited, classes
-      defined at the top level, as core classes conventionally are, can be
-      referred to by their unqualified name throughout the inheritance
-      hierarchy. However, if the name is shadowed at an intervening level of
-      the hierarchy, the unqualified name refers to the shadowed class/module.
-      For example, if a class named <code>Products::String</code> was defined,
-      its subclasses that used the <code>String</code> class would be
-      referring to <code>Products::String</code>; not the core
-      <code>String</code> class (which would need referring to as
-      <code>::String</code>).
-  
-      <p>Classes may, therefore, re-purpose the names of their ancestors to
-      create materially different classes, as above, or to customise them
-      through inheritance.<!-- examples of both --> In either case their changes
-      will only affect themselves and their children; other classes using the
-      unqualified name will be unaffected. Regardless, re-using names in this
-      manner can obfuscate code, so should only be done intentionally with due
-      consideration of the implications.
-  
-      <p>A class’ nesting does not determine its superclass. A nested class
-      defined without an explicit superclass does not inherit from its
-      enclosing class; it inherits from <code>Object</code>, as normal.
-  
-      <p>The nesting of a class is returned as an <code>Array</code> of
-      <code>Class</code> objects by <code>Module#nesting</code>, where the
-      first element is the innermost class, and the last the outermost.
+        <p>The methods defined on a class can be listed with
+        <code>Object#methods</code> or <code>Object#instance_methods</code>. They
+        are returned as an <code>Array</code> of <code>Symbol</code>s. If either
+        method is given an argument of <code>false</code>, superclass methods are
+        omitted.
 
-  <h3>Context</h3>
+        <p>When an instance method is added to, removed from, or undefined on, a
+        class it receives <code>:method_added</code>,
+        <code>:method_removed</code>, or <code>method_undefined</code>,
+        respectively, with the method’s name as a <code>Symbol</code> argument.
+        The situation is similar for singleton methods, except the message
+        selectors are prefixed with <code>singleton_</code>. 
+      </section>
 
-    <p><code>Class#class_eval</code> takes a string or block which it
-    evaluates in the receiver’s context, setting <code>self</code> to the
-    receiver. The evaluated code can access the class’s state, invoke its
-    singleton methods, and define instance or singleton methods. <!-- Needs
-    examples of all three --> <!-- Numeric.class_eval{ define_method(:squared)
-    { self ** 2} } -->
+      <section>
+        <h1>Missing Classes</h1>  
+        
+        <p>When a constant is used without being defined the enclosing class
+        is sent a <code>:const_missing</code> message with the constant name
+        as a <code>Symbol</code> argument. This is similar to
+        <code>:method_missing</code>, but for classes.
+      </section>
 
-    <p><code>Class#instance_exec</code> is similar, but accepts
-    any number of arguments which it passes to the required block.
+      <section>
+        <h1>Enumeration</h1>
 
+        <p><code>ObjectSpace.each_object(Class)</code> enumerates all
+        <code>Class</code> objects currently defined. 
+        
+        <p>Enumerating the subclasses of a given class is slightly harder, but the
+        figure below suggests a simple approach.</p>
 
-  <h3 id=eigenclass>Eigenclasses</h3> <!-- "singleton class"? -->
-  
-    <p>Every object is associated with two classes: that with which it was
-    instantiated, and an anonymous class specific to the object: its
-    <dfn title=eigenclass>eigenclass</dfn>. It is the eigenclass that holds
-    the object’s singleton methods. Class methods are, therefore, methods
-    defined in the eigenclass of a <code>Class</code> object.
+        <figure id=enumerating-subclasses>
+          <pre><code>
+          class Module
+            def children
+              constants.map{|c| const_get(c) }.select{|c| c.is_a?(Class) }
+            end
+          end
+          </code></pre>
+        </figure>
+      </section>
 
-    <p>The eigenclass of an object is opened with the <code>class &lt;&lt;
-      <var>object</var>…end</code> construct: the <code>class</code> keyword
-    followed by two less-than signs, an expression evaluating to an object,
-    then the class body. Methods defined within the body are defined on
-    <var>object</var>. Within a standard class definition, the class’s
-    eigenclass can be opened by supplying <code>self</code> as the value for
-    <var>object</var>.
+      <section>
+        <h1 id=type>Type</h1> 
 
-    <p>It is usually clearer to define singleton methods with the <code>def
-      <var>object</var>.<var>method</var></code> syntax rather than
-    explicitly opening <var>object</var>’s eigenclass.
+        <p><q>In many object-oriented languages, class names are used…for the type
+          of objects generated from the class.</q> <a class=ref
+          href=#refBRUCE02>Bruce</a> (p 20). <a href=#refKLAS95 class=ref>Klas
+          &amp; Schrefl</a> concur: <q>A class…defines…the type of [its]
+          instances</q> (p 10). Applying this notion to Ruby is problematic
+        because while it is certainly possible for a method to dynamically <i>type
+          check</i> its arguments with the
+        <code>Kernel#is_a?(<var>class</var>)</code> predicate, this approach is
+        both insufficient and unnecessary. 
 
-  <h3>State</h3>  
-  
-    <h4>Class Variables</h4>
+        <p>It is insufficient because an object’s class is not indicative of its
+        suitability for a specific role. Class-based type checking rests on
+        the premise that all objects of a given type will respond to the same
+        messages in the same fashion. However, Ruby’s classes may be modified at
+        will—allowing their methods to be redefined or removed—so two objects of
+        the same class will not necessarily provide the same behaviour. Similarly,
+        methods may be defined on, or removed from, individual objects, again
+        breaking the assumption.
 
-      <p><dfn title="class variables">Class variables</dfn> are variables local
-      to a class, typically used to share state between instances. They are
-      named with two commercial at signs followed by an identifier, i.e.
-      <code>@@<var>identifier</var></code>.
-
-      <p>They are encapsulated: inaccessible <!-- more accurate term? -->
-      outside of the class and its child classes. However, the encapsulation can
-      be broken with <code>Class#class_variable_get(<var>name</var>)</code> or
-      <code>Class#class_variable_set(<var>name</var>, <var>value</var>)</code>,
-      where <var>name</var> is the class variable name as a <code>Symbol</code>. 
-      
-      <p>Class variables are not subject to inheritance, but are <i>shared</i>
-      between subclasses: the same variable is accessed by all; it is neither
-      duplicated nor shadowed.  Therefore, the modification of a class variable
-      defined in a superclass affects the superclass along with any sibling
-      classes.
-
-      <p><code>Class#class_variables</code> returns an <code>Array</code> of the
-      class’s class variables as <code>Symbol</code>s, sans their
-      <code>@@</code> prefixes.
-
-    <h4>Class Instance Variables</h4>
-
-      <p>An instance variable used within a class definition, outside of an
-      instance method, is a <dfn title="class instance variable">class instance
-        variable</dfn>. It is not to be confused with a class variable. <!--
-      Note that if instance variables are "declared" outside of an instance
-      method, this will not affect their use as instance variables? -->
-
-      <p>Both kinds of variables are associated with the class, as opposed to
-      its instances. The primary advantage of class instance variables over
-      class variables is that they don't exhibit the latter’s awkward sharing
-      semantics: class instance variables are not shared with subclasses.
-
-      <p>Class instance variables can be used within class methods but not
-      instance methods—as in that context they are normal instance variables—so
-      are not necessarily appropriate substitutes.
-
-      <p>Accessor methods can be created for class instance variables by using
-      <code>Module#attr_accessor</code> and <code>Module#attr_writer</code>
-      inside the class’s singleton class.
-
-      <pre><code>
-        class &lt;&lt; self
-          attr_accessor :class_instance_variable
-        end
-      </code></pre>
-
-  <h3>Instances</h3>
-
-    <p><code>ObjectSpace.each_object(<var>class</var>)</code> returns an
-    <code>Enumerator</code> of a <var>class</var>’s instances.
-
-  <h3>Methods</h3>
-
-    <p>The methods defined on a class can be listed with
-    <code>Object#methods</code> or <code>Object#instance_methods</code>. They
-    are returned as an <code>Array</code> of <code>Symbol</code>s. If either
-    method is given an argument of <code>false</code>, superclass methods are
-    omitted.
-
-    <p>When an instance method is added to, removed from, or undefined on, a
-    class it receives <code>:method_added</code>,
-    <code>:method_removed</code>, or <code>method_undefined</code>,
-    respectively, with the method’s name as a <code>Symbol</code> argument.
-    The situation is similar for singleton methods, except the message
-    selectors are prefixed with <code>singleton_</code>. 
-
-  <h3>Missing Classes</h3>  
-    
-    <p>When a constant is used without being defined the enclosing class is
-    sent a <code>:const_missing</code> message with the constant name as a
-    <code>Symbol</code> argument. This is similar to
-    <code>:method_missing</code>, but for classes.
-
-  <h3>Enumeration</h3>
-
-    <p><code>ObjectSpace.each_object(Class)</code> enumerates all
-    <code>Class</code> objects currently defined. 
-    
-    <p>Enumerating the subclasses of a given class is slightly harder, but the
-    figure below suggests a simple approach.
-
-    <figure id=enumerating-subclasses>
-      <pre><code>
-      class Module
-        def children
-          constants.map{|c| const_get(c) }.select{|c| c.is_a?(Class) }
-        end
-      end
-      </code></pre>
-    </figure>
-
-  <h3 id=type>Type</h3> 
-
-    <p><q>In many object-oriented languages, class names are used…for the type
-      of objects generated from the class.</q> <a class=ref
-      href=#refBRUCE02>Bruce</a> (p 20). <a href=#refKLAS95 class=ref>Klas
-      &amp; Schrefl</a> concur: <q>A class…defines…the type of [its]
-      instances</q> (p 10). Applying this notion to Ruby is problematic
-    because while it is certainly possible for a method to dynamically <i>type
-      check</i> its arguments with the
-    <code>Kernel#is_a?(<var>class</var>)</code> predicate, this approach is
-    both insufficient and unnecessary. 
-
-    <p>It is insufficient because an object’s class is not indicative of its
-    suitability for a specific role. Class-based type checking rests on
-    the premise that all objects of a given type will respond to the same
-    messages in the same fashion. However, Ruby’s classes may be modified at
-    will—allowing their methods to be redefined or removed—so two objects of
-    the same class will not necessarily provide the same behaviour. Similarly,
-    methods may be defined on, or removed from, individual objects, again
-    breaking the assumption.
-
-    <p>It is unnecessary because Ruby offers a superior, meritocratic
-    alternative called “duck typing” (<a href=#refTHOM09 class=ref>Thomas et
-      al.</a>, p 372): if an object responds to the messages it would be sent
-    in the course of a computation it constitutes suitable input. The
-    yardstick is ability; not class.
-     
-    <p>An optimistic method simply assumes that its arguments are suitable;
-    allowing them to raise a <code>NoMethodError</code> if sent a message they
-    don't understand. This allows for particularly flexible <abbr
-      title="Application Programming Interface">API</abbr>s at the cost of
-    potentially obscure error messages for nonsensical arguments.
-    
-      <!--
-      def m(a)
-        a.roger
-      rescue NoMethodError
-        raise ArgumentError
-      end
-      -->
-    
-    <p>More typically, the
-    <code>Kernel#respond_to?(<var>selector</var>)</code> predicate is used to
-    determine the suitability of an object. For instance, a method may raise
-    an <code>ArgumentError</code> unless its argument responds to
-    <code>:&lt;&lt;</code>.
-    
-    <p>A refinement on the above is to send an argument the appropriate
-    <code>:try_convert</code> message, raising an exception if
-    <code>nil</code> is returned. <!-- Think about this more fully. Link with
-    .try_convert explanation -->
-    
-    <!-- Discuss meaning of TypeError -->
-    <!-- Note that "respond to" doesn't necessarily imply the object will
-    accept the arguments its given (mention #understand? idea). -->
-    <!-- Discuss somewhere the concept of selectors having a shared meaning
-    -->
-    <!-- http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/object/acts_like.rb
-    -->
+        <p>It is unnecessary because Ruby offers a superior, meritocratic
+        alternative called “duck typing” (<a href=#refTHOM09 class=ref>Thomas et
+          al.</a>, p 372): if an object responds to the messages it would be sent
+        in the course of a computation it constitutes suitable input. The
+        yardstick is ability; not class.
+         
+        <p>An optimistic method simply assumes that its arguments are suitable;
+        allowing them to raise a <code>NoMethodError</code> if sent a message they
+        don't understand. This allows for particularly flexible <abbr
+          title="Application Programming Interface">API</abbr>s at the cost of
+        potentially obscure error messages for nonsensical arguments.
+        
+          <!--
+          def m(a)
+            a.roger
+          rescue NoMethodError
+            raise ArgumentError
+          end
+          -->
+        
+        <p>More typically, the
+        <code>Kernel#respond_to?(<var>selector</var>)</code> predicate is used to
+        determine the suitability of an object. For instance, a method may raise
+        an <code>ArgumentError</code> unless its argument responds to
+        <code>:&lt;&lt;</code>.
+        
+        <p>A refinement on the above is to send an argument the appropriate
+        <code>:try_convert</code> message, raising an exception if
+        <code>nil</code> is returned. <!-- Think about this more fully. Link with
+        .try_convert explanation -->
+        
+        <!-- Discuss meaning of TypeError -->
+        <!-- Note that "respond to" doesn't necessarily imply the object will
+        accept the arguments its given (mention #understand? idea). -->
+        <!-- Discuss somewhere the concept of selectors having a shared meaning
+        -->
+        <!-- http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/object/acts_like.rb
+        -->
+      </section>
+    </section>
   </body>
 </html>
