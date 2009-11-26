@@ -281,22 +281,11 @@
           <code>Struct</code>: the <code>Struct</code> defines the simple
           attributes, and the class body adds behaviour/customisations.</p>
 
-          <pre><code>
-            class Element &lt; Struct.new(:name, :symbol, :atomic_number, :mass)      
-              def initialize(*args)
-                super
-                @poisonous = false
-              end
-              
-              def poisonous?
-                @poisonous
-              end
-              
-              def poisonous=(bool)
-                @poisonous = !!bool
-              end
-            end
-          </code></pre>
+          <figure id=struct-inheritance>
+          <dt>A class may inherit from a <code>Struct</code> to augment the
+          structure’s behaviour
+          </figure>
+
           <!-- OpenStruct -->   
         </section>
 
