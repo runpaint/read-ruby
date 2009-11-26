@@ -211,18 +211,7 @@
             same class the old method is overwritten with the new.</p>
 
             <figure id=reopened-class>
-              <dt>Re-defining a method in an existing class</dt>
-              <dd>
-                <pre><code>
-                  'hello'.length #=&gt; 5
-                  class String
-                    def length
-                      'How long is a piece of string?'
-                    end
-                  end
-                  'hello'.length #=&gt; 'How long is a piece of string?'
-                </code></pre>
-              </dd>
+              <dt>Re-defining a method in an existing class
             </figure>  
 
             <p>Classes can be made immutable, effectively preventing them from
