@@ -31,29 +31,29 @@
           equivalent is “interstitial”. The key in making great and growable systems
           is much more to design how its modules communicate rather than what their
           internal properties and behaviors should be. 
-          <cite><a href=#refKAY98 class=ref>Dr Alan Kay</a>, 1998</cite>
+          <cite><a href=/references#refKAY98 class=ref>Dr Alan Kay</a>, 1998</cite>
         </blockquote>
 
         <p>A message is a <q>request for an object to perform some
-          operation</q> (<a href=#refBUDD87 class=ref>Budd</a>, p. 6). It
-        consists of <q>a <i>receiver</i>, a message <i>selector</i>, and zero
-          or more <i>arguments</i>.</q> (<a href=#refBUDD87
-          class=ref>Budd</a>, p. 16).</p>
+        operation</q> (<a href=/references#refBUDD87 class=ref>Budd</a>, p.
+        6). It consists of <q>a <i>receiver</i>, a message <i>selector</i>,
+        and zero or more <i>arguments</i>.</q> (<a href=/references#refBUDD87
+        class=ref>Budd</a>, p. 16).</p>
         
         <!-- Diagram a message send -->
         <aside>
-          <p><a href=#refLIU99 class=ref>Liu</a> (p. 2) suggests that it can be
-          helpful to envisage messages as telegrams:</p>
+          <p><a href=/references#refLIU99 class=ref>Liu</a> (p. 2) suggests
+          that it can be helpful to envisage messages as telegrams:</p>
           
-          <blockquote cite=#refLIU99>
+          <blockquote cite=/references#refLIU99>
             <p>“Message” is too abstract a word. A better word is
             <i>telegram</i>. A “telegram” is tangible: I can touch it, I can
             see the information it carries, and I can picture the moment it
             arrives at the door of its addressee. It is not some vague
             electronic-sounding thing like a “message”. Therefore, I encourage
             you to think of an old-fashioned telegram whenever you see the
-            term “message”.
-            <cite><a href=#refLIU99>C. Liu</a>, 1999</cite> 
+            term “message”.  <cite><a class=ref href=/references#refLIU99>C.
+            Liu</a>, 1999</cite> 
           </blockquote>
         </aside>
       </section>
@@ -98,19 +98,21 @@
         <p>A message selector often corresponds to the name of a method in the
         receiver. That is, sending the message <var>s</var> to receiver
         <var>r</var> is equivalent to invoking the method <var>s</var> on
-        <var>r</var>. Indeed, <a href=#refFLAN08 class=ref>Flanagan &amp;
-          Matsumoto</a> (p. 178) claim that <q>…methods are called
-          ‟messages”</q>.
+        <var>r</var>. Indeed, <a href=/references#refFLAN08 class=ref>Flanagan
+        &amp; Matsumoto</a> (p. 178) claim that <q>…methods are called
+        ‟messages”</q>.
 
-        <p>In the definitions of <a href=#refBUDD87 class=ref>Budd</a> (p. 6), <a
-          href=#refHUNT97 class=ref>Hunt</a> (p. 73), <a href=#refMITCHELL04
-          class=ref>Mitchell</a> (p. 279), and <a href=#refKLAS95 class=ref>Klas
-          &amp; Schrefl</a> (p. 13), <i>message</i> refers to the <i>request</i>
-        being made of an object; whereas <a href=#refFLAN08 class=ref>Flanagan &amp;
-          Matsumoto</a> use it to refer the means with which the receiver would
-        respond to such a request. We prefer what Mitchell terms <q>Smalltalk
-          terminology</q> because it is well established in the literature, and the
-        basis for Ruby’s misappropriation.
+        <p>In the definitions of <a href=/references#refBUDD87
+        class=ref>Budd</a> (p. 6), <a href=/references#refHUNT97
+        class=ref>Hunt</a> (p. 73), <a href=/references#refMITCHELL04
+        class=ref>Mitchell</a> (p. 279), and <a href=/references#refKLAS95
+        class=ref>Klas &amp; Schrefl</a> (p. 13), <i>message</i> refers to the
+        <i>request</i> being made of an object; whereas <a
+        href=/references#refFLAN08 class=ref>Flanagan &amp; Matsumoto</a> use
+        it to refer the means with which the receiver would respond to such a
+        request. We prefer what Mitchell terms <q>Smalltalk terminology</q>
+        because it is well established in the literature, and the basis for
+        Ruby’s misappropriation.
 
         <p>Further, there is not necessarily a one-to-one correspondence
         between message selector and method name. If the named method does not
@@ -120,9 +122,9 @@
         represented.
 
         <p>The proper relation of <i>message</i> to <i>method</i> can be
-        understood by <a href=#refBUDD87>Budd</a>’s use of the term
-        <i>operation</i>: a method must perform the requested operation,
-        invoking whatever method is most appropriate to do so.
+        understood by <a class=ref href=/references#refBUDD87>Budd</a>’s use
+        of the term <i>operation</i>: a method must perform the requested
+        operation, invoking whatever method is most appropriate to do so.
 
         <!-- Expand on this idea: shared vocabulary? -->
         <p>Defining messages in terms of operations also provides the framework for
@@ -832,11 +834,11 @@
             mark a method as special. It doesn’t necessarily mean that it will be
             destructive or dangerous, but it means that it will require more
             attention than its alternative.</q> <a class=ref
-            href=#refBROWN09>[Brown, 2009, p. 52]</a>. <q>Usually, the method
+            href=/references#refBROWN09>[Brown, 2009, p. 52]</a>. <q>Usually, the method
             without the exclamation mark returns a modified copy of the object it is
             invoked on, and the one with the exclamation mark is a mutator method
             that alters the object in place.</q> <a class=ref
-            href=#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a></p>
+            href=/references#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a></p>
 
             <figure id=bang-messages>
             <dt>The <code>!</code> suffix often indicates that a message will
