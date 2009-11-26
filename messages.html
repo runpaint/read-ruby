@@ -323,39 +323,44 @@
             an <code>Array</code> can be used in the same fashion.  
           </aside>
 
-          <p>A message expression followed by a block literal causes the block
-          to be sent along with the message. A block literal may be enclosed
-          in curly braces (<code>{</code>…<code>}</code>) or a
-          <code>do</code>…<code>end</code> construct. These forms are
-          semantically equivalent, however it is conventional to use the
-          former for short blocks that fit on a single line, and the latter
-          for multi-line blocks.</p>
+          <section>
+            <h1 id=block-argument>Block Literals</h1>
 
-          <figure id=message-expression-with-block>
-            <dt>A message expression followed by a block literal causes the
-            block to be passed to the method.
-          </figure>
+              <p>A message expression followed by a block literal causes the
+              block to be sent along with the message. A block literal may be
+              enclosed in curly braces (<code>{</code>…<code>}</code>) or a
+              <code>do</code>…<code>end</code> construct. These forms are
+              semantically equivalent, however it is conventional to use the
+              former for short blocks that fit on a single line, and the
+              latter for multi-line blocks.</p>
 
-          <!-- Suggest here that Enumerators are returned when no block is given?
-          -->
+              <figure id=message-expression-with-block>
+                <dt>A message expression followed by a block literal causes
+                the block to be passed to the method.
+              </figure>
 
-          <aside class=note>
-            <p>To send a <code>Proc</code> object along with a message
-            expecting an anonymous block, prefix the object name with an
-            ampersand (U+0026: <code>&amp;</code>). If multiple arguments are
-            given the <code>Proc</code> must be specified last.</p>
+              <!-- Suggest here that Enumerators are returned when no block is given?
+              -->
 
-            <figure id=ampersand-prefix-with-argument>
-              <dt>Prefix the final argument with an ampersand to convert it to
-              a block literal.
-            </figure>
+              <aside class=note>
+                <p>To send a <code>Proc</code> object along with a message
+                expecting an anonymous block, prefix the object name with an
+                ampersand (U+0026: <code>&amp;</code>). If multiple arguments
+                are given the <code>Proc</code> must be specified last.</p>
 
-            <p>This technique works by sending <code>:to_proc</code> to the
-            object, and using the <code>Proc</code> returned as the block. By
-            extension, any object that responds to <code>:to_proc</code> in
-            this manner can be used in the same fashion.
-            <!-- Point to Symbol#to_proc here? --> 
-          </aside>
+                <figure id=ampersand-prefix-with-argument>
+                  <dt>Prefix the final argument with an ampersand to convert
+                  it to a block literal.
+                </figure>
+
+                <p>This technique works by sending <code>:to_proc</code> to
+                the object, and using the <code>Proc</code> returned as the
+                block. By extension, any object that responds to
+                <code>:to_proc</code> in this manner can be used in the same
+                fashion.
+                <!-- Point to Symbol#to_proc here? --> 
+              </aside>
+          </section>
 
           <section>
             <h1>Parentheses</h1>
