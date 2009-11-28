@@ -30,21 +30,25 @@
 
         <section>
           <h1>Instantiation</h1>
-          <!-- There are 3½ ways to instantiate an object...-->
-          <p>An object is instantiated by either sending an appropriate message to
-          an existing object or using a <i>literal</i>. 
           
-          <!-- Marshal.load also creates an object -->
+          <!-- More preamble here -->
+          <p>There are five main ways to <dfn>instantiate</dfn>, or
+          <em>create</em>, an object: 
           
-          <aside>
-            <p>This may seem to imply that, ultimately, all objects are instantiated
-            by means of literals, because a message cannot be sent to an object
-            unless that object already exists. This is not so. Certain objects
-            always exist. They come into being with the Ruby interpreter. 
-          </aside>
+          <ul>
+            <li>Using a <a href=#literals>literal</a>.
+            <li>Sending a <a href=#constructors>constructor</a> message to an
+            existing object (usually a class).
+            <li><a href=#cloning>Cloning</a> or <a
+              href=#duplication>duplicating</a> an existing object.
+            <li>Loading a serialized, or <a href=#marshaling>Marshaled</a>, object.
+          </ul>
+          
+          <p>In addition, certain core objects always exist without being
+          instantiated: they are created by the Ruby interpreter. </p>
 
           <section>
-            <h1>Literals</h1>
+            <h1 id=literals>Literals</h1>
 
               <!-- Discuss &:sym as a literal? -->
               <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
@@ -380,7 +384,7 @@
             </section>
 
             <section>
-              <h1>Constructors</h1>
+              <h1 id=constructors>Constructors</h1>
 
               <section>
                 <h1><code>.new</code></h1>
@@ -686,7 +690,7 @@
           </section>
 
           <section>
-            <h1>Cloning</h1>
+            <h1 id=cloning>Cloning</h1>
           
             <p><code>Object#clone</code> behaves like <code>Object#dup</code>
             except it also copies singleton methods and frozen state.
@@ -695,7 +699,7 @@
           </section>
 
           <section>
-            <h1>Marshaling</h1> <!-- Serialization? Make part of Instantiation? -->
+            <h1 id=marshaling>Marshaling</h1> <!-- Serialization? Make part of Instantiation? -->
             
             <p>An object may be serialized as a binary <code>String</code> by
             supplying it to <code>Marshal.dump</code>. If an <code>IO</code> object is
