@@ -47,9 +47,14 @@ task :compress => [:minimise, *FileList['out/*.html']] do |t|
   end
 end
 
-def headings(s)
-  titles = [s.xpath('./h1').inner_html, 
-            s.xpath('./section').map{|s2| headings(s2)}.compact
+def headings(s, f)
+  a = ''
+  unless (h1 = s.xpath('./h1')).inner_html.empty?
+    href = f.sub(/\.html$/,'') + '#' + h1.first.attributes['id']
+    a = "<a href=#{href}>#{h1.inner_html}</a>"
+  end
+  titles = [a, 
+            s.xpath('./section').map{|s2| headings(s2, f)}.compact
            ].reject(&:empty?)
   return if titles.empty?
   titles.size == 1 ? titles.first : titles
@@ -63,7 +68,7 @@ end
 
 task :toc => FileList['*.html'] do |t|
   chapters = t.prerequisites.map do |p| 
-    headings(Nokogiri::HTML(File.read p).css('body > section'))
+    headings(Nokogiri::HTML(File.read p).css('body > section'), p)
   end.compact
   puts toc(chapters)
 end
