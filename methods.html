@@ -13,7 +13,7 @@
   <body>
 
 <section>
-  <h1>Methods</h1>
+  <h1 id=methods>Methods</h1>
   <!-- Mention __method__ -->
 
   <q>A <dfn>method</dfn> is a named block of parameterized code associated
@@ -82,7 +82,7 @@
     </section>
 
     <section>
-      <h1>Per-Object Behaviour</h1>
+      <h1 id=per-object-behaviour>Per-Object Behaviour</h1>
 
         <p><q>In [the] prototype-based [programming] paradigm…there are no
         classes. Rather, new kinds of objects are formed more directly by
@@ -126,7 +126,7 @@
   </section>
   
   <section>
-    <h1>Return Values</h1>
+    <h1 id=return-values>Return Values</h1>
 
     <p>A method is a expression so always returns a value: the last statement
     executed, or <code>nil</code> if the method body is empty. If this value
@@ -438,7 +438,7 @@
   </section>
   
   <section>
-    <h1>Defining</h1>
+    <h1 id=defining>Defining</h1>
     
     <p>A method consists of a name, an optional parameter list, and a body.
     <a href=#method-names>Names</a> have already been discussed, the parameter
@@ -514,7 +514,7 @@ end</code></pre>
       <p>Each parameter name must be unique in the parameter list.</p>
 
       <section>
-        <h1>Pass By Reference</h1>
+        <h1 id=pass-by-reference>Pass By Reference</h1>
 
         <p>Arguments are passed to methods by reference instead of value.  If
         the method modifies an object it receives the caller’s copy is
@@ -535,7 +535,7 @@ end</code></pre>
       </section>
       
       <section>
-        <h1>Required Arguments</h1>
+        <h1 id=required-arguments>Required Arguments</h1>
 
         <p>A <dfn>required argument</dfn> <em>must</em>
         be supplied by the caller. A method which requires exactly 4 arguments
@@ -558,7 +558,7 @@ end</code></pre>
       </section>
 
       <section>
-        <h1>Optional Arguments and Default Values</h1>
+        <h1 id=optional-arguments>Optional Arguments and Default Values</h1>
 
         <p>An <dfn>optional argument</dfn> <em>may</em>
         be supplied by the caller. If it is not, the corresponding parameter
@@ -635,7 +635,7 @@ end</code></pre>
       </section>
 
       <section>
-        <h1>Named Arguments</h1>
+        <h1 id=named-arguments>Named Arguments</h1>
 
         <p>The parameter forms described above are positional in nature.  They
         depend on the argument’s location in the parameter list to marry it
@@ -685,7 +685,7 @@ end</code></pre>
       </section>
       
       <section>
-        <h1>Block Arguments</h1>
+        <h1 id=block-arguments>Block Arguments</h1>
         
         <p>Any method may be sent a <a href=/messages#block-argument>block
           argument</a>. The block may be yielded to, allowing its return value
@@ -759,7 +759,7 @@ end</code></pre>
       </section>
       
       <section>
-        <h1>Dynamic Method Definition</h1>
+        <h1 id=dynamic-definition>Dynamic Method Definition</h1>
 
         <p>An instance method can be defined dynamically with
         <code>Module#define_method(<var>name</var>, <var>body</var>)</code>,
@@ -796,7 +796,7 @@ end</code></pre>
       </section>
 
       <section>
-        <h1>Arity</h1>
+        <h1 id=arity>Arity</h1>
     
         <p>The arity of a method is the number of arguments it takes. If the
         method expects a fixed number of arguments, this number is its arity.  If
@@ -810,7 +810,7 @@ end</code></pre>
         objectifies.</p>
 
         <section>
-          <h1>Classification by Arity</h1>
+          <h1 id=classification-by-arity>Classification by Arity</h1>
 
           <p>Methods with fixed arities can be classified as follows: A
           <dfn>unary method</dfn> expects exactly one operand (its receiver),
@@ -824,7 +824,7 @@ end</code></pre>
     </section>
     
     <section>
-      <h1>Undefining</h1>
+      <h1 id=undefining>Undefining</h1>
 
       <p>The <code>undef</code> statement takes one or more
       <code>Symbol</code>s/identifiers as arguments, then undefines the
@@ -851,7 +851,7 @@ end</code></pre>
     </section>
     
     <section>
-      <h1>Removing</h1>
+      <h1 id=removing>Removing</h1>
     
       <p><code>Module#remove_method <var>name</var></code> removes the method
       named <var>name</var> from the current class only. A <dfn>removed
@@ -866,7 +866,7 @@ end</code></pre>
     </section>
 
     <section>
-      <h1>Visibility</h1>
+      <h1 id=visibility>Visibility</h1>
 
       <!-- Clarify that its the binding of a method to a class that has a
       visibility? c.f. matz -->
@@ -894,7 +894,7 @@ end</code></pre>
       </figure>
 
       <section>
-        <h1>Advisory Privacy</h1>
+        <h1 id=advisory-privacy>Advisory Privacy</h1>
 
         <p>Method visibility is merely an advisory construct. Ruby does not
         <i>prohibit</i> the invocation of private methods; she ensures that they
@@ -916,7 +916,7 @@ end</code></pre>
       </section>
       
       <section>
-        <h1>Public Methods</h1>
+        <h1 id=public-methods>Public Methods</h1>
 
         <p>A method is public unless explicitly declared otherwise, or declared
         outside of a class definition. The <code>initialize</code> method is
@@ -924,7 +924,7 @@ end</code></pre>
       </section>
 
       <section>
-        <h1>Private Methods</h1>
+        <h1 id=private-methods>Private Methods</h1>
 
         <p>A <dfn>private method</dfn> cannot be invoked with
         an explicit receiver: it can only be called by other instance methods of
@@ -944,7 +944,7 @@ end</code></pre>
       </section>
       
       <section>
-        <h1>Protected Methods</h1>
+        <h1 id=protected-methods>Protected Methods</h1>
 
         <p>Protected methods can invoked only from the class in which they were
         defined or a subclass thereof, that is they behave the same as private
@@ -961,7 +961,7 @@ end</code></pre>
       </section>
       
       <section>
-        <h1>Class Methods</h1>
+        <h1 id=class-methods>Class Methods</h1>
 
         <p>A class <!-- "Singleton"? --> method named <var>name</var> can be
         privatised with <code>Module#private_class_method <var>name</var></code>.
@@ -973,7 +973,7 @@ end</code></pre>
     </section>
 
     <section>
-      <h1>Aliases</h1>
+      <h1 id=aliases>Aliases</h1>
 
       <p>An <dfn title="method alias">alias</dfn> of a method is an alternate name by
       which it can be referred. For a method, <var>m</var>, and its alias,
@@ -1038,7 +1038,7 @@ end</code></pre>
     </section>
     
     <section>
-      <h1>Lookup Algorithm</h1>
+      <h1 id=lookup-algorithm>Lookup Algorithm</h1>
     
       <p>Evaluating a message expression requires the corresponding method
       definition be located in the receiver. The steps below illustrate the
@@ -1127,7 +1127,7 @@ end</code></pre>
       <code>find_by.firstname("martin").and.lastname("fowler)</code>.</p>
 
       <section>
-        <h1><code>Kernel#respond_to_missing?</code></h1>
+        <h1 id=respond-to-missing><code>Kernel#respond_to_missing?</code></h1>
 
         <p>A consequence of defining methods dynamically with
         <code>Kernel#method_missing</code> is that an object may respond to a given
@@ -1154,7 +1154,7 @@ end</code></pre>
     </section>
     
     <section>
-      <h1><code>Method</code> Objects</h1>
+      <h1 id=method-objects><code>Method</code> Objects</h1>
 
       <p>An instance of the <code>Method</code> class represents a method bound
       to an object. This <dfn>method object</dfn> enables you
@@ -1177,14 +1177,14 @@ end</code></pre>
       <code>NameError</code> if the given method is private or protected.</p>
 
       <section>
-        <h1>Arity</h1>
+        <h1 id=method-objects-arity>Arity</h1>
 
         <p><code>Method#arity</code> returns an <code>Integer</code>
         corresponding to the method’s arity.
       </section>
 
       <section>
-        <h1>Calling</h1>
+        <h1 id=method-objects-calling>Calling</h1>
 
         <p>The method represented by a <code>Method</code> object can be
         invoked with <code>Method#call</code> or its alias
@@ -1197,7 +1197,7 @@ end</code></pre>
       </section>
 
       <section>
-        <h1>Converting to a <code>Proc</code></h1>
+        <h1 id=method-objects-to-proc>Converting to a <code>Proc</code></h1>
         
         <p>A method object can be converted to a <code>Proc</code> by prefixing
         it with an ampersand (<code>&amp;</code>). Therefore it can be passed to
@@ -1206,7 +1206,7 @@ end</code></pre>
       </section>
 
       <section>
-        <h1>Equality</h1>
+        <h1 id=method-objects-equality>Equality</h1>
 
         <!-- Bug: #1898 --> <p><code>Method#==</code> returns true if both
         methods are bound to the same object and have the same body. The first
@@ -1222,7 +1222,7 @@ end</code></pre>
       </section>
 
       <section>
-        <h1>Source Location</h1>
+        <h1 id=method-objects-source-location>Source Location</h1>
 
         <p>The filename and line number where a method was defined is returned
         as an <code>Array</code> by <code>Method#source_location</code>. If the
@@ -1236,7 +1236,7 @@ end</code></pre>
       </section>
 
       <section>
-        <h1>Parameters</h1>
+        <h1 id=method-objects-parameters>Parameters</h1>
 
         <!-- [ruby-core:19759] Proposal: Method#get_args -->   
           
@@ -1252,7 +1252,7 @@ end</code></pre>
     </section>
     
     <section>
-      <h1><code>UnboundMethod</code> Objects</h1>
+      <h1 id=unboundmethod-objects><code>UnboundMethod</code> Objects</h1>
 
       <p>An <code>UnboundMethod</code> object is a <code>Method</code> object
       disassociated from the object on which it was defined.     

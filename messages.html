@@ -13,7 +13,7 @@
   <body>
 
   <section>    
-    <h1>Messages</h1>
+    <h1 id=messages>Messages</h1>
 
       <!-- List messages objects _should_ respond to, and those messages that are
       useful to define methods for -->
@@ -60,7 +60,7 @@
       </section>
 
       <section>
-        <h1>Purpose</h1>
+        <h1 id=purpose>Purpose</h1>
 
         <p>A message is <i>sent</i> to a receiver for the value it will
         return, and/or the side effects, if any, that result. 
@@ -94,7 +94,7 @@
       </section>
 
       <section>
-        <h1>The Distinction Between Messages and Methods</h1>
+        <h1 id=distinction>The Distinction Between Messages and Methods</h1>
 
         <p>A message selector often corresponds to the name of a method in the
         receiver. That is, sending the message <var>s</var> to receiver
@@ -133,7 +133,7 @@
       </section>
 
       <section>
-        <h1>Selectors</h1>
+        <h1 id=selectors>Selectors</h1>
 
         <!-- TODO: Talk here about "significant names"? Decide what material moves
         from the Method > Names section to here -->
@@ -167,7 +167,7 @@
       </section>
 
       <section>
-        <h1>Receivers</h1>
+        <h1 id=receivers>Receivers</h1>
 
         <p>Every message is sent to a <dfn title="message
         receiver">receiver</dfn> object, which may be explicit or
@@ -238,7 +238,7 @@
       <!-- Arguments section? -->
 
       <section>
-        <h1>Message Expression Syntax</h1>
+        <h1 id=expression-syntax>Message Expression Syntax</h1>
 
         <!-- We're using _message expression_ to describe this syntax... (dfn it?) -->
 
@@ -366,7 +366,7 @@
           </section>
 
           <section>
-            <h1>Parentheses</h1>
+            <h1 id=parentheses>Parentheses</h1>
 
               <p>Parentheses may be omitted from message expressions when
               doing so does not introduce syntactic ambiguity.
@@ -474,7 +474,7 @@
           
         <section>
           <!-- Better phrase than "dynamic sending"? -->
-          <h1>Dynamic Sending with <code>Object#send</code></h1>
+          <h1 id=object-send>Dynamic Sending with <code>Object#send</code></h1>
       
           <p>A message can also be sent to an object with
           <code>Object#send</code>, i.e.
@@ -500,7 +500,7 @@
       </section>
 
       <section>
-        <h1>Attribute Accessors and Setters</h1>
+        <h1 id=attributes>Attribute Accessors and Setters</h1>
 
         <!-- TODO: Note use of term 'unary' message --> 
         <p>A message without arguments that returns the value of the corresponding
@@ -538,7 +538,7 @@
       </section>
 
       <section>
-        <h1>Conventions</h1>
+        <h1 id=conventions>Conventions</h1>
 
         <p>Around certain selectors there exist conventions which are
         established by the core classes and standard library, so are worthy of
@@ -818,7 +818,7 @@
         </section>
         
         <section>
-          <h1>Tone</h1>
+          <h1 id=tone>Tone</h1>
 
           <p>By convention, a selector with a question mark (<code>?</code>) suffix
           denotes that the message poses a polar question to the receiver. Such messages
@@ -857,7 +857,7 @@
         </section>
         
         <section>
-          <h1>Plurality</h1>
+          <h1 id=plurality>Plurality</h1>
 
           <p>Messages whose selectors are plural generally return an
           <code>Enumerable</code> collection of objects. For example,

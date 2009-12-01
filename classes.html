@@ -13,7 +13,7 @@
   <body>
 
     <section>
-      <h1>Classes</h1>
+      <h1 id=classes>Classes</h1>
 
       <!-- http://blog.rubybestpractices.com/posts/rklemme/018-Complete_Class.html -->
       <!-- What does it mean to dup or clone a class? -->
@@ -35,7 +35,7 @@
       </aside>
 
       <section>
-        <h1>Names</h1>
+        <h1 id=names>Names</h1>
 
         <!-- Mention the Class::Subclass name qualification here or in Constants
         section? In same place mention Ruby's preference for flat hierarchies -->
@@ -51,7 +51,7 @@
         anonymous.</p>
 
         <section>
-          <h1>Rules</h1>
+          <h1 id=names-rules>Rules</h1>
 
           <p>The name of class must: 
             <ul>
@@ -75,7 +75,7 @@
         </section>
         
         <section>
-          <h1>Conventions</h1>
+          <h1 id=names-conventions>Conventions</h1>
 
           <p>Conventionally class names use camel-case capitalization: The
           initial letter of each word is capitalized, and spaces between the
@@ -89,7 +89,7 @@
       </section>
 
       <section>
-        <h1>Inheritance</h1>
+        <h1 id=inheritance>Inheritance</h1>
 
   <!--
      nil          }             General
@@ -124,7 +124,7 @@
         <!-- Discuss multiple inheritance and mix-ins? --> 
     
         <section>
-          <h1>Superclass</h1>
+          <h1 id=superclass>Superclass</h1>
             
           <p>The superclass is a class object. It is typically specified as a
           constant literal, but can be any expression evaluating to the same.
@@ -138,7 +138,7 @@
         </section>
 
         <section>
-          <h1>Ancestors</h1>
+          <h1 id=ancestors>Ancestors</h1>
 
           <p>The ancestors of a class are the classes and modules it
           inherits from: its superclass and mixed-in modules, then their
@@ -178,7 +178,7 @@
         description -->
 
         <section>
-          <h1>The <code>Class#inherited</code> hook</h1>  
+          <h1 id=class-inherited>The <code>Class#inherited</code> hook</h1>  
 
           <p>If a class defines a singleton method named <code>:inherited</code>, it
           is invoked when the class is inherited with the subclass as its argument.
@@ -186,10 +186,10 @@
       </section>
 
       <section>
-        <h1>Creation</h1>
+        <h1 id=creation>Creation</h1>
 
         <section>
-          <h1>The <code>class</code> Keyword</h1>
+          <h1 id=class-keyword>The <code>class</code> Keyword</h1>
 
           <p>The <code>class <var>name</var> &lt;
             <var>superclass</var>…end</code> expression opens a class named
@@ -204,7 +204,7 @@
           <code>Class</code> object.</p>
 
           <section>
-            <h1>Reopening Classes</h1>
+            <h1 id=reopening>Reopening Classes</h1>
 
             <p>If <code>class</code> is used with the name of a pre-existing
             class that class is <i>re-opened</i>. If a method is defined in a
@@ -232,7 +232,7 @@
         </section>
 
         <section>
-          <h1><code>Class.new</code></h1>
+          <h1 id=class-new><code>Class.new</code></h1>
       
           <p>The <code><var>name</var> = Class.new do…end</code> constructor may
           be used to similar effect. The principle difference being that existing
@@ -244,7 +244,7 @@
           </figure>
 
           <section>
-            <h1>Anonymous Classes</h1> <!-- Is this term confusing w.r.t
+            <h1 id=anonymous-classes>Anonymous Classes</h1> <!-- Is this term confusing w.r.t
             eigenclasses also being described as anonymous? -->
 
               <p>When a constant is used as a class name it has global <!-- This
@@ -264,7 +264,7 @@
         </section>
         
         <section>
-          <h1>Structs</h1>
+          <h1 id=structs>Structs</h1>
       
           <p><code>Struct</code> is a class generator, particularly useful for
           classes that only need to wrap data. It it instantiated with a list
@@ -291,7 +291,7 @@
         </section>
 
         <section>
-          <h1>Nesting</h1>
+          <h1 id=nesting>Nesting</h1>
      
           <p>A class may be defined within the body of another class. The fully
           qualified name of the inner class is
@@ -330,7 +330,7 @@
       </section>
       
       <section>
-        <h1>Context</h1>
+        <h1 id=context>Context</h1>
 
         <p><code>Class#class_eval</code> takes a string or block which it
         evaluates in the receiver’s context, setting <code>self</code> to the
@@ -370,10 +370,10 @@
       </section>
 
       <section>
-        <h1>State</h1>  
+        <h1 id=state>State</h1>  
 
         <section>
-          <h1>Class Variables</h1>
+          <h1 id=class-variables>Class Variables</h1>
 
           <p><dfn title="class variables">Class variables</dfn> are variables local
           to a class, typically used to share state between instances. They are
@@ -398,7 +398,7 @@
         </section>
 
         <section>
-          <h1>Class Instance Variables</h1>
+          <h1 id=class-instance-variables>Class Instance Variables</h1>
 
           <p>An instance variable used within a class definition, outside of an
           instance method, is a <dfn title="class instance variable">class instance
@@ -427,14 +427,14 @@
       </section>
 
       <section>
-        <h1>Instances</h1>
+        <h1 id=instances>Instances</h1>
 
         <p><code>ObjectSpace.each_object(<var>class</var>)</code> returns an
         <code>Enumerator</code> of a <var>class</var>’s instances.
       </section>
       
       <section>
-        <h1>Methods</h1>
+        <h1 id=methods>Methods</h1>
 
         <p>The methods defined on a class can be listed with
         <code>Object#methods</code> or <code>Object#instance_methods</code>. They
@@ -451,7 +451,7 @@
       </section>
 
       <section>
-        <h1>Missing Classes</h1>  
+        <h1 id=missing>Missing Classes</h1>  
         
         <p>When a constant is used without being defined the enclosing class
         is sent a <code>:const_missing</code> message with the constant name
@@ -460,7 +460,7 @@
       </section>
 
       <section>
-        <h1>Enumeration</h1>
+        <h1 id=enumeration>Enumeration</h1>
 
         <p><code>ObjectSpace.each_object(Class)</code> enumerates all
         <code>Class</code> objects currently defined. 
