@@ -15,6 +15,15 @@ end
 
 source_lambda = ->(t){ t.sub(/out\//, '') }
 
+rule('out/index.html' => FileList['*.html'] << 'out') do |rule|
+  chapters = FileList['*.html'].reject{|f| f == 'index.html'}.map do |p| 
+    headings(Nokogiri::HTML(File.read p).css('body > section'), p)
+  end.compact
+  nok = Nokogiri::HTML(File.read 'index.html')
+  nok.at('section > section > h1').after(toc(chapters))
+  nok.write_html_to(File.new('out/index.html', 'w'), encoding: 'UTF-8')
+end
+
 rule(/out\/.+.html$/ => [source_lambda] + HIGHLIGHTED_FIGURES) do |t|
   nok = Nokogiri::HTML(File.read t.source)
   has_figures = false
@@ -66,12 +75,6 @@ def toc(toc)
    end.join + '</ol>'
 end
 
-task :toc => FileList['*.html'] do |t|
-  chapters = t.prerequisites.map do |p| 
-    headings(Nokogiri::HTML(File.read p).css('body > section'), p)
-  end.compact
-  puts toc(chapters)
-end
 
 OUTPUT_FILES = FileList['*.css', '*.html'].map{|f| "out/#{f}"}
 task :default => [*OUTPUT_FILES, 'out', :minimise, :compress]
