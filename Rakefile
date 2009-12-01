@@ -34,6 +34,13 @@ rule(/out\/.+css/ => [source_lambda] << 'out') do |t|
   cp t.source, t.name
 end
 
+task :minimise => FileList['out/*.html'] do |t|
+  t.prerequisites.each do |p|
+    sh "h5-min #{p} > #{p}.min"
+    mv "#{p}.min", p
+  end
+end
+
 def headings(s)
   titles = [s.xpath('./h1').inner_html, 
             s.xpath('./section').map{|s2| headings(s2)}.compact
@@ -55,4 +62,4 @@ task :toc => FileList['*.html'] do |t|
   puts toc(chapters)
 end
 
-task :default => FileList['*.css', '*.html'].map{|f| "out/#{f}" } << 'out'
+task :default => [*FileList['*.css', '*.html'].map{|f| "out/#{f}" }, 'out', :minimise]
