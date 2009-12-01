@@ -41,6 +41,12 @@ task :minimise => FileList['out/*.html'] do |t|
   end
 end
 
+task :compress => [:minimise, *FileList['out/*.html']] do |t|
+  t.prerequisites.select{|p| File.file?(p)}.each do |p|
+    sh "gzip --best -c #{p} > #{p}.gz"
+  end
+end
+
 def headings(s)
   titles = [s.xpath('./h1').inner_html, 
             s.xpath('./section').map{|s2| headings(s2)}.compact
@@ -62,4 +68,5 @@ task :toc => FileList['*.html'] do |t|
   puts toc(chapters)
 end
 
-task :default => [*FileList['*.css', '*.html'].map{|f| "out/#{f}" }, 'out', :minimise]
+OUTPUT_FILES = FileList['*.css', '*.html'].map{|f| "out/#{f}"}
+task :default => [*OUTPUT_FILES, 'out', :minimise, :compress]
