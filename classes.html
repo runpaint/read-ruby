@@ -161,7 +161,7 @@
         copied to subclasses. 
 
         <p>It is worth stating explicitly that instance variables and class
-        variables are <em>not</em> inherited. <a href=#refFLAN08
+        variables are <em>not</em> inherited. <a href=/references#refFLAN08
           class=ref>Flanagan &amp; Matsumoto</a> (pp. 239–240) note a corollary:
         <q>If a subclass uses an instance variable with the same name as a
           variable used by one of its ancestors, it will overwrite the value of
@@ -481,15 +481,15 @@
       <section>
         <h1 id=type>Type</h1> 
 
-        <p><q>In many object-oriented languages, class names are used…for the type
-          of objects generated from the class.</q> <a class=ref
-          href=#refBRUCE02>Bruce</a> (p 20). <a href=#refKLAS95 class=ref>Klas
-          &amp; Schrefl</a> concur: <q>A class…defines…the type of [its]
-          instances</q> (p 10). Applying this notion to Ruby is problematic
-        because while it is certainly possible for a method to dynamically <i>type
-          check</i> its arguments with the
-        <code>Kernel#is_a?(<var>class</var>)</code> predicate, this approach is
-        both insufficient and unnecessary. 
+        <p><q>In many object-oriented languages, class names are used…for the
+          type of objects generated from the class.</q> <a class=ref
+          href=/references#refBRUCE02>Bruce</a> (p 20). <a
+          href=/references#refKLAS95 class=ref>Klas &amp; Schrefl</a> concur:
+        <q>A class…defines…the type of [its] instances</q> (p 10). Applying
+        this notion to Ruby is problematic because while it is certainly
+        possible for a method to dynamically <i>type check</i> its arguments
+        with the <code>Kernel#is_a?(<var>class</var>)</code> predicate, this
+        approach is both insufficient and unnecessary. 
 
         <p>It is insufficient because an object’s class is not indicative of its
         suitability for a specific role. Class-based type checking rests on
@@ -501,10 +501,10 @@
         breaking the assumption.
 
         <p>It is unnecessary because Ruby offers a superior, meritocratic
-        alternative called “duck typing” (<a href=#refTHOM09 class=ref>Thomas et
-          al.</a>, p 372): if an object responds to the messages it would be sent
-        in the course of a computation it constitutes suitable input. The
-        yardstick is ability; not class.
+        alternative called “duck typing” (<a href=/references#refTHOM09
+          class=ref>Thomas et al.</a>, p 372): if an object responds to the
+        messages it would be sent in the course of a computation it
+        constitutes suitable input. The yardstick is ability; not class.
          
         <p>An optimistic method simply assumes that its arguments are suitable;
         allowing them to raise a <code>NoMethodError</code> if sent a message they
