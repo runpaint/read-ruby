@@ -2,6 +2,8 @@
 require 'rake/clean'
 require 'nokogiri'
 CLOBBER.include('out')
+OUTPUT_FILES = FileList['*.css', '*.html'].map{|f| "out/#{f}"}
+OUTPUT_HTML = OUTPUT_FILES.select{|f| f.end_with?('.html')}
 directory 'out'
 
 HIGHLIGHTED_FIGURES = FileList['figures/*.rb'].map{|f| f.sub(/rb$/, 'html')}
@@ -15,14 +17,15 @@ end
 
 source_lambda = ->(t){ t.sub(/out\//, '') }
 
-rule('out/index.html' => FileList['*.html'] << 'out') do |rule|
-  chapters = FileList['*.html'].reject{|f| f == 'index.html'}.map do |p| 
+rule 'out/index.html' => FileList['*.html'] do |t|
+  chapters = t.prerequisites.reject{|f| f == 'index.html'}.map do |p| 
     headings(Nokogiri::HTML(File.read p).css('body > section'), p)
   end.compact
   nok = Nokogiri::HTML(File.read 'index.html')
   nok.at('section > section > h1').after(toc(chapters))
-  nok.write_html_to(File.new('out/index.html', 'w'), encoding: 'UTF-8')
+  File.open('out/index.html', 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
 end
+
 
 rule(/out\/.+.html$/ => [source_lambda] + HIGHLIGHTED_FIGURES) do |t|
   nok = Nokogiri::HTML(File.read t.source)
@@ -43,18 +46,14 @@ rule(/out\/.+css/ => [source_lambda] << 'out') do |t|
   cp t.source, t.name
 end
 
-task :minimise => FileList['out/*.html'] do |t|
+task :minimise => OUTPUT_HTML do |t|
   t.prerequisites.each do |p|
     sh "h5-min #{p} > #{p}.min"
     mv "#{p}.min", p
-  end
-end
-
-task :compress => [:minimise, *FileList['out/*.html']] do |t|
-  t.prerequisites.select{|p| File.file?(p)}.each do |p|
     sh "gzip --best -c #{p} > #{p}.gz"
   end
 end
+
 
 def headings(s, f)
   a = ''
@@ -75,6 +74,4 @@ def toc(toc)
    end.join + '</ol>'
 end
 
-
-OUTPUT_FILES = FileList['*.css', '*.html'].map{|f| "out/#{f}"}
-task :default => [*OUTPUT_FILES, 'out', :minimise, :compress]
+task :default => [*OUTPUT_FILES, :minimise]
