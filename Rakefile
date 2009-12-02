@@ -2,7 +2,7 @@
 require 'rake/clean'
 require 'nokogiri'
 CLOBBER.include('out')
-OUTPUT_FILES = FileList['*.css', '*.html'].map{|f| "out/#{f}"}
+OUTPUT_FILES = FileList['*.css', '*.html', '.htstatic'].map{|f| "out/#{f}"}
 OUTPUT_HTML = OUTPUT_FILES.select{|f| f.end_with?('.html')}
 directory 'out'
 
@@ -46,6 +46,10 @@ rule(/out\/.+css/ => [source_lambda] << 'out') do |t|
   cp t.source, t.name
 end
 
+rule(/out\// => [source_lambda]) do |t|
+  cp t.source, t.name
+end
+
 task :minimise => OUTPUT_HTML do |t|
   t.prerequisites.each do |p|
     sh "h5-min #{p} > #{p}.min"
@@ -75,3 +79,7 @@ def toc(toc)
 end
 
 task :default => [*OUTPUT_FILES, :minimise]
+
+task :upload => :default do
+  sh "rsync --delete -vaz out/ ruby:/home/public"
+end
