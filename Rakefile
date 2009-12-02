@@ -80,6 +80,16 @@ end
 
 task :default => [*OUTPUT_FILES, :minimise]
 
-task :upload => :default do
+task :upload => [:default, :sitemap] do
   sh "rsync --delete -vaz out/ ruby:/home/public"
+end
+
+task :sitemap => :default do
+  nok = Nokogiri::XML(File.read 'sitemap.xml')
+  FileList['*.html'].reject{|f| f == 'index.html'}.each do |f|
+    nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
+      "<url><loc>http://ruby.runpaint.org/#{f.sub(/\.html$/,'')}</loc></url>"
+    )
+  end
+  File.open('out/sitemap.xml','w'){|f| nok.write_to f}
 end
