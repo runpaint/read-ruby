@@ -18,11 +18,16 @@ end
 source_lambda = ->(t){ t.sub(/out\//, '') }
 
 rule 'out/index.html' => FileList['*.html'] do |t|
-  chapters = t.prerequisites.reject{|f| f == 'index.html'}.map do |p| 
-    headings(Nokogiri::HTML(File.read p).css('body > section'), p)
-  end.compact
+  nxt = '/index'
+  chapters = []
+  while nxt
+    nok = Nokogiri::HTML(File.read ".#{nxt}.html")
+    chapters << headings(nok.css('body > section'), nxt) unless nxt.end_with?('index')
+    nxt = nok.at('link[@rel=next]')
+    nxt = nxt['href'] if nxt
+  end
   nok = Nokogiri::HTML(File.read 'index.html')
-  nok.at('section > section > h1').after(toc(chapters))
+  nok.at('section > section > h1').after(toc(chapters.compact))
   File.open('out/index.html', 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
 end
 
