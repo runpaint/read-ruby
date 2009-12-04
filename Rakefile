@@ -27,6 +27,30 @@ task :upload => :default do
   sh "rsync --delete -vaz out/ ruby:/home/public"
 end
 
+file 'out/sitemap.xml' => FileList['*.html', 'sitemap.xml'] do |t|
+  nok = Nokogiri::XML(File.read 'sitemap.xml')
+  FileList['*.html'].reject{|f| f == 'index.html'}.each do |f|
+    nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
+      "<url><loc>http://ruby.runpaint.org/#{f.sub(/\.html$/,'')}</loc></url>"
+    )
+  end
+  File.open(t.name,'w'){|f| nok.write_to f}
+end
+
+file 'out/index.html' => FileList['*.html'] do |t|
+  nxt = '/index'
+  chapters = []
+  while nxt
+    nok = Nokogiri::HTML(File.read ".#{nxt}.html")
+    chapters << headings(nok.css('body > section'), nxt) unless nxt.end_with?('index')
+    nxt = nok.at('link[@rel=next]')
+    nxt = nxt['href'] if nxt
+  end
+  nok = Nokogiri::HTML(File.read 'index.html')
+  nok.at('section > section > h1').after(toc(chapters.compact))
+  File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
+end
+
 OUTPUT_FILES = []
 FileList['*.css', '*.html', '*.xml', '.htstatic'].each do |f|
   OUTPUT_FILES << (f_out = 'out/' + f)
@@ -41,7 +65,7 @@ FileList['*.css', '*.html', '*.xml', '.htstatic'].each do |f|
     OUTPUT_FILES << f_out + '.gz'
   end
 
-  next if f_out.end_with?('index.html')
+  next if Rake::Task.task_defined?(f_out)
   
   if f_out.end_with?('.html')
     html_figures = []
@@ -77,28 +101,4 @@ FileList['*.css', '*.html', '*.xml', '.htstatic'].each do |f|
   f_out
 end
 
-task :default => OUTPUT_FILES + [:sitemap]
-
-rule 'out/index.html' => FileList['*.html'] do |t|
-  nxt = '/index'
-  chapters = []
-  while nxt
-    nok = Nokogiri::HTML(File.read ".#{nxt}.html")
-    chapters << headings(nok.css('body > section'), nxt) unless nxt.end_with?('index')
-    nxt = nok.at('link[@rel=next]')
-    nxt = nxt['href'] if nxt
-  end
-  nok = Nokogiri::HTML(File.read 'index.html')
-  nok.at('section > section > h1').after(toc(chapters.compact))
-  File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
-end
-
-task :sitemap => OUTPUT_FILES do
-  nok = Nokogiri::XML(File.read 'sitemap.xml')
-  FileList['*.html'].reject{|f| f == 'index.html'}.each do |f|
-    nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
-      "<url><loc>http://ruby.runpaint.org/#{f.sub(/\.html$/,'')}</loc></url>"
-    )
-  end
-  File.open('out/sitemap.xml','w'){|f| nok.write_to f}
-end
+task :default => OUTPUT_FILES
