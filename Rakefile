@@ -25,6 +25,7 @@ end
 
 task :upload => :default do
   sh "rsync --delete -vaz out/ ruby:/home/public"
+  sh 'git push'
 end
 
 file 'out/sitemap.xml' => FileList['*.html', 'sitemap.xml'] do |t|
