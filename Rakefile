@@ -53,7 +53,7 @@ file 'out/index.html' => FileList['*.html'] do |t|
 end
 
 OUTPUT_FILES = []
-FileList['*.css', '*.html', '*.xml', '.htstatic'].each do |f|
+FileList['*.css', '*.html', '*.xml', '*.txt', '.htstatic'].each do |f|
   OUTPUT_FILES << (f_out = 'out/' + f)
   if %w{css html xml}.any?{|e| f.end_with? e}
     file "#{f_out}.gz" => f_out do |t|

@@ -1,0 +1,1 @@
+Sitemap: http://ruby.runpaint.org/sitemap
