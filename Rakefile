@@ -2,67 +2,7 @@
 require 'rake/clean'
 require 'nokogiri'
 CLOBBER.include('out')
-OUTPUT_FILES = FileList['*.css', '*.html', '.htstatic'].map{|f| "out/#{f}"}
-OUTPUT_HTML = OUTPUT_FILES.select{|f| f.end_with?('.html')}
 directory 'out'
-
-HIGHLIGHTED_FIGURES = FileList['figures/*.rb'].map{|f| f.sub(/rb$/, 'html')}
-
-rule(/figures\/.+\.html/ => '.rb') do |t|
-  sh "pygmentize -f html -O encoding=utf-8 -o #{t.name} #{t.source}"
-  munged = File.read(t.name).sub(/^<div.+pre>/, '<pre class=syntax><code>').
-                             sub(/<\/pre><\/div>/,'</code></pre>')
-  File.open(t.name,'w') {|f| f.print munged}
-end
-
-source_lambda = ->(t){ t.sub(/out\//, '') }
-
-rule 'out/index.html' => FileList['*.html'] do |t|
-  nxt = '/index'
-  chapters = []
-  while nxt
-    nok = Nokogiri::HTML(File.read ".#{nxt}.html")
-    chapters << headings(nok.css('body > section'), nxt) unless nxt.end_with?('index')
-    nxt = nok.at('link[@rel=next]')
-    nxt = nxt['href'] if nxt
-  end
-  nok = Nokogiri::HTML(File.read 'index.html')
-  nok.at('section > section > h1').after(toc(chapters.compact))
-  File.open('out/index.html', 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
-end
-
-
-rule(/out\/.+.html$/ => [source_lambda] + HIGHLIGHTED_FIGURES) do |t|
-  nok = Nokogiri::HTML(File.read t.source)
-  has_figures = false
-  nok.css('figure').each do |figure|
-    id = figure.attributes['id'].value
-    if file = t.prerequisites.grep(/#{id}.html$/).first    
-    # Warn if the figure has no dd or file?
-      figure.at('dt').before "<dd>#{File.read file}</dd>"
-      has_figures = true
-    end
-  end
-  nok.at('title').after("<link href=pygments.css rel=stylesheet>") if has_figures
-  nok.write_html_to(File.new(t.name, 'w'), encoding: 'UTF-8')
-end
-
-rule(/out\/.+css/ => [source_lambda] << 'out') do |t|
-  cp t.source, t.name
-end
-
-rule(/out\// => [source_lambda]) do |t|
-  cp t.source, t.name
-end
-
-task :minimise => OUTPUT_HTML do |t|
-  t.prerequisites.each do |p|
-    sh "h5-min #{p} > #{p}.min"
-    mv "#{p}.min", p
-    sh "gzip --best -c #{p} > #{p}.gz"
-  end
-end
-
 
 def headings(s, f)
   a = ''
@@ -83,13 +23,77 @@ def toc(toc)
    end.join + '</ol>'
 end
 
-task :default => [*OUTPUT_FILES, :minimise]
-
-task :upload => [:default, :sitemap] do
+task :upload => :default do
   sh "rsync --delete -vaz out/ ruby:/home/public"
 end
 
-task :sitemap => :default do
+OUTPUT_FILES = []
+FileList['*.css', '*.html', '*.xml', '.htstatic'].each do |f|
+  OUTPUT_FILES << (f_out = 'out/' + f)
+  if %w{css html xml}.any?{|e| f.end_with? e}
+    file "#{f_out}.gz" => f_out do |t|
+      if f_out.end_with? 'html'
+        sh "h5-min #{f_out} >#{f_out}.min"
+        mv "#{f_out}.min", f_out
+      end
+      sh "gzip --best -c #{f_out} >#{t.name}"      
+    end
+    OUTPUT_FILES << f_out + '.gz'
+  end
+
+  next if f_out.end_with?('index.html')
+  
+  if f_out.end_with?('.html')
+    html_figures = []
+    Nokogiri::HTML(File.read f).css('figure').map do |fig| 
+      'figures/' + fig.attributes['id'].value + '.rb'
+    end.select{|source_fig| File.exist?(source_fig)}.map do |source_fig|  
+      html_fig = source_fig.ext('html')
+      file html_fig => source_fig do
+        sh "pygmentize -f html -O encoding=utf-8 -o #{html_fig} #{source_fig}"
+        munged = File.read(html_fig).sub(/^<div.+pre>/, '<pre class=syntax><code>').
+                                     sub(/<\/pre><\/div>/,'</code></pre>')
+        File.open(html_fig,'w') {|f| f.print munged}
+      end
+      html_figures << html_fig
+    end
+    file f_out => [f, *html_figures] do |t|
+      has_figures = false
+      nok = Nokogiri::HTML(File.read f)
+      html_figures.each do |html_fig|
+        id = html_fig.match(/\/(?<id>.+)\.html/)[:id]
+        nok.at("figure[@id=#{id}] > dt").before "<dd>#{File.read html_fig}</dd>"
+        has_figures = true
+      end
+      nok.at('title').after("<link href=pygments.css rel=stylesheet>") if has_figures
+      File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
+    end
+  else
+    file f_out => f do |t|
+      cp t.prerequisites.first, t.name
+    end
+  end
+  file f_out => 'out'
+  f_out
+end
+
+task :default => OUTPUT_FILES + [:sitemap]
+
+rule 'out/index.html' => FileList['*.html'] do |t|
+  nxt = '/index'
+  chapters = []
+  while nxt
+    nok = Nokogiri::HTML(File.read ".#{nxt}.html")
+    chapters << headings(nok.css('body > section'), nxt) unless nxt.end_with?('index')
+    nxt = nok.at('link[@rel=next]')
+    nxt = nxt['href'] if nxt
+  end
+  nok = Nokogiri::HTML(File.read 'index.html')
+  nok.at('section > section > h1').after(toc(chapters.compact))
+  File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
+end
+
+task :sitemap => OUTPUT_FILES do
   nok = Nokogiri::XML(File.read 'sitemap.xml')
   FileList['*.html'].reject{|f| f == 'index.html'}.each do |f|
     nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
