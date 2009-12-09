@@ -7,15 +7,28 @@
 <section>
   <h1>Modules</h1>
 
+  <p>A <dfn>module</dfn> is <q cite=/references#refFLAN08>a named group of
+    methods, constants, and class variables</q> (<a class=ref
+    href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>).
+  
   <section>
     <h1>Differences between Classes and Modules</h1>
-    
+
+    <p>A module is similar to a class in what it can contain, but differs in
+    two important ways:</p>
+
     <section>
-      <h1>Initialisation</h1>
+      <h1>Instantiation</h1>
+      
+      <p>Unlike classes, modules cannot be instantiated. There is no
+      <code>Module#new</code>.
     </section>
 
     <section>
       <h1>Inheritance</h1>
+      
+      <p>Modules cannot inherit from a class or another module. Likewise,
+      classes cannot inherit from modules.
     </section>
   </section>
 
