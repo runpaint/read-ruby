@@ -5,33 +5,90 @@
 <link rel=author href=mailto:runrun@runpaint.org>
 
 <section>
-  <h1>Modules</h1>
+  <h1 id=modules>Modules</h1>
 
   <p>A <dfn>module</dfn> is <q cite=/references#refFLAN08>a named group of
     methods, constants, and class variables</q> (<a class=ref
     href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>).
   
   <section>
-    <h1>Differences between Classes and Modules</h1>
+    <h1 id=differences-from-classes>Differences between Classes and Modules</h1>
 
     <p>A module is similar to a class in what it can contain, but differs in
     two important ways:</p>
 
     <section>
-      <h1>Instantiation</h1>
+      <h1 id=instantiation>Instantiation</h1>
       
       <p>Unlike classes, modules cannot be instantiated. There is no
       <code>Module#new</code>.
     </section>
 
     <section>
-      <h1>Inheritance</h1>
+      <h1 id=inheritance>Inheritance</h1>
       
       <p>Modules cannot inherit from a class or another module. Likewise,
       classes cannot inherit from modules.
     </section>
   </section>
 
+  <section>
+    <h1 id=creation>Creation</h1>
+    
+    <p>Modules are created in much the same way as <a
+      href=/classes#creation>classes</a>, expect the
+    <code>module</code> keyword is used in place of <a
+      href=/classes#class-keyword><code>class</code></a>.</p>
+
+    <section>
+      <h1 id=module-keyword>The <code>module</code> Keyword</h1>
+
+      <p>The <code>module <var>name</var>…end</code> expression opens a module
+      named <var>name</var>. If the constant <var>name</var> is already
+      defined it must refer to an existing module, otherwise a
+      <code>TypeError</code> is raised.  If <var>name</var> was previously
+      undefined, it is created as a <code>Module</code> object.</p>
+
+      <section>
+        <h1 id=reopening>Reopening Modules</h1>
+
+        <p>If <code>module</code> is used with the name of a pre-existing
+        module that module is <i>re-opened</i>. If a method is defined in a
+        re-opened module with the same name as a pre-existing method in the
+        same module the old method is overwritten with the new.</p>
+
+        <p>Modules can be made immutable, effectively preventing them from
+        being reopened by freezing the module object. Frozen modules raise
+        <code>RuntimeError</code>s when methods are defined, or variables
+        manipulated, in their context. 
+      </section>
+
+      <p>The module body, which may be empty, is the elliptical region in the
+      expression. It introduces a new context in which <code>self</code> refers
+      to the class.</p>
+    </section>
+
+    <section>
+      <h1 id=module-new><code>Module.new</code></h1>
+  
+      <p>The <code><var>name</var> = Module.new do…end</code> constructor may
+      be used to similar effect. The principle difference being that existing
+      modules are overwritten rather than reopened.</p>
+
+      <section>
+        <h1 id=anonymous-modules>Anonymous Modules</h1>
+
+          <p>When a constant is used as a module name it has global <!-- This
+          word is problematic. How to better explain? --> scope. This
+          gives rise to the characteristic described above in <i>Reopening
+            Modules</i>. If this behaviour is not desirable, a module can be
+          made anonymous by assigning the value of <code>Module.new</code> to a
+          local variable, thus restricting the module to the local scope.
+          Subsequently assigning this variable to a constant, names the
+          module.</p>
+      </section>
+    </section>
+    
   <section>
     <h1>Namespacing</h1>
     <section>
