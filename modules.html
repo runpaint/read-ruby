@@ -92,6 +92,35 @@
     
   <section>
     <h1>Namespacing</h1>
+
+    <p>Modules can be used for <dfn>namespacing</dfn>: to combine a set of
+    methods with a common purpose so their names do not clash with unrelated
+    methods, and they can share data. Classes can be <a
+      href=/classes#nesting>used in the same way</a>.
+
+    <p>Modules are preferable to classes in this respect when the namespace
+    cannot sensibly instantiated. The use of a module improves the clarifies
+    this aspect of the <abbr title="Application Programming
+      Interface">API</abbr>.</p>
+
+    <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
+    suggests this technique can be useful in the following circumstances:</p>
+
+    <blockquote cite=/references#refBROWN09>
+      <ul>
+        <li>You are solving a single, atomic task that involves lots of steps
+        that would be better broken out into helper functions.
+        <li>You are wrapping some functions that don’t rely on much common
+        state between them, but are related to a common topic.
+        <li>The code is very general and can be used standalone or the code is
+        very specific but doesn’t relate directly to the object that it is
+        meant to be used by.
+        <li>The problem you are solving is small enough where object
+        orientation does more to get in the way than it does to help you.
+      </ul>
+      <cite><a href=/references#refBROWN09 class=ref>Ruby Best Practices</a></cite>
+    </blockquote>
+
     <section>
       <h1>Nesting</h1>
     </section>
