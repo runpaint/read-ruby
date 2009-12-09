@@ -5,166 +5,168 @@
 <link rel=author href=mailto:runrun@runpaint.org>
 <link rel=next href=/references>
 
-<section>
-  <h1 id=modules>Modules</h1>
-
-  <p>A <dfn>module</dfn> is <q cite=/references#refFLAN08>a named group of
-    methods, constants, and class variables</q> (<a class=ref
-    href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>).
-  
+<body>
   <section>
-    <h1 id=differences-from-classes>Differences between Classes and Modules</h1>
+    <h1 id=modules>Modules</h1>
 
-    <p>A module is similar to a class in what it can contain, but differs in
-    two important ways:</p>
-
-    <section>
-      <h1 id=instantiation>Instantiation</h1>
-      
-      <p>Unlike classes, modules cannot be instantiated. There is no
-      <code>Module#new</code>.
-    </section>
-
-    <section>
-      <h1 id=inheritance>Inheritance</h1>
-      
-      <p>Modules cannot inherit from a class or another module. Likewise,
-      classes cannot inherit from modules.
-    </section>
-  </section>
-
-  <section>
-    <h1 id=creation>Creation</h1>
+    <p>A <dfn>module</dfn> is <q cite=/references#refFLAN08>a named group of
+      methods, constants, and class variables</q> (<a class=ref
+      href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>).</p>
     
-    <p>Modules are created in much the same way as <a
-      href=/classes#creation>classes</a>, expect the
-    <code>module</code> keyword is used in place of <a
-      href=/classes#class-keyword><code>class</code></a>.</p>
-
     <section>
-      <h1 id=module-keyword>The <code>module</code> Keyword</h1>
+      <h1 id=differences-from-classes>Differences between Classes and Modules</h1>
 
-      <p>The <code>module <var>name</var>…end</code> expression opens a module
-      named <var>name</var>. If the constant <var>name</var> is already
-      defined it must refer to an existing module, otherwise a
-      <code>TypeError</code> is raised.  If <var>name</var> was previously
-      undefined, it is created as a <code>Module</code> object.</p>
+      <p>A module is similar to a class in what it can contain, but differs in
+      two important ways:</p>
 
       <section>
-        <h1 id=reopening>Reopening Modules</h1>
-
-        <p>If <code>module</code> is used with the name of a pre-existing
-        module that module is <i>re-opened</i>. If a method is defined in a
-        re-opened module with the same name as a pre-existing method in the
-        same module the old method is overwritten with the new.</p>
-
-        <p>Modules can be made immutable, effectively preventing them from
-        being reopened by freezing the module object. Frozen modules raise
-        <code>RuntimeError</code>s when methods are defined, or variables
-        manipulated, in their context. 
+        <h1 id=instantiation>Instantiation</h1>
+        
+        <p>Unlike classes, modules cannot be instantiated. There is no
+        <code>Module#new</code>.
       </section>
 
-      <p>The module body, which may be empty, is the elliptical region in the
-      expression. It introduces a new context in which <code>self</code> refers
-      to the class.</p>
+      <section>
+        <h1 id=inheritance>Inheritance</h1>
+        
+        <p>Modules cannot inherit from a class or another module. Likewise,
+        classes cannot inherit from modules.
+      </section>
     </section>
 
     <section>
-      <h1 id=module-new><code>Module.new</code></h1>
-  
-      <p>The <code><var>name</var> = Module.new do…end</code> constructor may
-      be used to similar effect. The principle difference being that existing
-      modules are overwritten rather than reopened.</p>
+      <h1 id=creation>Creation</h1>
+      
+      <p>Modules are created in much the same way as <a
+        href=/classes#creation>classes</a>, expect the
+      <code>module</code> keyword is used in place of <a
+        href=/classes#class-keyword><code>class</code></a>.</p>
 
       <section>
-        <h1 id=anonymous-modules>Anonymous Modules</h1>
+        <h1 id=module-keyword>The <code>module</code> Keyword</h1>
 
-          <p>When a constant is used as a module name it has global <!-- This
-          word is problematic. How to better explain? --> scope. This
-          gives rise to the characteristic described above in <i>Reopening
-            Modules</i>. If this behaviour is not desirable, a module can be
-          made anonymous by assigning the value of <code>Module.new</code> to a
-          local variable, thus restricting the module to the local scope.
-          Subsequently assigning this variable to a constant, names the
-          module.</p>
+        <p>The <code>module <var>name</var>…end</code> expression opens a module
+        named <var>name</var>. If the constant <var>name</var> is already
+        defined it must refer to an existing module, otherwise a
+        <code>TypeError</code> is raised.  If <var>name</var> was previously
+        undefined, it is created as a <code>Module</code> object.</p>
+
+        <section>
+          <h1 id=reopening>Reopening Modules</h1>
+
+          <p>If <code>module</code> is used with the name of a pre-existing
+          module that module is <i>re-opened</i>. If a method is defined in a
+          re-opened module with the same name as a pre-existing method in the
+          same module the old method is overwritten with the new.</p>
+
+          <p>Modules can be made immutable, effectively preventing them from
+          being reopened by freezing the module object. Frozen modules raise
+          <code>RuntimeError</code>s when methods are defined, or variables
+          manipulated, in their context. 
+        </section>
+
+        <p>The module body, which may be empty, is the elliptical region in the
+        expression. It introduces a new context in which <code>self</code> refers
+        to the class.</p>
       </section>
-    </section>
+
+      <section>
+        <h1 id=module-new><code>Module.new</code></h1>
     
-  <section>
-    <h1>Namespacing</h1>
+        <p>The <code><var>name</var> = Module.new do…end</code> constructor may
+        be used to similar effect. The principle difference being that existing
+        modules are overwritten rather than reopened.</p>
 
-    <p>Modules can be used for <dfn>namespacing</dfn>: to combine a set of
-    methods with a common purpose so their names do not clash with unrelated
-    methods, and they can share data. Classes can be <a
-      href=/classes#nesting>used in the same way</a>.
+        <section>
+          <h1 id=anonymous-modules>Anonymous Modules</h1>
 
-    <p>Modules are preferable to classes in this respect when the namespace
-    cannot sensibly instantiated. The use of a module improves the clarifies
-    this aspect of the <abbr title="Application Programming
-      Interface">API</abbr>.</p>
-
-    <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
-    suggests this technique can be useful in the following circumstances:</p>
-
-    <blockquote cite=/references#refBROWN09>
-      <ul>
-        <li>You are solving a single, atomic task that involves lots of steps
-        that would be better broken out into helper functions.
-        <li>You are wrapping some functions that don’t rely on much common
-        state between them, but are related to a common topic.
-        <li>The code is very general and can be used standalone or the code is
-        very specific but doesn’t relate directly to the object that it is
-        meant to be used by.
-        <li>The problem you are solving is small enough where object
-        orientation does more to get in the way than it does to help you.
-      </ul>
-      <cite><a href=/references#refBROWN09 class=ref>Ruby Best Practices</a></cite>
-    </blockquote>
-
+            <p>When a constant is used as a module name it has global <!-- This
+            word is problematic. How to better explain? --> scope. This
+            gives rise to the characteristic described above in <i>Reopening
+              Modules</i>. If this behaviour is not desirable, a module can be
+            made anonymous by assigning the value of <code>Module.new</code> to a
+            local variable, thus restricting the module to the local scope.
+            Subsequently assigning this variable to a constant, names the
+            module.</p>
+        </section>
+      </section>
+      
     <section>
-      <h1>Nesting</h1>
-    </section>
-  </section>
+      <h1 id=namespacing>Namespacing</h1>
 
-  <section>
-    <h1>Mixins</h1>
+      <p>Modules can be used for <dfn>namespacing</dfn>: to combine a set of
+      methods with a common purpose so their names do not clash with unrelated
+      methods, and they can share data. Classes can be <a
+        href=/classes#nesting>used in the same way</a>.
 
-    <section>
-      <h1>Mixing a Module into a Class</h1>
-    </section>
-    <section>
-      <h1>Mixing a Module into a Module</h1>
-    </section>
-    <section>
-      <h1>Inclusion</h1>
+      <p>Modules are preferable to classes in this respect when the namespace
+      cannot sensibly instantiated. The use of a module improves the clarifies
+      this aspect of the <abbr title="Application Programming
+        Interface">API</abbr>.</p>
+
+      <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
+      suggests this technique can be useful in the following circumstances:</p>
+
+      <blockquote cite=/references#refBROWN09>
+        <ul>
+          <li>You are solving a single, atomic task that involves lots of steps
+          that would be better broken out into helper functions.
+          <li>You are wrapping some functions that don’t rely on much common
+          state between them, but are related to a common topic.
+          <li>The code is very general and can be used standalone or the code is
+          very specific but doesn’t relate directly to the object that it is
+          meant to be used by.
+          <li>The problem you are solving is small enough where object
+          orientation does more to get in the way than it does to help you.
+        </ul>
+        <cite><a href=/references#refBROWN09 class=ref>Ruby Best Practices</a></cite>
+      </blockquote>
+
       <section>
-        <h1><code>Class#include?</code></h1>
+        <h1 id=nesting>Nesting</h1>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=mixins>Mixins</h1>
+
+      <section>
+        <h1 id=mixin-to-class>Mixing a Module into a Class</h1>
       </section>
       <section>
-        <h1><code>Class#included_modules</code></h1>
+        <h1 id=mixin-to-module>Mixing a Module into a Module</h1>
+      </section>
+      <section>
+        <h1 id=inclusion>Inclusion</h1>
+        <section>
+          <h1 id=class-include><code>Class#include?</code></h1>
+        </section>
+        <section>
+          <h1 id=class-included-modules><code>Class#included_modules</code></h1>
+        </section>
+      </section>
+
+      <section>
+        <h1 id=extension>Extension</h1>
       </section>
     </section>
 
     <section>
-      <h1>Extension</h1>
+      <h1 id=module-functions>Module Functions</h1>
     </section>
-  </section>
 
-  <section>
-    <h1>Module Functions</h1>
-  </section>
-
-  <section>
-    <h1>Autoloading</h1>
-  </section>
-
-  <section>
-    <h1>Context</h1>
     <section>
-      <h1>Module Eval</h1>
+      <h1 id=autoloading>Autoloading</h1>
     </section>
+
     <section>
-      <h1>Module Exec</h1>
+      <h1 id=context>Context</h1>
+      <section>
+        <h1 id=module-eval>Module Eval</h1>
+      </section>
+      <section>
+        <h1 id=module-exec>Module Exec</h1>
+      </section>
     </section>
   </section>
-</section>
+</body>
