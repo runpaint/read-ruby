@@ -293,10 +293,22 @@
 
       <p>A weakness of <code>module_function</code> is that it prevents a
       singleton method of the module from calling a private method of the same
-      module. <a href=#extend-self><code>extend self</code></a> does not
+      module.</p>
+
+      <figure id=module-function-private-method>
+        <dt><code>module_function</code> foils the calling of a private
+        instance method from a singleton method
+      </figure>
+      
+      <p><a href=#extend-self><code>extend self</code></a> does not
       exhibit this problem, but neither does it offer the granularity of
       <code>module_function</code>—it copies all instance methods into the
-      eigenclass—or automatically privatise instance methods.
+      eigenclass—or automatically privatise instance methods.</p>
+      
+      <figure id=module-function-extend-self>
+        <dt><code>extend self</code> allows the calling of a private
+        instance method from a singleton method
+      </figure>
     </section>
 
     <section>
