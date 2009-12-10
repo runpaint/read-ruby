@@ -315,10 +315,23 @@
       <h1 id=context>Context</h1>
       <section>
         <h1 id=module-eval>Module Eval</h1>
+
+        <p><code>Module#module_eval</code> takes a string or block which it
+        evaluates in the receiver’s context, setting <code>self</code> to the
+        receiver. The evaluated code can access the modules’s state, invoke its
+        singleton methods, and define instance or singleton methods.
       </section>
+
       <section>
         <h1 id=module-exec>Module Exec</h1>
+        
+        <p><code>Module#module_exec</code> behaves as
+        <code>Module#module_eval</code> except it requires a block, to which
+        it passes any arguments it has received.
       </section>
+        <!-- TODO: Track
+        http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26774 in
+        case this changes -->
     </section>
   </section>
 </body>
