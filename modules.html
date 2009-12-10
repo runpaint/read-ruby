@@ -125,6 +125,23 @@
 
       <section>
         <h1 id=nesting>Nesting</h1>
+
+          <p>A module may be defined within the body of another class or
+          module. The fully qualified name of the inner module is
+          <code><var>outer</var>::<var>inner</var></code>, where
+          <var>outer</var> is the name of the enclosing class/module, and
+          <var>inner</var> that of the enclosed.
+
+          <p>Since module names are constants and constants are inherited,
+          modules defined at the top level, as core modules conventionally
+          are, can be referred to by their unqualified name. However, if the
+          name is shadowed at an intervening level of the hierarchy, the
+          unqualified name refers to the shadowed module.  For example, if a
+          module named <code>Products::String</code> was defined, then within
+          the context of the <code>Products</code> module, <code>String</code>
+          would refer to <code>Products::String</code>; not the core
+          <code>String</code> class (which would need referring to as
+          <code>::String</code>).
       </section>
     </section>
 
