@@ -113,8 +113,8 @@
         <h1 id=mixin-to-module>Mixing a Module into a Module</h1>
         
         <p>It is less common to mixin a module to another module, but legal
-        nevertheless. The result is simply that the features of the included module
-        are copied to the including module.
+        nevertheless. The result is simply that the features of the included
+        module are copied to the including module.
         </section>
       
       <section>
@@ -222,7 +222,8 @@
           <li>The problem you are solving is small enough where object
           orientation does more to get in the way than it does to help you.
         </ul>
-        <cite><a href=/references#refBROWN09 class=ref>Ruby Best Practices</a></cite>
+        <cite><a href=/references#refBROWN09 class=ref>Ruby Best
+            Practices</a></cite>
       </blockquote>
 
       <p>This technique can be used in conjunction with <a
@@ -259,6 +260,43 @@
 
     <section>
       <h1 id=module-functions>Module Functions</h1>
+
+      <p>A single module may be used both as a namespace and a mix-in. The
+      first case requires the module’s methods to be singleton methods on the
+      <code>Module</code> object; the second requires them to be instance
+      methods.</p>
+      
+      <figure id=module-namespace-and-mixin>      
+        <dt>The <code>Math</code> module can be used as both a namespace and a
+        mix-in.
+      </figure>
+
+      <p>One solution is <code>Module#module_function</code>, which is used to
+      convert a mix-in module to a namespace module. In the context of a
+      module, <code>module_function</code> is provided with one or more
+      instance method names as arguments. Alternatively,
+      <code>module_function</code> may be invoked without arguments, in which
+      case it affects all instance methods defined subsequently within the
+      same module. In both cases, each affected method is copied to the
+      module’s singleton class then the original method is made private. The
+      duplication satisfies the requirement that methods are both instance and
+      singleton methods. The visibility change forces classes which mix-in the
+      module to invoke its methods in the “functional style”, that is without
+      an explicit receiver, so as not to confuse them with traditional
+      instance methods (<a href=/references#refFLAN08 class=ref>Flanagan &amp;
+        Matsumoto</a>, pp. 251–252).</p>
+
+      <figure id=module-function>
+        <dt><code>module_function</code> enables a module to be used both as a
+        namespace and mix-in
+      </figure>
+
+      <p>A weakness of <code>module_function</code> is that it prevents a
+      singleton method of the module from calling a private method of the same
+      module. <a href=#extend-self><code>extend self</code></a> does not
+      exhibit this problem, but neither does it offer the granularity of
+      <code>module_function</code>—it copies all instance methods into the
+      eigenclass—or automatically privatise instance methods.
     </section>
 
     <section>
