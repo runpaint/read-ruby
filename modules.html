@@ -93,59 +93,6 @@
       </section>
       
     <section>
-      <h1 id=namespacing>Namespacing</h1>
-
-      <p>Modules can be used for <dfn>namespacing</dfn>: to combine a set of
-      methods with a common purpose so their names do not clash with unrelated
-      methods, and they can share data. Classes can be <a
-        href=/classes#nesting>used in the same way</a>.
-
-      <p>Modules are preferable to classes in this respect when the namespace
-      cannot sensibly instantiated. The use of a module improves the clarifies
-      this aspect of the <abbr title="Application Programming
-        Interface">API</abbr>.</p>
-
-      <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
-      suggests this technique can be useful in the following circumstances:</p>
-
-      <blockquote cite=/references#refBROWN09>
-        <ul>
-          <li>You are solving a single, atomic task that involves lots of steps
-          that would be better broken out into helper functions.
-          <li>You are wrapping some functions that don’t rely on much common
-          state between them, but are related to a common topic.
-          <li>The code is very general and can be used standalone or the code is
-          very specific but doesn’t relate directly to the object that it is
-          meant to be used by.
-          <li>The problem you are solving is small enough where object
-          orientation does more to get in the way than it does to help you.
-        </ul>
-        <cite><a href=/references#refBROWN09 class=ref>Ruby Best Practices</a></cite>
-      </blockquote>
-
-      <section>
-        <h1 id=nesting>Nesting</h1>
-
-          <p>A module may be defined within the body of another class or
-          module. The fully qualified name of the inner module is
-          <code><var>outer</var>::<var>inner</var></code>, where
-          <var>outer</var> is the name of the enclosing class/module, and
-          <var>inner</var> that of the enclosed.
-
-          <p>Since module names are constants and constants are inherited,
-          modules defined at the top level, as core modules conventionally
-          are, can be referred to by their unqualified name. However, if the
-          name is shadowed at an intervening level of the hierarchy, the
-          unqualified name refers to the shadowed module.  For example, if a
-          module named <code>Products::String</code> was defined, then within
-          the context of the <code>Products</code> module, <code>String</code>
-          would refer to <code>Products::String</code>; not the core
-          <code>String</code> class (which would need referring to as
-          <code>::String</code>).
-      </section>
-    </section>
-
-    <section>
       <h1 id=mixins>Mixins</h1>
 
       <p>The primary use of modules is <dfn>mixins</dfn>: imbuing a given
@@ -210,7 +157,102 @@
         the <a href=/class#eigenclass>eigenclass</a> of the receiver,
         providing the <a href=/methods#per-object-behaviour>per-object
           behaviour</a> of <a href=/methods#singleton-method>singleton
-          methods</a>.
+          methods</a>.</p>
+
+        <section>
+          <h1 id=extend-self><code>extend self</code></h1>
+
+          <p>An idiomatic application of <code>extend</code> is to use
+          <code>extend self</code> within the context of a module. The effect
+          is to mix the current module into its <a
+            href=/classes#eigenclass>eigenclass</a>:</p>
+
+          <ul>
+            <li><a href=/methods#public-methods>Public</a> instance methods
+            can be invoked as instance methods in the context of the module,
+            i.e. without an explicit receiver, and singleton methods of the
+            module from anywhere.
+            <li><a href=/methods#private-methods>Private</a> and <a
+              href=/methods#protected-methods>protected</a> instance methods
+            can only be invoked from within the context of the module. 
+          </ul>
+
+          <p>An example of <code>extend self</code> is provided in a <a
+            href=#module-namespacing-extend-self>figure below</a>.
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=namespacing>Namespacing</h1>
+
+      <p>Modules can be used for <dfn>namespacing</dfn>: to combine a set of
+      methods with a common purpose so their names do not clash with unrelated
+      methods, and they can share data. Classes can be <a
+        href=/classes#nesting>used in the same way</a>.
+
+      <p>Modules are preferable to classes in this respect when the namespace
+      cannot sensibly instantiated. The use of a module improves the clarifies
+      this aspect of the <abbr title="Application Programming
+        Interface">API</abbr>.</p>
+
+      <p>Methods are defined on the module’s <a
+        href=/classes#eigenclass>eigenclass</a>, then invoked with the module
+      name as the receiver:
+      <code><var>module</var>.<var>selector</var></code>.</p>
+
+      <figure id=module-namespacing>
+        <dt>Modules can be used as namespaces by defining methods on their
+        eigenclass
+      </figure>
+
+      <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
+      suggests this technique can be useful in the following circumstances:</p>
+
+      <blockquote cite=/references#refBROWN09>
+        <ul>
+          <li>You are solving a single, atomic task that involves lots of steps
+          that would be better broken out into helper functions.
+          <li>You are wrapping some functions that don’t rely on much common
+          state between them, but are related to a common topic.
+          <li>The code is very general and can be used standalone or the code is
+          very specific but doesn’t relate directly to the object that it is
+          meant to be used by.
+          <li>The problem you are solving is small enough where object
+          orientation does more to get in the way than it does to help you.
+        </ul>
+        <cite><a href=/references#refBROWN09 class=ref>Ruby Best Practices</a></cite>
+      </blockquote>
+
+      <p>This technique can be used in conjunction with <a
+        href=#extend-self><code>extend self</code></a> to create private
+      helper methods: accessible to the module methods; inaccessible from
+      outside the module.</p>
+
+      <figure id=module-namespacing-extend-self>
+        <dt>A method can be grouped with private helper methods by using
+        a module that <code>extend</code>s <code>self</code>
+      </figure>
+
+      <section>
+        <h1 id=nesting>Nesting</h1>
+
+          <p>A module may be defined within the body of another class or
+          module. The fully qualified name of the inner module is
+          <code><var>outer</var>::<var>inner</var></code>, where
+          <var>outer</var> is the name of the enclosing class/module, and
+          <var>inner</var> that of the enclosed.
+
+          <p>Since module names are constants and constants are inherited,
+          modules defined at the top level, as core modules conventionally
+          are, can be referred to by their unqualified name. However, if the
+          name is shadowed at an intervening level of the hierarchy, the
+          unqualified name refers to the shadowed module.  For example, if a
+          module named <code>Products::String</code> was defined, then within
+          the context of the <code>Products</code> module, <code>String</code>
+          would refer to <code>Products::String</code>; not the core
+          <code>String</code> class (which would need referring to as
+          <code>::String</code>).
       </section>
     </section>
 
