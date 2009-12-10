@@ -3,8 +3,7 @@ module CPU
   def processors
     File.read('/proc/cpuinfo').split(/\n\n/).map{|processor| Hash[
         processor.lines.reject{|line| line.end_with?(':')}.
-                        map{|line| line.chomp.split(/\t+:\s?/)}.
-                        map{|key,value| normalise(key, value)}
+                        map{|line| normalise *line.chomp.split(/\t+:\s?/)}
     ]}
   end
 
