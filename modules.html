@@ -148,24 +148,69 @@
     <section>
       <h1 id=mixins>Mixins</h1>
 
+      <p>The primary use of modules is <dfn>mixins</dfn>: imbuing a given
+      object with the instance methods, or <dfn>features</dfn>, of a given
+      module. An object may have any number of modules mixed in.</p>
+
       <section>
         <h1 id=mixin-to-class>Mixing a Module into a Class</h1>
+        
+        <p>Mixing-in a module to class effectively enables multiple
+        inheritance: appending to it features from any number of sources. By
+        contrast, classes may only <a href=/classes#inheritance>inherit</a>
+        from a maximum of one other class.
       </section>
+
       <section>
         <h1 id=mixin-to-module>Mixing a Module into a Module</h1>
-      </section>
+        
+        <p>It is less common to mixin a module to another module, but legal
+        nevertheless. The result is simply that the features of the included module
+        are copied to the including module.
+        </section>
+      
       <section>
         <h1 id=inclusion>Inclusion</h1>
+
+        <p><code>Class#include</code> takes one or more module names as
+        arguments, then mixes them in to the enclosing class. Contrary to
+        intuition, the named modules are mixed-in in the reverse order in
+        which they are named. That is, <code>include A, B</code> appends the
+        features of module <code>B</code>, then module <code>A</code>.
+        Therefore, if <code>A</code> and <code>B</code> define an instance
+        method with the same name, <code>B</code>’s copy will be overwritten
+        by <code>A</code>’s.</p>
+
         <section>
           <h1 id=class-include><code>Class#include?</code></h1>
+          
+          <p>The <code>Class#include?</code> predicate returns
+          <code>true</code> if the module given as its argument has been
+          mixed-in to the receiver; <code>false</code> otherwise.
         </section>
+        
         <section>
           <h1 id=class-included-modules><code>Class#included_modules</code></h1>
+
+          <p><code>Class#included_modules</code> returns an <code>Array</code>
+          of <code>Module</code>s mixed-in to the receiver in the reverse
+          order of their inclusion. As <code>Object</code> includes the
+          <code>Kernel</code> module, this method will usually return
+          <code>Kernel</code> as the last element.
         </section>
       </section>
 
       <section>
         <h1 id=extension>Extension</h1>
+        
+        <p>A module may be mixed-in to any object through the use of
+        <code>Class#extend</code> which, like <a
+          href=#inclusion><code>Class#include</code></a>, takes one or more
+        module names as arguments. The features of each module are appended to
+        the <a href=/class#eigenclass>eigenclass</a> of the receiver,
+        providing the <a href=/methods#per-object-behaviour>per-object
+          behaviour</a> of <a href=/methods#singleton-method>singleton
+          methods</a>.
       </section>
     </section>
 
