@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<title>Closures</title>
+<link rel=license href=//creativecommons.org/licenses/by-sa/3.0/>
+<link rel=author href=mailto:runrun@runpaint.org>
+<link rel=stylesheet href=/main.css>
+<link rel=next href=/references>
+
+<body>
+  <section>
+    <h1 id=closures>Closures</h1>
+    <!--Block-local variables-->
+
+    <section>
+      <h1 id=semantics>Semantics</h1>
+
+      <p>A <code>Proc</code> has either <a href=#proc-semantics>proc
+        semantics</a> or <a href=#lambda-semantics>lambda semantics</a>. Its
+      semantics determine how it handles unexpected arguments and control flow
+      statements, such as <code>return</code>, appearing within the body of
+      the closure.</p>
+
+      <section>
+        <h1 id=lambda-predicate>The <code>#lambda?</code> Predicate</h1>
+
+        <p><code>Proc#lambda?</code> is a predicate which returns
+        <code>true</code> if the receiver has lambda semantics;
+        <code>false</code> if it has proc semantics.
+      </section>
+      
+      <section>
+        <h1 id=proc-semantics>Proc Semantics</h1>
+          
+          <section>
+            <h1 id=proc-semantics-arguments>Argument Passing</h1>
+            
+            <p>A <code>Proc</code> with proc semantics interprets the
+            arguments it receives with <dfn>yield semantics</dfn>:
+            according to the same rules as a block invoked with the
+            <code>yield</code> statement. This has the following
+            implications:</p>
+
+            <ul>
+              <li>Superfluous arguments are silently ignored.
+              <li>Parameters representing omitted arguments are assigned
+              <code>nil</code>.
+              <li><code>Array</code> arguments are automatically exploded.
+            </ul>
+          </section>
+
+          <section>
+            <h1 id=proc-semantics-control-flow>Control Flow Statements</h1>
+
+            <section>
+              <h1 id=proc-semantics-return><code>return</code></h1>
+
+              <p>Returns from the lexically enclosing method of the
+              <code>Proc</code>’s <em>creation</em> site.</p>
+
+              <figure id=proc-semantics-return>
+              <dt>Within a <code>Proc</code> with proc
+              semantics, <code>return</code> jumps to the <code>Proc</code>
+              creation site
+              </figure>
+
+              <p>If the <code>Proc</code> was not created within a method,
+              e.g. at the top level, or the method has already returned, a
+              <code>LocalJumpError</code> is raised.</p>
+
+              <figure id=proc-semantics-return-localjump>
+                <dt>A <code>LocalJumpError</code> is raised
+                when a <code>Proc</code> with proc semantics tries to
+                <code>return</code> without an enclosing method.
+              </figure>
+            </section>
+
+            <section>
+              <h1 id=proc-semantics-break><code>break</code></h1>
+
+              <p>Returns from the lexically enclosing method of the
+              <code>Proc</code>’s <em>call</em> site.</p>
+
+              <figure id=proc-semantics-break>
+                <dt class=figure-dt>Within a <code>Proc</code> with proc
+                semantics, <code>break</code> jumps to the <code>Proc</code>
+                call site
+              </figure>
+              
+              <p>A <code>LocalJumpError</code> is raised if
+              <code>break</code> is used from a block no longer in scope,
+              e.g. at the top-level of a block created with
+              <code>Proc.new</code> or <code>proc</code>.</p>
+
+              <figure id=proc-semantics-break-localjump>
+                <dt class=figure-dt>A <code>Proc</code> created with
+                <code>proc</code> or <code>Proc.new</code> cannot use
+                <code>break</code> at the top level
+              </figure>
+            </section>
+          </section>
+        </section>
+
+      <section>
+        <h1 id=lambda-semantics>Lambda Semantics</h1>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=creation>Creation</h1>
+      
+      <section>
+        <h1 id=proc-new><code>Proc.new</code></h1>
+
+        <p><code>Proc.new</code> creates a <code>Proc</code> with proc
+        semantics from the given block.</p>
+
+        <aside>
+          <h1 id=creation-with-implicit-block>Implicit Block</h1>
+          
+          <p>If the block is omitted, the block with which the lexically
+          enclosing method was invoked is used in its place. If the method was
+          not invoked with a block, or there is not an enclosing method, an
+          <code>ArgumentError</code> is raised.
+        </aside>
+      </section>
+
+      <section>
+        <h1 id=proc-keyword><code>proc</code> keyword</h1>
+
+        <p>The <code>proc</code> keyword is a synonym for <a
+          href=#proc-new><code>Proc.new</code></a>: it creates a
+        <code>Proc</code> with proc semantics from the given block. Without a
+        block argument an <a href=#creation-with-implicit-block>implicit
+          block</a> is assumed.
+      </section>
+
+      <section>
+        <h1 id=ampersand-prefixed-parameter>&<var>parameter</code></h1>
+
+        <p>A method or lambda whose parameter list includes an identifier
+        prefixed with an ampersand, assigns to the parameter a
+        <code>Proc</code> with proc semantics representing the block literal
+        that the method/lambda was sent. For more details, see <a
+          href=/methods#block-arguments>Methods: Block Arguments</a>, which
+        includes an <a
+          href=/methods#method-using-block-arguments>example</a>.
+      </section>
+
+      <section>
+        <h1 id=lambda-keyword><code>lambda</code> keyword</h1>
+
+        <p>The <code>lambda</code> keyword creates a <code>Proc</code> with
+        lambda semantics from the given block. Without a
+        block argument an <a href=#creation-with-implicit-block>implicit
+          block</a> is assumed.
+      </section>
+
+      <section>
+        <h1 id=lambda-literal>Lambda Literal (<code>->(){}</code>)</h1>
+
+        <p>The expression <code>-&gt;{<var>block</var>}</code> creates a
+        <code>Proc</code> with lambda semantics for the given <var>block</var>
+        which expects no arguments. The block may be preceded by a
+        parenthetical parameter list, i.e.
+        <code>-&gt;(<var>arg</var><sub>0</sub>…<var>arg</var><sub>n</sub>){
+          <var>block</var> }</code>, in which case the resulting lambda
+        expects to receive the corresponding arguments. 
+      </section>
+    </section>
+  </section>
+</body>
