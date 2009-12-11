@@ -31,78 +31,120 @@
       <section>
         <h1 id=proc-semantics>Proc Semantics</h1>
           
-          <section>
-            <h1 id=proc-semantics-arguments>Argument Passing</h1>
-            
-            <p>A <code>Proc</code> with proc semantics interprets the
-            arguments it receives with <dfn>yield semantics</dfn>:
-            according to the same rules as a block invoked with the
-            <code>yield</code> statement. This has the following
-            implications:</p>
+        <section>
+          <h1 id=proc-semantics-arguments>Argument Passing</h1>
+          
+          <p>A <code>Proc</code> with proc semantics interprets the
+          arguments it receives with <dfn>yield semantics</dfn>:
+          according to the same rules as a block invoked with the
+          <code>yield</code> statement. This has the following
+          implications:</p>
 
-            <ul>
-              <li>Superfluous arguments are silently ignored.
-              <li>Parameters representing omitted arguments are assigned
-              <code>nil</code>.
-              <li><code>Array</code> arguments are automatically exploded.
-            </ul>
+          <ul>
+            <li>Superfluous arguments are silently ignored.
+            <li>Parameters representing omitted arguments are assigned
+            <code>nil</code>.
+            <li><code>Array</code> arguments are automatically exploded.
+          </ul>
+        </section>
+
+        <section>
+          <h1 id=proc-semantics-control-flow>Control Flow Statements</h1>
+
+          <section>
+            <h1 id=proc-semantics-return><code>return</code></h1>
+
+            <p>Returns from the lexically enclosing method of the
+            <code>Proc</code>’s <em>creation</em> site.</p>
+
+            <figure id=proc-semantics-return>
+            <dt>Within a <code>Proc</code> with proc
+            semantics, <code>return</code> jumps to the <code>Proc</code>
+            creation site
+            </figure>
+
+            <p>If the <code>Proc</code> was not created within a method,
+            e.g. at the top level, or the method has already returned, a
+            <code>LocalJumpError</code> is raised.</p>
+
+            <figure id=proc-semantics-return-localjump>
+              <dt>A <code>LocalJumpError</code> is raised
+              when a <code>Proc</code> with proc semantics tries to
+              <code>return</code> without an enclosing method.
+            </figure>
           </section>
 
           <section>
-            <h1 id=proc-semantics-control-flow>Control Flow Statements</h1>
+            <h1 id=proc-semantics-break><code>break</code></h1>
 
-            <section>
-              <h1 id=proc-semantics-return><code>return</code></h1>
+            <p>Returns from the lexically enclosing method of the
+            <code>Proc</code>’s <em>call</em> site.</p>
 
-              <p>Returns from the lexically enclosing method of the
-              <code>Proc</code>’s <em>creation</em> site.</p>
+            <figure id=proc-semantics-break>
+              <dt class=figure-dt>Within a <code>Proc</code> with proc
+              semantics, <code>break</code> jumps to the <code>Proc</code>
+              call site
+            </figure>
+            
+            <p>A <code>LocalJumpError</code> is raised if
+            <code>break</code> is used from a block no longer in scope,
+            e.g. at the top-level of a block created with
+            <code>Proc.new</code> or <code>proc</code>.</p>
 
-              <figure id=proc-semantics-return>
-              <dt>Within a <code>Proc</code> with proc
-              semantics, <code>return</code> jumps to the <code>Proc</code>
-              creation site
-              </figure>
-
-              <p>If the <code>Proc</code> was not created within a method,
-              e.g. at the top level, or the method has already returned, a
-              <code>LocalJumpError</code> is raised.</p>
-
-              <figure id=proc-semantics-return-localjump>
-                <dt>A <code>LocalJumpError</code> is raised
-                when a <code>Proc</code> with proc semantics tries to
-                <code>return</code> without an enclosing method.
-              </figure>
-            </section>
-
-            <section>
-              <h1 id=proc-semantics-break><code>break</code></h1>
-
-              <p>Returns from the lexically enclosing method of the
-              <code>Proc</code>’s <em>call</em> site.</p>
-
-              <figure id=proc-semantics-break>
-                <dt class=figure-dt>Within a <code>Proc</code> with proc
-                semantics, <code>break</code> jumps to the <code>Proc</code>
-                call site
-              </figure>
-              
-              <p>A <code>LocalJumpError</code> is raised if
-              <code>break</code> is used from a block no longer in scope,
-              e.g. at the top-level of a block created with
-              <code>Proc.new</code> or <code>proc</code>.</p>
-
-              <figure id=proc-semantics-break-localjump>
-                <dt class=figure-dt>A <code>Proc</code> created with
-                <code>proc</code> or <code>Proc.new</code> cannot use
-                <code>break</code> at the top level
-              </figure>
-            </section>
+            <figure id=proc-semantics-break-localjump>
+              <dt class=figure-dt>A <code>Proc</code> created with
+              <code>proc</code> or <code>Proc.new</code> cannot use
+              <code>break</code> at the top level
+            </figure>
           </section>
         </section>
+      </section>
 
       <section>
         <h1 id=lambda-semantics>Lambda Semantics</h1>
-      </section>
+          
+        <section>
+          <h1 id=lambda-semantics-arguments>Argument Passing</h1>
+          
+          <p>A <code>Proc</code> with lambda semantics interprets the
+          arguments it receives with <dfn>invocation semantics</dfn>:
+          according to the same rules as method invocation. This has the
+          following implications:</p>
+
+          <ul>
+            <li>Superfluous arguments cause an <code>ArgumentError</code> to
+            be raised.
+            <li>Omitted arguments cause an <code>ArgumentError</code> to be
+            raised.
+            <li><code>Array</code> arguments are <em>not</em> automatically exploded.
+          </ul>
+        </section>
+
+        <section>
+          <h1 id=lambda-semantics-control-flow>Control Flow Statements</h1>
+
+          <section>
+            <h1 id=lambda-semantics-return><code>return</code></h1>
+
+            <p>Returns from the <code>Proc</code> as if it were a method.</p>
+
+            <figure id=lambda-semantics-return>
+              <dt>Within a <code>Proc</code> with lambda semantics,
+              <code>return</code> returns from the <code>Proc</code> itself
+            </figure>
+          </section>
+
+          <section>
+            <h1 id=lambda-semantics-break><code>break</code></h1>
+
+            <p>Acts exactly like <code>return</code>.</p>
+
+            <figure id=lambda-semantics-break>
+              <dt>Within a <code>Proc</code> with lambda semantics,
+              <code>break</code> returns from the <code>Proc</code> itself
+            </figure>
+          </section>
+        </section>
     </section>
 
     <section>
