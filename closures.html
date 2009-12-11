@@ -18,7 +18,43 @@
         semantics</a> or <a href=#lambda-semantics>lambda semantics</a>. Its
       semantics determine how it handles unexpected arguments and control flow
       statements, such as <code>return</code>, appearing within the body of
-      the closure.</p>
+      the closure. The differences are summarised in the following table, and
+      elaborated on below.</p>
+
+      <table id=closures-semantics-table>
+        <caption>A comparison of <code>Proc</code> semantics</caption>
+        <tr>
+          <th></th>
+          <th>Lambda
+          <th>Proc
+        </tr>
+        <tr>
+          <th>Extra arguments
+          <td><a href=#lambda-semantics-arguments>Raise <code>ArgumentError</code></a>
+          <td><a href=#proc-semantics-arguments>Ignored</a>
+        </tr>
+        <tr>
+          <th>Omitted arguments
+          <td><a href=#lambda-semantics-arguments>Raise <code>ArgumentError</code></a>
+          <td><a href=#proc-semantics-arguments>Assigned <code>nil</code></a>
+        </tr>
+        <tr>
+          <th><code>Array</code> arguments
+          <td><a href=#lambda-semantics-arguments>Never exploded</a>
+          <td><a href=#proc-semantics-arguments>Exploded if necessary</a>
+        </tr>
+        <tr>
+          <th><code>return</code>
+          <td><a href=#lambda-semantics-return>Returns from the lambda itself</a>
+          <td><a href=#proc-semantics-return>Returns from the creation site
+              method</a>
+        </tr>
+        <tr>
+          <th><code>break</code>
+          <td><a href=#lambda-semantics-break>Returns from the lambda itself</a>
+          <td><a href=#proc-semantics-break>Returns from the call site method</a>
+        </tr>
+      </table>
 
       <section>
         <h1 id=lambda-predicate>The <code>#lambda?</code> Predicate</h1>

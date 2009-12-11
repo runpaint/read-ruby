@@ -37,19 +37,21 @@ table {
   margin-left: auto;
   margin-right: auto;
 }
-table, tr, td, th {
+
+#operator-methods-table table, #operator-methods-table tr, #operator-methods-table td, #operator-methods-table th {
   border: 1px solid black;
   border-collapse: collapse;
 }
-th {
+
+#operator-methods-table th {
   padding: 10px;
 }
-td {
+#operator-methods-table td {
   text-align: center;
   font-size: 120%;
   font-weight: bold;
 }
-td:last-child {
+#operator-methods-table td:last-child {
   text-align: left;
   padding: 5px;
   font-size: 100%;
@@ -61,4 +63,12 @@ table > caption {
   padding-top: 2%;
   text-align: center;
   font-style: italic;
+}
+
+#closures-semantics-table th { text-align: left }
+#closures-semantics-table, #closures-semantics-table tr, #closures-semantics-table td, #closures-semantics-table th { 
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding-left: 5px;
+  padding-right: 5px;
 }
