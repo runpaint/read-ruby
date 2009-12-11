@@ -552,6 +552,27 @@
           <!--<h1>Common Selectors</h1>-->
 
           <dl>
+            <dt><code>:call</code>
+            <dd>
+            
+              <p>A variable-length argument list is accepted, with which the
+              receiver is in some way invoked. The return value is the result
+              of the invocation. <code>Method</code> and <code>Proc</code>
+              objects both behave in this fashion.
+
+              <p>This selector is notable because it instruments the following
+              syntax:
+              <code><var>receiver</var>.call(<var>arg</var><sub>0</sub>…<var>arg</var><sub>n</sub>)</code>
+              is equivalent to
+              <code><var>receiver</var>.(<var>arg</var><sub>0</sub>…<var>arg</var><sub>n</sub>)</code>.
+              That is, the selector’s name can be omitted from the message
+              expression.</p>
+              
+              <figure id=call-selector>
+                <dt class=figure-dt>Omitting the selector name in a message expression causes
+                <code>:call</code> to be assumed.
+              </figure>
+
             <dt><code>:each</code> / <code>:each_</code>*
             <dd>
             <!-- We're duplicating the description of #each and Enumerable with
