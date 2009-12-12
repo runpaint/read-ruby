@@ -304,5 +304,33 @@
         <dt>Syntax for invoking a <code>Proc</code>
       </figure>
     </section>
+
+    <section>
+      <h1 id=parameters>Parameters</h1>
+
+      <p>A <code>Proc</code> may be defined with a parameter list, which
+      describes the arguments it accepts. The syntax of the parameter list
+      content mostly mirrors that of <a href=/methods#method-arguments>method
+        parameter lists</a>, with the following differences:</p>
+
+      <ul>
+        <li>It is enclosed within a pair vertical lines (<code>|</code>),
+        rather than parentheses, which are mandatory if a parameter list is
+        specified.
+        <li>It is specified as the first element of the block associated with
+        the <code>Proc</code>: after the opening curly bracket or the
+        <code>do</code> keyword.
+        <li>If the <a href=#lambda-literal>lambda literal</a> syntax is used,
+        the vertical lines must be omitted and the parameter list must be
+        specified within the parentheses following <code>-&gt;</code> à la
+        method parameter lists; <em>not</em> in the block.
+      </ul>
+
+      <figure id=proc-parameters>
+        <dt>The parameter list for a <code>Proc</code> is enclosed within vertical
+        lines
+      </figure>
+      <!-- block-local variables -->
+    </section>
   </section>
 </body>
