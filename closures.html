@@ -9,7 +9,6 @@
 <body>
   <section>
     <h1 id=closures>Closures</h1>
-    <!--Block-local variables-->
 
     <section>
       <h1 id=semantics>Semantics</h1>
@@ -330,7 +329,60 @@
         <dt>The parameter list for a <code>Proc</code> is enclosed within vertical
         lines
       </figure>
-      <!-- block-local variables -->
+
+      <section>
+        <h1 id=block-local-variables>Block-Local Variables</h1>
+
+        <p>A closure may define <dfn>block-local variables</dfn>: local
+        variables which are distinct from those with the same name in an outer
+        lexical scope.</p>
+
+        <p>Block-local variables are defined in the parameter list after the
+        non-block-local parameters, and before the closing vertical line. They
+        are specified as a comma-separated list of identifiers, with a
+        semicolon preceding the first:
+        <code>|<var>param</var><sub>0</sub>,…,<var>param</var><sub>n</sub>;<var>block-local</var><sub>0</sub>,…,<var>block-local</var><sub>n</sub>|</code>.
+        The semicolon is mandatory, even if the list of block-local variables
+        is not preceded by any regular parameters.</p>
+
+        <p>In the case of <a href=#lambda-literal>lambda literals</a>,
+        block-local variables are specified in the same manner before the
+        closing parentheses of the parameter list, i.e.
+        <code>-&gt;(<var>param</var><sub>0</sub>,…,<var>param</var><sub>n</sub>;<var>block-local</var><sub>0</sub>,…,<var>block-local</var><sub>n</sub>){}</code>.</p>
+
+        <figure id=block-local-variables-syntax>
+          <dt>Block-local variables are specified after regular parameters and
+          preceded by a semicolon
+        </figure>
+        
+        <p>If a variable <var>v</var> is defined block-local:
+          <ol>
+            <li>If <var>v</var> was defined in an outer scope, its value is saved.
+            <li>Within the block <var>v</var> is assigned <code>nil</code>,
+            then behaves as any other local variable.
+            <li>Upon leaving the block, <var>v</var> is assigned the value it
+            had originally in the outer scope.
+          </ol>
+        </p>
+
+
+        <figure id=block-local-variables-example>
+          <dt>Block-local variables are are distinct from those with the same
+          name in an outer lexical scope
+        </figure>
+
+        <p>By contrast, if <var>v</var> is not defined as block-local, it
+        retains the value it was assigned inside the block, even after leaving
+        the block scope. However, defining a variable, <var>w</var>, inside
+        the block which did not exist in the outer scope, does not define it
+        in the outer scope. In both examples, <var>w</var> is undefined upon
+        leaving the block.</p>
+
+        <figure id=non-block-local-variables-example>
+          <dt>Non-block-local variables defined prior to the block retain the
+          value they were assigned inside the block even after leaving it
+        </figure>
+      </section>  
     </section>
   </section>
 </body>
