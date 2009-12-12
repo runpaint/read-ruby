@@ -52,10 +52,18 @@ file 'out/index.html' => FileList['*.html'] do |t|
   File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
 end
 
-OUTPUT_FILES = []
-FileList['*.css', '*.html', '*.xml', '*.txt', '.htstatic'].each do |f|
+OUTPUT_FILES = ['out/style.css']
+
+file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
+  File.open(t.name, 'w') do |f| 
+    f.print FileList['*.css'].map{|n| File.read(n)}.join
+  end
+  sh "gzip --best -c #{t.name} >#{t.name}.gz"      
+end
+
+FileList['*.html', '*.xml', '*.txt', '.htstatic'].each do |f|
   OUTPUT_FILES << (f_out = 'out/' + f)
-  if %w{css html xml}.any?{|e| f.end_with? e}
+  if %w{html xml}.any?{|e| f.end_with? e}
     file "#{f_out}.gz" => f_out do |t|
       if f_out.end_with? 'html'
         sh "h5-min #{f_out} >#{f_out}.min"
@@ -83,14 +91,11 @@ FileList['*.css', '*.html', '*.xml', '*.txt', '.htstatic'].each do |f|
       html_figures << html_fig
     end
     file f_out => [f, *html_figures] do |t|
-      has_figures = false
       nok = Nokogiri::HTML(File.read f)
       html_figures.each do |html_fig|
         id = html_fig.match(/\/(?<id>.+)\.html/)[:id]
         nok.at("figure[@id=#{id}] > dt").before "<dd>#{File.read html_fig}</dd>"
-        has_figures = true
       end
-      nok.at('title').after("<link href=pygments.css rel=stylesheet>") if has_figures
       File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
     end
   else
