@@ -276,5 +276,33 @@
         </figure>
       </section>
     </section>
+
+    <section>
+      <h1 id=calling>Calling</h1>
+
+      <p>A <code>Proc</code> can be invoked in the following ways:</p>
+      
+      <dl>
+        <dt><code>Proc#call(<var>arg</var><sub>0</sub>,…,<var>arg</var><sub>n</sub>)</code>
+        <dd>Also invoked with the syntax below.
+        <dt><code><var>proc</var>.(<var>arg</var><sub>0</sub>,…,<var>arg</var><sub>n</sub>)</code>
+        <dd>A syntactical shortcut for <code>Proc#call</code>. The
+        parentheses are mandatory, even if there are no arguments.
+        <dt><code>Proc#yield(<var>arg</var><sub>0</sub>,…,<var>arg</var><sub>n</sub>)</code>
+        <dd>An instance method with the selector <code>:yield</code>;
+        distinct from the <code>yield</code> keyword.
+        <dt><code>Proc#[<var>arg</var><sub>0</sub>,…,<var>arg</var><sub>n</sub>]</code>
+        <dd>The square brackets are mandatory, even if there are no arguments.
+        <dt><code>Proc#=== <var>arg</var></code>
+        <dd>Allows <code>Proc</code>s to be used in
+        <code>case</code> expressions. It requires exactly one argument, so is
+        unsuitable for a <code>Proc</code> with <a
+          href=#lambda-semantics>lambda semantics</a> that have arities other than 1.
+      </dl>
+      
+      <figure id=proc-calling>
+        <dt>Syntax for invoking a <code>Proc</code>
+      </figure>
+    </section>
   </section>
 </body>
