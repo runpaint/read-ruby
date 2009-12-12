@@ -1,1 +1,5 @@
+# vim: ft=apache
 Options +MultiViews
+# Stop files with .gz extension being served with a Content-Type of
+# application/x-gzip
+RemoveType .gz
