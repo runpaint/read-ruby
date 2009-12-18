@@ -10,6 +10,23 @@
   <section>
     <h1 id=closures>Closures</h1>
 
+    <blockquote cite=/references#refGRAHAM96>
+      A closure is a combination of a function and an environment. Closures
+      are created implicitly whenever a function refers to something from the
+      surrounding lexical environment.
+      <cite>ANSI Common Lisp</cite>
+    </blockquote>
+
+    <p>A <code>Proc</code> object represents a <dfn>closure</dfn>: a block of
+    executable code accompanied by an <q>explicit representation of a
+      referencing environment</q> (<a href=/references#refSCOTT06
+      class=ref>Scott</a>, 2006, pp. 138–140) (its
+    <dfn>binding</dfn>). The figure below provides a typical example:</p>
+
+    <figure id=closure-example>
+      <dt>A closure encapsulates a block of code and its associated binding
+    </figure>
+
     <section>
       <h1 id=semantics>Semantics</h1>
 
