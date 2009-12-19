@@ -4,14 +4,15 @@ require 'nokogiri'
 CLOBBER.include('out')
 directory 'out'
 
-def headings(s, f)
+def headings(s, f, level=1)
+  return if level > 2
   a = ''
   unless (h1 = s.xpath('./h1')).inner_html.empty?
     href = f.sub(/\.html$/,'') + '#' + h1.first.attributes['id']
-    a = "<a href=#{href}>#{h1.inner_html}</a>"
+    a = "<a href=#{href}>#{h1.inner_html.gsub(/ /,'&nbsp;')}</a>"
   end
   titles = [a, 
-            s.xpath('./section').map{|s2| headings(s2, f)}.compact
+            s.xpath('./section').map{|s2| headings(s2, f, level + 1)}.compact
            ].reject(&:empty?)
   return if titles.empty?
   titles.size == 1 ? titles.first : titles
