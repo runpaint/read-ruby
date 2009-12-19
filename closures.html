@@ -205,27 +205,28 @@
             </figure>
           </section>
         </section>
+      </section>
 
-        <section>
-          <h1 id=control-flow>Control Flow</h1>
+      <section>
+        <h1 id=control-flow>Control Flow</h1>
 
-          <p>Control flow statements other than <code>break</code> or
-          <code>return</code> operate in the same way for both kinds of
-          <code>Proc</code>s.</p>
+        <p>Control flow statements other than <code>break</code> or
+        <code>return</code> operate in the same way for both kinds of
+        <code>Proc</code>s.</p>
 
-          <dl>
-            <dt><code>next</code>
-            <dd>Returns its arguments to the <code>yield</code> statement or method that
-            invoked the <code>Proc</code>.
-            <dt><code>redo</code>
-            <dd>Jump to the beginning of the <code>Proc</code>
-            <dt><code>retry</code>
-            <dd>Always raises a <code>LocalJumpError</code>
-            <dt><code>raise</code>
-            <dd>Propagates the exception up the call stack: through any
-            enclosing block, then to the invoking method.
-          </dl>
-        </section>
+        <dl>
+          <dt><code>next</code>
+          <dd>Returns its arguments to the <code>yield</code> statement or method that
+          invoked the <code>Proc</code>.
+          <dt><code>redo</code>
+          <dd>Jump to the beginning of the <code>Proc</code>
+          <dt><code>retry</code>
+          <dd>Always raises a <code>LocalJumpError</code>
+          <dt><code>raise</code>
+          <dd>Propagates the exception up the call stack: through any
+          enclosing block, then to the invoking method.
+        </dl>
+      </section>
     </section>
 
     <section>
