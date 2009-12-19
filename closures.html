@@ -416,5 +416,22 @@
         </figure>
       </section>  
     </section>
+
+    <section>
+      <h1 id=binding>Binding</h1>
+      
+      <p>We have already introduced the concept of a binding as a reference to
+      the closure’s referencing environment. We have demonstrated that the
+      binding is dynamic, resolving variables referenced within a closure
+      relative to the environment in which it was called. An implication is
+      that these variables must be defined in the closure itself or exist in
+      the closure’s environment prior to its creation: they can be modified or
+      re-assigned subsequently, but they must have been assigned.</p>
+
+      <figure id=closure-binding-nameerror>
+        <dt>Variables referenced, but not defined, by a closure must have exist
+        in its environment at creation time
+      </figure>
+    </section>
   </section>
 </body>
