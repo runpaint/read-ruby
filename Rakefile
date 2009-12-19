@@ -62,7 +62,7 @@ file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
   sh "gzip --best -c #{t.name} >#{t.name}.gz"      
 end
 
-FileList['*.html', '*.xml', '*.txt', '.htstatic'].each do |f|
+FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
   OUTPUT_FILES << (f_out = 'out/' + f)
   if %w{html xml}.any?{|e| f.end_with? e}
     file "#{f_out}.gz" => f_out do |t|
