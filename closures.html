@@ -10,21 +10,36 @@
   <section>
     <h1 id=closures>Closures</h1>
 
-    <blockquote cite=/references#refGRAHAM96>
+    <!--<blockquote cite=/references#refGRAHAM96>
       A closure is a combination of a function and an environment. Closures
       are created implicitly whenever a function refers to something from the
       surrounding lexical environment.
       <cite>ANSI Common Lisp</cite>
-    </blockquote>
+    </blockquote> -->
 
-    <p>A <code>Proc</code> object represents a <dfn>closure</dfn>: a block of
-    executable code accompanied by an <q>explicit representation of a
-      referencing environment</q> (<a href=/references#refSCOTT06
-      class=ref>Scott</a>, 2006, pp. 138–140) (its
-    <dfn>binding</dfn>). The figure below provides a typical example:</p>
-
+    <p><q cite=/references#refGRAHAM96>A closure is a combination of a
+      function and an environment.</q> (<a href=/references#refGRAHAM96
+      class=ref>Graham</a>, 1996, pp. 107–109). The function is a parametrised
+    block of executable code, and the <q
+      cite=/references#refCOTT06>referencing environment</q> (<a
+      href=/references#refSCOTT06 class=ref>Scott</a>, 2006, pp. 138–140), or
+    <dfn>binding</dfn>, is a
+    reference to the lexical environment of the closure’s creation site. The
+    binding represents its variables as references, which are de-referenced in
+    the environment the closure is called, every time it is called. The figure
+    below provides the typical demonstration of this concept:</p>
+    
     <figure id=closure-example>
       <dt>A closure encapsulates a block of code and its associated binding
+    </figure>
+
+    <p>A closure is an instance of the <code>Proc</code> class, which provides
+    methods for calling the closure and accessing its binding. The following
+    example shows a closure being called with <code>Proc#[]</code> and an
+    argument.</p>
+
+    <figure id=closure-with-argument>
+    <dt>A closure may accept arguments from its calling environment
     </figure>
 
     <section>
