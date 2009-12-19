@@ -10,20 +10,13 @@
   <section>
     <h1 id=closures>Closures</h1>
 
-    <!--<blockquote cite=/references#refGRAHAM96>
-      A closure is a combination of a function and an environment. Closures
-      are created implicitly whenever a function refers to something from the
-      surrounding lexical environment.
-      <cite>ANSI Common Lisp</cite>
-    </blockquote> -->
-
     <p><q cite=/references#refGRAHAM96>A closure is a combination of a
       function and an environment.</q> (<a href=/references#refGRAHAM96
       class=ref>Graham</a>, 1996, pp. 107–109). The function is a parametrised
     block of executable code, and the <q
       cite=/references#refCOTT06>referencing environment</q> (<a
       href=/references#refSCOTT06 class=ref>Scott</a>, 2006, pp. 138–140), or
-    <dfn>binding</dfn>, is a
+    <a href=#binding><dfn>binding</dfn></a>, is a
     reference to the lexical environment of the closure’s creation site. The
     binding represents its variables as references, which are de-referenced in
     the environment the closure is called, every time it is called. The figure
@@ -36,7 +29,7 @@
     <p>A closure is an instance of the <code>Proc</code> class, which provides
     methods for calling the closure and accessing its binding. The following
     example shows a closure being called with <code>Proc#[]</code> and an
-    argument.</p>
+    <a href=#parameters>argument</a>.</p>
 
     <figure id=closure-with-argument>
     <dt>A closure may accept arguments from its calling environment
@@ -420,13 +413,14 @@
     <section>
       <h1 id=binding>Binding</h1>
       
-      <p>We have already introduced the concept of a binding as a reference to
-      the closure’s referencing environment. We have demonstrated that the
-      binding is dynamic, resolving variables referenced within a closure
-      relative to the environment in which it was called. An implication is
-      that these variables must be defined in the closure itself or exist in
-      the closure’s environment prior to its creation: they can be modified or
-      re-assigned subsequently, but they must have been assigned.</p>
+      <p>We have <a href=#closures>already introduced</a> the concept of a
+      binding as a reference to the closure’s referencing environment. We have
+      demonstrated that the binding is dynamic, resolving variables referenced
+      within a closure relative to the environment in which it was called. An
+      implication is that these variables must be defined in the closure
+      itself or exist in the closure’s environment prior to its creation: they
+      can be modified or re-assigned subsequently, but they must have been
+      assigned.</p>
 
       <figure id=closure-binding-nameerror>
         <dt>Variables referenced, but not defined, by a closure must have exist
