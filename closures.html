@@ -433,5 +433,25 @@
         in its environment at creation time
       </figure>
     </section>
+
+    <p>A closure is <q>self-contained: they contain everything the procedure
+      needs in order to be applied.</q> (<a href=/references#refFRIEDMAN08
+      class=ref>Friedman &amp; Wand</a>, 2008, pp. 79–82). Therefore, the
+    binding must also <q>…hold all the information necessary to execute a
+      method, such as the value of <code>self</code>, and the block, if any,
+      that would be invoked by a <code>yield</code>.</q> (<a
+      href=/references#refFLAN08 class=ref>Flanagan &amp; Matsumoto</a>, 2008,
+    pp. 202–203).
+
+    <p>A closure’s binding is encapsulated by a <code>Binding</code> object,
+    which is obtained with <code>Proc#binding</code>. It can then be used to
+    execute other code in the same environment with a method such as
+    <code>eval</code>.</p>
+
+    <figure id=closure-proc-binding>
+      <dt><code>Proc#binding</code> returns a closure’s binding as a
+      <code>Binding</code> object, allowing other code to be executed in the
+      same context
+    </figure>
   </section>
 </body>
