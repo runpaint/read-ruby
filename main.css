@@ -20,7 +20,7 @@ figure {
   display: block;
 }
 
-.figure-dt, figure > dt {
+figcaption {
   display: block;
   margin-left: 30%;
   margin-right: 30%;

@@ -135,11 +135,12 @@
     values.</p>
 
     <figure id=def-implicit-return>
-      <dt>A method which returns the Symbol <code>:to_sender</code>
+      <figcaption>A method which returns the Symbol <code>:to_sender</code>
     </figure>
 
     <figure id=def-implicit-return-multiple>
-      <dt>A method which returns multiple values as an <code>Array</code>.
+      <figcaption>A method which returns multiple values as an
+      <code>Array</code>.
     </figure>
 
     <p>A <code>return</code> statement causes the method to terminate
@@ -149,7 +150,7 @@
     an <code>Array</code>.</p> 
 
     <figure id=def-explicit-return-multiple>
-      <dt>A method which explicitly returns multiple values.
+      <figcaption>A method which explicitly returns multiple values.
     </figure>
 
     <p>This gives rise to two conventions:
@@ -181,8 +182,8 @@
     corresponding method is not defined in the superclass.</p>
     
     <figure id=super>
-      <dt><code>super</code> invokes the corresponding superclass method with
-      the current method’s arguments.
+      <figcaption><code>super</code> invokes the corresponding superclass
+      method with the current method’s arguments.
     </figure>
 
     <!-- Suggest if
@@ -232,7 +233,7 @@
     valid in a method name.</p> 
 
     <figure id=def-non-ascii-name>
-      <dt>Defining a method with a non-ASCII name
+      <figcaption>Defining a method with a non-ASCII name
     </figure>
 
     <section>
@@ -450,12 +451,9 @@
     called? -->
     
     <figure id=def-syntax>
-      <dd>
-        <pre class=syntax><code>def <var>name</var> (<var>parameters</var>)
-  <var>body</var>
-end</code></pre>
-      </dd>
-      <dt>The syntax of a method definition.
+       <pre class=syntax><code>def <var>name</var> (<var>parameters</var>)
+       <var>body</var> end</code></pre>
+      <figcaption>The syntax of a method definition.
     </figure>
     
     <p>If <var>name</var> does not include a full stop, an <a
@@ -466,7 +464,7 @@ end</code></pre>
     named <var>selector</var> is defined on <var>object</var>.</p>
 
     <figure id=def-instance-method>
-      <dt>Defining an instance method named <code>bark</code> for the
+      <figcaption>Defining an instance method named <code>bark</code> for the
       <code>Dog</code> class with the <code>def</code> keyword.
     </figure>
 
@@ -478,7 +476,7 @@ end</code></pre>
     <var>name</var> on the class named <var>class</var>.</p>
 
     <figure id=def-singleton-method>
-      <dt>Defining a singleton method named <code>breed</code> for the
+      <figcaption>Defining a singleton method named <code>breed</code> for the
       <code>Dog</code> class.
     </figure>
 
@@ -522,7 +520,8 @@ end</code></pre>
         modified, too.</p>
 
         <figure id=pass-by-reference>
-          <dt>The effect of a method’s modification of an argument on its caller
+          <figcaption>The effect of a method’s modification of an argument on
+          its caller
         </figure>
 
         <p>Alternatively, an argument may be <a
@@ -530,8 +529,8 @@ end</code></pre>
         independent of the caller’s.</p>
 
         <figure id=pass-by-reference-dup>
-          <dt>The effect of a method’s modification of a <code>dup</code>’d
-          argument on its caller</dt>
+          <figcaption>The effect of a method’s modification of a
+          <code>dup</code>’d argument on its caller
         </figure>
       </section>
       
@@ -554,7 +553,7 @@ end</code></pre>
         parameter names. Each parameter represents a mandatory argument.</p>
 
         <figure id=required-arguments>
-          <dt>Defining a method which requires exactly two arguments.
+          <figcaption>Defining a method which requires exactly two arguments.
         </figure>
       </section>
 
@@ -574,7 +573,7 @@ end</code></pre>
         instantiate an object on every invocation.</p>
 
         <figure id=optional-arguments>
-          <dt>Defining a method which takes an optional argument.
+          <figcaption>Defining a method which takes an optional argument.
         </figure>
 
         <p>Optional and required arguments can be specified alongside each
@@ -584,7 +583,7 @@ end</code></pre>
         arguments.</p>
 
         <figure id=required-arguments-with-optional-arguments>
-          <dt>Defining a method which takes both optional and required
+          <figcaption>Defining a method which takes both optional and required
           arguments.
         </figure>
       </section>
@@ -612,7 +611,8 @@ end</code></pre>
         in a parameter list, and any optional parameters must precede it.</p>
 
         <figure id=rest-arguments>
-          <dt>Defining a method which takes a variable number of arguments.
+          <figcaption>Defining a method which takes a variable number of
+          arguments.
         </figure>
 
         <p>A rest parameter may be supplied as a sole asterisk, omitting the
@@ -629,8 +629,8 @@ end</code></pre>
         passes them all to its superclass.</p>
 
         <figure id=rest-parameter-with-super>
-          <dt>A method which accepts a variable number of arguments then
-          passes them to its superclass (<code>Parent</code>) with
+          <figcaption>A method which accepts a variable number of arguments
+          then passes them to its superclass (<code>Parent</code>) with
           <code>super</code>.
         </figure>
       </section>
@@ -653,8 +653,8 @@ end</code></pre>
         <!-- TODO: Mention that File/IO, String#encode use this technique -->
 
         <figure id=named-arguments-with-hash>
-          <dt>A method which uses a <code>Hash</code> argument to simulate
-          named arguments.
+          <figcaption>A method which uses a <code>Hash</code> argument to
+          simulate named arguments.
         </figure>
 
         <p>If the <code>Hash</code> is the final argument, other than a block,
@@ -672,7 +672,7 @@ end</code></pre>
           </ul>
 
         <figure id=named-arguments-with-defaults>
-          <dt>A method which uses a <code>Hash</code> argument to simulate
+          <figcaption>A method which uses a <code>Hash</code> argument to simulate
           named arguments with default values.
         </figure>
 
@@ -705,16 +705,16 @@ end</code></pre>
         </aside>
 
         <figure id=method-invocation-with-block-literal>
-          <dt>A method which receives, and ignores, a block specified with
-          either of the block literal constructs.
+          <figcaption>A method which receives, and ignores, a block specified
+          with either of the block literal constructs.
         </figure>
          
         <p>A method may determine whether it has received a block with the
         <code>block_given?</code> predicate.</p>
 
         <figure id=method-using-block-given>
-          <dt>A method which uses the <code>block_given?</code> predicate to
-          determine whether it has been passed a block.
+          <figcaption>A method which uses the <code>block_given?</code>
+          predicate to determine whether it has been passed a block.
         </figure>
 
         <p>A block passed to a method in this way is not automatically called;
@@ -725,8 +725,9 @@ end</code></pre>
         <!-- TODO: Mention that yield takes arguments -->
 
         <figure id=method-using-block-given-yield>
-          <dt>A method which uses the <code>block_given?</code> predicate to
-          determine whether it has been passed a block, and if so calls it.
+          <figcaption>A method which uses the <code>block_given?</code>
+          predicate to determine whether it has been passed a block, and if so
+          calls it.
         </figure>
 
         <p>A method needing a reference to the block it was given, perhaps to
@@ -741,8 +742,8 @@ end</code></pre>
         <!-- Example with instance_eval ? -->
 
         <figure id=method-using-block-argument>
-          <dt>A method which uses a <code>&amp;block</code> parameter to refer
-          to the block it is given.
+          <figcaption>A method which uses a <code>&amp;block</code> parameter
+          to refer to the block it is given.
         </figure>
 
         <aside class=note>
@@ -752,8 +753,8 @@ end</code></pre>
           precisely the same parameter list as in the previous sections.</p>
 
           <figure id=method-receiving-block-ref>
-            <dt>A method which expects a reference to a block uses the same
-            parameter list as it would if expecting any other type of
+            <figcaption>A method which expects a reference to a block uses the
+            same parameter list as it would if expecting any other type of
             variable.
           </figure>
         </aside>
@@ -772,8 +773,8 @@ end</code></pre>
         to appear literally in the source code.</p>
 
         <figure id=define-method>
-          <dt>Using <code>define_method</code> to dynamically create a method
-          with a user-supplied name and body.
+          <figcaption>Using <code>define_method</code> to dynamically create a
+          method with a user-supplied name and body.
         </figure>
 
         <p><code>Module#define_method</code> is a private method so must be
@@ -782,8 +783,9 @@ end</code></pre>
         so:</p>
     
         <figure id=define-method-class-eval>
-          <dt>Using <code>define_method</code> inside <code>class_eval</code> to
-          dynamically create a method with a user-supplied name and body.
+          <figcaption>Using <code>define_method</code> inside
+          <code>class_eval</code> to dynamically create a method with a
+          user-supplied name and body.
         </figure>
           
         <p><code>Object#define_singleton_method</code> is called with a class
@@ -791,8 +793,8 @@ end</code></pre>
         <code>Module#define_method</code> for the obvious purpose.</p>
 
         <figure id=define-singleton-method>
-          <dt>Using <code>define_singleton_method</code> to dynamically create a
-          method.
+          <figcaption>Using <code>define_singleton_method</code> to
+          dynamically create a method.
         </figure>
       </section>
 
@@ -844,7 +846,7 @@ end</code></pre>
       called without affecting <code>Rectangle#height</code>.</p>
 
       <figure id=undef-method>
-        <dt>Undefining a method with <code>undef</code>.
+        <figcaption>Undefining a method with <code>undef</code>.
       </figure>
 
       <!-- Mention Module#undef_method? Does it offer any advantages? Better
@@ -861,8 +863,9 @@ end</code></pre>
       
       <!-- Use same example for undef_method so they can be contrasted -->
       <figure id=remove-method>
-        <dt>Using <code>remove_method</code> to remove a method definition from
-        a class, causing the superclass method to be invoked in its place.
+        <figcaption>Using <code>remove_method</code> to remove a method
+        definition from a class, causing the superclass method to be invoked
+        in its place.
       </figure>
     </section>
 
@@ -882,7 +885,8 @@ end</code></pre>
       specifier is encountered.</p>
 
       <figure id=visibility-specifiers>
-        <dt>Declaring the visibility of methods with visibility specifiers
+        <figcaption>Declaring the visibility of methods with visibility
+        specifiers
       </figure>
 
       <p>A visibility specifier with one or more method names (given as
@@ -890,8 +894,8 @@ end</code></pre>
       methods, which must have already been defined.</p>
 
       <figure id=visibility-specifiers-args>
-        <dt>Declaring the visibility of methods with visibility specifiers that
-        take arguments
+        <figcaption>Declaring the visibility of methods with visibility
+        specifiers that take arguments
       </figure>
 
       <section>
@@ -1024,7 +1028,7 @@ end</code></pre>
       a superclass --></p>
 
       <figure id=alias-for-wrapping>
-        <dt>Using <code>alias</code> to wrap a method
+        <figcaption>Using <code>alias</code> to wrap a method
       </figure>
 
       <!-- TODO: Link with example of using method objects to wrap methods
@@ -1095,7 +1099,7 @@ end</code></pre>
       </aside>
 
       <figure id=basicobject-method-missing>
-        <dt>A demonstration of <code>BasicObject#method_missing</code>
+        <figcaption>A demonstration of <code>BasicObject#method_missing</code>
       </figure>
       
       <p>If <code>method_missing</code> is invoked with a message it
@@ -1291,7 +1295,7 @@ end</code></pre>
           redefined:</p>
             
           <figure id=unboundmethod-black>
-            <dt>A class hierarchy where a method is redefined
+            <figcaption>A class hierarchy where a method is redefined
           </figure>
 
           <p>And I’ve got an instance of the subclass (<code>c = C.new</code>).

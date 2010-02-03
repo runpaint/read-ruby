@@ -23,7 +23,8 @@
     below provides the typical demonstration of this concept:</p>
     
     <figure id=closure-example>
-      <dt>A closure encapsulates a block of code and its associated binding
+      <figcaption>A closure encapsulates a block of code and its associated
+      binding
     </figure>
 
     <p>A closure is an instance of the <code>Proc</code> class, which provides
@@ -32,7 +33,7 @@
     <a href=#parameters>argument</a>.</p>
 
     <figure id=closure-with-argument>
-    <dt>A closure may accept arguments from its calling environment
+      <figcaption>A closure may accept arguments from its calling environment
     </figure>
 
     <section>
@@ -118,9 +119,9 @@
             <code>Proc</code>’s <em>creation</em> site.</p>
 
             <figure id=proc-semantics-return>
-            <dt>Within a <code>Proc</code> with proc
-            semantics, <code>return</code> jumps to the <code>Proc</code>
-            creation site
+              <figcaption>Within a <code>Proc</code> with proc
+              semantics, <code>return</code> jumps to the <code>Proc</code>
+              creation site
             </figure>
 
             <p>If the <code>Proc</code> was not created within a method,
@@ -128,7 +129,7 @@
             <code>LocalJumpError</code> is raised.</p>
 
             <figure id=proc-semantics-return-localjump>
-              <dt>A <code>LocalJumpError</code> is raised
+              <figcaption>A <code>LocalJumpError</code> is raised
               when a <code>Proc</code> with proc semantics tries to
               <code>return</code> without an enclosing method.
             </figure>
@@ -141,9 +142,8 @@
             <code>Proc</code>’s <em>call</em> site.</p>
 
             <figure id=proc-semantics-break>
-              <dt class=figure-dt>Within a <code>Proc</code> with proc
-              semantics, <code>break</code> jumps to the <code>Proc</code>
-              call site
+              <figcaption>Within a <code>Proc</code> with proc semantics,
+              <code>break</code> jumps to the <code>Proc</code> call site
             </figure>
             
             <p>A <code>LocalJumpError</code> is raised if
@@ -152,7 +152,7 @@
             <code>Proc.new</code> or <code>proc</code>.</p>
 
             <figure id=proc-semantics-break-localjump>
-              <dt class=figure-dt>A <code>Proc</code> created with
+              <figcaption>A <code>Proc</code> created with
               <code>proc</code> or <code>Proc.new</code> cannot use
               <code>break</code> at the top level
             </figure>
@@ -189,7 +189,7 @@
             <p>Returns from the <code>Proc</code> as if it were a method.</p>
 
             <figure id=lambda-semantics-return>
-              <dt>Within a <code>Proc</code> with lambda semantics,
+              <figcaption>Within a <code>Proc</code> with lambda semantics,
               <code>return</code> returns from the <code>Proc</code> itself
             </figure>
           </section>
@@ -200,7 +200,7 @@
             <p>Acts exactly like <code>return</code>.</p>
 
             <figure id=lambda-semantics-break>
-              <dt>Within a <code>Proc</code> with lambda semantics,
+              <figcaption>Within a <code>Proc</code> with lambda semantics,
               <code>break</code> returns from the <code>Proc</code> itself
             </figure>
           </section>
@@ -279,8 +279,8 @@
           block</a> is assumed.</p>
 
         <figure id=lambda-keyword-examples>
-          <dt><code>lambda</code> takes a block with which it creates a
-          <code>Proc</code> with lambda characteristics
+          <figcaption><code>lambda</code> takes a block with which it creates
+          a <code>Proc</code> with lambda characteristics
         </figure>
       </section>
 
@@ -296,8 +296,8 @@
         expects to receive the corresponding arguments.</p>
         
         <figure id=lambda-literal-syntax>
-          <dt><code>-&gt;(){}</code> creates a <code>Proc</code> with lambda
-          characteristics
+          <figcaption><code>-&gt;(){}</code> creates a <code>Proc</code> with
+          lambda characteristics
         </figure>
       </section>
     </section>
@@ -326,7 +326,7 @@
       </dl>
       
       <figure id=proc-calling>
-        <dt>Syntax for invoking a <code>Proc</code>
+        <figcaption>Syntax for invoking a <code>Proc</code>
       </figure>
     </section>
 
@@ -352,8 +352,8 @@
       </ul>
 
       <figure id=proc-parameters>
-        <dt>The parameter list for a <code>Proc</code> is enclosed within vertical
-        lines
+        <figcaption>The parameter list for a <code>Proc</code> is enclosed
+        within vertical lines
       </figure>
 
       <section>
@@ -377,8 +377,8 @@
         <code>-&gt;(<var>param</var><sub>0</sub>,…,<var>param</var><sub>n</sub>;<var>block-local</var><sub>0</sub>,…,<var>block-local</var><sub>n</sub>){}</code>.</p>
 
         <figure id=block-local-variables-syntax>
-          <dt>Block-local variables are specified after regular parameters and
-          preceded by a semicolon
+          <figcaption>Block-local variables are specified after regular
+          parameters and preceded by a semicolon
         </figure>
         
         <p>If a variable <var>v</var> is defined block-local:
@@ -392,8 +392,8 @@
         </p>
 
         <figure id=block-local-variables-example>
-          <dt>Block-local variables are are distinct from those with the same
-          name in an outer lexical scope
+          <figcaption>Block-local variables are are distinct from those with
+          the same name in an outer lexical scope
         </figure>
 
         <p>By contrast, if <var>v</var> is not defined as block-local, it
@@ -404,8 +404,9 @@
         leaving the block.</p>
 
         <figure id=non-block-local-variables-example>
-          <dt>Non-block-local variables defined prior to the block retain the
-          value they were assigned inside the block even after leaving it
+          <figcaption>Non-block-local variables defined prior to the block
+          retain the value they were assigned inside the block even after
+          leaving it
         </figure>
       </section>  
     </section>
@@ -423,8 +424,8 @@
       assigned.</p>
 
       <figure id=closure-binding-nameerror>
-        <dt>Variables referenced, but not defined, by a closure must have exist
-        in its environment at creation time
+        <figcaption>Variables referenced, but not defined, by a closure must
+        have exist in its environment at creation time
       </figure>
 
       <p>A closure is <q>self-contained: they contain everything the procedure
@@ -442,8 +443,8 @@
       <code>eval</code>.</p>
 
       <figure id=closure-proc-binding>
-        <dt><code>Proc#binding</code> returns a closure’s binding, allowing
-        other code to be executed in its context
+        <figcaption><code>Proc#binding</code> returns a closure’s binding,
+        allowing other code to be executed in its context
       </figure>
 
       <aside>
@@ -455,8 +456,8 @@
         object.</p>
 
         <figure id=kernel-binding-example>
-          <dt><code>Kernel.binding</code> returns the binding of the call
-          site
+          <figcaption><code>Kernel.binding</code> returns the binding of the
+          call site
         </figure>
       </aisde>
     </section>

@@ -203,8 +203,8 @@
       <code><var>module</var>.<var>selector</var></code>.</p>
 
       <figure id=module-namespacing>
-        <dt>Modules can be used as namespaces by defining methods on their
-        eigenclass
+        <figcaption>Modules can be used as namespaces by defining methods on
+        their eigenclass
       </figure>
 
       <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
@@ -232,8 +232,8 @@
       outside the module.</p>
 
       <figure id=module-namespacing-extend-self>
-        <dt>A method can be grouped with private helper methods by using
-        a module that <code>extend</code>s <code>self</code>
+        <figcaption>A method can be grouped with private helper methods by
+        using a module that <code>extend</code>s <code>self</code>
       </figure>
 
       <section>
@@ -267,8 +267,8 @@
       methods.</p>
       
       <figure id=module-namespace-and-mixin>      
-        <dt>The <code>Math</code> module can be used as both a namespace and a
-        mix-in.
+        <figcaption>The <code>Math</code> module can be used as both a
+        namespace and a mix-in.
       </figure>
 
       <p>One solution is <code>Module#module_function</code>, which is used to
@@ -287,8 +287,8 @@
         Matsumoto</a>, pp. 251–252).</p>
 
       <figure id=module-function>
-        <dt><code>module_function</code> enables a module to be used both as a
-        namespace and mix-in
+        <figcaption><code>module_function</code> enables a module to be used
+        both as a namespace and mix-in
       </figure>
 
       <p>A weakness of <code>module_function</code> is that it prevents a
@@ -296,8 +296,8 @@
       module.</p>
 
       <figure id=module-function-private-method>
-        <dt><code>module_function</code> foils the calling of a private
-        instance method from a singleton method
+        <figcaption><code>module_function</code> foils the calling of a
+        private instance method from a singleton method
       </figure>
       
       <p><a href=#extend-self><code>extend self</code></a> does not
@@ -306,7 +306,7 @@
       eigenclass—or automatically privatise instance methods.</p>
       
       <figure id=module-function-extend-self>
-        <dt><code>extend self</code> allows the calling of a private
+        <figcaption><code>extend self</code> allows the calling of a private
         instance method from a singleton method
       </figure>
     </section>

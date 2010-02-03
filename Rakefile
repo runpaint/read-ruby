@@ -95,7 +95,7 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
       nok = Nokogiri::HTML(File.read f)
       html_figures.each do |html_fig|
         id = html_fig.match(/\/(?<id>.+)\.html/)[:id]
-        nok.at("figure[@id=#{id}] > dt").before "<dd>#{File.read html_fig}</dd>"
+        nok.at("figure[@id=#{id}] > figcaption").before File.read(html_fig)
       end
       File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
     end

@@ -187,8 +187,8 @@
           the instance of the containing class.</p>
 
           <figure id=self-as-the-implicit-receiver>
-          <dt><code>self</code> is always defined; its value depends on the
-          enclosing context.</dt>
+            <figcaption><code>self</code> is always defined; its value depends
+            on the enclosing context.
           </figure>
 
           <p>There are four situations where the implicit receiver can not be
@@ -210,7 +210,8 @@
           private.</p> <!-- Are _messages_ private? -->
           
           <figure id=implicit-receiver-for-private-method>
-            <dt>Private messages must be sent with an implicit receiver.</dt>
+            <figcaption>Private messages must be sent with an implicit
+            receiver.
           </figure>
 
            <!-- TODO: Explain how 'puts "glark"' works in this context? -->
@@ -259,8 +260,9 @@
         </aside>
 
         <figure id=bare-selector-syntax>
-          <dt>A bare identifier is interpreted as a message selector unless it
-          has previously been used as a local variable name in the same scope.
+          <figcaption>A bare identifier is interpreted as a message selector
+          unless it has previously been used as a local variable name in the
+          same scope.
         </figure>
 
         <p>The receiver can be specified explicitly with the
@@ -270,8 +272,8 @@
         <var>selector</var> with a full stop (U+002E: <code>.</code>).</p>
 
         <figure id=receiver-dot-selector-syntax>
-        <dt>A message can be explicitly sent to an object by concatenating an
-        explicit receiver, a full stop, and a selector.
+          <figcaption>A message can be explicitly sent to an object by
+          concatenating an explicit receiver, a full stop, and a selector.
         </figure>
 
         <aside class=note>
@@ -298,8 +300,8 @@
           <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.</p>
           
           <figure id=receiver-selector-arguments-syntax>
-            <dt>The selector may be followed by a parenthesised list of zero
-            or more arguments.
+            <figcaption>The selector may be followed by a parenthesised list
+            of zero or more arguments.
           </figure>
 
           <p>If a message is sent with an unexpected number of arguments an
@@ -318,8 +320,8 @@
             <code>Enumerable</code> into its individual elements.</p>
 
             <figure id=splat-arguments>
-              <dt>Prefixing an <code>Enumerable</code> argument with an
-              asterisk explodes it into its constituent elements.
+              <figcaption>Prefixing an <code>Enumerable</code> argument with
+              an asterisk explodes it into its constituent elements.
             </figure>
 
             <p>This technique works by sending <code>:to_a</code> to the
@@ -339,8 +341,8 @@
               latter for multi-line blocks.</p>
 
               <figure id=message-expression-with-block>
-                <dt>A message expression followed by a block literal causes
-                the block to be passed to the method.
+                <figcaption>A message expression followed by a block literal
+                causes the block to be passed to the method.
               </figure>
 
               <!-- Suggest here that Enumerators are returned when no block is given?
@@ -353,8 +355,8 @@
                 are given the <code>Proc</code> must be specified last.</p>
 
                 <figure id=ampersand-prefix-with-argument>
-                  <dt>Prefix the final argument with an ampersand to convert
-                  it to a block literal.
+                  <figcaption>Prefix the final argument with an ampersand to
+                  convert it to a block literal.
                 </figure>
 
                 <p>This technique works by sending <code>:to_proc</code> to
@@ -386,7 +388,7 @@
               variable and selector share the same name.</p>
 
               <figure id=parentheses-disambiguate-bare-identifiers>
-                <dt>Parentheses are required to disambiguate an
+                <figcaption>Parentheses are required to disambiguate an
                 implicitly-received message’s selector from a local variable
                 with the same name.
               </figure>
@@ -396,8 +398,8 @@
               name and the first argument.</p>
 
               <figure id=parentheses-omitted-in-message-expressions>              
-              <dt>Parentheses can often be omitted from message expressions
-              involving arguments.
+                <figcaption>Parentheses can often be omitted from message
+                expressions involving arguments.
               </figure>
 
               <p>A common case when parentheses are <i>required</i> to disambiguate is
@@ -413,8 +415,8 @@
               unnecessary, as an aid to legibility.</p>
 
               <figure id=message-expressions-omit-parentheses-syntaxerror>
-              <dt>It is illegal to omit parentheses in nested message
-              expressions when doing so introduces ambiguity.
+                <figcaption>It is illegal to omit parentheses in nested
+                message expressions when doing so introduces ambiguity.
               </figure>
 
               <p>When parentheses are used to enclose a message’s arguments,
@@ -443,8 +445,8 @@
           fashion.</p>
 
           <figure id=message-chaining>
-          <dt>The receiver of a message may itself be a message expression,
-          allowing messages to be chained.
+            <figcaption>The receiver of a message may itself be a message
+            expression, allowing messages to be chained.
           </figure>
 
           <p>This technique relies on the composite receiver consistently
@@ -461,8 +463,8 @@
           because of their inconsistency.</p>
 
           <figure id=message-chaining-inconsistent-return-value>
-          <dt>Messages cannot be usefully chained if they have inconsistent
-          return values.
+            <figcaption>Messages cannot be usefully chained if they have
+            inconsistent return values.
           </figure>
 
           <!-- Mention andand -->
@@ -472,8 +474,8 @@
           their receiver. </p>
 
           <figure id=message-chaining-return-self>
-          <dt>Message chaining relies on each link consistently returning an
-          object of the same type.
+            <figcaption>Message chaining relies on each link consistently
+            returning an object of the same type.
           </figure>
         </section> 
           
@@ -490,8 +492,8 @@
           requires the selector to be a literal, embedded in the source.</p>
 
           <figure id=object-send>
-            <dt><code>Object#send</code> sends an object a message whose name
-            can be determined at runtime.
+            <figcaption><code>Object#send</code> sends an object a message
+            whose name can be determined at runtime.
           </figure>
 
           <p><code>Object#send</code> is aliased to <code>__send__</code>, so
@@ -573,8 +575,8 @@
               expression.</p>
               
               <figure id=call-selector>
-                <dt class=figure-dt>Omitting the selector name in a message expression causes
-                <code>:call</code> to be assumed.
+                <figcaption>Omitting the selector name in a message expression
+                causes <code>:call</code> to be assumed.
               </figure>
 
             <dt><code>:each</code> / <code>:each_</code>*
@@ -588,9 +590,9 @@
               <code>Enumerator</code> when the block is omitted. 
 
               <figure id=each-selector>
-              <dt class=figure-dt>The <code>:each</code> selector yields each
-              element of the receiver if given a block; otherwise returns an
-              <code>Enumerator</code>.
+                <figcaption>The <code>:each</code> selector yields each
+                element of the receiver if given a block; otherwise returns an
+                <code>Enumerator</code>.
               </figure>
 
               <p>Messages with selectors of the form
@@ -612,9 +614,9 @@
               Bug? -->
 
               <figure id=each_-selector>
-              <dt class=figure-dt>Selectors named
-              <code>:each_<var>attribute</var></code> enumerate the receiver
-              by <var>attribute</var>.
+                <figcaption>Selectors named
+                <code>:each_<var>attribute</var></code> enumerate the receiver
+                by <var>attribute</var>.
               </figure>
 
             </dd>
@@ -626,8 +628,8 @@
             <code>File#size</code> returns the receiver’s size in bytes.
 
             <figure id=size-selector>
-            <dt class=figure-dt>The <code>:size</code> selector returns the
-            receiver’s magnitude as an <code>Integer</code>.
+              <figcaption>The <code>:size</code> selector returns the
+              receiver’s magnitude as an <code>Integer</code>.
             </figure>
 
             <dt><code>:</code>*<code>_by</code>
@@ -638,8 +640,8 @@
             <code>Enumerable#minmax_by</code>.
             
             <figure id=_by-selector>
-            <dt class=figure-dt>Selectors with a <code>_by</code> suffix
-            accept a block which constrains their computation.
+              <figcaption>Selectors with a <code>_by</code> suffix accept a
+              block which constrains their computation.
             </figure>
 
             <dt><code>:to_</code>*
@@ -647,8 +649,8 @@
             the corresponding core type.
 
             <figure id=to_-selector>            
-            <dt class=figure-dt>Selectors with a <code>to_</code> prefix
-            return the receiver as an object of the given type.
+              <figcaption>Selectors with a <code>to_</code> prefix return the
+              receiver as an object of the given type.
             </figure>
 
             <dt><code>:try_convert</code>
@@ -656,17 +658,17 @@
             the argument to the receiver.
 
             <figure id=try_convert-selector>
-            <dt class=figure-dt>The <code>:try_convert</code> selector
-            implicitly converts it argument to its receiver, returning
-            <code>nil</code> if unsuccessful.
+              <figcaption>The <code>:try_convert</code> selector implicitly
+              converts it argument to its receiver, returning <code>nil</code>
+              if unsuccessful.
             </figure>
 
             <dt><code>:&lt;=&gt;</code>
             <dd><a href=#comparison>Compares</a> the operands.
 
             <figure id=spaceship-selector> 
-            <dt class=figure-dt><code>&lt;=&gt;</code> compares its receiver
-            to argument.
+              <figcaption><code>&lt;=&gt;</code> compares its receiver to
+              argument.
             </figure>
             
             <dt><code>:&lt;</code>
@@ -679,9 +681,9 @@
               <var>superclass</var>…end</code>.
 
             <figure id=less-than-selector>
-            <dt class=figure-dt>The <code>:&lt;</code> selector returns
-            <code>true</code> if the receiver is less than the argument;
-            <code>false</code> otherwise.
+              <figcaption>The <code>:&lt;</code> selector returns
+              <code>true</code> if the receiver is less than the argument;
+              <code>false</code> otherwise.
             </figure>
 
             <dt><code>:&gt;</code>
@@ -692,9 +694,9 @@
             argument is a <i>kind of</i> the receiver.
 
             <figure id=greater-than-selector>
-            <dt class=figure-dt>The <code>:&gt;</code> selector returns
-            <code>true</code> if the receiver is greater than the argument;
-            <code>false</code> otherwise.
+              <figcaption>The <code>:&gt;</code> selector returns
+              <code>true</code> if the receiver is greater than the argument;
+              <code>false</code> otherwise.
             </figure>
             
             <dt><code>:==</code>
@@ -702,9 +704,9 @@
               href=#equivalence>equivalent</a>.
             
             <figure id=equal-equal-selector>
-            <dt class=figure-dt>The <code>:==</code> selector returns
-            <code>true</code> if its operands are logically equivalent;
-            <code>false</code> otherwise.
+              <figcaption>The <code>:==</code> selector returns
+              <code>true</code> if its operands are logically equivalent;
+              <code>false</code> otherwise.
             </figure>
 
             <dt><code>:[]</code>
@@ -752,8 +754,8 @@
 
             </dd>
               <figure id=aref-music>
-                <dt>Examples of how different objects respond to the
-                <code>:[]</code> message.</dt>
+                <figcaption>Examples of how different objects respond to the
+                <code>:[]</code> message.
               </figure>
             <dt><code>:[]=</code>
             <dd>
@@ -776,9 +778,8 @@
               elements in <var>range</var> with <var>value</var>.  
 
               <figure id=element-set-selector>
-              <dt class=figure-dt>The <code>:[]=</code> selector assigns the
-              second argument to the slice of the receiver described by the
-              first.
+                <figcaption>The <code>:[]=</code> selector assigns the second
+                argument to the slice of the receiver described by the first.
               </figure>
             </dd>
             <dt><code>:=~</code>         
@@ -790,8 +791,8 @@
             return value -->
 
             <figure id=equal-tilde-selector>
-            <dt class=figure-dt>The <code>:=~</code> selector matches its
-            receiver with its argument.
+              <figcaption>The <code>:=~</code> selector matches its
+              receiver with its argument.
             </figure>
 
             <dt><code>:&lt;&lt;</code> <!-- Mutates; behaves differently with
@@ -805,8 +806,8 @@
             return mutated receiver -->.
 
             <figure id=left-shift-selector>
-            <dt class=figure-dt>The <code>:&lt;&lt;</code> selector typically
-            appends the argument to the receiver.
+              <figcaption>The <code>:&lt;&lt;</code> selector typically
+              appends the argument to the receiver.
             </figure>
             
             <dt><code>:+</code>
@@ -822,8 +823,8 @@
                 'a'</code>.
 
               <figure id=plus-selector>
-              <dt class=figure-dt>The <code>:+</code> selector combines the
-              operands into a new object.
+                <figcaption>The <code>:+</code> selector combines the
+                operands into a new object.
               </figure>
 
             </dd>  
@@ -833,8 +834,8 @@
             <code>Array#*</code>.
 
             <figure id=asterisk-selector>
-            <dt class=figure-dt>The <code>:*</code> selector duplicates the
-            receiver by the argument.
+              <figcaption>The <code>:*</code> selector duplicates the receiver
+              by the argument.
             </figure>
 
             <!-- :/ - only used by Numerics -->
@@ -853,7 +854,8 @@
           alternative? Lots of File methods fit this pattern. http://groups.google.com/group/ruby-talk-google/msg/cfdd0dca7f70c87e -->
 
           <figure id=predicate-messages>
-          <dt>The <code>?</code> suffix often indicates that a message is a predicate.
+            <figcaption>The <code>?</code> suffix often indicates that a
+            message is a predicate.
           </figure>
 
           <p>Following similar convention, a selector with an exclamation mark
@@ -868,8 +870,9 @@
             href=/references#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a></p>
 
             <figure id=bang-messages>
-            <dt>The <code>!</code> suffix often indicates that a message will
-            modify the receiver in place, or is otherwise “dangerous”.
+              <figcaption>The <code>!</code> suffix often indicates that a
+              message will modify the receiver in place, or is otherwise
+              “dangerous”.
             </figure>
 
             <p>Both suffixes are merely <i>conventional</i>, however; they do not
@@ -877,8 +880,8 @@
             manner.</p>
 
             <figure id=question-mark-suffix-non-predicate>
-            <dt>Selectors with a <code>?</code> suffix need not return
-            <code>true</code> or <code>false</code>.
+              <figcaption>Selectors with a <code>?</code> suffix need not
+              return <code>true</code> or <code>false</code>.
             </figure>
         </section>
         
@@ -896,8 +899,8 @@
           <code>Array</code>s of <code>Symbol</code>s.</p>
 
           <figure id=plural-selector-splat>
-            <dt>Idiomatically create an <code>Array</code> from a plural method
-            with the splat operator
+            <figcaption>Idiomatically create an <code>Array</code> from a
+            plural method with the splat operator
           </figure>
 
           <p>The plurality of the selector does not imply anything about the
@@ -976,8 +979,8 @@
         selector; <code>false</code> otherwise.</p>
 
         <figure id=respond-to>
-        <dt>An object <i>responds to</i> selectors for which a corresponding
-        method is defined.
+          <figcaption>An object <i>responds to</i> selectors for which a
+          corresponding method is defined.
         </figure>
 
         <p>However, by defining <code>method_missing</code> an object may
@@ -987,8 +990,8 @@
         explained later.</p>
 
         <figure id=respond-to-method-missing>
-        <dt><code>#respond_to?</code> is not necessarily accurate when
-        <code>method_missing</code> has been used.
+          <figcaption><code>#respond_to?</code> is not necessarily accurate
+          when <code>method_missing</code> has been used.
         </figure>
 
         <p><code>Kernel#respond_to?</code> ignores private methods by default.
@@ -996,7 +999,8 @@
         methods are included in its search.</p>
 
         <figure id=respond-to-private>        
-        <dt><code>:respond_to?</code> ignores private methods by default.
+          <figcaption><code>:respond_to?</code> ignores private methods by
+          default.
         </figure>
 
         <!-- Object#understand? -->
@@ -1010,10 +1014,9 @@
         it necessary.</p>
 
         <figure id=send-if-respond-to>
-          <dd>
-            <pre class=syntax><code><var>receiver</var>.<var>selector</var> if <var>receiver</var>.respond_to?(:<var>selector</var>)</code></pre>
-          </dd>
-          <dt>Sending a message only if the receiver responds to it.
+          <pre class=syntax><code><var>receiver</var>.<var>selector</var> if
+          <var>receiver</var>.respond_to?(:<var>selector</var>)</code></pre>
+          <figcaption>Sending a message only if the receiver responds to it.
         </figure> 
         
         <p>The following example suggests a simplification of this idiom by
@@ -1025,8 +1028,8 @@
         <code>NoMethodError</code> if it occurs.</p>
 
         <figure id=object-send-p>
-          <dt>An implementation of <code>Object#send?</code>, which returns
-          <code>nil</code> if the named method does not exist.
+          <figcaption>An implementation of <code>Object#send?</code>, which
+          returns <code>nil</code> if the named method does not exist.
         </figure>
         
         <p>A closely related related scenario involves wanting to send a
@@ -1035,18 +1038,17 @@
         The general solution is one of the following constructs:</p> 
         
         <figure id=ternary-nil-receiver>
-          <dd>
-          <pre class=syntax><code><var>receiver</var> ? <var>receiver</var>.<var>selector</var> : nil</code></pre>
-          </dd>
-          <dt>Using the ternary operator to send a receiver a message only if it is true; otherwise
-          return <code>nil</code>.    
+          <pre class=syntax><code><var>receiver</var> ?
+          <var>receiver</var>.<var>selector</var> : nil</code></pre>
+          <figcaption>Using the ternary operator to send a receiver a message
+          only if it is true; otherwise return <code>nil</code>.    
         </figure>
 
         <figure id=and-and-nil-receiver>
-          <dd>
-          <pre class=syntax><code><var>receiver</var> &amp;&amp; <var>receiver</var>.<var>selector</var></code></pre>
-          <dt>Using the logical and operator to send a receiver a message only
-          if it is true. 
+          <pre class=syntax><code><var>receiver</var> &amp;&amp;
+          <var>receiver</var>.<var>selector</var></code></pre>
+          <figcaption>Using the logical and operator to send a receiver a
+          message only if it is true. 
         </figure>
 
         <p>Ruby on Rails defines for this purpose
@@ -1057,9 +1059,10 @@
         raising a <code>NoMethodError</code>.</p>
 
         <figure id=object-try>
-          <dt>An implementation of <code>Object#try</code> derived from <a
-  href=http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/object/try.rb>Ruby
-  on Rails: Active Support</a>.
+          <figcaption>An implementation of <code>Object#try</code> derived
+          from <a
+            href=http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/object/try.rb>Ruby
+            on Rails: Active Support</a>.
         </figure>
 
         <p><!-- Object#try proxy -->
