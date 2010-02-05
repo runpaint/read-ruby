@@ -63,34 +63,6 @@ file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
   sh "gzip --best -c #{t.name} >#{t.name}.gz"      
 end
 
-class PNG
-  attr_reader :width, :height
-  def initialize(file)
-    @file = file
-    dimensions
-  end
-  
-  def dimensions
-    / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #@file`
-    @width, @height = [width, height].map(&:to_i)
-  end
-end
-
-FileList['railroad/*.ebnf'].each do |ebnf|
-  require 'pathname'
-  OUTPUT_FILES << png = "out/#{Pathname.new(ebnf).sub_ext('.png').to_path}" 
-  file png => [ebnf, 'out/railroad']  do 
-    require_relative './tasks/ebnf2png'
-    images = EBNF.new(ebnf).images
-    raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
-    Tempfile.open(File.basename png, 'w') do |tempfile|
-      tempfile.print images.values.first
-      tempfile.close
-      sh "convert png:#{tempfile.path} -trim -bordercolor White -border 10x10 #{png}"
-    end
-  end
-end
-
 FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
   OUTPUT_FILES << (f_out = 'out/' + f)
   if %w{html xml}.any?{|e| f.end_with? e}
@@ -107,42 +79,62 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
   next if Rake::Task.task_defined?(f_out)
   
   if f_out.end_with?('.html')
-    html_figures = []
-    Nokogiri::HTML(File.read f).css('figure[@id]').map do |fig| 
-      'figures/' + fig.attributes['id'].value + '.rb'
-    end.select{|source_fig| File.exist?(source_fig)}.map do |source_fig|  
-      html_fig = source_fig.ext('html')
-      file html_fig => source_fig do
-        sh "pygmentize -f html -O encoding=utf-8 -o #{html_fig} #{source_fig}"
-        munged = File.read(html_fig).sub(/^<div.+pre>/, '<pre class=syntax><code>').
-                                     sub(/<\/pre><\/div>/,'</code></pre>')
-        File.open(html_fig,'w') {|f| f.print munged}
-      end
-      html_figures << html_fig
-    end
-
+    figure_files = []
     nok = Nokogiri::HTML(File.read f)
-    nok.css('figure.railroad').each do |fig|
-      fig.css('img').each do |img|
-        path = "out/railroad/#{img['id']}.png"
-        img['id'] = ''
-        img['src'] = path[4..-1]
-        png = PNG.new(path)
-        img['width'] = png.width.to_s
-        img['height'] = png.height.to_s
+    nok.css('figure').each do |fig| 
+      if fig['class'] == 'railroad'
+        fig.css('img').each do |img|
+          figure_files << png = "out/railroad/#{img['id']}.png"
+          ebnf = "railroad/#{img['id']}.ebnf"
+
+          file png => [ebnf, 'out/railroad']  do 
+            require_relative './tasks/ebnf2png'
+            images = EBNF.new(ebnf).images
+            raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
+            Tempfile.open(File.basename png, 'w') do |tempfile|
+              tempfile.print images.values.first
+              tempfile.close
+              sh "convert png:#{tempfile.path} -trim -bordercolor White -border 10x10 #{png}"
+            end
+          end
+        end
+      else 
+        source_fig = 'figures/' + fig['id'] + '.rb'
+        break unless File.exists?(source_fig)
+        html_fig = source_fig.sub(/rb$/, 'html')
+        file html_fig => source_fig do
+          sh "pygmentize -f html -O encoding=utf-8 -o #{html_fig} #{source_fig}"
+          munged = File.read(html_fig).sub(/^<div.+pre>/, '<pre class=syntax><code>').
+                                       sub(/<\/pre><\/div>/,'</code></pre>')
+          File.open(html_fig,'w') {|f| f.print munged}
+        end
+        figure_files << html_fig
+      end
+    end
+    
+    file f_out => [f, *figure_files] do |t|
+      nok = Nokogiri::HTML(File.read f) #use nok from outer scope?
+      nok.css('figure').each do |fig|
+        if fig['id']
+          file = figure_files.
+            select{|f| f.end_with?("#{fig['id']}.html")}.
+            first
+          fig.at("figcaption").before(File.read file) if file
+        elsif fig['class'] == 'railroad'
+          fig.css('img').each do |img|
+            path = "out/railroad/#{img['id']}.png"
+            img['id'] = ''
+            img['src'] = path[4..-1]
+            / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
+            img['width'] = width
+            img['height'] = height
+          end
+        else
+          raise "Invalid figure: #{fig}"
+        end
       end
       File.open(f_out, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
     end
-    
-    file f_out => [f, *html_figures] do |t|
-      nok = Nokogiri::HTML(File.read f)
-      html_figures.each do |html_fig|
-        id = html_fig.match(/\/(?<id>.+)\.html/)[:id]
-        nok.at("figure[@id=#{id}] > figcaption").before File.read(html_fig)
-      end
-      File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
-    end
-    
   else
     file f_out => f do |t|
       cp t.prerequisites.first, t.name
