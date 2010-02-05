@@ -80,7 +80,7 @@ FileList['railroad/*.ebnf'].each do |ebnf|
   require 'pathname'
   OUTPUT_FILES << png = "out/#{Pathname.new(ebnf).sub_ext('.png').to_path}" 
   file png => [ebnf, 'out/railroad']  do 
-    require_relative './ebnf2png'
+    require_relative './tasks/ebnf2png'
     images = EBNF.new(ebnf).images
     raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
     Tempfile.open(File.basename png, 'w') do |tempfile|

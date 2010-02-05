@@ -124,18 +124,38 @@
                 <p>An integer literal consists of one or more consecutive digits.
                 Implementation limits dictate whether its a <code>Fixnum</code> or
                 <code>Bignum</code>, but the distinction can be ignored by treating both
-                as <code>Integer</code>s.
+                as <code>Integer</code>s.</p>
 
-                <p>Hexadecimal and octal literals allow integers to be expressed in base
-                sixteen or eight, respectively. A hexadecimal literal begins with
-                <code>0x</code>, and is followed by one or more hex digits (0–9, a–f). An
-                octal literal begins with <code>0o</code>, and is followed by one or more
-                octal digits (0–7). Both forms ignore case and create <code>Integer</code>
-                objects.
+                <figure class=railroad>
+                  <img id=digit>
+                  <img id=non-zero-digit>
+                  <img id=decimal-literal>
+                </figure>
+
+                <p>Hexadecimal, octal, and binary literals allow integers to
+                be expressed in base sixteen, eight, or two, respectively. A
+                hexadecimal literal begins with <code>0x</code>, and is
+                followed by one or more hex digits (0–9, a–f). An octal
+                literal begins with <code>0o</code>, and is followed by one or
+                more octal digits (0–7). A binary literal begins with
+                <code>0b</code>, and is followed by one or more binary digits
+                (0–1). All forms ignore case and create <code>Integer</code>
+                objects.</p>
+
+                <figure class=railroad>
+                  <img id=hexadecimal-literal>
+                  <img id=binary-literal>
+                  <img class=centre id=octal-literal>
+                </figure>
 
                 <p>A floating-point literal consists of two integer literals separated
-                with a period, e.g. <code>3.14</code>. It is of class <code>Float</code>.
+                with a period, e.g. <code>3.14</code>. It is of class
+                <code>Float</code>.</p>
                 <!-- Notes on the inacuracy of floats -->
+
+                <figure class=railroad>
+                  <img id=float-literal>
+                </figure>
 
                 <p><code>Rational</code> numbers are expressed with the
                 <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
