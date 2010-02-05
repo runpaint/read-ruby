@@ -84,10 +84,10 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
     nok.css('figure').each do |fig| 
       if fig['class'] == 'railroad'
         fig.css('img').each do |img|
-          figure_files << png = "out/railroad/#{img['id']}.png"
+          png = "railroad/#{img['id']}.png"
           ebnf = "railroad/#{img['id']}.ebnf"
 
-          file png => [ebnf, 'out/railroad']  do 
+          file png => ebnf  do 
             require_relative './tasks/ebnf2png'
             images = EBNF.new(ebnf).images
             raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
@@ -96,6 +96,12 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
               tempfile.close
               sh "convert png:#{tempfile.path} -trim -bordercolor White -border 10x10 #{png}"
             end
+          end
+
+          out_png = 'out/' + png
+          figure_files << out_png
+          file out_png => [png, 'out/railroad'] do
+            cp png, out_png
           end
         end
       else 
