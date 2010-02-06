@@ -121,10 +121,12 @@
                 <h1 id=numerics>Numerics</h1>
               <!-- Are immediates _instantiated_? -->
 
-                <p>An integer literal consists of one or more consecutive digits.
-                Implementation limits dictate whether its a <code>Fixnum</code> or
-                <code>Bignum</code>, but the distinction can be ignored by treating both
-                as <code>Integer</code>s.</p>
+                <p>A decimal integer literal consists of an optional sign
+                (<code>+</code> or <code>-</code>) followed by one or more
+                decimal digits. Implementation limits dictate whether its
+                a <code>Fixnum</code> or <code>Bignum</code>, but the
+                distinction can be ignored by treating both as
+                <code>Integer</code>s.</p>
 
                 <figure class=railroad>
                   <div class=centre style=width:467px>
@@ -158,6 +160,17 @@
 
                 <figure class=railroad>
                   <img class=centre id=float-literal>
+                </figure>
+
+                <p>A scientific notation literal consists of a coefficient
+                (<var>a</var>: a decimal or <code>Float</code> literal),
+                <code>e</code> or <code>E</code>, then an exponent
+                (<var>e</var>: a decimal literal). Its value is
+                <code><var>a</var> × 10<sup><var>e</var></sup></code>
+                represented as a <code>Float</code>.</p>
+
+                <figure class=railroad>
+                  <img class=centre id=scientific-notation-literal>
                 </figure>
 
                 <p><code>Rational</code> numbers are expressed with the
