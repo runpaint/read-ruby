@@ -1,1 +1,1 @@
-DecimalLiteral = "-"? NonZeroDigit ("_"? Digit)+
+DecimalLiteral = Sign? NonZeroDigit ("_"? Digit)+

@@ -1,1 +1,1 @@
-BinaryLiteral = ("-" | "+")? "0" ("b" | "B") ("0" | "1" )+
+BinaryLiteral = Sign? "0" ("b" | "B") ("0" | "1" )+
