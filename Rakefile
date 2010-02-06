@@ -3,7 +3,7 @@ require 'rake/clean'
 require 'nokogiri'
 CLOBBER.include('out')
 directory 'out'
-directory 'out/railroad'
+directory 'out/figures'
 
 def headings(s, f, level=1)
   return if level > 2
@@ -98,9 +98,9 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
             end
           end
 
-          out_png = 'out/' + png
+          out_png = 'out/figures/' + img['id'] + '.png'
           figure_files << out_png
-          file out_png => [png, 'out/railroad'] do
+          file out_png => [png, 'out/figures'] do
             cp png, out_png
           end
         end
@@ -128,7 +128,7 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
           fig.at("figcaption").before(File.read file) if file
         elsif fig['class'] == 'railroad'
           fig.css('img').each do |img|
-            path = "out/railroad/#{img['id']}.png"
+            path = "out/figures/#{img['id']}.png"
             img['id'] = ''
             img['src'] = path[4..-1]
             / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
