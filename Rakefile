@@ -88,18 +88,13 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
           ebnf = "railroad/#{img['id']}.ebnf"
 
           file png => ebnf  do 
-            require_relative './tasks/ebnf2png'
-            images = EBNF.new(ebnf).images
+            require 'pngrammar'
+            images = PNGrammar.new(ebnf).images
             raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
-            Tempfile.open(File.basename png, 'w') do |tempfile|
-              tempfile.print images.values.first
-              tempfile.close
-              sh "convert png:#{tempfile.path} -trim -bordercolor White -border 10x10 #{png}"
-            end
+            File.open(png, 'w'){|f| f.print images.values.first}
           end
 
-          out_png = 'out/figures/' + img['id'] + '.png'
-          figure_files << out_png
+          figure_files << out_png = 'out/figures/' + img['id'] + '.png'
           file out_png => [png, 'out/figures'] do
             cp png, out_png
           end
