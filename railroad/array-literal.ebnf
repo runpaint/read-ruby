@@ -1,1 +1,1 @@
-ArrayLiteral = "[" ( Expression ","? | (Expression ",")+)? "]"
+ArrayLiteral = "[" ExpressionList? "]"
