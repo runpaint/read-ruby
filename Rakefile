@@ -101,7 +101,7 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
         end
       else 
         source_fig = 'figures/' + fig['id'] + '.rb'
-        break unless File.exists?(source_fig)
+        next unless File.exists?(source_fig)
         html_fig = source_fig.sub(/rb$/, 'html')
         file html_fig => source_fig do
           sh "pygmentize -f html -O encoding=utf-8 -o #{html_fig} #{source_fig}"
