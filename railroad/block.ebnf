@@ -1,1 +1,1 @@
-Block = ("|" ParameterList "|")? (Statement+)?
+Block = ("|" ParameterList "|")? Statement*

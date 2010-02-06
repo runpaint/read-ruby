@@ -134,7 +134,6 @@
                   <img id=double-quoted-string-literal class=centre>
                 </figure>
 
-
                 <p>A string may be iterated over by Unicode codepoint with
                 <code>String#codepoints</code>, byte with <code>String#bytes</code>,
                 character with <code>String#chars</code>, or line with
@@ -478,25 +477,6 @@
                 message expression, an appropriate keyword expression, or
                 lambda literal.</p> <!-- Is this restriction accurate? --> 
 
-                <figure class=railroad>
-                  <img id=block class=centre>
-                  <img id=block-literal class=centre>
-                </figure>
-              </section>
-
-              <section>
-                <h1 id=lambdas>Lambdas</h1>
-
-                <p>A literal of the form
-                <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
-                  { <var>statements</var> }</code> instantiates a
-                <code>Proc</code> object with lambda characteristics. The
-                parameter list takes the same form as that used in method
-                definitions <!-- link -->. It may be omitted entirely.
-                <var>statements</var> is zero or more statements. For example,
-                <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a + b
-                  }</code>.</p>
-
                 <!-- TODO: Block local variable declarations -->
                 <figure class=railroad>
                   <img id=required-parameters>
@@ -504,8 +484,27 @@
                   <img id=optional-parameters>
                   <img id=block-parameter>
                   <img class=centre id=parameter-list>
-                  <img class=centre id=lambda-literal>
+                  <img id=block class=centre>
+                  <img id=block-literal class=centre>
                 </figure>
+
+                <section>
+                  <h1 id=lambdas>Lambdas</h1>
+
+                  <p>A literal of the form
+                  <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
+                    { <var>statements</var> }</code> instantiates a
+                  <code>Proc</code> object with lambda characteristics. The
+                  parameter list takes the same form as that used in method
+                  definitions <!-- link -->. It may be omitted entirely.
+                  <var>statements</var> is zero or more statements. For
+                  example, <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a
+                    + b }</code>.</p>
+
+                  <figure class=railroad>
+                    <img class=centre id=lambda-literal>
+                  </figure>
+                </section>
               </section>
 
               <section>
