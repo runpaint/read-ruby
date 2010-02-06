@@ -25,7 +25,9 @@ class EBNF
   end
 
   def results
-    @results ||= ua.get(URL).forms.first.tap {|f| f['ssyntax'] = ebnf}.
-                    submit.parser
+    @results ||= ua.get(URL).forms.first.tap do |f| 
+      f['ssyntax'] = ebnf
+      f['width'] = 1000
+    end.submit.parser
   end
 end
