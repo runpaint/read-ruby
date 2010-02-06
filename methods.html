@@ -473,18 +473,16 @@
     that due to method_missing method’s need not be defined before they are
     called? -->
     
-    <figure id=def-syntax>
-       <pre class=syntax><code>def <var>name</var> (<var>parameters</var>)
-       <var>body</var> end</code></pre>
-      <figcaption>The syntax of a method definition.
+    <figure class=railroad>
+      <img id=def-expression>
+      <figcaption>Syntax diagram of a method definition
     </figure>
     
-    <p>If <var>name</var> does not include a full stop, an <a
-      href=#instance-method>instance method</a> is
-    defined on the enclosing class; if it takes the form
-    <code><var>object</var>.<var>selector</var></code>, a <a
-      href=#singleton-method>singleton method</a>
-    named <var>selector</var> is defined on <var>object</var>.</p>
+    <p>If <code><var>expression</var>.</code> is omitted, an <a
+      href=#instance-method>instance method</a> named <var>symbol</var> is
+    defined on the enclosing class; otherwise a <a
+      href=#singleton-method>singleton method</a> named <var>symbol</var> is
+    defined on <var>expression</var>.</p>
 
     <figure id=def-instance-method>
       <figcaption>Defining an instance method named <code>bark</code> for the
