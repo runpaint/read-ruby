@@ -420,6 +420,23 @@
               </section>
 
               <section>
+                <h1 id=procs><code>Proc</code>s</h1>
+                
+                <p>A block literal creates a <code>Proc</code> object which
+                accepts the arguments provided in the optional parameter list
+                and represents a sequence of zero or more statements. Unlike
+                the other literals in this section, block literals must not
+                appear in the top-level context; they must either terminate a
+                message expression, an appropriate keyword expression, or
+                lambda literal.</p> <!-- Is this restriction accurate? --> 
+
+                <figure class=railroad>
+                  <img id=block class=centre>
+                  <img id=block-literal class=centre>
+                </figure>
+              </section>
+
+              <section>
                 <h1 id=lambdas>Lambdas</h1>
 
                 <p>A literal of the form
