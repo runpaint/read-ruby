@@ -1,1 +1,1 @@
-RequiredParameters = Identifier "," RequiredParameters?
+RequiredParameters = (Identifier ",")* Identifier ","?
