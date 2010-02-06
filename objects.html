@@ -69,7 +69,7 @@
                 <code>String</code> containing the character.</p>
 
                 <figure class=railroad>
-                  <img id=character-literal class=centre>
+                  <img id=character-literal>
                   <figcaption>Syntax diagram of the character literal
                 </figure>
 
@@ -83,7 +83,7 @@
                 single character.</p>
 
                 <figure class=railroad>
-                  <img id=single-quoted-string-literal class=centre>
+                  <img id=single-quoted-string-literal>
                   <figcaption>Syntax diagram of the single-quoted string literal
                 </figure>
 
@@ -100,7 +100,7 @@
                 a character legal in an identifier, as ambiguity results. </p>
 
                 <figure class=railroad>
-                  <img id=string-interpolation class=centre>
+                  <img id=string-interpolation>
                   <figcaption>Syntax diagram of the string interpolation
                   construct
                 </figure>
@@ -118,15 +118,15 @@
                 character must be preceded by a backlash.</p>
 
                 <figure class=railroad>
-                  <img id=hex-codepoint class=centre>
-                  <img id=unicode-escape class=centre>
+                  <img id=hex-codepoint>
+                  <img id=unicode-escape>
                   <!-- TODO: Incorporate maximumn value of octal integer: 377
                   -->
-                  <img id=byte-escape class=centre>
-                  <img id=control-escape class=centre>
-                  <img id=meta-escape class=centre>
-                  <img id=character-escape class=centre>
-                  <img id=escape class=centre>
+                  <img id=byte-escape>
+                  <img id=control-escape>
+                  <img id=meta-escape>
+                  <img id=character-escape>
+                  <img id=escape>
                   <figcaption>Syntax diagram of the string escape
                 </figure>
 
@@ -136,7 +136,7 @@
                 and character escapes.</p>
 
                 <figure class=railroad>
-                  <img id=double-quoted-string-literal class=centre>
+                  <img id=double-quoted-string-literal>
                   <figcaption>Syntax diagram of the double-quoted string literal
                 </figure>
 
@@ -145,7 +145,7 @@
                 literal.</p>
 
                 <figure class=railroad>
-                  <img id=string-literal class=centre>
+                  <img id=string-literal>
                   <figcaption>Syntax diagram of the string literal
                 </figure>
 
@@ -177,7 +177,7 @@
 
                 <!-- TODO: Look for other exceptions to this rule -->
                 <figure class=railroad>
-                  <img id=symbol-literal class=centre>
+                  <img id=symbol-literal>
                   <figcaption>Syntax diagram of the symbol literal
                 </figure>
 
@@ -197,11 +197,11 @@
 
                 <figure class=railroad>
                   <div class=centre style=width:467px>
-                    <img id=digit>
-                    <img id=non-zero-digit>
-                    <img id=plus-minus>
+                    <img style=display:inline id=digit>
+                    <img style=display:inline id=non-zero-digit>
+                    <img style=display:inline id=plus-minus>
                   </div>
-                  <img class=centre id=decimal-literal>
+                  <img id=decimal-literal>
                   <figcaption>Syntax diagram of the decimal literal
                 </figure>
 
@@ -217,10 +217,10 @@
 
                 <figure class=railroad>
                   <img style=float:left id=hex-digit>
+                  <img style=float:left id=octal-digit>
                   <img id=hexadecimal-literal>
                   <img id=binary-literal>
                   <img id=octal-literal>
-                  <img style=float:left id=octal-digit>
                   <br style=clear:both>
                   <figcaption>Syntax diagrams of the hexadecimal, binary, and
                   octal literals
@@ -232,7 +232,7 @@
                 <!-- Notes on the inacuracy of floats -->
 
                 <figure class=railroad>
-                  <img class=centre id=float-literal>
+                  <img id=float-literal>
                   <figcaption>Syntax diagram of the floating-point literal
                 </figure>
 
@@ -244,7 +244,7 @@
                 represented as a <code>Float</code>.</p>
 
                 <figure class=railroad>
-                  <img class=centre id=scientific-notation-literal>
+                  <img id=scientific-notation-literal>
                   <figcaption>Syntax diagram of the scientific notation literal
                 </figure>
 
@@ -274,7 +274,7 @@
 
                 <!-- TODO: Determine clear way to diagram optional spaces -->
                 <figure class=railroad>
-                  <img class=centre id=array-literal>
+                  <img id=array-literal>
                   <figcaption>Syntax diagram of the array literal
                 </figure>
                 
@@ -356,8 +356,8 @@
                 preferring <code>Symbol</code> keys).</p>
 
                 <figure class=railroad>
-                  <img class=centre id=hash-member>
-                  <img class=centre id=hash-literal>
+                  <img id=hash-member>
+                  <img id=hash-literal>
                   <figcaption>Syntax diagram of the hash literal
                 </figure>
                 
@@ -393,8 +393,8 @@
 
                 <!-- TODO: EBNF for regexp... -->
                 <figure class=railroad>
-                  <img id=regexp-options class=centre>
-                  <img id=regexp-literal class=centre>
+                  <img class=left id=regexp-options>
+                  <img class=inline id=regexp-literal>
                   <figcaption>Syntax diagram of the regexp literal
                 </figure>
 
@@ -469,7 +469,7 @@
                 <i>a</i>–<i>y</i>.</p>
 
                 <figure class=railroad>
-                  <img id=range-literal class=centre>
+                  <img id=range-literal>
                   <figcaption>Syntax diagram of the range literal
                 </figure>
 
@@ -489,9 +489,9 @@
                 iterated over with <code>Range#each</code>.  Alternatively,
                 <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
                 passes each <var>n</var><sup>th</sup></var> element to the
-              block. As <code>Range</code>s are <code>Enumerable</code>, they
-              can also be converted to an <code>Array</code> with
-              <code>Range#to_a</code>. 
+                block. As <code>Range</code>s are <code>Enumerable</code>, they
+                can also be converted to an <code>Array</code> with
+                <code>Range#to_a</code>. 
                 
                 <p>A non-discrete range is <dfn title="continuous
                   range">continuous</dfn>.  It represents an infinite set of
@@ -512,13 +512,13 @@
 
                 <!-- TODO: Block local variable declarations -->
                 <figure class=railroad>
-                  <img id=required-parameters>
-                  <img id=splat-parameter>
-                  <img id=optional-parameters>
-                  <img id=block-parameter>
-                  <img class=centre id=parameter-list>
-                  <img id=block class=centre>
-                  <img id=block-literal class=centre>
+                  <img class=inline id=required-parameters>
+                  <img class=inline id=splat-parameter>
+                  <img class=inline id=optional-parameters>
+                  <img class=inline id=block-parameter>
+                  <img id=parameter-list>
+                  <img id=block>
+                  <img id=block-literal>
                   <figcaption>Syntax diagram of the block literal
                 </figure>
 
@@ -536,7 +536,7 @@
                     + b }</code>.</p>
 
                   <figure class=railroad>
-                    <img class=centre id=lambda-literal>
+                    <img id=lambda-literal>
                   <figcaption>Syntax diagram of the lambda literal
                   </figure>
                 </section>
