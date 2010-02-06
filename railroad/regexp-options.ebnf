@@ -1,0 +1,1 @@
+RegexpOptions = ("i" | "o" | "m" | "x" | "n" | "e" | "u" | "s")+

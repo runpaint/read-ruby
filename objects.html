@@ -197,6 +197,7 @@
                 creates a three-element <code>Array</code> object with
                 <code>1</code> as the first element.</p>
 
+                <!-- TODO: Determine clear way to diagram optional spaces -->
                 <figure class=railroad>
                   <img class=centre id=array-literal>
                 </figure>
@@ -310,7 +311,13 @@
                 <code>String</code>. It <i>matches</i> when contained by the former. The
                 literal is of the form
                 <code>/<var>pattern</var>/<var>options</var></code>: a pattern delimited
-                by solidi, followed by zero or more option specifiers.
+                by solidi, followed by zero or more option specifiers.</p>
+
+                <!-- TODO: EBNF for regexp... -->
+                <figure class=railroad>
+                  <img id=regexp-options class=centre>
+                  <img id=regexp-literal class=centre>
+                </figure>
 
                 <p>The pattern consists of literal characters and meta-characters. A
                 literal character is a non-meta-character; it matches itself. Prefixing a
