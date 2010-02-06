@@ -85,11 +85,21 @@
                   <img id=single-quoted-string-literal class=centre>
                 </figure>
 
-                <p><dfn title="string interpolation">Interpolation</dfn> is the embedding
-                of the value of an expression within a string. It is achieved with the
-                syntax <code>#{<var>expression</var>}</code>, where <var>expression</var>
-                is an arbitrary expression. It is common for <var>expression</var> to be
-                simply the name of variable which is to be substituted for its value.
+                <p><dfn title="string interpolation">Interpolation</dfn> is
+                the embedding of the value of an expression within a string.
+                The general form of the syntax is
+                <code>#{<var>expression</var>}</code>.  It is common for
+                <var>expression</var> to be simply the name of a local
+                variable which is to be substituted for its value.
+
+                <p>The braces can be omitted if <var>expression</var> is the
+                name of a global—, class—, or instance variable. However, in
+                this case the variable name cannot be immediately followed by
+                a character legal in an identifier, as ambiguity results. </p>
+
+                <figure class=railroad>
+                  <img id=string-interpolation class=centre>
+                </figure>
                 
                 <p><dfn title="backslash escape">Escape sequences</dfn> are character
                 sequences prefixed with a reverse solidus (“backslash”) that have a
