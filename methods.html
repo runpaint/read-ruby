@@ -201,53 +201,15 @@
   </section>
 
   <section>
-    <h1 id=method-names>Names</h1>
 
       <!-- TODO: Talk about "significant" names here? e.g. to_*,
       inspect, etc.? -->
 
     <!-- Markup characters with code or i or something else? -->
     
-    <p>Method names conventionally begin with a lowercase letter or low line
-    (U+005F: <code>_</code>) (unless they name an operator method). They must
-    not begin with an ASCII integer. If they consist of multiple words, low
-    lines are used to separate. They must not contain any of the following
-    ASCII “punctuation” characters: <i>[</i>, <i>]</i>, <i>.</i>, <i>=</i>,
-    <i>*</i>, <i>!</i>, <i>~</i>, <i>@</i>, <i>-</i>, <i>+</i>, <i>/</i>,
-    <i>\</i>, <i>%</i>, <i>&lt;</i>, <i>&gt;</i>, <i>&amp;</i>, <i>^</i>,
-    <i>|</i>, <i>:</i>, <i>{</i>, <i>}</i>, however:
-    <!-- Unicode names -->
-
-    <ul>
-      <li>An otherwise legal method name may end with <i>=</i> or <i>!</i>,
-      <i>?</i> if it doesn’t already.
-      <li>The method names enumerated in the <a
-      href=#operator-methods-table>Operator Methods</a> table are all
-      exceptions to this rule, representing the only permissible permutations
-      of these characters.
-      <!-- TODO: Mention += and friends -->
-    </ul>
-
-    <aside>
-      It is legal for a method name to begin with an uppercase letter, but
-      then they may be confused with constants or class names. In fact,
-      several core classes have methods named this way for precisely this
-      reason: they provide a syntactical shortcut for constructing instances.
-      For example, <code>Array()</code> is a method of <code>Kernel</code>
-      which coerces its argument into an <code>Array</code> object. <!-- Quote
-      from Pickaxe p. 137?--> 
-    </aside>
-
-    <p>By implication, any other character legal in the source encoding is
-    valid in a method name.</p> 
-
-    <figure id=def-non-ascii-name>
-      <figcaption>Defining a method with a non-ASCII name
-    </figure>
-
     <section>
       <h1 id=operator-methods>Operator Methods</h1>
-
+      
       <p>Many <i>operators</i> of conventional programming languages are
       implemented as <dfn title="operator method">operator methods</dfn> in
       Ruby, allowing them to be <i>overloaded</i> by defining a corresponding
@@ -445,10 +407,62 @@
         </tr>
       </table>
 
+      <figure class=railroad>
+        <img id=operator-method-selector>
+        <figcaption>Syntax diagram of an operator method selector
+      </figure>
     </section>
+
+    <h1 id=method-names>Names</h1>
+
+    <figure class=railroad>
+      <img class=left style=margin-right:2% id=non-symbol-character>
+    </figure>
+
+    <p>Method names conventionally begin with a lowercase letter or low line
+    (U+005F: <code>_</code>) (unless they name an operator method). They must
+    not begin with an ASCII integer. If they consist of multiple words, low
+    lines are used to separate. They must not contain any of the following
+    ASCII “punctuation” characters: <i>[</i>, <i>]</i>, <i>.</i>, <i>=</i>,
+    <i>*</i>, <i>!</i>, <i>~</i>, <i>@</i>, <i>-</i>, <i>+</i>, <i>/</i>,
+    <i>\</i>, <i>%</i>, <i>&lt;</i>, <i>&gt;</i>, <i>&amp;</i>, <i>^</i>,
+    <i>|</i>, <i>:</i>, <i>{</i>, <i>}</i>, however:
+    <!-- Unicode names -->
+
+    <ul>
+      <li>An otherwise legal method name may end with <i>=</i> or <i>!</i>,
+      <i>?</i> if it doesn’t already.
+      <li>The method names enumerated in the <a
+      href=#operator-methods-table>Operator Methods</a> table are all
+      exceptions to this rule, representing the only permissible permutations
+      of these characters.
+      <!-- TODO: Mention += and friends -->
+    </ul>
+
+    <figure class=railroad>
+      <img id=symbol>
+      <figcaption>Syntax diagram of a method name
+    </figure>
+
+    <aside>
+      It is legal for a method name to begin with an uppercase letter, but
+      then they may be confused with constants or class names. In fact,
+      several core classes have methods named this way for precisely this
+      reason: they provide a syntactical shortcut for constructing instances.
+      For example, <code>Array()</code> is a method of <code>Kernel</code>
+      which coerces its argument into an <code>Array</code> object. <!-- Quote
+      from Pickaxe p. 137?--> 
+    </aside>
+
+    <p>By implication, any other character legal in the source encoding is
+    valid in a method name.</p> 
+
+    <figure id=def-non-ascii-name>
+      <figcaption>Defining a method with a non-ASCII name
+    </figure>
   </section>
   
-  <section>
+  <section class=clear>
     <h1 id=defining>Defining</h1>
     
     <p>A method consists of a name, an optional parameter list, and a body.
