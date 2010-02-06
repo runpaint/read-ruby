@@ -72,9 +72,18 @@
                   <img id=character-literal class=centre>
                 </figure>
 
-                <p>A <code>String</code> literal delimited by apostrophes (<code>'</code>)
-                is not subject to interpolation or escape sequences; whereas one delimited
-                by quotation marks (<code>"</code>) is. <!--alternative delimiters?-->
+                <!-- TODO: alternative delimiters-->
+
+                <p>A single-quoted <code>String</code> is a string delimited
+                by apostrophes (<code>'</code>). Its contents are not subject
+                to interpolation. The only recognised escape sequences are
+                <code>\\</code> and <code>\'</code>; any other escape is
+                interpreted literally, i.e. as a reverse solidus followed by a
+                single character.</p>
+
+                <figure class=railroad>
+                  <img id=single-quoted-string-literal class=centre>
+                </figure>
 
                 <p><dfn title="string interpolation">Interpolation</dfn> is the embedding
                 of the value of an expression within a string. It is achieved with the
