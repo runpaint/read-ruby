@@ -134,6 +134,14 @@
                   <img id=double-quoted-string-literal class=centre>
                 </figure>
 
+                <p>Therefore, a <dfn>string literal</dfn> is either a
+                double-quoted string literal or a single-quoted string
+                literal.</p>
+
+                <figure class=railroad>
+                  <img id=string-literal class=centre>
+                </figure>
+
                 <p>A string may be iterated over by Unicode codepoint with
                 <code>String#codepoints</code>, byte with <code>String#bytes</code>,
                 character with <code>String#chars</code>, or line with
@@ -143,21 +151,28 @@
               <section>
                 <h1 id=symbols>Symbols</h1>
 
-                <p>A <code>Symbol</code> represents a name. <code>Symbol</code>s are
-                immutable immediates. Two symbols with the same content will always be
-                represented by the same object, e.g. <code>:glark.object_id ==
-                  :glark.object_id</code>, so symbol comparisons are extremely efficient.
-                However, <code>Symbol</code> objects are not garbage collected, so are
-                unsuitable for storing data from unbounded collections; use
-                <code>String</code>s instead.
+                <p>A <code>Symbol</code> represents a name.
+                <code>Symbol</code>s are immutable immediates. Two symbols
+                with the same content will always be represented by the same
+                object, e.g. <code>:glark.object_id ==
+                  :glark.object_id</code>, so symbol comparisons are extremely
+                efficient.  However, <code>Symbol</code> objects are not
+                garbage collected, so are unsuitable for storing data from
+                unbounded collections; use <code>String</code>s instead.
                 
-                <p><code>Symbol</code>s are used for unique identifiers, such as
-                <code>Hash</code> keys, as message selectors and method names, and as a
-                substitute for constants.
+                <p><code>Symbol</code>s are used for unique identifiers, such
+                as <code>Hash</code> keys, as message selectors and method
+                names, and as a substitute for constants.
 
-                <p>A <code>Symbol</code> literal consists of a colon followed by an
-                identifier or <code>String</code> literal, e.g.
-                <code>:roland_barthes</code> or <code>:'887'</code>.
+                <p>A <code>Symbol</code> literal consists of a colon followed
+                by an identifier or <code>String</code> literal, e.g.
+                <code>:roland_barthes</code> or <code>:'887'</code>.</p>
+
+                <!-- TODO: Look for other exceptions to this rule -->
+                <figure class=railroad>
+                  <img id=symbol-literal class=centre>
+                </figure>
+
                 <!-- #to_sym -->
               </section>
 
@@ -315,15 +330,16 @@
                 include a key-value pair of <code>:lemon =&gt; :yellow</code>:
                 <code>:lemon</code> is the key; <code>:yellow</code> is the value.
 
-                <p>A <code>Hash</code> literal consists of a comma-separated list of
-                key-value pairs enclosed in curly braces (<code>{</code>, <code>}</code>).
-                The key is separated from its value with <code>=&gt;</code>. For example:
-                <code>{:age =&gt; 30, :name =&gt; 'Marlo'}</code>. If the key is a
-                <code>Symbol</code> literal, the colon with which its prefixed may be
-                made its suffix, and <code>=&gt;</code> can be omitted. The previous
-                example can be rewritten as <code>{age: 30, name: 'Marlo'}</code>. (This
-                syntactical shortcut is one of the reasons <code>Symbol</code>s are
-                preferred for keys).</p>
+                <p>A <code>Hash</code> literal consists of a comma-separated
+                list of key-value pairs enclosed in curly braces
+                (<code>{</code>, <code>}</code>).  The key is separated from
+                its value with <code>=&gt;</code>. For example: <code>{:age
+                  =&gt; 30, :name =&gt; 'Marlo'}</code>. If the key is a
+                <code>Symbol</code> literal, the colon with which its prefixed
+                may be made its suffix, and <code>=&gt;</code> can be omitted.
+                The previous example can be rewritten as <code>{age: 30, name:
+                  'Marlo'}</code>. (This syntactical shortcut is a reason for
+                preferring <code>Symbol</code> keys).</p>
 
                 <figure class=railroad>
                   <img class=centre id=hash-member>
