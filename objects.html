@@ -191,10 +191,15 @@
                 an ordered collection of objects, which need not be homogeneous. It is
                 automatically resized as elements are added or removed.
                 
-                <p>An <code>Array</code> literal is a comma-separated list of objects
-                enclosed in square brackets (<code>[</code>, <code>]</code>). For example,
-                <code>[1, :two, 'three']</code> creates a three-element
-                <code>Array</code> object with <code>1</code> as the first element.
+                <p>An <code>Array</code> literal is a comma-separated list of
+                expressions enclosed in square brackets (<code>[</code>,
+                <code>]</code>). For example, <code>[1, :two, 'three']</code>
+                creates a three-element <code>Array</code> object with
+                <code>1</code> as the first element.</p>
+
+                <figure class=railroad>
+                  <img class=centre id=array-literal>
+                </figure>
                 
                 <p>Arrays are indexed by integral subscripts, beginning with 0. If the
                 subscript is negative it counts backward from the last element (i.e.
