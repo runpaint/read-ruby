@@ -172,13 +172,17 @@
                 names, and as a substitute for constants.
 
                 <p>A <code>Symbol</code> literal consists of a colon followed
-                by an identifier or <code>String</code> literal, e.g.
+                by an symbol or <code>String</code> literal, e.g.
                 <code>:roland_barthes</code> or <code>:'887'</code>.</p>
 
                 <!-- TODO: Look for other exceptions to this rule -->
                 <figure class=railroad>
-                  <img id=symbol-literal>
-                  <figcaption>Syntax diagram of the symbol literal
+                  <img class=left id=operator-symbol>
+                  <img class=left id=non-symbol-character>
+                  <img class=inline id=symbol>
+                  <!-- TODO: Exclude \0 -->
+                  <img class=inline id=symbol-literal>
+                  <figcaption class=clear>Syntax diagram of the symbol literal
                 </figure>
 
                 <!-- #to_sym -->

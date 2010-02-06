@@ -1,1 +1,1 @@
-SymbolLiteral = ":" (Identifier | StringLiteral | "@+" | "@-")
+SymbolLiteral = ":" (Symbol | StringLiteral)

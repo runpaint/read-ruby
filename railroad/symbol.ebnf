@@ -1,0 +1,1 @@
+Symbol = OperatorSymbol | ("NOT NonSymbolCharacter"+ ("=" | "!")?)

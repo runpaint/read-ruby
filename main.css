@@ -87,3 +87,7 @@ table > caption {
 .inline {
   display: inline
 }
+
+.clear {
+  clear: both
+}
