@@ -61,16 +61,20 @@
               <section>
                 <h1 id=strings>Strings</h1>
 
-                <p><code>String</code>s are mutable sequences of characters with an
-                associated encoding.
+                <p><code>String</code>s are mutable sequences of characters
+                with an associated encoding.
+                
+                <p>A single character prefixed with a question mark
+                (<code>?<var>char</var></code>) instantiates a
+                <code>String</code> containing the character.</p>
+
+                <figure class=railroad>
+                  <img id=character-literal class=centre>
+                </figure>
 
                 <p>A <code>String</code> literal delimited by apostrophes (<code>'</code>)
                 is not subject to interpolation or escape sequences; whereas one delimited
                 by quotation marks (<code>"</code>) is. <!--alternative delimiters?-->
-                
-                <p>A single character prefixed with a question mark
-                (<code>?<var>char</var></code>) instantiates a <code>String</code>
-                containing the character.
 
                 <p><dfn title="string interpolation">Interpolation</dfn> is the embedding
                 of the value of an expression within a string. It is achieved with the
@@ -88,7 +92,19 @@
                 and <code>\u{<var>hex</var>}</code> the Unicode codepoint
                 <var>hex</var>, a hexadecimal number. To include a literal apostrophe
                 or quotation mark in a string literal delimited by the same, the
-                character must be preceded by a backlash.
+                character must be preceded by a backlash.</p>
+
+                <figure class=railroad>
+                  <img id=hex-codepoint class=centre>
+                  <img id=unicode-escape class=centre>
+                  <!-- TODO: Incorporate maximumn value of octal integer: 377
+                  -->
+                  <img id=byte-escape class=centre>
+                  <img id=control-escape class=centre>
+                  <img id=meta-escape class=centre>
+                  <img id=character-escape class=centre>
+                  <img id=escape class=centre>
+                </figure>
 
                 <p>A string may be iterated over by Unicode codepoint with
                 <code>String#codepoints</code>, byte with <code>String#bytes</code>,
@@ -148,10 +164,12 @@
                 objects.</p>
 
                 <figure class=railroad>
-                  <img style=float:left id=hexadecimal-digit>
+                  <img style=float:left id=hex-digit>
                   <img id=hexadecimal-literal>
                   <img id=binary-literal>
                   <img id=octal-literal>
+                  <img style=float:left id=octal-digit>
+                  <br style=clear:both>
                 </figure>
 
                 <p>A floating-point literal consists of two integer literals separated

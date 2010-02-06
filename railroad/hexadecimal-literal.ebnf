@@ -1,1 +1,1 @@
-HexadecimalLiteral = Sign? "0" ("x" | "X") HexadecimalDigit+
+HexadecimalLiteral = Sign? "0" ("x" | "X") HexDigit+
