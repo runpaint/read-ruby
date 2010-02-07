@@ -1,1 +1,1 @@
-ParameterList = RequiredParameters? OptionalParameters? RestParameter? BlockParameter?
+ParameterList = (OptionalParameters? | RequiredParameters? OptionalParameters?) RestParameter? BlockParameter?
