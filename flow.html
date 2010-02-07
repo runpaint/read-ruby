@@ -13,10 +13,10 @@
   <section>
     <h1>Conditionals</h1>
 
-    <p>A <dfn>conditional</dfn> is an expression evaluated for its truth
-    value. The conditional is <dfn title="false conditional">false</dfn> if
-    the expression’s value is <code>nil</code> or <code>false</code>;
-    otherwise it is <dfn title="true conditional">true</dfn>.</p>
+    <p>A <dfn>conditional</dfn> is an expression evaluated as a truthbearer.
+    The conditional is <dfn title="false conditional">false</dfn> if the
+    expression’s value is <code>nil</code> or <code>false</code>; otherwise it
+    is <dfn title="true conditional">true</dfn>.</p>
 
     <figure id=conditional-true>
       <!-- FIXME: Use if statement in example to show the conditionals’ truth
@@ -34,9 +34,31 @@
   <section>
     <h1>Branching</h1>
     
+    <p><dfn>Branching statements</dfn> predicate the execution of a block on a
+    conditional. For example, an <code>if</code> statement executes its
+    associated code block iff its conditional is true.</p>
+
     <section>
       <h1>The <code>if</code> Statement</h1>
       
+      <p>The <code>if</code> statement comprises a conditional, zero or more
+      statements (hereafter: the code block), then several optional clauses
+      which are explained subsequently. The code block is executed iff the
+      conditional is true.</p>
+
+      <figure class=railroad>
+        <img id=if-statement>
+        <figcaption>Syntax diagram of <code>if</code> statement
+      </figure>
+
+      <p>The return value of an <code>if</code> statement is that of the
+      executed code block, or <code>nil</code> if no branch <!-- define branch
+      previously --> was executed.</p>
+
+      <figure id=if-statement-simple>
+        <figcaption>The simple form of the <code>if</code> statement
+      </figure>
+
       <section>
         <h1>Postfix Form</h1>
       </section>
