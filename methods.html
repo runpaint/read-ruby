@@ -702,8 +702,11 @@
 
         <p>If the <code>Hash</code> is the final argument, other than a block,
         that a method expects, the curly braces which delimit the
-        <code>Hash</code> can be omitted. For example, <code>m({ key: :value
-          })</code> can be written as <code>m key: :value</code>.
+        <code>Hash</code> can be omitted as long as there is white space
+        between the selector and the <code>Hash</code> contents.</p> For
+        example, <code><var>selector</var>({ key: :value })</code> can be
+        written as <code><var>selector</var> key: :value</code>.
+
 
         <p>The advantages of this approach include:
           <ul>
@@ -775,12 +778,16 @@
 
         <p>A method needing a reference to the block it was given, perhaps to
         pass to another method, is defined with a final parameter whose name
-        is prefixed with an ampersand (U+0026: <code>&amp;</code>).  For
-        example: <code> def m(a,b,&amp;block)</code>. The method can access
-        the block as a <code>Proc</code> object named after the parameter
-        (sans ampersand). It may invoke the block via its
+        is prefixed with an ampersand (U+0026: <code>&amp;</code>). The method
+        can access the block as a <code>Proc</code> object named after the
+        parameter (sans ampersand). It may invoke the block via its
         <code>Proc#call</code> method, or <code>yield</code> to it. In either
         case, the method is invoked in precisely the same way as before.</p>
+
+        <figure class=railroad>
+          <img id=block-parameter>
+          <figcaption>Syntax diagram of a block parameter
+        </figure>
 
         <!-- Example with instance_eval ? -->
 
