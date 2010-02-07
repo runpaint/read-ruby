@@ -1,1 +1,1 @@
-RestParameter = "*" Identifier
+RestParameter = "*" Identifier?
