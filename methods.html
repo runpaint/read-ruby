@@ -578,7 +578,7 @@
         </aside>
 
         <p>Required arguments are specified with a comma-separated list of
-        parameter names. Each parameter represents a mandatory argument.</p>
+        identifiers. Each parameter represents a mandatory argument.</p>
 
         <figure class=railroad>
           <img id=required-parameters>
@@ -603,6 +603,12 @@
         permitted to refer to previous parameters. The default value is
         evaluated each time the method is invoked, so may, for example,
         instantiate an object on every invocation.</p>
+
+        <figure class=railroad>
+          <img class=centre id=optional-parameter>
+          <img class=centre id=optional-parameters>
+          <figcaption>Syntax diagram of optional parameters
+        </figure>
 
         <figure id=optional-arguments>
           <figcaption>Defining a method which takes an optional argument.
