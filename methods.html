@@ -1054,13 +1054,18 @@
       allows the programmer to use method names which “read” more naturally in a
       given context. <!-- TODO: example from FLAN09 about Range#include? ? -->
 
-      <p>An alias is created with the <code>alias</code> keyword from inside the
-      class of the existing method. The syntax is <code>alias
+      <p>An alias is created with the <code>alias</code> keyword from inside
+      the class of the existing method. The syntax is <code>alias
         <var>new_name</var> <var>current_name</var></code>, where both
-      <var>new_name</var> and <var>current_name</var> are <code>Symbol</code>s
-      or identifiers. A method named <var>current_name</var> must already be
-      defined.  If a method named <var>new_name</var> already exists it is
-      overwritten.
+      <var>new_name</var> and <var>current_name</var> are <code>Symbol</code>
+      literals or identifiers. A method named <var>current_name</var> must
+      already be defined.  If a method named <var>new_name</var> already
+      exists it is overwritten.</p>
+
+      <figure class=railroad>
+        <img id=alias-statement>
+        <figcaption>Syntax diagram of the <code>alias</code> statement
+      </figure>
 
       <p><code>Module#alias_method <var>new_name</var>,
         <var>current_name</var></code> can be used to the same effect, the
