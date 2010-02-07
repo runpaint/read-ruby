@@ -60,7 +60,28 @@
       </figure>
 
       <section>
-        <h1>Postfix Form</h1>
+      <h1 id=postfix-if>Postfix <code>if</code></h1>
+
+        <p>A postfix <code>if</code> statement is a concise alternative when
+        the code block contains a single statement. It comprises an
+        expression, the <code>if</code> keyword, then a conditional. The
+        expression is executed iff the conditional is true.</p>
+        
+        <figure class=railroad>
+          <img id=postfix-if-statement>
+          <figcaption>Syntax diagram of the postfix <code>if</code> statement
+        </figure>
+
+        <p>This syntax, as opposed to <code>if <var>conditional</var>…</code>,
+        foregrounds the expression. This is of stylistic benefit if the
+        conditional is normally true because it highlights the default
+        case.</p>
+
+
+        <figure id=postfix-if-statement>
+          <figcaption>The postfix <code>if</code> statement executes its
+          left-hand side if its right-hand side is true
+        </figure>
       </section>
     </section>
 
