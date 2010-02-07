@@ -34,16 +34,18 @@
   <section>
     <h1>Branching</h1>
     
-    <p><dfn>Branching statements</dfn> predicate the execution of a block on a
+    <p><dfn>Branching statements</dfn> predicate the execution of block on a
     conditional. For example, an <code>if</code> statement executes its
-    associated code block iff its conditional is true.</p>
+    associated code block iff its conditional is true. Each code block of an
+    branching statement is termed a <dfn>branch</dfn>, to describe the effect
+    of the statement on program execution.</p>
 
     <section>
       <h1>The <code>if</code> Statement</h1>
       
       <p>The <code>if</code> statement comprises a conditional, zero or more
-      statements (hereafter: the code block), then several optional clauses
-      which are explained subsequently. The code block is executed iff the
+      statements (the branch), then, optionally, additional branches whose
+      forms are explained subsequently. The branch is executed iff the
       conditional is true.</p>
 
       <figure class=railroad>
@@ -52,18 +54,17 @@
       </figure>
 
       <p>The return value of an <code>if</code> statement is that of the
-      executed code block, or <code>nil</code> if no branch <!-- define branch
-      previously --> was executed.</p>
+      executed branch, or <code>nil</code> if no branch was executed.</p>
 
       <figure id=if-statement-simple>
         <figcaption>The simple form of the <code>if</code> statement
       </figure>
 
       <section>
-      <h1 id=postfix-if>Postfix <code>if</code></h1>
+        <h1 id=postfix-if>Postfix <code>if</code></h1>
 
         <p>A postfix <code>if</code> statement is a concise alternative when
-        the code block contains a single statement. It comprises an
+        the branch consists of a sole statement. It comprises an
         expression, the <code>if</code> keyword, then a conditional. The
         expression is executed iff the conditional is true.</p>
         
@@ -83,10 +84,27 @@
           left-hand side if its right-hand side is true
         </figure>
       </section>
-    </section>
 
-    <section>
-      <h1>The <code>else</code> Statement</h1>
+      <section>
+        <h1>The <code>else</code> Clause</h1>
+
+        <figure id=if-statement-with-else-clause>
+          <figcaption>An <code>if</code> statement can contain an
+          <code>else</code> clause, which is executed iff no other branch was
+          executed.
+        </figure>
+
+        <p>Prior to an <code>if</code> statement’s <code>end</code> keyword an
+        <code>else</code> branch may appear. It is executed iff no preceding
+        branch was executed, serving as the default branch.</p>
+
+        <figure class=railroad>
+          <img id=else-clause>
+          <img id=if-statement>
+          <figcaption>Syntax diagram of <code>if</code> statement with an
+          <code>else</code> branch
+        </figure>
+      </section>
     </section>
 
     <section>
