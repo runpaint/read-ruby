@@ -1,1 +1,1 @@
-OptionalParameters = Identifier "=" Expression "," OptionalParameters?
+OptionalParameters = (OptionalParameter ",")* OptionalParameter ","?
