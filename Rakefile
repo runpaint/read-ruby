@@ -124,7 +124,7 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
         elsif fig['class'] == 'railroad'
           fig.css('img').each do |img|
             path = "out/figures/#{img['id']}.png"
-            img['id'] = ''
+            img.delete('id')
             img['src'] = path[4..-1]
             / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
             img['width'] = width
