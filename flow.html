@@ -162,16 +162,50 @@
   <section>
     <h1>Boolean Logic</h1>
     
+    <p>The Boolean logic operators return either <code>true</code> or
+    <code>false</code> by evaluating their operands as conditionals. For this
+    reason, Boolean expressions are often themselves used as conditionals.
+
+    <p>There are two forms of each Boolean operator—keyword (e.g.
+    <code>and</code>) and  punctuation (e.g. <code>&amp;&amp;</code>)—which
+    differ only in precedence. The former have low precedence; the latter
+    high.</p>
+
     <section>
       <h1>The AND Operator</h1>
+      
+      <p>The binary <code>and</code>/<code>&amp;&amp;</code> operators return
+      <code>true</code> iff both operands are true. They perform short-circuit
+      evaluation, so will only evaluate the second operand if the first is
+      true.</p>
+
+      <figure class=railroad>
+        <img id=boolean-and-operator>
+      </figure>
     </section>
 
     <section>
       <h1>The OR Operator</h1>
+
+      <p>The binary <code>or</code>/<code>||</code> operators return
+      <code>true</code> iff at least one operand is true. They perform
+      short-circuit evaluation, so will only evaluate the second operand if
+      the first is false.</p>
+
+      <figure class=railroad>
+        <img id=boolean-or-operator>
+      </figure>
     </section>
 
     <section>
       <h1>The NOT Operator</h1>
+
+      <p>The unary <code>not</code>/<code>!</code> operators return
+      <code>true</code> iff the operand is false.</p>
+
+      <figure class=railroad>
+        <img id=boolean-not-operator>
+      </figure>
     </section>
 
     <section>

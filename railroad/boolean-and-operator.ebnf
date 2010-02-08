@@ -1,0 +1,1 @@
+BooleanANDOperator = Expression ("and" | "&&") Expression
