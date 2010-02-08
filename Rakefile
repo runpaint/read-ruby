@@ -63,6 +63,17 @@ file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
   sh "gzip --best -c #{t.name} >#{t.name}.gz"      
 end
 
+task :validate => FileList['out/*.html'] do |t|
+  require_relative '../h5-valid/lib/h5-valid'
+  t.prerequisites.each do |file|
+    validator = HTML5::Validator.new(file)
+    valid = validator.valid? ? 'OK' : "ERRORS (#{validator.errors.size})"
+    puts "#{file}: #{valid}"
+    puts "\t#{validator.errors_str}" unless validator.valid?
+  end
+end
+
+
 FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
   OUTPUT_FILES << (f_out = 'out/' + f)
   if %w{html xml}.any?{|e| f.end_with? e}
