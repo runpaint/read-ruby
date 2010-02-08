@@ -43,60 +43,49 @@
     <section>
       <h1>The <code>if</code> Statement</h1>
       
-      <p>The <code>if</code> statement comprises a conditional, zero or more
-      statements (the branch), then, optionally, additional branches whose
-      forms are explained subsequently. The branch is executed iff the
-      conditional is true.</p>
-
       <figure class=railroad>
         <img id=if-statement>
         <figcaption>Syntax diagram of <code>if</code> statement
       </figure>
 
-      <p>The return value of an <code>if</code> statement is that of the
-      executed branch, or <code>nil</code> if no branch was executed.</p>
+      <p>The <code>if</code> statement comprises a conditional, zero or more
+      statements (the branch), then, optionally, additional branches whose
+      forms are explained subsequently. The branch is executed iff the
+      conditional is true.</p>
 
       <figure id=if-statement-simple>
         <figcaption>The simple form of the <code>if</code> statement
       </figure>
 
+      <p>The return value of an <code>if</code> statement is that of the
+      executed branch, or <code>nil</code> if no branch was executed.</p>
+
       <section>
         <h1 id=postfix-if>Postfix <code>if</code></h1>
+
+        <figure class=railroad>
+          <img id=postfix-if-statement>
+          <figcaption>Syntax diagram of the postfix <code>if</code> statement
+        </figure>
 
         <p>A postfix <code>if</code> statement is a concise alternative when
         the branch consists of a sole statement. It comprises an
         expression, the <code>if</code> keyword, then a conditional. The
         expression is executed iff the conditional is true.</p>
         
-        <figure class=railroad>
-          <img id=postfix-if-statement>
-          <figcaption>Syntax diagram of the postfix <code>if</code> statement
+        <figure id=postfix-if-statement>
+          <figcaption>The postfix <code>if</code> statement executes its
+          left-hand side if its right-hand side is true
         </figure>
 
         <p>This syntax, as opposed to <code>if <var>conditional</var>…</code>,
         foregrounds the expression. This is of stylistic benefit if the
         conditional is normally true because it highlights the default
         case.</p>
-
-
-        <figure id=postfix-if-statement>
-          <figcaption>The postfix <code>if</code> statement executes its
-          left-hand side if its right-hand side is true
-        </figure>
       </section>
 
       <section>
         <h1>The <code>else</code> Clause</h1>
-
-        <figure id=if-statement-with-else-clause>
-          <figcaption>An <code>if</code> statement can contain an
-          <code>else</code> clause, which is executed iff no other branch was
-          executed.
-        </figure>
-
-        <p>Prior to an <code>if</code> statement’s <code>end</code> keyword an
-        <code>else</code> branch may appear. It is executed iff no preceding
-        branch was executed, serving as the default branch.</p>
 
         <figure class=railroad>
           <img id=else-clause>
@@ -104,15 +93,26 @@
           <figcaption>Syntax diagram of <code>if</code> statement with an
           <code>else</code> branch
         </figure>
+
+        <p>Prior to an <code>if</code> statement’s <code>end</code> keyword an
+        <code>else</code> branch may appear. It is executed iff no preceding
+        branch was executed, serving as the default branch.</p>
+
+        <figure id=if-statement-with-else-clause>
+          <figcaption>An <code>if</code> statement can contain an
+          <code>else</code> clause, which is executed iff no other branch was
+          executed.
+        </figure>
       </section>
 
       <section>
         <h1>The <code>elsif</code> Clause</h1>
 
-        <figure id=if-statement-with-elsif-and-else-clause>
-          <figcaption>Using an <code>if</code> statement with
-          <code>elsif</code> and <code>else</code> branches to compute the
-          Möbius function
+        <figure class=railroad>
+          <img id=elsif-clause>
+          <img id=if-statement>
+          <figcaption>Syntax diagram of <code>if</code> statement with an
+          <code>elsif</code> branch
         </figure>
 
         <p>An <code>if</code> statement may contain any number of
@@ -121,12 +121,12 @@
         require all prior conditionals to be false and their conditional to be
         true.</p>
 
-        <figure class=railroad>
-          <img id=elsif-clause>
-          <img id=if-statement>
-          <figcaption>Syntax diagram of <code>if</code> statement with an
-          <code>elsif</code> branch
+        <figure id=if-statement-with-elsif-and-else-clause>
+          <figcaption>Using an <code>if</code> statement with
+          <code>elsif</code> and <code>else</code> branches to compute the
+          Möbius function
         </figure>
+
       </section>
     </section>
 
@@ -134,27 +134,29 @@
     <section>
       <h1>The <code>unless</code> Statement</h1>
 
-      <p>The <code>unless</code> statement executes its branch iff its
-      conditional is false. It may be followed by an <code>else</code> branch,
-      which executes iff the <code>unless</code> conditional is true.
-      <code>elsif</code> clauses are prohibited.</p>
-
       <figure class=railroad>
         <img id=else-clause>
         <img id=unless-statement>
         <figcaption>Syntax diagram of <code>unless</code> statement
       </figure>
 
+      <p>The <code>unless</code> statement executes its branch iff its
+      conditional is false. It may be followed by an <code>else</code> branch,
+      which executes iff the <code>unless</code> conditional is true.
+      <code>elsif</code> clauses are prohibited.</p>
+
       <section>
         <h1>Postfix Form</h1>
         
+        <figure class=railroad>
+          <img id=postfix-unless-statement>
+          <figcaption>Syntax diagram of the postfix <code>unless</code>
+          statement
+        </figure>
+
         <p>The postfix form of the <code>unless</code> statement behaves as
         the postfix <code>if</code> statement, except the expression is
         executed iff the conditional is false.</p>
-
-        <figure class=railroad>
-          <img id=postfix-unless-statement>
-        </figure>
       </section>
     </section>
   </section>
@@ -174,42 +176,61 @@
     <section>
       <h1>The AND Operator</h1>
       
+      <figure class=railroad>
+        <img id=boolean-and-operator>
+        <figcaption>Syntax diagram of the Boolean AND operator
+      </figure>
+
       <p>The binary <code>and</code>/<code>&amp;&amp;</code> operators return
       <code>true</code> iff both operands are true. They perform short-circuit
       evaluation, so will only evaluate the second operand if the first is
       true.</p>
-
-      <figure class=railroad>
-        <img id=boolean-and-operator>
-      </figure>
     </section>
 
     <section>
       <h1>The OR Operator</h1>
 
+      <figure class=railroad>
+        <img id=boolean-or-operator>
+        <figcaption>Syntax diagram of the Boolean OR operator
+      </figure>
+
       <p>The binary <code>or</code>/<code>||</code> operators return
       <code>true</code> iff at least one operand is true. They perform
       short-circuit evaluation, so will only evaluate the second operand if
       the first is false.</p>
-
-      <figure class=railroad>
-        <img id=boolean-or-operator>
-      </figure>
     </section>
 
     <section>
       <h1>The NOT Operator</h1>
 
-      <p>The unary <code>not</code>/<code>!</code> operators return
-      <code>true</code> iff the operand is false.</p>
-
       <figure class=railroad>
         <img id=boolean-not-operator>
+        <figcaption>Syntax diagram of the Boolean NOT operator
       </figure>
+
+      <p>The unary <code>not</code>/<code>!</code> operators return
+      <code>true</code> iff the operand is false.</p>
     </section>
 
     <section>
       <h1>The Ternary Operator</h1>
+
+      <figure class=railroad>
+        <img id=ternary-operator>
+        <figcaption>Syntax diagram of the ternary operator
+      </figure>
+
+      <p>The ternary operator is a concise alternative to <code>if
+        <var>conditional</var>…else…</code> when the conditional and branches
+      are simple. It consists of three operands, the first of which is the
+      conditional. If the conditional is true, the second expression is
+      evaluated; otherwise the third expression is evaluated.</p>
+
+      <figure id=ternary-operator-on-single-line>
+        <figcaption>The ternary operator is a compact two-way branching
+        construct
+      </figure>
     </section>
   </section>
 
