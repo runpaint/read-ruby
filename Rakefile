@@ -64,7 +64,7 @@ file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
 end
 
 task :validate => FileList['out/*.html'] do |t|
-  require_relative '../h5-valid/lib/h5-valid'
+  require 'h5-valid'
   t.prerequisites.each do |file|
     validator = HTML5::Validator.new(file)
     valid = validator.valid? ? 'OK' : "ERRORS (#{validator.errors.size})"
