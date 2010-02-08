@@ -133,14 +133,29 @@
 
     <section>
       <h1>The <code>unless</code> Statement</h1>
-      
+
+      <p>The <code>unless</code> statement executes its branch iff its
+      conditional is false. It may be followed by an <code>else</code> branch,
+      which executes iff the <code>unless</code> conditional is true.
+      <code>elsif</code> clauses are prohibited.</p>
+
+      <figure class=railroad>
+        <img id=else-clause>
+        <img id=unless-statement>
+        <figcaption>Syntax diagram of <code>unless</code> statement
+      </figure>
+
       <section>
         <h1>Postfix Form</h1>
-      </section>
-    </section>
+        
+        <p>The postfix form of the <code>unless</code> statement behaves as
+        the postfix <code>if</code> statement, except the expression is
+        executed iff the conditional is false.</p>
 
-    <section>
-      <h1>The <code>elsif</code> Statement</h1>
+        <figure class=railroad>
+          <img id=postfix-unless-statement>
+        </figure>
+      </section>
     </section>
   </section>
 
