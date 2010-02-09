@@ -232,41 +232,117 @@
         construct
       </figure>
     </section>
+
+    <section>
+      <h1>The <code>case</code> Statement</h1>
+    </section>
   </section>
 
   <section>
     <h1>Looping</h1>
     
-    <section>
-      <h1>Infinite Loops: <code>loop</code></h1>
-    </section>
+    <p>Looping constructs represent repetition. They comprise a block of code
+    (hereafter: the <dfn title="loop body">body</a>) and a <dfn>terminating
+      condition</dfn> which governs the number of times the body will
+    execute.</p>
 
+    <p>The following constructs are materially identical in that they can all
+    be used to create any kind of loop, albeit when combined with control flow
+    statements. The purpose of having many different approaches to looping, as
+    opposed to a single, generic construct, is to allow common scenarios to be
+    expressed concisely and simply, and in doing so lessen the chance of
+    erroneous terminating conditions.</p>
     <section>
-      <h1>Looping <var>n</var> Times</h1>
+      <h1>Count-Controlled Loops</h1>
+
+      <p>The constructs that follow instrument an <i>a priori</i> number of
+      repetitions.</p>
+
       <!-- for loops are unnecessary -->
+      
       <section>
         <h1><code>Integer#times</code></h1>
+
+        <p><code>Integer#times</code> creates a loop which executes <var>n</var>
+        times, where <var>n</var> is the integer’s magnitude. For example,
+        <code>10.times { … }</code> executes the block ten times, passing into
+        the block the number of the current iteration.
       </section>
 
       <section>
         <h1><code>Integer#upto</code></h1>
+
+        <p>Similarly, <code>Integer#upto(<var>limit</var>)</code> counts from
+        the value of the receiver <em>up</em> to the value of
+        <var>limit</var>, executing the loop body each time. On each iteration
+        the block is passed the current number in the progression. For,
+        example, <code>10.upto(13)</code> executes the loop body four times,
+        passing it 10, 11, 12, 13, then terminating.
       </section>
 
       <section>
         <h1><code>Integer#downto</code></h1>
+
+        <p>Conversely, <code>Integer#downto(<var>limit</var>)</code> counts
+        from the value of the receiver <em>down</em> to the value of
+        <var>limit</var>, executing the loop body each time. As with
+        <code>Integer#upto</code>, the block is passed the number of the
+        current progression.
       </section>
     </section>
 
     <section>
-      <h1>Looping <code>while</code> a Condition is True</h1>
+      <h1>Condition-Controlled Loops</h1>
+
+      <p>A condition-controlled loop uses a conditional to determine when the
+      loop should terminate. The conditional is tested prior to each
+      repetition, its value determining whether to repeat or terminate the
+      loop.</p>
+
+      <section>
+        <h1><code>while</code> Loops</h1>
+
+        <p>The <code>while</code> loop executes its body as long as its
+        conditional is true. If the conditional is initially false the body is
+        never executed.</p>
+
+        <section>
+          <h1>Postfix <code>while</code></h1>
+
+          <p><code>while</code> can also be used as a statement modifier in
+          which case it executes it left-hand side while its right-hand side
+          is true.
+        </section>
+      </section>
+
+      <section>
+        <h1><code>until</code> Loops</h1>
+
+        <p>The <code>until</code> loop executes its body as long as its
+        conditional is false. If the conditional is initially true the body is
+        never executed.
+
+        <section>
+          <h1>Postfix <code>until</code></h1>
+
+          <p><code>until</code> can also be used as a statement modifier in
+          which case it executes it left-hand side until its right-hand side
+          is true.
+        </section>
+      </section>
     </section>
 
     <section>
-      <h1>Looping <code>until</code> a Condition is True</h1>
-    </section>
+      <h1>Infinite Loops: <code>loop</code></h1>
 
-    <section>
-      <h1>Looping <code>unless</code> a Condition is True</h1>
+      <p>The <code>loop</code> keyword executes its body indefinitely. Unlike
+      the constructs discussed previously, there is no explicit terminating
+      condition. An infinite loop qua infinite loop is undesirable, so the
+      body will typically include statements that conditionally terminate it.
+      Such statements include the control flow statements, <code>throw</code>,
+      <code>raise</code>, and <code>exit</code>. The principle of
+      <code>loop</code>, therefore, is to repeat an operation until explicitly
+      told to halt. 
     </section>
 
     <section>
