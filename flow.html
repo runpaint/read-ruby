@@ -268,10 +268,16 @@
           <figcaption>Syntax diagram of the <code>Integer#times</code> loop
         </figure>
 
-        <p><code>Integer#times</code> creates a loop which executes <var>n</var>
-        times, where <var>n</var> is the integer’s magnitude. For example,
-        <code>10.times { … }</code> executes the block ten times, passing into
-        the block the number of the current iteration.</p>
+        <p><code>Integer#times</code> creates a loop which executes
+        <var>n</var> times, where <var>n</var> is the integer’s magnitude. For
+        example, <code>10.times { … }</code> executes the block ten times,
+        passing into the block the number of the current iteration. When the
+        block is omitted an <code>Enumerator</code> is returned.</p>
+
+        <figure id=integer-times-loop>
+          <figcaption><code>Integer#times</code> executes the associated block
+          the number of times specified by the receiver.
+        </figure>
       </section>
 
       <section>
@@ -287,7 +293,13 @@
         <var>limit</var>, executing the loop body each time. On each iteration
         the block is passed the current number in the progression. For,
         example, <code>10.upto(13)</code> executes the loop body four times,
-        passing it 10, 11, 12, 13, then terminating.
+        passing it 10, 11, 12, 13, then terminating. When the
+        block is omitted an <code>Enumerator</code> is returned.</p>
+
+        <figure id=integer-upto-loop>
+          <figcaption><code>Integer#upto</code> counts from the receiver up to
+          its argument, executing the associated block each time
+        </figure>
       </section>
 
       <section>
@@ -302,7 +314,14 @@
         from the value of the receiver <em>down</em> to the value of
         <var>limit</var>, executing the loop body each time. As with
         <code>Integer#upto</code>, the block is passed the number of the
-        current progression.
+        current progression. When the block is omitted an
+        <code>Enumerator</code> is returned.</p>
+
+        <figure id=integer-downto-loop>
+          <figcaption><code>Integer#downto</code> counts from the receiver
+          down to its argument, executing the associated block each time
+        </figure>
+
       </section>
     </section>
 

@@ -1,1 +1,1 @@
-IntegerTimes = Integer "." "times" BlockLiteral
+IntegerTimes = Integer "." "times" BlockLiteral?
