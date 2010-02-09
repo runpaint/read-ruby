@@ -25,6 +25,10 @@ def toc(toc)
    end.join + '</ol>'
 end
 
+def add_analytics(nok)
+  nok.css('link').last.after(File.read 'analytics.html')
+end
+
 task :upload => :default do
   sh "rsync --delete -vaz out/ ruby:/home/public"
   sh 'git push'
@@ -50,6 +54,7 @@ file 'out/index.html' => FileList['*.html'] do |t|
     nxt = nxt['href'] if nxt
   end
   nok = Nokogiri::HTML(File.read 'index.html')
+  add_analytics(nok)
   nok.at('section > section > h1').after(toc(chapters.compact))
   File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
 end
@@ -75,6 +80,7 @@ end
 
 
 FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
+  next if f == 'analytics.html'
   OUTPUT_FILES << (f_out = 'out/' + f)
   if %w{html xml}.any?{|e| f.end_with? e}
     file "#{f_out}.gz" => f_out do |t|
@@ -126,6 +132,7 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
     
     file f_out => [f, *figure_files] do |t|
       nok = Nokogiri::HTML(File.read f) #use nok from outer scope?
+      add_analytics(nok)
       nok.css('figure').each do |fig|
         if fig['id']
           file = figure_files.
