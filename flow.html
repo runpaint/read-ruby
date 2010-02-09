@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset=utf-8>
-<title>Flow</title>
+<title>Flow - Read Ruby</title>
 <link rel=license href=//creativecommons.org/licenses/by-sa/3.0/>
 <link rel=author href=mailto:runrun@runpaint.org>
 <link rel=stylesheet href=style>
@@ -263,14 +263,24 @@
       <section>
         <h1><code>Integer#times</code></h1>
 
+        <figure class=railroad>
+          <img id=integer-times>
+          <figcaption>Syntax diagram of the <code>Integer#times</code> loop
+        </figure>
+
         <p><code>Integer#times</code> creates a loop which executes <var>n</var>
         times, where <var>n</var> is the integer’s magnitude. For example,
         <code>10.times { … }</code> executes the block ten times, passing into
-        the block the number of the current iteration.
+        the block the number of the current iteration.</p>
       </section>
 
       <section>
         <h1><code>Integer#upto</code></h1>
+
+        <figure class=railroad>
+          <img id=integer-upto>
+          <figcaption>Syntax diagram of the <code>Integer#upto</code> loop
+        </figure>
 
         <p>Similarly, <code>Integer#upto(<var>limit</var>)</code> counts from
         the value of the receiver <em>up</em> to the value of
@@ -282,6 +292,11 @@
 
       <section>
         <h1><code>Integer#downto</code></h1>
+
+        <figure class=railroad>
+          <img id=integer-downto>
+          <figcaption>Syntax diagram of the <code>Integer#downto</code> loop
+        </figure>
 
         <p>Conversely, <code>Integer#downto(<var>limit</var>)</code> counts
         from the value of the receiver <em>down</em> to the value of
@@ -302,12 +317,23 @@
       <section>
         <h1><code>while</code> Loops</h1>
 
+        <figure class=railroad>
+          <img id=while-loop>
+          <figcaption>Syntax diagram of the <code>while</code> loop
+        </figure>
+
         <p>The <code>while</code> loop executes its body as long as its
         conditional is true. If the conditional is initially false the body is
         never executed.</p>
 
         <section>
           <h1>Postfix <code>while</code></h1>
+
+          <figure class=railroad>
+            <img id=postfix-while-statement>
+            <figcaption>Syntax diagram of the postfix-<code>while</code>
+            statement
+          </figure>
 
           <p><code>while</code> can also be used as a statement modifier in
           which case it executes it left-hand side while its right-hand side
@@ -318,12 +344,22 @@
       <section>
         <h1><code>until</code> Loops</h1>
 
+        <figure class=railroad>
+          <img id=until-loop>
+          <figcaption>Syntax diagram of the <code>until</code> loop
+        </figure>
+
         <p>The <code>until</code> loop executes its body as long as its
         conditional is false. If the conditional is initially true the body is
         never executed.
 
         <section>
           <h1>Postfix <code>until</code></h1>
+
+          <figure class=railroad>
+            <img id=postfix-until-statement>
+            <figcaption>Syntax diagram of the postfix-<code>until</code> loop
+          </figure>
 
           <p><code>until</code> can also be used as a statement modifier in
           which case it executes it left-hand side until its right-hand side
@@ -335,6 +371,11 @@
     <section>
       <h1>Infinite Loops: <code>loop</code></h1>
 
+      <figure class=railroad>
+        <img id=loop-loop>
+        <figcaption>Syntax diagram of the <code>loop</code> loop
+      </figure>
+
       <p>The <code>loop</code> keyword executes its body indefinitely. Unlike
       the constructs discussed previously, there is no explicit terminating
       condition. An infinite loop qua infinite loop is undesirable, so the
@@ -342,7 +383,7 @@
       Such statements include the control flow statements, <code>throw</code>,
       <code>raise</code>, and <code>exit</code>. The principle of
       <code>loop</code>, therefore, is to repeat an operation until explicitly
-      told to halt. 
+      told to halt.
     </section>
 
     <section>
