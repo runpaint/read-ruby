@@ -332,7 +332,7 @@
       loop should terminate. The conditional is tested prior to each
       repetition, its value determining whether to repeat or terminate the
       loop.</p>
-
+      <!-- warn about constant conditions -->
       <section>
         <h1><code>while</code> Loops</h1>
 
@@ -344,6 +344,11 @@
         <p>The <code>while</code> loop executes its body as long as its
         conditional is true. If the conditional is initially false the body is
         never executed.</p>
+  
+        <figure id=while-loop-fig>
+          <figcaption>Using a <code>while</code> loop to calculate the Farey
+          sequence of order <var>n</var>
+        </figure>
 
         <section>
           <h1>Postfix <code>while</code></h1>
@@ -356,7 +361,12 @@
 
           <p><code>while</code> can also be used as a statement modifier in
           which case it executes it left-hand side while its right-hand side
-          is true.
+          is true.</p>
+
+          <figure id=postfix-while-statement-fig>
+            <figcaption>Using the postfix-<code>while</code> statement to
+            naïvely calculate the number of bits set in an integer
+          </figure>
         </section>
       </section>
 
