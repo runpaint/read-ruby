@@ -144,6 +144,11 @@
       which executes iff the <code>unless</code> conditional is true.
       <code>elsif</code> clauses are prohibited.</p>
 
+      <figure id=unless-statement-fig>
+        <figcaption>The <code>unless</code> statement executes its body iff
+        its conditional is false.
+      </figure>
+
       <section>
         <h1>Postfix Form</h1>
         
@@ -156,6 +161,12 @@
         <p>The postfix form of the <code>unless</code> statement behaves as
         the postfix <code>if</code> statement, except the expression is
         executed iff the conditional is false.</p>
+
+        <figure id=postfix-unless-statement-fig>
+          <figcaption>Using the postfix-<code>unless</code> statement to
+          <code>raise</code> an <code>ArgumentError</code> if the argument
+          can’t be converted to a <code>String</code>
+        </figure>
       </section>
     </section>
   </section>
