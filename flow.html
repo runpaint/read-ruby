@@ -140,9 +140,10 @@
       </figure>
 
       <p>The <code>unless</code> statement executes its branch iff its
-      conditional is false. It may be followed by an <code>else</code> branch,
-      which executes iff the <code>unless</code> conditional is true.
-      <code>elsif</code> clauses are prohibited.</p>
+      conditional is false. It is equivalent to an <code>if</code> statement
+      with the conditional inverted. It may be followed by an
+      <code>else</code> branch, which executes iff the <code>unless</code>
+      conditional is true.  <code>elsif</code> clauses are prohibited.</p>
 
       <figure id=unless-statement-fig>
         <figcaption>The <code>unless</code> statement executes its body iff
@@ -261,6 +262,88 @@
 
     <section>
       <h1>The <code>case</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=case-statement-syntax>
+        <figcaption>Syntax diagram of the <code>case</code> statement
+      </figure>
+
+      <p>The <code>case</code> statement allows a single expression
+      (hereafter: the <dfn title="topic of a case statment">topic</dfn>) to be
+      tested against other expressions without having to evaluate the
+      topic each time. It begins with a <code>case
+        <var>topic</var></code> clause, where <var>topic</var> is an arbitrary
+      expression.</p>
+
+      <figure class=railroad>
+        <img id=when-clause>
+        <figcaption>Syntax diagram of the <code>case</code> statement’s
+        <code>when</code> clause  
+      </figure>
+      
+      <p>A branch is introduced by the <code>when</code> keyword followed by a
+      comma-separated list of one or more expressions. This list is separated
+      from the statements comprising the branch body by the <code>then</code>
+      keyword or a statement terminator.</p>
+
+      <figure class=railroad>
+        <img id=else-clause>
+        <figcaption>Syntax diagram of the <code>case</code> statement’s
+        <code>else</code> clause  
+      </figure>
+      
+      <p>A single <code>else</code> clause may appear between the final
+      <code>when</code> clause and the <code>end</code> keyword which delimits
+      the <code>case</code> statement.</p>
+      
+      <figure id=case-cf-if>
+        <figcaption>The same method implemented first with an <code>if</code>
+        statement then with a <code>case</code> statement
+      </figure>
+
+      <p>A <code>when</code> clause <dfn title="matching <code>when</code>
+        clause">matches</dfn> the topic if any of the expressions listed after
+      <code>when</code> have case equality (<code><var>expression</var> ==
+        <var>topic</var></code>) with the topic. Therefore, <code>when
+        <var>expression</var></code> is equivalent to <code>if
+        <var>expression</var> === <var>topic</var></code>. By default, the
+      <code>#===</code> message is equivalent to <code>#==</code>—they both
+      test for equality—but certain core classes redefine <code>#===</code> to
+      behave more usefully in this context, as shown in the following
+      table.</p>
+
+      <figure id=case-equality-operator-table>
+        <table>
+          <tr><th>Class (<var>a</var>)
+              <th>Semantics of <code><var>a</var> === <var>b</var></code>
+          <tr><td><code>Class</code>
+              <td><code><var>b</var>.instance_of?(<var>a</var>)</code>
+          <tr><td><code>Proc</code>
+              <td><code><var>a</var>.call(<var>b</var>)</code>
+          <tr><td><code>Range</code>
+              <td><code><var>a</var>.include?(<var>b</var>)</code>
+          <tr><td><code>Regexp</code>
+              <td><code><var>a</var> =~ <var>b</var></code>
+          <tr><td><code>Symbol</code>
+              <td><code><var>a</var> == <var>b</var>.to_sym</code>
+          </table>
+        <figcaption>The effect of the case equality operator on a receiver of
+        class <var>a</var> and a single operand (<var>b</var>)
+      </figure>
+
+      <p>A <code>case</code> expression is evaluated by evaluating each
+      <code>when</code> branch in the order that they appear in the source
+      file. If a branch matches the topic, it is executed, and its return
+      value becomes that of the <code>case</code> statement; otherwise, the
+      next branch is evaluated in the same manner. If none of the
+      <code>when</code> branches match, and an <code>else</code> branch is
+      present, the <code>case</code> statement’s return value is that of the
+      <code>else</code> branch; otherwise it is <code>nil</code>.
+
+      <figure id=case-statement-fig>
+        <figcaption>Using the <code>case</code> statement to classify a HTTP
+        status code
+      </figure>
     </section>
   </section>
 
