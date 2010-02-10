@@ -360,7 +360,7 @@
           </figure>
 
           <p><code>while</code> can also be used as a statement modifier in
-          which case it executes it left-hand side while its right-hand side
+          which case it executes its left-hand side while its right-hand side
           is true.</p>
 
           <figure id=postfix-while-statement-fig>
@@ -396,7 +396,7 @@
           </figure>
 
           <p><code>until</code> can also be used as a statement modifier in
-          which case it executes it left-hand side until its right-hand side
+          which case it executes its left-hand side until its right-hand side
           is true.</p>
 
           <figure id=postfix-until-statement-fig>
@@ -419,10 +419,15 @@
       the constructs discussed previously, there is no explicit terminating
       condition. An infinite loop qua infinite loop is undesirable, so the
       body will typically include statements that conditionally terminate it.
-      Such statements include the control flow statements, <code>throw</code>,
-      <code>raise</code>, and <code>exit</code>. The principle of
-      <code>loop</code>, therefore, is to repeat an operation until explicitly
-      told to halt.
+      Such statements include the control flow statements,
+      <code>return</code>, <code>throw</code>, <code>raise</code>, and
+      <code>exit</code>. The principle of <code>loop</code>, therefore, is to
+      repeat an operation until explicitly told to halt.</p>
+
+      <figure id=loop-loop-fig>
+        <figcaption>Using the <code>loop</code> construct to determine whether
+        an integer is <i>happy</i>
+      </figure>
     </section>
 
     <section>
