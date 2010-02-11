@@ -3,7 +3,6 @@ require 'rake/clean'
 require 'nokogiri'
 CLOBBER.include('out')
 directory 'out'
-directory 'out/figures'
 FIGURE_CSS = ['figure.railroad > img', 'figure[@id]']
 
 def headings(s, f, level=1)
@@ -64,10 +63,8 @@ rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies(t[4..-1])}) do |t|
       file = el['id'].sub(/\.rb/,'.html')
       el.at("figcaption").before(File.read 'figures/' + file)
     elsif el['id'].end_with?('.png')
-      path = "out/figures/#{el['id']}"
-      cp path[4..-1], path
+      el['src'] = path = "figures/#{el['id']}"
       el.delete('id')
-      el['src'] = path[4..-1]
       / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
       el['width'], el['height'] = width, height
     end
@@ -98,6 +95,10 @@ file 'out/index.html' => FileList['*.html'] do |t|
   write_html(nok, t.name)
 end
 
+file 'out/figures' => ['out', 'figures'] do |t|
+  ln_s '../figures', t.name
+end
+
 file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
   File.open(t.name, 'w') do |f| 
     f.print FileList['*.css'].map{|n| File.read(n)}.join
@@ -119,10 +120,6 @@ rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
   cp t.source, t.name
 end
 
-task :upload => :default do
-  sh "rsync --delete -vaz out/ ruby:/home/public"
-  sh 'git push'
-end
 
 output_files = ['out', 'out/figures', 'out/style.css']
 FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
@@ -131,3 +128,8 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
 end
 
 task :default => output_files
+
+task :upload => :default do
+  sh "rsync --delete -vazL out/ ruby:/home/public"
+  sh 'git push'
+end
