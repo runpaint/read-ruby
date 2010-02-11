@@ -550,6 +550,11 @@
       <section>
         <h1 id=break-statement><code>break</code> Statement</h1>
         
+        <figure class=railroad>
+          <img id=break-statement.png>
+          <figcaption>Syntax diagram of the <code>break</code> statement
+        </figure>
+
         <p>Within a loop the <code>break</code> statement transfers control to
         the first statement following the loop. (Within a <a
           href=/closures#return-proc-semantics>proc</a> or <a
@@ -563,6 +568,11 @@
       <section>
         <h1 id=next-statement><code>next</code> Statement</h1>
 
+        <figure class=railroad>
+          <img id=next-statement.png>
+          <figcaption>Syntax diagram of the <code>next</code> statement
+        </figure>
+
         <p>The <code>next</code> statement ends the current iteration of the
         loop and begins the next. It raises a <code>LocalJump</code> exception
         when used outside of a loop or closure. Any arguments it is given are
@@ -571,6 +581,11 @@
 
       <section>
         <h1 id=redo-statement><code>redo</code> Statement</h1>
+
+        <figure class=railroad>
+          <img id=redo-statement.png>
+          <figcaption>Syntax diagram of the <code>redo</code> statement
+        </figure>
 
         <p>The <code>redo</code> statement restarts the current iteration of
         the loop, returning control to the first expression in the body. The
