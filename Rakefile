@@ -69,7 +69,7 @@ rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies(t[4..-1])}) do |t|
       el.delete('id')
       el['src'] = path[4..-1]
       / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
-      el['width'], el['height'] = width. height
+      el['width'], el['height'] = width, height
     end
   end
   write_html(nok, t.name)
