@@ -1,0 +1,1 @@
+CatchThrowLabel = Identifier | SymbolLiteral | StringLiteral

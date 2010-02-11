@@ -579,7 +579,50 @@
 
       <section>
         <h1 id=throw-catch><code>throw</code>/<code>catch</code> Statements</h1>
+        
+        <p>The <code>catch</code> method defines a labeled block of code. The
+        <code>throw</code> method exits a <code>catch</code> block with a
+        given label. Taken together, they form a general-purpose control
+        structure.</p>
 
+        <figure class=railroad>
+          <img id=catch-throw-label.png>
+          <figcaption>Syntax diagram of the label used in
+          <code>catch</code>/<code>throw</code> pairs
+        </figure>
+
+        <p>The label is normally given as a <code>Symbol</code>, but a
+        <code>String</code> is permissible, too.</p>
+
+        <figure class=railroad>
+          <img id=catch-statement.png>
+          <figcaption>Syntax diagram of the <code>catch</code> statement
+        </figure>
+
+        <p>A <code>catch</code> block is defined with <code>catch
+          <var>label</var> <var>block</var></code>, where <var>label</var> is
+        the label which this block should catch, and <var>block</var> is a
+        block literal. The block is called immediately.</p>
+
+        <figure class=railroad>
+          <img id=throw-statement.png>
+          <figcaption>Syntax diagram of the <code>throw</code> statement
+        </figure>
+
+        <p>The syntax of <code>throw</code> is <code>throw <var>label</var>,
+          <var>value</var></code>, where <var>label</var> is the label of an
+        enclosing <code>catch</code> block, and <var>value</var> is an optional
+        expression which, if supplied, becomes the value of the corresponding
+        <code>catch</code> block. 
+        
+        <p><code>throw</code> immediately causes the current execution path to
+        terminate and a search to begin for the nearest <code>catch</code>
+        block defined with the same label. The search proceeds out through the
+        current lexical scope, then up through the call stack towards the
+        top-level of the program, crossing method boundaries if necessary. If
+        such a <code>catch</code> is found, it is exited, and execution
+        resumes from the statement that follows it. Otherwise, if the search
+        is unsuccessful, an <code>ArgumentError</code> exception is raised.
       </section>
     </section>
     
