@@ -2,8 +2,10 @@
 require 'rake/clean'
 require 'nokogiri'
 CLOBBER.include('out')
-directory 'out'
 FIGURE_CSS = ['figure.railroad > img', 'figure[@id]']
+EXTENSIONS = { '.rb' => '.html', '.ebnf' => '.png'}
+
+directory 'out'
 
 def headings(s, f, level=1)
   return if level > 2
@@ -41,27 +43,37 @@ def chapter_dependecies(chapter)
     map{|e| 'figures/' + e['id'].sub(/\.rb$/, '.html')} << chapter
 end
 
-rule(%r{figures/.+\.png$} => ->(t){ t.sub(/\.png/,'.ebnf')}) do |t|
+def target(source)
+  source.start_with?('figures/') ? source.gsub(/\.[a-z]+$/, EXTENSIONS) 
+                                 : 'out/' + source
+end
+
+def source(target)
+  target.start_with?('out/') ? target[4..-1] 
+                             : target.gsub(/\.[a-z]+$/, EXTENSIONS.invert)
+end
+
+rule(%r{figures/.+\.png$} => ->(t){ source(t) }) do |t|
   require 'pngrammar'
   images = PNGrammar.new(t.source).images
   raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
   File.open(t.name, 'w'){|f| f.print images.values.first}
 end
 
-rule(%r{figures/.+\.html} => ->(t){ t.sub(/\.html/, '.rb')}) do |t|
+rule(%r{figures/.+\.html} => ->(t){ source(t) }) do |t|
   sh "pygmentize -f html -O encoding=utf-8 -o #{t.name} #{t.source}"
   munged = File.read(t.name).sub(/^<div.+pre>/, '<pre class=syntax><code>').
                              sub(/<\/pre><\/div>/,'</code></pre>')
   File.open(t.name,'w') {|f| f.print munged}
 end
 
-rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies(t[4..-1])}) do |t|
+rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies source(t)  }) do |t|
   source = t.prerequisites.last
   nok = Nokogiri::HTML(File.read source)
   nok.css(*FIGURE_CSS).each do |el|
     if el['id'] and el['id'].end_with?('.rb')
-      file = el['id'].sub(/\.rb/,'.html')
-      el.at("figcaption").before(File.read 'figures/' + file)
+      file = target('figures/' + el['id'])
+      el.at("figcaption").before(File.read file)
     elsif el['id'].end_with?('.png')
       el['src'] = path = "figures/#{el['id']}"
       el.delete('id')
