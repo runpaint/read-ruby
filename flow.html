@@ -8,23 +8,23 @@
 <!-- http://www.engineyard.com/blog/2010/iteration-shouldnt-spin-your-wheels/
 -->
 <section>
-  <h1>Flow</h1>
+  <h1 id=flow>Flow</h1>
   
   <section>
-    <h1>Conditionals</h1>
+    <h1 id=conditionals>Conditionals</h1>
 
     <p>A <dfn>conditional</dfn> is an expression evaluated as a truthbearer.
     The conditional is <dfn title="false conditional">false</dfn> if the
     expression’s value is <code>nil</code> or <code>false</code>; otherwise it
     is <dfn title="true conditional">true</dfn>.</p>
 
-    <figure id=conditional-true>
+    <figure id=conditional-true.rb>
       <!-- FIXME: Use if statement in example to show the conditionals’ truth
       -->
       <figcaption>Conditionals that are true
     </figure>
 
-    <figure id=conditional-false>
+    <figure id=conditional-false.rb>
       <!-- FIXME: Use unless statement in example to show the conditionals’
       falsity -->
       <figcaption>Conditionals that are false
@@ -32,7 +32,7 @@
   </section>
 
   <section>
-    <h1>Branching</h1>
+    <h1 id=branching>Branching</h1>
     
     <p><dfn>Branching statements</dfn> predicate the execution of block on a
     conditional. For example, an <code>if</code> statement executes its
@@ -41,10 +41,10 @@
     of the statement on program execution.</p>
 
     <section>
-      <h1>The <code>if</code> Statement</h1>
+      <h1 id=if-statement>The <code>if</code> Statement</h1>
       
       <figure class=railroad>
-        <img id=if-statement>
+        <img id=if-statement.png>
         <figcaption>Syntax diagram of <code>if</code> statement
       </figure>
 
@@ -53,7 +53,7 @@
       forms are explained subsequently. The branch is executed iff the
       conditional is true.</p>
 
-      <figure id=if-statement-simple>
+      <figure id=if-statement-simple.rb>
         <figcaption>The simple form of the <code>if</code> statement
       </figure>
 
@@ -64,7 +64,7 @@
         <h1 id=postfix-if>Postfix <code>if</code></h1>
 
         <figure class=railroad>
-          <img id=postfix-if-statement>
+          <img id=postfix-if-statement.png>
           <figcaption>Syntax diagram of the postfix <code>if</code> statement
         </figure>
 
@@ -73,7 +73,7 @@
         expression, the <code>if</code> keyword, then a conditional. The
         expression is executed iff the conditional is true.</p>
         
-        <figure id=postfix-if-statement>
+        <figure id=postfix-if-statement.rb>
           <figcaption>The postfix <code>if</code> statement executes its
           left-hand side if its right-hand side is true
         </figure>
@@ -85,11 +85,11 @@
       </section>
 
       <section>
-        <h1>The <code>else</code> Clause</h1>
+        <h1 id=if-else-clause>The <code>else</code> Clause</h1>
 
         <figure class=railroad>
-          <img id=else-clause>
-          <img id=if-statement>
+          <img id=else-clause.png>
+          <img id=if-statement.png>
           <figcaption>Syntax diagram of <code>if</code> statement with an
           <code>else</code> branch
         </figure>
@@ -98,7 +98,7 @@
         <code>else</code> branch may appear. It is executed iff no preceding
         branch was executed, serving as the default branch.</p>
 
-        <figure id=if-statement-with-else-clause>
+        <figure id=if-statement-with-else-clause.rb>
           <figcaption>An <code>if</code> statement can contain an
           <code>else</code> clause, which is executed iff no other branch was
           executed.
@@ -106,11 +106,11 @@
       </section>
 
       <section>
-        <h1>The <code>elsif</code> Clause</h1>
+        <h1 id=if-elsif-clause>The <code>elsif</code> Clause</h1>
 
         <figure class=railroad>
-          <img id=elsif-clause>
-          <img id=if-statement>
+          <img id=elsif-clause.png>
+          <img id=if-statement.png>
           <figcaption>Syntax diagram of <code>if</code> statement with an
           <code>elsif</code> branch
         </figure>
@@ -121,7 +121,7 @@
         require all prior conditionals to be false and their conditional to be
         true.</p>
 
-        <figure id=if-statement-with-elsif-and-else-clause>
+        <figure id=if-statement-with-elsif-and-else-clause.rb>
           <figcaption>Using an <code>if</code> statement with
           <code>elsif</code> and <code>else</code> branches to compute the
           Möbius function
@@ -131,11 +131,11 @@
 
 
     <section>
-      <h1>The <code>unless</code> Statement</h1>
+      <h1 id=unless-statement>The <code>unless</code> Statement</h1>
 
       <figure class=railroad>
-        <img id=else-clause>
-        <img id=unless-statement>
+        <img id=else-clause.png>
+        <img id=unless-statement.png>
         <figcaption>Syntax diagram of <code>unless</code> statement
       </figure>
 
@@ -145,16 +145,16 @@
       <code>else</code> branch, which executes iff the <code>unless</code>
       conditional is true.  <code>elsif</code> clauses are prohibited.</p>
 
-      <figure id=unless-statement-fig>
+      <figure id=unless-statement-fig.rb>
         <figcaption>The <code>unless</code> statement executes its body iff
         its conditional is false.
       </figure>
 
       <section>
-        <h1>Postfix Form</h1>
+        <h1 id=postfix-unless-statement>Postfix Form</h1>
         
         <figure class=railroad>
-          <img id=postfix-unless-statement>
+          <img id=postfix-unless-statement.png>
           <figcaption>Syntax diagram of the postfix <code>unless</code>
           statement
         </figure>
@@ -163,7 +163,7 @@
         the postfix <code>if</code> statement, except the expression is
         executed iff the conditional is false.</p>
 
-        <figure id=postfix-unless-statement-fig>
+        <figure id=postfix-unless-statement-fig.rb>
           <figcaption>Using the postfix-<code>unless</code> statement to
           <code>raise</code> an <code>ArgumentError</code> if the argument
           can’t be converted to a <code>String</code>
@@ -173,7 +173,7 @@
   </section>
 
   <section>
-    <h1>Boolean Logic</h1>
+    <h1 id=boolean-logic>Boolean Logic</h1>
     
     <p>The Boolean logic operators return either <code>true</code> or
     <code>false</code> by evaluating their operands as conditionals. For this
@@ -185,10 +185,10 @@
     high.</p>
 
     <section>
-      <h1>The AND Operator</h1>
+      <h1 id=and-operator>The AND Operator</h1>
       
       <figure class=railroad>
-        <img id=boolean-and-operator>
+        <img id=boolean-and-operator.png>
         <figcaption>Syntax diagram of the Boolean AND operator
       </figure>
 
@@ -197,7 +197,7 @@
       evaluation, so will only evaluate the second operand if the first is
       true.</p>
 
-      <figure id=and-operator-fig>
+      <figure id=and-operator-fig.rb>
         <figcaption>Using the Boolean AND operator (<code>&amp;&amp;</code>)
         and the bitwise AND operator (<code>&amp;</code>) to determine whether
         an integer is a power of 2
@@ -205,10 +205,10 @@
     </section>
 
     <section>
-      <h1>The OR Operator</h1>
+      <h1 id=or-operator>The OR Operator</h1>
 
       <figure class=railroad>
-        <img id=boolean-or-operator>
+        <img id=boolean-or-operator.png>
         <figcaption>Syntax diagram of the Boolean OR operator
       </figure>
 
@@ -217,34 +217,34 @@
       short-circuit evaluation, so will only evaluate the second operand if
       the first is false.</p>
 
-      <figure id=or-operator-fig>
+      <figure id=or-operator-fig.rb>
         <figcaption>Using the Boolean OR operator to determine whether the
         check digit of an ISBN-13 is correct
       </figure>
     </section>
 
     <section>
-      <h1>The NOT Operator</h1>
+      <h1 id=not-operator>The NOT Operator</h1>
 
       <figure class=railroad>
-        <img id=boolean-not-operator>
+        <img id=boolean-not-operator.png>
         <figcaption>Syntax diagram of the Boolean NOT operator
       </figure>
 
       <p>The unary <code>not</code>/<code>!</code> operators return
       <code>true</code> iff the operand is false.</p>
 
-      <figure id=not-operator-fig>
+      <figure id=not-operator-fig.rb>
         <figcaption>Using the Boolean NOT operator to invert the value of its
         operand
       </figure>
     </section>
 
     <section>
-      <h1>The Ternary Operator</h1>
+      <h1 id=ternary-operator>The Ternary Operator</h1>
 
       <figure class=railroad>
-        <img id=ternary-operator>
+        <img id=ternary-operator.png>
         <figcaption>Syntax diagram of the ternary operator
       </figure>
 
@@ -254,17 +254,17 @@
       conditional. If the conditional is true, the second expression is
       evaluated; otherwise the third expression is evaluated.</p>
 
-      <figure id=ternary-operator-on-single-line>
+      <figure id=ternary-operator-on-single-line.rb>
         <figcaption>The ternary operator is a compact two-way branching
         construct 
       </figure>
     </section>
 
     <section>
-      <h1>The <code>case</code> Statement</h1>
+      <h1 id=case-statement>The <code>case</code> Statement</h1>
 
       <figure class=railroad>
-        <img id=case-statement-syntax>
+        <img id=case-statement-syntax.png>
         <figcaption>Syntax diagram of the <code>case</code> statement
       </figure>
 
@@ -276,7 +276,7 @@
       expression.</p>
 
       <figure class=railroad>
-        <img id=when-clause>
+        <img id=when-clause.png>
         <figcaption>Syntax diagram of the <code>case</code> statement’s
         <code>when</code> clause  
       </figure>
@@ -287,7 +287,7 @@
       keyword or a statement terminator.</p>
 
       <figure class=railroad>
-        <img id=else-clause>
+        <img id=else-clause.png>
         <figcaption>Syntax diagram of the <code>case</code> statement’s
         <code>else</code> clause  
       </figure>
@@ -296,7 +296,7 @@
       <code>when</code> clause and the <code>end</code> keyword which delimits
       the <code>case</code> statement.</p>
       
-      <figure id=case-cf-if>
+      <figure id=case-cf-if.rb>
         <figcaption>The same method implemented first with an <code>if</code>
         statement then with a <code>case</code> statement
       </figure>
@@ -340,7 +340,7 @@
       present, the <code>case</code> statement’s return value is that of the
       <code>else</code> branch; otherwise it is <code>nil</code>.
 
-      <figure id=case-statement-fig>
+      <figure id=case-statement-fig.rb>
         <figcaption>Using the <code>case</code> statement to classify a HTTP
         status code
       </figure>
@@ -348,7 +348,7 @@
   </section>
 
   <section>
-    <h1>Looping</h1>
+    <h1 id=looping>Looping</h1>
     
     <p>Looping constructs represent repetition. They comprise a block of code
     (hereafter: the <dfn title="loop body">body</a>) and a <dfn>terminating
@@ -362,7 +362,7 @@
     expressed concisely and simply, and in doing so lessen the chance of
     erroneous terminating conditions.</p>
     <section>
-      <h1>Count-Controlled Loops</h1>
+      <h1 id=count-controlled-loops>Count-Controlled Loops</h1>
 
       <p>The constructs that follow instrument an <i>a priori</i> number of
       repetitions.</p>
@@ -370,10 +370,10 @@
       <!-- for loops are unnecessary -->
       
       <section>
-        <h1><code>Integer#times</code></h1>
+        <h1 id=integer-times><code>Integer#times</code></h1>
 
         <figure class=railroad>
-          <img id=integer-times>
+          <img id=integer-times.png>
           <figcaption>Syntax diagram of the <code>Integer#times</code> loop
         </figure>
 
@@ -383,17 +383,17 @@
         passing into the block the number of the current iteration. When the
         block is omitted an <code>Enumerator</code> is returned.</p>
 
-        <figure id=integer-times-loop>
+        <figure id=integer-times-loop.rb>
           <figcaption><code>Integer#times</code> executes the associated block
           the number of times specified by the receiver.
         </figure>
       </section>
 
       <section>
-        <h1><code>Integer#upto</code></h1>
+        <h1 id=integer-upto><code>Integer#upto</code></h1>
 
         <figure class=railroad>
-          <img id=integer-upto>
+          <img id=integer-upto.png>
           <figcaption>Syntax diagram of the <code>Integer#upto</code> loop
         </figure>
 
@@ -405,17 +405,17 @@
         passing it 10, 11, 12, 13, then terminating. When the
         block is omitted an <code>Enumerator</code> is returned.</p>
 
-        <figure id=integer-upto-loop>
+        <figure id=integer-upto-loop.rb>
           <figcaption><code>Integer#upto</code> counts from the receiver up to
           its argument, executing the associated block each time
         </figure>
       </section>
 
       <section>
-        <h1><code>Integer#downto</code></h1>
+        <h1 id=integer-downto><code>Integer#downto</code></h1>
 
         <figure class=railroad>
-          <img id=integer-downto>
+          <img id=integer-downto.png>
           <figcaption>Syntax diagram of the <code>Integer#downto</code> loop
         </figure>
 
@@ -426,7 +426,7 @@
         current progression. When the block is omitted an
         <code>Enumerator</code> is returned.</p>
 
-        <figure id=integer-downto-loop>
+        <figure id=integer-downto-loop.rb>
           <figcaption><code>Integer#downto</code> counts from the receiver
           down to its argument, executing the associated block each time
         </figure>
@@ -435,7 +435,7 @@
     </section>
 
     <section>
-      <h1>Condition-Controlled Loops</h1>
+      <h1 id=condition-controlled-loops>Condition-Controlled Loops</h1>
 
       <p>A condition-controlled loop uses a conditional to determine when the
       loop should terminate. The conditional is tested prior to each
@@ -443,10 +443,10 @@
       loop.</p>
       <!-- warn about constant conditions -->
       <section>
-        <h1><code>while</code> Loops</h1>
+        <h1 id=while-loop><code>while</code> Loops</h1>
 
         <figure class=railroad>
-          <img id=while-loop>
+          <img id=while-loop.png>
           <figcaption>Syntax diagram of the <code>while</code> loop
         </figure>
 
@@ -454,16 +454,16 @@
         conditional is true. If the conditional is initially false the body is
         never executed.</p>
   
-        <figure id=while-loop-fig>
+        <figure id=while-loop-fig.rb>
           <figcaption>Using a <code>while</code> loop to calculate the Farey
           sequence of order <var>n</var>
         </figure>
 
         <section>
-          <h1>Postfix <code>while</code></h1>
+          <h1 id=postfix-while-statement>Postfix <code>while</code></h1>
 
           <figure class=railroad>
-            <img id=postfix-while-statement>
+            <img id=postfix-while-statement.png>
             <figcaption>Syntax diagram of the postfix-<code>while</code>
             statement
           </figure>
@@ -472,7 +472,7 @@
           which case it executes its left-hand side while its right-hand side
           is true.</p>
 
-          <figure id=postfix-while-statement-fig>
+          <figure id=postfix-while-statement-fig.rb>
             <figcaption>Using the postfix-<code>while</code> statement to
             naïvely calculate the number of bits set in an integer
           </figure>
@@ -480,10 +480,10 @@
       </section>
 
       <section>
-        <h1><code>until</code> Loops</h1>
+        <h1 id=until-loop><code>until</code> Loops</h1>
 
         <figure class=railroad>
-          <img id=until-loop>
+          <img id=until-loop.png>
           <figcaption>Syntax diagram of the <code>until</code> loop
         </figure>
 
@@ -491,16 +491,16 @@
         conditional is false. If the conditional is initially true the body is
         never executed.</p>
 
-        <figure id=until-loop-fig>
+        <figure id=until-loop-fig.rb>
           <figcaption>Using the <code>until</code> loop to generate the
           <i>look-and-say</i> sequence
         </figure>
 
         <section>
-          <h1>Postfix <code>until</code></h1>
+          <h1 id=postfix-until-statement>Postfix <code>until</code></h1>
 
           <figure class=railroad>
-            <img id=postfix-until-statement>
+            <img id=postfix-until-statement.png>
             <figcaption>Syntax diagram of the postfix-<code>until</code> loop
           </figure>
 
@@ -508,7 +508,7 @@
           which case it executes its left-hand side until its right-hand side
           is true.</p>
 
-          <figure id=postfix-until-statement-fig>
+          <figure id=postfix-until-statement-fig.rb>
             <figcaption>Using the postfix-<code>until</code> statement to
             determine the next prime number following the receiver
           </figure>
@@ -517,10 +517,10 @@
     </section>
 
     <section>
-      <h1>Infinite Loops: <code>loop</code></h1>
+      <h1 id=loop>Infinite Loops: <code>loop</code></h1>
 
       <figure class=railroad>
-        <img id=loop-loop>
+        <img id=loop-loop.png>
         <figcaption>Syntax diagram of the <code>loop</code> loop
       </figure>
 
@@ -533,30 +533,30 @@
       <code>exit</code>. The principle of <code>loop</code>, therefore, is to
       repeat an operation until explicitly told to halt.</p>
 
-      <figure id=loop-loop-fig>
+      <figure id=loop-loop-fig.rb>
         <figcaption>Using the <code>loop</code> construct to determine whether
         an integer is <i>happy</i>
       </figure>
     </section>
 
     <section>
-      <h1>Iterating Over a Collection</h1>
+      <h1 id=iterating-collection>Iterating Over a Collection</h1>
 
       <section>
-        <h1><code>each</code></h1>
+        <h1 id=each><code>each</code></h1>
       </section>
 
       <section>
-        <h1><code>for</code></h1>
+        <h1 id=for><code>for</code></h1>
       </section>
     </section>
 
     <section>
-      <h1>Exceptions</h1>
+      <h1 id=exceptions>Exceptions</h1>
     </section>
     
     <section>
-      <h1><code>BEGIN</code> / <code>END</code></h1>
+      <h1 id=begin-end><code>BEGIN</code> / <code>END</code></h1>
     </section>
   </section>
 </section>

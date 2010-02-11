@@ -6,332 +6,330 @@
 <link rel=next href=/closures>
 <link rel=stylesheet href=/style>
 
-<body>
+<section>
+  <h1 id=modules>Modules</h1>
+
+  <p>A <dfn>module</dfn> is <q cite=/references#refFLAN08>a named group of
+    methods, constants, and class variables</q> (<a class=ref
+    href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>).</p>
+  
   <section>
-    <h1 id=modules>Modules</h1>
+    <h1 id=differences-from-classes>Differences between Classes and Modules</h1>
 
-    <p>A <dfn>module</dfn> is <q cite=/references#refFLAN08>a named group of
-      methods, constants, and class variables</q> (<a class=ref
-      href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>).</p>
-    
+    <p>A module is similar to a class in what it can contain, but differs in
+    two important ways:</p>
+
     <section>
-      <h1 id=differences-from-classes>Differences between Classes and Modules</h1>
-
-      <p>A module is similar to a class in what it can contain, but differs in
-      two important ways:</p>
-
-      <section>
-        <h1 id=instantiation>Instantiation</h1>
-        
-        <p>Unlike classes, modules cannot be instantiated. There is no
-        <code>Module#new</code>.
-      </section>
-
-      <section>
-        <h1 id=inheritance>Inheritance</h1>
-        
-        <p>Modules cannot inherit from a class or another module. Likewise,
-        classes cannot inherit from modules.
-      </section>
+      <h1 id=instantiation>Instantiation</h1>
+      
+      <p>Unlike classes, modules cannot be instantiated. There is no
+      <code>Module#new</code>.
     </section>
 
     <section>
-      <h1 id=creation>Creation</h1>
+      <h1 id=inheritance>Inheritance</h1>
       
-      <p>Modules are created in much the same way as <a
-        href=/classes#creation>classes</a>, expect the
-      <code>module</code> keyword is used in place of <a
-        href=/classes#class-keyword><code>class</code></a>.</p>
-
-      <section>
-        <h1 id=module-keyword>The <code>module</code> Keyword</h1>
-
-        <p>The <code>module <var>name</var>…end</code> expression opens a module
-        named <var>name</var>. If the constant <var>name</var> is already
-        defined it must refer to an existing module, otherwise a
-        <code>TypeError</code> is raised.  If <var>name</var> was previously
-        undefined, it is created as a <code>Module</code> object.</p>
-
-        <section>
-          <h1 id=reopening>Reopening Modules</h1>
-
-          <p>If <code>module</code> is used with the name of a pre-existing
-          module that module is <i>re-opened</i>. If a method is defined in a
-          re-opened module with the same name as a pre-existing method in the
-          same module the old method is overwritten with the new.</p>
-
-          <p>Modules can be made immutable, effectively preventing them from
-          being reopened by freezing the module object. Frozen modules raise
-          <code>RuntimeError</code>s when methods are defined, or variables
-          manipulated, in their context. 
-        </section>
-
-        <p>The module body, which may be empty, is the elliptical region in the
-        expression. It introduces a new context in which <code>self</code> refers
-        to the class.</p>
-      </section>
-
-      <section>
-        <h1 id=module-new><code>Module.new</code></h1>
-    
-        <p>The <code><var>name</var> = Module.new do…end</code> constructor may
-        be used to similar effect. The principle difference being that existing
-        modules are overwritten rather than reopened.</p>
-
-        <section>
-          <h1 id=anonymous-modules>Anonymous Modules</h1>
-
-            <p>When a constant is used as a module name it has global <!-- This
-            word is problematic. How to better explain? --> scope. This
-            gives rise to the characteristic described above in <i>Reopening
-              Modules</i>. If this behaviour is not desirable, a module can be
-            made anonymous by assigning the value of <code>Module.new</code> to a
-            local variable, thus restricting the module to the local scope.
-            Subsequently assigning this variable to a constant, names the
-            module.</p>
-        </section>
-      </section>
-      
-    <section>
-      <h1 id=mixins>Mixins</h1>
-
-      <p>The primary use of modules is <dfn>mixins</dfn>: imbuing a given
-      object with the instance methods, or <dfn>features</dfn>, of a given
-      module. An object may have any number of modules mixed in.</p>
-
-      <section>
-        <h1 id=mixin-to-class>Mixing a Module into a Class</h1>
-        
-        <p>Mixing-in a module to class effectively enables multiple
-        inheritance: appending to the class features from any number of
-        sources. By contrast, classes may only <a
-          href=/classes#inheritance>inherit</a> from a maximum of one other
-        class.
-      </section>
-
-      <section>
-        <h1 id=mixin-to-module>Mixing a Module into a Module</h1>
-        
-        <p>It is less common to mixin a module to another module, but legal
-        nevertheless. The result is simply that the features of the included
-        module are copied to the including module.
-        </section>
-      
-      <section>
-        <h1 id=inclusion>Inclusion</h1>
-
-        <p><code>Class#include</code> takes one or more module names as
-        arguments, then mixes them in to the enclosing class. Contrary to
-        intuition, the named modules are mixed-in in the reverse order in
-        which they are named. That is, <code>include A, B</code> appends the
-        features of module <code>B</code>, then module <code>A</code>.
-        Therefore, if <code>A</code> and <code>B</code> define an instance
-        method with the same name, <code>B</code>’s copy will be overwritten
-        by <code>A</code>’s.</p>
-
-        <section>
-          <h1 id=class-include><code>Class#include?</code></h1>
-          
-          <p>The <code>Class#include?</code> predicate returns
-          <code>true</code> if the module given as its argument has been
-          mixed-in to the receiver; <code>false</code> otherwise.
-        </section>
-        
-        <section>
-          <h1 id=class-included-modules><code>Class#included_modules</code></h1>
-
-          <p><code>Class#included_modules</code> returns an <code>Array</code>
-          of <code>Module</code>s mixed-in to the receiver in the reverse
-          order of their inclusion. As <code>Object</code> includes the
-          <code>Kernel</code> module, this method will usually return
-          <code>Kernel</code> as the last element.
-        </section>
-      </section>
-
-      <section>
-        <h1 id=extension>Extension</h1>
-        
-        <p>A module may be mixed-in to any object through the use of
-        <code>Class#extend</code> which, like <a
-          href=#inclusion><code>Class#include</code></a>, takes one or more
-        module names as arguments. The features of each module are appended to
-        the <a href=/class#eigenclass>eigenclass</a> of the receiver,
-        providing the <a href=/methods#per-object-behaviour>per-object
-          behaviour</a> of <a href=/methods#singleton-method>singleton
-          methods</a>.</p>
-
-        <section>
-          <h1 id=extend-self><code>extend self</code></h1>
-
-          <p>An idiomatic application of <code>extend</code> is to use
-          <code>extend self</code> within the context of a module. The effect
-          is to mix the current module into its <a
-            href=/classes#eigenclass>eigenclass</a>:</p>
-
-          <ul>
-            <li><a href=/methods#public-methods>Public</a> instance methods
-            can be invoked as instance methods in the context of the module,
-            i.e. without an explicit receiver, and singleton methods of the
-            module from anywhere.
-            <li><a href=/methods#private-methods>Private</a> and <a
-              href=/methods#protected-methods>protected</a> instance methods
-            can only be invoked from within the context of the module. 
-          </ul>
-
-          <p>An example of <code>extend self</code> is provided in a <a
-            href=#module-namespacing-extend-self>figure below</a>.
-        </section>
-      </section>
-    </section>
-
-    <section>
-      <h1 id=namespacing>Namespacing</h1>
-
-      <p>Modules can be used for <dfn>namespacing</dfn>: to combine a set of
-      methods with a common purpose so their names do not clash with unrelated
-      methods, and they can share data. Classes can be <a
-        href=/classes#nesting>used in the same way</a>.
-
-      <p>Modules are preferable to classes in this respect when the namespace
-      cannot sensibly instantiated. The use of a module improves the clarifies
-      this aspect of the <abbr title="Application Programming
-        Interface">API</abbr>.</p>
-
-      <p>Methods are defined on the module’s <a
-        href=/classes#eigenclass>eigenclass</a>, then invoked with the module
-      name as the receiver:
-      <code><var>module</var>.<var>selector</var></code>.</p>
-
-      <figure id=module-namespacing>
-        <figcaption>Modules can be used as namespaces by defining methods on
-        their eigenclass
-      </figure>
-
-      <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
-      suggests this technique can be useful in the following circumstances:</p>
-
-      <blockquote cite=/references#refBROWN09>
-        <ul>
-          <li>You are solving a single, atomic task that involves lots of steps
-          that would be better broken out into helper functions.
-          <li>You are wrapping some functions that don’t rely on much common
-          state between them, but are related to a common topic.
-          <li>The code is very general and can be used standalone or the code is
-          very specific but doesn’t relate directly to the object that it is
-          meant to be used by.
-          <li>The problem you are solving is small enough where object
-          orientation does more to get in the way than it does to help you.
-        </ul>
-        <cite><a href=/references#refBROWN09 class=ref>Ruby Best
-            Practices</a></cite>
-      </blockquote>
-
-      <p>This technique can be used in conjunction with <a
-        href=#extend-self><code>extend self</code></a> to create private
-      helper methods: accessible to the module methods; inaccessible from
-      outside the module.</p>
-
-      <figure id=module-namespacing-extend-self>
-        <figcaption>A method can be grouped with private helper methods by
-        using a module that <code>extend</code>s <code>self</code>
-      </figure>
-
-      <section>
-        <h1 id=nesting>Nesting</h1>
-
-          <p>A module may be defined within the body of another class or
-          module. The fully qualified name of the inner module is
-          <code><var>outer</var>::<var>inner</var></code>, where
-          <var>outer</var> is the name of the enclosing class/module, and
-          <var>inner</var> that of the enclosed.
-
-          <p>Since module names are constants and constants are inherited,
-          modules defined at the top level, as core modules conventionally
-          are, can be referred to by their unqualified name. However, if the
-          name is shadowed at an intervening level of the hierarchy, the
-          unqualified name refers to the shadowed module.  For example, if a
-          module named <code>Products::String</code> was defined, then within
-          the context of the <code>Products</code> module, <code>String</code>
-          would refer to <code>Products::String</code>; not the core
-          <code>String</code> class (which would need referring to as
-          <code>::String</code>).
-      </section>
-    </section>
-
-    <section>
-      <h1 id=module-functions>Module Functions</h1>
-
-      <p>A single module may be used both as a namespace and a mix-in. The
-      first case requires the module’s methods to be singleton methods on the
-      <code>Module</code> object; the second requires them to be instance
-      methods.</p>
-      
-      <figure id=module-namespace-and-mixin>      
-        <figcaption>The <code>Math</code> module can be used as both a
-        namespace and a mix-in.
-      </figure>
-
-      <p>One solution is <code>Module#module_function</code>, which is used to
-      convert a mix-in module to a namespace module. In the context of a
-      module, <code>module_function</code> is provided with one or more
-      instance method names as arguments. Alternatively,
-      <code>module_function</code> may be invoked without arguments, in which
-      case it affects all instance methods defined subsequently within the
-      same module. In both cases, each affected method is copied to the
-      module’s singleton class then the original method is made private. The
-      duplication satisfies the requirement that methods are both instance and
-      singleton methods. The visibility change forces classes which mix-in the
-      module to invoke its methods in the “functional style”, that is without
-      an explicit receiver, so as not to confuse them with traditional
-      instance methods (<a href=/references#refFLAN08 class=ref>Flanagan &amp;
-        Matsumoto</a>, pp. 251–252).</p>
-
-      <figure id=module-function>
-        <figcaption><code>module_function</code> enables a module to be used
-        both as a namespace and mix-in
-      </figure>
-
-      <p>A weakness of <code>module_function</code> is that it prevents a
-      singleton method of the module from calling a private method of the same
-      module.</p>
-
-      <figure id=module-function-private-method>
-        <figcaption><code>module_function</code> foils the calling of a
-        private instance method from a singleton method
-      </figure>
-      
-      <p><a href=#extend-self><code>extend self</code></a> does not
-      exhibit this problem, but neither does it offer the granularity of
-      <code>module_function</code>—it copies all instance methods into the
-      eigenclass—or automatically privatise instance methods.</p>
-      
-      <figure id=module-function-extend-self>
-        <figcaption><code>extend self</code> allows the calling of a private
-        instance method from a singleton method
-      </figure>
-    </section>
-
-    <section>
-      <h1 id=context>Context</h1>
-      <section>
-        <h1 id=module-eval>Module Eval</h1>
-
-        <p><code>Module#module_eval</code> takes a string or block which it
-        evaluates in the receiver’s context, setting <code>self</code> to the
-        receiver. The evaluated code can access the modules’s state, invoke its
-        singleton methods, and define instance or singleton methods.
-      </section>
-
-      <section>
-        <h1 id=module-exec>Module Exec</h1>
-        
-        <p><code>Module#module_exec</code> behaves as
-        <code>Module#module_eval</code> except it requires a block, to which
-        it passes any arguments it has received.
-      </section>
-        <!-- TODO: Track
-        http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26774 in
-        case this changes -->
+      <p>Modules cannot inherit from a class or another module. Likewise,
+      classes cannot inherit from modules.
     </section>
   </section>
-</body>
+
+  <section>
+    <h1 id=creation>Creation</h1>
+    
+    <p>Modules are created in much the same way as <a
+      href=/classes#creation>classes</a>, expect the
+    <code>module</code> keyword is used in place of <a
+      href=/classes#class-keyword><code>class</code></a>.</p>
+
+    <section>
+      <h1 id=module-keyword>The <code>module</code> Keyword</h1>
+
+      <p>The <code>module <var>name</var>…end</code> expression opens a module
+      named <var>name</var>. If the constant <var>name</var> is already
+      defined it must refer to an existing module, otherwise a
+      <code>TypeError</code> is raised.  If <var>name</var> was previously
+      undefined, it is created as a <code>Module</code> object.</p>
+
+      <section>
+        <h1 id=reopening>Reopening Modules</h1>
+
+        <p>If <code>module</code> is used with the name of a pre-existing
+        module that module is <i>re-opened</i>. If a method is defined in a
+        re-opened module with the same name as a pre-existing method in the
+        same module the old method is overwritten with the new.</p>
+
+        <p>Modules can be made immutable, effectively preventing them from
+        being reopened by freezing the module object. Frozen modules raise
+        <code>RuntimeError</code>s when methods are defined, or variables
+        manipulated, in their context. 
+      </section>
+
+      <p>The module body, which may be empty, is the elliptical region in the
+      expression. It introduces a new context in which <code>self</code> refers
+      to the class.</p>
+    </section>
+
+    <section>
+      <h1 id=module-new><code>Module.new</code></h1>
+  
+      <p>The <code><var>name</var> = Module.new do…end</code> constructor may
+      be used to similar effect. The principle difference being that existing
+      modules are overwritten rather than reopened.</p>
+
+      <section>
+        <h1 id=anonymous-modules>Anonymous Modules</h1>
+
+          <p>When a constant is used as a module name it has global <!-- This
+          word is problematic. How to better explain? --> scope. This
+          gives rise to the characteristic described above in <i>Reopening
+            Modules</i>. If this behaviour is not desirable, a module can be
+          made anonymous by assigning the value of <code>Module.new</code> to a
+          local variable, thus restricting the module to the local scope.
+          Subsequently assigning this variable to a constant, names the
+          module.</p>
+      </section>
+    </section>
+    
+  <section>
+    <h1 id=mixins>Mixins</h1>
+
+    <p>The primary use of modules is <dfn>mixins</dfn>: imbuing a given
+    object with the instance methods, or <dfn>features</dfn>, of a given
+    module. An object may have any number of modules mixed in.</p>
+
+    <section>
+      <h1 id=mixin-to-class>Mixing a Module into a Class</h1>
+      
+      <p>Mixing-in a module to class effectively enables multiple
+      inheritance: appending to the class features from any number of
+      sources. By contrast, classes may only <a
+        href=/classes#inheritance>inherit</a> from a maximum of one other
+      class.
+    </section>
+
+    <section>
+      <h1 id=mixin-to-module>Mixing a Module into a Module</h1>
+      
+      <p>It is less common to mixin a module to another module, but legal
+      nevertheless. The result is simply that the features of the included
+      module are copied to the including module.
+      </section>
+    
+    <section>
+      <h1 id=inclusion>Inclusion</h1>
+
+      <p><code>Class#include</code> takes one or more module names as
+      arguments, then mixes them in to the enclosing class. Contrary to
+      intuition, the named modules are mixed-in in the reverse order in
+      which they are named. That is, <code>include A, B</code> appends the
+      features of module <code>B</code>, then module <code>A</code>.
+      Therefore, if <code>A</code> and <code>B</code> define an instance
+      method with the same name, <code>B</code>’s copy will be overwritten
+      by <code>A</code>’s.</p>
+
+      <section>
+        <h1 id=class-include><code>Class#include?</code></h1>
+        
+        <p>The <code>Class#include?</code> predicate returns
+        <code>true</code> if the module given as its argument has been
+        mixed-in to the receiver; <code>false</code> otherwise.
+      </section>
+      
+      <section>
+        <h1 id=class-included-modules><code>Class#included_modules</code></h1>
+
+        <p><code>Class#included_modules</code> returns an <code>Array</code>
+        of <code>Module</code>s mixed-in to the receiver in the reverse
+        order of their inclusion. As <code>Object</code> includes the
+        <code>Kernel</code> module, this method will usually return
+        <code>Kernel</code> as the last element.
+      </section>
+    </section>
+
+    <section>
+      <h1 id=extension>Extension</h1>
+      
+      <p>A module may be mixed-in to any object through the use of
+      <code>Class#extend</code> which, like <a
+        href=#inclusion><code>Class#include</code></a>, takes one or more
+      module names as arguments. The features of each module are appended to
+      the <a href=/class#eigenclass>eigenclass</a> of the receiver,
+      providing the <a href=/methods#per-object-behaviour>per-object
+        behaviour</a> of <a href=/methods#singleton-method>singleton
+        methods</a>.</p>
+
+      <section>
+        <h1 id=extend-self><code>extend self</code></h1>
+
+        <p>An idiomatic application of <code>extend</code> is to use
+        <code>extend self</code> within the context of a module. The effect
+        is to mix the current module into its <a
+          href=/classes#eigenclass>eigenclass</a>:</p>
+
+        <ul>
+          <li><a href=/methods#public-methods>Public</a> instance methods
+          can be invoked as instance methods in the context of the module,
+          i.e. without an explicit receiver, and singleton methods of the
+          module from anywhere.
+          <li><a href=/methods#private-methods>Private</a> and <a
+            href=/methods#protected-methods>protected</a> instance methods
+          can only be invoked from within the context of the module. 
+        </ul>
+
+        <p>An example of <code>extend self</code> is provided in a <a
+          href=#module-namespacing-extend-self>figure below</a>.
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=namespacing>Namespacing</h1>
+
+    <p>Modules can be used for <dfn>namespacing</dfn>: to combine a set of
+    methods with a common purpose so their names do not clash with unrelated
+    methods, and they can share data. Classes can be <a
+      href=/classes#nesting>used in the same way</a>.
+
+    <p>Modules are preferable to classes in this respect when the namespace
+    cannot sensibly instantiated. The use of a module improves the clarifies
+    this aspect of the <abbr title="Application Programming
+      Interface">API</abbr>.</p>
+
+    <p>Methods are defined on the module’s <a
+      href=/classes#eigenclass>eigenclass</a>, then invoked with the module
+    name as the receiver:
+    <code><var>module</var>.<var>selector</var></code>.</p>
+
+    <figure id=module-namespacing.rb>
+      <figcaption>Modules can be used as namespaces by defining methods on
+      their eigenclass
+    </figure>
+
+    <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
+    suggests this technique can be useful in the following circumstances:</p>
+
+    <blockquote cite=/references#refBROWN09>
+      <ul>
+        <li>You are solving a single, atomic task that involves lots of steps
+        that would be better broken out into helper functions.
+        <li>You are wrapping some functions that don’t rely on much common
+        state between them, but are related to a common topic.
+        <li>The code is very general and can be used standalone or the code is
+        very specific but doesn’t relate directly to the object that it is
+        meant to be used by.
+        <li>The problem you are solving is small enough where object
+        orientation does more to get in the way than it does to help you.
+      </ul>
+      <cite><a href=/references#refBROWN09 class=ref>Ruby Best
+          Practices</a></cite>
+    </blockquote>
+
+    <p>This technique can be used in conjunction with <a
+      href=#extend-self><code>extend self</code></a> to create private
+    helper methods: accessible to the module methods; inaccessible from
+    outside the module.</p>
+
+  <figure id=module-namespacing-extend-self.rb>
+      <figcaption>A method can be grouped with private helper methods by
+      using a module that <code>extend</code>s <code>self</code>
+    </figure>
+
+    <section>
+      <h1 id=nesting>Nesting</h1>
+
+        <p>A module may be defined within the body of another class or
+        module. The fully qualified name of the inner module is
+        <code><var>outer</var>::<var>inner</var></code>, where
+        <var>outer</var> is the name of the enclosing class/module, and
+        <var>inner</var> that of the enclosed.
+
+        <p>Since module names are constants and constants are inherited,
+        modules defined at the top level, as core modules conventionally
+        are, can be referred to by their unqualified name. However, if the
+        name is shadowed at an intervening level of the hierarchy, the
+        unqualified name refers to the shadowed module.  For example, if a
+        module named <code>Products::String</code> was defined, then within
+        the context of the <code>Products</code> module, <code>String</code>
+        would refer to <code>Products::String</code>; not the core
+        <code>String</code> class (which would need referring to as
+        <code>::String</code>).
+    </section>
+  </section>
+
+  <section>
+    <h1 id=module-functions>Module Functions</h1>
+
+    <p>A single module may be used both as a namespace and a mix-in. The
+    first case requires the module’s methods to be singleton methods on the
+    <code>Module</code> object; the second requires them to be instance
+    methods.</p>
+    
+    <figure id=module-namespace-and-mixin.rb>      
+      <figcaption>The <code>Math</code> module can be used as both a
+      namespace and a mix-in.
+    </figure>
+
+    <p>One solution is <code>Module#module_function</code>, which is used to
+    convert a mix-in module to a namespace module. In the context of a
+    module, <code>module_function</code> is provided with one or more
+    instance method names as arguments. Alternatively,
+    <code>module_function</code> may be invoked without arguments, in which
+    case it affects all instance methods defined subsequently within the
+    same module. In both cases, each affected method is copied to the
+    module’s singleton class then the original method is made private. The
+    duplication satisfies the requirement that methods are both instance and
+    singleton methods. The visibility change forces classes which mix-in the
+    module to invoke its methods in the “functional style”, that is without
+    an explicit receiver, so as not to confuse them with traditional
+    instance methods (<a href=/references#refFLAN08 class=ref>Flanagan &amp;
+      Matsumoto</a>, pp. 251–252).</p>
+
+    <figure id=module-function.rb>
+      <figcaption><code>module_function</code> enables a module to be used
+      both as a namespace and mix-in
+    </figure>
+
+    <p>A weakness of <code>module_function</code> is that it prevents a
+    singleton method of the module from calling a private method of the same
+    module.</p>
+
+    <figure id=module-function-private-method.rb>
+      <figcaption><code>module_function</code> foils the calling of a
+      private instance method from a singleton method
+    </figure>
+    
+    <p><a href=#extend-self><code>extend self</code></a> does not
+    exhibit this problem, but neither does it offer the granularity of
+    <code>module_function</code>—it copies all instance methods into the
+    eigenclass—or automatically privatise instance methods.</p>
+    
+    <figure id=module-function-extend-self.rb>
+      <figcaption><code>extend self</code> allows the calling of a private
+      instance method from a singleton method
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=context>Context</h1>
+    <section>
+      <h1 id=module-eval>Module Eval</h1>
+
+      <p><code>Module#module_eval</code> takes a string or block which it
+      evaluates in the receiver’s context, setting <code>self</code> to the
+      receiver. The evaluated code can access the modules’s state, invoke its
+      singleton methods, and define instance or singleton methods.
+    </section>
+
+    <section>
+      <h1 id=module-exec>Module Exec</h1>
+      
+      <p><code>Module#module_exec</code> behaves as
+      <code>Module#module_eval</code> except it requires a block, to which
+      it passes any arguments it has received.
+    </section>
+      <!-- TODO: Track
+      http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26774 in
+      case this changes -->
+  </section>
+</section>

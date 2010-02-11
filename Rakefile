@@ -49,7 +49,7 @@ file 'out/index.html' => FileList['*.html'] do |t|
   chapters = []
   while nxt
     nok = Nokogiri::HTML(File.read ".#{nxt}.html")
-    chapters << headings(nok.css('body > section'), nxt) unless nxt.end_with?('index')
+    chapters << headings(nok.at('section'), nxt) unless nxt.end_with?('index')
     nxt = nok.at('link[@rel=next]')
     nxt = nxt['href'] if nxt
   end
@@ -101,8 +101,8 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
     nok.css('figure').each do |fig| 
       if fig['class'] == 'railroad'
         fig.css('img').each do |img|
-          png = "railroad/#{img['id']}.png"
-          ebnf = "railroad/#{img['id']}.ebnf"
+          png = "railroad/#{img['id']}"
+          ebnf = "railroad/#{img['id'].sub(/png$/, 'ebnf')}"
 
           file png => ebnf  do 
             require 'pngrammar'
@@ -111,14 +111,13 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
             File.open(png, 'w'){|f| f.print images.values.first}
           end
 
-          figure_files << out_png = 'out/figures/' + img['id'] + '.png'
+          figure_files << out_png = 'out/figures/' + img['id']
           file out_png => [png, 'out/figures'] do
             cp png, out_png
           end
         end
-      else 
-        source_fig = 'figures/' + fig['id'] + '.rb'
-        next unless File.exists?(source_fig)
+      elsif fig['id'].end_with?('.rb')
+        source_fig = 'figures/' + fig['id']
         html_fig = source_fig.sub(/rb$/, 'html')
         file html_fig => source_fig do
           sh "pygmentize -f html -O encoding=utf-8 -o #{html_fig} #{source_fig}"
@@ -134,22 +133,20 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
       nok = Nokogiri::HTML(File.read f) #use nok from outer scope?
       add_analytics(nok)
       nok.css('figure').each do |fig|
-        if fig['id']
+        if fig['id'] and fig['id'].end_with?('.rb')
           file = figure_files.
-            select{|f| f.end_with?("#{fig['id']}.html")}.
+            select{|f| f.end_with?(fig['id'].sub(/rb$/, 'html'))}.
             first
           fig.at("figcaption").before(File.read file) if file
         elsif fig['class'] == 'railroad'
-          fig.css('img').each do |img|
-            path = "out/figures/#{img['id']}.png"
+          fig.css('img').each do |img|  
+            path = "out/figures/#{img['id']}"
             img.delete('id')
             img['src'] = path[4..-1]
             / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
             img['width'] = width
             img['height'] = height
           end
-        else
-          raise "Invalid figure: #{fig}"
         end
       end
       File.open(f_out, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
