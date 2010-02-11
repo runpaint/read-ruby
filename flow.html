@@ -541,6 +541,49 @@
     </section>
 
     <section>
+      <h1 id=control-flow-statements>Control Flow Statements</h1>
+
+      <!-- Clarify the below applies only to loops; the remarks in Closures
+      apply to iterators. Perhaps move the Closures section to here?
+      Similarly, return is introduced in Methods... -->
+
+      <section>
+        <h1 id=break-statement><code>break</code> Statement</h1>
+        
+        <p>Within a loop the <code>break</code> statement transfers control to
+        the first statement following the loop. (Within a <a
+          href=/closures#return-proc-semantics>proc</a> or <a
+          href=/closures#return-lambda-semantics>lambda</a> it has different
+        semantics). The value of a <code>break</code> statement, and therefore
+        the enclosing loop, is that of its arguments—coerced into an
+        <code>Array</code> if there is a plurality—, or <code>nil</code> in
+        their absence.
+      </section>
+
+      <section>
+        <h1 id=next-statement><code>next</code> Statement</h1>
+
+        <p>The <code>next</code> statement ends the current iteration of the
+        loop and begins the next. It raises a <code>LocalJump</code> exception
+        when used outside of a loop or closure. Any arguments it is given are
+        ignored.
+      </section>
+
+      <section>
+        <h1 id=redo-statement><code>redo</code> Statement</h1>
+
+        <p>The <code>redo</code> statement restarts the current iteration of
+        the loop, returning control to the first expression in the body. The
+        loop conditional is not re-evaluated.
+      </section>
+
+      <section>
+        <h1 id=throw-catch><code>throw</code>/<code>catch</code> Statements</h1>
+
+      </section>
+    </section>
+    
+    <section>
       <h1 id=iterating-collection>Iterating Over a Collection</h1>
 
       <section>
