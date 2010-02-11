@@ -4,6 +4,7 @@ require 'nokogiri'
 CLOBBER.include('out')
 directory 'out'
 directory 'out/figures'
+FIGURE_CSS = ['figure.railroad > img', 'figure[@id]']
 
 def headings(s, f, level=1)
   return if level > 2
@@ -25,13 +26,53 @@ def toc(toc)
    end.join + '</ol>'
 end
 
-def add_analytics(nok)
+def write_html(nok, file)
   nok.css('link').last.after(File.read 'analytics.html')
+  File.open(file, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
+  # Validate?
+  sh "h5-min #{file} >#{file}.min"
+  mv "#{file}.min", file
+  sh "gzip --best -c #{file} >#{file}.gz"      
 end
 
-task :upload => :default do
-  sh "rsync --delete -vaz out/ ruby:/home/public"
-  sh 'git push'
+def chapter_dependecies(chapter)
+  Nokogiri::HTML(File.read chapter).
+    css(*FIGURE_CSS).
+    select{|e| e['id'] =~ /\.[a-z]+$/}.
+    map{|e| 'figures/' + e['id'].sub(/\.rb$/, '.html')} << chapter
+end
+
+rule(%r{figures/.+\.png$} => ->(t){ t.sub(/\.png/,'.ebnf')}) do |t|
+  require 'pngrammar'
+  images = PNGrammar.new(t.source).images
+  raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
+  File.open(t.name, 'w'){|f| f.print images.values.first}
+end
+
+rule(%r{figures/.+\.html} => ->(t){ t.sub(/\.html/, '.rb')}) do |t|
+  sh "pygmentize -f html -O encoding=utf-8 -o #{t.name} #{t.source}"
+  munged = File.read(t.name).sub(/^<div.+pre>/, '<pre class=syntax><code>').
+                             sub(/<\/pre><\/div>/,'</code></pre>')
+  File.open(t.name,'w') {|f| f.print munged}
+end
+
+rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies(t[4..-1])}) do |t|
+  source = t.prerequisites.last
+  nok = Nokogiri::HTML(File.read source)
+  nok.css(*FIGURE_CSS).each do |el|
+    if el['id'] and el['id'].end_with?('.rb')
+      file = el['id'].sub(/\.rb/,'.html')
+      el.at("figcaption").before(File.read 'figures/' + file)
+    elsif el['id'].end_with?('.png')
+      path = "out/figures/#{el['id']}"
+      cp path[4..-1], path
+      el.delete('id')
+      el['src'] = path[4..-1]
+      / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
+      el['width'], el['height'] = width. height
+    end
+  end
+  write_html(nok, t.name)
 end
 
 file 'out/sitemap.xml' => FileList['*.html', 'sitemap.xml'] do |t|
@@ -45,8 +86,7 @@ file 'out/sitemap.xml' => FileList['*.html', 'sitemap.xml'] do |t|
 end
 
 file 'out/index.html' => FileList['*.html'] do |t|
-  nxt = '/index'
-  chapters = []
+  nxt, chapters = '/index', []
   while nxt
     nok = Nokogiri::HTML(File.read ".#{nxt}.html")
     chapters << headings(nok.at('section'), nxt) unless nxt.end_with?('index')
@@ -54,12 +94,9 @@ file 'out/index.html' => FileList['*.html'] do |t|
     nxt = nxt['href'] if nxt
   end
   nok = Nokogiri::HTML(File.read 'index.html')
-  add_analytics(nok)
   nok.at('section > section > h1').after(toc(chapters.compact))
-  File.open(t.name, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
+  write_html(nok, t.name)
 end
-
-OUTPUT_FILES = ['out/style.css']
 
 file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
   File.open(t.name, 'w') do |f| 
@@ -78,86 +115,19 @@ task :validate => FileList['out/*.html'] do |t|
   end
 end
 
-
-FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
-  next if f == 'analytics.html'
-  OUTPUT_FILES << (f_out = 'out/' + f)
-  if %w{html xml}.any?{|e| f.end_with? e}
-    file "#{f_out}.gz" => f_out do |t|
-      if f_out.end_with? 'html'
-        sh "h5-min #{f_out} >#{f_out}.min"
-        mv "#{f_out}.min", f_out
-      end
-      sh "gzip --best -c #{f_out} >#{t.name}"      
-    end
-    OUTPUT_FILES << f_out + '.gz'
-  end
-
-  next if Rake::Task.task_defined?(f_out)
-  
-  if f_out.end_with?('.html')
-    figure_files = []
-    nok = Nokogiri::HTML(File.read f)
-    nok.css('figure').each do |fig| 
-      if fig['class'] == 'railroad'
-        fig.css('img').each do |img|
-          png = "railroad/#{img['id']}"
-          ebnf = "railroad/#{img['id'].sub(/png$/, 'ebnf')}"
-
-          file png => ebnf  do 
-            require 'pngrammar'
-            images = PNGrammar.new(ebnf).images
-            raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
-            File.open(png, 'w'){|f| f.print images.values.first}
-          end
-
-          figure_files << out_png = 'out/figures/' + img['id']
-          file out_png => [png, 'out/figures'] do
-            cp png, out_png
-          end
-        end
-      elsif fig['id'].end_with?('.rb')
-        source_fig = 'figures/' + fig['id']
-        html_fig = source_fig.sub(/rb$/, 'html')
-        file html_fig => source_fig do
-          sh "pygmentize -f html -O encoding=utf-8 -o #{html_fig} #{source_fig}"
-          munged = File.read(html_fig).sub(/^<div.+pre>/, '<pre class=syntax><code>').
-                                       sub(/<\/pre><\/div>/,'</code></pre>')
-          File.open(html_fig,'w') {|f| f.print munged}
-        end
-        figure_files << html_fig
-      end
-    end
-    
-    file f_out => [f, *figure_files] do |t|
-      nok = Nokogiri::HTML(File.read f) #use nok from outer scope?
-      add_analytics(nok)
-      nok.css('figure').each do |fig|
-        if fig['id'] and fig['id'].end_with?('.rb')
-          file = figure_files.
-            select{|f| f.end_with?(fig['id'].sub(/rb$/, 'html'))}.
-            first
-          fig.at("figcaption").before(File.read file) if file
-        elsif fig['class'] == 'railroad'
-          fig.css('img').each do |img|  
-            path = "out/figures/#{img['id']}"
-            img.delete('id')
-            img['src'] = path[4..-1]
-            / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
-            img['width'] = width
-            img['height'] = height
-          end
-        end
-      end
-      File.open(f_out, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
-    end
-  else
-    file f_out => f do |t|
-      cp t.prerequisites.first, t.name
-    end
-  end
-  file f_out => 'out'
-  f_out
+rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
+  cp t.source, t.name
 end
 
-task :default => OUTPUT_FILES
+task :upload => :default do
+  sh "rsync --delete -vaz out/ ruby:/home/public"
+  sh 'git push'
+end
+
+output_files = ['out', 'out/figures', 'out/style.css']
+FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
+  next if f == 'analytics.html'
+  output_files << (f_out = 'out/' + f)
+end
+
+task :default => output_files
