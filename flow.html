@@ -761,6 +761,54 @@
             </table>
          </figure>
       </section>
+
+      <section>
+        <h1 id=rescue><code>rescue</code></h1>
+
+        <figure class=railroad>
+          <img id=rescue-clause.png>
+          <figcaption>Syntax diagram of a <code>rescue</code> clause
+        </figure>
+
+        <p>A <code>rescue</code> clause may be inserted as the final clause of
+        a <code>begin</code> block, a method definition, a class definition,
+        or a module definition. It handles the exceptions described by its
+        arguments, then returns control to the statement following the
+        initiating <code>raise</code>.</p>
+
+        <section>
+          <h1 id=begin-statement><code>begin</code> Statements</h1>
+          
+          <figure class=railroad>
+            <img id=begin-statement.png>
+            <figcaption>Syntax diagram of a <code>begin</code> statement
+          </figure>
+
+          <p><code>rescue</code> is typically used in conjunction with a
+          <code>begin</code> statement, which simply associates a block
+          of statements with one or more <code>rescue</code> clauses. The
+          <code>rescue</code> clauses may be followed by optional
+          <code>else</code> and <code>ensure</code> clauses, described below.
+        </section>
+
+        <p>Without arguments, <code>rescue</code> handles only
+        <code>StandardError</code> exceptions and subclasses thereof.
+        <code>rescue</code> may be followed by <code> =&gt;
+          <var>identifier</var></code> to assign the rescued exception to a
+        local variable named <var>identifier</var>. Having done so,
+        <code>Exception</code> instance methods such as <code>#message</code>
+        and <code>#class</code> may be sent to it.
+
+        <p>If arguments are provided to <code>rescue</code> they must be
+        supplied as a comma-separated list of <code>Exception</code> classes
+        to be handled. A <code>rescue</code> clause so written will handle
+        exceptions of any of the named classes or their subclasses.
+
+        <p>A construct that accepts a <code>rescue</code> clause accepts any
+        number of them. They are tested against the current exception in the
+        order that they appear in the source file, so they should be arranged
+        in order of decreasing specificity.
+      </section>
     </section>
     
     <section>
