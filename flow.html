@@ -655,6 +655,39 @@
 
     <section>
       <h1 id=exceptions>Exceptions</h1>
+
+      <p>An instance of the <code>Exception</code> class, or
+      <dfn>exception</dfn>, is an object representing an abnormal condition that
+      changes the typical flow of execution. A block may initiate, or
+      <dfn>raise</dfn>, an exception to signal an abnormality which it is
+      either unwilling or unable to handle locally. This suspends program
+      execution and causes a corresponding <dfn>exception handler</dfn>—a block
+      which has elected to resolve the abnormality—to be sought. If the search is
+      successful, the handler is called, then execution resumes from the
+      statement following that which raised the exception. Otherwise, the
+      program terminates.</p>
+
+      <section>
+        <h1 id=raise><code>raise</code></h1>
+
+        <p>An exception is raised with the <code>Kernel.raise</code> method,
+        or its alias <code>Kernel.fail</code>.
+
+        <p>When <code>raise</code> is called without arguments it raises a
+        <code>RuntimeError</code>. If called thusly inside a
+        <code>rescue</code> clause, it re-raises the current exception.
+
+        <p>If the sole argument to <code>raise</code> is an
+        <code>Exception</code> object, that exception is raised. When the sole
+        argument is a <code>String</code>, a <code>RuntimeError</code> is
+        raised with that string as its message.
+
+        <p>The first argument of <code>raise</code> can be an object
+        responding to <code>:exception</code>, in which case the exception
+        raised is the <code>Exception</code> object returned by that method.
+        The <code>Exception</code> class itself defines such a method,
+        allowing any of its subclasses to be used in this manner.
+      </section>
     </section>
     
     <section>
