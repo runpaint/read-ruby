@@ -830,6 +830,47 @@
           <code>rescue</code> clauses may cause the <code>else</code> clause
           to be skipped.
         </section>
+
+        <section>
+          <h1 id=ensure-clause><code>ensure</code> Clause</h1>
+          
+          <p>A construct that accepts <code>rescue</code> clauses may include
+          an <code>ensure</code> clause as its final clause. The statements in
+          an <code>ensure</code> clause will always be executed, regardless of
+          whether their previous sibling clauses raised an exception or
+          employed a flow control statement such as <code>return</code>.
+          Specifically, if the construct to which <code>ensure</code> is
+          attached…
+          
+          <dl>
+            <dt>Exits normally
+            <dd>The <code>else</code> clause, if any, is
+                executed, followed by the <code>ensure</code> clause.
+            <dt>Executes <code>return</code>
+            <dd>The <code>else</code> clause, if any, is skipped, and the
+            <code>ensure</code> clause is executed.
+            <dt>Raises an exception
+            <dd>A matching <code>rescue</code> clause, if any, is executed,
+            followed by the <code>ensure</code> clause.
+          </dl>
+
+          <p>The return value of a construct containing <code>ensure</code> is
+          that of the previously executed clause, unless the
+          <code>ensure</code> clause explicitly returns a value with
+          <code>return</code>. That is, unlike other constructs the return
+          value of <code>ensure</code> is not necessarily its last statement
+          executed.  This is to allow <code>ensure</code> clauses to be
+          attached to <code>def</code> statements, for example; otherwise the
+          method being defined would never be able to return a value.
+
+          <p>An <code>ensure</code> clause may cancel the propagation of an
+          exception by raising an exception of its own or executing a control
+          flow statement. This new transfer of control—be it to the end of the
+          current block via <code>break</code> or <code>next</code>, the
+          return of the current method via <code>return</code>, or the nearest
+          matching <code>rescue</code> clause via <code>raise</code>—replaces
+          that of the current exception, aborting its passage. 
+        </section>
     </section>
     
     <section>
