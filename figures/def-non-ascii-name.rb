@@ -1,5 +1,5 @@
-    # coding: utf-8
-    def Π
-      Math::PI
-    end
-    Π #=&gt; 3.141592653589793
+# coding: utf-8
+def Π
+  Math::PI
+end
+Π #=> 3.141592653589793
