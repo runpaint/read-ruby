@@ -763,18 +763,41 @@
       </section>
 
       <section>
-        <h1 id=rescue><code>rescue</code></h1>
+        <h1 id=exception-handling>Exception Handling</h1>
 
-        <figure class=railroad>
-          <img id=rescue-clause.png>
-          <figcaption>Syntax diagram of a <code>rescue</code> clause
-        </figure>
 
-        <p>A <code>rescue</code> clause may be inserted as the final clause of
-        a <code>begin</code> block, a method definition, a class definition,
-        or a module definition. It handles the exceptions described by its
-        arguments, then returns control to the statement following the
-        initiating <code>raise</code>.</p>
+        <section>
+          <h1 id=rescue><code>rescue</code></h1>
+
+          <figure class=railroad>
+            <img id=rescue-clause.png>
+            <figcaption>Syntax diagram of a <code>rescue</code> clause
+          </figure>
+
+          <p>A <code>rescue</code> clause may be inserted as the final clause of
+          a <code>begin</code> block, a method definition, a class definition,
+          or a module definition. It handles the exceptions described by its
+          arguments, then returns control to the statement following the
+          initiating <code>raise</code>.
+
+          <p>Without arguments, <code>rescue</code> handles only
+          <code>StandardError</code> exceptions and subclasses thereof.
+          <code>rescue</code> may be followed by <code> =&gt;
+            <var>identifier</var></code> to assign the rescued exception to a
+          local variable named <var>identifier</var>. Having done so,
+          <code>Exception</code> instance methods such as <code>#message</code>
+          and <code>#class</code> may be sent to it.
+
+          <p>If arguments are provided to <code>rescue</code> they must be
+          supplied as a comma-separated list of <code>Exception</code> classes
+          to be handled. A <code>rescue</code> clause so written will handle
+          exceptions of any of the named classes or their subclasses.
+
+          <p>A construct that accepts a <code>rescue</code> clause accepts any
+          number of them. They are tested against the current exception in the
+          order that they appear in the source file, so they should be arranged
+          in order of decreasing specificity.
+        </section>
 
         <section>
           <h1 id=begin-statement><code>begin</code> Statements</h1>
@@ -791,24 +814,22 @@
           <code>else</code> and <code>ensure</code> clauses, described below.
         </section>
 
-        <p>Without arguments, <code>rescue</code> handles only
-        <code>StandardError</code> exceptions and subclasses thereof.
-        <code>rescue</code> may be followed by <code> =&gt;
-          <var>identifier</var></code> to assign the rescued exception to a
-        local variable named <var>identifier</var>. Having done so,
-        <code>Exception</code> instance methods such as <code>#message</code>
-        and <code>#class</code> may be sent to it.
+        <section>
+          <h1 id=else-clause><code>else</code> Clause</h1>
+          
+          <figure class=railroad>
+            <img id=else-clause.png>
+            <figcaption>Syntax diagram of an <code>else</code> clause
+          </figure>
 
-        <p>If arguments are provided to <code>rescue</code> they must be
-        supplied as a comma-separated list of <code>Exception</code> classes
-        to be handled. A <code>rescue</code> clause so written will handle
-        exceptions of any of the named classes or their subclasses.
-
-        <p>A construct that accepts a <code>rescue</code> clause accepts any
-        number of them. They are tested against the current exception in the
-        order that they appear in the source file, so they should be arranged
-        in order of decreasing specificity.
-      </section>
+          <p>A group of <code>rescue</code> statements may be followed by an
+          <code>else</code> clause, whose body is executed iff neither the
+          <code>rescue</code> clauses handled an exception nor the preceding
+          statements raised one. However, even in this case the use of flow
+          control statements in the statements preceding the
+          <code>rescue</code> clauses may cause the <code>else</code> clause
+          to be skipped.
+        </section>
     </section>
     
     <section>
