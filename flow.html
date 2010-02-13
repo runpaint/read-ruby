@@ -760,18 +760,26 @@
       responding to <code>:exception</code>, in which case the exception
       raised is the <code>Exception</code> object returned by that method.
       The <code>Exception</code> class itself defines such a method,
-      allowing any of its subclasses to be used in this manner.
+      allowing any of its subclasses to be used in this manner.</p>
+
+      <figure id=raise-one-argument.rb>
+        <figcaption>Using <code>raise</code> with a single argument
+      </figure>
 
       <p><code>raise</code> accepts a <code>String</code> as an optional
-      second argument, which becomes the exception’s message.
+      second argument, which becomes the exception’s message.</p>
 
       <p>The exception’s <a href=#exception-backtrace>backtrace</a> may be set
       explicitly by providing an <code>Array</code> of <code>String</code>s as
       <code>raise</code>’s third argument.</p>
 
+      <figure id=raise-multiple-arguments.rb>
+        <figcaption>Using <code>raise</code> with multiple arguments
+      </figure>
+
+      <br>
+
       <figure>
-        <figcaption class=nowrap>A summary of the arguments accepted by
-        <code>raise</code></figcaption>
         <table class=border>
           <thead>
             <tr>
@@ -826,6 +834,7 @@
               <td><code><var>a</var>.exception</code> with <var>b</var> as the
                   message, <var>c</var> as the backtrace
           </table>
+          <figcaption class=nowrap>A summary of the arguments accepted by <code>raise</code>
        </figure>
     </section>
 
@@ -1153,7 +1162,10 @@
                       named <code>m</code>, the expression <code>m</code>
                       would result in a <code>NameError</code>; whereas the
                       expression <var>m()</var> would cause a
-                      <code>NoMethodError</code>. 
+                      <code>NoMethodError</code>. Responds to
+                      <code>#args</code> with an <code>Array</code> of the
+                      arguments sent to the method, and to <code>#name</code>
+                      with the method’s name.
                     </dl>
                   <dt><code>RangeError</code>
                   <dd>Raised by methods receiving numeric arguments that fall
