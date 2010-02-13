@@ -531,8 +531,11 @@
       body will typically include statements that conditionally terminate it.
       Such statements include the control flow statements,
       <code>return</code>, <code>throw</code>, <code>raise</code>, and
-      <code>exit</code>. The principle of <code>loop</code>, therefore, is to
-      repeat an operation until explicitly told to halt.</p>
+      <code>exit</code>. In addition, <a href=#raise>raising</a> a <a
+        href=#stop-iteration><code>StopIteration</code></a> <a
+        href=#exceptions>exception</a> inside the loop body has the same
+      effect. The principle of <code>loop</code>, therefore, is to repeat an
+      operation until explicitly told to halt.</p>
 
       <figure id=loop-loop-fig.rb>
         <figcaption>Using the <code>loop</code> construct to determine whether
@@ -730,7 +733,7 @@
         <p>The <code>Exception#backtrace</code> accessor returns the backtrace
         of the receiver.
       </section>
-    </section>
+
 
     <section>
       <h1 id=raise><code>raise</code></h1>
@@ -855,41 +858,11 @@
     <section>
       <h1 id=exception-handling>Exception Handling</h1>
 
-
-      <section>
-        <h1 id=rescue><code>rescue</code></h1>
-
-        <figure class=railroad>
-          <img id=rescue-clause.png>
-          <figcaption>Syntax diagram of a <code>rescue</code> clause
-        </figure>
-
-        <p>A <code>rescue</code> clause may be inserted as the final clause of
-        a <code>begin</code> block, a method definition, a class definition,
-        or a module definition. It handles the exceptions described by its
-        arguments, then returns control to the statement following the
-        initiating <code>raise</code>.
-
-        <p>Without arguments, <code>rescue</code> handles only
-        <code>StandardError</code> exceptions and subclasses thereof.
-        <code>rescue</code> may be followed by <code> =&gt;
-          <var>identifier</var></code> to assign the rescued exception to a
-        local variable named <var>identifier</var>. Having done so,
-        <code>Exception</code> instance methods such as <code>#message</code>
-        and <code>#class</code> may be sent to it.
-
-        <!-- TODO: Mention $! -->
-
-        <p>If arguments are provided to <code>rescue</code> they must be
-        supplied as a comma-separated list of <code>Exception</code> classes
-        to be handled. A <code>rescue</code> clause so written will handle
-        exceptions of any of the named classes or their subclasses.
-
-        <p>A construct that accepts a <code>rescue</code> clause accepts any
-        number of them. They are tested against the current exception in the
-        order that they appear in the source file, so they should be arranged
-        in order of decreasing specificity.
-      </section>
+      <p>An exception is handled with a <a
+        href=#postfix-rescue><code>rescue</code> statement modifier</a> or by
+      attaching a <a href=#rescue><code>rescue</code> clause</a> to a <a
+        href=#begin-statement><code>begin</code> statement</a>, a method
+      definition, a class definition, or a module definition.</p>
 
       <section>
         <h1 id=begin-statement><code>begin</code> Statements</h1>
@@ -903,11 +876,86 @@
         <code>begin</code> statement, which simply associates a block
         of statements with one or more <code>rescue</code> clauses. The
         <code>rescue</code> clauses may be followed by optional
-        <code>else</code> and <code>ensure</code> clauses, described below.
+        <a href=#rescue-else-clause><code>else</code></a> and <a
+          href=#ensure-clause><code>ensure</code></a> clauses.
+
       </section>
 
       <section>
-        <h1 id=else-clause><code>else</code> Clause</h1>
+        <h1 id=rescue><code>rescue</code></h1>
+
+        <figure class=railroad>
+          <img id=rescue-clause.png>
+          <figcaption>Syntax diagram of a <code>rescue</code> clause
+        </figure>
+
+        <p>A <code>rescue</code> clause handles the exceptions described by
+        its arguments, then returns control to the statement following the
+        initiating <code>raise</code>.
+
+        <p>Without arguments, <code>rescue</code> handles only
+        <code>StandardError</code> exceptions and subclasses thereof.
+        <code>rescue</code> may be followed by <code> =&gt;
+          <var>identifier</var></code> to assign the rescued exception to a
+        local variable named <var>identifier</var>. Having done so,
+        <code>Exception</code> instance methods such as <code>#message</code>
+        and <code>#class</code> may be sent to it.</p>
+
+        <figure id=rescue-clause.rb>
+          <figcaption>Using a <code>begin</code> block with a
+          <code>rescue</code> clause to raise and rescue a
+          <code>RuntimeError</code>
+        </figure>
+
+        <p>If arguments are provided to <code>rescue</code> they must be
+        supplied as a comma-separated list of <code>Exception</code> classes
+        to be handled. A <code>rescue</code> clause so written will handle
+        exceptions of any of the named classes or their subclasses.
+
+        <p>A construct that accepts a <code>rescue</code> clause accepts any
+        number of them. They are tested against the current exception in the
+        order that they appear in the source file, so should be arranged by
+        decreasing specificity.
+      </section>
+
+      <section>
+        <h1 id=postfix-rescue>Postfix <code>rescue</code> Statement</h1>
+
+        <figure class=railroad>
+          <img id=postfix-rescue-statement.png>
+          <figcaption>Syntax diagram of the <code>rescue</code> statement
+          modifier
+        </figure>
+
+        <p><code>rescue</code> may be also used as a statement modifier. In
+        this form it is not restricted to the aforementioned constructs; it
+        may appear anywhere a statement can otherwise. Its syntax is
+        <code><var>a</var> rescue <var>b</var></code>, where <var>a</var> and
+        <var>b</var> are both expressions. It evaluates to <var>a</var> by
+        default; <var>b</var> if <var>a</var> raises an exception of
+        <code>StandardError</code> or subclass thereof.
+        
+        <p>Unlike the <code>rescue</code> clause, the <code>rescue</code>
+        modifier does not permit specifying exception classes to match or a
+        local variable to which the caught exception is aliased. However,
+        regarding the last point, if the right-hand operand of
+        <code>rescue</code> is the special variable <a
+          href=#dollar-bang><code>$!</code></a>, the statement will evaluate
+        to the rescued exception.
+      </section>
+
+      <section>
+        <h1 id=dollar-bang><code>$!</code></h1>
+
+        <p>Within a <code>rescue</code> clause or on the right-hand side of a
+        <code>rescue</code> statement modifier, the <code>$!</code> variable
+        holds the caught exception. In other contexts it evaluates to
+        <code>nil</code>.
+      </section>
+
+
+      <section>
+        <h1 id=rescue-else-clause><code>else</code> Clause</h1>
         
         <figure class=railroad>
           <img id=else-clause.png>
@@ -926,6 +974,11 @@
       <section>
         <h1 id=ensure-clause><code>ensure</code> Clause</h1>
         
+        <figure class=railroad>
+          <img id=ensure-clause.png>
+          <figcaption>Syntax diagram of the <code>ensure</code> clause
+        </figure>
+
         <!-- Note that it handles exit(), too -->
 
         <p>A construct that accepts <code>rescue</code> clauses may include
@@ -965,6 +1018,207 @@
         matching <code>rescue</code> clause via <code>raise</code>—replaces
         that of the current exception, aborting its passage. 
       </section>
+    </section>
+
+    <section>
+      <h1 id=exception-class-hierarchy><code>Exception</code> Class
+        Hierarchy</h1>
+
+        <dl>
+          <dt><code>Exception</code>
+          <dd>
+            <dl>
+              <dt><code>NoMemoryError</code>
+              <dd>The Ruby interpreter failed to allocate memory.
+              <dt><code>ScriptError</code>
+              <dd>
+                <dl>
+                  <dt><code>LoadError</code>
+                  <dd>Raised by <code>Kernel.require</code>,
+                  <code>Kernel.load</code>, and
+                  <code>Kernel.require_relative</code> when the named file
+                  cannot be opened; by <code>require_relative</code>
+                  when called from inside <code>eval</code> or
+                  <code>irb</code>; and by the <code>ruby</code> binary when a
+                  script is expected but no supplied.
+                  <dt><code>NotImplementedError</code>
+                  <dd>Raised by methods which rely on operating system
+                  functions that are not available to the current script. For
+                  example, methods depending on the <code>fsync()</code> or
+                  <code>fork()</code> system calls may raise this exception if
+                  the underlying operating system or Ruby runtime does not
+                  support them.
+                  <dt><code>SyntaxError</code>
+                  <dd>Raised by <code>require</code>,
+                  <code>require_relative</code>, <code>load</code>, and
+                  <code>eval</code> if the script they are interpreting is
+                  syntactically invalid.
+                </dl>
+              <dt><code>SecurityError</code>
+              <dd>Raised by methods that are prohibited by the current safe
+              level.
+              <dt><code>SignalException</code>
+              <dd>
+                <dl>
+                  <dt><code>Interrupt</code>
+                  <dd>
+                </dl>
+              <dt><code>SystemExit</code>
+              <dd>Raised by <code>exit</code> and processes which attempt to
+              terminate the current script.
+              <dt><code>SystemStackError</code>
+              <dd>Raised by Ruby when a stack overflow is detected.
+              <dt><code>StandardError</code>
+              <dd>The parent class of most recoverable errors. Caught by a
+              bare <code>rescue</code> statement modifier or clause.
+                <dl>
+                  <dt><code>ArgumentError</code>
+                  <dd>Raised by Ruby when a message is sent with an unexpected
+                  number of arguments. Often raised by methods themselves for
+                  similar reasons.
+                  <dt><code>EncodingError</code>
+                  <dd>
+                    <dl>
+                      <dt><code>Encoding::CompatibilityError</code>
+                      <dd>Raised by <code>Encoding</code> and
+                      <code>String</code> methods when the source encoding is
+                      incompatiable with the target encoding.
+                      <dt><code>Encoding::ConverterNotFoundError</code>
+                      <dd>Raised by transcoding methods when a named encoding
+                      does not correspond with a known converter.
+                      <dt><code>Encoding::UndefinedConversionError</code>
+                      <dd>Raised by <code>Encoding</code> and
+                      <code>String</code> methods when a transcoding operation
+                      fails.
+                      <dt><code>Encoding::InvalidByteSequenceError</code>
+                      <dd>Raised by <code>Encoding</code> and
+                      <code>String</code> methods when the string being
+                      transcoded contains a byte invalid for the either the
+                      source or target encoding.
+                    </dl>
+                  <dt><code>FiberError</code>
+                  <dd>Raised by fibers when attempting to call/resume a dead
+                  fiber, attempting to yield from the root fiber, or calling a
+                  fiber across threads.
+                  <dt><code>IOError</code>
+                  <dd>Raised by methods performing input/output operations.
+                  For example, it is raised when attempting to read from an
+                  <code>IO</code> stream not opened for reading, or when
+                  attempting to operate on a closed stream.
+                    <dl>
+                      <dt><code>EOFError</code>
+                      <dd>Raised by <code>IO</code> methods when attempting to
+                      read past the end of a file.
+                    </dl>
+                  <dt><code>IndexError</code>
+                  <dd>Raised by some <code>Array</code> and
+                  <code>String</code> methods when
+                  attempting to access a subscript that is out of bounds; by
+                  some <code>Regexp</code> methods when attempting to access a
+                  capture group by an invalid name/subscript.
+                    <dl>
+                      <dt><code>KeyError</code>
+                      <dd>Raised by certain <code>Hash</code> methods when
+                      attempting to access a value with an undefined key.
+                      <dt id=stop-iteration><code>StopIteration</code>
+                      <dd>Raised by <code>Enumerator</code>s when attempting
+                      to access an element past the end of the sequence.
+                      Caught by <code>loop</code>, causing the loop to
+                      terminate.
+                    </dl>
+                  <dt><code>LocalJumpError</code>
+                  <dd>Raised when attempting to return from a method that has
+                  already has already returned, call a <code>Proc</code> that
+                  has already returned, executing <code>retry</code> in a
+                  <code>Proc</code>, executing <code>next</code> outside of a
+                  loop or block, and by many methods which were not supplied
+                  with a required block argument.
+                  <dt><code>NameError</code>
+                  <dd>Raised when Ruby sees an identifier whose name neither
+                  corresponds to a local variable or method anywhere other
+                  than the left-hand side of the assignment operator; when an
+                  uninitialised constant is seen; when a class or instance
+                  variable is declared with an illegal name; and by
+                  <code>Object#method</code>,
+                  <code>Object#instance_method</code>, etc., when attempting
+                  to retrieve a <code>Method</code> object for a non-existent
+                  method.
+                    <dl>
+                      <dt><code>NoMethodError</code>
+                      <dd>Raised by Ruby when an attempt is made to invoke a
+                      non-existent method. <code>NameError</code> takes
+                      preference when an expression is ambiguous as to whether
+                      it represents a local variable reference or method call.
+                      For example, if there is neither method nor variable
+                      named <code>m</code>, the expression <code>m</code>
+                      would result in a <code>NameError</code>; whereas the
+                      expression <var>m()</var> would cause a
+                      <code>NoMethodError</code>. 
+                    </dl>
+                  <dt><code>RangeError</code>
+                  <dd>Raised by methods receiving numeric arguments that fall
+                  outside of their operating limits. For example,
+                  <code>Array#combination</code> and
+                  <code>Array#product</code> raise this exception when their
+                  arguments are too large to permute.
+                    <dl>
+                      <dt><code>FloatDomainError</code>
+                      <dd>Raised by many mathematical methods which receive
+                      <abbr title="Not a Number">NaN</a> or Infinity (∞) as
+                      arguments.   
+                    </dl>
+                  <dt><code>RegexpError</code>
+                  <dd>Raised by <code>Regexp.new</code> when passed a
+                  syntactically invalid regular expression, and when a
+                  <code>Regexp</code> literal includes characters invalid in
+                  its encoding.
+                  <dt><code>RuntimeError</code>
+                  <dd>The default exception instantiated by
+                  <code>raise</code>, so quite generic in usage. Core classes
+                  often raise this exception when a method has receieved valid
+                  arguments yet is unable to complete. Also, this is raised
+                  when attempting to modify frozen objects or modify an object
+                  whilst iterating it.
+                  <dt><code>SystemCallError</code>
+                  <dd><p>Raised when an attempt to call an operating system
+                  function fails, despite that function being implemented and
+                  expected to work. For example, it is raised by
+                  <code>Dir</code> when unable to create a directory,
+                  <code>exec</code> when unable to execute a command, and
+                  <code>File.link</code> when unable to create a symlink.
+                  <dl>
+                    <dt><code>Errno::</code>*
+                    <dd>There are many exception classes in the
+                    <code>Errno</code> namespace which subclass
+                    <code>SystemCallError</code>. They represent low-level,
+                    operating-system-specific exceptions, and as such it is
+                    often sufficient to rescue <code>SystemCallError</code>
+                    and ignore their specifics.
+                  </dl>
+                  <dt><code>ThreadError</code>
+                  <dd>Raised by <code>Thread</code> when a thread cannot be
+                  initialised, moved to another group, manipulated on account
+                  of being dead, or when a shared mutex is unexpectedly
+                  locked. 
+                  <dt><code>TypeError</code>
+                  <dd>Common exception raised by methods who receive an
+                  argument of an unexpected type. For instance, it is raised
+                  by <code>Range</code> on attempts to iterate from
+                  <code>Float</code>s, <code>class</code> and
+                  <code>module</code> when the given constant is defined and
+                  not a <code>Class</code>, and by various classes unable to
+                  convert their argument to a specific type.
+                  <dt><code>ZeroDivisionError</code>
+                  <dd>Raised by mathematical operators when they are asked,
+                  explicitly or implicitly, to divided a number by
+                  <code>0</code>. Some
+                  methods raise this exception when a division by the
+                  <code>Float</code> <code>0.0</code>, while
+                  <code>Integer#/</code>, notably, returns
+                  <code>Float::INFINITY</code>.
+                </dl>
+            </dl>
+        </dl>
     </section>
   </section>
   
