@@ -29,6 +29,12 @@ figcaption {
   font-style: italic;
 }
 
+figcaption.nowrap {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
 figure.railroad > img, .centre {
   display: block;
   margin-left: auto;
