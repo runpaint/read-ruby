@@ -1,1 +1,1 @@
-BeginStatement = "begin" Statement* RescueClause* ElseClause? EnsureClause? "end"
+BeginStatement = "begin" Statement* ExceptionClauses "end"

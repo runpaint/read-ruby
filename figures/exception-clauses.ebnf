@@ -1,0 +1,1 @@
+ExceptionClauses = RescueClause* ElseClause? EnsureClause?
