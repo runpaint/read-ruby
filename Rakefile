@@ -49,8 +49,10 @@ def target(source)
 end
 
 def source(target)
-  target.start_with?('out/') ? target[4..-1] 
-                             : target.gsub(/\.[a-z]+$/, EXTENSIONS.invert)
+  src = target.start_with?('out/') ? target[4..-1] 
+                                   : target.gsub(/\.[a-z]+$/, EXTENSIONS.invert)
+  raise "#{src} is implied by #{target} but missing" unless File.exists?(src)
+  src
 end
 
 rule(%r{figures/.+\.png$} => ->(t){ source(t) }) do |t|
