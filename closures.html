@@ -207,7 +207,8 @@
 
         <dl>
           <dt><code>next</code>
-          <dd>Returns its arguments to the <code>yield</code> statement or method that
+          <dd>Returns its arguments to the <a
+            href=/flow#yield><code>yield</code> statement</a> or method that
           invoked the <code>Proc</code>.
           <dt><code>redo</code>
           <dd>Jump to the beginning of the <code>Proc</code>
@@ -429,9 +430,10 @@
         class=ref>Friedman &amp; Wand</a>, 2008, pp. 79–82). Therefore, the
       binding must also <q>…hold all the information necessary to execute a
         method, such as the value of <code>self</code>, and the block, if any,
-        that would be invoked by a <code>yield</code>.</q> (<a
-        href=/references#refFLAN08 class=ref>Flanagan &amp; Matsumoto</a>, 2008,
-      pp. 202–203).
+        that would be invoked by a <a
+          href=/flow#yield><code>yield</code>>/a>.</q> (<a
+          href=/references#refFLAN08 class=ref>Flanagan &amp; Matsumoto</a>,
+        2008, pp. 202–203).
 
       <p>A closure’s binding is encapsulated by a <code>Binding</code> object,
       which is obtained with <code>Proc#binding</code>. It can then be used to
