@@ -103,3 +103,20 @@ table.border, table.border th,  table.border tr, table.border td {
 .clear {
   clear: both
 }
+
+/* Comment interface. Pare down? */
+#configUI { position: absolute; z-index: 20; top: 10em; right: 0; width: 11em; padding: 0 0.5em 0 0.5em; font-size: small; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em 0 0 1em; -moz-border-radius: 1em 0 0 1em; }
+ #configUI p { margin: 0.75em 0; padding: 0.3em; }
+ #configUI p label { display: block; }
+ #configUI #updateUI, #configUI .loginUI { text-align: center; }
+ #configUI input[type=button] { display: block; margin: auto; }
+ #configUI :link, #configUI :visited { color: white; }
+ #configUI :link:hover, #configUI :visited:hover { background: transparent; }
+ #reviewer { position: fixed; bottom: 0; right: 0; padding: 0.15em 0.25em 0em 0.5em; white-space: nowrap; overflow: hidden; z-index: 30; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em 0 0 0; -moz-border-radius: 1em 0 0 0; }
+ #reviewer * { font-size: small; }
+ #reviewer.off > :not(:first-child) { display: none; }
+ #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em; -moz-border-radius: 1em; -webkit-transition: opacity 1s linear; }
+ #alert.closed { opacity: 0; }
+ #alert button { position: absolute; bottom: 0.5em; right: 2em; border: solid white; color: white; font-size: 0.4em; background: transparent; }
+ #alert :link, #alert :visited { color: white; }
+ #alert :link:hover, #alert :visited:hover { background: transparent; }

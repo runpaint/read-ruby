@@ -7,6 +7,10 @@ EXTENSIONS = { '.rb' => '.html', '.ebnf' => '.png'}
 
 directory 'out'
 
+def git_hash
+  @git ||= `git rev-parse HEAD`.chomp
+end
+
 def headings(s, f, level=1)
   return if level > 2
   a = ''
@@ -28,7 +32,8 @@ def toc(toc)
 end
 
 def write_html(nok, file)
-  nok.css('link').last.after(File.read 'analytics.html')
+  nok.css('link').last.after(File.read '_script.html')
+  nok.at('section')['id'] = git_hash()
   File.open(file, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
   # Validate?
   sh "h5-min #{file} >#{file}.min"
@@ -137,8 +142,8 @@ end
 
 
 output_files = ['out', 'out/figures', 'out/style.css']
-FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg'].each do |f|
-  next if f == 'analytics.html'
+FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
+  next if f.start_with?('_')
   output_files << (f_out = 'out/' + f)
 end
 
