@@ -582,14 +582,14 @@
               causes <code>:call</code> to be assumed.
             </figure>
 
-          <dt><code>:each</code> / <code>:each_</code>*
+          <dt id=each-selector><code>:each</code> / <code>:each_</code>*
           <dd>
           <!-- We're duplicating the description of #each and Enumerable with
           the _enumerables_ section... -->
             <p>Classes mixing-in the <a
-              href=#enumerables><code>Enumerable</code></a> module are expected,
-            by default, to respond to <code>:each</code> by yielding the next
-            element of the sequence. Conventionally, it returns an
+            href=/objects/#enumerables><code>Enumerable</code></a> module are
+            expected, by default, to respond to <code>:each</code> by yielding
+            the next element of the sequence. Conventionally, it returns an
             <code>Enumerator</code> when the block is omitted. 
 
             <figure id=each-selector.rb>

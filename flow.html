@@ -643,20 +643,95 @@
         is unsuccessful, an <code>ArgumentError</code> exception is raised.
       </section>
     </section>
-    
-    <section>
-      <h1 id=iterating-collection>Iterating Over a Collection</h1>
-
-      <section>
-        <h1 id=each><code>each</code></h1>
-      </section>
-
-      <section>
-        <h1 id=for><code>for</code></h1>
-      </section>
-    </section>
   </section>
 
+  <section>
+    <h1 id=iterators>Iterators</h1>
+
+      <!-- TODO: Define 'iterator' -->
+
+      <section>
+        <h1 id=internal-iterators>Internal</h1>
+        
+        <p>An internal iterator is a method which accepts a block to which
+        each element of a collection is yielded in turn. These are
+        <em>internal</em> iterators because they “push“ elements of the
+        collection to the block; whereas <em>external</em> iterators,
+        discussed below, are objects from which the elements are “pulled”.</p>
+
+        <p>In fact, <a href=#integer-times><code>Integer#times</code></a>, <a
+          href=#integer-upto><code>Integer#upto</code></a>, and <a
+          href=#integer-downto><code>Integer#downto</code></a>, which were
+        introduced above, are themselves internal iterators. The collection
+        over which they iterate is a sequence of integers.
+
+        <p>The most common internal iterator is <code>:each</code> because its
+        presence allows a collection class to mix-in the <a
+          href=/objects/#enumerables><code>Enumerable</code></a> module. It is
+        defined on all core classes that can sensibly be iterated over, with
+        the provisos noted in <a href=/messages#each-selector>Messages:
+          <code>each</code> / <code>each_</code>*</a>.
+
+        <p>An object supporting internal iteration is sent the appropriate
+        selector (e.g. <code>:each</code>) along with a block literal
+        expecting at least one argument. Each time the block is called its
+        argument will be the next element of the collection, where the
+        semantics of <i>next</i> depend on the iterator’s intent. The block is
+        a closure, so flow control statements can be used in its body in the
+        manner described in <a href=/closures>Closures</a>.
+
+        <figure id=each-selector.rb>
+          <figcaption>The <code>:each</code> selector yields each
+          element of the receiver if given a block; otherwise returns an
+          <code>Enumerator</code>.
+        </figure>
+
+        <p><code>:each</code>, along with most internal iterators, can also be
+        sent without a block in which case it returns an
+        <code>Enumerator</code>.</p>
+
+        <section>
+          <h1 id=for><code>for</code></h1>
+
+          <figure class=railroad>
+            <img id=for-loop.png>
+            <figcaption>Syntax diagram of the <code>for</code> loop
+          </figure>
+          
+          <p>Objects responding to <code>:each</code> in the manner outlined
+          above may also be iterated over with the <code>for</code> keyword as
+          shown below. The only practical difference between a
+          <code>for</code> loop and using <code>:each</code> directly is that
+          the latter defines a new variable scope for the duration of the
+          block.</p>
+
+          <figure id=for-loop.rb>
+            <figcaption>Using the <code>for</code> keyword to drive an
+            internal iterator
+          </figure>
+        </section>
+        
+        <p>Internal iterators are not limited to behaving like
+        <code>:each</code>; <a href=/objects#enumerables>Objects:
+          Enumerables</a> describes some of the specialised iterators the
+        <code>Enumerable</code> module defines in terms of <code>:each</code>.
+        
+        <section>
+          <h1 id=custom-internal-iterators>Custom Internal Iterators</h1>
+          
+          <p>Fundamentally, an internal iterator is just a method which yields
+          a value to a block. The mechanics of methods using
+          <code>yield</code> are described in <a
+            href=/methods#block-arguments>Methods: Block Arguments</a>.</p>
+
+          <figure id=custom-internal-iterator.rb>
+            <figcaption class=nowrap>Using <code>yield</code> to create a
+            custom internal iterator
+          </figure>
+        </section>
+    </section>
+  </section>
+  
   <section>
     <h1 id=exceptions>Exceptions</h1>
 
