@@ -60,6 +60,7 @@ rule(%r{figures/.+\.png$} => ->(t){ source(t) }) do |t|
   images = PNGrammar.new(t.source).images
   raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
   File.open(t.name, 'w'){|f| f.print images.values.first}
+  sh "optipng #{t.name}"
 end
 
 rule(%r{figures/.+\.html} => ->(t){ source(t) }) do |t|
