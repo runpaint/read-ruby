@@ -735,8 +735,9 @@
         <h1 id=block-arguments>Block Arguments</h1>
         
         <p>Any method may be sent a <a href=/messages#block-argument>block
-          argument</a>. The block may be yielded to, allowing its return value
-        to be captured, or objectified and assigned to a variable.</p>
+          argument</a>. The block may be <a href=/flow#yield>yielded</a> to,
+        allowing its return value to be captured, or objectified and assigned
+        to a variable.</p>
 
         <aside class=note>
           <a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto
@@ -764,11 +765,9 @@
         </figure>
 
         <p>A block passed to a method in this way is not automatically called;
-        the method must use the <code>yield</code> keyword to do so. An
-        implication of this is that methods not expecting blocks will ignore
-        them. The return value of <code>yield</code> is that of the block.</p>
-
-        <!-- TODO: Mention that yield takes arguments -->
+        the method must use the <a href=/flow#yield><code>yield</code></a>
+        keyword to do so. An implication of this is that methods not expecting
+        blocks will ignore them.</p>
 
         <figure id=method-using-block-given-yield.rb>
           <figcaption>A method which uses the <code>block_given?</code>
@@ -781,8 +780,9 @@
         is prefixed with an ampersand (U+0026: <code>&amp;</code>). The method
         can access the block as a <code>Proc</code> object named after the
         parameter (sans ampersand). It may invoke the block via its
-        <code>Proc#call</code> method, or <code>yield</code> to it. In either
-        case, the method is invoked in precisely the same way as before.</p>
+        <code>Proc#call</code> method, or <a
+          href=/flow#yield><code>yield</code></a> to it. In either case, the
+        method is invoked in precisely the same way as before.</p>
 
         <figure class=railroad>
           <img id=block-parameter.png>

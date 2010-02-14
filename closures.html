@@ -96,17 +96,8 @@
           <h1 id=proc-semantics-arguments>Argument Passing</h1>
           
           <p>A <code>Proc</code> with proc semantics interprets the
-          arguments it receives with <dfn>yield semantics</dfn>:
-          according to the same rules as a block invoked with the
-          <code>yield</code> statement. This has the following
-          implications:</p>
-
-          <ul>
-            <li>Superfluous arguments are silently ignored.
-            <li>Parameters representing omitted arguments are assigned
-            <code>nil</code>.
-            <li><code>Array</code> arguments are automatically exploded.
-          </ul>
+          arguments it receives with <a href=/flow#yield-arguments>yield
+            semantics</a>.
         </section>
 
         <section>

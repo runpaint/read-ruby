@@ -362,6 +362,7 @@
     opposed to a single, generic construct, is to allow common scenarios to be
     expressed concisely and simply, and in doing so lessen the chance of
     erroneous terminating conditions.</p>
+
     <section>
       <h1 id=count-controlled-loops>Count-Controlled Loops</h1>
 
@@ -431,7 +432,6 @@
           <figcaption><code>Integer#downto</code> counts from the receiver
           down to its argument, executing the associated block each time
         </figure>
-
       </section>
     </section>
 
@@ -542,105 +542,162 @@
         an integer is <i>happy</i>
       </figure>
     </section>
+  </section>
+
+  <section>
+    <h1 id=control-flow-statements>Control Flow Statements</h1>
+
+    <!-- Clarify the below applies only to loops; the remarks in Closures
+    apply to iterators. Perhaps move the Closures section to here?
+    Similarly, return is introduced in Methods... -->
 
     <section>
-      <h1 id=control-flow-statements>Control Flow Statements</h1>
+      <h1 id=break-statement><code>break</code> Statement</h1>
+      
+      <figure class=railroad>
+        <img id=break-statement.png>
+        <figcaption>Syntax diagram of the <code>break</code> statement
+      </figure>
 
-      <!-- Clarify the below applies only to loops; the remarks in Closures
-      apply to iterators. Perhaps move the Closures section to here?
-      Similarly, return is introduced in Methods... -->
+      <p>Within a loop the <code>break</code> statement transfers control to
+      the first statement following the loop. (Within a <a
+        href=/closures#return-proc-semantics>proc</a> or <a
+        href=/closures#return-lambda-semantics>lambda</a> it has different
+      semantics). The value of a <code>break</code> statement, and therefore
+      the enclosing loop, is that of its arguments—coerced into an
+      <code>Array</code> if there is a plurality—, or <code>nil</code> in
+      their absence.
+    </section>
+
+    <section>
+      <h1 id=next-statement><code>next</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=next-statement.png>
+        <figcaption>Syntax diagram of the <code>next</code> statement
+      </figure>
+
+      <p>The <code>next</code> statement ends the current iteration of the
+      loop and begins the next. It raises a <code>LocalJump</code> exception
+      when used outside of a loop or closure. Any arguments it is given are
+      ignored.
+    </section>
+
+    <section>
+      <h1 id=redo-statement><code>redo</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=redo-statement.png>
+        <figcaption>Syntax diagram of the <code>redo</code> statement
+      </figure>
+
+      <p>The <code>redo</code> statement restarts the current iteration of
+      the loop, returning control to the first expression in the body. The
+      loop conditional is not re-evaluated.
+    </section>
+
+    <section>
+      <h1 id=throw-catch><code>throw</code>/<code>catch</code> Statements</h1>
+      
+      <p>The <code>catch</code> method defines a labeled block of code. The
+      <code>throw</code> method exits a <code>catch</code> block with a
+      given label. Taken together, they form a general-purpose control
+      structure.</p>
+
+      <figure class=railroad>
+        <img id=catch-throw-label.png>
+        <figcaption>Syntax diagram of the label used in
+        <code>catch</code>/<code>throw</code> pairs
+      </figure>
+
+      <p>The label is normally given as a <code>Symbol</code>, but a
+      <code>String</code> is permissible, too.</p>
+
+      <figure class=railroad>
+        <img id=catch-statement.png>
+        <figcaption>Syntax diagram of the <code>catch</code> statement
+      </figure>
+
+      <p>A <code>catch</code> block is defined with <code>catch
+        <var>label</var> <var>block</var></code>, where <var>label</var> is
+      the label which this block should catch, and <var>block</var> is a
+      block literal. The block is called immediately.</p>
+
+      <figure class=railroad>
+        <img id=throw-statement.png>
+        <figcaption>Syntax diagram of the <code>throw</code> statement
+      </figure>
+
+      <p>The syntax of <code>throw</code> is <code>throw <var>label</var>,
+        <var>value</var></code>, where <var>label</var> is the label of an
+      enclosing <code>catch</code> block, and <var>value</var> is an optional
+      expression which, if supplied, becomes the value of the corresponding
+      <code>catch</code> block. 
+      
+      <p><code>throw</code> immediately causes the current execution path to
+      terminate and a search to begin for the nearest <code>catch</code>
+      block defined with the same label. The search proceeds out through the
+      current lexical scope, then up through the call stack towards the
+      top-level of the program, crossing method boundaries if necessary. If
+      such a <code>catch</code> is found, it is exited, and execution
+      resumes from the statement that follows it. Otherwise, if the search
+      is unsuccessful, an <code>ArgumentError</code> exception is raised.
+    </section>
+
+    <section>
+      <h1 id=yield><code>yield</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=yield-statement.png>
+        <figcaption>Syntax diagram of the <code>yield</code> statement
+      </figure>
+
+      <p>The <code>yield</code> statement causes control to be transferred to
+      the associated block, then resume from the statement following
+      <code>yield</code>. It effects a <em>temporary</em> transfer such that
+      the yielding method retains control; whereas <code>return</code> cedes
+      complete control of execution to its caller. This enables a method to
+      <code>yield</code> to a block multiple times, as opposed to
+      <code>return</code> which, by definition, may be executed by a method no
+      more than once.
+
+      <p>As explained in <a href=/messages#block-argument>Messages: Block
+        Literals</a> a block literal may be sent along with a message. Then,
+      as explained in <a href=/methods#block-arguments>Methods: Block
+        Arguments</a>, the receiving method may access this block, which we
+      will refer to as <i>the associated block</i>.
+
+      <p>The return value of <code>yield</code> is that of the block yielded
+      to.</p>
 
       <section>
-        <h1 id=break-statement><code>break</code> Statement</h1>
-        
-        <figure class=railroad>
-          <img id=break-statement.png>
-          <figcaption>Syntax diagram of the <code>break</code> statement
-        </figure>
+        <h1 id=yield-arguments>Arguments</h1>
 
-        <p>Within a loop the <code>break</code> statement transfers control to
-        the first statement following the loop. (Within a <a
-          href=/closures#return-proc-semantics>proc</a> or <a
-          href=/closures#return-lambda-semantics>lambda</a> it has different
-        semantics). The value of a <code>break</code> statement, and therefore
-        the enclosing loop, is that of its arguments—coerced into an
-        <code>Array</code> if there is a plurality—, or <code>nil</code> in
-        their absence.
-      </section>
+        <p><code>yield</code> may be supplied with one or more arguments,
+        which are passed to the associated block. It is this ability that
+        enables <a href=#internal-iterators>internal iterators</a> to be <a
+          href=#custom-internal-iterators>constructed</a>. 
 
-      <section>
-        <h1 id=next-statement><code>next</code> Statement</h1>
+        <p><code>yield</code>’s arguments are married with the block’s
+        parameter list with <dfn>yield semantics</dfn>: semantics similar to
+        those of <a href=/methods#method-arguments>methods</a>, with the
+        following differences:</p>
 
-        <figure class=railroad>
-          <img id=next-statement.png>
-          <figcaption>Syntax diagram of the <code>next</code> statement
-        </figure>
+        <ul>
+          <li>Superfluous arguments are silently discarded. A block wishing to
+          collect a variable number of arguments into an <code>Array</code>
+          must use a <a href=/methods#rest-parameters>rest parameter</a>. 
+          <li>Parameters representing omitted arguments are assigned
+          <code>nil</code>.
+          <li><code>Array</code> arguments are automatically exploded.
+          <li>Block literals are prohibited as arguments. That is, a block
+          cannot be yielded to another block. The workaround is to yield a
+          <code>Proc</code> object representing the block to be yielded.
+        </ul>
 
-        <p>The <code>next</code> statement ends the current iteration of the
-        loop and begins the next. It raises a <code>LocalJump</code> exception
-        when used outside of a loop or closure. Any arguments it is given are
-        ignored.
-      </section>
-
-      <section>
-        <h1 id=redo-statement><code>redo</code> Statement</h1>
-
-        <figure class=railroad>
-          <img id=redo-statement.png>
-          <figcaption>Syntax diagram of the <code>redo</code> statement
-        </figure>
-
-        <p>The <code>redo</code> statement restarts the current iteration of
-        the loop, returning control to the first expression in the body. The
-        loop conditional is not re-evaluated.
-      </section>
-
-      <section>
-        <h1 id=throw-catch><code>throw</code>/<code>catch</code> Statements</h1>
-        
-        <p>The <code>catch</code> method defines a labeled block of code. The
-        <code>throw</code> method exits a <code>catch</code> block with a
-        given label. Taken together, they form a general-purpose control
-        structure.</p>
-
-        <figure class=railroad>
-          <img id=catch-throw-label.png>
-          <figcaption>Syntax diagram of the label used in
-          <code>catch</code>/<code>throw</code> pairs
-        </figure>
-
-        <p>The label is normally given as a <code>Symbol</code>, but a
-        <code>String</code> is permissible, too.</p>
-
-        <figure class=railroad>
-          <img id=catch-statement.png>
-          <figcaption>Syntax diagram of the <code>catch</code> statement
-        </figure>
-
-        <p>A <code>catch</code> block is defined with <code>catch
-          <var>label</var> <var>block</var></code>, where <var>label</var> is
-        the label which this block should catch, and <var>block</var> is a
-        block literal. The block is called immediately.</p>
-
-        <figure class=railroad>
-          <img id=throw-statement.png>
-          <figcaption>Syntax diagram of the <code>throw</code> statement
-        </figure>
-
-        <p>The syntax of <code>throw</code> is <code>throw <var>label</var>,
-          <var>value</var></code>, where <var>label</var> is the label of an
-        enclosing <code>catch</code> block, and <var>value</var> is an optional
-        expression which, if supplied, becomes the value of the corresponding
-        <code>catch</code> block. 
-        
-        <p><code>throw</code> immediately causes the current execution path to
-        terminate and a search to begin for the nearest <code>catch</code>
-        block defined with the same label. The search proceeds out through the
-        current lexical scope, then up through the call stack towards the
-        top-level of the program, crossing method boundaries if necessary. If
-        such a <code>catch</code> is found, it is exited, and execution
-        resumes from the statement that follows it. Otherwise, if the search
-        is unsuccessful, an <code>ArgumentError</code> exception is raised.
+        <p>As with message expressions, the final argument to
+        <code>yield</code> may be a <code>Hash</code> literal with or without
+        its delimiting curly braces.
       </section>
     </section>
   </section>
@@ -650,86 +707,89 @@
 
       <!-- TODO: Define 'iterator' -->
 
+    <section>
+      <h1 id=internal-iterators>Internal</h1>
+      
+      <p>An internal iterator is a method which accepts a block to which each
+      element of a collection is <a href=#yield>yielded</a> in turn. These are
+      <em>internal</em> iterators because they “push“ elements of the
+      collection to the block; whereas <em>external</em> iterators, discussed
+      below, are objects from which the elements are “pulled”.</p>
+
+      <p>In fact, <a href=#integer-times><code>Integer#times</code></a>, <a
+        href=#integer-upto><code>Integer#upto</code></a>, and <a
+        href=#integer-downto><code>Integer#downto</code></a>, which were
+      introduced above, are themselves internal iterators. The collection
+      over which they iterate is a sequence of integers.
+
+      <p>The most common internal iterator is <code>:each</code> because its
+      presence allows a collection class to mix-in the <a
+        href=/objects/#enumerables><code>Enumerable</code></a> module. It is
+      defined on all core classes that can sensibly be iterated over, with
+      the provisos noted in <a href=/messages#each-selector>Messages:
+        <code>each</code> / <code>each_</code>*</a>.
+
+      <p>An object supporting internal iteration is sent the appropriate
+      selector (e.g. <code>:each</code>) along with a block literal
+      expecting at least one argument. Each time the block is called its
+      argument will be the next element of the collection, where the
+      semantics of <i>next</i> depend on the iterator’s intent. The block is
+      a closure, so flow control statements can be used in its body in the
+      manner described in <a href=/closures>Closures</a>.</p>
+
+      <figure id=each-selector.rb>
+        <figcaption>The <code>:each</code> selector yields each
+        element of the receiver if given a block; otherwise returns an
+        <code>Enumerator</code>.
+      </figure>
+
+      <p><code>:each</code>, along with most internal iterators, can also be
+      sent without a block in which case it returns an
+      <code>Enumerator</code>.</p>
+
       <section>
-        <h1 id=internal-iterators>Internal</h1>
-        
-        <p>An internal iterator is a method which accepts a block to which
-        each element of a collection is yielded in turn. These are
-        <em>internal</em> iterators because they “push“ elements of the
-        collection to the block; whereas <em>external</em> iterators,
-        discussed below, are objects from which the elements are “pulled”.</p>
+        <h1 id=for><code>for</code></h1>
 
-        <p>In fact, <a href=#integer-times><code>Integer#times</code></a>, <a
-          href=#integer-upto><code>Integer#upto</code></a>, and <a
-          href=#integer-downto><code>Integer#downto</code></a>, which were
-        introduced above, are themselves internal iterators. The collection
-        over which they iterate is a sequence of integers.
-
-        <p>The most common internal iterator is <code>:each</code> because its
-        presence allows a collection class to mix-in the <a
-          href=/objects/#enumerables><code>Enumerable</code></a> module. It is
-        defined on all core classes that can sensibly be iterated over, with
-        the provisos noted in <a href=/messages#each-selector>Messages:
-          <code>each</code> / <code>each_</code>*</a>.
-
-        <p>An object supporting internal iteration is sent the appropriate
-        selector (e.g. <code>:each</code>) along with a block literal
-        expecting at least one argument. Each time the block is called its
-        argument will be the next element of the collection, where the
-        semantics of <i>next</i> depend on the iterator’s intent. The block is
-        a closure, so flow control statements can be used in its body in the
-        manner described in <a href=/closures>Closures</a>.
-
-        <figure id=each-selector.rb>
-          <figcaption>The <code>:each</code> selector yields each
-          element of the receiver if given a block; otherwise returns an
-          <code>Enumerator</code>.
+        <figure class=railroad>
+          <img id=for-loop.png>
+          <figcaption>Syntax diagram of the <code>for</code> loop
         </figure>
-
-        <p><code>:each</code>, along with most internal iterators, can also be
-        sent without a block in which case it returns an
-        <code>Enumerator</code>.</p>
-
-        <section>
-          <h1 id=for><code>for</code></h1>
-
-          <figure class=railroad>
-            <img id=for-loop.png>
-            <figcaption>Syntax diagram of the <code>for</code> loop
-          </figure>
-          
-          <p>Objects responding to <code>:each</code> in the manner outlined
-          above may also be iterated over with the <code>for</code> keyword as
-          shown below. The only practical difference between a
-          <code>for</code> loop and using <code>:each</code> directly is that
-          the latter defines a new variable scope for the duration of the
-          block.</p>
-
-          <figure id=for-loop.rb>
-            <figcaption>Using the <code>for</code> keyword to drive an
-            internal iterator
-          </figure>
-        </section>
         
-        <p>Internal iterators are not limited to behaving like
-        <code>:each</code>; <a href=/objects#enumerables>Objects:
-          Enumerables</a> describes some of the specialised iterators the
-        <code>Enumerable</code> module defines in terms of <code>:each</code>.
-        
-        <section>
-          <h1 id=custom-internal-iterators>Custom Internal Iterators</h1>
-          
-          <p>Fundamentally, an internal iterator is just a method which yields
-          a value to a block. The mechanics of methods using
-          <code>yield</code> are described in <a
-            href=/methods#block-arguments>Methods: Block Arguments</a>.</p>
+        <p>Objects responding to <code>:each</code> in the manner outlined
+        above may also be iterated over with the <code>for</code> keyword as
+        shown below. The only practical difference between a
+        <code>for</code> loop and using <code>:each</code> directly is that
+        the latter defines a new variable scope for the duration of the
+        block.</p>
 
-          <figure id=custom-internal-iterator.rb>
-            <figcaption class=nowrap>Using <code>yield</code> to create a
-            custom internal iterator
-          </figure>
-        </section>
+        <figure id=for-loop.rb>
+          <figcaption>Using the <code>for</code> keyword to drive an
+          internal iterator
+        </figure>
+      </section>
+      
+      <p>Internal iterators are not limited to behaving like
+      <code>:each</code>; <a href=/objects#enumerables>Objects:
+        Enumerables</a> describes some of the specialised iterators the
+      <code>Enumerable</code> module defines in terms of
+      <code>:each</code>.</p>
+      
+      <section>
+        <h1 id=custom-internal-iterators>Custom Internal Iterators</h1>
+        
+        <p>Fundamentally, an internal iterator is just a method which <a
+          href=#yield>yields</a> a value to a block. The mechanics of methods
+        accepting blocks are described in <a
+          href=/methods#block-arguments>Methods: Block Arguments</a>.</p>
+
+        <figure id=custom-internal-iterator.rb>
+          <figcaption class=nowrap>Using <code>yield</code> to create a
+          custom internal iterator
+        </figure>
+      </section>
     </section>
+
+      <!-- TODO: External iterators -->
   </section>
   
   <section>
@@ -1032,6 +1092,7 @@
           <figcaption>Using the postfix <code>rescue</code> statement to
           return <code>nil</code> when a <code>ZeroDivisionError</code> is
           raised.
+        </figure>
       </section>
 
       <section>
@@ -1193,8 +1254,8 @@
                     </dl>
                   <dt><code>FiberError</code>
                   <dd>Raised by fibers when attempting to call/resume a dead
-                  fiber, attempting to yield from the root fiber, or calling a
-                  fiber across threads.
+                  fiber, attempting to <a href=#yield>yield</a> from the root
+                  fiber, or calling a fiber across threads.
                   <dt><code>IOError</code>
                   <dd>Raised by methods performing input/output operations.
                   For example, it is raised when attempting to read from an
@@ -1262,7 +1323,7 @@
                     <dl>
                       <dt><code>FloatDomainError</code>
                       <dd>Raised by many mathematical methods which receive
-                      <abbr title="Not a Number">NaN</a> or Infinity (∞) as
+                      <abbr title="Not a Number">NaN</abbr> or Infinity (∞) as
                       arguments.   
                     </dl>
                   <dt><code>RegexpError</code>
