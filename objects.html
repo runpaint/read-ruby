@@ -351,6 +351,40 @@
               <figcaption>Syntax diagram of the string literal
             </figure>
 
+            <section>
+              <h1 id=here-documents>Here Documents</h1>
+
+              <figure class=railroad>
+                <img id=here-doc.png>
+                <figcaption>Syntax diagram of the here document
+              </figure>
+
+              <p><dfn>Here documents</dfn> extend the concept of alternative
+              delimiters to allow an arbitrary <em>sequence</em> of characters
+              as a delimiter. They begin with <code>&lt;&lt;</code> followed
+              immediately by an arbitary identifier or string literal. Their
+              content begins on the following line and continues until that
+              same identifier/string is seen on a line by itself with no
+              interveneing whitespace. If there is a hyphen between the
+              opening <code>&lt;&lt;</code> and the delimiter, i.e.
+              <code>&lt;&lt;-<var>delimiter</var></code>, the closing
+              delimiter may be preceeded with whitespace. The final newline
+              character before the closing delimiter is part of the here
+              document’s contents: a minimal here document is equivalent to
+              <code>"\n"</code>.
+              
+              <p>If the delimiter is an identifier or double quoted string,
+              the contents of the here document is intrepreted with
+              double-quoted string semantics. Otherwise, the here document’s
+              contents are intrepeted literally: all escape sequences and
+              interpolation constructs are ignored.</p>
+
+              <figure id=here-doc.rb>
+                <figcaption>Using a here document to render a poem
+              </figure>
+            </section>
+
+            <!-- TODO: Snip below paragraph? -->
             <p>A string may be iterated over by Unicode codepoint with
             <code>String#codepoints</code>, byte with <code>String#bytes</code>,
             character with <code>String#chars</code>, or line with

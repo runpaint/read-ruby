@@ -1,0 +1,9 @@
+HereDocument = "<<" (
+  (
+   (Identifier | StringLiteral) Expression? "\\n" Character* "\\n" (Identifier | StringLiteral)
+  ) 
+  | 
+  (
+    "-" (Identifier | StringLiteral) Expression? "\\n" Character* "\\n" " "* (Identifier | StringLiteral)
+  )
+)
