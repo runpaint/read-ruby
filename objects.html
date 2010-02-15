@@ -80,17 +80,21 @@
               </figure>
 
               <p>A single-quoted <code>String</code> is a string delimited by
-              apostrophes (<code>'</code>). Its contents are not subject to
-              interpolation. The only recognised escape sequences are
-              <code>\\</code> and <code>\'</code>; any other escape is
-              interpreted literally, i.e. as a reverse solidus followed by a
-              single character.</p>
+              U+0027 APOSTROPHE (<code>'</code>) characters or <a
+                href=#single-quoted-strings-q><code>%q</code></a>. Its
+              contents are not subject to <a
+                href=#string-interpolation>interpolation</a>. The only
+              recognised <a href=#string-escapes>escape sequences</a> are
+              <code>\\</code> and <code>\<var>delimiter</var></code>; any
+              other escape is interpreted literally, i.e. as a reverse solidus
+              followed by a single character.</p>
 
               <section>
-                <h1 id=single-quoted-strings-alt-delim>Alternative Delimiters for Single-Quoted Strings</h1>
+                <h1 id=single-quoted-strings-q>Alternative Delimiters for Single-Quoted Strings</h1>
                 <figure class=railroad>
                   <img id=single-quoted-string-literal-q.png>
-                  <figcaption>Syntax diagram of the <code>%q</code> single-quoted string literal
+                  <figcaption>Syntax diagram of the <code>%q</code>
+                  single-quoted string literal
                 </figure>
 
                 <p>A single-quoted string may also be delimited by arbitrary
@@ -124,9 +128,11 @@
               </figure>
 
               <p>A double-quoted <code>String</code> is a <code>String</code>
-              delimited with quotation marks (<code>"</code>). Its contents
-              are subject to <a href=#string-interpolation>interpolation</a>
-              and <a href=#string-escapes>character escapes</a>.</p>
+              delimited with U+0022 QUOTATION MARK (<code>"</code>) characters
+              or <a href=#double-quoted-strings-q><code>%Q</code></a>. Its
+              contents are subject to <a
+                href=#string-interpolation>interpolation</a> and <a
+                href=#string-escapes>character escapes</a>.</p>
 
               <section>
                 <h1 id=string-interpolation>String Interpolation</h1>
@@ -153,10 +159,21 @@
               <section>
                 <h1 id=string-escapes>String Escapes</h1>
 
+                <figure class=railroad>
+                  <!-- TODO: Incorporate maximumn value of octal integer: 377
+                  -->
+                  <img id=byte-escape.png>
+                  <img id=control-escape.png>
+                  <img id=meta-escape.png>
+                  <img id=character-escape.png>
+                  <img id=escape.png>
+                  <figcaption>Syntax diagram of the string escape
+                </figure>
+
                 <p><dfn title="backslash escape">Escape sequences</dfn> are
-                character sequences prefixed with a reverse solidus
-                (“backslash”) that have a meaning other than their constituent
-                characters.</p>
+                character sequences prefixed with a U+005C REVERSE SOLIDUS
+                (<code>\</code>) (“backslash”) that have a meaning other than
+                their constituent characters.</p>
 
                 <table class=border>
                   <thead>
@@ -269,6 +286,8 @@
                   <figure class=railroad>
                     <img id=hex-codepoint.png>
                     <img id=unicode-escape.png>
+                    <figcaption>Syntax diagram of the Unicode <code>\u</code>
+                    escape
                   </figure>
 
                   <p>An arbitrary Unicode character may be embedded in a
@@ -291,23 +310,14 @@
                   encoding. 
                 </section>
                 
-                <figure class=railroad>
-                  <!-- TODO: Incorporate maximumn value of octal integer: 377
-                  -->
-                  <img id=byte-escape.png>
-                  <img id=control-escape.png>
-                  <img id=meta-escape.png>
-                  <img id=character-escape.png>
-                  <img id=escape.png>
-                  <figcaption>Syntax diagram of the string escape
-                </figure>
               </section>
 
               <section>
-                <h1 id=double-quoted-strings-alt-delim>Alternative Delimiters for Double-Quoted Strings</h1>
+                <h1 id=double-quoted-strings-q>Alternative Delimiters for Double-Quoted Strings</h1>
                 <figure class=railroad>
                   <img id=double-quoted-string-literal-q.png>
-                  <figcaption>Syntax diagram of the <code>%Q</code> single-quoted string literal
+                  <figcaption>Syntax diagram of the <code>%Q</code>
+                  double-quoted string literal
                 </figure>
 
                 <p>A double-quoted string may also be delimited by arbitrary
