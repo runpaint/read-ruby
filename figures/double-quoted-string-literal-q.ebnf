@@ -1,0 +1,1 @@
+DoubleQuotedStringLiteralQ = "%" "Q"? ((Delimiter ("NOT Delimiter OR '\'" | CharacterEscape)* Delimiter) | "(" ("NOT '(' OR ')'" | CharacterEscape )* ")" | "[" ("NOT '[' OR ']'" | CharacterEscape )*"]" | "{" ("NOT '{' OR '}'" | CharacterEscape)* "}" | "<" ("NOT '<' OR '>'" | CharacterEscape)* ">")

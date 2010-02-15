@@ -158,7 +158,7 @@
                 (“backslash”) that have a meaning other than their constituent
                 characters.</p>
 
-                <table>
+                <table class=border>
                   <thead>
                     <tr><th>Escape Sequence<th>Interpretation
                   </thead>
@@ -264,7 +264,7 @@
                 </table>
 
                 <section>
-                  <h1 id=unicode-escape>Unicode Escape</h1>
+                  <h1 id=unicode-escapes>Unicode Escapes</h1>
 
                   <figure class=railroad>
                     <img id=hex-codepoint.png>
@@ -277,7 +277,7 @@
                   SMILING FACE (☺) is <code>\u263A</code>.
 
                   <p>The <code>\u{}</code> construct extends this ability to
-                  embedding multiple codepoints accepts with the same escape.
+                  embedding multiple codepoints with the same escape.
                   The curly braces delimit one or more hexadecimal codepoints
                   separated by whitespace. This form does not restrict a
                   codepoint to four digits. For example, U+1F090 DOMINO TILE
@@ -303,6 +303,33 @@
                 </figure>
               </section>
 
+              <section>
+                <h1 id=double-quoted-strings-alt-delim>Alternative Delimiters for Double-Quoted Strings</h1>
+                <figure class=railroad>
+                  <img id=double-quoted-string-literal-q.png>
+                  <figcaption>Syntax diagram of the <code>%Q</code> single-quoted string literal
+                </figure>
+
+                <p>A double-quoted string may also be delimited by arbitrary
+                delimiters with the
+                <code>%Q<var>delimiter</var>…<var>delimiter</var></code> and
+                <code>%<var>delimiter</var>…<var>delimiter</var></code>constructs,
+                where <var>delimiter</var> is a single character.  If
+                <var>delimiter</var> appears in the string it must be escaped.
+                
+                <p>If the opening delimiter is <code>(</code>, <code>[</code>,
+                <code>&lt;</code>, or <code>{</code>, the closing delimiter
+                must be the corresponding closing bracket. For example, if the
+                opening delimiter is <code>[</code>, the closing delimiter
+                must be <code>]</code>. When these paired delimiters are used,
+                the same pair may appear inside the string as long as they are
+                properly balanced.</p>
+
+                <figure id=double-quoted-string-literal-q.rb>
+                  <figcaption>Constructing a double-quoted string with
+                  alternative delimiters using <code>%Q</code>
+                </figure>
+              </section>
             </section>
 
             <p>Therefore, a <dfn>string literal</dfn> is either a

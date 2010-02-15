@@ -1,1 +1,1 @@
-SingleQuotedStringLiteral = "'" ("[^'\\]" | CharacterEscape)* "'"
+SingleQuotedStringLiteral = ("'" ("[^'\\]" | CharacterEscape)* "'") | SingleQuotedStringLiteralQ
