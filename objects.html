@@ -125,7 +125,8 @@
 
               <p>A double-quoted <code>String</code> is a <code>String</code>
               delimited with quotation marks (<code>"</code>). Its contents
-              are subject to interpolation and character escapes.</p>
+              are subject to <a href=#string-interpolation>interpolation</a>
+              and <a href=#string-escapes>character escapes</a>.</p>
 
               <section>
                 <h1 id=string-interpolation>String Interpolation</h1>
@@ -155,21 +156,141 @@
                 <p><dfn title="backslash escape">Escape sequences</dfn> are
                 character sequences prefixed with a reverse solidus
                 (“backslash”) that have a meaning other than their constituent
-                characters. <code>\n</code> is a newline (U+000A);
-                <code>\t</code> a tab (U+0009); <code>\r</code> a carriage
-                return (U+000D); <code>\s</code> a space (U+0020);
-                <code>\\</code> a reverse solidus;
-                <code>\n<var>octal</var></code> the byte given by
-                <var>octal</var>, a three digit octal number &lt; 377; and
-                <code>\u{<var>hex</var>}</code> the Unicode codepoint
-                <var>hex</var>, a hexadecimal number. To include a literal
-                apostrophe or quotation mark in a string literal delimited by
-                the same, the character must be preceded by a backlash.</p>
+                characters.</p>
 
-                <!-- TODO: List other one-character escapes, e.g. \a -->
+                <table>
+                  <thead>
+                    <tr><th>Escape Sequence<th>Interpretation
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>\a</code>
+                      <td>U+0007 &lt;control&gt;: The <a
+                          href=//en.wikipedia.org/wiki/Bell_character>BEL</a>
+                          character. Rings the console bell.
+                    <tr>
+                      <td><code>\b</code>
+                      <td>U+0008 &lt;control&gt;: The <a
+                          href=//en.wikipedia.org/wiki/Backspace>Backspace</a>
+                          character.
+                    <tr>
+                      <td><code>\e</code>
+                      <td>U+001B &lt;control&gt;: The <a
+                          href=//en.wikipedia.org/wiki/Esc>ESC</a>
+                          character.
+                    <tr>
+                      <td><code>\f</code>
+                      <td>U+000C &lt;control&gt;: The <a
+                          href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
+                          character.
+                    <tr>
+                      <td><code>\n</code>
+                      <td>U+000A &lt;control&gt;: The <a
+                          href=//en.wikipedia.org/wiki/Newline>Newline</a> character.
+                    <tr>
+                      <td><code>\r</code>
+                      <td>U+000D &lt;control&gt;: The <a
+                          href=//en.wikipedia.org/wiki/Carriage_return>Carriage Return</a> 
+                        character.
+                    <tr>
+                      <td><code>\s</code>
+                      <td>U+0020 SPACE: The <a
+                          href=//en.wikipedia.org/wiki/Space_key>Space</a>
+                        character.
+                    <tr>
+                      <td><code>\t</code>
+                      <td>U+0009 &lt;control&gt;: The <a
+                          href=//en.wikipedia.org/wiki/Tab_character>Tab</a> 
+                        character
+                    <tr>
+                      <td><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code>
+                        <td>The <a
+                            href=//en.wikipedia.org/wiki/Unicode>Unicode</a>
+                          <a
+                            href=//en.wikipedia.org/wiki/Codepoint>codepoint</a>
+                          specified by the four given hexadecimal digits.
+                    <tr>
+                      <td><code>\u{<var>codepoints</var>}</code>
+                      <td>The Unicode codepoint(s) specified by
+                        <var>codepoints</var>.</code> See: <a
+                          href=#unicode-escapes>Unicode Escapes</a>.
+                    <tr>
+                      <td><code>\v</code>
+                      <td>U+000B &lt;control&gt;: The vertical tab character.
+                    <tr>
+                      <td><code>\<var>octal</var><var>octal</var><var>octal</var></code>
+                      <td>The byte specified by the three given octal digits
+                    <tr>
+                      <td><code>\<var>octal</var><var>octal</var></code>
+                      <td>The byte specified by the two given octal digits
+                    <tr>
+                      <td><code>\<var>octal</var></code>
+                      <td>The byte specified by the given octal digit
+                    <tr>
+                      <td><code>\x<var>hex</var><var>hex</var></code>
+                      <td>The byte specified by the two given hexadecimal
+                        digits
+                    <tr>
+                      <td><code>\x<var>hex</var></code>
+                      <td>The byte specified by the given hexadecimal digit
+                    <tr>
+                      <td><code>\c<var>char</var></code>
+                      <td rowspan=2>The <a
+                          href=//en.wikipedia.org/wiki/Control_character>control
+                          character</a> <code>Ctrl-<var>char</var></code>,
+                        e.g.  <code>\cZ</code> is U+001A &lt;control&gt;
+                    <tr>
+                      <td><code>\C-<var>char</var></code>
+                    <tr>
+                      <td><code>\M-<var>char</var></code>
+                      <td>Meta character <var>char</var> formed by setting
+                          the high bit of <var>char</var> character code
+                    <tr>
+                      <td><code>\</code>U+000A &lt;control&gt;
+                      <td rowspan=3>A backslash before a <a
+                          href=//en.wikipedia.org/wiki/Newline>line terminator</a>
+                        escapes it, removing both the line
+                        terminator and backslash from the string
+                    <tr>
+                      <td><code>\</code>U+000D &lt;control&gt;
+                    <tr>
+                      <td><code>\</code>U+000D&nbsp;&lt;control&gt;U+000A&nbsp;&lt;control&gt;
+                    <tr>
+                      <td><code>\<var>char</var></code>
+                      <td>A backslash before any other character evaluates to
+                        the character itself
+                  </tbody>
+                </table>
+
+                <section>
+                  <h1 id=unicode-escape>Unicode Escape</h1>
+
+                  <figure class=railroad>
+                    <img id=hex-codepoint.png>
+                    <img id=unicode-escape.png>
+                  </figure>
+
+                  <p>An arbitrary Unicode character may be embedded in a
+                  string by specifying its codepoint as four hexadecimal
+                  digits following <code>\u</code>. For example, U+263A WHITE
+                  SMILING FACE (☺) is <code>\u263A</code>.
+
+                  <p>The <code>\u{}</code> construct extends this ability to
+                  embedding multiple codepoints accepts with the same escape.
+                  The curly braces delimit one or more hexadecimal codepoints
+                  separated by whitespace. This form does not restrict a
+                  codepoint to four digits. For example, U+1F090 DOMINO TILE
+                  VERTICAL-06-03 (🂐) and U+1F091 DOMINO TILE VERTICAL-06-04
+                  (🂑) are <code>\u{1f090 1F091}</code>
+
+                  <p>Both escapes above force the string in which they are
+                  embedded to have UTF-8 encoding. However, they are illegal
+                  in a file that has both a non-UTF-8 source encoding and
+                  a string containing literal multibyte characters in that
+                  encoding. 
+                </section>
+                
                 <figure class=railroad>
-                  <img id=hex-codepoint.png>
-                  <img id=unicode-escape.png>
                   <!-- TODO: Incorporate maximumn value of octal integer: 377
                   -->
                   <img id=byte-escape.png>
