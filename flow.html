@@ -618,14 +618,9 @@
       given label. Taken together, they form a general-purpose control
       structure.</p>
 
-      <figure class=railroad>
-        <img id=catch-throw-label.png>
-        <figcaption>Syntax diagram of the label used in
-        <code>catch</code>/<code>throw</code> pairs
-      </figure>
-
-      <p>The label is normally given as a <code>Symbol</code>, but a
-      <code>String</code> is permissible, too.</p>
+      <p>The label is normally given as a <code>Symbol</code> or
+      <code>String</code>, however any object is permissible as long as the
+      thrown object is <em>identical</em> to the caught object.</p>
 
       <figure class=railroad>
         <img id=catch-statement.png>

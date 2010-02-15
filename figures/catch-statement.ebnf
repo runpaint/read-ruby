@@ -1,1 +1,1 @@
-CatchStatement = "catch" ("(" CatchThrowLabel ")" BlockLiteral | CatchThrowLabel "do" Block "end")
+CatchStatement = "catch" ("(" Expression ")" BlockLiteral | Expression "do" Block "end")

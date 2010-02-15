@@ -1,1 +1,1 @@
-ThrowStatement = "throw" ThrowCatchLabel ("," Expression)?
+ThrowStatement = "throw" Expression ("," Expression)?
