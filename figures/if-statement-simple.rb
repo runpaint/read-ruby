@@ -1,5 +1,5 @@
 if true
   :verdadero
-end #=> :t
+end #=> :verdadero
 
 if false then :falso end #=> nil
