@@ -115,59 +115,73 @@
               </section>
             </section>
 
-            <p><dfn title="string interpolation">Interpolation</dfn> is
-            the embedding of the value of an expression within a string.
-            The general form of the syntax is
-            <code>#{<var>expression</var>}</code>.  It is common for
-            <var>expression</var> to be simply the name of a local
-            variable which is to be substituted for its value.
+            <section>
+              <h1 id=double-quoted-strings>Double-Quoted Strings</h1>
 
-            <p>The braces can be omitted if <var>expression</var> is the
-            name of a global—, class—, or instance variable. However, in
-            this case the variable name cannot be immediately followed by
-            a character legal in an identifier, as ambiguity results. </p>
+              <figure class=railroad>
+                <img id=double-quoted-string-literal.png>
+                <figcaption>Syntax diagram of the double-quoted string literal
+              </figure>
 
-            <figure class=railroad>
-              <img id=string-interpolation.png>
-              <figcaption>Syntax diagram of the string interpolation
-              construct
-            </figure>
-            
-            <p><dfn title="backslash escape">Escape sequences</dfn> are character
-            sequences prefixed with a reverse solidus (“backslash”) that have a
-            meaning other than their constituent characters. <code>\n</code> is a
-            newline (U+000A); <code>\t</code> a tab (U+0009); <code>\r</code> a
-            carriage return (U+000D); <code>\s</code> a space (U+0020);
-            <code>\\</code> a reverse solidus; <code>\n<var>octal</var></code> the
-            byte given by <var>octal</var>, a three digit octal number &lt; 377;
-            and <code>\u{<var>hex</var>}</code> the Unicode codepoint
-            <var>hex</var>, a hexadecimal number. To include a literal apostrophe
-            or quotation mark in a string literal delimited by the same, the
-            character must be preceded by a backlash.</p>
+              <p>A double-quoted <code>String</code> is a <code>String</code>
+              delimited with quotation marks (<code>"</code>). Its contents
+              are subject to interpolation and character escapes.</p>
 
-            <!-- TODO: List other one-character escapes, e.g. \a -->
-            <figure class=railroad>
-              <img id=hex-codepoint.png>
-              <img id=unicode-escape.png>
-              <!-- TODO: Incorporate maximumn value of octal integer: 377
-              -->
-              <img id=byte-escape.png>
-              <img id=control-escape.png>
-              <img id=meta-escape.png>
-              <img id=character-escape.png>
-              <img id=escape.png>
-              <figcaption>Syntax diagram of the string escape
-            </figure>
+              <section>
+                <h1 id=string-interpolation>String Interpolation</h1>
 
-            <p>A double-quoted <code>String</code> is a
-            <code>String</code> delimited with quotation marks
-            (<code>"</code>). Its contents are subject to interpolation
-            and character escapes.</p>
+                <figure class=railroad>
+                  <img id=string-interpolation.png>
+                  <figcaption>Syntax diagram of the string interpolation
+                  construct
+                </figure>
 
-            <figure class=railroad>
-              <img id=double-quoted-string-literal.png>
-              <figcaption>Syntax diagram of the double-quoted string literal
-            </figure>
+                <p><dfn title="string interpolation">Interpolation</dfn> is
+                the embedding of the value of an expression within a string.
+                The general form of the syntax is
+                <code>#{<var>expression</var>}</code>.  It is common for
+                <var>expression</var> to be simply the name of a local
+                variable which is to be substituted for its value.
+
+                <p>The braces can be omitted if <var>expression</var> is the
+                name of a global—, class—, or instance variable. However, in
+                this case the variable name cannot be immediately followed by
+                a character legal in an identifier, as ambiguity results. </p>
+              </section>
+
+              <section>
+                <h1 id=string-escapes>String Escapes</h1>
+
+                <p><dfn title="backslash escape">Escape sequences</dfn> are
+                character sequences prefixed with a reverse solidus
+                (“backslash”) that have a meaning other than their constituent
+                characters. <code>\n</code> is a newline (U+000A);
+                <code>\t</code> a tab (U+0009); <code>\r</code> a carriage
+                return (U+000D); <code>\s</code> a space (U+0020);
+                <code>\\</code> a reverse solidus;
+                <code>\n<var>octal</var></code> the byte given by
+                <var>octal</var>, a three digit octal number &lt; 377; and
+                <code>\u{<var>hex</var>}</code> the Unicode codepoint
+                <var>hex</var>, a hexadecimal number. To include a literal
+                apostrophe or quotation mark in a string literal delimited by
+                the same, the character must be preceded by a backlash.</p>
+
+                <!-- TODO: List other one-character escapes, e.g. \a -->
+                <figure class=railroad>
+                  <img id=hex-codepoint.png>
+                  <img id=unicode-escape.png>
+                  <!-- TODO: Incorporate maximumn value of octal integer: 377
+                  -->
+                  <img id=byte-escape.png>
+                  <img id=control-escape.png>
+                  <img id=meta-escape.png>
+                  <img id=character-escape.png>
+                  <img id=escape.png>
+                  <figcaption>Syntax diagram of the string escape
+                </figure>
+              </section>
+
+            </section>
 
             <p>Therefore, a <dfn>string literal</dfn> is either a
             double-quoted string literal or a single-quoted string
