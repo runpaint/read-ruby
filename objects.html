@@ -57,12 +57,12 @@
           <section>
             <h1 id=strings>Strings</h1>
 
-            <p><code>String</code>s are mutable sequences of characters
-            with an associated encoding.
+            <p><code>String</code>s are mutable sequences of characters with
+            an associated encoding.
             
             <p>A single character prefixed with a question mark
-            (<code>?<var>char</var></code>) instantiates a
-            <code>String</code> containing the character.</p>
+            (<code>?<var>char</var></code>) instantiates a <code>String</code>
+            containing the character.</p>
 
             <figure class=railroad>
               <img id=character-literal.png>
@@ -71,17 +71,49 @@
 
             <!-- TODO: alternative delimiters-->
 
-            <p>A single-quoted <code>String</code> is a string delimited
-            by apostrophes (<code>'</code>). Its contents are not subject
-            to interpolation. The only recognised escape sequences are
-            <code>\\</code> and <code>\'</code>; any other escape is
-            interpreted literally, i.e. as a reverse solidus followed by a
-            single character.</p>
+            <section>
+              <h1 id=single-quoted-strings>Single-Quoted Strings</h1>
 
-            <figure class=railroad>
-              <img id=single-quoted-string-literal.png>
-              <figcaption>Syntax diagram of the single-quoted string literal
-            </figure>
+              <figure class=railroad>
+                <img id=single-quoted-string-literal.png>
+                <figcaption>Syntax diagram of the single-quoted string literal
+              </figure>
+
+              <p>A single-quoted <code>String</code> is a string delimited by
+              apostrophes (<code>'</code>). Its contents are not subject to
+              interpolation. The only recognised escape sequences are
+              <code>\\</code> and <code>\'</code>; any other escape is
+              interpreted literally, i.e. as a reverse solidus followed by a
+              single character.</p>
+
+              <section>
+                <h1 id=single-quoted-strings-alt-delim>Alternative Delimiters for Single-Quoted Strings</h1>
+                <figure class=railroad>
+                  <img id=single-quoted-string-literal-q.png>
+                  <figcaption>Syntax diagram of the <code>%q</code> single-quoted string literal
+                </figure>
+
+                <p>A single-quoted string may also be delimited by arbitrary
+                delimiters with the
+                <code>%q<var>delimiter</var>…<var>delimiter</var></code>
+                construct, where <var>delimiter</var> is a single character.
+                If <var>delimiter</var> appears in the string it must be
+                escaped.
+                
+                <p>If the opening delimiter is <code>(</code>, <code>[</code>,
+                <code>&lt;</code>, or <code>{</code>, the closing delimiter
+                must be the corresponding closing bracket. For example, if the
+                opening delimiter is <code>[</code>, the closing delimiter
+                must be <code>]</code>. When these paired delimiters are used,
+                the same pair may appear inside the string as long as they are
+                properly balanced.</p>
+
+                <figure id=single-quoted-string-literal-q.rb>
+                  <figcaption>Constructing a single-quoted string with
+                  alternative delimiters using <code>%q</code>
+                </figure>
+              </section>
+            </section>
 
             <p><dfn title="string interpolation">Interpolation</dfn> is
             the embedding of the value of an expression within a string.
