@@ -2,7 +2,7 @@
 require 'rake/clean'
 require 'nokogiri'
 CLOBBER.include('out')
-FIGURE_CSS = ['figure.railroad > img', 'figure[@id]']
+FIGURE_CSS = ['figure.railroad img', 'figure[@id]']
 EXTENSIONS = { '.rb' => '.html', '.ebnf' => '.png'}
 
 directory 'out'
