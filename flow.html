@@ -7,6 +7,7 @@
 <link rel=next href=/references>
 
 <!-- http://www.engineyard.com/blog/2010/iteration-shouldnt-spin-your-wheels/
+http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
 -->
 <section>
   <h1 id=flow>Flow</h1>
@@ -650,7 +651,13 @@
       top-level of the program, crossing method boundaries if necessary. If
       such a <code>catch</code> is found, it is exited, and execution
       resumes from the statement that follows it. Otherwise, if the search
-      is unsuccessful, an <code>ArgumentError</code> exception is raised.
+      is unsuccessful, an <code>ArgumentError</code> exception is raised.</p>
+
+      <figure id=catch-throw.rb>
+        <figcaption>Using <code>throw</code> and
+        <code>catch</code> to follow URL redirection. (Based on the
+        implementation of <code>OpenURI</code>)
+      </figcaption>
     </section>
 
     <section>
