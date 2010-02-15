@@ -868,7 +868,7 @@
         <p>The <code>Exception#backtrace</code> accessor returns the backtrace
         of the receiver.
       </section>
-
+    </section>
 
     <section>
       <h1 id=raise><code>raise</code></h1>
@@ -1177,8 +1177,7 @@
     </section>
 
     <section>
-      <h1 id=exception-class-hierarchy><code>Exception</code> Class
-        Hierarchy</h1>
+      <h1 id=exception-class-hierarchy><code>Exception</code> Class Hierarchy</h1>
 
         <dl>
           <dt><code>Exception</code>
@@ -1382,6 +1381,72 @@
   </section>
   
   <section>
-    <h1 id=begin-end><code>BEGIN</code> / <code>END</code></h1>
+    <h1 id=begin-exit-handler>Begin / Exit Handlers</h1>
+
+    <p>A <dfn title="begin handler">begin</dfn> or <dfn title="exit
+      handler">exit</dfn> handler register code to be executed at the
+    beginning or end, respectively, of a program.</p>
+
+    <section>
+      <h1 id=begin-block><code>BEGIN</code> Block</h1>
+
+      <figure class=railroad>
+        <img id=begin-block.png>
+        <figcaption>Syntax diagram of the <code>BEGIN</code> block
+      </figure>
+
+      <p>A <code>BEGIN</code> block, as opposed to a <a
+        href=#begin-statement><code>begin</code> statement</a>, is executed at
+      the very beginning of a program. They consist of the <code>BEGIN</code>
+      keyword followed by statements delimited by curly braces. They define
+      their own variable scope, entirely independent of any surrounding or
+      preceding statements, and hidden from statements that follow. If multiple
+      <code>BEGIN</code> blocks are present, they are executed in the order
+      encountered by the interpreter.</p>
+
+      <figure id=begin-block.rb>
+        <figcaption>Using <code>BEGIN</code> to execute a given block before
+        any other statement
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=end-block><code>END</code> Block</h1>
+
+      <figure class=railroad>
+        <img id=end-block.png>
+        <figcaption>Syntax diagram of the <code>END</code> block
+      </figure>
+
+      <p>An <code>END</code> block, as opposed to the <code>end</code> keyword,
+      is executed at the very end of a program. They consist of the
+      <code>END</code> keyword followed by statements delimited by curly braces.
+      Unlike <code>BEGIN</code> blocks, they share local variable scope with
+      surrounding code. A further difference is that the execution of an
+      <code>END</code> block is governed by surrounding constructs: if it
+      appears in the body of a conditional, for instance, its execution is
+      dependent on that conditional being true. However, even if enclosed in a
+      looping construct, an <code>END</code> block is still only executed
+      once.</p>
+
+      <figure id=end-block.rb>
+        <figcaption>Using <code>END</code> to execute a given block
+        after any other statement
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=at_exit><code>Kernel.at_exit</code></h1>
+      
+      <p>An alternative to <a href=#end-block><code>END</code> blocks</a> is
+      <code>Kernel.at_exit</code>. It accepts a block argument which it
+      registers to execute at the end of program execution. If called multiple
+      times the blocks are executed in reverse chronological order.</p>
+
+      <figure id=at_exit.rb>
+        <figcaption>Using <code>at_exit</code> to execute a given block after
+        any other statement
+      </figure>
+    </section>
   </section>
 </section>
