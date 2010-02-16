@@ -384,6 +384,25 @@
               </figure>
             </section>
 
+            <section>
+              <h1 id=backticks>Backticks</h1>
+
+              <p>A double-quoted string delimited with U+0060 GRAVE ACCENT
+              (<code>`</code>) characters, or “backticks”, executes its
+              contents as an operating system command and returns the output.
+              This is achieved by the <code>Kernel.`</code> method, which can
+              be redefined to alter these semantics. Alternative delimiters
+              can be used with the corresponding
+              <code>%x<var>delimiter</var>…<var>delimiter</var></code>
+              construct, which follows the same rules a <a
+                href=#double-quoted-strings-q><code>%Q</code></a>.</p>
+              
+              <figure id=backticks.rb>
+                <figcaption>Using backticks to execute commands and retrieve
+                the output
+              </figure>
+            </section>
+
             <!-- TODO: Snip below paragraph? -->
             <p>A string may be iterated over by Unicode codepoint with
             <code>String#codepoints</code>, byte with <code>String#bytes</code>,
