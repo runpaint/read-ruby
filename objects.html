@@ -394,7 +394,7 @@
               be redefined to alter these semantics. Alternative delimiters
               can be used with the corresponding
               <code>%x<var>delimiter</var>…<var>delimiter</var></code>
-              construct, which follows the same rules a <a
+              construct, which follows the same rules as <a
                 href=#double-quoted-strings-q><code>%Q</code></a>.</p>
               
               <figure id=backticks.rb>
@@ -413,6 +413,16 @@
           <section>
             <h1 id=symbols>Symbols</h1>
 
+            <figure class=railroad>
+              <img class=left id=operator-method-selector.png>
+              <img class=left id=non-symbol-character.png>
+              <img class=inline id=symbol.png>
+              <!-- TODO: Exclude \0 -->
+              <!-- TODO: Look for other exceptions to this rule -->
+              <img class=inline id=symbol-literal.png>
+              <figcaption class=clear>Syntax diagram of the symbol literal
+            </figure>
+
             <p>A <code>Symbol</code> represents a name.
             <code>Symbol</code>s are immutable immediates. Two symbols
             with the same content will always be represented by the same
@@ -428,17 +438,11 @@
 
             <p>A <code>Symbol</code> literal consists of a colon followed
             by an symbol or <code>String</code> literal, e.g.
-            <code>:roland_barthes</code> or <code>:'887'</code>.</p>
-
-            <!-- TODO: Look for other exceptions to this rule -->
-            <figure class=railroad>
-              <img class=left id=operator-method-selector.png>
-              <img class=left id=non-symbol-character.png>
-              <img class=inline id=symbol.png>
-              <!-- TODO: Exclude \0 -->
-              <img class=inline id=symbol-literal.png>
-              <figcaption class=clear>Syntax diagram of the symbol literal
-            </figure>
+            <code>:roland_barthes</code> or <code>:'887'</code>.
+            The <code>%s<var>delimiter</var>…<var>delimiter</var></code>
+            construct enables symbols to be specified between arbitray
+            delimiters along the same lines as <a
+              href=#single-quoted-strings-q><code>%q</code></a>.
 
             <!-- #to_sym -->
           </section>
