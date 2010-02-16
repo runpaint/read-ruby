@@ -525,9 +525,17 @@
           <section>
             <h1 id=arrays>Arrays</h1>
         
-            <!-- Mention #to_a? --> <p>An <code>Array</code> instance represents
-            an ordered collection of objects, which need not be homogeneous. It is
-            automatically resized as elements are added or removed.
+            <!-- TODO: Determine clear way to diagram optional spaces -->
+            <figure class=railroad>
+              <img id=expression-list.png>
+              <img id=array-literal.png>
+              <figcaption>Syntax diagram of the array literal
+            </figure>
+
+            <!-- Mention #to_a? --> <p>An <code>Array</code> instance
+            represents an ordered collection of objects, which need not be
+            homogeneous. It is automatically resized as elements are added or
+            removed.
             
             <p>An <code>Array</code> literal is a comma-separated list of
             expressions enclosed in square brackets (<code>[</code>,
@@ -535,13 +543,25 @@
             creates a three-element <code>Array</code> object with
             <code>1</code> as the first element.</p>
 
-            <!-- TODO: Determine clear way to diagram optional spaces -->
-            <figure class=railroad>
-              <img id=expression-list.png>
-              <img id=array-literal.png>
-              <figcaption>Syntax diagram of the array literal
-            </figure>
-            
+            <section>
+              <h1 id=array-literal-w>Alternative Delimiters</h1>
+
+              <p>The <code>%w<var>delimiter</var>…<var>delimiter</var></code>
+              construct is a syntactical shortcut for instantiating an array
+              of strings. The delimiters take the same form as those of <a
+                href=#single-quoted-string-q><code>%q</code></a>. The text
+              between them is split on whitespace, each substring becoming an
+              element on the array. <code>%w</code> interprets its contents
+              with single-quoted string semantics; its counterpart,
+              <code>%W</code>, behaves in the same way using double-quoted
+              string semantics.</p>
+
+              <figure id=array-literal-w.rb>
+                <figcaption>Creating an array of strings with the
+                <code>%w</code> and <code>%W</code> constructs
+              </figure>
+            </section>
+
             <p>Arrays are indexed by integral subscripts, beginning with 0. If the
             subscript is negative it counts backward from the last element (i.e.
             <code>-1</code> refers to the last element).
