@@ -16,822 +16,894 @@
 
   <section>
     <h1 id=literals>Literals</h1>
+      
+    <!-- Discuss &:sym as a literal? -->
+    <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
+    for the instantiation of a particular core object.</p> <!-- Doesn’t call
+    initialize; Performance pips pedagogy --> <!-- Cover block literals? -->
 
-      <!-- Discuss &:sym as a literal? -->
-      <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
-      for the instantiation of a particular core object.</p>
-        <!-- Doesn’t call initialize; Performance pips pedagogy -->
-        <!-- Cover block literals? -->
+    <section>
+      <h1 id=strings>Strings</h1>
+       
+      <p><code>String</code>s are mutable sequences of characters with
+      an associated encoding.
+      
+      <p>A single character prefixed with a question mark
+      (<code>?<var>char</var></code>) instantiates a <code>String</code>
+      containing the character.</p>
+      
+      <figure class=railroad>
+        <img id=character-literal.png>
+        <figcaption>Syntax diagram of the character literal
+      </figure>
+      
+      <!-- TODO: alternative delimiters-->
 
       <section>
-        <h1 id=strings>Strings</h1>
-
-        <p><code>String</code>s are mutable sequences of characters with
-        an associated encoding.
+        <h1 id=single-quoted-strings>Single-Quoted Strings</h1>
         
-        <p>A single character prefixed with a question mark
-        (<code>?<var>char</var></code>) instantiates a <code>String</code>
-        containing the character.</p>
-
         <figure class=railroad>
-          <img id=character-literal.png>
-          <figcaption>Syntax diagram of the character literal
+          <img id=single-quoted-string-literal.png>
+          <figcaption>Syntax diagram of the single-quoted string literal
         </figure>
-
-        <!-- TODO: alternative delimiters-->
-
+        
+        <p>A single-quoted <code>String</code> is a string delimited by
+        U+0027 APOSTROPHE (<code>'</code>) characters or <a
+          href=#single-quoted-strings-q><code>%q</code></a>. Its
+        contents are not subject to <a
+          href=#string-interpolation>interpolation</a>. The only
+        recognised <a href=#string-escapes>escape sequences</a> are
+        <code>\\</code> and <code>\<var>delimiter</var></code>; any
+        other escape is interpreted literally, i.e. as a reverse solidus
+        followed by a single character.</p>
+         
         <section>
-          <h1 id=single-quoted-strings>Single-Quoted Strings</h1>
-
+          <h1 id=single-quoted-strings-q>Alternative Delimiters for Single-Quoted Strings</h1>
+          
           <figure class=railroad>
-            <img id=single-quoted-string-literal.png>
-            <figcaption>Syntax diagram of the single-quoted string literal
+            <img id=single-quoted-string-literal-q.png>
+            <figcaption>Syntax diagram of the <code>%q</code>
+            single-quoted string literal
           </figure>
-
-          <p>A single-quoted <code>String</code> is a string delimited by
-          U+0027 APOSTROPHE (<code>'</code>) characters or <a
-            href=#single-quoted-strings-q><code>%q</code></a>. Its
-          contents are not subject to <a
-            href=#string-interpolation>interpolation</a>. The only
-          recognised <a href=#string-escapes>escape sequences</a> are
-          <code>\\</code> and <code>\<var>delimiter</var></code>; any
-          other escape is interpreted literally, i.e. as a reverse solidus
-          followed by a single character.</p>
-
-          <section>
-            <h1 id=single-quoted-strings-q>Alternative Delimiters for Single-Quoted Strings</h1>
-            <figure class=railroad>
-              <img id=single-quoted-string-literal-q.png>
-              <figcaption>Syntax diagram of the <code>%q</code>
-              single-quoted string literal
-            </figure>
-
-            <p>A single-quoted string may also be delimited by arbitrary
-            delimiters with the
-            <code>%q<var>delimiter</var>…<var>delimiter</var></code>
-            construct, where <var>delimiter</var> is a single character.
-            If <var>delimiter</var> appears in the string it must be
-            escaped.
-            
-            <p>If the opening delimiter is <code>(</code>, <code>[</code>,
-            <code>&lt;</code>, or <code>{</code>, the closing delimiter
-            must be the corresponding closing bracket. For example, if the
-            opening delimiter is <code>[</code>, the closing delimiter
-            must be <code>]</code>. When these paired delimiters are used,
-            the same pair may appear inside the string as long as they are
-            properly balanced.</p>
-
-            <figure id=single-quoted-string-literal-q.rb>
-              <figcaption>Constructing a single-quoted string with
-              alternative delimiters using <code>%q</code>
-            </figure>
-          </section>
-        </section>
-
-        <section>
-          <h1 id=double-quoted-strings>Double-Quoted Strings</h1>
-
-          <figure class=railroad>
-            <img id=double-quoted-string-literal.png>
-            <figcaption>Syntax diagram of the double-quoted string literal
+          
+          <p>A single-quoted string may also be delimited by arbitrary
+          delimiters with the
+          <code>%q<var>delimiter</var>…<var>delimiter</var></code> construct,
+          where <var>delimiter</var> is a single character.  If
+          <var>delimiter</var> appears in the string it must be escaped.
+          
+          <p>If the opening delimiter is <code>(</code>, <code>[</code>,
+          <code>&lt;</code>, or <code>{</code>, the closing delimiter must be
+          the corresponding closing bracket. For example, if the opening
+          delimiter is <code>[</code>, the closing delimiter must be
+          <code>]</code>. When these paired delimiters are used, the same pair
+          may appear inside the string as long as they are properly
+          balanced.</p>
+           
+          <figure id=single-quoted-string-literal-q.rb>
+            <figcaption>Constructing a single-quoted string with alternative
+            delimiters using <code>%q</code>
           </figure>
-
-          <p>A double-quoted <code>String</code> is a <code>String</code>
-          delimited with U+0022 QUOTATION MARK (<code>"</code>) characters
-          or <a href=#double-quoted-strings-q><code>%Q</code></a>. Its
-          contents are subject to <a
-            href=#string-interpolation>interpolation</a> and <a
-            href=#string-escapes>character escapes</a>.</p>
-
-          <section>
-            <h1 id=string-interpolation>String Interpolation</h1>
-
-            <figure class=railroad>
-              <img id=string-interpolation.png>
-              <figcaption>Syntax diagram of the string interpolation
-              construct
-            </figure>
-
-            <p><dfn title="string interpolation">Interpolation</dfn> is
-            the embedding of the value of an expression within a string.
-            The general form of the syntax is
-            <code>#{<var>expression</var>}</code>.  It is common for
-            <var>expression</var> to be simply the name of a local
-            variable which is to be substituted for its value.
-
-            <p>The braces can be omitted if <var>expression</var> is the
-            name of a global—, class—, or instance variable. However, in
-            this case the variable name cannot be immediately followed by
-            a character legal in an identifier, as ambiguity results. </p>
-          </section>
-
-          <section>
-            <h1 id=string-escapes>String Escapes</h1>
-
-            <figure class=railroad>
-              <!-- TODO: Incorporate maximumn value of octal integer: 377
-              -->
-              <img id=byte-escape.png>
-              <img id=control-escape.png>
-              <img id=meta-escape.png>
-              <img id=character-escape.png>
-              <img id=escape.png>
-              <figcaption>Syntax diagram of the string escape
-            </figure>
-
-            <p><dfn title="backslash escape">Escape sequences</dfn> are
-            character sequences prefixed with a U+005C REVERSE SOLIDUS
-            (<code>\</code>) (“backslash”) that have a meaning other than
-            their constituent characters.</p>
-
-            <table class=border>
-              <thead>
-                <tr><th>Escape Sequence<th>Interpretation
-              </thead>
-              <tbody>
-                <tr>
-                  <td><code>\a</code>
-                  <td>U+0007 &lt;control&gt;: The <a
-                      href=//en.wikipedia.org/wiki/Bell_character>BEL</a>
-                      character. Rings the console bell.
-                <tr>
-                  <td><code>\b</code>
-                  <td>U+0008 &lt;control&gt;: The <a
-                      href=//en.wikipedia.org/wiki/Backspace>Backspace</a>
-                      character.
-                <tr>
-                  <td><code>\e</code>
-                  <td>U+001B &lt;control&gt;: The <a
-                      href=//en.wikipedia.org/wiki/Esc>ESC</a>
-                      character.
-                <tr>
-                  <td><code>\f</code>
-                  <td>U+000C &lt;control&gt;: The <a
-                      href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
-                      character.
-                <tr>
-                  <td><code>\n</code>
-                  <td>U+000A &lt;control&gt;: The <a
-                      href=//en.wikipedia.org/wiki/Newline>Newline</a> character.
-                <tr>
-                  <td><code>\r</code>
-                  <td>U+000D &lt;control&gt;: The <a
-                      href=//en.wikipedia.org/wiki/Carriage_return>Carriage Return</a> 
-                    character.
-                <tr>
-                  <td><code>\s</code>
-                  <td>U+0020 SPACE: The <a
-                      href=//en.wikipedia.org/wiki/Space_key>Space</a>
-                    character.
-                <tr>
-                  <td><code>\t</code>
-                  <td>U+0009 &lt;control&gt;: The <a
-                      href=//en.wikipedia.org/wiki/Tab_character>Tab</a> 
-                    character
-                <tr>
-                  <td><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code>
-                    <td>The <a
-                        href=//en.wikipedia.org/wiki/Unicode>Unicode</a>
-                      <a
-                        href=//en.wikipedia.org/wiki/Codepoint>codepoint</a>
-                      specified by the four given hexadecimal digits.
-                <tr>
-                  <td><code>\u{<var>codepoints</var>}</code>
-                  <td>The Unicode codepoint(s) specified by
-                    <var>codepoints</var>.</code> See: <a
-                      href=#unicode-escapes>Unicode Escapes</a>.
-                <tr>
-                  <td><code>\v</code>
-                  <td>U+000B &lt;control&gt;: The vertical tab character.
-                <tr>
-                  <td><code>\<var>octal</var><var>octal</var><var>octal</var></code>
-                  <td>The byte specified by the three given octal digits,
-                    whose combined value does not exceed 377<sub>8</sub>.
-                <tr>
-                  <td><code>\<var>octal</var><var>octal</var></code>
-                  <td>The byte specified by the two given octal digits
-                <tr>
-                  <td><code>\<var>octal</var></code>
-                  <td>The byte specified by the given octal digit
-                <tr>
-                  <td><code>\x<var>hex</var><var>hex</var></code>
-                  <td>The byte specified by the two given hexadecimal
-                    digits
-                <tr>
-                  <td><code>\x<var>hex</var></code>
-                  <td>The byte specified by the given hexadecimal digit
-                <tr>
-                  <td><code>\c<var>char</var></code>
-                  <td rowspan=2>The <a
-                      href=//en.wikipedia.org/wiki/Control_character>control
-                      character</a> <code>Ctrl-<var>char</var></code>,
-                    e.g.  <code>\cZ</code> is U+001A &lt;control&gt;
-                <tr>
-                  <td><code>\C-<var>char</var></code>
-                <tr>
-                  <td><code>\M-<var>char</var></code>
-                  <td>Meta character <var>char</var> formed by setting
-                      the high bit of <var>char</var> character code
-                <tr>
-                  <td><code>\</code>U+000A &lt;control&gt;
-                  <td rowspan=3>A backslash before a <a
-                      href=//en.wikipedia.org/wiki/Newline>line terminator</a>
-                    escapes it, removing both the line
-                    terminator and backslash from the string
-                <tr>
-                  <td><code>\</code>U+000D &lt;control&gt;
-                <tr>
-                  <td><code>\</code>U+000D&nbsp;&lt;control&gt;U+000A&nbsp;&lt;control&gt;
-                <tr>
-                  <td><code>\<var>char</var></code>
-                  <td>A backslash before any other character evaluates to
-                    the character itself
-              </tbody>
-            </table>
-
-            <section>
-              <h1 id=unicode-escapes>Unicode Escapes</h1>
-
-              <figure class=railroad>
-                <img id=hex-codepoint.png>
-                <img id=unicode-escape.png>
-                <figcaption>Syntax diagram of the Unicode <code>\u</code>
-                escape
-              </figure>
-
-              <p>An arbitrary Unicode character may be embedded in a
-              string by specifying its codepoint as four hexadecimal
-              digits following <code>\u</code>. For example, U+263A WHITE
-              SMILING FACE (☺) is <code>\u263A</code>.
-
-              <p>The <code>\u{}</code> construct extends this ability to
-              embedding multiple codepoints with the same escape.
-              The curly braces delimit one or more hexadecimal codepoints
-              separated by whitespace. This form does not restrict a
-              codepoint to four digits. For example, U+1F090 DOMINO TILE
-              VERTICAL-06-03 (🂐) and U+1F091 DOMINO TILE VERTICAL-06-04
-              (🂑) are <code>\u{1f090 1F091}</code>
-
-              <p>Both escapes above force the string in which they are
-              embedded to have UTF-8 encoding. However, they are illegal
-              in a file that has both a non-UTF-8 source encoding and
-              a string containing literal multibyte characters in that
-              encoding. 
-            </section>
-            
-          </section>
-
-          <section>
-            <h1 id=double-quoted-strings-q>Alternative Delimiters for Double-Quoted Strings</h1>
-            <figure class=railroad>
-              <img id=double-quoted-string-literal-q.png>
-              <figcaption>Syntax diagram of the <code>%Q</code>
-              double-quoted string literal
-            </figure>
-
-            <p>A double-quoted string may also be delimited by arbitrary
-            delimiters with the
-            <code>%Q<var>delimiter</var>…<var>delimiter</var></code> and
-            <code>%<var>delimiter</var>…<var>delimiter</var></code>constructs,
-            where <var>delimiter</var> is a single character.  If
-            <var>delimiter</var> appears in the string it must be escaped.
-            
-            <p>If the opening delimiter is <code>(</code>, <code>[</code>,
-            <code>&lt;</code>, or <code>{</code>, the closing delimiter
-            must be the corresponding closing bracket. For example, if the
-            opening delimiter is <code>[</code>, the closing delimiter
-            must be <code>]</code>. When these paired delimiters are used,
-            the same pair may appear inside the string as long as they are
-            properly balanced.</p>
-
-            <figure id=double-quoted-string-literal-q.rb>
-              <figcaption>Constructing a double-quoted string with
-              alternative delimiters using <code>%Q</code>
-            </figure>
-          </section>
         </section>
-
-        <p>Therefore, a <dfn>string literal</dfn> is either a
-        double-quoted string literal or a single-quoted string
-        literal.</p>
-
+      </section>
+      
+      <section>
+        <h1 id=double-quoted-strings>Double-Quoted Strings</h1>
+        
         <figure class=railroad>
-          <img id=string-literal.png>
-          <figcaption>Syntax diagram of the string literal
+          <img id=double-quoted-string-literal.png>
+          <figcaption>Syntax diagram of the double-quoted string literal
         </figure>
-
+        
+        <p>A double-quoted <code>String</code> is a <code>String</code>
+        delimited with U+0022 QUOTATION MARK (<code>"</code>) characters or <a
+          href=#double-quoted-strings-q><code>%Q</code></a>. Its contents are
+        subject to <a href=#string-interpolation>interpolation</a> and <a
+          href=#string-escapes>character escapes</a>.</p>
+        
         <section>
-          <h1 id=here-documents>Here Documents</h1>
-
+          <h1 id=string-interpolation>String Interpolation</h1>
+          
           <figure class=railroad>
-            <img id=here-doc.png>
-            <figcaption>Syntax diagram of the here document
+            <img id=string-interpolation.png>
+            <figcaption>Syntax diagram of the string interpolation
+            construct
           </figure>
-
-          <p><dfn>Here documents</dfn> extend the concept of alternative
-          delimiters to allow an arbitrary <em>sequence</em> of characters
-          as a delimiter. They begin with <code>&lt;&lt;</code> followed
-          immediately by an arbitary identifier or string literal. Their
-          content begins on the following line and continues until that
-          same identifier/string is seen on a line by itself with no
-          interveneing whitespace. If there is a hyphen between the
-          opening <code>&lt;&lt;</code> and the delimiter, i.e.
-          <code>&lt;&lt;-<var>delimiter</var></code>, the closing
-          delimiter may be preceeded with whitespace. The final newline
-          character before the closing delimiter is part of the here
-          document’s contents: a minimal here document is equivalent to
-          <code>"\n"</code>.
           
-          <p>If the delimiter is an identifier or double quoted string,
-          the contents of the here document is intrepreted with
-          double-quoted string semantics. Otherwise, the here document’s
-          contents are intrepeted literally: all escape sequences and
-          interpolation constructs are ignored.</p>
-
-          <figure id=here-doc.rb>
-            <figcaption>Using a here document to render a poem
-          </figure>
+          <p><dfn title="string interpolation">Interpolation</dfn> is
+          the embedding of the value of an expression within a string.
+          The general form of the syntax is
+          <code>#{<var>expression</var>}</code>.  It is common for
+          <var>expression</var> to be simply the name of a local
+          variable which is to be substituted for its value.
+          
+          <p>The braces can be omitted if <var>expression</var> is the
+          name of a global—, class—, or instance variable. However, in
+          this case the variable name cannot be immediately followed by
+          a character legal in an identifier, as ambiguity results. </p>
         </section>
 
         <section>
-          <h1 id=backticks>Backticks</h1>
-
-          <p>A double-quoted string delimited with U+0060 GRAVE ACCENT
-          (<code>`</code>) characters, or “backticks”, executes its
-          contents as an operating system command and returns the output.
-          This is achieved by the <code>Kernel.`</code> method, which can
-          be redefined to alter these semantics. Alternative delimiters
-          can be used with the corresponding
-          <code>%x<var>delimiter</var>…<var>delimiter</var></code>
-          construct, which follows the same rules as <a
-            href=#double-quoted-strings-q><code>%Q</code></a>.</p>
-          
-          <figure id=backticks.rb>
-            <figcaption>Using backticks to execute commands and retrieve
-            the output
+          <h1 id=string-escapes>String Escapes</h1>
+           
+          <figure class=railroad>
+            <!-- TODO: Incorporate maximumn value of octal integer: 377
+            -->
+            <img id=byte-escape.png>
+            <img id=control-escape.png>
+            <img id=meta-escape.png>
+            <img id=character-escape.png>
+            <img id=escape.png>
+            <figcaption>Syntax diagram of the string escape
           </figure>
+           
+          <p><dfn title="backslash escape">Escape sequences</dfn> are
+          character sequences prefixed with a U+005C REVERSE SOLIDUS
+          (<code>\</code>) (“backslash”) that have a meaning other than their
+          constituent characters.</p>
+           
+          <table class=border>
+            <thead>
+              <tr><th>Escape Sequence<th>Interpretation
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>\a</code>
+                <td>U+0007 &lt;control&gt;: The <a
+                    href=//en.wikipedia.org/wiki/Bell_character>BEL</a>
+                    character. Rings the console bell.
+              <tr>
+                <td><code>\b</code>
+                <td>U+0008 &lt;control&gt;: The <a
+                    href=//en.wikipedia.org/wiki/Backspace>Backspace</a>
+                    character.
+              <tr>
+                <td><code>\e</code>
+                <td>U+001B &lt;control&gt;: The <a
+                    href=//en.wikipedia.org/wiki/Esc>ESC</a>
+                    character.
+              <tr>
+                <td><code>\f</code>
+                <td>U+000C &lt;control&gt;: The <a
+                    href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
+                    character.
+              <tr>
+                <td><code>\n</code>
+                <td>U+000A &lt;control&gt;: The <a
+                    href=//en.wikipedia.org/wiki/Newline>Newline</a> character.
+              <tr>
+                <td><code>\r</code>
+                <td>U+000D &lt;control&gt;: The <a
+                    href=//en.wikipedia.org/wiki/Carriage_return>Carriage Return</a> 
+                  character.
+              <tr>
+                <td><code>\s</code>
+                <td>U+0020 SPACE: The <a
+                    href=//en.wikipedia.org/wiki/Space_key>Space</a>
+                  character.
+              <tr>
+                <td><code>\t</code>
+                <td>U+0009 &lt;control&gt;: The <a
+                    href=//en.wikipedia.org/wiki/Tab_character>Tab</a> 
+                  character
+              <tr>
+                <td><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code>
+                  <td>The <a
+                      href=//en.wikipedia.org/wiki/Unicode>Unicode</a>
+                    <a
+                      href=//en.wikipedia.org/wiki/Codepoint>codepoint</a>
+                    specified by the four given hexadecimal digits.
+              <tr>
+                <td><code>\u{<var>codepoints</var>}</code>
+                <td>The Unicode codepoint(s) specified by
+                  <var>codepoints</var>. See: <a
+                    href=#unicode-escapes>Unicode Escapes</a>.
+              <tr>
+                <td><code>\v</code>
+                <td>U+000B &lt;control&gt;: The vertical tab character.
+              <tr>
+                <td><code>\<var>octal</var><var>octal</var><var>octal</var></code>
+                <td>The byte specified by the three given octal digits,
+                  whose combined value does not exceed 377<sub>8</sub>.
+              <tr>
+                <td><code>\<var>octal</var><var>octal</var></code>
+                <td>The byte specified by the two given octal digits
+              <tr>
+                <td><code>\<var>octal</var></code>
+                <td>The byte specified by the given octal digit
+              <tr>
+                <td><code>\x<var>hex</var><var>hex</var></code>
+                <td>The byte specified by the two given hexadecimal
+                  digits
+              <tr>
+                <td><code>\x<var>hex</var></code>
+                <td>The byte specified by the given hexadecimal digit
+              <tr>
+                <td><code>\c<var>char</var></code>
+                <td rowspan=2>The <a
+                    href=//en.wikipedia.org/wiki/Control_character>control
+                    character</a> <code>Ctrl-<var>char</var></code>,
+                  e.g.  <code>\cZ</code> is U+001A &lt;control&gt;
+              <tr>
+                <td><code>\C-<var>char</var></code>
+              <tr>
+                <td><code>\M-<var>char</var></code>
+                <td>Meta character <var>char</var> formed by setting
+                    the high bit of <var>char</var> character code
+              <tr>
+                <td><code>\</code>U+000A &lt;control&gt;
+                <td rowspan=3>A backslash before a <a
+                    href=//en.wikipedia.org/wiki/Newline>line terminator</a>
+                  escapes it, removing both the line
+                  terminator and backslash from the string
+              <tr>
+                <td><code>\</code>U+000D &lt;control&gt;
+              <tr>
+                <td><code>\</code>U+000D&nbsp;&lt;control&gt;U+000A&nbsp;&lt;control&gt;
+              <tr>
+                <td><code>\<var>char</var></code>
+                <td>A backslash before any other character evaluates to
+                  the character itself
+            </tbody>
+          </table>
+           
+          <section>
+            <h1 id=unicode-escapes>Unicode Escapes</h1>
+               
+            <figure class=railroad>
+              <img id=hex-codepoint.png>
+              <img id=unicode-escape.png>
+              <figcaption>Syntax diagram of the Unicode <code>\u</code>
+              escape
+            </figure>
+            
+            <p>An arbitrary Unicode character may be embedded in a
+            string by specifying its codepoint as four hexadecimal
+            digits following <code>\u</code>. For example, U+263A WHITE
+            SMILING FACE (☺) is <code>\u263A</code>.
+            
+            <p>The <code>\u{}</code> construct extends this ability to
+            embedding multiple codepoints with the same escape.
+            The curly braces delimit one or more hexadecimal codepoints
+            separated by whitespace. This form does not restrict a
+            codepoint to four digits. For example, U+1F090 DOMINO TILE
+            VERTICAL-06-03 (🂐) and U+1F091 DOMINO TILE VERTICAL-06-04
+            (🂑) are <code>\u{1f090 1F091}</code>
+            
+            <p>Both escapes above force the string in which they are
+            embedded to have UTF-8 encoding. However, they are illegal
+            in a file that has both a non-UTF-8 source encoding and
+            a string containing literal multibyte characters in that
+            encoding. 
+          </section>
         </section>
 
-        <!-- TODO: Snip below paragraph? -->
-        <p>A string may be iterated over by Unicode codepoint with
-        <code>String#codepoints</code>, byte with <code>String#bytes</code>,
-        character with <code>String#chars</code>, or line with
-        <code>String#lines</code>.</p>
+        <section>
+          <h1 id=double-quoted-strings-q>Alternative Delimiters for Double-Quoted Strings</h1>
+          
+          <figure class=railroad>
+            <img id=double-quoted-string-literal-q.png>
+            <figcaption>Syntax diagram of the <code>%Q</code>
+            double-quoted string literal
+          </figure>
+          
+          <p>A double-quoted string may also be delimited by arbitrary
+          delimiters with the
+          <code>%Q<var>delimiter</var>…<var>delimiter</var></code> and
+          <code>%<var>delimiter</var>…<var>delimiter</var></code>constructs,
+          where <var>delimiter</var> is a single character.  If
+          <var>delimiter</var> appears in the string it must be escaped.
+           
+          <p>If the opening delimiter is <code>(</code>, <code>[</code>,
+          <code>&lt;</code>, or <code>{</code>, the closing delimiter
+          must be the corresponding closing bracket. For example, if the
+          opening delimiter is <code>[</code>, the closing delimiter
+          must be <code>]</code>. When these paired delimiters are used,
+          the same pair may appear inside the string as long as they are
+          properly balanced.</p>
+            
+          <figure id=double-quoted-string-literal-q.rb>
+            <figcaption>Constructing a double-quoted string with
+            alternative delimiters using <code>%Q</code>
+          </figure>
+        </section>
+      </section>
+      
+      <p>Therefore, a <dfn>string literal</dfn> is either a double-quoted
+      string literal or a single-quoted string literal.</p>
+      
+      <figure class=railroad>
+        <img id=string-literal.png>
+        <figcaption>Syntax diagram of the string literal
+      </figure>
+       
+      <section>
+        <h1 id=here-documents>Here Documents</h1>
+        
+        <figure class=railroad>
+          <img id=here-doc.png>
+          <figcaption>Syntax diagram of the here document
+        </figure>
+         
+        <p><dfn>Here documents</dfn> extend the concept of alternative
+        delimiters to allow an arbitrary <em>sequence</em> of characters
+        as a delimiter. They begin with <code>&lt;&lt;</code> followed
+        immediately by an arbitary identifier or string literal. Their
+        content begins on the following line and continues until that
+        same identifier/string is seen on a line by itself with no
+        intervening whitespace. If there is a hyphen between the
+        opening <code>&lt;&lt;</code> and the delimiter, i.e.
+        <code>&lt;&lt;-<var>delimiter</var></code>, the closing
+        delimiter may be preceded with whitespace. The final newline
+        character before the closing delimiter is part of the here
+        document’s contents: a minimal here document is equivalent to
+        <code>"\n"</code>.
+        
+        <p>If the delimiter is an identifier or double quoted string,
+        the contents of the here document is interpreted with
+        double-quoted string semantics. Otherwise, the here document’s
+        contents are interpreted literally: all escape sequences and
+        interpolation constructs are ignored.</p>
+        
+        <figure id=here-doc.rb>
+          <figcaption>Using a here document to render a poem
+        </figure>
       </section>
 
       <section>
-        <h1 id=symbols>Symbols</h1>
-
-        <figure class=railroad>
-          <img class=left id=operator-method-selector.png>
-          <img class=left id=non-symbol-character.png>
-          <img class=inline id=symbol.png>
-          <!-- TODO: Exclude \0 -->
-          <!-- TODO: Look for other exceptions to this rule -->
-          <img class=inline id=symbol-literal.png>
-          <figcaption class=clear>Syntax diagram of the symbol literal
-        </figure>
-
-        <p>A <code>Symbol</code> represents a name.
-        <code>Symbol</code>s are immutable immediates. Two symbols
-        with the same content will always be represented by the same
-        object, e.g. <code>:glark.object_id ==
-          :glark.object_id</code>, so symbol comparisons are extremely
-        efficient.  However, <code>Symbol</code> objects are not
-        garbage collected, so are unsuitable for storing data from
-        unbounded collections; use <code>String</code>s instead.
+        <h1 id=backticks>Backticks</h1>
+          
+        <p>A double-quoted string delimited with U+0060 GRAVE ACCENT
+        (<code>`</code>) characters, or “backticks”, executes its
+        contents as an operating system command and returns the output.
+        This is achieved by the <code>Kernel.`</code> method, which can
+        be redefined to alter these semantics. Alternative delimiters
+        can be used with the corresponding
+        <code>%x<var>delimiter</var>…<var>delimiter</var></code>
+        construct, which follows the same rules as <a
+          href=#double-quoted-strings-q><code>%Q</code></a>.</p>
         
-        <p><code>Symbol</code>s are used for unique identifiers, such
-        as <code>Hash</code> keys, as message selectors and method
-        names, and as a substitute for constants.
-
-        <p>A <code>Symbol</code> literal consists of a colon followed
-        by an symbol or <code>String</code> literal, e.g.
-        <code>:roland_barthes</code> or <code>:'887'</code>.
-        The <code>%s<var>delimiter</var>…<var>delimiter</var></code>
-        construct enables symbols to be specified between arbitray
-        delimiters along the same lines as <a
-          href=#single-quoted-strings-q><code>%q</code></a>.
-
-        <!-- #to_sym -->
+        <figure id=backticks.rb>
+          <figcaption>Using backticks to execute commands and retrieve
+          the output
+        </figure>
       </section>
 
-      <section>
-        <h1 id=numerics>Numerics</h1>
+      <!-- TODO: Snip below paragraph? -->
+      <p>A string may be iterated over by Unicode codepoint with
+      <code>String#codepoints</code>, byte with <code>String#bytes</code>,
+      character with <code>String#chars</code>, or line with
+      <code>String#lines</code>.</p>
+    </section>
+      
+    <section>
+      <h1 id=symbols>Symbols</h1>
+
+      <figure class=railroad>
+        <img class=left id=operator-method-selector.png>
+        <img class=left id=non-symbol-character.png>
+        <img class=inline id=symbol.png>
+        <!-- TODO: Exclude \0 -->
+        <!-- TODO: Look for other exceptions to this rule -->
+        <img class=inline id=symbol-literal.png>
+        <figcaption class=clear>Syntax diagram of the symbol literal
+      </figure>
+
+      <p>A <code>Symbol</code> represents a name.
+      <code>Symbol</code>s are immutable immediates. Two symbols
+      with the same content will always be represented by the same
+      object, e.g. <code>:glark.object_id ==
+        :glark.object_id</code>, so symbol comparisons are extremely
+      efficient.  However, <code>Symbol</code> objects are not
+      garbage collected, so are unsuitable for storing data from
+      unbounded collections; use <code>String</code>s instead.
+      
+      <p><code>Symbol</code>s are used for unique identifiers, such
+      as <code>Hash</code> keys, as message selectors and method
+      names, and as a substitute for constants.
+
+      <p>A <code>Symbol</code> literal consists of a colon followed
+      by an symbol or <code>String</code> literal, e.g.
+      <code>:roland_barthes</code> or <code>:'887'</code>.
+      The <code>%s<var>delimiter</var>…<var>delimiter</var></code>
+      construct enables symbols to be specified between arbitrary
+      delimiters along the same lines as <a
+        href=#single-quoted-strings-q><code>%q</code></a>.
+
+      <!-- #to_sym -->
+    </section>
+
+    <section>
+      <h1 id=numerics>Numerics</h1>
       <!-- Are immediates _instantiated_? -->
+                 
+      <p>A decimal integer literal consists of an optional sign
+      (<code>+</code> or <code>-</code>) followed by one or more decimal
+      digits. Implementation limits dictate whether its a <code>Fixnum</code>
+      or <code>Bignum</code>, but the distinction can be ignored by treating
+      both as <code>Integer</code>s.</p>
+       
+      <figure class=railroad>
+        <div class=centre style=width:467px>
+          <img style=display:inline id=digit.png>
+          <img style=display:inline id=non-zero-digit.png>
+          <img style=display:inline id=plus-minus.png>
+        </div>
+        <img id=decimal-literal.png>
+        <figcaption>Syntax diagram of the decimal literal
+      </figure>
+       
+      <p>Hexadecimal, octal, and binary literals allow integers to be
+      expressed in base sixteen, eight, or two, respectively. A hexadecimal
+      literal begins with <code>0x</code>, and is followed by one or more hex
+      digits (0–9, a–f). An octal literal begins with <code>0o</code>, and is
+      followed by one or more octal digits (0–7). A binary literal begins with
+      <code>0b</code>, and is followed by one or more binary digits (0–1). All
+      forms ignore case and create <code>Integer</code> objects.</p>
+       
+      <figure class=railroad>
+        <img style=float:left id=hex-digit.png>
+        <img style=float:left id=octal-digit.png>
+        <img id=hexadecimal-literal.png>
+        <img id=binary-literal.png>
+        <img id=octal-literal.png>
+        <br style=clear:both>
+        <figcaption>Syntax diagrams of the hexadecimal, binary, and
+        octal literals
+      </figure>
+       
+      <p>A floating-point literal consists of two integer literals
+      separated with a period, e.g. <code>3.14</code>. It is of
+      class <code>Float</code>.</p>
+      <!-- Notes on the inacuracy of floats -->
+      
+      <figure class=railroad>
+        <img id=float-literal.png>
+        <figcaption>Syntax diagram of the floating-point literal
+      </figure>
+      
+      <p>A scientific notation literal consists of a coefficient
+      (<var>a</var>: a decimal or <code>Float</code> literal),
+      <code>e</code> or <code>E</code>, then an exponent
+      (<var>e</var>: a decimal literal). Its value is
+      <code><var>a</var> × 10<sup><var>e</var></sup></code>
+      represented as a <code>Float</code>.</p>
+      
+      <figure class=railroad>
+        <img id=scientific-notation-literal.png>
+        <figcaption>Syntax diagram of the scientific notation literal
+      </figure>
+              
+      <p><code>Rational</code> numbers are expressed with the
+      <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
+      constructor. Similarly, <code>Complex(<var>real</var>,
+        <var>imaginary</var>)</code> creates a <code>Complex</code>
+      object.</p>
+           
+      <!--        <li>Standard mathematical operations as methods
+            <li><code>/</code> performs integer division
+            <li>to_* 
+      -->
+    </section>
 
-        <p>A decimal integer literal consists of an optional sign
-        (<code>+</code> or <code>-</code>) followed by one or more
-        decimal digits. Implementation limits dictate whether its
-        a <code>Fixnum</code> or <code>Bignum</code>, but the
-        distinction can be ignored by treating both as
-        <code>Integer</code>s.</p>
-
-        <figure class=railroad>
-          <div class=centre style=width:467px>
-            <img style=display:inline id=digit.png>
-            <img style=display:inline id=non-zero-digit.png>
-            <img style=display:inline id=plus-minus.png>
-          </div>
-          <img id=decimal-literal.png>
-          <figcaption>Syntax diagram of the decimal literal
-        </figure>
-
-        <p>Hexadecimal, octal, and binary literals allow integers to
-        be expressed in base sixteen, eight, or two, respectively. A
-        hexadecimal literal begins with <code>0x</code>, and is
-        followed by one or more hex digits (0–9, a–f). An octal
-        literal begins with <code>0o</code>, and is followed by one or
-        more octal digits (0–7). A binary literal begins with
-        <code>0b</code>, and is followed by one or more binary digits
-        (0–1). All forms ignore case and create <code>Integer</code>
-        objects.</p>
-
-        <figure class=railroad>
-          <img style=float:left id=hex-digit.png>
-          <img style=float:left id=octal-digit.png>
-          <img id=hexadecimal-literal.png>
-          <img id=binary-literal.png>
-          <img id=octal-literal.png>
-          <br style=clear:both>
-          <figcaption>Syntax diagrams of the hexadecimal, binary, and
-          octal literals
-        </figure>
-
-        <p>A floating-point literal consists of two integer literals
-        separated with a period, e.g. <code>3.14</code>. It is of
-        class <code>Float</code>.</p>
-        <!-- Notes on the inacuracy of floats -->
-
-        <figure class=railroad>
-          <img id=float-literal.png>
-          <figcaption>Syntax diagram of the floating-point literal
-        </figure>
-
-        <p>A scientific notation literal consists of a coefficient
-        (<var>a</var>: a decimal or <code>Float</code> literal),
-        <code>e</code> or <code>E</code>, then an exponent
-        (<var>e</var>: a decimal literal). Its value is
-        <code><var>a</var> × 10<sup><var>e</var></sup></code>
-        represented as a <code>Float</code>.</p>
-
-        <figure class=railroad>
-          <img id=scientific-notation-literal.png>
-          <figcaption>Syntax diagram of the scientific notation literal
-        </figure>
-
-        <p><code>Rational</code> numbers are expressed with the
-        <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
-        constructor. Similarly, <code>Complex(<var>real</var>,
-          <var>imaginary</var>)</code> creates a <code>Complex</code>
-        object.</p>
-
-    <!--        <li>Standard mathematical operations as methods
-              <li><code>/</code> performs integer division
-              <li>to_* -->
-      </section>
-
-      <section>
-        <h1 id=arrays>Arrays</h1>
-    
-        <!-- TODO: Determine clear way to diagram optional spaces -->
-        <figure class=railroad>
-          <img id=expression-list.png>
-          <img id=array-literal.png>
-          <figcaption>Syntax diagram of the array literal
-        </figure>
-
-        <!-- Mention #to_a? --> <p>An <code>Array</code> instance
-        represents an ordered collection of objects, which need not be
-        homogeneous. It is automatically resized as elements are added or
-        removed.
+    <section>
+      <h1 id=arrays>Arrays</h1>
+       
+      <!-- TODO: Determine clear way to diagram optional spaces -->
+      <figure class=railroad>
+        <img id=expression-list.png>
+        <img id=array-literal.png>
+        <figcaption>Syntax diagram of the array literal
+      </figure>
+       
+      <!-- Mention #to_a? --> <p>An <code>Array</code> instance represents an
+      ordered collection of objects, which need not be homogeneous. It is
+      automatically resized as elements are added or removed.
+      
+      <p>An <code>Array</code> literal is a comma-separated list of
+      expressions enclosed in square brackets (<code>[</code>,
+      <code>]</code>). For example, <code>[1, :two, 'three']</code> creates a
+      three-element <code>Array</code> object with <code>1</code> as the first
+      element.</p>
         
-        <p>An <code>Array</code> literal is a comma-separated list of
-        expressions enclosed in square brackets (<code>[</code>,
-        <code>]</code>). For example, <code>[1, :two, 'three']</code>
-        creates a three-element <code>Array</code> object with
-        <code>1</code> as the first element.</p>
-
-        <section>
-          <h1 id=array-literal-w>Alternative Delimiters</h1>
-
-          <p>The <code>%w<var>delimiter</var>…<var>delimiter</var></code>
-          construct is a syntactical shortcut for instantiating an array
-          of strings. The delimiters take the same form as those of <a
-            href=#single-quoted-string-q><code>%q</code></a>. The text
-          between them is split on whitespace, each substring becoming an
-          element on the array. <code>%w</code> interprets its contents
-          with single-quoted string semantics; its counterpart,
-          <code>%W</code>, behaves in the same way using double-quoted
-          string semantics.</p>
-
-          <figure id=array-literal-w.rb>
-            <figcaption>Creating an array of strings with the
-            <code>%w</code> and <code>%W</code> constructs
-          </figure>
-        </section>
-
-        <p>Arrays are indexed by integral subscripts, beginning with 0. If the
-        subscript is negative it counts backward from the last element (i.e.
-        <code>-1</code> refers to the last element).
-        An element with subscript <var>index</var> can be retrieved with
-        <code>Array#[<var>index</var>]</code>. If the index doesn’t exist,
-        <code>nil</code> is returned. The index can be assigned to with
-        <code>Array#[<var>index</var>]=</code>. 
-        
-        <p>Elements are appended to an array with <code>Array#&lt;&lt;</code>; and
-        prepended with <code>Array#unshift</code>.
-        <code>Array#include?(<var>element</var>)</code> tests whether the array
-        contains <var>element</var>. The total number of elements is returned by
-        <code>Array#size</code>. <code>Array#each</code> iterates over the array,
-        <code>yield</code>ing the next element each time.</p>
-
-        <aside>
-          <h1 id=enumerables>Enumerables</h1>
-
-            <!-- Mention #to_enum? -->
-            <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
-            <code>Range</code> mixin the <code>Enumerable</code> module. Any object
-            may do the same as long as its class defines an <code>#each</code> method
-            which <code>yield</code>s the next element in the collection on every
-            invocation.  In return, the class gains a staggering variety of methods
-            for working with collections such as the following.
-
-            <p><code>#map {|<var>element</var>| }</code> returns an
-            <code>Array</code> created by passing each element of the collection to
-            the block, then storing the result. For example, <code>[1,2,3].map{|n|
-              n**2} #=&gt; [1,4,9]</code>. <!-- Symbol#to_proc ? -->
-
-            <p><code>#reduce {|<var>element<sub>0</sub></var>,
-              <var>element<sub>n</sub></var>| }</code> passes the first two elements
-            to the block, then for each subsequent element the last result of the
-            block and the element itself. For example: <code>[2,3,5,7].reduce(&amp;:+)
-              =&gt; 17</code>.
-
-            <p><code>#select {|<var>element</var>| }</code> returns an
-            <code>Array</code> of elements for which the block returned
-            <code>true</code>.
-
-            <p>Lastly, <code>#any?</code>, <code>#all?</code>, and <code>#none?</code>
-            accept a block which is called with an element of the collection. The
-            determinative indicates how many elements of the collection the block must
-            return <code>true</code> for the method to return <code>true</code>. For
-            instance, <code>#any?</code> returns <code>true</code> as soon as a single
-            element in the collection satisfies the block. 
-            
-            <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
-        </aside>
-      </section>
-
       <section>
-        <h1 id=hashes>Hashes</h1>
+        <h1 id=array-literal-w>Alternative Delimiters</h1>
+                  
+        <p>The <code>%w<var>delimiter</var>…<var>delimiter</var></code>
+        construct is a syntactical shortcut for instantiating an array
+        of strings. The delimiters take the same form as those of <a
+          href=#single-quoted-string-q><code>%q</code></a>. The text
+        between them is split on whitespace, each substring becoming an
+        element on the array. <code>%w</code> interprets its contents
+        with single-quoted string semantics; its counterpart,
+        <code>%W</code>, behaves in the same way using double-quoted
+        string semantics.</p>
+         
+        <figure id=array-literal-w.rb>
+          <figcaption>Creating an array of strings with the
+          <code>%w</code> and <code>%W</code> constructs
+        </figure>
+      </section>
+      
+      <p>Arrays are indexed by integral subscripts, beginning with 0. If the
+      subscript is negative it counts backward from the last element (i.e.
+      <code>-1</code> refers to the last element).  An element with subscript
+      <var>index</var> can be retrieved with
+      <code>Array#[<var>index</var>]</code>. If the index doesn’t exist,
+      <code>nil</code> is returned. The index can be assigned to with
+      <code>Array#[<var>index</var>]=</code>. 
+       
+      <p>Elements are appended to an array with <code>Array#&lt;&lt;</code>;
+      and prepended with <code>Array#unshift</code>.
+      <code>Array#include?(<var>element</var>)</code> tests whether the array
+      contains <var>element</var>. The total number of elements is returned by
+      <code>Array#size</code>. <code>Array#each</code> iterates over the
+      array, <code>yield</code>ing the next element each time.</p>
+                
+      <aside>
+        <h1 id=enumerables>Enumerables</h1>
+         
+        <!-- Mention #to_enum? -->
+        <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
+        <code>Range</code> mixin the <code>Enumerable</code> module. Any object
+        may do the same as long as its class defines an <code>#each</code> method
+        which <code>yield</code>s the next element in the collection on every
+        invocation.  In return, the class gains a staggering variety of methods
+        for working with collections such as the following.
+                
+        <p><code>#map {|<var>element</var>| }</code> returns an
+        <code>Array</code> created by passing each element of the collection to
+        the block, then storing the result. For example, <code>[1,2,3].map{|n|
+          n**2} #=&gt; [1,4,9]</code>. <!-- Symbol#to_proc ? -->
+         
+        <p><code>#reduce {|<var>element<sub>0</sub></var>,
+          <var>element<sub>n</sub></var>| }</code> passes the first two
+        elements to the block, then for each subsequent element the last
+        result of the block and the element itself. For example:
+        <code>[2,3,5,7].reduce(&amp;:+) =&gt; 17</code>.
+         
+        <p><code>#select {|<var>element</var>| }</code> returns an
+        <code>Array</code> of elements for which the block returned
+        <code>true</code>.
+        
+        <p>Lastly, <code>#any?</code>, <code>#all?</code>, and <code>#none?</code>
+        accept a block which is called with an element of the collection. The
+        determinative indicates how many elements of the collection the block must
+        return <code>true</code> for the method to return <code>true</code>. For
+        instance, <code>#any?</code> returns <code>true</code> as soon as a single
+        element in the collection satisfies the block. 
+         
+        <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
+      </aside>
+    </section>
 
-        <!--<code>{phileas_fog: :jean_passepartout, bertie_wooster:
+    <section>
+      <h1 id=hashes>Hashes</h1>
+        
+      <!--<code>{phileas_fog: :jean_passepartout, bertie_wooster:
           :reginald_jeeves}</code>.-->
-
-        <!-- Mention Hash#[]? -->
-        <p>A <code>Hash</code> instance represents a collection of associations
-        between unique keys and values (<i>key-value</i> pairs), both of which may
-        be any object. It is indexed by key, and ordered by insertion. For
-        instance, a <code>Hash</code> mapping colours to corresponding fruits may
-        include a key-value pair of <code>:lemon =&gt; :yellow</code>:
-        <code>:lemon</code> is the key; <code>:yellow</code> is the value.
-
-        <p>A <code>Hash</code> literal consists of a comma-separated
-        list of key-value pairs enclosed in curly braces
-        (<code>{</code>, <code>}</code>).  The key is separated from
-        its value with <code>=&gt;</code>. For example: <code>{:age
-          =&gt; 30, :name =&gt; 'Marlo'}</code>. If the key is a
-        <code>Symbol</code> literal, the colon with which its prefixed
-        may be made its suffix, and <code>=&gt;</code> can be omitted.
-        The previous example can be rewritten as <code>{age: 30, name:
-          'Marlo'}</code>. (This syntactical shortcut is a reason for
-        preferring <code>Symbol</code> keys).</p>
-
-        <figure class=railroad>
-          <img id=hash-member.png>
-          <img id=hash-literal.png>
-          <figcaption>Syntax diagram of the hash literal
-        </figure>
+      
+      <!-- Mention Hash#[]? -->
+      <p>A <code>Hash</code> instance represents a collection of associations
+      between unique keys and values (<i>key-value</i> pairs), both of which may
+      be any object. It is indexed by key, and ordered by insertion. For
+      instance, a <code>Hash</code> mapping colours to corresponding fruits may
+      include a key-value pair of <code>:lemon =&gt; :yellow</code>:
+      <code>:lemon</code> is the key; <code>:yellow</code> is the value.
+      
+      <p>A <code>Hash</code> literal consists of a comma-separated
+      list of key-value pairs enclosed in curly braces
+      (<code>{</code>, <code>}</code>).  The key is separated from
+      its value with <code>=&gt;</code>. For example: <code>{:age
+        =&gt; 30, :name =&gt; 'Marlo'}</code>. If the key is a
+      <code>Symbol</code> literal, the colon with which its prefixed
+      may be made its suffix, and <code>=&gt;</code> can be omitted.
+      The previous example can be rewritten as <code>{age: 30, name:
+        'Marlo'}</code>. (This syntactical shortcut is a reason for
+      preferring <code>Symbol</code> keys).</p>
+      
+      <figure class=railroad>
+        <img id=hash-member.png>
+        <img id=hash-literal.png>
+        <figcaption>Syntax diagram of the hash literal
+      </figure>
         
-        <p>A value may be retrieved for a given key with
-        <code>Hash#[<var>key</var>]</code>. A value may be associated with a given
-        key with <code>Hash#[<var>key</var>] = <var>value</var></code>. Note that
-        as keys are unique, associating a value with an existing key will delete
-        its previous value. A key’s existence may be determined
-        with <code>Hash#key?(<var>key</var>)</code>.
+      <p>A value may be retrieved for a given key with
+      <code>Hash#[<var>key</var>]</code>. A value may be associated with a given
+      key with <code>Hash#[<var>key</var>] = <var>value</var></code>. Note that
+      as keys are unique, associating a value with an existing key will delete
+      its previous value. A key’s existence may be determined
+      with <code>Hash#key?(<var>key</var>)</code>.
+      
+      <p>Hashes can be iterated over with <code>Hash#each</code>, which yields a
+      key and its associated value on each iteration. Alternatively,
+      <code>Hash#each_key</code> and <code>Hash#each_value</code> iterate over
+      the keys or values, respectively.
+      
+      <p>Uses include a dictionary, allowing values to be looked up by key; a
+      dispatch table, where the values are <code>Proc</code>s identified by
+      their key; and a cache of unique values, taking advantage of the unique
+      keys property.
+      
+      <p><code>Hash</code> is <code>Enumerable</code>, <!-- link --> so all
+      <code>Enumerable</code> methods are available as well.
+    </section>
 
-        <p>Hashes can be iterated over with <code>Hash#each</code>, which yields a
-        key and its associated value on each iteration. Alternatively,
-        <code>Hash#each_key</code> and <code>Hash#each_value</code> iterate over
-        the keys or values, respectively.
-
-        <p>Uses include a dictionary, allowing values to be looked up by key; a
-        dispatch table, where the values are <code>Proc</code>s identified by
-        their key; and a cache of unique values, taking advantage of the unique
-        keys property.
-
-        <p><code>Hash</code> is <code>Enumerable</code>, <!-- link --> so all
-        <code>Enumerable</code> methods are available as well.
-      </section>
-
-      <section>
-        <h1 id=regexps>Regexps</h1>
-
-        <p>A <code>Regexp</code> represents a pattern that describes a
-        <code>String</code>. It <i>matches</i> when contained by the former. The
-        literal is of the form
-        <code>/<var>pattern</var>/<var>options</var></code>: a pattern delimited
-        by solidi, followed by zero or more option specifiers.</p>
-
-        <!-- TODO: EBNF for regexp... -->
-        <figure class=railroad>
-          <img class=left id=regexp-options.png>
-          <img class=inline id=regexp-literal.png>
-          <figcaption>Syntax diagram of the regexp literal
-        </figure>
-
-        <p>The pattern consists of literal characters and meta-characters. A
-        literal character is a non-meta-character; it matches itself. Prefixing a
-        meta-character with a reverse solidus causes it to match literally.
-        <!-- List the meta-characters explicitly? -->
-
-        <p>A balanced pair of parentheses are meta-characters which group and/or
-        capture the characters they enclose. Grouping allows the enclosed to be
-        treated as an atomic whole such that meta-characters directly following
-        the closing parenthesis act on the whole. Capturing is the extraction of
-        specific parts of the text being matched so it can be referred to later,
-        from within the pattern <!-- Mention backreferences? --> or the
-        surrounding program. Parentheses do not capture if the opening parenthesis
-        is directly followed by <code>?:</code>. Captures can be referred to by
-        name if the opening parenthesis is followed by
-        <code>?&lt;<var>name</var>&gt;</code>.  Alternatively, they can be
-        referred to by number, where the <var>n</var><sup>th</sup> group of
-        parentheses is numbered <var>n</var>.
-
-        <p>A literal character or parenthetical may be followed by a quantifier
-        meta-character which specifies how many consecutive occurrences are
-        required at that point in the pattern. <code>+</code> requires at least
-        one, <code>*</code> zero or more, and
-        <code>{<var>min</var>,<var>max</var>}</code> between <var>min</var> and
-        <var>max</var> times. <!-- Note that one of these can be omitted? -->
-
-        <p>A character class specifies a set of characters, one of which must
-        appear at that point in the pattern, enclosed within a pair of square
-        brackets. The characters are specified literally, one after the other. A
-        range of consecutive characters may be abbreviated with the notation
-        <code><var>start</var>-<var>end</var></code>: the first character in the
-        range separated from the last by a hyphen. Inside a character class the
-        hyphen is therefore a metacharacter, so to be matched literally must
-        appear immediately before the right square bracket.
+    <section>
+      <h1 id=regexps>Regexps</h1>
         
-        <p>There are pre-defined character classes to match alphabetical
-        characters (<code>[[:alpha:]]</code>), lowercase
-        (<code>[[:lower:]]</code>), uppercase (<code>[[:upper:]]</code>),
-        alphanumerics (<code>[[:alnum:]]</code>), digits
-        (<code>[[:digit:]]</code>), whitespace (<code>[[:space:]]</code>), and
-        punctuation (<code>[[:punct:]]</code>), among others. The period matches
-        any character except newline.
+      <p>A <code>Regexp</code> represents a pattern that describes a
+      <code>String</code>. It <i>matches</i> when contained by the former. The
+      literal is of the form
+      <code>/<var>pattern</var>/<var>options</var></code>: a pattern delimited
+      by solidi, followed by zero or more option specifiers.</p>
+      
+      <!-- TODO: EBNF for regexp... -->
+      <figure class=railroad>
+        <img class=left id=regexp-options.png>
+        <img class=inline id=regexp-literal.png>
+        <figcaption>Syntax diagram of the regexp literal
+      </figure>
+      
+      <p>The pattern consists of literal characters and meta-characters. A
+      literal character is a non-meta-character; it matches itself. Prefixing a
+      meta-character with a reverse solidus causes it to match literally.
+      <!-- List the meta-characters explicitly? -->
+      
+      <p>A balanced pair of parentheses are meta-characters which group and/or
+      capture the characters they enclose. Grouping allows the enclosed to be
+      treated as an atomic whole such that meta-characters directly following
+      the closing parenthesis act on the whole. Capturing is the extraction of
+      specific parts of the text being matched so it can be referred to later,
+      from within the pattern <!-- Mention backreferences? --> or the
+      surrounding program. Parentheses do not capture if the opening parenthesis
+      is directly followed by <code>?:</code>. Captures can be referred to by
+      name if the opening parenthesis is followed by
+      <code>?&lt;<var>name</var>&gt;</code>.  Alternatively, they can be
+      referred to by number, where the <var>n</var><sup>th</sup> group of
+      parentheses is numbered <var>n</var>.
+      
+      <p>A literal character or parenthetical may be followed by a quantifier
+      meta-character which specifies how many consecutive occurrences are
+      required at that point in the pattern. <code>+</code> requires at least
+      one, <code>*</code> zero or more, and
+      <code>{<var>min</var>,<var>max</var>}</code> between <var>min</var> and
+      <var>max</var> times. <!-- Note that one of these can be omitted? -->
+      
+      <p>A character class specifies a set of characters, one of which must
+      appear at that point in the pattern, enclosed within a pair of square
+      brackets. The characters are specified literally, one after the other. A
+      range of consecutive characters may be abbreviated with the notation
+      <code><var>start</var>-<var>end</var></code>: the first character in the
+      range separated from the last by a hyphen. Inside a character class the
+      hyphen is therefore a metacharacter, so to be matched literally must
+      appear immediately before the right square bracket.
+      
+      <p>There are pre-defined character classes to match alphabetical
+      characters (<code>[[:alpha:]]</code>), lowercase
+      (<code>[[:lower:]]</code>), uppercase (<code>[[:upper:]]</code>),
+      alphanumerics (<code>[[:alnum:]]</code>), digits
+      (<code>[[:digit:]]</code>), whitespace (<code>[[:space:]]</code>), and
+      punctuation (<code>[[:punct:]]</code>), among others. The period matches
+      any character except newline.
+      
+      <p>A vertical line is a meta-character specifying that either the
+      expression to its right, or that to its left, must match. It is usually used
+      inside a parenthetical.
+      
+      <p><code>String#match</code> returns a <code>MatchData</code> object if
+      the match succeeded; <code>nil</code> otherwise. <code>MatchData#[]</code>
+      returns the text captured by the capture group given as a
+      <code>Symbol</code>, for a named group, or an <code>Integer</code>.
+       
+      <!-- String#gsub? -->
+    </section>
 
-        <p>A vertical line is a meta-character specifying that either the
-        expression to its right, or that to its left, must match. It is usually used
-        inside a parenthetical.
+    <section>
+      <h1 id=ranges>Ranges</h1>
+      
+      <p>A <code>Range</code> represents a sequence between two
+      given values.  It is either <i>inclusive</i> or
+      <i>exclusive</i>: the former includes the endpoint; the latter
+      does not. For example, 0–9 is a range consisting of all
+      single-digit integers, expressed by specifying the start-point
+      and endpoint.
 
-        <p><code>String#match</code> returns a <code>MatchData</code> object if
-        the match succeeded; <code>nil</code> otherwise. <code>MatchData#[]</code>
-        returns the text captured by the capture group given as a
-        <code>Symbol</code>, for a named group, or an <code>Integer</code>.
+      <p>A <code>Range</code> literal consists of two values
+      separated by two or three periods: the former range is
+      inclusive; the latter exclusive. For example,
+      <code>'a'...'z'</code> represents letters
+      <i>a</i>–<i>y</i>.</p>
+      
+      <figure class=railroad>
+        <img id=range-literal.png>
+        <figcaption>Syntax diagram of the range literal
+      </figure>
+       
+      <p>The start-point and endpoint must be comparable <!-- link
+      --> with <code>#&lt;=&gt;</code>. That is, for a range
+      <code><var>start</var>..<var>end</var></code>,
+      <code><var>start</var> &lt;=&gt; <var>end</var></code> must
+      return -1, 0, or 1.
+      <code>Range#include?(<var>object</var>)</code> allows ranges
+      to be used as intervals: returning <code>true</code> if
+      <var>object</var> is a member; <code>false</code> otherwise.  
+      
+      <p>A range is <dfn title="discrete ranges">discrete</dfn> if
+      it begins with a value that responds to <code>#succ</code> by
+      returning the next element of the sequence. It is so called
+      because it represents a finite set of values that can be
+      iterated over with <code>Range#each</code>.  Alternatively,
+      <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
+      passes each <var>n</var><sup>th</sup> element to the
+      block. As <code>Range</code>s are <code>Enumerable</code>, they
+      can also be converted to an <code>Array</code> with
+      <code>Range#to_a</code>. 
+       
+      <p>A non-discrete range is <dfn title="continuous
+        range">continuous</dfn>.  It represents an infinite set of
+      values, therefore a <code>TypeError</code> is raised when
+      attempting to iterate over it.
+    </section>
 
-        <!-- String#gsub? -->
-      </section>
-
-      <section>
-        <h1 id=ranges>Ranges</h1>
-
-        <p>A <code>Range</code> represents a sequence between two
-        given values.  It is either <i>inclusive</i> or
-        <i>exclusive</i>: the former includes the endpoint; the latter
-        does not. For example, 0–9 is a range consisting of all
-        single-digit integers, expressed by specifying the start-point
-        and endpoint.
-
-        <p>A <code>Range</code> literal consists of two values
-        separated by two or three periods: the former range is
-        inclusive; the latter exclusive. For example,
-        <code>'a'...'z'</code> represents letters
-        <i>a</i>–<i>y</i>.</p>
-
-        <figure class=railroad>
-          <img id=range-literal.png>
-          <figcaption>Syntax diagram of the range literal
-        </figure>
-
-        <p>The start-point and endpoint must be comparable <!-- link
-        --> with <code>#&lt;=&gt;</code>. That is, for a range
-        <code><var>start</var>..<var>end</var></code>,
-        <code><var>start</var> &lt;=&gt; <var>end</var></code> must
-        return -1, 0, or 1.
-        <code>Range#include?(<var>object</var>)</code> allows ranges
-        to be used as intervals: returning <code>true</code> if
-        <var>object</var> is a member; <code>false</code> otherwise.  
-
-        <p>A range is <dfn title="discrete ranges">discrete</dfn> if
-        it begins with a value that responds to <code>#succ</code> by
-        returning the next element of the sequence. It is so called
-        because it represents a finite set of values that can be
-        iterated over with <code>Range#each</code>.  Alternatively,
-        <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
-        passes each <var>n</var><sup>th</sup></var> element to the
-        block. As <code>Range</code>s are <code>Enumerable</code>, they
-        can also be converted to an <code>Array</code> with
-        <code>Range#to_a</code>. 
-        
-        <p>A non-discrete range is <dfn title="continuous
-          range">continuous</dfn>.  It represents an infinite set of
-        values, therefore a <code>TypeError</code> is raised when
-        attempting to iterate over it.
-      </section>
-
-      <section>
-        <h1 id=procs><code>Proc</code>s</h1>
-        
-        <p>A block literal creates a <code>Proc</code> object which
-        accepts the arguments provided in the optional parameter list
-        and represents a sequence of zero or more statements. Unlike
-        the other literals in this section, block literals must not
-        appear in the top-level context; they must either terminate a
-        message expression, an appropriate keyword expression, or
-        lambda literal.</p> <!-- Is this restriction accurate? --> 
-
+    <section>
+      <h1 id=procs><code>Proc</code>s</h1>
+           
+      <p>A block literal creates a <code>Proc</code> object which
+      accepts the arguments provided in the optional parameter list
+      and represents a sequence of zero or more statements. Unlike
+      the other literals in this section, block literals must not
+      appear in the top-level context; they must either terminate a
+      message expression, an appropriate keyword expression, or
+      lambda literal.</p> <!-- Is this restriction accurate? --> 
+      
         <!-- TODO: Block local variable declarations -->
-        <figure class=railroad>
-          <img id=required-parameters.png>
-          <img id=optional-parameter.png>
-          <img id=optional-parameters.png>
-          <div style=width:590px class=centre>
-            <img class=inline id=rest-parameter.png>
-            <img class=inline id=block-parameter.png>
-          </div>
-          <img id=parameter-list.png>
-          <img id=block.png>
-          <img id=block-literal.png>
-          <figcaption>Syntax diagram of the block literal
-        </figure>
-
-        <section>
-          <h1 id=lambdas>Lambdas</h1>
-
-          <p>A literal of the form
-          <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
-            { <var>statements</var> }</code> instantiates a
-          <code>Proc</code> object with lambda characteristics. The
-          parameter list takes the same form as that used in method
-          definitions <!-- link -->. It may be omitted entirely.
-          <var>statements</var> is zero or more statements. For
-          example, <code>-&gt; { 42 }</code>, or <code>-&gt;(a, b) { a
-            + b }</code>.</p>
-
-          <figure class=railroad>
-            <img id=lambda-literal.png>
-          <figcaption>Syntax diagram of the lambda literal
-          </figure>
-        </section>
-      </section>
+      <figure class=railroad>
+        <img id=required-parameters.png>
+        <img id=optional-parameter.png>
+        <img id=optional-parameters.png>
+        <div style=width:590px class=centre>
+          <img class=inline id=rest-parameter.png>
+          <img class=inline id=block-parameter.png>
+        </div>
+        <img id=parameter-list.png>
+        <img id=block.png>
+        <img id=block-literal.png>
+        <figcaption>Syntax diagram of the block literal
+      </figure>
 
       <section>
-        <h1 id=immediates>Immediates</h1> <!-- sidebar this? -->
+        <h1 id=lambdas>Lambdas</h1>
+        
+        <p>A literal of the form
+        <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
+          { <var>statements</var> }</code> instantiates a <code>Proc</code>
+        object with lambda characteristics. The parameter list takes the
+        same form as that used in method definitions <!-- link -->. It may
+        be omitted entirely.  <var>statements</var> is zero or more
+        statements. For example, <code>-&gt; { 42 }</code>, or
+        <code>-&gt;(a, b) { a + b }</code>.</p>
 
-        <p><code>Symbol</code> and <code>Fixnum</code> literals are
-        <dfn title=immediates>immediate</dfn> values. They are stored
-        as values rather than object references so are immutable and
-        cannot have singleton methods defined on them.
+        <figure class=railroad>
+          <img id=lambda-literal.png>
+          <figcaption>Syntax diagram of the lambda literal
+        </figure>
       </section>
     </section>
 
     <section>
-      <h1 id=identifiers>Identifiers</h1>
-      
-      <p>An <dfn>identifier</dfn> is the name of a variable or constant. It
-      must not contain any US-ASCII character other than the alphanumerics
-      (<code>A</code>—<code>Z</code>, <code>a</code>—<code>z</code>,
-      <code>0</code>–<code>9</code>) and the U+005F LOW LINE (<code>_</code>),
-      or begin with a US-ASCII digit. However, it may contain any other
-      character legal in the source encoding.
+      <h1 id=immediates>Immediates</h1> <!-- sidebar this? -->
 
-      <section>
-        <h1 id=constants>Constants</h1>
-
-        <p>If the first character of an identifier is an uppercase ASCII
-        character (<code>A</code>—<code>Z</code>), it names a constant. Such
-        an identifier does not have its constancy enforced by Ruby, so
-        repeated assignments are legal, but cause a warning to be issued. It
-        is a strong convention that constants qua constants are named entirely
-        in US-ASCII uppercase letters with low lines to separate words,
-        whereas constants used to name classes or modules are named in
-        camel-case: title case with whitespace removed. 
-      </section>
-      
-
-    <!-- Mention: * = 1 # Legal assignment without variable creation -->
+      <p><code>Symbol</code> and <code>Fixnum</code> literals are
+      <dfn title=immediates>immediate</dfn> values. They are stored
+      as values rather than object references so are immutable and
+      cannot have singleton methods defined on them.
     </section>
+  </section>
+
+  <section>
+    <h1 id=identifiers>Identifiers</h1>
+    
+    <p>An <dfn>identifier</dfn> is the name of a variable or constant. It
+    must not contain any US-ASCII character other than the alphanumerics
+    (<code>A</code>—<code>Z</code>, <code>a</code>—<code>z</code>,
+    <code>0</code>–<code>9</code>) and the U+005F LOW LINE (<code>_</code>),
+    or begin with a US-ASCII digit. However, it may contain any other
+    character legal in the source encoding.</p>
+    
+    <section>
+      <h1 id=constants>Constants</h1>
+      
+      <p>If the first character of an identifier is an uppercase ASCII
+      character (<code>A</code>—<code>Z</code>), it names a constant. Such
+      an identifier does not have its constancy enforced by Ruby, so
+      repeated assignments are legal, but cause a warning to be issued. It
+      is a strong convention that constants qua constants are named entirely
+      in US-ASCII uppercase letters with low lines to separate words,
+      whereas constants used to name classes or modules are named in
+      camel-case: title case with whitespace removed. 
+    </section>
+      
+    <!-- Mention: * = 1 # Legal assignment without variable creation -->
+  </section>
+
+  <section>
+    <h1 id=keywords>Keywords</h1>
+    
+    <dl>
+      <!-- Is alias an expression given that it always returns nil? -->
+      <dt><a href=/methods#aliases><code>alias</code></a> 
+      <dd>
+      <dt><a href=/flow#and-operator><code>and</code></a> 
+      <dd>
+      <dt><a href=/flow#begin-statement><code>begin</code></a> 
+      <dd>
+      <dt><a href=/flow#break-statement><code>break</code></a> 
+      <dd>
+      <dt><a href=/classes#class-keyword><code>class</code></a>
+      <dd>
+      <dt><a href=/flow#case-statement><code>case</code></a> 
+      <!-- Is def an expression given that it always returns nil? -->
+      <dd>
+      <dt><a href=/methods#defining><code>def</code></a> 
+      <dd>
+      <dt><code>defined?</code> 
+      <dd>
+      <dt><a href=/messages#block-argument><code>do</code></a> <!-- ?? -->
+      <dd>
+      <dt><a href=/flow#if-else-clause><code>else</code></a> <!-- rescue else
+      clause -->
+      <dd>
+      <dt><a href=/flow#if-elsif-clause><code>elsif</code></a>
+      <dd>
+      <dt><a href=/flow#for><code>in</code></a> <!-- xref for in specifically?
+      -->
+      <dd>
+      <dt><a href=/flow#ensure-clause><code>ensure</code></a>
+      <dd>
+      <dt><code>false</code>
+      <dd>
+      <dt><a href=/flow#for><code>for</code></a>
+      <dd>
+      <dt><a href=/flow#if-statement><code>if</code></a> <!-- postfix form, also -->
+      <dd>
+      <dt><a href=/modules#module-keyword><code>module</code></a>
+      <dd>
+      <dt><a href=/flow#next-statement><code>next</code></a>
+      <dd>
+      <dt><code>nil</code>
+      <dd>
+      <dt><a href=/flow#not-operator><code>not</code></a>
+      <dd>
+      <dt><a href=/flow#or-operator><code>or</code></a>
+      <dd>
+      <dt><a href=/flow#redo-statement><code>redo</code></a>
+      <dd>
+      <dt><a href=/flow#rescue><code>rescue</code></a>
+      <dd>
+      <dt><code>retry</code>
+      <!-- return should be discussed in Flow > Control Statements -->
+      <dd>
+      <dt><a href=/methods#return-values><code>return</code></a>
+      <dd>
+      <dt><code>self</code>
+      <dd>
+      <dt><a href=/methods#super><code>super</code></a>
+      <dd>
+      <dt><code>true</code>
+      <dd>
+      <dt><a href=/methods#undefining><code>undef</code></a>
+      <dd>
+      <dt><a href=/flow#unless-statement><code>unless</code></a>
+      <dd>
+      <dt><a href=/flow#until-loop><code>until</code></a>
+      <dd>
+      <dt><a href=/flow#when><code>when</code></a>
+      <dd>
+      <dt><a href=/flow#while-loop><code>while</code></a>
+      <dd>
+      <dt><a href=/flow#yield><code>yield</code></a>
+      <dd>
+    </dl>
+  </section>
 </section>

@@ -36,8 +36,12 @@ def write_html(nok, file)
   nok.at('section')['id'] = git_hash()
   File.open(file, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
   # Validate?
-  sh "h5-min #{file} >#{file}.min"
-  mv "#{file}.min", file
+  if ENV['DEBUG']
+    $stderr.puts "Not minifying HTML in debug mode"
+  else
+    sh "h5-min #{file} >#{file}.min"
+    mv "#{file}.min", file
+  end
   sh "gzip --best -c #{file} >#{file}.gz"      
 end
 
