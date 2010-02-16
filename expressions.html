@@ -823,8 +823,53 @@
       whereas constants used to name classes or modules are named in
       camel-case: title case with whitespace removed. 
     </section>
-      
     <!-- Mention: * = 1 # Legal assignment without variable creation -->
+  </section>
+
+  <section>
+    <h1 id=defined>The <code>defined?</code> Operator</h1>
+
+    <p><code>defined?</code> is a unary operator which tests whether its
+    operand is defined, and if so returns a description of it.
+    <code>nil</code> is returned if the operand is an undefined variable or
+    method, an expression which uses <code>yield</code> without an
+    associated block, or an expression which uses <code>super</code> without
+    a corresponding superclass method. In all cases the test is conducted
+    without evaluating the operand.</p>
+    
+    <table>
+      <thead>
+        <tr><th>Operand<th>Return Value of <code>defined?</code>
+      </thead>
+      <tbody>
+        <tr><td>Defined local variable<td><code>"local-variable"</code>
+        <tr><td>Defined global variable<td><code>"global-variable"</code>
+        <tr><td>Defined constant<td><code>"constant"</code>
+        <tr><td>Defined instance variable<td><code>"instance-variable"</code>
+        <tr><td>Defined class variable<td><code>"class variable"</code>
+        <tr><td><code>nil</code><td><code>"nil"</code>
+        <tr><td><code>true</code><td><code>"true"</code>
+        <tr><td><code>false</code><td><code>"false"</code>
+        <tr><td><code>self</code><td><code>"self"</code>
+        <tr><td>Expression using <code>yield</code>
+            correctly<td><code>"yield"</code>
+        <tr><td>Expression using <code>super</code>
+            correctly<td><code>"super"</code>
+        <tr><td>Assignment expression<td><code>"assignment"</code>
+        <tr><td>Message sending expression (doesn’t check arity)
+             <td><code>"method"</code>
+        <tr><td>Any other legal expression<td><code>"expression"</code>
+        <tr><td>Undefined variable or invalid use of
+            <code>yield</code>/<code>super</code>
+            <td><code>nil</code>
+      </tbody>
+      <caption>The return values of the <code>defined?</code> operator
+    </table>
+
+    <figure id=defined.rb>
+      <figcaption>Using the <code>defined?</code> operator to test whether a
+      variable or expression is defined
+    </figure>
   </section>
 
   <section>
@@ -849,7 +894,7 @@
       <!-- Is def an expression given that it always returns nil? -->
       <dt><a href=/methods#defining><code>def</code></a> 
       <dd>Defines a method
-      <dt><code>defined?</code> 
+      <dt><a href=#defined><code>defined?</code></a> 
       <dd>
       <dt><a href=/messages#block-argument><code>do</code></a> <!-- ?? -->
       <dd>Delimits a block literal
