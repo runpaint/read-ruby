@@ -11,6 +11,9 @@
 <section>  
   <h1 id=expressions>Expressions</h1>
 
+  <p>An expression is a literal, an identifier, a message expression, a
+  keyword expression, or a parenthesized expression.</p>
+
   <section>
     <h1 id=literals>Literals</h1>
 
@@ -803,5 +806,32 @@
         as values rather than object references so are immutable and
         cannot have singleton methods defined on them.
       </section>
+    </section>
+
+    <section>
+      <h1 id=identifiers>Identifiers</h1>
+      
+      <p>An <dfn>identifier</dfn> is the name of a variable or constant. It
+      must not contain any US-ASCII character other than the alphanumerics
+      (<code>A</code>—<code>Z</code>, <code>a</code>—<code>z</code>,
+      <code>0</code>–<code>9</code>) and the U+005F LOW LINE (<code>_</code>),
+      or begin with a US-ASCII digit. However, it may contain any other
+      character legal in the source encoding.
+
+      <section>
+        <h1 id=constants>Constants</h1>
+
+        <p>If the first character of an identifier is an uppercase ASCII
+        character (<code>A</code>—<code>Z</code>), it names a constant. Such
+        an identifier does not have its constancy enforced by Ruby, so
+        repeated assignments are legal, but cause a warning to be issued. It
+        is a strong convention that constants qua constants are named entirely
+        in US-ASCII uppercase letters with low lines to separate words,
+        whereas constants used to name classes or modules are named in
+        camel-case: title case with whitespace removed. 
+      </section>
+      
+
+    <!-- Mention: * = 1 # Legal assignment without variable creation -->
     </section>
 </section>
