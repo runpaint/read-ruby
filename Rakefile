@@ -32,7 +32,9 @@ def toc(toc)
 end
 
 def write_html(nok, file)
-  nok.css('link').last.after(File.read '_script.html')
+  %w{_script _alpha-strip}.each do |file|
+    nok.css('link').last.after(File.read file + '.html')
+  end
   nok.at('section')['id'] = git_hash()
   File.open(file, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
   # Validate?

@@ -109,6 +109,21 @@ tbody > tr.odd {
   clear: both
 }
 
+div#alpha-strip {
+  background-color: #F5F5F5;
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 0.15em 0.25em 0em 0.5em;
+  overflow: hidden;
+}
+#alpha-strip em {
+  font-weight: bold;
+  text-size: 120%;
+}
+
 /* Comment interface. Pare down? */
 #configUI { position: absolute; z-index: 20; top: 10em; right: 0; width: 11em; padding: 0 0.5em 0 0.5em; font-size: small; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em 0 0 1em; -moz-border-radius: 1em 0 0 1em; }
  #configUI p { margin: 0.75em 0; padding: 0.3em; }
