@@ -425,6 +425,18 @@
             <figcaption>Accessors for a class’s class instance variables are
             created inside its eigenclass with <code>attr_accessor</code>.
           </figure>
+          <!-- TODO: Show more general approch for attr_ methods:
+           Note:
+           http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/class/attribute_accessors.rb
+            class Class
+              def cattr_accessor(*syms)
+                (class << self; self; end).instance_eval do
+                  attr_accessor *syms
+                 end
+              end
+            end
+          -->
+
         </section>
       </section>
 

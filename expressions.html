@@ -11,8 +11,10 @@
 <section>  
   <h1 id=expressions>Expressions</h1>
 
-  <p>An expression is a literal, an identifier, a message expression, a
-  keyword expression, or a parenthesized expression.</p>
+  <p>An expression is a <a href=#literals>literal</a>, an <a
+    href=#identifiers>identifier</a>, a <a
+    href=/messages#expression-syntax>message expression</a>, a
+  <a href=#keywords>keyword expression</a>, or a parenthesized expression.</p>
 
   <section>
     <h1 id=literals>Literals</h1>
@@ -824,6 +826,30 @@
       camel-case: title case with whitespace removed. 
     </section>
     <!-- Mention: * = 1 # Legal assignment without variable creation -->
+
+    <section>
+      <h1 id=variables>Variables</h1>
+      
+      <p>A <dfn>variable</dfn> is a named storage location that holds a value.
+      <!-- TODO: Employ more rigourous definition; cite source --> It is named
+      with an identifier, optionally preceded by a <dfn>sigil</dfn> (a symbol
+      denoting the variable’s scope):</p>
+
+      <dl>
+        <dt><var>identifier</var>
+        <dd>An identifier whose first character is a US-ASCII lowercase
+        character or low line is a local variable unless preceded by one of
+        the following sigils.
+        <dt><code>$</code><var>identifier</var>
+        <dd>An U+0024 DOLLAR SIGN (<code>$</code>) prefix denotes a global variable
+        <dt><code>@</code><var>identifier</var>
+        <dd>A single U+0040 COMMERCIAL AT (<code>@</code>) introduces an
+        <a href=/objects#instance-variables>instance variable</a>.
+        <dt><code>@@</code><var>identifier</var>
+        <dd>Two consecutive U+0040 COMMERCIAL AT (<code>@</code>) symbols
+        introduce a <a href=/classes#class-variables>class variable</a>.
+      </dl>
+    </section>
   </section>
 
   <section>
@@ -873,8 +899,8 @@
   </section>
 
   <section>
-    <h1 id=keywords>Keywords</h1>
-    
+    <h1 id=keywords>Keyword Expressions</h1>
+
     <dl>
       <!-- Is alias an expression given that it always returns nil? -->
       <dt><a href=/methods#aliases><code>alias</code></a> 
@@ -896,20 +922,24 @@
       <dd>Defines a method
       <dt><a href=#defined><code>defined?</code></a> 
       <dd>
+      <!-- NOTE: Not standalone -->
       <dt><a href=/messages#block-argument><code>do</code></a> <!-- ?? -->
       <dd>Delimits a block literal
+      <!-- NOTE: Not standalone -->
       <dt><a href=/flow#if-else-clause><code>else</code></a> <!-- rescue else
       clause -->
       <dd>Optional default clause for the <code>case</code>, <code>if</code>,
       <code>unless</code> statements. Optional clause of <code>begin</code>,
       <code>class</code>, <code>def</code>, and <code>module</code> statements
       for use in exception handling.
+      <!-- NOTE: Not standalone -->
       <dt><a href=/flow#if-elsif-clause><code>elsif</code></a>
       <dd>Optional clause in an <code>if</code> statement.
       <dt><a href=/flow#for><code>in</code></a> <!-- xref for in specifically?
       -->
       <dd>Separates a list of identifiers from the object being iterated in a
       <code>for</code> loop.
+      <!-- NOTE: Not standalone -->
       <dt><a href=/flow#ensure-clause><code>ensure</code></a>
       <dd>Optional clause of <code>begin</code>, <code>class</code>,
       <code>def</code>, and <code>module</code> statements which is executed
@@ -934,13 +964,16 @@
       <dd>Boolean unary operator performing logical NOT. 
       <dt><a href=/flow#or-operator><code>or</code></a>
       <dd>Boolean binary operator performing logical OR.
+      <!-- NOTE: No return value -->
       <dt><a href=/flow#redo-statement><code>redo</code></a>
       <dd>Restarts the current iteration of a loop without re-evaluating the
       conditional.
+      <!-- NOTE: Not standalone -->
       <dt><a href=/flow#rescue><code>rescue</code></a>
       <dd>Optional clause of <code>begin</code>, <code>class</code>,
       <code>def</code>, or <code>module</code> statements that handles the
       specified exceptions.
+      <!-- NOTE: No return value? -->
       <dt><code>retry</code>
       <dd>
       <!-- return should be discussed in Flow > Control Statements -->
@@ -954,15 +987,19 @@
       with the same name.
       <dt><a href=/flow#true><code>true</code></a>
       <dd>Singleton instance of <code>TrueClass</code> representing truth.
+      <!-- NOTE: No return value -->
       <dt><a href=/methods#undefining><code>undef</code></a>
       <dd>Removes the definition of a given method from the class in which it
       was defined.
       <dt><a href=/flow#unless-statement><code>unless</code></a>
       <dd>Conditional statement and statement modifier.
+      <!-- NOTE: No return value -->
       <dt><a href=/flow#until-loop><code>until</code></a>
       <dd>Looping construct.
+      <!-- NOTE: No return value -->
       <dt><a href=/flow#when><code>when</code></a>
       <dd>Clause in a <code>case</code> statement.
+      <!-- NOTE: No return value -->
       <dt><a href=/flow#while-loop><code>while</code></a>
       <dd>Looping construct.
       <dt><a href=/flow#yield><code>yield</code></a>
