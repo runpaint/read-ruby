@@ -900,7 +900,7 @@
           retain the value they were assigned inside the block even after
           leaving it
         </figure>
-
+  
         <p>The <code>Kernel.local_variables</code> method returns an
         <code>Array</code> of local variable names in the current scope as
         <code>Symbol</code>s.
@@ -917,6 +917,10 @@
         <figure id=global-variables.rb>
           <figcaption>Global variables are accessible in every scope
         </figure>
+        
+        <p>An <code>Array</code> of global variable names as
+        <code>Symbol</code>s can be obtained with
+        <code>Kernel.global_variables</code>
       </section>
     </section>
   </section>
