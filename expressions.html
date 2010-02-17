@@ -920,7 +920,262 @@
         
         <p>An <code>Array</code> of global variable names as
         <code>Symbol</code>s can be obtained with
-        <code>Kernel.global_variables</code>
+        <code>Kernel.global_variables</code></p>
+
+        <section>
+          <h1 id=predefined-globals>Predefined Global Variables</h1>
+
+          <p>Ruby predefines certain global variables automatically. They are
+          summarised in the following table.</p>
+
+          <table class=border>
+            <caption>Predefined global variables
+            <thead>
+              <tr>
+                <th>Global Variable
+                <th title="Alias when the English library is required">
+                  <code>English</code> Name
+                <th>Value
+                <th>Meaning
+            </thead>
+            <tbody>
+              <tr class=odd>
+                <td><code>$*</code>
+                <td><code>$ARGV</code>
+                <td><code>Array</code>
+                <td>Read-only alias of <code>ARGV</code>
+              <tr>
+                <td><code>$$</code>
+                <td><code>$PID</code> / <code>$PROCESS_ID</code>
+                <td><code>Fixnum</code>
+                <td>ID of the current Ruby process. Read-only.
+              <tr class=odd>
+                <td><code>$?</code>
+                <td><code>$CHILD_STATUS</code>
+                <td><code>nil</code> or <code>Process::Status</code>
+                <td>Exit status of the last terminated process. Read-only,
+                  thread-local.
+              <tr>
+                <td><code>$-d</code>
+                <td rowspan=2>&nbsp;
+                <td rowspan=2><code>true</code> or <code>false</code>
+                <td rowspan=2>Whether Ruby was invoked with the
+                              <code>-d</code> or <code>--debug</code> switches.  
+              <tr>
+                <td><code>$DEBUG</code>
+              <tr class=odd>
+                <td><code>$"</code>
+                <td rowspan=2>&nbsp;</code>
+                <td rowspan=2><code>Array</code> of <code>String</code>s
+                <td rowspan=2>Absolute filenames of files loaded with
+                              <code>Kernel.load</code> or 
+                              <code>Kernel.require</code>. Read-only.
+              <tr class=odd>
+                <td><code>$LOADED_FEATURES</code>
+              <tr>
+                <td><code>$:</code>
+                <td rowspan=3>&nbsp;</code>
+                <td rowspan=3><code>Array</code> of <code>String</code>s
+                <td rowspan=3>Absolute paths to directories searched by 
+                              <code>Kernel.load</code> or 
+                              <code>Kernel.require</code>. Read-only, but the
+                              contents of the <code>Array</code> can be 
+                              modified
+              <tr>
+                <td><code>$LOAD_PATH</code>
+              <tr class=odd>
+                <td><code>$-I</code>
+              <tr>
+                <td><code>$0</code>
+                <td rowspan=2>&nbsp;</code>
+                <td rowspan=2><code>String</code>s
+                <td rowspan=2>Filename of the Ruby script being executed.
+                              Equal to <code>-</code> if the program was read
+                              from STDIN, or <code>-e</code> if
+                              <code>ruby</code> was supplied with the
+                              <code>-e</code> switch. 
+              <tr>
+                <td><code>$PROGRAM_NAME</code>
+              <tr class=odd>
+                <td><code>$SAFE</code>
+                <td>&nbsp;</code>
+                <td><code>Fixnum</code>s
+                <td>Current safe level. Thread-local.
+              <tr>
+                <td><code>$-w</code>
+                <td rowspan=3>&nbsp;</code>
+                <td rowspan=3><code>true</code>, <code>false</code>, or
+                              <code>nil</code>
+                <td rowspan=3><code>true</code> if the <code>-v</code>, 
+                              <code>-w</code>, or <code>--verbose</code> 
+                              switches were supplied on the command line; 
+                              <code>nil</code> if the <code>-W0</code> switch 
+                              was supplied; <code>false</code>, otherwise.
+                              Assigning <code>nil</code> to this variable
+                              suppresses all warnings.
+              <tr>
+                <td><code>$-v</code>
+              <tr>
+                <td><code>$VERBOSE</code>
+              <tr class=odd>
+                <td><code>$!</code>
+                <td><code>$ERROR_INFO</code>
+                <td><code>Exception</code>
+                <td>Inside a <code>rescue</code> clause or after the
+                <code>rescue</code> modifier holds the current exception. 
+                Thread-local.
+              <tr>
+                <td><code>$@</code>
+                <td><code>$ERROR_POSITION</code>
+                <td><code>Array</code> of <code>String</code>s
+                <td>Inside a <code>rescue</code> clause or after the
+                <code>rescue</code> modifier holds the stack trace of the
+                current exception.  Thread-local.
+              <tr class=odd>
+                <td><code>$_</code>
+                <td><code>$LAST_READ_LINE</code>
+                <td><code>String</code>
+                <td>Last string read by <code>Kernel.gets</code> or
+                <code>Kernel.readline</code>. Thread-local, method-local.
+              <tr>
+                <td><code>$&lt;</code>
+                <td><code>$DEFAULT_INPUT</code>
+                <td><code>ARGF</code>
+                <td>Read-only alias for <code>ARGF</code>.
+              <tr class=odd>
+                <td><code>$stdin</code>
+                <td>&nbsp;
+                <td><code>IO</code>
+                <td>Standard input stream.
+              <tr>
+                <td><code>$&gt;</code>
+                <td rowspan=2><code>$DEFAULT_OUTPUT</code>
+                <td rowspan=2><code>IO</code>s
+                <td rowspan=2>Standard output stream.
+              <tr>
+                <td><code>$stdout</code>
+              <tr class=odd>
+                <td><code>$stderr</code>
+                <td>&nbsp;
+                <td><code>IO</code>
+                <td>Standard error stream.
+              <tr>
+                <td><code>$FILENAME</code>
+                <td>&nbsp;
+                <td><code>String</code>
+                <td>Filename of the file currently being read from
+                <code>ARGF</code>; <code>-</code> if <code>ARGF</code> is
+                empty or reading from <code>STDIN</code>. Read-only.
+              <tr class=odd>
+                <td><code>$.</code>
+                <td><code>$NR</code> / <code>$INPUT_LINE_NUMBER</code>
+                <td><code>Fixnum</code>
+                <td>Number of the last line read from the current input file
+                in <code>ARGF</code>.
+              <tr>
+                <td><code>$/</code>
+                <td rowspan=2><code>$RS</code> /
+                <code>$INPUT_RECORD_SEPARATOR</code>
+                <td rowspan=2><code>String</code>
+                <td rowspan=2>Input record separator. Default value is
+                <code>"\n"</code>. Can be set with the <code>-0</code> switch
+              <tr>
+                <td><code>$-0</code>
+              <tr class=odd>
+                <td><code>$\</code>
+                <td><code>$ORS</code> / <code>$OUTPUT_RECORD_SEPARATOR</code>
+                <td><code>String</code> or <code>nil</code>
+                <td>Appended to <code>Kernel.print</code> output if
+                non-<code>nil</code>. Default value is <code>nil</code>, or
+                <code>$/</code> if the <code>-l</code> switch is given.
+              <tr>
+                <td><code>$,</code>
+                <td><code>$OFS</code> / <code>$OUTPUT_FIELD_SEPARATOR</code>
+                <td><code>nil</code> or <code>String</code>
+                <td>Separator printed between the arguments of
+                <code>Kernel.print</code> and the default separator of
+                <code>Array.join</code>. Equal to <code>nil</code> by default.
+              <tr class=odd>
+                <td><code>$;</code>
+                <td rowspan=2><code>$FS</code> / <code>$FIELD_SEPARATOR</code>
+                <td rowspan=2><code>String</code> or <code>nil</code>
+                <td rowspan=2>Default field separator of
+                <code>String#split</code>. Default value is <code>nil</code>
+                or the argument to the <code>-F</code> switch.
+              <tr class=odd>
+                <td><code>$-F</code>
+              <tr>
+                <td><code>$F</code>
+                <td>&nbsp;
+                <td><code>Array</code> of <code>String</code>s
+                <td>If the <code>-a</code> and <code>-n</code>/<code>-p</code>
+                switches were given, holds the return value of
+                <code>String#split</code> for the current input line.
+              <tr class=odd>
+                <td><code>$~</code>
+                <td><code>$MATCH_INFO</code>
+                <td><code>MatchData</code> or <code>nil</code>
+                <td><code>MatchData</code> from the last regexp match. Thread-
+                and method-local.
+              <tr>
+                <td><code>$&amp;</code>
+                <td><code>$MATCH</code>
+                <td><code>String</code>
+                <td>Text matched by last regexp match. Read-only. Thread- and
+                method-local.
+              <tr class=odd>
+                <td><code>$`</code>
+                <td><code>$PREMATCH</code>
+                <td><code>String</code>
+                <td>Text precceeding the match of the last regexp match.
+                Read-only. Thread- and method-local.
+              <tr>
+                <td><code>$'</code>
+                <td><code>$POSTMATCH</code>
+                <td><code>String</code>
+                <td>Text following the match of the last regexp match.
+                Read-only. Thread- and method-local.
+              <tr class=odd>
+                <td><code>$+</code>
+                <td><code>$LAST_PAREN_MATCH</code>
+                <td><code>String</code>
+                <td>Text enclosed in the last successfully matched group of
+                the last regexp match.  Read-only. Thread- and method-local.
+              <tr>
+                <td><code>$-a</code>
+                <td>&nbsp;
+                <td><code>true</code> or <code>false</code>
+                <td><code>true</code> if the <code>-a</code> switch was given;
+                <code>false</code> otherwise. Read-only.
+              <tr class=odd>
+                <td><code>$-i</code>
+                <td>&nbsp;
+                <td><code>true</code> or <code>false</code>
+                <td>Argument of the <code>-i</code> switch, if given;
+                otherwise <code>nil</code>; <code>false</code> otherwise.
+              <tr>
+                <td><code>$-l</code>
+                <td>&nbsp;
+                <td><code>true</code> or <code>false</code>
+                <td><code>true</code> if the <code>-l</code> switch was given;
+                <code>false</code> otherwise. Read-only.
+              <tr class=odd>
+                <td><code>$-p</code>
+                <td>&nbsp;
+                <td><code>true</code> or <code>false</code>
+                <td><code>true</code> if the <code>-p</code> switch was given;
+                <code>false</code> otherwise. Read-only.
+              <tr>
+                <td><code>$-W</code>
+                <td>&nbsp;
+                <td><code>Fixnum</code>
+                <td>Current verbosity level: <code>0</code> if the
+                <code>-W0</code> switch was given; <code>2</code> if the
+                <code>-w</code>, <code>-v</code>, or <code>--verbose</code>
+                switches were given; <code>1</code> otherwise. Read-only.
+            </tbody>
+          </table>
+        </section>
       </section>
     </section>
   </section>
@@ -941,7 +1196,9 @@
     a corresponding superclass method. In all cases the test is conducted
     without evaluating the operand.</p>
     
+    <!-- Couldn’t use nth-child selector because of rowspan -->
     <table>
+      <caption>The return values of the <code>defined?</code> operator
       <thead>
         <tr><th>Operand<th>Return Value of <code>defined?</code>
       </thead>
@@ -967,13 +1224,12 @@
             <code>yield</code>/<code>super</code>
             <td><code>nil</code>
       </tbody>
-      <caption>The return values of the <code>defined?</code> operator
     </table>
   </section>
 
   <section>
     <h1 id=keywords>Keyword Expressions</h1>
-
+    
     <dl>
       <!-- Is alias an expression given that it always returns nil? -->
       <dt><a href=/methods#aliases><code>alias</code></a> 

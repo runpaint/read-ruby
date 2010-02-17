@@ -92,6 +92,11 @@ table.border, table.border th,  table.border tr, table.border td {
   padding-left: 5px;
   padding-right: 5px;
 }
+
+tbody > tr.odd {
+    background-color: #F5F5F5;
+}
+
 .left {
   float: left
 }
