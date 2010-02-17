@@ -856,21 +856,34 @@
         <p>A local variable’s scope is the method or block in which it was
         initialized; outside of this scope it is undefined, its previous value
         forgotten. This scope is recursive: it continues thought any
-        blocks or other constructs defined within.
+        blocks or other constructs defined within.</p>
+
+        <figure id=local-variables.rb>
+          <figcaption>The scope of a local variable
+        </figure>
 
         <p>A variable is initialized if it appears on the left-hand side
-        (before the U+003D EQUALS SIGN (<code>=</code>) of an assignment
+        (before the U+003D EQUALS SIGN (<code>=</code>)) of an assignment
         expression. However, this assignment expression need not actually
         execute: its mere presence is enough to create the variable. For
         example, if an assignment expression involving a local variable on the
         left-hand side appears within a branch that does not execute, the
         variable comes into existence.  Variables of this sort have the value
-        <code>nil</code>.
+        <code>nil</code>.</p>
+
+        <figure id=local-variables-assignment.rb>
+          <figcaption>An assignment expression initializes a local variable
+        </figure>
 
         <p>Attempting to use an uninitialized local variable causes the
         identifier to be interpreted as a message selector which is sent to
         the current implicit receiver. If such a method doesn’t exist a
-        <code>NameError</code> is raised.
+        <code>NameError</code> is raised.</p>
+
+        <figure id=local-variables-uninitialized.rb>
+          <figcaption>Referring to an uninitialized local variable causes a
+          <code>NameError</code> to be raised.
+        </figure>
 
         <p>A block defines its own lexical scope. Local variables defined
         within it do not persist outside of it. However, if, in the context of
@@ -880,7 +893,13 @@
         will be that which it was assigned within the block. If, instead, it
         is desired that variables defined within a block do not clash with
         those defined outside, <a href=/closures#block-local-variables>block
-          local variables</a> are appropriate.         
+          local variables</a> are appropriate.</p>
+
+        <figure id=non-block-local-variables-example.rb>
+          <figcaption>Non-block-local variables defined prior to the block
+          retain the value they were assigned inside the block even after
+          leaving it
+        </figure>
       </section>
     </section>
   </section>
