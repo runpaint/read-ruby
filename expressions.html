@@ -12,7 +12,7 @@
   <h1 id=expressions>Expressions</h1>
 
   <p>An expression is a <a href=#literals>literal</a>, an <a
-    href=#identifiers>identifier</a>, a <a
+    href=#identifiers>identifier</a>, an assignment expression, a <a
     href=/messages#expression-syntax>message expression</a>, a
   <a href=#keywords>keyword expression</a>, or a parenthesized expression.</p>
 
@@ -849,6 +849,39 @@
         <dd>Two consecutive U+0040 COMMERCIAL AT (<code>@</code>) symbols
         introduce a <a href=/classes#class-variables>class variable</a>.
       </dl>
+
+      <section>
+        <h1 id=local-variables>Local Variables</h1>
+
+        <p>A local variable’s scope is the method or block in which it was
+        initialized; outside of this scope it is undefined, its previous value
+        forgotten. This scope is recursive: it continues thought any
+        blocks or other constructs defined within.
+
+        <p>A variable is initialized if it appears on the left-hand side
+        (before the U+003D EQUALS SIGN (<code>=</code>) of an assignment
+        expression. However, this assignment expression need not actually
+        execute: its mere presence is enough to create the variable. For
+        example, if an assignment expression involving a local variable on the
+        left-hand side appears within a branch that does not execute, the
+        variable comes into existence.  Variables of this sort have the value
+        <code>nil</code>.
+
+        <p>Attempting to use an uninitialized local variable causes the
+        identifier to be interpreted as a message selector which is sent to
+        the current implicit receiver. If such a method doesn’t exist a
+        <code>NameError</code> is raised.
+
+        <p>A block defines its own lexical scope. Local variables defined
+        within it do not persist outside of it. However, if, in the context of
+        a block, a local variable is initialized with the name of one
+        initialized in the enclosing scope, the variables refer to the same
+        storage location: having left the block’s scope the variable’s value
+        will be that which it was assigned within the block. If, instead, it
+        is desired that variables defined within a block do not clash with
+        those defined outside, <a href=/closures#block-local-variables>block
+          local variables</a> are appropriate.         
+      </section>
     </section>
   </section>
 
