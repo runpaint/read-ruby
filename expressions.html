@@ -852,7 +852,7 @@
 
       <section>
         <h1 id=local-variables>Local Variables</h1>
-
+        
         <p>A local variable’s scope is the method or block in which it was
         initialized; outside of this scope it is undefined, its previous value
         forgotten. This scope is recursive: it continues thought any
@@ -870,7 +870,7 @@
         left-hand side appears within a branch that does not execute, the
         variable comes into existence.  Variables of this sort have the value
         <code>nil</code>.</p>
-
+  
         <figure id=local-variables-assignment.rb>
           <figcaption>An assignment expression initializes a local variable
         </figure>
@@ -899,6 +899,19 @@
           <figcaption>Non-block-local variables defined prior to the block
           retain the value they were assigned inside the block even after
           leaving it
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=global-variables>Global Variables</h1>
+
+        <p>A global variable is accessible in every scope. Once set it refers
+        to the same object wherever it is referenced. An uninitialized global
+        variable has the value <code>nil</code>, although attempting to use
+        such a variable results in a warning.</p>
+
+        <figure id=global-variables.rb>
+          <figcaption>Global variables are accessible in every scope
         </figure>
       </section>
     </section>
