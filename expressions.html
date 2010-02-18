@@ -827,6 +827,8 @@
       in US-ASCII uppercase letters with low lines to separate words,
       whereas constants used to name classes or modules are named in
       camel-case: title case with whitespace removed. 
+
+      <!-- TODO: Note that constants are never unitialized -->
     </section>
     <!-- Mention: * = 1 # Legal assignment without variable creation -->
 
@@ -1180,6 +1182,160 @@
           </table>
         </section>
       </section>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=assignment>Assignment Expressions</h1>
+
+    <p>An assignment expression sets the value of one or more lvalues to their
+    corresponding rvalues. Its general form is <code><var>lvalues</var> =
+      <var>rvalues</var></code>. An <dfn>lvalue</dfn> is the target of an
+    assignment: an expression that can appear on the <em>l</em>eft-hand side
+    of an assignment expression; whereas an <dfn>rvalue</dfn> is the value
+    being assigned, appearing on the <em>r</em>ight-hand side.</p>
+
+    <section>
+      <h1 id=lvalues>Lvalues</h1>
+
+      <section>
+        <h1 id=lvalue-variable>Variable Lvalues</h1>
+
+        <p>The name of any variable is a valid lvalue. An assignment
+        expression involving a variable lvalue causes the variable to take the
+        value of the corresponding rvalue. This operation occurs without any
+        methods being invoked or messages sent: it is inbuilt and its
+        semantics cannot be overridden. 
+      </section>
+
+      <section>
+        <h1 id=lvalue-constant>Constant Lvalues</h1>
+
+        <p>The name of any constant is a valid lvalue. Assignment to a
+        constant has the same semantics as assignment to a variable, with two
+        caveats:
+          <ul>
+            <li>If the constant is initialized prior to the assignment, a
+            warning will be issued.
+            <li>Constant assignment is illegal in the body of a method.
+          </ul>
+      </section>
+
+      <section>
+        <h1 id=lvalue-attribute>Attribute Lvalues</h1>
+
+        <p>A message expression of the form
+        <code><var>receiver</var>.<var>selector</var></code> is a valid lvalue
+        unless the last character of <var>selector</var> is U+003F QUESTION
+        MARK (<code>?</code>) or U+0021 EXCLAMATION MARK (<code>!</code>). If
+        the last character of <var>selector</var> is not U+003D EQUALS SIGN
+        (<code>=</code>), it is set to be. Assigning to such an lvalue is
+        equivalent to sending <var>receiver</var> a message whose selector is
+        <var>selector</var> and arguments are the rvalue.          
+      </section>
+
+      <section>
+        <h1 id=lvalue-element-ref>Element Reference Lvalues</h1>
+
+        <p>An element reference expression, i.e.
+        <code><var>receiver</var>[<var>expression</var>]</code> is a special
+        case of attribute lvalues. It is equivalent to
+        <code><var>receiver</var>.[]=(<var>expression</var>,
+          <var>rvalue</var>)</code>.
+      </section>
+    </section>
+
+    <section>
+      <h1 id=simple-assignment>Simple Assignment</h1>
+
+      <p>A simple assignment expression consists of a single lvalue and a
+      single rvalue: <code><var>lvalue</var> = <var>rvalue</var></code>. It
+      sets the value of <var>lvalue</var> to <var>rvalue</var>.
+    </section>
+
+    <section>
+      <h1 id=abbreviated-assignment>Abbreviated Assignment</h1>
+
+      <p>An abbreviated assignment expression is a syntactical shortcut for an
+      rvalue using a binary operator with the lvalue as an operand. It takes
+      the general form that follows, where <var>operator</var> is one of
+      thirteen predefined selectors enumerated in the table below:
+
+      <pre><code>
+      <var>lvalue</var> <var>operator</var>= <var>rvalue</var>
+      </code></pre>
+
+      <p>This is wholly equivalent to:
+
+      <pre><code>
+      <var>lvalue</var> = <var>lvalue</var> <var>operator</var> <var>rvalue</var>
+      </code></pre> 
+
+      <p>This equivalence means that the abbreviated form results in the
+      lvalue being sent a message with the selector <var>operator</var> and
+      the argument <var>rvalue</var>, then the result of this operation being
+      assigned to <var>lvalue</var>.
+
+      <table class=border>
+        <caption>The abbreviated assignment operators
+        <thead>
+          <tr><th>Operator<th>Abbreviation<th>Expansion
+        </thead>          
+        <tbody class=zebra>
+          <tr>
+            <td><code>+</code>
+            <td><code><var>lvalue</var> += <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> + <var>rvalue</var></code>  
+          <tr>
+            <td><code>-</code>
+            <td><code><var>lvalue</var> -= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> - <var>rvalue</var></code>  
+          <tr>
+            <td><code>*</code>
+            <td><code><var>lvalue</var> *= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> * <var>rvalue</var></code>  
+          <tr>
+            <td><code>/</code>
+            <td><code><var>lvalue</var> /= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> / <var>rvalue</var></code>  
+          <tr>
+            <td><code>%</code>
+            <td><code><var>lvalue</var> %= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> % <var>rvalue</var></code>  
+          <tr>
+            <td><code>**</code>
+            <td><code><var>lvalue</var> **= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> ** <var>rvalue</var></code>  
+          <tr>
+            <td><code>&amp;&amp;</code>
+            <td><code><var>lvalue</var> &amp;&amp;= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> &amp;&amp; <var>rvalue</var></code>  
+          <tr>
+            <td><code>||</code>
+            <td><code><var>lvalue</var> ||= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> || <var>rvalue</var></code>  
+          <tr>
+            <td><code>&amp;</code>
+            <td><code><var>lvalue</var> &amp;= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> &amp; <var>rvalue</var></code>  
+          <tr>
+            <td><code>|</code>
+            <td><code><var>lvalue</var> |= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> | <var>rvalue</var></code>  
+          <tr>
+            <td><code>^</code>
+            <td><code><var>lvalue</var> ^= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> ^ <var>rvalue</var></code>  
+          <tr>
+            <td><code>&lt;&lt;</code>
+            <td><code><var>lvalue</var> &lt;&lt;= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> &lt;&lt; <var>rvalue</var></code>  
+          <tr>
+            <td><code>&gt;&gt;</code>
+            <td><code><var>lvalue</var> &gt;&gt;= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> &gt;&gt; <var>rvalue</var></code>  
+        </tbody>
+      </table>
     </section>
   </section>
 

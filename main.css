@@ -96,6 +96,9 @@ table.border, table.border th,  table.border tr, table.border td {
 tbody > tr.odd {
     background-color: #F5F5F5;
 }
+tbody.zebra tr:nth-child(2n+1) {
+    background-color: #F5F5F5;
+}
 
 .left {
   float: left
