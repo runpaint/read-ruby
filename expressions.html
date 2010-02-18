@@ -1366,59 +1366,10 @@
       </section>
 
       <section>
-        <h1 id=parallel-assignment-one-lvalue>One Lvalue, Many Rvalues</h1>
-
-        <p>Assigning multiple rvalues to a single lvalue is equivalent to
-        assigning an <code>Array</code> whose elements are the rvalues.
-        Assigning <var>n</var> rvalues to a single lvalue is equivalent to:
-        
-        <pre class=syntax><code>
-<var>lvalue</var> = [<var>rvalue</var><sub>0</sub>,…,<var>rvalue</var><sub><var>n</var></sub>]</code></pre>
-
-        <p>If this behaviour is undesirable, the lvalue can be followed by a
-        trailing comma, assigning <var>rvalue</var><sub>0</sub> to
-        <var>lvalue</var>, and discarding the remaining rvalues.
-      </section>
-
-      <section>
-        <h1 id=parallel-assignment-array-rvalue>Array as an Rvalue</h1>
-
-        <p>If there are multiple lvalues and a single rvalue responding to
-        <code>:to_a</code>, the rvalue is expanded (via
-        <code>:to_a</code>) and its constituent elements made rvalues in
-        their own right. If there are as many lvalues as there are elements in
-        the rvalue, assignment proceeds according to <a
-          href=#parallel-assignment-equal>Equal Number of Lvalues to
-          Rvalues</a>; otherwise the following section, <a
-          href=#parallel-assignment-unequal>Unequal Number of Lvalues to
-          Rvalues</a>, applies.
-      </section>
-
-      <section>
-        <h1 id=parallel-assignment-unequal>Unequal Number of Lvalues to
-          Rvalues</h1>
-
-        <p>When the lvalues outnumber the rvalues, assignment proceeds as with
-        <a href=#parallel-assignment-equal>equal numbers of lvalues to
-          rvalues</a>, with the remaining lvalues being assigned
-        <code>nil</code>. That is, for <var>n</var> rvalues and <var>m</var>
-        lvalues, where <var>n</var> &lt; <var>m</var>, <var>lvalue</var><sub>0</sub>–<var>lvalue</var><sub><var>n</var></sub> are assigned
-        <var>rvalue</var><sub>0</sub>–<var>rvalue</var><sub><var>n</var></sub>, and
-        <var>lvalue</var><sub><var>n</var>+1</sub>–<var>lvalue</var><sub><var>m</var></sub>
-        are assigned <code>nil</code>.
-
-        <p>Conversely, when the rvalues outnumber the lvalues, assignment
-        proceeds as with <a href=#parallel-assignment-equal>equal numbers of
-          lvalues to rvalues</a>, with the remaining rvalues being discarded.
-      </section>
-
-      <section>
         <h1 id=splat>The Splat Operator</h1>
 
         <!-- TODO: Mary this section with discussion of splat in Methods and
         elsewhere -->
-        <!-- Begin Assignment Expressions with this topic, so the cases above
-        can be described in these terms? -->
 
         <p>Lvalues and rvalues may optionally be directly preceded by a U+002A
         ASTERISK (<code>*</code>), termed a <dfn>splat</dfn> hereafter.</p>
@@ -1453,7 +1404,56 @@
           them into a list of their constituent elements.
           <!-- TODO: Aside that #to_splat was previously recommended -->
         </section>
+      </section>
 
+      <section>
+        <h1 id=parallel-assignment-one-lvalue>One Lvalue, Many Rvalues</h1>
+
+        <p>When multiple rvalues are assigned to a single lvalue, there is an
+        <a href=#splat-lvalue>implicit splat operator</a> before the lvalue.
+        Therefore, assigning <var>n</var> rvalues to a single lvalue is
+        equivalent to:
+        
+        <pre class=syntax><code>
+<var>lvalue</var> = [<var>rvalue</var><sub>0</sub>,…,<var>rvalue</var><sub><var>n</var></sub>]</code></pre>
+
+        <p>If this behaviour is undesirable, the lvalue can be followed by a
+        trailing comma, assigning <var>rvalue</var><sub>0</sub> to
+        <var>lvalue</var>, and discarding the remaining rvalues.
+      </section>
+
+      <section>
+        <h1 id=parallel-assignment-array-rvalue>Array as an Rvalue</h1>
+
+        <p>If there are multiple lvalues and a single rvalue, there is an <a
+          href=#splat-rvalue>implicit splat operator</a> before the rvalue. If
+        there are as many lvalues as there are elements in the splatted
+        rvalue, assignment proceeds according to <a
+          href=#parallel-assignment-equal>Equal Number of Lvalues to
+          Rvalues</a>; otherwise the following section, <a
+          href=#parallel-assignment-unequal>Unequal Number of Lvalues to
+          Rvalues</a>, applies.
+      </section>
+
+      <section>
+        <h1 id=parallel-assignment-unequal>Unequal Number of Lvalues to
+          Rvalues</h1>
+
+        <p>When the lvalues outnumber the rvalues, assignment proceeds as with
+        <a href=#parallel-assignment-equal>equal numbers of lvalues to
+          rvalues</a>, with the remaining lvalues being assigned
+        <code>nil</code>. That is, for <var>n</var> rvalues and <var>m</var>
+        lvalues, where <var>n</var> &lt; <var>m</var>,
+        <var>lvalue</var><sub>0</sub>–<var>lvalue</var><sub><var>n</var></sub>
+        are assigned
+        <var>rvalue</var><sub>0</sub>–<var>rvalue</var><sub><var>n</var></sub>,
+        and
+        <var>lvalue</var><sub><var>n</var>+1</sub>–<var>lvalue</var><sub><var>m</var></sub>
+        are assigned <code>nil</code>.
+
+        <p>Conversely, when the rvalues outnumber the lvalues, assignment
+        proceeds as with <a href=#parallel-assignment-equal>equal numbers of
+          lvalues to rvalues</a>, with the remaining rvalues being discarded.
       </section>
     </section>
   </section>
