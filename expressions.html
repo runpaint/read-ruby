@@ -1442,31 +1442,32 @@
           href=#parallel-assignment-unequal>Unequal Number of Lvalues to
           Rvalues</a>, applies.</p>
 
-        <figure id=parallel-assignment-one-rvalue.rb>
-          <figcaption>When an <code>Array</code> with
+        <figure class=compact id=parallel-assignment-one-rvalue.rb>
+          <figcaption style=width:25%>When an <code>Array</code> with
           <var>n</var> elements is assigned to <var>n</var> lvalues, each
           lvalue is assigned one element
         </figure>
 
-        <figure id=parallel-assignment-rvalue-to-ary.rb>
-          <figcaption>When an object responding to
+        <figure class=compact id=parallel-assignment-rvalue-to-ary.rb>
+          <figcaption style=width:25%>When an object responding to
           <code>:to_ary</code> with an <var>n</var> element <code>Array</code>
           is assigned to <var>n</var> lvalues, each lvalue is assigned one
           element
         </figure>
-        
-        <figure id=parallel-assignment-one-rvalue-nil.rb>
-          <figcaption>When an <code>Array</code> with <var>n</var> elements is
+
+        <figure class=compact id=parallel-assignment-one-rvalue-nil.rb>
+          <figcaption style=width:45%>When an <code>Array</code> with <var>n</var> elements is
           assigned to fewer than <var>n</var> lvalues, the first <var>n</var>
           elements are assigned the corresponding lvalue, and the remainder
           discarded
         </figure>
         
-        <figure id=parallel-assignment-one-rvalue-non-array.rb>
-          <figcaption>When a non-<code>Array</code> is assigned to multiple
+        <figure class=compact id=parallel-assignment-one-rvalue-non-array.rb>
+          <figcaption style=width:45%>When a non-<code>Array</code> is assigned to multiple
           lvalues, the first lvalue takes the sole rvalue, and the remaining
           lvalues are assigned <code>nil</code>
         </figure>
+        <br class=clear>
       </section>
 
       <section>

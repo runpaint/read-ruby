@@ -29,6 +29,26 @@ figcaption {
   font-style: italic;
 }
 
+figure.compact pre > code {
+  display: block;
+  float: left;
+  white-space: pre;
+  margin-bottom: 3%;
+}
+
+figure.compact figcaption {
+  float: left;
+  margin-left: 2%;
+  width: 20%;
+  display: block;
+  margin-right: 0;
+  text-align: left;
+  font-style: italic;
+}
+figure.compact {
+  clear: both;
+}
+
 figcaption.nowrap {
   margin-left: auto;
   margin-right: auto;
