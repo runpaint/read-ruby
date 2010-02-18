@@ -150,7 +150,7 @@
               <tr><th>Escape Sequence<th>Interpretation
             </thead>
             <tbody>
-              <tr>
+              <tr class=odd>
                 <td><code>\a</code>
                 <td>U+0007 &lt;control&gt;: The <a
                     href=//en.wikipedia.org/wiki/Bell_character>BEL</a>
@@ -160,7 +160,7 @@
                 <td>U+0008 &lt;control&gt;: The <a
                     href=//en.wikipedia.org/wiki/Backspace>Backspace</a>
                     character.
-              <tr>
+              <tr class=odd>
                 <td><code>\e</code>
                 <td>U+001B &lt;control&gt;: The <a
                     href=//en.wikipedia.org/wiki/Esc>ESC</a>
@@ -170,7 +170,7 @@
                 <td>U+000C &lt;control&gt;: The <a
                     href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
                     character.
-              <tr>
+              <tr class=odd>
                 <td><code>\n</code>
                 <td>U+000A &lt;control&gt;: The <a
                     href=//en.wikipedia.org/wiki/Newline>Newline</a> character.
@@ -179,7 +179,7 @@
                 <td>U+000D &lt;control&gt;: The <a
                     href=//en.wikipedia.org/wiki/Carriage_return>Carriage Return</a> 
                   character.
-              <tr>
+              <tr class=odd>
                 <td><code>\s</code>
                 <td>U+0020 SPACE: The <a
                     href=//en.wikipedia.org/wiki/Space_key>Space</a>
@@ -189,7 +189,7 @@
                 <td>U+0009 &lt;control&gt;: The <a
                     href=//en.wikipedia.org/wiki/Tab_character>Tab</a> 
                   character
-              <tr>
+              <tr class=odd>
                 <td><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code>
                   <td>The <a
                       href=//en.wikipedia.org/wiki/Unicode>Unicode</a>
@@ -201,47 +201,47 @@
                 <td>The Unicode codepoint(s) specified by
                   <var>codepoints</var>. See: <a
                     href=#unicode-escapes>Unicode Escapes</a>.
-              <tr>
+              <tr class=odd>
                 <td><code>\v</code>
                 <td>U+000B &lt;control&gt;: The vertical tab character.
               <tr>
                 <td><code>\<var>octal</var><var>octal</var><var>octal</var></code>
                 <td>The byte specified by the three given octal digits,
                   whose combined value does not exceed 377<sub>8</sub>.
-              <tr>
+              <tr class=odd>
                 <td><code>\<var>octal</var><var>octal</var></code>
                 <td>The byte specified by the two given octal digits
               <tr>
                 <td><code>\<var>octal</var></code>
                 <td>The byte specified by the given octal digit
-              <tr>
+              <tr class=odd>
                 <td><code>\x<var>hex</var><var>hex</var></code>
                 <td>The byte specified by the two given hexadecimal
                   digits
               <tr>
                 <td><code>\x<var>hex</var></code>
                 <td>The byte specified by the given hexadecimal digit
-              <tr>
+              <tr class=odd>
                 <td><code>\c<var>char</var></code>
                 <td rowspan=2>The <a
                     href=//en.wikipedia.org/wiki/Control_character>control
                     character</a> <code>Ctrl-<var>char</var></code>,
                   e.g.  <code>\cZ</code> is U+001A &lt;control&gt;
-              <tr>
+              <tr class=odd>
                 <td><code>\C-<var>char</var></code>
               <tr>
                 <td><code>\M-<var>char</var></code>
                 <td>Meta character <var>char</var> formed by setting
                     the high bit of <var>char</var> character code
-              <tr>
+              <tr class=odd>
                 <td><code>\</code>U+000A &lt;control&gt;
                 <td rowspan=3>A backslash before a <a
                     href=//en.wikipedia.org/wiki/Newline>line terminator</a>
                   escapes it, removing both the line
                   terminator and backslash from the string
-              <tr>
+              <tr class=odd>
                 <td><code>\</code>U+000D &lt;control&gt;
-              <tr>
+              <tr class=odd>
                 <td><code>\</code>U+000D&nbsp;&lt;control&gt;U+000A&nbsp;&lt;control&gt;
               <tr>
                 <td><code>\<var>char</var></code>
