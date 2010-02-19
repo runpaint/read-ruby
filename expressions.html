@@ -497,7 +497,6 @@
        
       <!-- TODO: Determine clear way to diagram optional spaces -->
       <figure class=railroad>
-        <img id=expression-list.png>
         <img id=array-literal.png>
         <figcaption>Syntax diagram of the array literal
       </figure>
@@ -506,6 +505,11 @@
       ordered collection of objects, which need not be homogeneous. It is
       automatically resized as elements are added or removed.
       
+      <figure class=railroad>
+        <img id=expression-list.png>
+        <figcaption>Syntax diagram of an expression list
+      </figure>
+
       <p>An <code>Array</code> literal is a comma-separated list of
       expressions enclosed in square brackets (<code>[</code>,
       <code>]</code>). For example, <code>[1, :two, 'three']</code> creates a
@@ -597,6 +601,11 @@
       include a key-value pair of <code>:lemon =&gt; :yellow</code>:
       <code>:lemon</code> is the key; <code>:yellow</code> is the value.
       
+      <figure class=railroad>
+        <img id=hash-literal.png>
+        <figcaption>Syntax diagram of the hash literal
+      </figure>
+
       <p>A <code>Hash</code> literal consists of a comma-separated
       list of key-value pairs enclosed in curly braces
       (<code>{</code>, <code>}</code>).  The key is separated from
@@ -610,8 +619,7 @@
       
       <figure class=railroad>
         <img id=hash-member.png>
-        <img id=hash-literal.png>
-        <figcaption>Syntax diagram of the hash literal
+        <figcaption>Syntax diagram of an element of the hash literal
       </figure>
         
       <p>A value may be retrieved for a given key with
