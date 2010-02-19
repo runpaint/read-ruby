@@ -1246,6 +1246,13 @@
     </section>
 
     <section>
+      <h1 id=rvalues>Rvalues</h1>
+
+      <p>An rvalue is any expression. The value of the expression is assigned
+      to the corresponding lvalue.
+    </section>
+
+    <section>
       <h1 id=simple-assignment>Simple Assignment</h1>
 
       <p>A simple assignment expression consists of a single lvalue and a
@@ -1347,8 +1354,9 @@
     <section>
       <h1 id=parallel-assignment>Parallel Assignment</h1>
 
-      <p>A parallel assignment expression involves multiple lvalues and/or
-      multiple rvalues. The values are separated by commas.</p>
+      <p>A parallel assignment expression involves multiple <a
+      href=#lvalues>lvalues</a> and/or multiple <a href=#rvalues>rvalues</a>.
+      The values are separated by commas.</p>
 
       <section>
         <h1 id=parallel-assignment-equal>Equal Number of Lvalues to Rvalues</h1>
@@ -1359,8 +1367,8 @@
         is assigned the <var>n</var><sup>th</sup></var> rvalue.
         
         <p>The parallel aspect of this operation is that all of the rvalues
-        are evaluated prior to assigning them. This allows the value of two
-        variables to be swapped as shown in the figure below:</p>
+        are evaluated prior to assigning them. This allows the value of two or
+        more variables to be swapped, as shown in the figure below:</p>
         
         <figure id=parallel-assignment-equal.rb>
           <figcaption>Parallel assignment when there are the same number of
@@ -1386,7 +1394,12 @@
           then it consumes all rvalues which have not already been paired with
           lvalues. If a splatted lvalue is followed by other lvalues, it
           consumes as many rvalues as possible while still allowing the
-          following lvalues to receive their rvalues.
+          following lvalues to receive their rvalues.</p>
+
+          <figure id=splat-lvalue.rb>
+            <figcaption>A splatted lvalue greedily consumes rvalues into an
+            <code>Array</code>
+          </figure>
         </section>
 
         <section>
@@ -1404,8 +1417,13 @@
           <p>However, for objects that do respond to <code>:to_a</code> with an
           <code>Array</code>, such as <code>Array</code>, <code>Hash</code>,
           <code>Range</code>, and <code>Enumerator</code>, splatting expands
-          them into a list of their constituent elements.
+          them into a list of their constituent elements.</p>
           <!-- TODO: Aside that #to_splat was previously recommended -->
+
+          <figure id=splat-rvalue.rb>
+            <figcaption>Splatting an rvalue expands it into its constituent
+            elements
+          </figure>
         </section>
       </section>
 
@@ -1432,42 +1450,59 @@
       <section>
         <h1 id=parallel-assignment-one-rvalue>Many Lvalues, One Rvalue</h1>
         
-        <p>If there are multiple lvalues and a single rvalue, and the rvalue
-        responds to <code>:to_ary</code> with an <code>Array</code>, the
-        elements of this array become rvalues in their own right, replacing
-        the original rvalue. If there are as many lvalues as there are
-        elements in the splatted rvalue, assignment proceeds according to <a
-          href=#parallel-assignment-equal>Equal Number of Lvalues to
-          Rvalues</a>; otherwise the following section, <a
-          href=#parallel-assignment-unequal>Unequal Number of Lvalues to
-          Rvalues</a>, applies.</p>
-
-        <figure class=compact id=parallel-assignment-one-rvalue.rb>
+        <p>If there are multiple lvalues and a single rvalue that responds to
+        <code>:to_ary</code> with an <code>Array</code>, the elements of this
+        array become rvalues in their own right, replacing the original
+        rvalue.</p>
+        
+        <figure style=clear:bottom class=compact id=parallel-assignment-one-rvalue.rb>
           <figcaption style=width:25%>When an <code>Array</code> with
           <var>n</var> elements is assigned to <var>n</var> lvalues, each
           lvalue is assigned one element
         </figure>
 
+        <br class=clear>
+
+        <p>Note that <code>:to_ary</code> is sent rather than the
+        <code>:to_a</code> used by the <a
+          href=#splat-rvalue>splat</a> operator. In the former case,
+        the programmer did not directly request that conversion take place so
+        the message for <a href=/objects#implicit-conversion>implicit</a>
+        conversion is sent; in the latter, his use of the splat operator
+        constitutes an <a href=/objects#explicit-conversion>explicit
+          conversion</a>, so the more liberal protocol is followed.</p>
+        
         <figure class=compact id=parallel-assignment-rvalue-to-ary.rb>
           <figcaption style=width:25%>When an object responding to
           <code>:to_ary</code> with an <var>n</var> element <code>Array</code>
           is assigned to <var>n</var> lvalues, each lvalue is assigned one
           element
         </figure>
+        
+        <br class=clear>
+
+        <p>If there are as many lvalues as there are
+        elements in the splatted rvalue, assignment proceeds according to <a
+          href=#parallel-assignment-equal>Equal Number of Lvalues to
+          Rvalues</a>; otherwise the following section, <a
+          href=#parallel-assignment-unequal>Unequal Number of Lvalues to
+          Rvalues</a>, applies.</p>
 
         <figure class=compact id=parallel-assignment-one-rvalue-nil.rb>
-          <figcaption style=width:45%>When an <code>Array</code> with <var>n</var> elements is
-          assigned to fewer than <var>n</var> lvalues, the first <var>n</var>
-          elements are assigned the corresponding lvalue, and the remainder
-          discarded
+          <figcaption style=width:45%>When an <code>Array</code> with
+          <var>n</var> elements is assigned to fewer than <var>n</var>
+          lvalues, the first <var>n</var> elements are assigned the
+          corresponding lvalue, and the remainder discarded
         </figure>
         
-        <figure class=compact id=parallel-assignment-one-rvalue-non-array.rb>
-          <figcaption style=width:45%>When a non-<code>Array</code> is assigned to multiple
-          lvalues, the first lvalue takes the sole rvalue, and the remaining
-          lvalues are assigned <code>nil</code>
+        <br class=clear>
+        <!--<figure class=compact id=parallel-assignment-one-rvalue-non-array.rb>
+          <figcaption style=width:45%>When a non-<code>Array</code> is
+          assigned to multiple lvalues, the first lvalue takes the sole
+          rvalue, and the remaining lvalues are assigned <code>nil</code>
         </figure>
         <br class=clear>
+        -->
       </section>
 
       <section>
@@ -1521,6 +1556,22 @@
 
         <figure id=sub-assignment.rb>
           <figcaption>Using sub-assignment to distribute nested rvalues
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=parallel-assignment-value>The Value of a Parallel Assignment
+          Expression</h1>
+
+        <p>A parallel assignment expression involving a single rvalue has
+        that rvalue as its value. Otherwise, the value is
+        an <code>Array</code> of the rvalues, including any that were
+        discarded. In both cases, the rvalues are splatted as appropriate
+        before being returned.</p>
+
+        <figure id=parallel-assignment-value.rb>
+          <figcaption>The value of a parallel assignment expression is its
+          rvalues
         </figure>
       </section>
     </section>
