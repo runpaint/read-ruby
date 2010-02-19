@@ -30,16 +30,20 @@
       <h1 id=strings>Strings</h1>
        
       <p><code>String</code>s are mutable sequences of characters with
-      an associated encoding.
+      an associated encoding.</p>
+
+      <section>
+        <h1 id=character>Character</h1>
       
-      <p>A single character prefixed with a question mark
-      (<code>?<var>char</var></code>) instantiates a <code>String</code>
-      containing the character.</p>
-      
-      <figure class=railroad>
-        <img id=character-literal.png>
-        <figcaption>Syntax diagram of the character literal
-      </figure>
+        <figure class=railroad>
+          <img id=character-literal.png>
+          <figcaption>Syntax diagram of the character literal
+        </figure>
+
+        <p>A single character prefixed with a question mark
+        (<code>?<var>char</var></code>) instantiates a <code>String</code>
+        comprising the character.
+      </section>
       
       <!-- TODO: alternative delimiters-->
 
@@ -131,12 +135,6 @@
           <h1 id=string-escapes>String Escapes</h1>
            
           <figure class=railroad>
-            <!-- TODO: Incorporate maximumn value of octal integer: 377
-            -->
-            <img id=byte-escape.png>
-            <img id=control-escape.png>
-            <img id=meta-escape.png>
-            <img id=character-escape.png>
             <img id=escape.png>
             <figcaption>Syntax diagram of the string escape
           </figure>
@@ -146,6 +144,75 @@
           (<code>\</code>) (“backslash”) that have a meaning other than their
           constituent characters.</p>
            
+          <section>
+            <h1 id=byte-escape>Byte Escape</h1>
+
+            <figure class=railroad>
+              <!-- TODO: Incorporate maximumn value of octal integer: 377
+              -->
+              <img id=byte-escape.png>
+              <figcaption>Syntax diagram of the byte escape
+            </figure>
+
+            <section>
+              <h1 id=octal-byte>Octal Byte Escape</h1>
+
+              <p>A reverse solidus followed by an octal number between zero
+              and 377<sub>8</sub> represents the character whose character
+              code that is.</p>
+
+              <figure id=octal-byte-escape.rb>
+                <figcaption>An octal byte escape consists of a backslash
+                followed by a character code in base 8
+              </figure>
+            </section>
+
+            <section>
+              <h1 id=hex-byte>Hexadecimal Byte Escape</h1>
+
+              <p>A hexadecimal byte escape consists of <code>\x</code>
+              followed by a hexadecimal number ≤ FF<sub>16</sub>. It
+              represents the character whose code is given by the number.</p>
+
+              <figure id=hex-byte-escape.rb>
+                <figcaption>A hexadecimal byte escape consists of a backslash
+                followed by an <code>x</code> followed by one or two
+                hexadecimal digits
+              </figure>
+            </section>
+          </section>
+
+          <section>
+            <h1 id=control-escape>Control Escape</h1>
+
+            <figure class=railroad>
+              <img id=control-escape.png>
+              <figcaption>Syntax diagram of the control escape
+            </figure>
+
+            <p>The escape sequence for <a
+            href=//en.wikipedia.org/wiki/Control_character>control
+            character</a>
+            <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd> consists of
+            a reverse solidus, either <code>c</code> or <code>C-</code>, then
+            <var>char</var>, which may be a character or escape.
+            (<var>char</var> must not be a <a
+            href=#control-escape>control</a>, Unicode, <a
+            href=#hex-byte>hexadecimal</a>, or three-digit <a
+            href=#octal-byte>octal</a>, escape). Its value is the character
+            whose character code is that of <var>char</var> ∧ 0x1F.</p>
+            
+            <figure id=control-escape.rb>
+              <figcaption>The control escape represents a control key
+            </figure>
+          </section>
+
+          <figure class=railroad>
+            <img id=meta-escape.png>
+            <img id=character-escape.png>
+            <figcaption>Syntax diagram of the string escape
+          </figure>
+
           <table class=border>
             <thead>
               <tr><th>Escape Sequence<th>Interpretation
@@ -503,7 +570,7 @@
        
       <!-- Mention #to_a? --> <p>An <code>Array</code> instance represents an
       ordered collection of objects, which need not be homogeneous. It is
-      automatically resized as elements are added or removed.
+      automatically resized as elements are added or removed.</p>
       
       <figure class=railroad>
         <img id=expression-list.png>
