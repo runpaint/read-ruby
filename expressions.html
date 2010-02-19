@@ -1353,7 +1353,22 @@
         </tbody>
       </table>
 
-      <!-- TODO: Aside ||= idiom -->
+      <aside>
+        <p>The <code>||=</code> operator gives rise to a popular idiom
+        Perrotta terms a <q cite=/references#refPER10>Nil Guard</q> (<a
+        href=/references#refPER10>Perrotta</a>, pp. 243–244). Its purpose is
+        to assign the rvalue to the lvalue iff the lvalue is <a
+        href=/flow#conditionals>false</a> (<code>false</code> or
+        <code>nil</code>). That is, to initialize the lvalue only if it isn’t
+        already. Perrotta describes an <a
+        href=/objects#instance-variables>instance variable</a> employing this
+        technique as a <q cite=/references#refPER10>Lazy Instance Variable</q>
+        (<a href=/references#refPER10>Perrotta</a>, pp. 243–244).</p>
+
+        <figure id=nil-guard.rb>
+          <figcaption>Initializing a variable only if it hasn’t been already.
+        </figure>
+      </aside>
     </section>
 
     <section>
