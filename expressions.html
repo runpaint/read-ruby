@@ -1433,6 +1433,20 @@
             <figcaption>A splatted lvalue greedily consumes rvalues into an
             <code>Array</code>
           </figure>
+
+          <section>
+            <h1 id=empty-splat>Empty Splat</h1>
+
+            <p>An lvalue may consist of sole U+002A ASTERISK (<code>*</code>),
+            without any associated identifier. It behaves as described above,
+            but instead of assigning the corresponding rvalues to the splatted
+            lvalue, it discards them.</p>
+
+            <figure id=empty-splat.rb>
+              <figcaption>An lvalue consisting of a sole asterisk greedily
+              consumes the associated rvalues, then discards them
+            </figure>
+          </section>
         </section>
 
         <section>
