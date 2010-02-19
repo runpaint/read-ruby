@@ -44,7 +44,6 @@ def write_html(nok, file)
     sh "h5-min #{file} >#{file}.min"
     mv "#{file}.min", file
   end
-  sh "gzip --best -c #{file} >#{file}.gz"      
 end
 
 def chapter_dependecies(chapter)
@@ -129,7 +128,6 @@ file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
   File.open(t.name, 'w') do |f| 
     f.print FileList['*.css'].map{|n| File.read(n)}.join
   end
-  sh "gzip --best -c #{t.name} >#{t.name}.gz"      
 end
 
 task :validate => FileList['out/*.html'] do |t|
@@ -155,7 +153,13 @@ end
 
 task :default => output_files
 
-task :upload => :default do
+task :gzip => :default do
+  FileList['out/*html', 'out/*css'].each do |file|
+    sh "gzip --best -c #{file} >#{file}.gz"      
+  end
+end
+
+task :upload => :gzip do
   sh "rsync --delete -vazL out/ ruby:/home/public"
   sh 'git push'
 end
