@@ -1188,18 +1188,21 @@
   <section>
     <h1 id=assignment>Assignment Expressions</h1>
 
-    <p>An assignment expression sets the value of one or more lvalues to their
-    corresponding rvalues. Its general form is <code><var>lvalues</var> =
-      <var>rvalues</var></code>. An <dfn>lvalue</dfn> is the target of an
-    assignment: an expression that can appear on the <em>l</em>eft-hand side
-    of an assignment expression; whereas an <dfn>rvalue</dfn> is the value
-    being assigned, appearing on the <em>r</em>ight-hand side.</p>
+    <p>An assignment expression sets the value of one or more <a
+    href=#lvalues>lvalues</a> to their corresponding <a
+    href=#rvalues>rvalues</a>. Its general form is <code><var>lvalues</var> =
+    <var>rvalues</var></code>: one or more lvalues, a U+003D EQUALS SIGN
+    (<code>=</code>), then one or more rvalues.</p>
 
     <section>
       <h1 id=lvalues>Lvalues</h1>
 
+      <p>An <dfn>lvalue</dfn> is a target of an assignment: an expression
+      that can appear on the <em>l</em>eft-hand side of an assignment
+      expression.</p>
+
       <section>
-        <h1 id=lvalue-variable>Variable Lvalues</h1>
+        <h1 id=lvalue-variable>Variables</h1>
 
         <p>The name of any variable is a valid lvalue. An assignment
         expression involving a variable lvalue causes the variable to take the
@@ -1209,7 +1212,7 @@
       </section>
 
       <section>
-        <h1 id=lvalue-constant>Constant Lvalues</h1>
+        <h1 id=lvalue-constant>Constants</h1>
 
         <p>The name of any constant is a valid lvalue. Assignment to a
         constant has the same semantics as assignment to a variable, with two
@@ -1222,16 +1225,15 @@
       </section>
 
       <section>
-        <h1 id=lvalue-attribute>Attribute Lvalues</h1>
+        <h1 id=lvalue-attribute>Attributes</h1>
 
         <p>A message expression of the form
         <code><var>receiver</var>.<var>selector</var></code> is a valid lvalue
         unless the last character of <var>selector</var> is U+003F QUESTION
         MARK (<code>?</code>) or U+0021 EXCLAMATION MARK (<code>!</code>). If
         the last character of <var>selector</var> is not U+003D EQUALS SIGN
-        (<code>=</code>), it is set to be. Assigning to such an lvalue is
-        equivalent to sending <var>receiver</var> a message whose selector is
-        <var>selector</var> and arguments are the rvalue.          
+        (<code>=</code>), it is set to be. Then, <var>receiver</var> is sent
+        <var>selector</var> with the rvalue as its argument.
       </section>
 
       <section>
@@ -1239,17 +1241,19 @@
 
         <p>An element reference expression, i.e.
         <code><var>receiver</var>[<var>expression</var>]</code> is a special
-        case of attribute lvalues. It is equivalent to
-        <code><var>receiver</var>.[]=(<var>expression</var>,
-          <var>rvalue</var>)</code>.
+        case of <a href=#lvalue-attribute>attribute lvalues</a>. It is
+        equivalent to <code><var>receiver</var>.[]=(<var>expression</var>,
+        <var>rvalue</var>)</code>.
       </section>
     </section>
 
     <section>
       <h1 id=rvalues>Rvalues</h1>
 
-      <p>An rvalue is any expression. The value of the expression is assigned
-      to the corresponding lvalue.
+      <p>An <dfn>rvalue</dfn> is a value being assigned: appearing on the
+      <em>r</em>ight-hand side of an assignment expression. Any expression is
+      a valid rvalue. The value of the expression that assigned to the
+      corresponding lvalue.
     </section>
 
     <section>
@@ -1268,9 +1272,10 @@
       <h1 id=abbreviated-assignment>Abbreviated Assignment</h1>
 
       <p>An abbreviated assignment expression is a syntactical shortcut for an
-      rvalue using a binary operator with the lvalue as an operand. It takes
-      the general form that follows, where <var>operator</var> is one of
-      thirteen predefined selectors enumerated in the table below:
+      rvalue consisting of a binary operator whose operands are the lvalue and
+      rvalue, respectively. It takes the following general form, where
+      <var>operator</var> is one of thirteen predefined selectors enumerated
+      in the table below:
 
       <pre><code>
       <var>lvalue</var> <var>operator</var>= <var>rvalue</var>
