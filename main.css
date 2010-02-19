@@ -71,7 +71,13 @@ body > section > h1 {
   margin-top: 1em;
   margin-bottom: 2em;
 }
-body > section > section h1 { font-size: 140% }
+
+body > section > section h1 { 
+  font-size: 140%;
+  text-transform: capitalize;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
 body > section > section > section h1 { font-size: 130% }
 body > section > section > section section h1 { font-size: 120% }
 
