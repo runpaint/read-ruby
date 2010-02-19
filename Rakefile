@@ -12,22 +12,36 @@ def git_hash
 end
 
 def headings(s, f, level=1)
-  return if level > 2
   a = ''
   unless (h1 = s.xpath('./h1')).inner_html.empty?
     href = f.sub(/\.html$/,'') + '#' + h1.first.attributes['id']
     a = "<a href=#{href}>#{h1.inner_html.gsub(/ /,'&nbsp;')}</a>"
   end
   titles = [a, 
-            s.xpath('./section').map{|s2| headings(s2, f, level + 1)}.compact
+            s.xpath('./section').map do |s2| 
+              headings(s2, f, level + 1)
+            end.compact
            ].reject(&:empty?)
   return if titles.empty?
   titles.size == 1 ? titles.first : titles
 end
 
-def toc(toc)
+def all_headings
+  return @chapters if defined?(@chapters)
+  nxt, @chapters = '/index', []
+  while nxt
+    nok = Nokogiri::HTML(File.read ".#{nxt}.html")
+    @chapters << headings(nok.at('section'), nxt) unless nxt.end_with?('index')
+    nxt = nok.at('link[@rel=next]')
+    nxt = nxt['href'] if nxt
+  end
+  @chapters.compact
+end
+
+def toc(toc, depth)
+  return '' if depth < 1
   '<ol>' + toc.map do |e|
-    '<li>' + (e.is_a?(Array) ? e.first + toc(e.last) : e) + '</li>'
+    '<li>' + (e.is_a?(Array) ? e.first + toc(e.last, depth-1) : e) + '</li>'
    end.join + '</ol>'
 end
 
@@ -108,15 +122,14 @@ file 'out/sitemap.xml' => FileList['*.html', 'sitemap.xml'] do |t|
 end
 
 file 'out/index.html' => FileList['*.html'] do |t|
-  nxt, chapters = '/index', []
-  while nxt
-    nok = Nokogiri::HTML(File.read ".#{nxt}.html")
-    chapters << headings(nok.at('section'), nxt) unless nxt.end_with?('index')
-    nxt = nok.at('link[@rel=next]')
-    nxt = nxt['href'] if nxt
-  end
   nok = Nokogiri::HTML(File.read 'index.html')
-  nok.at('section > section > h1').after(toc(chapters.compact))
+  nok.at('section > section > h1').after(toc(all_headings, 2))
+  write_html(nok, t.name)
+end
+
+file 'out/toc.html' => FileList['*.html'] do |t|
+  nok = Nokogiri::HTML(File.read 'toc.html')
+  nok.at('section > h1').after(toc(all_headings, 99))
   write_html(nok, t.name)
 end
 
