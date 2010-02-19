@@ -855,6 +855,7 @@
         introduce a <a href=/classes#class-variables>class variable</a>.
       </dl>
 
+      <!-- TODO: Scope section -->
       <section>
         <h1 id=local-variables>Local Variables</h1>
         
@@ -1261,7 +1262,8 @@
 
       <p>A simple assignment expression consists of a single lvalue and a
       single rvalue: <code><var>lvalue</var> = <var>rvalue</var></code>. It
-      sets the value of <var>lvalue</var> to <var>rvalue</var>.
+      sets the value of <var>lvalue</var> to <var>rvalue</var>, then returns
+      <var>rvalue</var>.
 
       <p>If the rvalue is an <code>Array</code>, the lvalue may be followed by
       a trailing comma to set the lvalue to the first element of the rvalue,
@@ -1271,11 +1273,11 @@
     <section>
       <h1 id=abbreviated-assignment>Abbreviated Assignment</h1>
 
-      <p>An abbreviated assignment expression is a syntactical shortcut for an
-      rvalue consisting of a binary operator whose operands are the lvalue and
-      rvalue, respectively. It takes the following general form, where
-      <var>operator</var> is one of thirteen predefined selectors enumerated
-      in the table below:
+      <p>An <dfn>abbreviated assignment</dfn> expression is a syntactical
+      shortcut for an rvalue consisting of a binary operator whose operands
+      are the lvalue and rvalue, respectively. It takes the following general
+      form, where <var>operator</var> is one of thirteen predefined selectors
+      enumerated in the table below:
 
       <pre><code>
       <var>lvalue</var> <var>operator</var>= <var>rvalue</var>
@@ -1291,6 +1293,9 @@
       lvalue being sent a message with the selector <var>operator</var> and
       the argument <var>rvalue</var>, then the result of this operation being
       assigned to <var>lvalue</var>.
+
+      <p>The value returned by an abbreviated assignment expression is that of
+      its expanded right-hand side.
 
       <table class=border>
         <caption>The abbreviated assignment operators
