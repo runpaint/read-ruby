@@ -151,7 +151,7 @@ FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
   output_files << (f_out = 'out/' + f)
 end
 
-task :default => output_files
+task :default => [*output_files, '_script.html']
 
 task :gzip => :default do
   FileList['out/*html', 'out/*css'].each do |file|
