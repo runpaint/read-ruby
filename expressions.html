@@ -1501,6 +1501,28 @@
           superfluous rvalues are discarded 
         </figure>
       </section>
+
+      <section>
+        <h1 id=sub-assignment>Sub-assignment</h1>
+
+        <p>When a group of at least two lvalues are enclosed in parentheses,
+        they are initially treated as a single lvalue in that, collectively,
+        they are assigned a single rvalue. After all remaining lvalues have
+        been paired with their corresponding rvalues, the rules of parallel
+        assignment are applied again to each of these groups, recursively for
+        each level of parentheticals. 
+
+        <p>Recall that if multiple lvalues are assigned a single rvalue that
+        responds to <code>:to_ary</code>, the rvalue is assigned to the first
+        lvalue, and the remaining lvalues are assigned <code>nil</code>.
+        Therefore, sub-assignment is most useful when the corresponding rvalue
+        is array-like, because it distributes the elements of potentially
+        nested arrays on the right-hand side among lvalues.</p>
+
+        <figure id=sub-assignment.rb>
+          <figcaption>Using sub-assignment to distribute nested rvalues
+        </figure>
+      </section>
     </section>
   </section>
 
