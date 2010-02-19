@@ -1390,17 +1390,18 @@
       href=#lvalues>lvalues</a> and/or multiple <a href=#rvalues>rvalues</a>.
       The values are separated by commas.</p>
 
+      <p>The parallel aspect of this operation is that all of the rvalues are
+      evaluated, left to right, prior to assigning them. This allows the value
+      of two or more variables to be swapped, as shown in the <a
+      href=#parallel-assignment-equal.rb>figure below</a>.</p>
+
       <section>
         <h1 id=parallel-assignment-equal>Equal Number of Lvalues to Rvalues</h1>
         
         <p>When there are as many lvalues as there are rvalues, each lvalue is
         assigned the rvalue in the corresponding position on the right-hand
         side of the expression. That is, the <var>n</var><sup>th</sup> lvalue
-        is assigned the <var>n</var><sup>th</sup></var> rvalue.
-        
-        <p>The parallel aspect of this operation is that all of the rvalues
-        are evaluated prior to assigning them. This allows the value of two or
-        more variables to be swapped, as shown in the figure below:</p>
+        is assigned the <var>n</var><sup>th</sup></var> rvalue.</p>
         
         <figure id=parallel-assignment-equal.rb>
           <figcaption>Parallel assignment when there are the same number of
