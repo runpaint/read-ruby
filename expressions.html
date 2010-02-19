@@ -1239,7 +1239,9 @@
         <p>An important implication of the above is that the receiver defines
         the semantics of assignment. Typically, a selector ending with
         <code>=</code> will assign its argument to the corresponding instance
-        variable, but it is free to do otherwise.
+        variable, but it is free to do otherwise. However, the return value of
+        an attribute assignment expression is always the rvalue; the value
+        returned by the receiver is ignored.
       </section>
 
       <section>
