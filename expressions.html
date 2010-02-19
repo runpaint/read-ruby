@@ -937,373 +937,426 @@
     <code>0</code>–<code>9</code>) and the U+005F LOW LINE (<code>_</code>),
     or begin with a US-ASCII digit. However, it may contain any other
     character legal in the source encoding.</p>
-    
+  </section>
+  
+  <section>
+    <h1 id=variables>Variables</h1>
+
+    <p>A <dfn>variable</dfn> is a named storage location that holds a value.
+    <!-- TODO: Employ more rigourous definition; cite source --> It is named
+    with an identifier, possibly preceded by a <dfn>sigil</dfn> (a symbol
+    denoting the variable’s scope):</p>
+
+    <!-- created via assignment -->
+
+    <dl>
+      <dt><var>identifier</var>
+      <dd>An identifier whose first character is a US-ASCII lowercase
+      character or low line is a local variable unless preceded by one of
+      the following sigils.
+      <dt><code>$</code><var>identifier</var>
+      <dd>An U+0024 DOLLAR SIGN (<code>$</code>) prefix denotes a global variable
+      <dt><code>@</code><var>identifier</var>
+      <dd>A single U+0040 COMMERCIAL AT (<code>@</code>) introduces an
+      <a href=/objects#instance-variables>instance variable</a>.
+      <dt><code>@@</code><var>identifier</var>
+      <dd>Two consecutive U+0040 COMMERCIAL AT (<code>@</code>) symbols
+      introduce a <a href=/classes#class-variables>class variable</a>.
+    </dl>
+
     <section>
       <h1 id=constants>Constants</h1>
-      
-      <p>If the first character of an identifier is an uppercase ASCII
-      character (<code>A</code>—<code>Z</code>), it names a constant. Such
-      an identifier does not have its constancy enforced by Ruby, so
-      repeated assignments are legal, but cause a warning to be issued. It
-      is a strong convention that constants qua constants are named entirely
-      in US-ASCII uppercase letters with low lines to separate words,
-      whereas constants used to name classes or modules are named in
-      camel-case: title case with whitespace removed. 
 
-      <!-- TODO: Note that constants are never unitialized -->
-    </section>
-    <!-- Mention: * = 1 # Legal assignment without variable creation -->
+      <p>A constant is a variable whose value, once assigned, is not expected
+      to change. Its constancy is not enforced by Ruby, so repeated
+      assignments are legal, but cause a warning to be issued.</p>
 
-    <section>
-      <h1 id=variables>Variables</h1>
-      
-      <p>A <dfn>variable</dfn> is a named storage location that holds a value.
-      <!-- TODO: Employ more rigourous definition; cite source --> It is named
-      with an identifier, optionally preceded by a <dfn>sigil</dfn> (a symbol
-      denoting the variable’s scope):</p>
-
-      <dl>
-        <dt><var>identifier</var>
-        <dd>An identifier whose first character is a US-ASCII lowercase
-        character or low line is a local variable unless preceded by one of
-        the following sigils.
-        <dt><code>$</code><var>identifier</var>
-        <dd>An U+0024 DOLLAR SIGN (<code>$</code>) prefix denotes a global variable
-        <dt><code>@</code><var>identifier</var>
-        <dd>A single U+0040 COMMERCIAL AT (<code>@</code>) introduces an
-        <a href=/objects#instance-variables>instance variable</a>.
-        <dt><code>@@</code><var>identifier</var>
-        <dd>Two consecutive U+0040 COMMERCIAL AT (<code>@</code>) symbols
-        introduce a <a href=/classes#class-variables>class variable</a>.
-      </dl>
-
-      <!-- TODO: Scope section -->
       <section>
-        <h1 id=local-variables>Local Variables</h1>
+        <h1 id=constants-name>Name</h1>
         
-        <p>A local variable’s scope is the method or block in which it was
-        initialized; outside of this scope it is undefined, its previous value
-        forgotten. This scope is recursive: it continues thought any
-        blocks or other constructs defined within.</p>
-
-        <figure id=local-variables.rb>
-          <figcaption>The scope of a local variable
-        </figure>
-
-        <p>A variable is initialized if it appears on the left-hand side
-        (before the U+003D EQUALS SIGN (<code>=</code>)) of an assignment
-        expression. However, this assignment expression need not actually
-        execute: its mere presence is enough to create the variable. For
-        example, if an assignment expression involving a local variable on the
-        left-hand side appears within a branch that does not execute, the
-        variable comes into existence.  Variables of this sort have the value
-        <code>nil</code>.</p>
-  
-        <figure id=local-variables-assignment.rb>
-          <figcaption>An assignment expression initializes a local variable
-        </figure>
-
-        <p>Attempting to use an uninitialized local variable causes the
-        identifier to be interpreted as a message selector which is sent to
-        the current implicit receiver. If such a method doesn’t exist a
-        <code>NameError</code> is raised.</p>
-
-        <figure id=local-variables-uninitialized.rb>
-          <figcaption>Referring to an uninitialized local variable causes a
-          <code>NameError</code> to be raised.
-        </figure>
-
-        <p>A block defines its own lexical scope. Local variables defined
-        within it do not persist outside of it. However, if, in the context of
-        a block, a local variable is initialized with the name of one
-        initialized in the enclosing scope, the variables refer to the same
-        storage location: having left the block’s scope the variable’s value
-        will be that which it was assigned within the block. If, instead, it
-        is desired that variables defined within a block do not clash with
-        those defined outside, <a href=/closures#block-local-variables>block
-          local variables</a> are appropriate.</p>
-
-        <figure id=non-block-local-variables-example.rb>
-          <figcaption>Non-block-local variables defined prior to the block
-          retain the value they were assigned inside the block even after
-          leaving it
-        </figure>
-  
-        <p>The <code>Kernel.local_variables</code> method returns an
-        <code>Array</code> of local variable names in the current scope as
-        <code>Symbol</code>s.
+        <p>A constant is, by definition, named with an identifier whose first
+        character is an uppercase ASCII character
+        (<code>A</code>—<code>Z</code>). It is a strong convention that
+        constants qua constants are named entirely in US-ASCII uppercase
+        letters with low lines to separate words, whereas constants used to
+        name classes or modules are named in camel-case: title case with
+        whitespace removed. 
       </section>
 
       <section>
-        <h1 id=global-variables>Global Variables</h1>
+        <h1 id=constants-references>References</h1>
         
-        <p>A global variable is accessible in every scope. Once set it refers
-        to the same object wherever it is referenced. An uninitialized global
-        variable has the value <code>nil</code>, although attempting to use
-        such a variable results in a warning.</p>
-        
-        <figure id=global-variables.rb>
-          <figcaption>Global variables are accessible in every scope
+        <figure class=railroad>
+          <img id=constant-reference.png>
+          <figcaption>Syntax diagram of a constant reference
         </figure>
         
-        <p>An <code>Array</code> of global variable names as
-        <code>Symbol</code>s can be obtained with
-        <code>Kernel.global_variables</code></p>
+        <p>A <dfn>constant reference</dfn> is an expression whose value is
+        that of the named constant. The simplest constant reference is a
+        primary expression consisting solely of the constant’s name, e.g.
+        <code>Constant</code>.
 
-        <section>
-          <h1 id=predefined-globals>Predefined Global Variables</h1>
+        <p>A constant reference may also be qualified by prefixing the
+        constant name with the <q cite=/references#refTHOM09><dfn>scope
+        operator</dfn></q> (<a href=/references#refTHOM09>Thomas et al.</a>,
+        2009, pp. 336–339): two consecutive U+003A COLON (<code>:</code>)
+        characters. This causes the constant to be looked up in the global
+        scope.
 
-          <p>Ruby predefines certain global variables automatically. They are
-          summarised in the following table.</p>
+        <p>A reference may be qualified further by preceding the scope
+        operator with an expression evaluating to the <code>Class</code> or
+        <code>Module</code> object in which the constant was defined.
+      </section>
+      
+      <section>
+        <h1 id=constants-scope>Scope</h1>
+        
+        <p>A constant defined in the context of a class or module is
+        accessible throughout that context by unqualified reference. It may be
+        accessed from an exterior context by qualifying its name with that of
+        the defining class/module.
 
-          <table class=border>
-            <caption>Predefined global variables
-            <thead>
-              <tr>
-                <th>Global Variable
-                <th title="Alias when the English library is required">
-                  <code>English</code> Name
-                <th>Value
-                <th>Meaning
-            </thead>
-            <tbody>
-              <tr class=odd>
-                <td><code>$*</code>
-                <td><code>$ARGV</code>
-                <td><code>Array</code>
-                <td>Read-only alias of <code>ARGV</code>
-              <tr>
-                <td><code>$$</code>
-                <td><code>$PID</code> / <code>$PROCESS_ID</code>
-                <td><code>Fixnum</code>
-                <td>ID of the current Ruby process. Read-only.
-              <tr class=odd>
-                <td><code>$?</code>
-                <td><code>$CHILD_STATUS</code>
-                <td><code>nil</code> or <code>Process::Status</code>
-                <td>Exit status of the last terminated process. Read-only,
-                  thread-local.
-              <tr>
-                <td><code>$-d</code>
-                <td rowspan=2>&nbsp;
-                <td rowspan=2><code>true</code> or <code>false</code>
-                <td rowspan=2>Whether Ruby was invoked with the
-                              <code>-d</code> or <code>--debug</code> switches.  
-              <tr>
-                <td><code>$DEBUG</code>
-              <tr class=odd>
-                <td><code>$"</code>
-                <td rowspan=2>&nbsp;</code>
-                <td rowspan=2><code>Array</code> of <code>String</code>s
-                <td rowspan=2>Absolute filenames of files loaded with
-                              <code>Kernel.load</code> or 
-                              <code>Kernel.require</code>. Read-only.
-              <tr class=odd>
-                <td><code>$LOADED_FEATURES</code>
-              <tr>
-                <td><code>$:</code>
-                <td rowspan=3>&nbsp;</code>
-                <td rowspan=3><code>Array</code> of <code>String</code>s
-                <td rowspan=3>Absolute paths to directories searched by 
-                              <code>Kernel.load</code> or 
-                              <code>Kernel.require</code>. Read-only, but the
-                              contents of the <code>Array</code> can be 
-                              modified
-              <tr>
-                <td><code>$LOAD_PATH</code>
-              <tr class=odd>
-                <td><code>$-I</code>
-              <tr>
-                <td><code>$0</code>
-                <td rowspan=2>&nbsp;</code>
-                <td rowspan=2><code>String</code>s
-                <td rowspan=2>Filename of the Ruby script being executed.
-                              Equal to <code>-</code> if the program was read
-                              from STDIN, or <code>-e</code> if
-                              <code>ruby</code> was supplied with the
-                              <code>-e</code> switch. 
-              <tr>
-                <td><code>$PROGRAM_NAME</code>
-              <tr class=odd>
-                <td><code>$SAFE</code>
-                <td>&nbsp;</code>
-                <td><code>Fixnum</code>s
-                <td>Current safe level. Thread-local.
-              <tr>
-                <td><code>$-w</code>
-                <td rowspan=3>&nbsp;</code>
-                <td rowspan=3><code>true</code>, <code>false</code>, or
-                              <code>nil</code>
-                <td rowspan=3><code>true</code> if the <code>-v</code>, 
-                              <code>-w</code>, or <code>--verbose</code> 
-                              switches were supplied on the command line; 
-                              <code>nil</code> if the <code>-W0</code> switch 
-                              was supplied; <code>false</code>, otherwise.
-                              Assigning <code>nil</code> to this variable
-                              suppresses all warnings.
-              <tr>
-                <td><code>$-v</code>
-              <tr>
-                <td><code>$VERBOSE</code>
-              <tr class=odd>
-                <td><code>$!</code>
-                <td><code>$ERROR_INFO</code>
-                <td><code>Exception</code>
-                <td>Inside a <code>rescue</code> clause or after the
-                <code>rescue</code> modifier holds the current exception. 
-                Thread-local.
-              <tr>
-                <td><code>$@</code>
-                <td><code>$ERROR_POSITION</code>
-                <td><code>Array</code> of <code>String</code>s
-                <td>Inside a <code>rescue</code> clause or after the
-                <code>rescue</code> modifier holds the stack trace of the
-                current exception.  Thread-local.
-              <tr class=odd>
-                <td><code>$_</code>
-                <td><code>$LAST_READ_LINE</code>
-                <td><code>String</code>
-                <td>Last string read by <code>Kernel.gets</code> or
-                <code>Kernel.readline</code>. Thread-local, method-local.
-              <tr>
-                <td><code>$&lt;</code>
-                <td><code>$DEFAULT_INPUT</code>
-                <td><code>ARGF</code>
-                <td>Read-only alias for <code>ARGF</code>.
-              <tr class=odd>
-                <td><code>$stdin</code>
-                <td>&nbsp;
-                <td><code>IO</code>
-                <td>Standard input stream.
-              <tr>
-                <td><code>$&gt;</code>
-                <td rowspan=2><code>$DEFAULT_OUTPUT</code>
-                <td rowspan=2><code>IO</code>s
-                <td rowspan=2>Standard output stream.
-              <tr>
-                <td><code>$stdout</code>
-              <tr class=odd>
-                <td><code>$stderr</code>
-                <td>&nbsp;
-                <td><code>IO</code>
-                <td>Standard error stream.
-              <tr>
-                <td><code>$FILENAME</code>
-                <td>&nbsp;
-                <td><code>String</code>
-                <td>Filename of the file currently being read from
-                <code>ARGF</code>; <code>-</code> if <code>ARGF</code> is
-                empty or reading from <code>STDIN</code>. Read-only.
-              <tr class=odd>
-                <td><code>$.</code>
-                <td><code>$NR</code> / <code>$INPUT_LINE_NUMBER</code>
-                <td><code>Fixnum</code>
-                <td>Number of the last line read from the current input file
-                in <code>ARGF</code>.
-              <tr>
-                <td><code>$/</code>
-                <td rowspan=2><code>$RS</code> /
-                <code>$INPUT_RECORD_SEPARATOR</code>
-                <td rowspan=2><code>String</code>
-                <td rowspan=2>Input record separator. Default value is
-                <code>"\n"</code>. Can be set with the <code>-0</code> switch
-              <tr>
-                <td><code>$-0</code>
-              <tr class=odd>
-                <td><code>$\</code>
-                <td><code>$ORS</code> / <code>$OUTPUT_RECORD_SEPARATOR</code>
-                <td><code>String</code> or <code>nil</code>
-                <td>Appended to <code>Kernel.print</code> output if
-                non-<code>nil</code>. Default value is <code>nil</code>, or
-                <code>$/</code> if the <code>-l</code> switch is given.
-              <tr>
-                <td><code>$,</code>
-                <td><code>$OFS</code> / <code>$OUTPUT_FIELD_SEPARATOR</code>
-                <td><code>nil</code> or <code>String</code>
-                <td>Separator printed between the arguments of
-                <code>Kernel.print</code> and the default separator of
-                <code>Array.join</code>. Equal to <code>nil</code> by default.
-              <tr class=odd>
-                <td><code>$;</code>
-                <td rowspan=2><code>$FS</code> / <code>$FIELD_SEPARATOR</code>
-                <td rowspan=2><code>String</code> or <code>nil</code>
-                <td rowspan=2>Default field separator of
-                <code>String#split</code>. Default value is <code>nil</code>
-                or the argument to the <code>-F</code> switch.
-              <tr class=odd>
-                <td><code>$-F</code>
-              <tr>
-                <td><code>$F</code>
-                <td>&nbsp;
-                <td><code>Array</code> of <code>String</code>s
-                <td>If the <code>-a</code> and <code>-n</code>/<code>-p</code>
-                switches were given, holds the return value of
-                <code>String#split</code> for the current input line.
-              <tr class=odd>
-                <td><code>$~</code>
-                <td><code>$MATCH_INFO</code>
-                <td><code>MatchData</code> or <code>nil</code>
-                <td><code>MatchData</code> from the last regexp match. Thread-
-                and method-local.
-              <tr>
-                <td><code>$&amp;</code>
-                <td><code>$MATCH</code>
-                <td><code>String</code>
-                <td>Text matched by last regexp match. Read-only. Thread- and
-                method-local.
-              <tr class=odd>
-                <td><code>$`</code>
-                <td><code>$PREMATCH</code>
-                <td><code>String</code>
-                <td>Text preceding the match of the last regexp match.
-                Read-only. Thread- and method-local.
-              <tr>
-                <td><code>$'</code>
-                <td><code>$POSTMATCH</code>
-                <td><code>String</code>
-                <td>Text following the match of the last regexp match.
-                Read-only. Thread- and method-local.
-              <tr class=odd>
-                <td><code>$+</code>
-                <td><code>$LAST_PAREN_MATCH</code>
-                <td><code>String</code>
-                <td>Text enclosed in the last successfully matched group of
-                the last regexp match.  Read-only. Thread- and method-local.
-              <tr>
-                <td><code>$-a</code>
-                <td>&nbsp;
-                <td><code>true</code> or <code>false</code>
-                <td><code>true</code> if the <code>-a</code> switch was given;
-                <code>false</code> otherwise. Read-only.
-              <tr class=odd>
-                <td><code>$-i</code>
-                <td>&nbsp;
-                <td><code>true</code> or <code>false</code>
-                <td>Argument of the <code>-i</code> switch, if given;
-                otherwise <code>nil</code>; <code>false</code> otherwise.
-              <tr>
-                <td><code>$-l</code>
-                <td>&nbsp;
-                <td><code>true</code> or <code>false</code>
-                <td><code>true</code> if the <code>-l</code> switch was given;
-                <code>false</code> otherwise. Read-only.
-              <tr class=odd>
-                <td><code>$-p</code>
-                <td>&nbsp;
-                <td><code>true</code> or <code>false</code>
-                <td><code>true</code> if the <code>-p</code> switch was given;
-                <code>false</code> otherwise. Read-only.
-              <tr>
-                <td><code>$-W</code>
-                <td>&nbsp;
-                <td><code>Fixnum</code>
-                <td>Current verbosity level: <code>0</code> if the
-                <code>-W0</code> switch was given; <code>2</code> if the
-                <code>-w</code>, <code>-v</code>, or <code>--verbose</code>
-                switches were given; <code>1</code> otherwise. Read-only.
-            </tbody>
-          </table>
-        </section>
+        <p>A constant defined in another context may be referred to
+        unqualified or prefixed with the scope operator. However, it is
+        illegal to define a constant in a method body as every invocation of
+        the method would cause re-assignment, defeating the purpose of a
+        constant.
+
+        <p>A qualified constant name may be used as an lvalue, allowing
+        constants to be defined in the context of a class or module from
+        outside.
+      </section>
+      <!-- TODO: Note that constants are never unitialized -->
+    </section>
+
+    <!-- Mention: * = 1 # Legal assignment without variable creation -->
+      
+      <!-- TODO: Scope section -->
+    <section>
+      <h1 id=local-variables>Local Variables</h1>
+      
+      <p>A local variable’s scope is the method or block in which it was
+      initialized; outside of this scope it is undefined, its previous value
+      forgotten. This scope is recursive: it continues thought any
+      blocks or other constructs defined within.</p>
+
+      <figure id=local-variables.rb>
+        <figcaption>The scope of a local variable
+      </figure>
+
+      <p>A variable is initialized if it appears on the left-hand side
+      (before the U+003D EQUALS SIGN (<code>=</code>)) of an assignment
+      expression. However, this assignment expression need not actually
+      execute: its mere presence is enough to create the variable. For
+      example, if an assignment expression involving a local variable on the
+      left-hand side appears within a branch that does not execute, the
+      variable comes into existence.  Variables of this sort have the value
+      <code>nil</code>.</p>
+
+      <figure id=local-variables-assignment.rb>
+        <figcaption>An assignment expression initializes a local variable
+      </figure>
+
+      <p>Attempting to use an uninitialized local variable causes the
+      identifier to be interpreted as a message selector which is sent to
+      the current implicit receiver. If such a method doesn’t exist a
+      <code>NameError</code> is raised.</p>
+
+      <figure id=local-variables-uninitialized.rb>
+        <figcaption>Referring to an uninitialized local variable causes a
+        <code>NameError</code> to be raised.
+      </figure>
+
+      <p>A block defines its own lexical scope. Local variables defined
+      within it do not persist outside of it. However, if, in the context of
+      a block, a local variable is initialized with the name of one
+      initialized in the enclosing scope, the variables refer to the same
+      storage location: having left the block’s scope the variable’s value
+      will be that which it was assigned within the block. If, instead, it
+      is desired that variables defined within a block do not clash with
+      those defined outside, <a href=/closures#block-local-variables>block
+        local variables</a> are appropriate.</p>
+
+      <figure id=non-block-local-variables-example.rb>
+        <figcaption>Non-block-local variables defined prior to the block
+        retain the value they were assigned inside the block even after
+        leaving it
+      </figure>
+
+      <p>The <code>Kernel.local_variables</code> method returns an
+      <code>Array</code> of local variable names in the current scope as
+      <code>Symbol</code>s.
+    </section>
+
+    <section>
+      <h1 id=global-variables>Global Variables</h1>
+      
+      <p>A global variable is accessible in every scope. Once set it refers
+      to the same object wherever it is referenced. An uninitialized global
+      variable has the value <code>nil</code>, although attempting to use
+      such a variable results in a warning.</p>
+      
+      <figure id=global-variables.rb>
+        <figcaption>Global variables are accessible in every scope
+      </figure>
+      
+      <p>An <code>Array</code> of global variable names as
+      <code>Symbol</code>s can be obtained with
+      <code>Kernel.global_variables</code></p>
+
+      <section>
+        <h1 id=predefined-globals>Predefined Global Variables</h1>
+
+        <p>Ruby predefines certain global variables automatically. They are
+        summarised in the following table.</p>
+
+        <table class=border>
+          <caption>Predefined global variables
+          <thead>
+            <tr>
+              <th>Global Variable
+              <th title="Alias when the English library is required">
+                <code>English</code> Name
+              <th>Value
+              <th>Meaning
+          </thead>
+          <tbody>
+            <tr class=odd>
+              <td><code>$*</code>
+              <td><code>$ARGV</code>
+              <td><code>Array</code>
+              <td>Read-only alias of <code>ARGV</code>
+            <tr>
+              <td><code>$$</code>
+              <td><code>$PID</code> / <code>$PROCESS_ID</code>
+              <td><code>Fixnum</code>
+              <td>ID of the current Ruby process. Read-only.
+            <tr class=odd>
+              <td><code>$?</code>
+              <td><code>$CHILD_STATUS</code>
+              <td><code>nil</code> or <code>Process::Status</code>
+              <td>Exit status of the last terminated process. Read-only,
+                thread-local.
+            <tr>
+              <td><code>$-d</code>
+              <td rowspan=2>&nbsp;
+              <td rowspan=2><code>true</code> or <code>false</code>
+              <td rowspan=2>Whether Ruby was invoked with the
+                            <code>-d</code> or <code>--debug</code> switches.  
+            <tr>
+              <td><code>$DEBUG</code>
+            <tr class=odd>
+              <td><code>$"</code>
+              <td rowspan=2>&nbsp;</code>
+              <td rowspan=2><code>Array</code> of <code>String</code>s
+              <td rowspan=2>Absolute filenames of files loaded with
+                            <code>Kernel.load</code> or 
+                            <code>Kernel.require</code>. Read-only.
+            <tr class=odd>
+              <td><code>$LOADED_FEATURES</code>
+            <tr>
+              <td><code>$:</code>
+              <td rowspan=3>&nbsp;</code>
+              <td rowspan=3><code>Array</code> of <code>String</code>s
+              <td rowspan=3>Absolute paths to directories searched by 
+                            <code>Kernel.load</code> or 
+                            <code>Kernel.require</code>. Read-only, but the
+                            contents of the <code>Array</code> can be 
+                            modified
+            <tr>
+              <td><code>$LOAD_PATH</code>
+            <tr class=odd>
+              <td><code>$-I</code>
+            <tr>
+              <td><code>$0</code>
+              <td rowspan=2>&nbsp;</code>
+              <td rowspan=2><code>String</code>s
+              <td rowspan=2>Filename of the Ruby script being executed.
+                            Equal to <code>-</code> if the program was read
+                            from STDIN, or <code>-e</code> if
+                            <code>ruby</code> was supplied with the
+                            <code>-e</code> switch. 
+            <tr>
+              <td><code>$PROGRAM_NAME</code>
+            <tr class=odd>
+              <td><code>$SAFE</code>
+              <td>&nbsp;</code>
+              <td><code>Fixnum</code>s
+              <td>Current safe level. Thread-local.
+            <tr>
+              <td><code>$-w</code>
+              <td rowspan=3>&nbsp;</code>
+              <td rowspan=3><code>true</code>, <code>false</code>, or
+                            <code>nil</code>
+              <td rowspan=3><code>true</code> if the <code>-v</code>, 
+                            <code>-w</code>, or <code>--verbose</code> 
+                            switches were supplied on the command line; 
+                            <code>nil</code> if the <code>-W0</code> switch 
+                            was supplied; <code>false</code>, otherwise.
+                            Assigning <code>nil</code> to this variable
+                            suppresses all warnings.
+            <tr>
+              <td><code>$-v</code>
+            <tr>
+              <td><code>$VERBOSE</code>
+            <tr class=odd>
+              <td><code>$!</code>
+              <td><code>$ERROR_INFO</code>
+              <td><code>Exception</code>
+              <td>Inside a <code>rescue</code> clause or after the
+              <code>rescue</code> modifier holds the current exception. 
+              Thread-local.
+            <tr>
+              <td><code>$@</code>
+              <td><code>$ERROR_POSITION</code>
+              <td><code>Array</code> of <code>String</code>s
+              <td>Inside a <code>rescue</code> clause or after the
+              <code>rescue</code> modifier holds the stack trace of the
+              current exception.  Thread-local.
+            <tr class=odd>
+              <td><code>$_</code>
+              <td><code>$LAST_READ_LINE</code>
+              <td><code>String</code>
+              <td>Last string read by <code>Kernel.gets</code> or
+              <code>Kernel.readline</code>. Thread-local, method-local.
+            <tr>
+              <td><code>$&lt;</code>
+              <td><code>$DEFAULT_INPUT</code>
+              <td><code>ARGF</code>
+              <td>Read-only alias for <code>ARGF</code>.
+            <tr class=odd>
+              <td><code>$stdin</code>
+              <td>&nbsp;
+              <td><code>IO</code>
+              <td>Standard input stream.
+            <tr>
+              <td><code>$&gt;</code>
+              <td rowspan=2><code>$DEFAULT_OUTPUT</code>
+              <td rowspan=2><code>IO</code>s
+              <td rowspan=2>Standard output stream.
+            <tr>
+              <td><code>$stdout</code>
+            <tr class=odd>
+              <td><code>$stderr</code>
+              <td>&nbsp;
+              <td><code>IO</code>
+              <td>Standard error stream.
+            <tr>
+              <td><code>$FILENAME</code>
+              <td>&nbsp;
+              <td><code>String</code>
+              <td>Filename of the file currently being read from
+              <code>ARGF</code>; <code>-</code> if <code>ARGF</code> is
+              empty or reading from <code>STDIN</code>. Read-only.
+            <tr class=odd>
+              <td><code>$.</code>
+              <td><code>$NR</code> / <code>$INPUT_LINE_NUMBER</code>
+              <td><code>Fixnum</code>
+              <td>Number of the last line read from the current input file
+              in <code>ARGF</code>.
+            <tr>
+              <td><code>$/</code>
+              <td rowspan=2><code>$RS</code> /
+              <code>$INPUT_RECORD_SEPARATOR</code>
+              <td rowspan=2><code>String</code>
+              <td rowspan=2>Input record separator. Default value is
+              <code>"\n"</code>. Can be set with the <code>-0</code> switch
+            <tr>
+              <td><code>$-0</code>
+            <tr class=odd>
+              <td><code>$\</code>
+              <td><code>$ORS</code> / <code>$OUTPUT_RECORD_SEPARATOR</code>
+              <td><code>String</code> or <code>nil</code>
+              <td>Appended to <code>Kernel.print</code> output if
+              non-<code>nil</code>. Default value is <code>nil</code>, or
+              <code>$/</code> if the <code>-l</code> switch is given.
+            <tr>
+              <td><code>$,</code>
+              <td><code>$OFS</code> / <code>$OUTPUT_FIELD_SEPARATOR</code>
+              <td><code>nil</code> or <code>String</code>
+              <td>Separator printed between the arguments of
+              <code>Kernel.print</code> and the default separator of
+              <code>Array.join</code>. Equal to <code>nil</code> by default.
+            <tr class=odd>
+              <td><code>$;</code>
+              <td rowspan=2><code>$FS</code> / <code>$FIELD_SEPARATOR</code>
+              <td rowspan=2><code>String</code> or <code>nil</code>
+              <td rowspan=2>Default field separator of
+              <code>String#split</code>. Default value is <code>nil</code>
+              or the argument to the <code>-F</code> switch.
+            <tr class=odd>
+              <td><code>$-F</code>
+            <tr>
+              <td><code>$F</code>
+              <td>&nbsp;
+              <td><code>Array</code> of <code>String</code>s
+              <td>If the <code>-a</code> and <code>-n</code>/<code>-p</code>
+              switches were given, holds the return value of
+              <code>String#split</code> for the current input line.
+            <tr class=odd>
+              <td><code>$~</code>
+              <td><code>$MATCH_INFO</code>
+              <td><code>MatchData</code> or <code>nil</code>
+              <td><code>MatchData</code> from the last regexp match. Thread-
+              and method-local.
+            <tr>
+              <td><code>$&amp;</code>
+              <td><code>$MATCH</code>
+              <td><code>String</code>
+              <td>Text matched by last regexp match. Read-only. Thread- and
+              method-local.
+            <tr class=odd>
+              <td><code>$`</code>
+              <td><code>$PREMATCH</code>
+              <td><code>String</code>
+              <td>Text preceding the match of the last regexp match.
+              Read-only. Thread- and method-local.
+            <tr>
+              <td><code>$'</code>
+              <td><code>$POSTMATCH</code>
+              <td><code>String</code>
+              <td>Text following the match of the last regexp match.
+              Read-only. Thread- and method-local.
+            <tr class=odd>
+              <td><code>$+</code>
+              <td><code>$LAST_PAREN_MATCH</code>
+              <td><code>String</code>
+              <td>Text enclosed in the last successfully matched group of
+              the last regexp match.  Read-only. Thread- and method-local.
+            <tr>
+              <td><code>$-a</code>
+              <td>&nbsp;
+              <td><code>true</code> or <code>false</code>
+              <td><code>true</code> if the <code>-a</code> switch was given;
+              <code>false</code> otherwise. Read-only.
+            <tr class=odd>
+              <td><code>$-i</code>
+              <td>&nbsp;
+              <td><code>true</code> or <code>false</code>
+              <td>Argument of the <code>-i</code> switch, if given;
+              otherwise <code>nil</code>; <code>false</code> otherwise.
+            <tr>
+              <td><code>$-l</code>
+              <td>&nbsp;
+              <td><code>true</code> or <code>false</code>
+              <td><code>true</code> if the <code>-l</code> switch was given;
+              <code>false</code> otherwise. Read-only.
+            <tr class=odd>
+              <td><code>$-p</code>
+              <td>&nbsp;
+              <td><code>true</code> or <code>false</code>
+              <td><code>true</code> if the <code>-p</code> switch was given;
+              <code>false</code> otherwise. Read-only.
+            <tr>
+              <td><code>$-W</code>
+              <td>&nbsp;
+              <td><code>Fixnum</code>
+              <td>Current verbosity level: <code>0</code> if the
+              <code>-W0</code> switch was given; <code>2</code> if the
+              <code>-w</code>, <code>-v</code>, or <code>--verbose</code>
+              switches were given; <code>1</code> otherwise. Read-only.
+          </tbody>
+        </table>
       </section>
     </section>
   </section>
