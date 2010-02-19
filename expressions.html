@@ -1133,7 +1133,7 @@
                 <td><code>$`</code>
                 <td><code>$PREMATCH</code>
                 <td><code>String</code>
-                <td>Text precceeding the match of the last regexp match.
+                <td>Text preceding the match of the last regexp match.
                 Read-only. Thread- and method-local.
               <tr>
                 <td><code>$'</code>
@@ -1235,6 +1235,11 @@
         the last character of <var>selector</var> is not U+003D EQUALS SIGN
         (<code>=</code>), it is set to be. Then, <var>receiver</var> is sent
         <var>selector</var> with the rvalue as its argument.
+
+        <p>An important implication of the above is that the receiver defines
+        the semantics of assignment. Typically, a selector ending with
+        <code>=</code> will assign its argument to the corresponding instance
+        variable, but it is free to do otherwise.
       </section>
 
       <section>
