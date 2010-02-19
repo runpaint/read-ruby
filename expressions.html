@@ -145,7 +145,31 @@
           constituent characters.</p>
            
           <section>
-            <h1 id=byte-escape>Byte Escape</h1>
+            <h1 id=character-escapes>Character Escapes</h1>
+
+            <figure class=railroad>
+              <img id=character-escape.png>
+              <figcaption>Syntax diagram of the string escape
+            </figure>
+
+            <p>A character escape consists of a reverse solidus followed by a
+            single character, <var>char</var>. If <var>char</var> is one of
+            [<code>abcefnrstuvxCM01234567</code>], the escape has the meaning
+            given in the table below. If <var>char</var> is a literal line
+            terminator (i.e. U+000A &lt;control&gt;, U+000D &lt;control&gt;,
+            or U+000D&nbsp;&lt;control&gt;U+000A&nbsp;&lt;control&gt;), both
+            the reverse solidus and the line terminator are removed from the
+            string. In all other cases <code>\<var>char</var></code> evaluates
+            to <var>char</var>.</p>
+
+            <figure id=character-escape.rb>
+              <figcaption>A character escape is a reverse solidus followed by
+              a single character
+            </figure>
+          </section>
+
+          <section>
+            <h1 id=byte-escapes>Byte Escapes</h1>
 
             <figure class=railroad>
               <!-- TODO: Incorporate maximumn value of octal integer: 377
@@ -155,7 +179,7 @@
             </figure>
 
             <section>
-              <h1 id=octal-byte>Octal Byte Escape</h1>
+              <h1 id=octal-byte>Octal Byte Escapes</h1>
 
               <p>A reverse solidus followed by an octal number between zero
               and 377<sub>8</sub> represents the character whose character
@@ -168,7 +192,7 @@
             </section>
 
             <section>
-              <h1 id=hex-byte>Hexadecimal Byte Escape</h1>
+              <h1 id=hex-byte>Hexadecimal Byte Escapes</h1>
 
               <p>A hexadecimal byte escape consists of <code>\x</code>
               followed by a hexadecimal number ≤ FF<sub>16</sub>. It
@@ -183,7 +207,7 @@
           </section>
 
           <section>
-            <h1 id=control-escape>Control Escape</h1>
+            <h1 id=control-escapes>Control Escapes</h1>
 
             <figure class=railroad>
               <img id=control-escape.png>
@@ -207,11 +231,65 @@
             </figure>
           </section>
 
-          <figure class=railroad>
-            <img id=meta-escape.png>
-            <img id=character-escape.png>
-            <figcaption>Syntax diagram of the string escape
-          </figure>
+          <section>
+            <h1 id=meta-escapes>Meta Character Escapes</h1>
+
+            <figure class=railroad>
+              <img id=meta-escape.png>
+              <figcaption>Syntax diagram of the meta character escape
+            </figure>
+
+            <p>The meta character escape <code>\M-<var>char</var></code>
+            represents the character whose character code is that of
+            <var>char</var> ∨ 0x80, where <var>char</var> is a single
+            character or escape. (<var>char</var> must not be a <a
+            href=#meta-escape>meta character</a>, Unicode, <a
+            href=#hex-byte>hexadecimal</a>, or three-digit <a
+            href=#octal-byte>octal</a>, escape).</p>
+
+            <figure id=meta-escape.rb>
+              <figcaption>The meta character escape represents the given meta
+              character.
+            </figure>
+          </section>
+
+          <section>
+            <h1 id=unicode-escapes>Unicode Escapes</h1>
+               
+            <figure class=railroad>
+              <img id=unicode-escape.png>
+              <figcaption>Syntax diagram of the Unicode <code>\u</code>
+              escape
+            </figure>
+            
+            <p>An arbitrary <a
+            href=//en.wikipedia.org/wiki/Unicode>Unicode</a> character may be
+            embedded in a string by specifying its <a
+            href=//en.wikipedia.org/wiki/Codepoint>codepoint</a> as four
+            hexadecimal digits following <code>\u</code>.            
+
+            <p>The <code>\u{}</code> construct extends this ability to
+            embedding multiple codepoints with the same escape.
+            The curly braces delimit one or more hexadecimal codepoints
+            separated by whitespace. This form does not restrict a
+            codepoint to four digits.</p>             
+
+            <figure class=railroad>
+              <img id=hex-codepoint.png>
+              <figcaption>Syntax diagram of a Unicode codepoint in hexadecimal
+            </figure>
+
+            <p>Both escapes above force the string in which they are
+            embedded to have UTF-8 encoding. However, they are illegal
+            in a file that has both a non-UTF-8 source encoding and
+            a string containing literal multibyte characters in that
+            encoding.</p>
+
+            <figure id=unicode-escape.rb>
+              <figcaption>A Unicode escape represents a Unicode character with
+              the given codepoint(s)
+            </figure>
+          </section>
 
           <table class=border>
             <thead>
@@ -258,51 +336,49 @@
                     href=//en.wikipedia.org/wiki/Tab_character>Tab</a> 
                   character
               <tr class=odd>
-                <td><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code>
-                  <td>The <a
-                      href=//en.wikipedia.org/wiki/Unicode>Unicode</a>
-                    <a
-                      href=//en.wikipedia.org/wiki/Codepoint>codepoint</a>
-                    specified by the four given hexadecimal digits.
+                <td><a
+                href=#unicode-escapes><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code></a>
+                  <td>The Unicode codepoint specified by the four given
+                  hexadecimal digits.
               <tr>
-                <td><code>\u{<var>codepoints</var>}</code>
+                <td><a
+                href=#unicode-escapes><code>\u{<var>codepoints</var>}</code></a>
                 <td>The Unicode codepoint(s) specified by
-                  <var>codepoints</var>. See: <a
-                    href=#unicode-escapes>Unicode Escapes</a>.
+                  <a href=#unicode-escapes><var>codepoints</var></a>.
               <tr class=odd>
                 <td><code>\v</code>
                 <td>U+000B &lt;control&gt;: The vertical tab character.
               <tr>
-                <td><code>\<var>octal</var><var>octal</var><var>octal</var></code>
+                <td><a
+                href=#octal-byte><code>\<var>octal</var><var>octal</var><var>octal</var></code></a>
                 <td>The byte specified by the three given octal digits,
                   whose combined value does not exceed 377<sub>8</sub>.
               <tr class=odd>
-                <td><code>\<var>octal</var><var>octal</var></code>
-                <td>The byte specified by the two given octal digits
+                <td><a
+                href=#octal-byte><code>\<var>octal</var><var>octal</var></code></a>
+                <td>The byte specified by the two given octal digits.
               <tr>
-                <td><code>\<var>octal</var></code>
-                <td>The byte specified by the given octal digit
+                <td><a href=#octal-byte><code>\<var>octal</var></code></a>
+                <td>The byte specified by the given octal digit.
               <tr class=odd>
-                <td><code>\x<var>hex</var><var>hex</var></code>
+                <td><a
+                href=#hex-byte><code>\x<var>hex</var><var>hex</var></code></a>
                 <td>The byte specified by the two given hexadecimal
-                  digits
+                  digits.
               <tr>
-                <td><code>\x<var>hex</var></code>
-                <td>The byte specified by the given hexadecimal digit
+                <td><a href=#hex-byte><code>\x<var>hex</var></code></a>
+                <td>The byte specified by the given hexadecimal digit.
               <tr class=odd>
-                <td><code>\c<var>char</var></code>
-                <td rowspan=2>The <a
-                    href=//en.wikipedia.org/wiki/Control_character>control
-                    character</a>
-                  <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd>,
-                  e.g. <kbd><kbd>Ctrl</kbd>-<kbd>Z</kbd></kbd> is represented
-                  by <code>\cZ</code>, translating to U+001A &lt;control&gt;
+                <td><a
+                href=#control-escapes><code>\c<var>char</var></code></a>
+                <td rowspan=2>The control character
+                <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd>.
               <tr class=odd>
-                <td><code>\C-<var>char</var></code>
+                <td><a
+                href=#control-escapes><code>\C-<var>char</var></code></a>
               <tr>
-                <td><code>\M-<var>char</var></code>
-                <td>Meta character <var>char</var> formed by setting
-                    the high bit of <var>char</var> character code
+                <td><a href=#meta-escapes><code>\M-<var>char</var></code></a>
+                <td>Meta character <var>char</var>.
               <tr class=odd>
                 <td><code>\</code>U+000A &lt;control&gt;
                 <td rowspan=3>A backslash before a <a
@@ -319,36 +395,6 @@
                   the character itself
             </tbody>
           </table>
-           
-          <section>
-            <h1 id=unicode-escapes>Unicode Escapes</h1>
-               
-            <figure class=railroad>
-              <img id=hex-codepoint.png>
-              <img id=unicode-escape.png>
-              <figcaption>Syntax diagram of the Unicode <code>\u</code>
-              escape
-            </figure>
-            
-            <p>An arbitrary Unicode character may be embedded in a
-            string by specifying its codepoint as four hexadecimal
-            digits following <code>\u</code>. For example, U+263A WHITE
-            SMILING FACE (☺) is <code>\u263A</code>.
-            
-            <p>The <code>\u{}</code> construct extends this ability to
-            embedding multiple codepoints with the same escape.
-            The curly braces delimit one or more hexadecimal codepoints
-            separated by whitespace. This form does not restrict a
-            codepoint to four digits. For example, U+1F090 DOMINO TILE
-            VERTICAL-06-03 (🂐) and U+1F091 DOMINO TILE VERTICAL-06-04
-            (🂑) are <code>\u{1f090 1F091}</code>
-            
-            <p>Both escapes above force the string in which they are
-            embedded to have UTF-8 encoding. However, they are illegal
-            in a file that has both a non-UTF-8 source encoding and
-            a string containing literal multibyte characters in that
-            encoding. 
-          </section>
         </section>
 
         <section>
@@ -666,7 +712,7 @@
       be any object. It is indexed by key, and ordered by insertion. For
       instance, a <code>Hash</code> mapping colours to corresponding fruits may
       include a key-value pair of <code>:lemon =&gt; :yellow</code>:
-      <code>:lemon</code> is the key; <code>:yellow</code> is the value.
+      <code>:lemon</code> is the key; <code>:yellow</code> is the value.</p>
       
       <figure class=railroad>
         <img id=hash-literal.png>
