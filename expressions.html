@@ -1455,13 +1455,11 @@
         array become rvalues in their own right, replacing the original
         rvalue.</p>
         
-        <figure style=clear:bottom class=compact id=parallel-assignment-one-rvalue.rb>
-          <figcaption style=width:25%>When an <code>Array</code> with
+        <figure id=parallel-assignment-one-rvalue.rb>
+          <figcaption>When an <code>Array</code> with
           <var>n</var> elements is assigned to <var>n</var> lvalues, each
           lvalue is assigned one element
         </figure>
-
-        <br class=clear>
 
         <p>Note that <code>:to_ary</code> is sent rather than the
         <code>:to_a</code> used by the <a
@@ -1472,15 +1470,13 @@
         constitutes an <a href=/objects#explicit-conversion>explicit
           conversion</a>, so the more liberal protocol is followed.</p>
         
-        <figure class=compact id=parallel-assignment-rvalue-to-ary.rb>
-          <figcaption style=width:25%>When an object responding to
+        <figure id=parallel-assignment-rvalue-to-ary.rb>
+          <figcaption>When an object responding to
           <code>:to_ary</code> with an <var>n</var> element <code>Array</code>
           is assigned to <var>n</var> lvalues, each lvalue is assigned one
           element
         </figure>
         
-        <br class=clear>
-
         <p>If there are as many lvalues as there are
         elements in the splatted rvalue, assignment proceeds according to <a
           href=#parallel-assignment-equal>Equal Number of Lvalues to
@@ -1488,14 +1484,13 @@
           href=#parallel-assignment-unequal>Unequal Number of Lvalues to
           Rvalues</a>, applies.</p>
 
-        <figure class=compact id=parallel-assignment-one-rvalue-nil.rb>
-          <figcaption style=width:45%>When an <code>Array</code> with
+        <figure id=parallel-assignment-one-rvalue-nil.rb>
+          <figcaption>When an <code>Array</code> with
           <var>n</var> elements is assigned to fewer than <var>n</var>
           lvalues, the first <var>n</var> elements are assigned the
           corresponding lvalue, and the remainder discarded
         </figure>
         
-        <br class=clear>
         <!--<figure class=compact id=parallel-assignment-one-rvalue-non-array.rb>
           <figcaption style=width:45%>When a non-<code>Array</code> is
           assigned to multiple lvalues, the first lvalue takes the sole

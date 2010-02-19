@@ -47,6 +47,9 @@ figure.compact figcaption {
 }
 figure.compact {
   clear: both;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 figcaption.nowrap {
