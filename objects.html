@@ -217,7 +217,8 @@
       <section>
         <h1 id=instance-variables>Instance Variables</h1>
 
-        <p>The state of an object is encapsulated in instance variables, whose
+        <p>The state of an object is encapsulated in its <a
+          href=/expressions#instance-variables>instance variables</a>, whose
         values are local to that particular object, hidden <!-- better word? -->
         from others. An object will not respond to a message selecting one if its
         instance variables unless a corresponding method has been defined, either
@@ -227,21 +228,6 @@
         <p>An instance variable is typically defined in an instance method. If
         defined in the context of a class it is a <a
           href=/classes#class-instance-variables>class instance variable</a>.
-        Its name is an identifier prefixed with a commercial at sign
-        (<code>@</code>).
-        
-        <!-- Use Object# instead of Kernel# ? --> <p>The names of an object’s
-        instance variables are returned as an <code>Array</code> of
-        <code>Symbol</code>s by <code>Kernel#instance_variables</code> in the
-        order they were assigned. <!--
-        http://redmine.ruby-lang.org/issues/show/2243 -->  Their
-        values may be retrieved and modified from another object with
-        <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
-        <code>Kernel#instance_variable_set(<var>ivar</var>,
-          <var>value</var>)</code>, respectively, where <var>ivar</var> is the
-        variable’s name as a <code>Symbol</code>, including the <code>@</code>
-        prefix. These methods should be used sparingly as they break
-        encapsulation.
       </section>
 
       <section>

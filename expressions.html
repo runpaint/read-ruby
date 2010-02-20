@@ -966,11 +966,11 @@
 
     <section>
       <h1 id=constants>Constants</h1>
-
+      
       <p>A constant is a variable whose value, once assigned, is not expected
       to change. Its constancy is not enforced by Ruby, so repeated
       assignments are legal, but cause a warning to be issued.</p>
-
+      
       <section>
         <h1 id=constants-name>Name</h1>
         
@@ -1035,10 +1035,10 @@
         uninitialized state. Referencing a constant that does not exist
         results in a <code>NameError</code>.
       </section>
-
+  
       <section>
         <h1 id=constants-predefined>Predefined</h1>
-
+  
         <p>The following table lists global constants that Ruby defines
         automatically.</p>
 
@@ -1155,9 +1155,10 @@
     </section>
 
       <!-- TODO: Scope section -->
+
     <section>
       <h1 id=local-variables>Local Variables</h1>
-      
+            
       <section>
         <h1 id=local-variables-name>Name</h1>
         
@@ -1222,16 +1223,68 @@
           <code>NameError</code> to be raised.
         </figure>
       </section>
-
-
+       
       <p>The <code>Kernel.local_variables</code> method returns an
       <code>Array</code> of local variable names in the current scope as
       <code>Symbol</code>s.
     </section>
 
     <section>
+      <h1 id=instance-variables>Instance Variables</h1>
+            
+      <section>
+        <h1 id=instance-variables-name>Name</h1>
+        
+        <p>An instance variable is named by an identifier with a U+0040
+        COMMERCIAL AT (<code>@</code>) sigil:
+        <code>@<var>identifier</var></code>. Conventionally, the name consists
+        of lowercase words separated by low lines.
+      </section>
+
+      <section>
+        <h1 id=instance-variables-scope>Scope</h1>
+        
+        <p>An instance variable defined in the body of an instance method is
+        accessible by every instance of that method’s receiver. Its scope is a
+        specific object. By corollary, an instance variable defined outside of
+        an instance method, such as in a class body, is not accessible from
+        instance methods: it is, even if named identically, entirely separate. 
+
+        <p>The above describes the typical use for instance variables, namely
+        storing an object’s state, but they may also be defined inside a class
+        or module body, outside of any method, in which case their scope is
+        delimited by the class/module in which they were defined. The former
+        are <a href=/class#class-instance-variables>class instance
+        variables</a>; the latter module instance variables.
+      </section>
+
+      <section>
+        <h1 id=instance-variables-initialization>Initialization</h1>
+
+        <p>An instance variable is created by assigning to it a value. It is
+        not inherited from a superclass: it exists for a given object only if
+        an instance method of that object has assigned to it a value.
+
+        <p>An uninitialized instance variable has the value <code>nil</code>,
+        but its use results in a warning.
+      </section>
+       
+      <p>The names of an object’s instance variables are returned as an
+      <code>Array</code> of <code>Symbol</code>s by
+      <code>Kernel#instance_variables</code> in the order they were assigned.
+      <!-- http://redmine.ruby-lang.org/issues/show/2243 -->  Their values may
+      be retrieved and modified from another object with
+      <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
+      <code>Kernel#instance_variable_set(<var>ivar</var>,
+      <var>value</var>)</code>, respectively, where <var>ivar</var> is the
+      variable’s name as a <code>Symbol</code>, including the <code>@</code>
+      prefix. These methods should be used sparingly as they break
+      encapsulation.
+    </section>
+
+    <section>
       <h1 id=globals>Global Variables</h1>
-      
+            
       <section>
         <h1 id=globals-name>Name</h1>
 
@@ -1257,7 +1310,7 @@
           <figcaption>Global variables are accessible in every scope
         </figure>
       </section>
-
+      
       <section>
         <h1 id=globals-initialization>Initialization</h1>
 
