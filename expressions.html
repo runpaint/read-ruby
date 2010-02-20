@@ -1231,7 +1231,7 @@
 
     <section>
       <h1 id=instance-variables>Instance Variables</h1>
-            
+                  
       <section>
         <h1 id=instance-variables-name>Name</h1>
         
@@ -1282,6 +1282,87 @@
       encapsulation.
     </section>
 
+    <section>
+      <h1 id=class-variables>Class Variables</h1>
+                  
+      <section>
+        <h1 id=class-variables-name>Name</h1>
+        
+        <p>A class variable is named by an identifier whose sigil is two
+        consecutive U+0040 COMMERCIAL AT (<code>@</code>) characters:
+        <code>@@<var>identifier</var></code>. Conventionally, the name
+        consists of lowercase words separated by low lines.
+      </section>
+
+      <section>
+        <h1 id=class-variables-scope>Scope</h1>
+       
+        <p>A class variable’s scope is the body of the enclosing class or
+        module. It is shared between all instances of the class and accessible
+        from both the class body and its methods, but is nevertheless
+        encapsulated: concealed, by default, from the class’s users.
+
+        <p>Unlike instance variables, class variables are inherited
+        by child classes: if a class modifies a class variable defined in its
+        superclass, the change is visible in both locations.</p>
+
+        <figure id=class-variables-inherited.rb>
+          <figcaption>Class variables are inherited by child classes
+        </figure>
+
+        <p>A class variable defined at the top-level of a program is inherited
+        by all classes. It behaves like a global variable.</p>
+
+        <figure id=class-variables-inherited-top.rb>
+          <figcaption>Class variables are inherited from the top-level
+        </figure>
+
+        <p>Ruby issues a warning—e.g., <samp>class variable @@cvar of Top
+        is overtaken by Object</samp>—when a class variable is first defined
+        in a child class then subsequently assigned to in a parent class, as
+        shown below:</p>
+
+        <figure id=class-variables-overtaken.rb>
+          <figcaption>A warning is issued if a parent seems to unintentionally
+          clobber a child’s class variable
+        </figure>
+
+        <p>However, a class variable is not shared between sibling classes,
+        unless defined in their common parent, or those without a common
+        parent.</p>
+
+        <figure id=class-variables-siblings.rb>
+          <figcaption>Class variables are unique amongst sibling classes
+        </figure>
+
+        <p>These semantics have led <a href=/references#refTHOM09>Thomas et
+        al.</a> (pp. 337–338) to explicitly advise against the use of class
+        variables and <a href=/references#refPER10>Perrotta</a> (p. 129) to
+        regard them as having <q cite=/references#refPER10>…a nasty habit of
+        surprising you</q>. An alternative mechanism for storing class state
+        is <a href=/class#class-instance-variables>class instance
+        variables</a>, which are not afflicted with either of the above
+        problems, but cannot be referenced from instance methods.
+      </section>
+
+      <section>
+        <h1 id=class-variables-initialization>Initialization</h1>
+        
+        <p>Class variables must be initialized before use. Referencing an
+        uninitialized class variable results in a <code>NameError</code>. 
+      </section>
+       
+      <p>The names of a class’s class variables are returned as an
+      <code>Array</code> of <code>Symbol</code>s by
+      <code>Module#class_variables</code> in the order they were assigned.
+      Their values may be retrieved and modified from outside this class with
+      <code>Module#class_variable_get(<var>cvar</var>)</code> and
+      <code>Module#class_variable_set(<var>cvar</var>,
+      <var>value</var>)</code>, respectively, where <var>cvar</var> is the
+      variable’s name as a <code>Symbol</code>, including the <code>@@</code>
+      prefix. These methods should be used sparingly as they break
+      encapsulation.
+    </section>
     <section>
       <h1 id=globals>Global Variables</h1>
             
@@ -1767,7 +1848,7 @@
         href=/flow#conditionals>false</a> (<code>false</code> or
         <code>nil</code>). That is, to initialize the lvalue only if it isn’t
         already. Perrotta describes an <a
-        href=/objects#instance-variables>instance variable</a> employing this
+        href=#instance-variables>instance variable</a> employing this
         technique as a <q cite=/references#refPER10>Lazy Instance Variable</q>
         (<a href=/references#refPER10>Perrotta</a>, pp. 243–244).</p>
 

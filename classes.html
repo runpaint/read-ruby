@@ -375,30 +375,10 @@
       <section>
         <h1 id=state>State</h1>  
 
-        <section>
-          <h1 id=class-variables>Class Variables</h1>
-
-          <p><dfn title="class variables">Class variables</dfn> are variables local
-          to a class, typically used to share state between instances. They are
-          named with two commercial at signs followed by an identifier, i.e.
-          <code>@@<var>identifier</var></code>.
-
-          <p>They are encapsulated: inaccessible <!-- more accurate term? -->
-          outside of the class and its child classes. However, the encapsulation can
-          be broken with <code>Class#class_variable_get(<var>name</var>)</code> or
-          <code>Class#class_variable_set(<var>name</var>, <var>value</var>)</code>,
-          where <var>name</var> is the class variable name as a <code>Symbol</code>. 
-          
-          <p>Class variables are not subject to inheritance, but are <i>shared</i>
-          between subclasses: the same variable is accessed by all; it is neither
-          duplicated nor shadowed.  Therefore, the modification of a class variable
-          defined in a superclass affects the superclass along with any sibling
-          classes.
-
-          <p><code>Class#class_variables</code> returns an <code>Array</code> of the
-          class’s class variables as <code>Symbol</code>s, sans their
-          <code>@@</code> prefixes.
-        </section>
+        <p>A class may store its state in <a
+          href=/expressions#class-variables>class variables</a>, as discussed
+        previously, however, due to the unpopular semantics of class
+        variables, class instance variables are may be used instead.</p>
 
         <section>
           <h1 id=class-instance-variables>Class Instance Variables</h1>
