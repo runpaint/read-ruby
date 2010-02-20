@@ -991,9 +991,9 @@
           <figcaption>Syntax diagram of a constant reference
         </figure>
         
-        <p>A <dfn>constant reference</dfn> is an expression whose value is
-        that of the named constant. The simplest constant reference is a
-        primary expression consisting solely of the constant’s name, e.g.
+        <p>A <dfn>constant reference</dfn> is an expression evaluating to the
+        named constant. The simplest constant reference is a primary
+        expression consisting solely of the constant’s name, e.g.
         <code>Constant</code>.
 
         <p>A constant reference may also be qualified by prefixing the
@@ -1027,61 +1027,85 @@
         outside.
       </section>
       <!-- TODO: Note that constants are never unitialized -->
+      <section>
+        <h1 id=constants-initialization>Initialization</h1>
+
+        <p>Constants only come into existence when they are assigned a value.
+        Therefore a constant, unlike the other variables, is never in an
+        uninitialized state. Referencing a constant that does not exist
+        results in a <code>NameError</code>.
+      </section>
     </section>
 
-    <!-- Mention: * = 1 # Legal assignment without variable creation -->
-      
       <!-- TODO: Scope section -->
     <section>
       <h1 id=local-variables>Local Variables</h1>
       
-      <p>A local variable’s scope is the method or block in which it was
-      initialized; outside of this scope it is undefined, its previous value
-      forgotten. This scope is recursive: it continues thought any
-      blocks or other constructs defined within.</p>
+      <section>
+        <h1 id=local-variables-name>Name</h1>
+        
+        <p>A local variable is named by an identifier whose first character is
+        a lowercase US-ASCII character (<code>a</code>—<code>z</code>) or
+        U+005F LOW LINE (<code>_</code>). Conventionally, the name consists of
+        lowercase words separated by low lines.
+      </section>
 
-      <figure id=local-variables.rb>
-        <figcaption>The scope of a local variable
-      </figure>
+      <section>
+        <h1 id=local-variables-scope>Scope</h1>
+        
+        <p>A local variable’s scope is the method or block in which it was
+        initialized; outside of this scope it is undefined, its previous value
+        forgotten. This scope is recursive: it continues thought any
+        blocks or other constructs defined within.</p>
 
-      <p>A variable is initialized if it appears on the left-hand side
-      (before the U+003D EQUALS SIGN (<code>=</code>)) of an assignment
-      expression. However, this assignment expression need not actually
-      execute: its mere presence is enough to create the variable. For
-      example, if an assignment expression involving a local variable on the
-      left-hand side appears within a branch that does not execute, the
-      variable comes into existence.  Variables of this sort have the value
-      <code>nil</code>.</p>
+        <figure id=local-variables.rb>
+          <figcaption>The scope of a local variable
+        </figure>
 
-      <figure id=local-variables-assignment.rb>
-        <figcaption>An assignment expression initializes a local variable
-      </figure>
+        <p>A block defines its own lexical scope. Local variables defined
+        within it do not persist outside of it. However, if, in the context of
+        a block, a local variable is initialized with the name of one
+        initialized in the enclosing scope, the variables refer to the same
+        storage location: having left the block’s scope the variable’s value
+        will be that which it was assigned within the block. If, instead, it
+        is desired that variables defined within a block do not clash with
+        those defined outside, <a href=/closures#block-local-variables>block
+          local variables</a> are appropriate.</p>
 
-      <p>Attempting to use an uninitialized local variable causes the
-      identifier to be interpreted as a message selector which is sent to
-      the current implicit receiver. If such a method doesn’t exist a
-      <code>NameError</code> is raised.</p>
+        <figure id=non-block-local-variables-example.rb>
+          <figcaption>Non-block-local variables defined prior to the block
+          retain the value they were assigned inside the block even after
+          leaving it
+        </figure>
+      </section>
 
-      <figure id=local-variables-uninitialized.rb>
-        <figcaption>Referring to an uninitialized local variable causes a
-        <code>NameError</code> to be raised.
-      </figure>
+      <section>
+        <h1 id=local-variables-initialization>Initialization</h1>
+        
+        <p>A variable is initialized if it appears on the left-hand side
+        (before the U+003D EQUALS SIGN (<code>=</code>)) of an assignment
+        expression. However, this assignment expression need not actually
+        execute: its mere presence is enough to create the variable. For
+        example, if an assignment expression involving a local variable on the
+        left-hand side appears within a branch that does not execute, the
+        variable comes into existence.  Variables of this sort have the value
+        <code>nil</code>.</p>
 
-      <p>A block defines its own lexical scope. Local variables defined
-      within it do not persist outside of it. However, if, in the context of
-      a block, a local variable is initialized with the name of one
-      initialized in the enclosing scope, the variables refer to the same
-      storage location: having left the block’s scope the variable’s value
-      will be that which it was assigned within the block. If, instead, it
-      is desired that variables defined within a block do not clash with
-      those defined outside, <a href=/closures#block-local-variables>block
-        local variables</a> are appropriate.</p>
+        <figure id=local-variables-assignment.rb>
+          <figcaption>An assignment expression initializes a local variable
+        </figure>
 
-      <figure id=non-block-local-variables-example.rb>
-        <figcaption>Non-block-local variables defined prior to the block
-        retain the value they were assigned inside the block even after
-        leaving it
-      </figure>
+        <p>Attempting to use an uninitialized local variable causes the
+        identifier to be interpreted as a message selector which is sent to
+        the current implicit receiver. If such a method doesn’t exist a
+        <code>NameError</code> is raised.</p>
+
+        <figure id=local-variables-uninitialized.rb>
+          <figcaption>Referring to an uninitialized local variable causes a
+          <code>NameError</code> to be raised.
+        </figure>
+      </section>
+
 
       <p>The <code>Kernel.local_variables</code> method returns an
       <code>Array</code> of local variable names in the current scope as
@@ -1089,17 +1113,42 @@
     </section>
 
     <section>
-      <h1 id=global-variables>Global Variables</h1>
+      <h1 id=globals>Global Variables</h1>
       
-      <p>A global variable is accessible in every scope. Once set it refers
-      to the same object wherever it is referenced. An uninitialized global
-      variable has the value <code>nil</code>, although attempting to use
-      such a variable results in a warning.</p>
-      
-      <figure id=global-variables.rb>
-        <figcaption>Global variables are accessible in every scope
-      </figure>
-      
+      <section>
+        <h1 id=globals-name>Name</h1>
+
+        <p>A global variable is named with a U+0024 DOLLAR SIGN
+        (<code>$</code>) sigil: <code>$<var>identifier</var></code>.
+        Conventionally, the name consists of lowercase words separated by low
+        lines.
+
+        <p>A global variable should not be defined with the same name as a
+        predefined global variable, and indeed cannot if that variable is
+        read-only.
+
+        <!-- TODO: summarise naming conventions of pre-defined globals -->
+      </section>
+
+      <section>
+        <h1 id=globals-scope>Scope</h1>
+
+        <p>A global variable is accessible in every scope. Once set it refers
+        to the same object wherever it is referenced.</p>
+
+        <figure id=global-variables.rb>
+          <figcaption>Global variables are accessible in every scope
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=globals-initialization>Initialization</h1>
+
+        <p>An uninitialized global variable has the value <code>nil</code>,
+        although attempting to use such a variable results in a warning. The
+        predefined global variables are already initialized.
+      </section>
+
       <p>An <code>Array</code> of global variable names as
       <code>Symbol</code>s can be obtained with
       <code>Kernel.global_variables</code></p>
