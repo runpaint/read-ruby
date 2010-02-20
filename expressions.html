@@ -1035,6 +1035,123 @@
         uninitialized state. Referencing a constant that does not exist
         results in a <code>NameError</code>.
       </section>
+
+      <section>
+        <h1 id=constants-predefined>Predefined</h1>
+
+        <p>The following table lists global constants that Ruby defines
+        automatically.</p>
+
+        <table class=border>
+          <caption>Predefined global constants
+          <thead>
+            <tr>
+              <th>Constant
+              <th>Class
+              <th>Meaning
+          </thead>
+          <tbody class=zebra>
+            <tr>
+              <td><code>DATA</code>
+              <td><code>IO</code>
+              <td>If the source file contains the line <code>__END__</code>,
+              the lines that follow are accessible by reading from
+              <code>DATA</code>.
+            <tr>
+              <td><code>FALSE</code>
+              <td><code>FalseClass</code>
+              <td><code>false</code>
+            <tr>
+              <td><code>NIL</code>
+              <td><code>NilClass</code>
+              <td><code>nil</code>
+            <tr>
+              <td><code>RUBY_COPYRIGHT</code>
+              <td><code>String</code>
+              <td>Copyright statement for the interpreter, e.g. <samp>ruby -
+              Copyright (C) 1993-2010 Yukihiro Matsumoto</samp>.
+            <tr>
+              <td><code>RUBY_DESCRIPTION</code>
+              <td><code>String</code>
+              <td>Version number and architecture of the interpreter, e.g.
+              <samp>ruby 1.9.2dev (2010-02-19 trunk 26715) [i686-linux]</samp>.
+            <tr>
+              <td><code>RUBY_ENGINE</code>
+              <td><code>String</code>
+              <td>The implementation of the interpreter, e.g.
+              <samp>ruby</samp>.
+              <dl class=inline>
+                <dt><samp>ruby</samp>
+                <dd><abbr title="Matz’s Ruby Intepreter">MRI</abbr>: official
+                implementation.
+                <dt><samp>rbx</samp>
+                <dd><a href=//rubini.us/>Rubinius</a>.
+                <dt><samp>macruby</samp>
+                <dd><a href=http://www.macruby.org/>MacRuby</a>.
+                <dt><samp>ironruby</samp>
+                <dd><a href=//ironruby.net/>IronRuby</a>.
+                <dt><samp>jruby</samp>
+                <dd><a href=//jruby.org/>JRuby</a>.
+                <dt><samp>maglev</samp> <!-- TODO: Confirm -->
+                <dd><a href=//maglev.gemstone.com/>MagLev</a>
+              </dl>
+            <tr>
+              <td><code>RUBY_PATCHLEVEL</code>
+              <td><code>Fixnum</code>
+              <td>Patch level of the interpreter, e.g. <samp>-1</samp>.
+            <tr>
+              <td><code>RUBY_PLATFORM</code>
+              <td><code>String</code>
+              <td>Platform for which the interpreter was built, e.g.
+              <samp>i686-linux</samp>.
+            <tr>
+              <td><code>RUBY_RELEASE_DATE</code>
+              <td><code>String</code>
+              <td>Release date, for point releases, or build date, for
+              trunk builds, of the interpreter, e.g. <samp>2010-02-19</samp>.
+            <tr>
+              <td><code>RUBY_REVISION</code>
+              <td><code>Fixnum</code>
+              <td>Revision of the interpreter, e.g. <samp>26715</samp>.
+              (<abbr title="Subversion">SVN</abbr> revision number on MRI).
+            <tr>
+              <td><code>RUBY_VERSION</code>
+              <td><code>String</code>
+              <td>Version number of the interpreter, e.g. <samp>1.9.2</samp>.
+            <tr>
+              <td><code>STDERR</code>
+              <td><code>IO</code>
+              <td>Standard error stream. Initial value of
+              <code>$stderr</code>.
+            <tr>
+              <td><code>STDIN</code>
+              <td><code>IO</code>
+              <td>Standard input stream. Initial value of
+              <code>$stdin</code>.
+            <tr>
+              <td><code>STDOUT</code>
+              <td><code>IO</code>
+              <td>Standard output stream. Initial value of
+              <code>$stdout</code>.
+            <tr>
+              <td><code>SCRIPT_LINES__</code>
+              <td><code>Hash</code>
+              <td>If assigned a <code>Hash</code>, each subsequent file loaded
+              or required will create an entry in the hash, whose key is the
+              filename as a <code>String</code>, and value is the file’s lines
+              as an <code>Array</code> of <code>String</code>s.
+            <tr>
+              <td><code>TOPLEVEL_BINDING</code>
+              <td><code>Binding</code>
+              <td>Represents the top-level execution environment, i.e. outside
+              of any class, module, method, block, or other construct.
+            <tr>
+              <td><code>TRUE</code>
+              <td><code>TrueClass</code>
+              <td><code>true</code>
+          </tbody>
+        </table>
+      </section>
     </section>
 
       <!-- TODO: Scope section -->
