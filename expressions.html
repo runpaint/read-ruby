@@ -831,6 +831,7 @@
       is the result of summing the operands: the primary expression
       <code>3</code>.</p>
       
+
       <section>
         <h1 id=arity>Arity</h1>
         
@@ -915,9 +916,6 @@
         </figure>
       </section>
 
-        <table class=border>
-          
-        </table>
       <!-- section for each op -->
       <section>
         <h1 id=ternary-operator>Ternary Operator</h1>
@@ -970,6 +968,244 @@
           </tbody>
         </table>
       </section>
+
+      <table class='border hidelinks'>
+        <caption>
+          <p>A table of Ruby operators shown in order of descending
+          precedence, where a decrease is shown by a change in background
+          colour.          
+          
+          <dl style=text-align:left class=inline-small>
+            <dt id=op-tbl-mean>&dagger;
+            <dd>The meaning ascribed to each operator is that which is common;
+            re-definable operators may have different semantics. 
+            <dt id=op-tbl-unary>&Dagger;
+            <dd>Unary operators with binary equivalents are shown with a
+            <code>@</code> suffix. This is the name of their selector, but the
+            suffix is omitted in operator expressions.
+            <dt id=op-tbl-meth>⁂
+            <dd>A ✔ in this column indicates that the operator is implemented
+            as a method, and therefore can be overridden by defining a method
+            with the same name.
+          </dl>
+        </caption>
+        <thead>
+          <tr>
+            <th>Operator
+            <th>Meaning <a href=#op-tbl-mean>&dagger;</a>
+            <th>Method? <a href=#op-tbl-meth>⁂</a>
+        </thead>
+        <tbody>
+          <tr class=odd>
+            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
+          <tr class=odd>
+            <td><code>!</code>
+            <td>Boolean NOT
+            <td>✔
+          <tr class=odd> 
+            <td><code>~</code>
+            <td>Bitwise complement
+            <td>✔
+          <tr class=odd>
+            <td><code>+@</code>
+            <td>Unary plus <a href=#op-tbl-unary>&Dagger;</a>
+            <td>✔
+
+          <tr>
+            <th colspan=3>Binary <span title="Right associative">&rarr;</span>
+          <tr>
+            <td><code>**</code>
+            <td>Exponentiation
+            <td>✔
+
+          <tr class=odd>
+            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
+          <tr class="odd">
+            <td><code>-@</code>
+            <td>Unary minus <a href=#op-tbl-unary>&Dagger;</a>
+            <td>✔
+          <tr>
+            <th colspan=3>Binary <span title="Left associative">&larr;</span>
+          <tr>
+            <td><code>*</code>
+            <td>Multiplication
+            <td>✔
+          <tr>
+            <td><code>/</code>
+            <td>Division
+            <td>✔
+          <tr>
+          
+            <td><code>%</code>
+            <td>Modulo
+            <td>✔
+
+          <tr class=odd>
+            <td><code>+</code>
+            <td>Addition/concatenation
+            <td>✔
+          <tr class=odd>
+            <td><code>-</code>
+            <td>Subtraction
+            <td>✔
+
+          <tr>
+            <td><code>&lt;&lt;</code>
+            <td>Left shift/append
+            <td>✔
+          <tr>
+            <td><code>&gt;&gt;</code>
+            <td>Right shift
+            <td>✔
+          
+          <tr class=odd>
+            <td><code>&amp;</code>
+            <td>Bitwise AND
+            <td>✔
+
+          <tr>
+            <td><code>|</code>
+            <td>Bitwise OR
+            <td>✔
+          <tr>
+            <td><code>^</code>
+            <td>Bitwise XOR
+            <td>✔
+          
+          <tr class=odd>
+            <td><code>&lt;</code>
+            <td>Less than
+            <td>✔
+          <tr class=odd>
+            <td><code>&lt;=</code>
+            <td>Less than or equal to
+            <td>✔
+          <tr class=odd>
+            <td><code>&gt;=</code>
+            <td>Greater than or equal to
+            <td>✔
+          <tr class=odd>
+            <td><code>&gt;</code>
+            <td>Greater than
+            <td>✔
+          <tr>
+            <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
+          <tr>
+            <td><code>==</code>
+            <td>Equality
+            <td>✔
+          <tr>
+            <td><code>===</code>
+            <td>Case equality
+            <td>✔
+          <tr>
+            <td><code>!=</code>
+            <td>Negated equality
+            <td>✔
+          <tr>
+            <td><code>=~</code>
+            <td>Pattern matching
+            <td>✔
+          <tr>
+            <td><code>!~</code>
+            <td>Negated pattern matching
+            <td>✔
+          <tr>
+            <td><code>&lt;=&gt;</code>
+            <td>Comparison (<i>spaceship</i>)
+            <td>✔
+
+          <tr class=odd>
+            <th colspan=3>Binary <span title="Left associative">&larr;</span>
+          <tr class=odd>
+            <td><code>&amp;&amp;</code>
+            <td>Boolean AND
+            <td>✖
+
+          <tr>
+            <td><code>||</code>
+            <td>Boolean OR
+            <td>✖
+
+          <tr class=odd>
+            <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
+          <tr class=odd>
+            <td><code>..</code>
+            <td>Inclusive range
+            <td>✖
+          <tr class=odd>
+            <td><code>...</code>
+            <td>Exclusive range
+            <td>✖
+          
+          <tr>
+            <th colspan=3>Ternary <span title="Right associative">&rarr;</span>
+          <tr>
+            <td><code>?</code>…<code>:</code>
+            <td>Conditional
+            <td>✖
+
+          <tr class=odd>
+            <th colspan=3>Binary <span title="Right associative">&rarr;</span>
+          <tr class=odd>
+            <td><code>=</code>
+            <td>Assignment
+            <td>✖
+          <tr class=odd>
+            <td><code>**=</code>
+            <td rowspan=13 style=vertical-align:top>Abbreviated assignment
+            <td rowspan=13>✖
+          <tr class=odd>
+            <td><code>*=</code>
+          <tr class=odd>
+            <td><code>/=</code>
+          <tr class=odd>
+            <td><code>%=</code>
+          <tr class=odd>
+            <td><code>+=</code>
+          <tr class=odd>
+            <td><code>-=</code>
+          <tr class=odd>
+            <td><code>&lt;&lt;=</code>
+          <tr class=odd>
+            <td><code>&gt;&gt;=</code>
+          <tr class=odd>
+            <td><code>&amp;&amp;=</code>
+          <tr class=odd>
+            <td><code>&amp;=</code>
+          <tr class=odd>
+            <td><code>||=</code>
+          <tr class=odd>
+            <td><code>|=</code>
+          <tr class=odd>
+            <td><code>^=</code>
+
+          <tr>
+            <th colspan=3>Unary <span title=Nonassociative>&harr;</span>
+          <tr>
+            <td><code>defined?</code>
+            <td>Test variable definition and type
+            <td>✖
+
+          <tr class=odd>
+            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
+          <tr class=odd>
+            <td><code>not</code>
+            <td>Boolean NOT
+            <td>✖
+
+          <tr>
+            <th colspan=3>Binary <span title="Left associative">&larr;</span>
+          <tr>
+            <td><code>and</code>
+            <td>Boolean AND
+            <td>✖
+          <tr>
+            <td><code>or</code>
+            <td>Boolean OR
+            <td>✖
+        </tbody>
+      </table>
     </section>
 
     <!-- message expressions -->
