@@ -1217,6 +1217,8 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
         matching <code>rescue</code> clause via <code>raise</code>—replaces
         that of the current exception, aborting its passage.</p>
 
+        <!-- TODO: State explicitly that an ensure clause containing, say,
+        return, implicitly rescues the current exception -->
         <figure id=ensure-clause.rb>
           <figcaption>Using an <code>ensure</code> clause to save data to disk
           even if an exception occurs
