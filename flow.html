@@ -16,34 +16,11 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
   <section>
     <h1 id=conditionals>Conditionals</h1>
 
-    <section>
-      <h1 id=true-false-nil>Truth, Falsehood, and Nil</h1>
-
-      <p>Ruby defines three special values representing the two Boolean
-      states, and nil.</p>
-
-      <dl>
-        <dt id=true><code>true</code></dt>
-        <dd>The <code>true</code> keyword returns the singleton instance of
-        <code>TrueClass</code>. Its value is, by definition, true.
-        <dt id=false><code>false</code></dt>
-        <dd>The <code>false</code> keyword returns the singleton instance of
-        <code>FalseClass</code>. Its value is, by definition, false.
-        <dt id=nil><code>nil</code></dt>
-        <dd>The <code>nil</code> keyword returns the singleton instance of
-        <code>NilClass</code>. Its value is represents the absence of a value.
-        The <code>Kernel.nil?</code> predicate returns <code>true</code> if
-        its value is <code>nil</code>; <code>false</code> otherwise.
-        <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
-        -->
-      </dl>
-    </section>
-
     <p>A <dfn>conditional</dfn> is an expression evaluated as a truthbearer.
     The conditional is <dfn title="false conditional">false</dfn> if the
-    expression’s value is <a href=#nil><code>nil</code></a> or <a
-      href=#false><code>false</code></a>; otherwise it
-    is <dfn title="true conditional">true</dfn>.</p>
+    expression’s value is <a href=/expressions#nil><code>nil</code></a> or <a
+      href=/expressions#false><code>false</code></a>; otherwise it is <dfn
+      title="true conditional">true</dfn>.</p>
 
     <figure id=conditional-true.rb>
       <!-- FIXME: Use if statement in example to show the conditionals’ truth

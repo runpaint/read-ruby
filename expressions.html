@@ -20,16 +20,21 @@
     * A variable's scope is the portion of the program where it has meaning
     * 
   -->
-  <p>An expression is an <a href=/objects#literals>literal</a>, an <a
-    href=#identifiers>identifier</a>, an assignment expression, a <a
-    href=/messages#expression-syntax>message expression</a>, a
-  <a href=#keywords>keyword expression</a>, or a parenthesized expression.</p>
+
+  <p>An expression is either primary or compound. Primary expressions comprise
+  atomic units such as <a href=/objects#literals>literals</a> and variable
+  references, which can be combined with operators to produce compound
+  expressions.</p>
 
   <section>
     <h1 id=primary-expressions>Primary Expressions</h1>
       
     <section>
       <h1 id=literals>Literals</h1>
+      
+      <p>An <a href=/objects#literals>object literal</a> is an item of syntax
+      for instantiating certain core objects such as strings, numbers, arrays,
+      and hashes.</p>
     </section>
 
     <section>
@@ -37,18 +42,44 @@
 
       <section>
         <h1 id=true><code>true</code></h1>
+        
+        <p>The <code>true</code> keyword returns the singleton instance of
+        <code>TrueClass</code>. Its value is, by definition, true.
       </section>
 
       <section>
         <h1 id=false><code>false</code></h1>
+
+        <p>The <code>false</code> keyword returns the singleton instance of
+        <code>FalseClass</code>. Its value is, by definition, false.
       </section>
 
       <section>
         <h1 id=nil><code>nil</code></h1>
+
+        <p>The <code>nil</code> keyword returns the singleton instance of
+        <code>NilClass</code>. Its value is represents the absence of a value.
+        The <code>Kernel.nil?</code> predicate returns <code>true</code> if
+        its value is <code>nil</code>; <code>false</code> otherwise.
+        <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
+        -->
       </section>
 
       <section>
         <h1 id=self><code>self</code></h1>
+
+        <p><code>self</code> always evaluates to the current object. Outside
+        of any class definition, i.e. at the top-level, the current object is
+        an instance of <code>Object</code> called <code>main</code>. Inside a
+        class definition, but outside of a method definition, the current
+        object is an instance of <code>Class</code>. Within a method
+        definition the current object is the instance of the containing
+        class.</p>
+
+        <figure id=self-as-the-implicit-receiver.rb>
+          <figcaption><code>self</code> is always defined; its value depends
+          on the enclosing context.
+        </figure>
       </section>
 
       <section>
@@ -69,25 +100,18 @@
 
       <p>A <dfn>variable</dfn> is a named storage location that holds a value.
       <!-- TODO: Employ more rigourous definition; cite source --> It is named
-      with an identifier, possibly preceded by a <dfn>sigil</dfn> (a symbol
-      denoting the variable’s scope):</p>
+      with an <a href=/programs#identifiers>identifier</a>, possibly preceded
+      by a <dfn>sigil</dfn> (a symbol denoting the variable’s scope).</p>
 
       <!-- created via assignment -->
 
-      <dl>
-        <dt><var>identifier</var>
-        <dd>An identifier whose first character is a US-ASCII lowercase
-        character or low line is a local variable unless preceded by one of
-        the following sigils.
-        <dt><code>$</code><var>identifier</var>
-        <dd>An U+0024 DOLLAR SIGN (<code>$</code>) prefix denotes a global variable
-        <dt><code>@</code><var>identifier</var>
-        <dd>A single U+0040 COMMERCIAL AT (<code>@</code>) introduces an
-        <a href=/objects#instance-variables>instance variable</a>.
-        <dt><code>@@</code><var>identifier</var>
-        <dd>Two consecutive U+0040 COMMERCIAL AT (<code>@</code>) symbols
-        introduce a <a href=/classes#class-variables>class variable</a>.
-      </dl>
+      <p>When the name of a variable appears somewhere other than the
+      left-hand side of an assignment expression it is a <dfn>variable
+      reference</dfn> which evaluates to the variable’s value. </p>
+
+      <p>The specifics of variable references are explain in the following
+      sections, along with complementary treatment of variable scope,
+      initialization, and assignment.</p>
 
       <section>
         <h1 id=constants>Constants</h1>
@@ -95,17 +119,20 @@
         <p>A constant is a variable whose value, once assigned, is not expected
         to change. Its constancy is not enforced by Ruby, so repeated
         assignments are legal, but cause a warning to be issued.</p>
-        
+        <!-- TODO: Note that warning is implementation defined behaviour -->
+
+        <!-- Explain the dual role of constants: constants qua constants and
+             as the names of classes/modules -->
         <section>
           <h1 id=constants-name>Name</h1>
           
-          <p>A constant is, by definition, named with an identifier whose first
-          character is an uppercase ASCII character
-          (<code>A</code>—<code>Z</code>). It is a strong convention that
-          constants qua constants are named entirely in US-ASCII uppercase
-          letters with low lines to separate words, whereas constants used to
-          name classes or modules are named in camel-case: title case with
-          whitespace removed. 
+          <p>A constant is, by definition, named with an <a
+          href=/programs#identifiers>identifier </a>whose first character is
+          an uppercase US-ASCII character (<code>A</code>—<code>Z</code>). It is
+          a strong convention that constants qua constants are named entirely
+          in US-ASCII uppercase letters with low lines to separate words,
+          whereas constants used to name classes or modules are named in
+          camel-case: title case with whitespace removed. 
         </section>
 
         <section>
@@ -145,7 +172,7 @@
           unqualified or prefixed with the scope operator. However, it is
           illegal to define a constant in a method body as every invocation of
           the method would cause re-assignment, defeating the purpose of a
-          constant.
+          constant. <!-- Cite FLAN08 -->
 
           <p>A qualified constant name may be used as an lvalue, allowing
           constants to be defined in the context of a class or module from
@@ -287,10 +314,11 @@
         <section>
           <h1 id=local-variables-name>Name</h1>
           
-          <p>A local variable is named by an identifier whose first character is
-          a lowercase US-ASCII character (<code>a</code>—<code>z</code>) or
-          U+005F LOW LINE (<code>_</code>). Conventionally, the name consists of
-          lowercase words separated by low lines.
+          <p>A local variable is named by an <a
+          href=/programs#identifiers>identifier</a> whose first character is a
+          lowercase US-ASCII character (<code>a</code>—<code>z</code>) or
+          U+005F LOW LINE (<code>_</code>). Conventionally, the name consists
+          of lowercase words separated by low lines.
         </section>
 
         <section>
@@ -794,12 +822,78 @@
     <section>
       <h1 id=operators>Operators</h1>
 
+      <p>An <dfn>operator</dfn> performs an operation on one or more
+      expressions, termed its <dfn>operands</dfn>, combing them into a new
+      value. It is represented by a token which describes the operation. 
+      
+      <p>For example, the compound expression <code>1 + 2</code> comprises the
+      <code>+</code> operator and two integer literals as operands. Its value
+      is the result of summing the operands: the primary expression
+      <code>3</code>.</p>
+      
       <section>
         <h1 id=arity>Arity</h1>
+        
+        <!-- TODO: Link with Methods > Arity -->
+        <p>An operator’s <dfn title="operator arity">arity</dfn> is the number
+        of operands on which it operates. The <code>+</code> operator shown
+        above has an arity of 2. More than two numbers can be summed together,
+        of course, but an expression such as <code>1 + 2 + 3</code> involves
+        the <code>+</code> operator twice: <code>1 + 2</code> then <code>3 +
+        3</code>.</p>
+
+        <p>An operand can be classified by its arity as follows:</p>
+
+        <dl class=inline>
+          <dt><dfn>Unary operator</dfn>
+          <dd>An arity of 1.
+          <dt><dfn>Binary operator</dfn>
+          <dd>An arity of 2.
+          <dt><dfn>Ternary operator</dfn>
+          <dd>An arity of 3.
+        </dl>
+
+        <p>A few operators are both unary and binary. They can either be used
+        with one operand or two. <code>+</code>, again, serves to illustrate:
+        in its unary form it changes the sign of its operand; in its binary
+        form it performs summation. To distinguish between these two cases,
+        the unary forms of <code>+</code> and <code>-</code> are named
+        <code>+@</code> and <code>-@</code>, respectively. (Note: it is merely
+        a coincidence that U+0040 COMMERCIAL AT (<code>@</code>) is used as
+        both a sigil for class and instance variables and in the names of
+        these operators; there is no connection).</p>
       </section>
 
       <section>
         <h1 id=precedence>Precedence</h1>
+
+        <p>A compound expression might itself contain compound expressions,
+        each of which comprises an operator and its operands. For example,
+        <code>1 - 2 * 3</code>. This expression is potentially ambiguous: is
+        the intent to subtract 2 from 1, then multiply the result by 3, or
+        multiply 2 and 3, then subtract the result from 1? In evaluating such
+        an expression Ruby must apply <dfn>precedence rules</dfn> so as to
+        determine the order in which the operators should be performed.  
+        
+        <p><dfn title="operator precedence">Precedence</dfn> is a relative
+        order defined over the operators such that each operator has lower,
+        equal, or higher precedence than another. For a given statement, the
+        higher an operator’s precedence the earlier in it is evaluated. <!--
+        FIXME: This is awkward. I'm trying to clarify that precedence only
+        comes into play at the operator level; it doesn't affect the order of
+        statement evaluation --> <code>*</code> has a higher precedence than
+        <code>-</code>, as in mathematics, so the example above evaluates to
+        ˗5.
+
+        <p>The default order of precedence may be overridden by grouping
+        sub-expressions that should be performed earlier with parentheses,
+        again mirroring the rule in mathematics. When parenthetical groups
+        contain other parenthetical groups, the innermost group is given the
+        highest precedence.</p>
+
+        <figure id=precedence-parentheses.rb>
+          <figcaption>Parentheses can be used to force precedence
+        </figure>
       </section>
 
       <section>

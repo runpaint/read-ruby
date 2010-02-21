@@ -182,14 +182,9 @@
         <h1 id=implicit-receiver>Implicit Receivers</h1>
 
         <p>If a receiver is not specified an <dfn>implicit receiver</dfn> of
-        <code>self</code> is assumed. <code>self</code> always refers to the
-        current object. Outside of any class definition, i.e. at the
-        top-level, the current object is an instance of <code>Object</code>
-        called <code>main</code>. Inside a class definition, but outside of
-        a method definition, the current object is an instance of
-        <code>Class</code>. Within a method definition the current object is
-        the instance of the containing class.</p>
+        <a href=/expressions#self><code>self</code></a> is assumed.</p>
 
+        <!-- Figure included in Expressions#self, too; duplicate here? -->
         <figure id=self-as-the-implicit-receiver.rb>
           <figcaption><code>self</code> is always defined; its value depends
           on the enclosing context.
