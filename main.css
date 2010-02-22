@@ -185,18 +185,10 @@ dl.inline-small > dt:after {
   content: ' '
 }
 
-.hidelinks a {
-  text-decoration: none;
+#operator-table a {
   color: inherit;
 }
 
-.hidelinks a:link, a:visited {
-}
-
-.hidelinks a:hover {
-  background-color: black;
-  color: white;
-}
 /* Comment interface. Pare down? */
 #configUI { position: absolute; z-index: 20; top: 10em; right: 0; width: 11em; padding: 0 0.5em 0 0.5em; font-size: small; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em 0 0 1em; -moz-border-radius: 1em 0 0 1em; }
  #configUI p { margin: 0.75em 0; padding: 0.3em; }

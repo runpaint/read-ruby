@@ -380,6 +380,13 @@
         previously, however, due to the unpopular semantics of class
         variables, class instance variables are may be used instead.</p>
 
+        <!-- The canonical example of class variables is an object maintaing
+        an initialization count. Show how to do this with class instance
+        variables, e.g.
+        self.class.class_eval{ defined?(@count) ? @count += 1 : @count = 1} 
+        Optionally with scalfholding to make accessing class variables from
+        instance methods more palpable
+        -->
         <section>
           <h1 id=class-instance-variables>Class Instance Variables</h1>
 

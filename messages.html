@@ -669,7 +669,7 @@
             if unsuccessful.
           </figure>
 
-          <dt><code>:&lt;=&gt;</code>
+          <dt id=spaceship><code>:&lt;=&gt;</code>
           <dd><a href=#comparison>Compares</a> the operands.
 
           <figure id=spaceship-selector.rb> 
@@ -677,7 +677,7 @@
             argument.
           </figure>
           
-          <dt><code>:&lt;</code>
+          <dt id=less-than><code>:&lt;</code>
           <dd>Determines whether the receiver is <i>less than</i> the argument.
           Normally implemented in terms of <a
             href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&lt;</code>
@@ -692,7 +692,7 @@
             <code>false</code> otherwise.
           </figure>
 
-          <dt><code>:&gt;</code>
+          <dt id=greater-than><code>:&gt;</code>
           <dd>Determines whether the receiver is <i>greater than</i> the argument.
           Normally implemented in terms of <a
             href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
@@ -705,7 +705,7 @@
             <code>false</code> otherwise.
           </figure>
           
-          <dt><code>:==</code>
+          <dt id=equal-equal><code>:==</code>
           <dd>Determines whether the operands are <a
             href=#equivalence>equivalent</a>.
           
@@ -788,7 +788,7 @@
               argument to the slice of the receiver described by the first.
             </figure>
           </dd>
-          <dt><code>:=~</code>         
+          <dt id=equal-tilde><code>:=~</code>         
           <dd>Matches the receiver with the argument. One of the operands is
           typically a <code>Regexp</code>. This operator is commutative, i.e.
           <code>(<var>a</var> =~ <var>b</var>) == (<var>b</var> =~
@@ -801,7 +801,7 @@
             receiver with its argument.
           </figure>
 
-          <dt><code>:&lt;&lt;</code> <!-- Mutates; behaves differently with
+          <dt id=left-shift><code>:&lt;&lt;</code> <!-- Mutates; behaves differently with
           numerics -->
           <dd>When the receiver is an <code>Integer</code> it is shifted left
           the amount of places specified by the argument. Otherwise, the sole
@@ -816,7 +816,7 @@
             appends the argument to the receiver.
           </figure>
           
-          <dt><code>:+</code>
+          <dt id=plus><code>:+</code>
           <dd>
             <p>Sum the receiver with the sole argument, which should be of the
             same class, returning a new object. Whereas <code>:&lt;&lt;</code>
@@ -834,7 +834,7 @@
             </figure>
 
           </dd>  
-          <dt><code>:*</code>
+          <dt id=asterisk><code>:*</code>
           <dd>Multiples the receiver by a sole numeric argument, returning the
           result. For example: <code>Fixnum#*</code>, <code>String#*</code>, and
           <code>Array#*</code>.

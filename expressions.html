@@ -969,7 +969,8 @@
         </table>
       </section>
 
-      <table class='border hidelinks'>
+      <!-- Unite with Methods > Operator Methods Table -->
+      <table id=operator-table class=border>
         <caption>
           <p>A table of Ruby operators shown in order of descending
           precedence, where a decrease is shown by a change in background
@@ -1000,7 +1001,7 @@
             <th colspan=3>Unary <span title="Right associative">&rarr;</span>
           <tr class=odd>
             <td><code>!</code>
-            <td>Boolean NOT
+            <td><a href=/flow#not-operator>Boolean NOT</a>
             <td>✔
           <tr class=odd> 
             <td><code>~</code>
@@ -1028,11 +1029,11 @@
             <th colspan=3>Binary <span title="Left associative">&larr;</span>
           <tr>
             <td><code>*</code>
-            <td>Multiplication
+            <td><a href=/messages#asterisk>Multiplication</a>
             <td>✔
           <tr>
             <td><code>/</code>
-            <td>Division
+            <td>Division <!--  Footnote String#/ idea -->
             <td>✔
           <tr>
           
@@ -1042,7 +1043,7 @@
 
           <tr class=odd>
             <td><code>+</code>
-            <td>Addition/concatenation
+            <td><a href=/messages#plus>Addition/concatenation</a>
             <td>✔
           <tr class=odd>
             <td><code>-</code>
@@ -1051,7 +1052,7 @@
 
           <tr>
             <td><code>&lt;&lt;</code>
-            <td>Left shift/append
+            <td><a href=/messages#left-shift>Left shift/append</a>
             <td>✔
           <tr>
             <td><code>&gt;&gt;</code>
@@ -1074,7 +1075,7 @@
           
           <tr class=odd>
             <td><code>&lt;</code>
-            <td>Less than
+            <td><a href=/messages#less-than>Less than</a>
             <td>✔
           <tr class=odd>
             <td><code>&lt;=</code>
@@ -1086,15 +1087,16 @@
             <td>✔
           <tr class=odd>
             <td><code>&gt;</code>
-            <td>Greater than
+            <td><a href=/messages#greater-than>Greater than</a>
             <td>✔
           <tr>
             <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
           <tr>
             <td><code>==</code>
-            <td>Equality
+            <td><a href=/messages#equal-equal>Equality</a>
             <td>✔
           <tr>
+            <!-- Link with material in Flow -->
             <td><code>===</code>
             <td>Case equality
             <td>✔
@@ -1104,7 +1106,7 @@
             <td>✔
           <tr>
             <td><code>=~</code>
-            <td>Pattern matching
+            <td><a href=/messages#equal-tilde>Pattern matching</a>
             <td>✔
           <tr>
             <td><code>!~</code>
@@ -1112,48 +1114,49 @@
             <td>✔
           <tr>
             <td><code>&lt;=&gt;</code>
-            <td>Comparison (<i>spaceship</i>)
+            <td><a href=/messages#spaceship>Comparison</a> (<i>spaceship</i>)
             <td>✔
 
           <tr class=odd>
             <th colspan=3>Binary <span title="Left associative">&larr;</span>
           <tr class=odd>
             <td><code>&amp;&amp;</code>
-            <td>Boolean AND
+            <td><a href=/flow#and-operator>Boolean AND</a>
             <td>✖
 
           <tr>
             <td><code>||</code>
-            <td>Boolean OR
+            <td><a href=/flow#or-operator>Boolean OR</a>
             <td>✖
 
           <tr class=odd>
             <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
           <tr class=odd>
             <td><code>..</code>
-            <td>Inclusive range
+            <td><a href=/objects#ranges>Inclusive range</a>
             <td>✖
           <tr class=odd>
             <td><code>...</code>
-            <td>Exclusive range
+            <td><a href=/objects#ranges>Exclusive range</a>
             <td>✖
           
           <tr>
             <th colspan=3>Ternary <span title="Right associative">&rarr;</span>
           <tr>
             <td><code>?</code>…<code>:</code>
-            <td>Conditional
+            <td><a href=/flow#ternary-operator>Conditional</a>
             <td>✖
 
           <tr class=odd>
             <th colspan=3>Binary <span title="Right associative">&rarr;</span>
           <tr class=odd>
             <td><code>=</code>
-            <td>Assignment
+            <td><a href=#assignment>Assignment</a>
             <td>✖
           <tr class=odd>
             <td><code>**=</code>
-            <td rowspan=13 style=vertical-align:top>Abbreviated assignment
+            <td rowspan=13 style=vertical-align:top><a
+            href=#abbreviated-assignment>Abbreviated assignment</a>
             <td rowspan=13>✖
           <tr class=odd>
             <td><code>*=</code>
@@ -1184,25 +1187,25 @@
             <th colspan=3>Unary <span title=Nonassociative>&harr;</span>
           <tr>
             <td><code>defined?</code>
-            <td>Test variable definition and type
+            <td><a href=#defined>Test variable definition and type</a>
             <td>✖
 
           <tr class=odd>
             <th colspan=3>Unary <span title="Right associative">&rarr;</span>
           <tr class=odd>
             <td><code>not</code>
-            <td>Boolean NOT
+            <td><a href=/flow#not-operator>Boolean NOT</a>
             <td>✖
 
           <tr>
             <th colspan=3>Binary <span title="Left associative">&larr;</span>
           <tr>
             <td><code>and</code>
-            <td>Boolean AND
+            <td><a href=/flow#and-operator>Boolean AND</a>
             <td>✖
           <tr>
             <td><code>or</code>
-            <td>Boolean OR
+            <td><a href=/flow#or-operator>Boolean OR</a>
             <td>✖
         </tbody>
       </table>
