@@ -69,7 +69,7 @@
         <h1 id=self><code>self</code></h1>
 
         <p><code>self</code> always evaluates to the current object. Outside
-        of any class definition, i.e. at the top-level, the current object is
+        of any class definition, i.e. at the top‐level, the current object is
         an instance of <code>Object</code> called <code>main</code>. Inside a
         class definition, but outside of a method definition, the current
         object is an instance of <code>Class</code>. Within a method
@@ -106,7 +106,7 @@
       <!-- created via assignment -->
 
       <p>When the name of a variable appears somewhere other than the
-      left-hand side of an assignment expression it is a <dfn>variable
+      left‐hand side of an assignment expression it is a <dfn>variable
       reference</dfn> which evaluates to the variable’s value. </p>
 
       <p>The specifics of variable references are explain in the following
@@ -128,11 +128,11 @@
           
           <p>A constant is, by definition, named with an <a
           href=/programs#identifiers>identifier </a>whose first character is
-          an uppercase US-ASCII character (<code>A</code>—<code>Z</code>). It is
+          an uppercase US‐ASCII character (<code>A</code>–<code>Z</code>). It is
           a strong convention that constants qua constants are named entirely
-          in US-ASCII uppercase letters with low lines to separate words,
+          in US‐ASCII uppercase letters with low lines to separate words,
           whereas constants used to name classes or modules are named in
-          camel-case: title case with whitespace removed. 
+          camel‐case: title case with whitespace removed. 
         </section>
 
         <section>
@@ -171,7 +171,7 @@
           <p>A constant defined in another context may be referred to
           unqualified or prefixed with the scope operator. However, it is
           illegal to define a constant in a method body as every invocation of
-          the method would cause re-assignment, defeating the purpose of a
+          the method would cause re‐assignment, defeating the purpose of a
           constant. <!-- Cite FLAN08 -->
 
           <p>A qualified constant name may be used as an lvalue, allowing
@@ -295,7 +295,7 @@
               <tr>
                 <td><code>TOPLEVEL_BINDING</code>
                 <td><code>Binding</code>
-                <td>Represents the top-level execution environment, i.e. outside
+                <td>Represents the top‐level execution environment, i.e. outside
                 of any class, module, method, block, or other construct.
               <tr>
                 <td><code>TRUE</code>
@@ -316,7 +316,7 @@
           
           <p>A local variable is named by an <a
           href=/programs#identifiers>identifier</a> whose first character is a
-          lowercase US-ASCII character (<code>a</code>—<code>z</code>) or
+          lowercase US‐ASCII character (<code>a</code>–<code>z</code>) or
           U+005F LOW LINE (<code>_</code>). Conventionally, the name consists
           of lowercase words separated by low lines.
         </section>
@@ -344,7 +344,7 @@
             local variables</a> are appropriate.</p>
 
           <figure id=non-block-local-variables-example.rb>
-            <figcaption>Non-block-local variables defined prior to the block
+            <figcaption>Non‐block‐local variables defined prior to the block
             retain the value they were assigned inside the block even after
             leaving it
           </figure>
@@ -353,12 +353,12 @@
         <section>
           <h1 id=local-variables-initialization>Initialization</h1>
           
-          <p>A variable is initialized if it appears on the left-hand side
+          <p>A variable is initialized if it appears on the left‐hand side
           (before the U+003D EQUALS SIGN (<code>=</code>)) of an assignment
           expression. However, this assignment expression need not actually
           execute: its mere presence is enough to create the variable. For
           example, if an assignment expression involving a local variable on the
-          left-hand side appears within a branch that does not execute, the
+          left‐hand side appears within a branch that does not execute, the
           variable comes into existence.  Variables of this sort have the value
           <code>nil</code>.</p>
 
@@ -463,11 +463,11 @@
             <figcaption>Class variables are inherited by child classes
           </figure>
 
-          <p>A class variable defined at the top-level of a program is inherited
+          <p>A class variable defined at the top‐level of a program is inherited
           by all classes. It behaves like a global variable.</p>
 
           <figure id=class-variables-inherited-top.rb>
-            <figcaption>Class variables are inherited from the top-level
+            <figcaption>Class variables are inherited from the top‐level
           </figure>
 
           <p>Ruby issues a warning—e.g., <samp>class variable @@cvar of Top
@@ -530,7 +530,7 @@
 
           <p>A global variable should not be defined with the same name as a
           predefined global variable, and indeed cannot if that variable is
-          read-only.
+          read‐only.
 
           <!-- TODO: summarise naming conventions of pre-defined globals -->
         </section>
@@ -579,18 +579,18 @@
                 <td><code>$*</code>
                 <td><code>$ARGV</code>
                 <td><code>Array</code>
-                <td>Read-only alias of <code>ARGV</code>
+                <td>Read‐only alias of <code>ARGV</code>
               <tr>
                 <td><code>$$</code>
                 <td><code>$PID</code> / <code>$PROCESS_ID</code>
                 <td><code>Fixnum</code>
-                <td>ID of the current Ruby process. Read-only.
+                <td>ID of the current Ruby process. Read‐only.
               <tr class=odd>
                 <td><code>$?</code>
                 <td><code>$CHILD_STATUS</code>
                 <td><code>nil</code> or <code>Process::Status</code>
-                <td>Exit status of the last terminated process. Read-only,
-                  thread-local.
+                <td>Exit status of the last terminated process. Read‐only,
+                  thread‐local.
               <tr>
                 <td><code>$-d</code>
                 <td rowspan=2>&nbsp;
@@ -605,7 +605,7 @@
                 <td rowspan=2><code>Array</code> of <code>String</code>s
                 <td rowspan=2>Absolute filenames of files loaded with
                               <code>Kernel.load</code> or 
-                              <code>Kernel.require</code>. Read-only.
+                              <code>Kernel.require</code>. Read‐only.
               <tr class=odd>
                 <td><code>$LOADED_FEATURES</code>
               <tr>
@@ -614,7 +614,7 @@
                 <td rowspan=3><code>Array</code> of <code>String</code>s
                 <td rowspan=3>Absolute paths to directories searched by 
                               <code>Kernel.load</code> or 
-                              <code>Kernel.require</code>. Read-only, but the
+                              <code>Kernel.require</code>. Read‐only, but the
                               contents of the <code>Array</code> can be 
                               modified
               <tr>
@@ -636,7 +636,7 @@
                 <td><code>$SAFE</code>
                 <td>&nbsp;</code>
                 <td><code>Fixnum</code>s
-                <td>Current safe level. Thread-local.
+                <td>Current safe level. Thread‐local.
               <tr>
                 <td><code>$-w</code>
                 <td rowspan=3>&nbsp;</code>
@@ -659,25 +659,25 @@
                 <td><code>Exception</code>
                 <td>Inside a <code>rescue</code> clause or after the
                 <code>rescue</code> modifier holds the current exception. 
-                Thread-local.
+                Thread‐local.
               <tr>
                 <td><code>$@</code>
                 <td><code>$ERROR_POSITION</code>
                 <td><code>Array</code> of <code>String</code>s
                 <td>Inside a <code>rescue</code> clause or after the
                 <code>rescue</code> modifier holds the stack trace of the
-                current exception.  Thread-local.
+                current exception. Thread‐local.
               <tr class=odd>
                 <td><code>$_</code>
                 <td><code>$LAST_READ_LINE</code>
                 <td><code>String</code>
                 <td>Last string read by <code>Kernel.gets</code> or
-                <code>Kernel.readline</code>. Thread-local, method-local.
+                <code>Kernel.readline</code>. Thread‐local, method‐local.
               <tr>
                 <td><code>$&lt;</code>
                 <td><code>$DEFAULT_INPUT</code>
                 <td><code>ARGF</code>
-                <td>Read-only alias for <code>ARGF</code>.
+                <td>Read‐only alias for <code>ARGF</code>.
               <tr class=odd>
                 <td><code>$stdin</code>
                 <td>&nbsp;
@@ -701,7 +701,7 @@
                 <td><code>String</code>
                 <td>Filename of the file currently being read from
                 <code>ARGF</code>; <code>-</code> if <code>ARGF</code> is
-                empty or reading from <code>STDIN</code>. Read-only.
+                empty or reading from <code>STDIN</code>. Read‐only.
               <tr class=odd>
                 <td><code>$.</code>
                 <td><code>$NR</code> / <code>$INPUT_LINE_NUMBER</code>
@@ -722,7 +722,7 @@
                 <td><code>$ORS</code> / <code>$OUTPUT_RECORD_SEPARATOR</code>
                 <td><code>String</code> or <code>nil</code>
                 <td>Appended to <code>Kernel.print</code> output if
-                non-<code>nil</code>. Default value is <code>nil</code>, or
+                non‐<code>nil</code>. Default value is <code>nil</code>, or
                 <code>$/</code> if the <code>-l</code> switch is given.
               <tr>
                 <td><code>$,</code>
@@ -751,38 +751,38 @@
                 <td><code>$~</code>
                 <td><code>$MATCH_INFO</code>
                 <td><code>MatchData</code> or <code>nil</code>
-                <td><code>MatchData</code> from the last regexp match. Thread-
-                and method-local.
+                <td><code>MatchData</code> from the last regexp match. Thread‐
+                and method‐local.
               <tr>
                 <td><code>$&amp;</code>
                 <td><code>$MATCH</code>
                 <td><code>String</code>
-                <td>Text matched by last regexp match. Read-only. Thread- and
-                method-local.
+                <td>Text matched by last regexp match. Read‐only. Thread‐ and
+                method‐local.
               <tr class=odd>
                 <td><code>$`</code>
                 <td><code>$PREMATCH</code>
                 <td><code>String</code>
                 <td>Text preceding the match of the last regexp match.
-                Read-only. Thread- and method-local.
+                Read‐only. Thread‐ and method‐local.
               <tr>
                 <td><code>$'</code>
                 <td><code>$POSTMATCH</code>
                 <td><code>String</code>
                 <td>Text following the match of the last regexp match.
-                Read-only. Thread- and method-local.
+                Read‐only. Thread‐ and method‐local.
               <tr class=odd>
                 <td><code>$+</code>
                 <td><code>$LAST_PAREN_MATCH</code>
                 <td><code>String</code>
                 <td>Text enclosed in the last successfully matched group of
-                the last regexp match.  Read-only. Thread- and method-local.
+                the last regexp match.  Read‐only. Thread‐ and method‐local.
               <tr>
                 <td><code>$-a</code>
                 <td>&nbsp;
                 <td><code>true</code> or <code>false</code>
                 <td><code>true</code> if the <code>-a</code> switch was given;
-                <code>false</code> otherwise. Read-only.
+                <code>false</code> otherwise. Read‐only.
               <tr class=odd>
                 <td><code>$-i</code>
                 <td>&nbsp;
@@ -794,13 +794,13 @@
                 <td>&nbsp;
                 <td><code>true</code> or <code>false</code>
                 <td><code>true</code> if the <code>-l</code> switch was given;
-                <code>false</code> otherwise. Read-only.
+                <code>false</code> otherwise. Read‐only.
               <tr class=odd>
                 <td><code>$-p</code>
                 <td>&nbsp;
                 <td><code>true</code> or <code>false</code>
                 <td><code>true</code> if the <code>-p</code> switch was given;
-                <code>false</code> otherwise. Read-only.
+                <code>false</code> otherwise. Read‐only.
               <tr>
                 <td><code>$-W</code>
                 <td>&nbsp;
@@ -808,7 +808,7 @@
                 <td>Current verbosity level: <code>0</code> if the
                 <code>-W0</code> switch was given; <code>2</code> if the
                 <code>-w</code>, <code>-v</code>, or <code>--verbose</code>
-                switches were given; <code>1</code> otherwise. Read-only.
+                switches were given; <code>1</code> otherwise. Read‐only.
             </tbody>
           </table>
         </section>
@@ -884,10 +884,11 @@
         comes into play at the operator level; it doesn't affect the order of
         statement evaluation --> <code>*</code> has a higher precedence than
         <code>-</code>, as in mathematics, so the example above evaluates to
-        ˗5.
+        −5.
+        
 
         <p>The default order of precedence may be overridden by grouping
-        sub-expressions that should be performed earlier with parentheses,
+        sub‐expressions that should be performed earlier with parentheses,
         again mirroring the rule in mathematics. When parenthetical groups
         contain other parenthetical groups, the innermost is given the
         highest precedence.</p>
@@ -904,9 +905,9 @@
         arity, the operator’s <dfn>associativity</dfn> determines their order
         of evaluation.
 
-        <p><dfn>Left-associative</dfn> operators are evaluated from left to
-        right; <dfn>right-associative</dfn> operators are evaluated in the
-        opposite direction. <dfn>Non-associative</dfn> operators are
+        <p><dfn>Left‐associative</dfn> operators are evaluated from left to
+        right; <dfn>right‐associative</dfn> operators are evaluated in the
+        opposite direction. <dfn>Non‐associative</dfn> operators are
         ambiguous: parentheses must be employed to specify their order of
         evaluation.</p>
 
@@ -1226,7 +1227,7 @@
         <h1 id=lvalues>Lvalues</h1>
 
         <p>An <dfn>lvalue</dfn> is a target of an assignment: an expression
-        that can appear on the <em>l</em>eft-hand side of an assignment
+        that can appear on the <em>l</em>eft‐hand side of an assignment
         expression.</p>
 
         <section>
@@ -1286,7 +1287,7 @@
         <h1 id=rvalues>Rvalues</h1>
 
         <p>An <dfn>rvalue</dfn> is a value being assigned: appearing on the
-        <em>r</em>ight-hand side of an assignment expression. Any expression is
+        <em>r</em>ight‐hand side of an assignment expression. Any expression is
         a valid rvalue. The value of the expression that assigned to the
         corresponding lvalue.
       </section>
@@ -1329,7 +1330,7 @@
         assigned to <var>lvalue</var>.
 
         <p>The value returned by an abbreviated assignment expression is that of
-        its expanded right-hand side.
+        its expanded right‐hand side.
 
         <table class=border>
           <caption>The abbreviated assignment operators
@@ -1426,7 +1427,7 @@
           <h1 id=parallel-assignment-equal>Equal Number of Lvalues to Rvalues</h1>
           
           <p>When there are as many lvalues as there are rvalues, each lvalue is
-          assigned the rvalue in the corresponding position on the right-hand
+          assigned the rvalue in the corresponding position on the right‐hand
           side of the expression. That is, the <var>n</var><sup>th</sup> lvalue
           is assigned the <var>n</var><sup>th</sup></var> rvalue.</p>
           
@@ -1486,7 +1487,7 @@
             <p>When given an object that does not respond to <code>:to_a</code>,
             <code>Kernel.Array()</code> returns an <code>Array</code> with that
             object as its sole element. Therefore, splatting such an object causes
-            it to expand to itself, effectively a no-op.
+            it to expand to itself, effectively a no‐op.
             
             <p>However, for objects that do respond to <code>:to_a</code> with an
             <code>Array</code>, such as <code>Array</code>, <code>Hash</code>,
@@ -1619,12 +1620,12 @@
           <p>Recall that if multiple lvalues are assigned a single rvalue that
           responds to <code>:to_ary</code>, the rvalue is assigned to the first
           lvalue, and the remaining lvalues are assigned <code>nil</code>.
-          Therefore, sub-assignment is most useful when the corresponding rvalue
-          is array-like, because it distributes the elements of potentially
-          nested arrays on the right-hand side among lvalues.</p>
+          Therefore, sub‐assignment is most useful when the corresponding rvalue
+          is array‐like, because it distributes the elements of potentially
+          nested arrays on the right‐hand side among lvalues.</p>
 
           <figure id=sub-assignment.rb>
-            <figcaption>Using sub-assignment to distribute nested rvalues
+            <figcaption>Using sub‐assignment to distribute nested rvalues
           </figure>
         </section>
 

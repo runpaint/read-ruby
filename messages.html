@@ -560,9 +560,13 @@
       These are, however, merely suggestions—explanations of traditions; not
       a list of requirements. Ignore as you see fit.</p>
 
+      <!-- TODO: Look in stdlib, too, e.g. Set! -->
       <section>
-        <!--<h1>Common Selectors</h1>-->
+        <!--<h1>Common Selectors</h1>--> <!-- Needs a title. Can't be
+        _common_. _core_? . Each selector should be a <section> with a h1-->
 
+        <!-- Ruby uses ** as a glob; is there a use for :** in that area? Muse
+             on its use for attaching comments to symbols, i.e. Symbol#** -->
         <dl>
           <dt><code>:call</code>
           <dd>
@@ -816,6 +820,7 @@
             appends the argument to the receiver.
           </figure>
           
+          <!-- &gt;&gt; - Process::Status#&gt;&gt; -->
           <dt id=plus><code>:+</code>
           <dd>
             <p>Sum the receiver with the sole argument, which should be of the
