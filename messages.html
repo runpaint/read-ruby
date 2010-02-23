@@ -47,9 +47,10 @@
       class=ref>Budd</a>, p. 16).</p>
       
       <!-- Diagram a message send -->
-      <aside class=footnote>
-        <p><span class=number>†</span><a href=/references#refLIU99 class=ref>Liu</a> (p. 2) suggests
-        that it can be helpful to envisage messages as telegrams:</p>
+      <aside class=sidenote>
+        <p><span class=number>†</span><a href=/references#refLIU99
+        class=ref>Liu</a> (p. 2) suggests that it can be helpful to envisage
+        messages as telegrams:</p>
         
         <blockquote cite=/references#refLIU99>
           <p>“Message” is too abstract a word. A better word is
@@ -143,26 +144,26 @@
       <!-- TODO: Talk here about "significant names"? Decide what material moves
       from the Method > Names section to here -->
 
-      <p>The message <dfn title="message selector">selector</dfn> is the
-      name of the operation the receiver should perform in response to
+      <p>The message <dfn title="message selector">selector</dfn><sup>†</sup>
+      is the name of the operation the receiver should perform in response to
       message.</p>
 
-      <aside class=note>
-        Subsequently we will refer to a specific selector with the <a
-        href=#symbols><code>Symbol</code> literal syntax</a>, i.e.
-        <code>:<var>selector</var></code>: the selector name prefixed with a
-        colon. This is consistent with Ruby’s general use of
-        <code>Symbol</code>s, and distinguishes a selector from a bare
-        identifier.
+      <aside class=sidenote>
+        <p><span class=sidemark>†</span>Subsequently we will refer to a
+        specific selector with the <a href=#symbols><code>Symbol</code>
+        literal syntax</a>, i.e.  <code>:<var>selector</var></code>: the
+        selector name prefixed with a colon. This is consistent with Ruby’s
+        general use of <code>Symbol</code>s, and distinguishes a selector from
+        a bare identifier.
       </aside>
 
       <p>The selector is assumed to be the name of a method
-      defined<sup>†</sup> upon the receiver or one of its superclasses. If a
+      defined<sup>‡</sup> upon the receiver or one of its superclasses. If a
       corresponding method is not found in the receiver, the <a
       href=#method-missing>Method Missing</a> protocol is initiated.</p>
 
-      <aside class=footnote>
-        <p><span class=number>†</span> A message selector may consist of any
+      <aside class=sidenote>
+        <p><span class=sidemark>‡</span> A message selector may consist of any
         <code>Symbol</code>, even those which are illegal when defining a
         method with the <code>def</code> keyword. Methods with corresponding
         names can be defined with <code>Object#define_method</code>, or such
@@ -208,9 +209,8 @@
         <p>By contrast, the implicit receiver must be used when the message is
         private.</p> <!-- Are _messages_ private? -->
         
-        <figure id=implicit-receiver-for-private-method.rb>
-          <figcaption>Private messages must be sent with an implicit
-          receiver.
+        <figure class=centre id=implicit-receiver-for-private-method.rb>
+          <figcaption>Private messages must be sent with an implicit receiver.
         </figure>
 
          <!-- TODO: Explain how 'puts "glark"' works in this context? -->
@@ -249,8 +249,8 @@
       to which <var>s</var> should be sent causes the <a
       href=#implicit-receiver>implicit receiver</a> to be assumed.</p>
 
-      <aside class=footnote>
-        <p><span class=number>†</span>The syntax explained above is
+      <aside class=sidenote>
+        <p><span class=sidemark>†</span>The syntax explained above is
         potentially ambiguous. If Ruby sees a bare identifier, e.g.
         <code>glark</code>, is that a reference to a local variable or an
         attempt to send a message to <code>self</code>?  If Ruby has
@@ -259,7 +259,7 @@
         message.
       </aside>
 
-      <figure id=bare-selector-syntax.rb>
+      <figure class=sidenote id=bare-selector-syntax.rb>
         <figcaption>A bare identifier is interpreted as a message selector
         unless it has previously been used as a local variable name in the
         same scope.
@@ -271,12 +271,12 @@
       receiver</a> separated from the <var>selector</var> with a full stop
       (U+002E: <code>.</code>).</p>
 
-      <figure id=receiver-dot-selector-syntax.rb>
+      <figure class=sidenote id=receiver-dot-selector-syntax.rb>
         <figcaption>A message can be explicitly sent to an object by
         concatenating an explicit receiver, a full stop, and a selector.
       </figure>
 
-      <aside class=footnote>
+      <aside class=sidenote>
         <p><span class=number>‡</span>An alternative to the
         <code><var>receiver</var>.<var>selector</var></code> syntax is
         <code><var>receiver</var>::<var>selector</var></code>, where the
@@ -294,12 +294,12 @@
         <h1 id=message-arguments>Arguments</h1>
         
         <p>A message may be accompanied by one or more <dfn title="message
-        arguments">arguments</var>: variables to be used in the resulting
+        arguments">arguments</dfn>: variables to be used in the resulting
         computations. Arguments are supplied as a parenthesized list of
         variables separated by commas:
         <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.</p>
         
-        <figure id=receiver-selector-arguments-syntax.rb>
+        <figure class=sidenote id=receiver-selector-arguments-syntax.rb>
           <figcaption>The selector may be followed by a parenthesised list
           of zero or more arguments.
         </figure>
@@ -319,7 +319,7 @@
           context is termed a <dfn>splat operator</dfn>, thus expanding the
           <code>Enumerable</code> into its individual elements.</p>
 
-          <figure id=splat-arguments.rb>
+          <figure class=centre id=splat-arguments.rb>
             <figcaption>Prefixing an <code>Enumerable</code> argument with
             an asterisk explodes it into its constituent elements.
           </figure>
@@ -340,7 +340,7 @@
             former for short blocks that fit on a single line, and the
             latter for multi-line blocks.</p>
 
-            <figure id=message-expression-with-block.rb>
+            <figure class=sidenote id=message-expression-with-block.rb>
               <figcaption>A message expression followed by a block literal
               causes the block to be passed to the method.
             </figure>
@@ -354,7 +354,7 @@
               ampersand (U+0026: <code>&amp;</code>). If multiple arguments
               are given the <code>Proc</code> must be specified last.</p>
 
-              <figure id=ampersand-prefix-with-argument.rb>
+              <figure class=centre style=width:40em id=ampersand-prefix-with-argument.rb>
                 <figcaption>Prefix the final argument with an ampersand to
                 convert it to a block literal.
               </figure>
@@ -387,7 +387,7 @@
             variable when the message has an implicit receiver and both
             variable and selector share the same name.</p>
 
-            <figure id=parentheses-disambiguate-bare-identifiers.rb>
+            <figure class=sidenote id=parentheses-disambiguate-bare-identifiers.rb>
               <figcaption>Parentheses are required to disambiguate an
               implicitly-received message’s selector from a local variable
               with the same name.
@@ -397,7 +397,8 @@
             involved. If so, there must be whitespace between the selector
             name and the first argument.</p>
 
-            <figure id=parentheses-omitted-in-message-expressions.rb>              
+            <figure class=sidenote
+            id=parentheses-omitted-in-message-expressions.rb>              
               <figcaption>Parentheses can often be omitted from message
               expressions involving arguments.
             </figure>
@@ -414,7 +415,8 @@
             Therefore, it is recommended to employ parentheses in such cases, even if
             unnecessary, as an aid to legibility.</p>
 
-            <figure id=message-expressions-omit-parentheses-syntaxerror.rb>
+            <figure class=sidenote
+            id=message-expressions-omit-parentheses-syntaxerror.rb>
               <figcaption>It is illegal to omit parentheses in nested
               message expressions when doing so introduces ambiguity.
             </figure>
@@ -451,7 +453,7 @@
         arbitrarily <dfn title="message chaining">chained</dfn> in this
         fashion.</p>
 
-        <figure id=message-chaining.rb>
+        <figure class=sidenote id=message-chaining.rb>
           <figcaption>The receiver of a message may itself be a message
           expression, allowing messages to be chained.
         </figure>
@@ -469,7 +471,7 @@
         <code>nil</code> if it does not exist, make awkward links in chains
         because of their inconsistency.</p>
 
-        <figure id=message-chaining-inconsistent-return-value.rb>
+        <figure class=sidenote id=message-chaining-inconsistent-return-value.rb>
           <figcaption>Messages cannot be usefully chained if they have
           inconsistent return values.
         </figure>
@@ -480,7 +482,7 @@
         return <code>self</code> so as to receive any message understood by
         their receiver. </p>
 
-        <figure id=message-chaining-return-self.rb>
+        <figure class=sidenote id=message-chaining-return-self.rb>
           <figcaption>Message chaining relies on each link consistently
           returning an object of the same type.
         </figure>
@@ -498,7 +500,7 @@
         runtime, as opposed to the syntax described previously which
         requires the selector to be a literal, embedded in the source.</p>
 
-        <figure id=object-send.rb>
+        <figure class=centre id=object-send.rb>
           <figcaption><code>Object#send</code> sends an object a message
           whose name can be determined at runtime.
         </figure>
@@ -531,15 +533,15 @@
       attribute value might have been computed dynamically, for example. 
 
       <p>A message with an argument whose selector comprises an attribute
-      accessor’s name suffixed with an equals sign (<code>=</code>), is
-      called an <dfn>attribute setter</dfn>. It sets the attribute to the
-      value supplied. A message with a selector
-      <code><var>selector</var>=</code> can be used as an lvalue<sup>†</sup>, i.e.
-      <code><var>receiver</var>.<var>selector</var> =
-      <var>value</var></code> is equivalent to
+      accessor’s name suffixed with an equals sign (<code>=</code>), is called
+      an <dfn>attribute setter</dfn>. It sets the attribute to the value
+      supplied. A message with a selector <code><var>selector</var>=</code>
+      can be used as an lvalue<sup>†</sup>, i.e.
+      <code><var>receiver</var>.<var>selector</var> = <var>value</var></code>
+      is equivalent to
       <code><var>receiver</var>.<var>selector</var>=(<var>value</var>).</code></p>
 
-      <aside id=ambiguous-lvalue-syntax class=footnote>
+      <aside id=ambiguous-lvalue-syntax class=sidenote>
         <p><span class=number>†</span>The syntax <code>name = value</code> is
         therefore ambiguous. Is the intent to assign the value
         <code>value</code> to the local variable <code>name</code> or to send
@@ -563,301 +565,341 @@
       a list of requirements. Ignore as you see fit.</p>
 
       <!-- TODO: Look in stdlib, too, e.g. Set! -->
-      <section>
         <!--<h1>Common Selectors</h1>--> <!-- Needs a title. Can't be
         _common_. _core_? . Each selector should be a <section> with a h1-->
 
         <!-- Ruby uses ** as a glob; is there a use for :** in that area? Muse
              on its use for attaching comments to symbols, i.e. Symbol#** -->
-        <dl>
-          <dt><code>:call</code>
-          <dd>
-          
-            <p>A variable-length argument list is accepted, with which the
-            receiver is in some way invoked. The return value is the result
-            of the invocation. <code>Method</code> and <code>Proc</code>
-            objects both behave in this fashion.
+      <section>
+        <h1 id=call><code>:call</code></h1>
+      
+        <p>A variable-length argument list is accepted, with which the
+        receiver is in some way invoked. The return value is the result
+        of the invocation. <code>Method</code> and <code>Proc</code>
+        objects both behave in this fashion.
 
-            <p>This selector is notable because it instruments the following
-            syntax:
-            <code><var>receiver</var>.call(<var>arg</var><sub>0</sub>…<var>arg</var><sub>n</sub>)</code>
-            is equivalent to
-            <code><var>receiver</var>.(<var>arg</var><sub>0</sub>…<var>arg</var><sub>n</sub>)</code>.
-            That is, the selector’s name can be omitted from the message
-            expression.</p>
-            
-            <figure id=call-selector.rb>
-              <figcaption>Omitting the selector name in a message expression
-              causes <code>:call</code> to be assumed.
-            </figure>
+        <p>This selector is notable because it instruments the following
+        syntax:
+        <code><var>receiver</var>.call(<var>arg</var><sub>0</sub>…<var>arg</var><sub>n</sub>)</code>
+        is equivalent to
+        <code><var>receiver</var>.(<var>arg</var><sub>0</sub>…<var>arg</var><sub>n</sub>)</code>.
+        That is, the selector’s name can be omitted from the message
+        expression.</p>
+        
+        <figure class=centre id=call-selector.rb>
+          <figcaption>Omitting the selector name in a message expression
+          causes <code>:call</code> to be assumed.
+        </figure>
+      </section>
 
-          <dt id=each-selector><code>:each</code> / <code>:each_</code>*
-          <dd>
-          <!-- We're duplicating the description of #each and Enumerable with
-          the _enumerables_ section... -->
-            <p>Classes mixing-in the <a
-            href=/objects/#enumerables><code>Enumerable</code></a> module are
-            expected, by default, to respond to <code>:each</code> by yielding
-            the next element of the sequence. Conventionally, it returns an
-            <code>Enumerator</code> when the block is omitted. 
+      <section>    
+        <!-- We're duplicating the description of #each and Enumerable with
+        the _enumerables_ section... -->
 
-            <figure id=each-selector.rb>
-              <figcaption>The <code>:each</code> selector yields each
-              element of the receiver if given a block; otherwise returns an
-              <code>Enumerator</code>.
-            </figure>
+        <figure id=each_-selector.rb class=sidenote>
+          <figcaption>Selectors named
+          <code>:each_<var>attribute</var></code> enumerate the receiver
+          by <var>attribute</var>.
+        </figure>
 
-            <p>Messages with selectors of the form
-            <code>:each_<var>attribute</var></code> request their receiver
-            enumerates the collection in terms of <var>attribute</var>, that is
-            yielding each successive <var>attribute</var>; as opposed to <code>:each</code>
-            which presumably yields a different sort of attribute. For example,
-            <code>String#each_codepoint</code> interprets the string as a
-            collection of codepoints, yielding each in turn.
-            <code>String#each_char</code>, however, interprets the string as a
-            collection of characters, so will yield a different sequence of
-            objects. An object need only respond to such messages if it already
-            responds to <code>:each</code>, and can sensibly be enumerated in
-            another fashion. It is common to provide an alias for a selector of
-            this form named with the plural of <var>attribute</var>, e.g.
-            <code>String#each_byte</code> is aliased to
-            <code>String#bytes</code>; <code>IO#each_line</code> is aliased to
-            <code>IO#lines</code>. <!-- Enumerable doesn't provide this alias.
-            Bug? -->
+        <h1 id=each><code>:each</code> / <code>:each_</code>*</h1>
 
-            <figure id=each_-selector.rb>
-              <figcaption>Selectors named
-              <code>:each_<var>attribute</var></code> enumerate the receiver
-              by <var>attribute</var>.
-            </figure>
+        <p>Classes mixing-in the <a
+        href=/objects/#enumerables><code>Enumerable</code></a> module are
+        expected, by default, to respond to <code>:each</code> by yielding the
+        next element of the sequence. Conventionally, it returns an
+        <code>Enumerator</code> when the block is omitted.</p>
 
-          </dd>
-          <dt><code>:size</code> / <code>:length</code>
-          <dd><code>:size</code> and <code>:length</code>, which are typically
-          aliases of each other, return an <code>Integer</code> representing the
-          magnitude of the receiver. For example, <code>Array#size</code>
-          returns the number of elements the receiver contains;
-          <code>File#size</code> returns the receiver’s size in bytes.
 
-          <figure id=size-selector.rb>
-            <figcaption>The <code>:size</code> selector returns the
-            receiver’s magnitude as an <code>Integer</code>.
-          </figure>
+        <figure class=centre id=each-selector.rb>
+          <figcaption>The <code>:each</code> selector yields each
+          element of the receiver if given a block; otherwise returns an
+          <code>Enumerator</code>.
+        </figure>
 
-          <dt><code>:</code>*<code>_by</code>
-          <dd>The <code>_by</code> suffix typically implies that the method
-          expects a block, the results of which constrain the computation. For
-          example, <code>Enumerable#group_by</code>,
-          <code>Enumerable#sort_by</code>, and
-          <code>Enumerable#minmax_by</code>.
-          
-          <figure id=_by-selector.rb>
-            <figcaption>Selectors with a <code>_by</code> suffix accept a
-            block which constrains their computation.
-          </figure>
+        <p>Messages with selectors of the form
+        <code>:each_<var>attribute</var></code> request their receiver
+        enumerates the collection in terms of <var>attribute</var>, that is
+        yielding each successive <var>attribute</var>; as opposed to
+        <code>:each</code> which presumably yields a different sort of
+        attribute. For example, <code>String#each_codepoint</code> interprets
+        the string as a collection of codepoints, yielding each in turn.
+        <code>String#each_char</code>, however, interprets the string as a
+        collection of characters, so will yield a different sequence of
+        objects. An object need only respond to such messages if it already
+        responds to <code>:each</code>, and can sensibly be enumerated in
+        another fashion. It is common to provide an alias for a selector of
+        this form named with the plural of <var>attribute</var>, e.g.
+        <code>String#each_byte</code> is aliased to <code>String#bytes</code>;
+        <code>IO#each_line</code> is aliased to <code>IO#lines</code>.</p>
+        <!-- Enumerable doesn't provide this alias.  Bug? -->
+      </section>
 
-          <dt><code>:to_</code>*
-          <dd><a href=#conversion>Converts</a> the receiver into an object of
-          the corresponding core type.
+      <section>
+        <figure id=size-selector.rb class=sidenote>
+          <figcaption>The <code>:size</code> selector returns the
+          receiver’s magnitude as an <code>Integer</code>.
+        </figure>
 
-          <figure id=to_-selector.rb>            
-            <figcaption>Selectors with a <code>to_</code> prefix return the
-            receiver as an object of the given type.
-          </figure>
+        <h1 id=size><code>:size</code> / <code>:length</code></h1>
 
-          <dt><code>:try_convert</code>
-          <dd>Class method which <a href=#try-convert>implicitly converts</a>
-          the argument to the receiver.
+        <p><code>:size</code> and <code>:length</code>, which are typically
+        aliases of each other, return an <code>Integer</code> representing the
+        magnitude of the receiver. For example, <code>Array#size</code>
+        returns the number of elements the receiver contains;
+        <code>File#size</code> returns the receiver’s size in bytes.</p>
+      </section>
 
-          <figure id=try_convert-selector.rb>
-            <figcaption>The <code>:try_convert</code> selector implicitly
-            converts it argument to its receiver, returning <code>nil</code>
-            if unsuccessful.
-          </figure>
+      <section>
+        <figure id=_by-selector.rb class=sidenote>
+          <figcaption>Selectors with a <code>_by</code> suffix accept a block
+          which constrains their computation.
+        </figure>
 
-          <dt id=spaceship><code>:&lt;=&gt;</code>
-          <dd><a href=#comparison>Compares</a> the operands.
+        <h1 id=by><code>:</code>*<code>_by</code></h1>
 
-          <figure id=spaceship-selector.rb> 
-            <figcaption><code>&lt;=&gt;</code> compares its receiver to
-            argument.
-          </figure>
-          
-          <dt id=less-than><code>:&lt;</code>
-          <dd>Determines whether the receiver is <i>less than</i> the argument.
-          Normally implemented in terms of <a
-            href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&lt;</code>
-          creatively uses this selector to test whether the receiver is a
-          <i>kind of</i> the argument because it mirrors the syntax for defining
-          a class with a superclass, i.e. <code>class <var>name</var> &lt;
-            <var>superclass</var>…end</code>.
+        <p>The <code>_by</code> suffix typically implies that the method
+        expects a block, the results of which constrain the computation. For
+        example, <code>Enumerable#group_by</code>,
+        <code>Enumerable#sort_by</code>, and
+        <code>Enumerable#minmax_by</code>.</p>
+      </section>
 
-          <figure id=less-than-selector.rb>
-            <figcaption>The <code>:&lt;</code> selector returns
-            <code>true</code> if the receiver is less than the argument;
-            <code>false</code> otherwise.
-          </figure>
+      <section>
+        <h1 id=to><code>:to_</code>*</h1>
 
-          <dt id=greater-than><code>:&gt;</code>
-          <dd>Determines whether the receiver is <i>greater than</i> the argument.
-          Normally implemented in terms of <a
-            href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
-          provides symmetry to <code>Class#&lt;</code> by testing whether the
-          argument is a <i>kind of</i> the receiver.
+        <p><a href=#conversion>Converts</a> the receiver into an object of the
+        corresponding core type.</p>
 
-          <figure id=greater-than-selector.rb>
-            <figcaption>The <code>:&gt;</code> selector returns
-            <code>true</code> if the receiver is greater than the argument;
-            <code>false</code> otherwise.
-          </figure>
-          
-          <dt id=equal-equal><code>:==</code>
-          <dd>Determines whether the operands are <a
-            href=#equivalence>equivalent</a>.
-          
-          <figure id=equal-equal-selector.rb>
-            <figcaption>The <code>:==</code> selector returns
-            <code>true</code> if its operands are logically equivalent;
-            <code>false</code> otherwise.
-          </figure>
-
-          <dt><code>:[]</code>
-          <dd>
-            <!-- Needs to follow message expression syntax -->
-            <p><dfn title="element reference">Element reference</dfn> syntax:
-            indexes the receiver by the “key” supplied as the argument(s),
-            returning the requested slice or <code>nil</code>/<code>[]</code> if
-            no corresponding data was found. It is a special case of the message
-            expression syntax because it sends a selector named <code>:[]</code>
-            to the receiver, passing in the contents of
-            <code>[</code>…<code>]</code> as arguments, i.e.
-            <code><var>receiver</var>[<var>argument<sub>0</sub></var>,…,<var>argument<sub>n</sub></var>]</code>
-            is equivalent to
-            <code><var>receiver</var>.[](<var>argument<sub>0</sub></var>,…,<var>argument<sub>n</sub></var>)</code>
-
-            <p>The simplest example is <code>Array#[]</code>, which returns the
-            element stored at the given <code>Integer</code> index. Similarly,
-            <code>Hash#[]</code> returns the value corresponding to the given
-            key object. In this role, <code>:[]</code> acts as an interface to a
-            pre-computed lookup table.
-            
-            <p>However, this abstraction conveniently extends to virtual slices,
-            where the values are computed dynamically, shielding the user from
-            these unnecessary details: he need not concern himself with
-            <i>how</i> the data are derived, merely that they satisfy the key.
-            For example, <code>Array#[]</code> also accepts a <code>Range</code>
-            argument, for which it returns a sub-<code>Array</code> of elements
-            whose indexes are members of the <code>Range</code>. This is
-            computationally quite a different operation to the case with
-            <code>Integer</code> arguments, yet the API makes no distinction. A
-            clearer case is <code>Dir.[]</code> which interprets its arguments
-            as shell globs against the current working directory, returning an
-            <code>Array</code> of the matching entries. In this way
-            <code>Dir</code> behaves as if it maintains a
-            <code>Hash</code>-style mapping from glob to files.
-
-            <p>As alluded to with <code>Array#[<var>range</var>]</code>, it is
-            common for <code>:[]</code> to accept arguments of wildly different
-            types and try to produce a sensible result. For example,
-            <code>String#[]</code> accepts either an <code>Integer</code>, a
-            pair of <code>Integer</code>s, a <code>Range</code>, a
-            <code>Regexp</code>, a <code>Regexp</code> and an
-            <code>Integer</code>, or a <code>String</code>.</p>
-
-          </dd>
-            <figure id=aref-music.rb>
-              <figcaption>Examples of how different objects respond to the
-              <code>:[]</code> message.
-            </figure>
-          <dt><code>:[]=</code>
-          <dd>
-            <p>The assignment counterpart to <code>:[]</code>: the first argument(s)
-            describe the slice, and the final argument its new value. It
-            is expected that <code><var>obj</var>[<var>key</var>] =
-              <var>value</var></code> then <code><var>obj</var>[<var>key</var>] ==
-              <var>value</var></code>. For this equivalency to hold,
-            <code>:[]=</code> may need to be more restrictive in the arguments it
-            accepts than its counterpart because some key forms make unsuitable
-            assignment targets. For example, <code>Method#[]</code> calls the
-            objectified method with the supplied arguments, but it is unclear what
-            it would mean to assign to such a slice, so <code>Method#[]=</code> is
-            not defined.
-
-            <p>For example, <code>String#[<var>regexp</var>]=
-              <var>value</var></code> assigns <var>value</var> to the portion of
-            the <code>String</code> matched by <var>regexp</var>;
-            <code>Array#[<var>range</var>]= <var>value</var></code> replaces the
-            elements in <var>range</var> with <var>value</var>.  
-
-            <figure id=element-set-selector.rb>
-              <figcaption>The <code>:[]=</code> selector assigns the second
-              argument to the slice of the receiver described by the first.
-            </figure>
-          </dd>
-          <dt id=equal-tilde><code>:=~</code>         
-          <dd>Matches the receiver with the argument. One of the operands is
-          typically a <code>Regexp</code>. This operator is commutative, i.e.
-          <code>(<var>a</var> =~ <var>b</var>) == (<var>b</var> =~
-            <var>a</var>)</code>. For example, <code>String#=~</code>,
-          <code>Regexp#=~</code>, and <code>Symbol#=~</code>. <!-- Describe
-          return value -->
-
-          <figure id=equal-tilde-selector.rb>
-            <figcaption>The <code>:=~</code> selector matches its
-            receiver with its argument.
-          </figure>
-
-          <dt id=left-shift><code>:&lt;&lt;</code> <!-- Mutates; behaves differently with
-          numerics -->
-          <dd>When the receiver is an <code>Integer</code> it is shifted left
-          the amount of places specified by the argument. Otherwise, the sole
-          argument is appended to the receiver, and the mutated receiver
-          returned. For example, <code>Array#&lt;&lt;</code>,
-          <code>String#&lt;&lt;</code>, <code>IO#&lt;&lt;</code>, and
-          <code>Enumerator::Yielder#&lt;&lt;</code> <!-- Last example doesn't
-          return mutated receiver -->.
-
-          <figure id=left-shift-selector.rb>
-            <figcaption>The <code>:&lt;&lt;</code> selector typically
-            appends the argument to the receiver.
-          </figure>
-          
-          <!-- &gt;&gt; - Process::Status#&gt;&gt; -->
-          <dt id=plus><code>:+</code>
-          <dd>
-            <p>Sum the receiver with the sole argument, which should be of the
-            same class, returning a new object. Whereas <code>:&lt;&lt;</code>
-            appends the argument to the receiver, <code>:+</code> combines the
-            operands into a new object. For example, <code>Fixnum#+</code>,
-            <code>String#+</code>, <code>Array#+</code>.
-            
-            <p>Addition in this manner is not necessarily commutative when the
-            operands are non-numeric. For example, <code>'a' + 'b' != 'b' +
-              'a'</code>.
-
-            <figure id=plus-selector.rb>
-              <figcaption>The <code>:+</code> selector combines the
-              operands into a new object.
-            </figure>
-
-          </dd>  
-          <dt id=asterisk><code>:*</code>
-          <dd>Multiples the receiver by a sole numeric argument, returning the
-          result. For example: <code>Fixnum#*</code>, <code>String#*</code>, and
-          <code>Array#*</code>.
-
-          <figure id=asterisk-selector.rb>
-            <figcaption>The <code>:*</code> selector duplicates the receiver
-            by the argument.
-          </figure>
-
-          <!-- :/ - only used by Numerics -->
-          <!-- String#/ http://redmine.ruby-lang.org/issues/show/2017 -->
-          <!-- empty? include?, rewind, initialize, new, coerce -->
-        </dl>
+        <figure id=to_-selector.rb class=centre>            
+          <figcaption>Selectors with a <code>to_</code> prefix return the
+          receiver as an object of the given type.
+        </figure>
       </section>
       
       <section>
+        <figure id=try_convert-selector.rb class=sidenote>
+          <figcaption>The <code>:try_convert</code> selector implicitly
+          converts it argument to its receiver, returning <code>nil</code>
+          if unsuccessful.
+        </figure>
+
+        <h1 id=try-convert><code>:try_convert</code></h1>
+
+        <p>Class method which <a href=#try-convert>implicitly converts</a> the
+        argument to the receiver.</p>
+      </section>
+
+      <section>
+        <h1 id=spaceship><code>:&lt;=&gt;</code></h1>
+
+        <p><a href=#comparison>Compares</a> the operands.</p>
+
+        <figure id=spaceship-selector.rb class=centre> 
+          <figcaption><code>&lt;=&gt;</code> compares its receiver to
+          argument.
+        </figure>
+      </section>  
+
+      <section>
+        <figure class=sidenote id=less-than-selector.rb>
+          <figcaption>The <code>:&lt;</code> selector returns
+          <code>true</code> if the receiver is less than the argument;
+          <code>false</code> otherwise.
+        </figure>
+
+        <h1 id=less-than><code>:&lt;</code></h1>
+
+        <p>Determines whether the receiver is <i>less than</i> the argument.
+        Normally implemented in terms of <a
+        href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&lt;</code>
+        creatively uses this selector to test whether the receiver is a
+        <i>kind of</i> the argument because it mirrors the syntax for defining
+        a class with a superclass, i.e. <code>class <var>name</var> &lt;
+        <var>superclass</var>…end</code>.</p>
+      </section>
+
+      <section>
+        <figure class=sidenote id=greater-than-selector.rb>
+          <figcaption>The <code>:&gt;</code> selector returns
+          <code>true</code> if the receiver is greater than the argument;
+          <code>false</code> otherwise.
+        </figure>
+
+        <h1 id=greater-than><code>:&gt;</code></h1>
+
+        <p>Determines whether the receiver is <i>greater than</i> the
+        argument.  Normally implemented in terms of <a
+        href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
+        provides symmetry to <code>Class#&lt;</code> by testing whether the
+        argument is a <i>kind of</i> the receiver.</p>
+      </section>
+
+      <section>
+        <h1 id=equal-equal><code>:==</code></h1>
+
+        <p>Determines whether the operands are <a
+        href=#equivalence>equivalent</a>.</p>
+        
+        <figure class=centre id=equal-equal-selector.rb>
+          <figcaption>The <code>:==</code> selector returns
+          <code>true</code> if its operands are logically equivalent;
+          <code>false</code> otherwise.
+        </figure>
+      </section>
+
+      <section>
+        <figure class=sidenote id=aref-music.rb>
+          <figcaption>Examples of how different objects respond to the
+          <code>:[]</code> message.
+        </figure>
+
+        <h1 id=aref><code>:[]</code></h1>
+
+        <!-- Needs to follow message expression syntax --> <p><dfn
+        title="element reference">Element reference</dfn> syntax: indexes the
+        receiver by the “key” supplied as the argument(s), returning the
+        requested slice or <code>nil</code>/<code>[]</code> if no
+        corresponding data was found. It is a special case of the message
+        expression syntax because it sends a selector named <code>:[]</code>
+        to the receiver, passing in the contents of
+        <code>[</code>…<code>]</code> as arguments, i.e.
+        <code><var>receiver</var>[<var>argument<sub>0</sub></var>,…,<var>argument<sub>n</sub></var>]</code>
+        is equivalent to
+        <code><var>receiver</var>.[](<var>argument<sub>0</sub></var>,…,<var>argument<sub>n</sub></var>)</code>
+
+        <p>The simplest example is <code>Array#[]</code>, which returns the
+        element stored at the given <code>Integer</code> index. Similarly,
+        <code>Hash#[]</code> returns the value corresponding to the given
+        key object. In this role, <code>:[]</code> acts as an interface to a
+        pre-computed lookup table.
+        
+        <p>However, this abstraction conveniently extends to virtual slices,
+        where the values are computed dynamically, shielding the user from
+        these unnecessary details: he need not concern himself with
+        <i>how</i> the data are derived, merely that they satisfy the key.
+        For example, <code>Array#[]</code> also accepts a <code>Range</code>
+        argument, for which it returns a sub-<code>Array</code> of elements
+        whose indexes are members of the <code>Range</code>. This is
+        computationally quite a different operation to the case with
+        <code>Integer</code> arguments, yet the API makes no distinction. A
+        clearer case is <code>Dir.[]</code> which interprets its arguments
+        as shell globs against the current working directory, returning an
+        <code>Array</code> of the matching entries. In this way
+        <code>Dir</code> behaves as if it maintains a
+        <code>Hash</code>-style mapping from glob to files.
+
+        <p>As alluded to with <code>Array#[<var>range</var>]</code>, it is
+        common for <code>:[]</code> to accept arguments of wildly different
+        types and try to produce a sensible result. For example,
+        <code>String#[]</code> accepts either an <code>Integer</code>, a
+        pair of <code>Integer</code>s, a <code>Range</code>, a
+        <code>Regexp</code>, a <code>Regexp</code> and an
+        <code>Integer</code>, or a <code>String</code>.</p>
+      </section>
+
+      <section>
+        <figure id=element-set-selector.rb class=sidenote>
+          <figcaption>The <code>:[]=</code> selector assigns the second
+          argument to the slice of the receiver described by the first.
+        </figure>
+
+        <h1 id=aref-set><code>:[]=</code></h1>
+    
+        <p>The assignment counterpart to <code>:[]</code>: the first
+        argument(s) describe the slice, and the final argument its new value.
+        It is expected that <code><var>obj</var>[<var>key</var>] =
+        <var>value</var></code> then <code><var>obj</var>[<var>key</var>] ==
+        <var>value</var></code>. For this equivalency to hold,
+        <code>:[]=</code> may need to be more restrictive in the arguments it
+        accepts than its counterpart because some key forms make unsuitable
+        assignment targets. For example, <code>Method#[]</code> calls the
+        objectified method with the supplied arguments, but it is unclear what
+        it would mean to assign to such a slice, so <code>Method#[]=</code> is
+        not defined.
+
+        <p>For example, <code>String#[<var>regexp</var>]=
+          <var>value</var></code> assigns <var>value</var> to the portion of
+        the <code>String</code> matched by <var>regexp</var>;
+        <code>Array#[<var>range</var>]= <var>value</var></code> replaces the
+        elements in <var>range</var> with <var>value</var>.</p>
+      </section>
+
+      <section>
+        <h1 id=equal-tilde><code>:=~</code></h1>      
+
+        <p>Matches the receiver with the argument. One of the operands is
+        typically a <code>Regexp</code>. This operator is commutative, i.e.
+        <code>(<var>a</var> =~ <var>b</var>) == (<var>b</var> =~
+        <var>a</var>)</code>. For example, <code>String#=~</code>,
+        <code>Regexp#=~</code>, and <code>Symbol#=~</code>.</p> <!-- Describe
+        return value -->
+
+        <figure id=equal-tilde-selector.rb class=centre>
+          <figcaption>The <code>:=~</code> selector matches its
+          receiver with its argument.
+        </figure>
+      </section>
+
+      <section>
+        <figure id=left-shift-selector.rb class=sidenote>
+          <figcaption>The <code>:&lt;&lt;</code> selector typically
+          appends the argument to the receiver.
+        </figure>
+
+        <h1 id=left-shift><code>:&lt;&lt;</code></h1> 
+        
+        <!-- Mutates; behaves differently with numerics --> <p>When the
+        receiver is an <code>Integer</code> it is shifted left the amount of
+        places specified by the argument. Otherwise, the sole argument is
+        appended to the receiver, and the mutated receiver returned. For
+        example, <code>Array#&lt;&lt;</code>, <code>String#&lt;&lt;</code>,
+        <code>IO#&lt;&lt;</code>, and
+        <code>Enumerator::Yielder#&lt;&lt;</code> <!-- Last example doesn't
+        return mutated receiver -->.</p>
+          <!-- &gt;&gt; - Process::Status#&gt;&gt; -->
+      </section>
+
+      <section>
+        <figure id=plus-selector.rb class=sidenote>
+          <figcaption>The <code>:+</code> selector combines the
+          operands into a new object.
+        </figure>
+
+        <h1 id=plus><code>:+</code></h1>
+
+        <p>Sum the receiver with the sole argument, which should be of the
+        same class, returning a new object. Whereas <code>:&lt;&lt;</code>
+        appends the argument to the receiver, <code>:+</code> combines the
+        operands into a new object. For example, <code>Fixnum#+</code>,
+        <code>String#+</code>, <code>Array#+</code>.
+        
+        <p>Addition in this manner is not necessarily commutative when the
+        operands are non-numeric. For example, <code>'a' + 'b' != 'b' +
+        'a'</code>.</p>
+      </section>
+
+      <section>
+        <h1 id=asterisk><code>:*</code></h1>
+
+        <p>Multiples the receiver by a sole numeric argument, returning the
+        result. For example: <code>Fixnum#*</code>, <code>String#*</code>,
+        and <code>Array#*</code>.</p>
+
+        <figure class=sidenote id=asterisk-selector.rb> <figcaption>The
+        <code>:*</code> selector duplicates the receiver by the argument.
+        </figure>
+      </section>
+          <!-- :/ - only used by Numerics -->
+          <!-- String#/ http://redmine.ruby-lang.org/issues/show/2017 -->
+          <!-- empty? include?, rewind, initialize, new, coerce -->
+      
+      <section>
+        <figure class=sidenote id=predicate-messages.rb>
+          <figcaption>The <code>?</code> suffix often indicates that a
+          message is a predicate.
+        </figure>
+
         <h1 id=tone>Tone</h1>
 
         <p>By convention, a selector with a question mark (<code>?</code>) suffix
@@ -866,9 +908,9 @@
         <!-- Mention situation when a selector is mirrored by a predicate
         alternative? Lots of File methods fit this pattern. http://groups.google.com/group/ruby-talk-google/msg/cfdd0dca7f70c87e -->
 
-        <figure id=predicate-messages.rb>
-          <figcaption>The <code>?</code> suffix often indicates that a
-          message is a predicate.
+        <figure class=sidenote id=question-mark-suffix-non-predicate.rb>
+          <figcaption>Selectors with a <code>?</code> suffix need not
+          return <code>true</code> or <code>false</code>.
         </figure>
 
         <p>Following similar convention, a selector with an exclamation mark
@@ -882,7 +924,7 @@
           that alters the object in place.</q> <a class=ref
           href=/references#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a></p>
 
-          <figure id=bang-messages.rb>
+          <figure class=centre id=bang-messages.rb>
             <figcaption>The <code>!</code> suffix often indicates that a
             message will modify the receiver in place, or is otherwise
             “dangerous”.
@@ -892,10 +934,6 @@
           guarantee that the receiver will respond in the aforementioned
           manner.</p>
 
-          <figure id=question-mark-suffix-non-predicate.rb>
-            <figcaption>Selectors with a <code>?</code> suffix need not
-            return <code>true</code> or <code>false</code>.
-          </figure>
       </section>
       
       <section>
@@ -911,7 +949,7 @@
         <code>Object#instance_variables</code>, and similar methods, return
         <code>Array</code>s of <code>Symbol</code>s.</p>
 
-        <figure id=plural-selector-splat.rb>
+        <figure class=sidenote id=plural-selector-splat.rb>
           <figcaption>Idiomatically create an <code>Array</code> from a
           plural method with the splat operator
         </figure>
@@ -923,7 +961,7 @@
         allows the returned value to be treated as <code>Enumerable</code>
         regardless of its size.
       <section> <!-- /Plurality --> 
-
+    </section>
      <!--
      <h4>A Survey of Selectors</h4>
      Enumerable
@@ -991,7 +1029,7 @@
       <code>true</code> if a method is defined with the same name as the
       selector; <code>false</code> otherwise.</p>
 
-      <figure id=respond-to.rb>
+      <figure class=sidenote id=respond-to.rb>
         <figcaption>An object <i>responds to</i> selectors for which a
         corresponding method is defined.
       </figure>
@@ -1002,7 +1040,7 @@
       The solution is <code>Kernel#respond_to_missing?</code>, which is
       explained later.</p>
 
-      <figure id=respond-to-method-missing.rb>
+      <figure class=sidenote id=respond-to-method-missing.rb>
         <figcaption><code>#respond_to?</code> is not necessarily accurate
         when <code>method_missing</code> has been used.
       </figure>
@@ -1011,7 +1049,7 @@
       If it is sent with a second argument of <code>true</code>, private
       methods are included in its search.</p>
 
-      <figure id=respond-to-private.rb>        
+      <figure class=sidenote id=respond-to-private.rb>        
         <figcaption><code>:respond_to?</code> ignores private methods by
         default.
       </figure>
@@ -1029,7 +1067,7 @@
       that are particularly permissive in their argument handling may find
       it necessary.</p>
 
-      <figure id=send-if-respond-to>
+      <figure class=sidenote id=send-if-respond-to>
         <pre class=syntax><code><var>receiver</var>.<var>selector</var> if
         <var>receiver</var>.respond_to?(:<var>selector</var>)</code></pre>
         <figcaption>Sending a message only if the receiver responds to it.
@@ -1043,7 +1081,7 @@
         href=#method-missing>Method Missing</a>, by rescuing
       <code>NoMethodError</code> if it occurs.</p>
 
-      <figure id=object-send-p.rb>
+      <figure class=centre id=object-send-p.rb>
         <figcaption>An implementation of <code>Object#send?</code>, which
         returns <code>nil</code> if the named method does not exist.
       </figure>
@@ -1053,14 +1091,14 @@
       working with values which shouldn’t be <code>nil</code>, but might be.
       The general solution is one of the following constructs:</p> 
       
-      <figure id=ternary-nil-receiver>
+      <figure class=sidenote id=ternary-nil-receiver>
         <pre class=syntax><code><var>receiver</var> ?
         <var>receiver</var>.<var>selector</var> : nil</code></pre>
         <figcaption>Using the ternary operator to send a receiver a message
         only if it is true; otherwise return <code>nil</code>.    
       </figure>
 
-      <figure id=and-and-nil-receiver>
+      <figure class=centre id=and-and-nil-receiver>
         <pre class=syntax><code><var>receiver</var> &amp;&amp;
         <var>receiver</var>.<var>selector</var></code></pre>
         <figcaption>Using the logical and operator to send a receiver a
@@ -1074,7 +1112,7 @@
       <code>nil</code> when the receiver is <code>nil</code>, rather than
       raising a <code>NoMethodError</code>.</p>
 
-      <figure id=object-try.rb>
+      <figure class=centre id=object-try.rb>
         <figcaption>An implementation of <code>Object#try</code> derived
         from <a
           href=http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/object/try.rb>Ruby

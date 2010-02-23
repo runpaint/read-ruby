@@ -1,5 +1,5 @@
 body {
-  font-size: 0.8;
+  font-size: 0.8em;
   font-family: serif;
 }
 
@@ -7,9 +7,14 @@ body {
  * mostly has a right margin of 40%, but we let tables and large figures
  * overflow. Additionally, the right margin holds sidenotes
  */
-section > p, h1, table, figure.centre, figure.left, section > dl, ul {
+section > p, h1, table, figure.centre, figure.left, section > dl, ul, ol, section > blockquote, section > aside.note {
   margin-left: 4%;
   margin-right: 40%;
+}
+
+section > blockquote p {
+  margin-left: 8%;
+  margin-right: 8%;
 }
 
 /* Short definition lists that appear in tables can be rendered such that
