@@ -1,5 +1,5 @@
 body {
-  font-size: 0.8em;
+  font-size: 0.9em;
   font-family: serif;
 }
 
@@ -34,6 +34,10 @@ dl.inline > dt:after {
   content: ': '
 }
 
+.bigsym {
+  font-size: 2em;
+  font-weight: bolder;
+}
 /*********** 
  *         *
  * FIGURES *
@@ -42,6 +46,7 @@ dl.inline > dt:after {
 
 /* A sidenote is a block that floats in the right margin */  
 .sidenote {
+  padding-top: 2em;
   float: right;
   width: 20em;
   font-family: serif;
@@ -62,7 +67,7 @@ figure pre {
  * We render them in a slightly smaller font to make them appear peripheral */
 aside.sidenote {
   font-family: sans-serif;
-  font-size: 0.95em;
+  font-size: 0.80em;
   padding-bottom: 1em;
 }
 
@@ -170,10 +175,11 @@ h1 {
 
 /* Chapter title */
 body > section > h1 {
-  font-size: 2em;
+  font-size: 5em;
   text-align: center;
   text-transform: uppercase;
   counter-reset: a;
+  margin-bottom: 0.25em;
 }
 
 /* First-level */
@@ -184,9 +190,8 @@ body > section > section > h1:before {
 }
 body > section > section > h1 {
   counter-reset: b; 
-  font-size: 1.8em;
+  font-size: 1.6em;
   text-align: left;
-  margin-left: 0.2em;
   font-variant: small-caps;
 }
 
@@ -198,11 +203,9 @@ body > section > section > section > h1:before {
 }
 body > section > section > section > h1 {
   counter-reset: c;
-  font-size: 1.6em;
-  text-align: center;
-  margin-left: 0.2em;
+  font-size: 1.3em;
   margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 0.8em;
   letter-spacing: -1px;
 
 }
@@ -215,7 +218,6 @@ body > section > section > section > section > h1:before {
 }
 body > section > section > section > section > h1 {
   font-size: 1.4em;
-  margin-left: 4%;
   padding-top: 1em;
 }
 
@@ -227,7 +229,6 @@ body > section > section > section > section > section > h1 {
   font-size: 1.3em;
   font-weight: normal;
   font-style: italic;
-  margin-left: 4%;
 }
 body > section > section > section > section > section > h1 + p {
   padding-top: 0.2;
@@ -244,6 +245,8 @@ body > section > section > section > section > section > section h1, h1.runin {
   display: run-in;
   padding-right: 0.5em;
   margin-right:0;
+  margin-bottom:0;
+  margin-left: 0;
 }
 
 body > section > section > section > section > section > section h1:after {

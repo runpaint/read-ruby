@@ -241,9 +241,17 @@
     <section>
       <h1 id=expression-syntax>Message Expression Syntax</h1>
 
+      <aside class=sidenote>
+        <p><span class=sidemark>†</span>The syntax explained above is
+        potentially ambiguous. If Ruby sees a bare identifier, e.g.
+        <code>glark</code>, is that a reference to a local variable or an
+        attempt to send a message to <code>self</code>?  If Ruby has
+        previously seen the identifier being assigned to, e.g.  <code>glark =
+        2</code>, it is treated as a variable reference; otherwise it is a
+        message.
+      </aside>
+
       <figure class=railroad>
-        <img id=expression-list.png>
-        <img id=argument-list.png>
         <img id=message-expression.png>
         <figcaption>Syntax diagram for message expression
       </figure>
@@ -255,16 +263,16 @@
       href=#implicit-receiver>implicit receiver</a> to be assumed.</p>
 
       <aside class=sidenote>
-        <p><span class=sidemark>†</span>The syntax explained above is
-        potentially ambiguous. If Ruby sees a bare identifier, e.g.
-        <code>glark</code>, is that a reference to a local variable or an
-        attempt to send a message to <code>self</code>?  If Ruby has
-        previously seen the identifier being assigned to, e.g.  <code>glark =
-        2</code>, it is treated as a variable reference; otherwise it is a
-        message.
+        <p><span class=sidemark>‡</span>An alternative to the
+        <code><var>receiver</var>.<var>selector</var></code> syntax is
+        <code><var>receiver</var>::<var>selector</var></code>, where the
+        full stop is replaced with a double colon (U+003A: <code>::</code>).
+        However, the latter syntax has fallen out of favour due to the
+        confusion it creates between message sending and constant reference
+        expressions.  It is not recommended for use in new code.
       </aside>
 
-      <figure class=sidenote id=bare-selector-syntax.rb>
+      <figure class=centre id=bare-selector-syntax.rb>
         <figcaption>A bare identifier is interpreted as a message selector
         unless it has previously been used as a local variable name in the
         same scope.
@@ -276,35 +284,39 @@
       receiver</a> separated from the <var>selector</var> with a full stop
       (U+002E: <code>.</code>).</p>
 
-      <figure class=sidenote id=receiver-dot-selector-syntax.rb>
+      <figure class=centre id=receiver-dot-selector-syntax.rb>
         <figcaption>A message can be explicitly sent to an object by
         concatenating an explicit receiver, a full stop, and a selector.
       </figure>
-
-      <aside class=sidenote>
-        <p><span class=number>‡</span>An alternative to the
-        <code><var>receiver</var>.<var>selector</var></code> syntax is
-        <code><var>receiver</var>::<var>selector</var></code>, where the
-        full stop is replaced with a double colon (U+003A: <code>::</code>).
-        However, the latter syntax has fallen out of favour due to the
-        confusion it creates between message sending and constant reference
-        expressions.  It is not recommended for use in new code.
-      </aside>
 
       <p>In either case, a <code>NoMethodError</code> is raised if the
       receiver neither defines a corresponding method nor defines a
       <code>method_missing</code> method that handles the message.</p>
 
       <section>
+        
+        <figure class='railroad sidenote' style=width:35em;padding-top:1em>
+          <img id=expression-list.png>
+        </figure>
+
         <h1 id=message-arguments>Arguments</h1>
         
+        <figure class='railroad centre'>
+          <img id=argument-list.png>
+        </figure>
+
         <p>A message may be accompanied by one or more <dfn title="message
         arguments">arguments</dfn>: variables to be used in the resulting
         computations. Arguments are supplied as a parenthesized list of
         variables separated by commas:
         <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.</p>
         
-        <figure class=sidenote id=receiver-selector-arguments-syntax.rb>
+        <figure class=sidenote id=splat-arguments.rb>
+          <figcaption>Prefixing an <code>Enumerable</code> argument with
+          an asterisk explodes it into its constituent elements.
+        </figure>
+
+        <figure class=centre id=receiver-selector-arguments-syntax.rb>
           <figcaption>The selector may be followed by a parenthesised list
           of zero or more arguments.
         </figure>
@@ -323,11 +335,6 @@
           argument with an asterisk (U+002A: <code>*</code>), which in this
           context is termed a <dfn>splat operator</dfn>, thus expanding the
           <code>Enumerable</code> into its individual elements.</p>
-
-          <figure class=centre id=splat-arguments.rb>
-            <figcaption>Prefixing an <code>Enumerable</code> argument with
-            an asterisk explodes it into its constituent elements.
-          </figure>
 
           <p>This technique works by sending <code>:to_a</code> to the
           prefixed object, so any object that responds to this message with
@@ -569,7 +576,7 @@
         <!-- Ruby uses ** as a glob; is there a use for :** in that area? Muse
              on its use for attaching comments to symbols, i.e. Symbol#** -->
       <section>
-        <h1 id=call><code>:call</code></h1>
+        <h1 class=runin id=call><code class=bigsym>:call</code></h1>
       
         <p>A variable-length argument list is accepted, with which the
         receiver is in some way invoked. The return value is the result
@@ -600,7 +607,7 @@
           by <var>attribute</var>.
         </figure>
 
-        <h1 id=each><code>:each</code> / <code>:each_</code>*</h1>
+        <h1 class=runin id=each><code class=bigsym>:each / :each_</code>*</h1>
 
         <p>Classes mixing-in the <a
         href=/objects/#enumerables><code>Enumerable</code></a> module are
@@ -638,7 +645,7 @@
           receiver’s magnitude as an <code>Integer</code>.
         </figure>
 
-        <h1 id=size><code>:size</code> / <code>:length</code></h1>
+        <h1 class=runin id=size><code class=bigsym>:size / :length</code></h1>
 
         <p><code>:size</code> and <code>:length</code>, which are typically
         aliases of each other, return an <code>Integer</code> representing the
@@ -653,7 +660,7 @@
           which constrains their computation.
         </figure>
 
-        <h1 id=by><code>:</code>*<code>_by</code></h1>
+        <h1 class=runin id=by><code class=bigsym>_by</code></h1>
 
         <p>The <code>_by</code> suffix typically implies that the method
         expects a block, the results of which constrain the computation. For
@@ -663,7 +670,7 @@
       </section>
 
       <section>
-        <h1 id=to><code>:to_</code>*</h1>
+        <h1 class=runin id=to><code class=bigsym>:to_</code></h1>
 
         <p><a href=#conversion>Converts</a> the receiver into an object of the
         corresponding core type.</p>
@@ -681,14 +688,15 @@
           if unsuccessful.
         </figure>
 
-        <h1 id=try-convert><code>:try_convert</code></h1>
+        <h1 class=runin id=try-convert><code
+        class=bigsym>:try_convert</code></h1>
 
         <p>Class method which <a href=#try-convert>implicitly converts</a> the
         argument to the receiver.</p>
       </section>
 
       <section>
-        <h1 id=spaceship><code>:&lt;=&gt;</code></h1>
+        <h1 class=runin id=spaceship><code class=bigsym>:&lt;=&gt;</code></h1>
 
         <p><a href=#comparison>Compares</a> the operands.</p>
 
@@ -705,7 +713,7 @@
           <code>false</code> otherwise.
         </figure>
 
-        <h1 id=less-than><code>:&lt;</code></h1>
+        <h1 class=runin id=less-than><code class=bigsym>:&lt;</code></h1>
 
         <p>Determines whether the receiver is <i>less than</i> the argument.
         Normally implemented in terms of <a
@@ -723,7 +731,7 @@
           <code>false</code> otherwise.
         </figure>
 
-        <h1 id=greater-than><code>:&gt;</code></h1>
+        <h1 class=runin id=greater-than><code class=bigsym>:&gt;</code></h1>
 
         <p>Determines whether the receiver is <i>greater than</i> the
         argument.  Normally implemented in terms of <a
@@ -733,7 +741,7 @@
       </section>
 
       <section>
-        <h1 id=equal-equal><code>:==</code></h1>
+        <h1 class=runin id=equal-equal><code class=bigsym>:==</code></h1>
 
         <p>Determines whether the operands are <a
         href=#equivalence>equivalent</a>.</p>
@@ -751,7 +759,7 @@
           <code>:[]</code> message.
         </figure>
 
-        <h1 id=aref><code>:[]</code></h1>
+        <h1 class=runin id=aref><code class=bigsym>:[]</code></h1>
 
         <!-- Needs to follow message expression syntax --> <p><dfn
         title="element reference">Element reference</dfn> syntax: indexes the
@@ -801,7 +809,7 @@
           argument to the slice of the receiver described by the first.
         </figure>
 
-        <h1 id=aref-set><code>:[]=</code></h1>
+        <h1 class=runin id=aref-set><code class=bigsym>:[]=</code></h1>
     
         <p>The assignment counterpart to <code>:[]</code>: the first
         argument(s) describe the slice, and the final argument its new value.
@@ -823,7 +831,7 @@
       </section>
 
       <section>
-        <h1 id=equal-tilde><code>:=~</code></h1>      
+        <h1 class=runin id=equal-tilde><code class=bigsym>:=~</code></h1>      
 
         <p>Matches the receiver with the argument. One of the operands is
         typically a <code>Regexp</code>. This operator is commutative, i.e.
@@ -844,7 +852,7 @@
           appends the argument to the receiver.
         </figure>
 
-        <h1 id=left-shift><code>:&lt;&lt;</code></h1> 
+        <h1 class=runin id=left-shift><code class=bigsym>:&lt;&lt;</code></h1> 
         
         <!-- Mutates; behaves differently with numerics --> <p>When the
         receiver is an <code>Integer</code> it is shifted left the amount of
@@ -863,7 +871,7 @@
           operands into a new object.
         </figure>
 
-        <h1 id=plus><code>:+</code></h1>
+        <h1 class=runin id=plus><code class=bigsym>:+</code></h1>
 
         <p>Sum the receiver with the sole argument, which should be of the
         same class, returning a new object. Whereas <code>:&lt;&lt;</code>
@@ -877,7 +885,7 @@
       </section>
 
       <section>
-        <h1 id=asterisk><code>:*</code></h1>
+        <h1 class=runin id=asterisk><code class=bigsym>:*</code></h1>
 
         <p>Multiples the receiver by a sole numeric argument, returning the
         result. For example: <code>Fixnum#*</code>, <code>String#*</code>,
