@@ -731,7 +731,9 @@
             return <code>true</code> for the method to return <code>true</code>. For
             instance, <code>#any?</code> returns <code>true</code> as soon as a single
             element in the collection satisfies the block. 
-             
+            <!-- History:
+            http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26301
+            --> 
             <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
           </aside>
         </section>
@@ -745,11 +747,24 @@
           <!-- Mention Hash#[]? -->
           <p>A <code>Hash</code> instance represents a collection of associations
           between unique keys and values (<i>key-value</i> pairs), both of which may
-          be any object. It is indexed by key, and ordered by insertion. For
+          be any object. It is indexed by key, and ordered by insertion<sup>†</sup>. For
           instance, a <code>Hash</code> mapping colours to corresponding fruits may
           include a key-value pair of <code>:lemon =&gt; :yellow</code>:
           <code>:lemon</code> is the key; <code>:yellow</code> is the value.</p>
-          
+
+          <aside class=footnote>
+          <p><span class=number>†</span>Hash tables do not normally <a
+            href=//blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12542>preserve
+            order of insertion</a>, of course; a <a
+            href=//blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12556>doubly-circularly
+            linked list</a> is used behind the scenes. Ilya Grigorik
+            <a
+              href=//www.igvita.com/2009/02/04/ruby-19-internals-ordered-hash/>examined
+              the consequences</a> of this decision.
+            <!-- http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/315237
+            -->
+          </aside>
+
           <figure class=railroad>
             <img id=hash-literal.png>
             <figcaption>Syntax diagram of the hash literal

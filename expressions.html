@@ -29,69 +29,71 @@
   <section>
     <h1 id=primary-expressions>Primary Expressions</h1>
       
+    <!-- TODO: Intro -->
+
     <section>
       <h1 id=literals>Literals</h1>
       
       <p>An <a href=/objects#literals>object literal</a> is an item of syntax
       for instantiating certain core objects such as strings, numbers, arrays,
       and hashes.</p>
-    </section>
-
-    <section>
-      <h1 id=keyword-literals>Keyword Literals</h1>
 
       <section>
-        <h1 id=true><code>true</code></h1>
-        
-        <p>The <code>true</code> keyword returns the singleton instance of
-        <code>TrueClass</code>. Its value is, by definition, true.
-      </section>
+        <h1 id=keyword-literals>Keyword Literals</h1>
 
-      <section>
-        <h1 id=false><code>false</code></h1>
+        <section>
+          <h1 class=runin id=true><code>true</code></h1>
+          
+          <p>The <code>true</code> keyword returns the singleton instance of
+          <code>TrueClass</code>. Its value is, by definition, true.
+        </section>
 
-        <p>The <code>false</code> keyword returns the singleton instance of
-        <code>FalseClass</code>. Its value is, by definition, false.
-      </section>
+        <section>
+          <h1 class=runin id=false><code>false</code></h1>
 
-      <section>
-        <h1 id=nil><code>nil</code></h1>
+          <p>The <code>false</code> keyword returns the singleton instance of
+          <code>FalseClass</code>. Its value is, by definition, false.
+        </section>
 
-        <p>The <code>nil</code> keyword returns the singleton instance of
-        <code>NilClass</code>. Its value is represents the absence of a value.
-        The <code>Kernel.nil?</code> predicate returns <code>true</code> if
-        its value is <code>nil</code>; <code>false</code> otherwise.
-        <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
-        -->
-      </section>
+        <section>
+          <h1 class=runin id=nil><code>nil</code></h1>
 
-      <section>
-        <h1 id=self><code>self</code></h1>
+          <p>The <code>nil</code> keyword returns the singleton instance of
+          <code>NilClass</code>. Its value is represents the absence of a value.
+          The <code>Kernel.nil?</code> predicate returns <code>true</code> if
+          its value is <code>nil</code>; <code>false</code> otherwise.
+          <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
+          -->
+        </section>
 
-        <p><code>self</code> always evaluates to the current object. Outside
-        of any class definition, i.e. at the top‐level, the current object is
-        an instance of <code>Object</code> called <code>main</code>. Inside a
-        class definition, but outside of a method definition, the current
-        object is an instance of <code>Class</code>. Within a method
-        definition the current object is the instance of the containing
-        class.</p>
+        <section>
+          <h1 class=runin id=self><code>self</code></h1>
 
-        <figure id=self-as-the-implicit-receiver.rb>
-          <figcaption><code>self</code> is always defined; its value depends
-          on the enclosing context.
-        </figure>
-      </section>
+          <p><code>self</code> always evaluates to the current object. Outside
+          of any class definition, i.e. at the top‐level, the current object is
+          an instance of <code>Object</code> called <code>main</code>. Inside a
+          class definition, but outside of a method definition, the current
+          object is an instance of <code>Class</code>. Within a method
+          definition the current object is the instance of the containing
+          class.</p>
 
-      <section>
-        <h1 id=file><code>__FILE__</code></h1>
-      </section>
+          <figure class=centre id=self-as-the-implicit-receiver.rb>
+            <figcaption><code>self</code> is always defined; its value depends
+            on the enclosing context.
+          </figure>
+        </section>
 
-      <section>
-        <h1 id=line><code>__LINE__</code></h1>
-      </section>
+        <section>
+          <h1 class=runin id=file><code>__FILE__</code></h1>
+        </section>
 
-      <section>
-        <h1 id=encoding><code>__ENCODING__</code></h1>
+        <section>
+          <h1 class=runin id=line><code>__LINE__</code></h1>
+        </section>
+
+        <section>
+          <h1 class=runin id=encoding><code>__ENCODING__</code></h1>
+        </section>
       </section>
     </section>
 
@@ -194,8 +196,8 @@
           <p>The following table lists global constants that Ruby defines
           automatically.</p>
 
-          <table class=border>
-            <caption>Predefined global constants
+          <table class=border style=width:90%>
+            <caption>Predefined global constants</caption>
             <thead>
               <tr>
                 <th>Constant
@@ -322,16 +324,16 @@
         </section>
 
         <section>
+          <figure class=sidenote id=local-variables.rb>
+            <figcaption>The scope of a local variable
+          </figure>
+
           <h1 id=local-variables-scope>Scope</h1>
-          
+
           <p>A local variable’s scope is the method or block in which it was
           initialized; outside of this scope it is undefined, its previous value
           forgotten. This scope is recursive: it continues thought any
           blocks or other constructs defined within.</p>
-
-          <figure id=local-variables.rb>
-            <figcaption>The scope of a local variable
-          </figure>
 
           <p>A block defines its own lexical scope. Local variables defined
           within it do not persist outside of it. However, if, in the context of
@@ -343,7 +345,7 @@
           those defined outside, <a href=/closures#block-local-variables>block
             local variables</a> are appropriate.</p>
 
-          <figure id=non-block-local-variables-example.rb>
+          <figure class=centre id=non-block-local-variables-example.rb>
             <figcaption>Non‐block‐local variables defined prior to the block
             retain the value they were assigned inside the block even after
             leaving it
@@ -351,8 +353,12 @@
         </section>
 
         <section>
+          <figure class=sidenote id=local-variables-assignment.rb>
+            <figcaption>An assignment expression initializes a local variable
+          </figure>
+
           <h1 id=local-variables-initialization>Initialization</h1>
-          
+
           <p>A variable is initialized if it appears on the left‐hand side
           (before the U+003D EQUALS SIGN (<code>=</code>)) of an assignment
           expression. However, this assignment expression need not actually
@@ -362,19 +368,10 @@
           variable comes into existence.  Variables of this sort have the value
           <code>nil</code>.</p>
 
-          <figure id=local-variables-assignment.rb>
-            <figcaption>An assignment expression initializes a local variable
-          </figure>
-
           <p>Attempting to use an uninitialized local variable causes the
           identifier to be interpreted as a message selector which is sent to
           the current implicit receiver. If such a method doesn’t exist a
           <code>NameError</code> is raised.</p>
-
-          <figure id=local-variables-uninitialized.rb>
-            <figcaption>Referring to an uninitialized local variable causes a
-            <code>NameError</code> to be raised.
-          </figure>
         </section>
          
         <p>The <code>Kernel.local_variables</code> method returns an
@@ -388,10 +385,13 @@
         <section>
           <h1 id=instance-variables-name>Name</h1>
           
-          <p>An instance variable is named by an identifier with a U+0040
-          COMMERCIAL AT (<code>@</code>) sigil:
-          <code>@<var>identifier</var></code>. Conventionally, the name consists
-          of lowercase words separated by low lines.
+          <!-- Cooper prefers the term <q>object variable</q>.-->
+
+          <p>An instance variable is named by an
+          identifier with a U+0040 COMMERCIAL AT (<code>@</code>) sigil:
+          <code>@<var>identifier</var></code>. Conventionally, the name
+          consists of lowercase words separated by low lines.</p>
+
         </section>
 
         <section>
@@ -448,8 +448,12 @@
         </section>
 
         <section>
+          <figure id=class-variables-inherited.rb class=sidenote>
+            <figcaption>Class variables are inherited by child classes
+          </figure>
+
           <h1 id=class-variables-scope>Scope</h1>
-         
+
           <p>A class variable’s scope is the body of the enclosing class or
           module. It is shared between all instances of the class and accessible
           from both the class body and its methods, but is nevertheless
@@ -459,14 +463,10 @@
           by child classes: if a class modifies a class variable defined in its
           superclass, the change is visible in both locations.</p>
 
-          <figure id=class-variables-inherited.rb>
-            <figcaption>Class variables are inherited by child classes
-          </figure>
-
           <p>A class variable defined at the top‐level of a program is inherited
           by all classes. It behaves like a global variable.</p>
 
-          <figure id=class-variables-inherited-top.rb>
+          <figure class=sidenote id=class-variables-inherited-top.rb>
             <figcaption>Class variables are inherited from the top‐level
           </figure>
 
@@ -475,7 +475,7 @@
           in a child class then subsequently assigned to in a parent class, as
           shown below:</p>
 
-          <figure id=class-variables-overtaken.rb>
+          <figure class=sidenote id=class-variables-overtaken.rb>
             <figcaption>A warning is issued if a parent seems to unintentionally
             clobber a child’s class variable
           </figure>
@@ -484,7 +484,7 @@
           unless defined in their common parent, or those without a common
           parent.</p>
 
-          <figure id=class-variables-siblings.rb>
+          <figure class=centre id=class-variables-siblings.rb>
             <figcaption>Class variables are unique amongst sibling classes
           </figure>
 
@@ -538,12 +538,12 @@
         <section>
           <h1 id=globals-scope>Scope</h1>
 
-          <p>A global variable is accessible in every scope. Once set it refers
-          to the same object wherever it is referenced.</p>
-
-          <figure id=global-variables.rb>
+          <figure class=sidenote id=global-variables.rb>
             <figcaption>Global variables are accessible in every scope
           </figure>
+
+          <p>A global variable is accessible in every scope. Once set it refers
+          to the same object wherever it is referenced.</p>
         </section>
         
         <section>
@@ -564,7 +564,7 @@
           <p>Ruby predefines certain global variables automatically. They are
           summarised in the following table.</p>
 
-          <table class=border>
+          <table class=border style=width:90%>
             <caption>Predefined global variables
             <thead>
               <tr>
@@ -831,153 +831,11 @@
       is the result of summing the operands: the primary expression
       <code>3</code>.</p>
       
-
-      <section>
-        <h1 id=arity>Arity</h1>
-        
-        <!-- TODO: Link with Methods > Arity -->
-        <p>An operator’s <dfn title="operator arity">arity</dfn> is the number
-        of operands on which it operates. The <code>+</code> operator shown
-        above has an arity of 2. More than two numbers can be summed together,
-        of course, but an expression such as <code>1 + 2 + 3</code> involves
-        the <code>+</code> operator twice: <code>1 + 2</code> then <code>3 +
-        3</code>.</p>
-
-        <p>An operand can be classified by its arity as follows:</p>
-
-        <dl class=inline>
-          <dt><dfn>Unary operator</dfn>
-          <dd>An arity of 1.
-          <dt><dfn>Binary operator</dfn>
-          <dd>An arity of 2.
-          <dt><dfn>Ternary operator</dfn>
-          <dd>An arity of 3.
-        </dl>
-
-        <p>A few operators are both unary and binary. They can either be used
-        with one operand or two. <code>+</code>, again, serves to illustrate:
-        in its unary form it changes the sign of its operand; in its binary
-        form it performs summation. To distinguish between these two cases,
-        the unary forms of <code>+</code> and <code>-</code> are named
-        <code>+@</code> and <code>-@</code>, respectively. (Note: it is merely
-        a coincidence that U+0040 COMMERCIAL AT (<code>@</code>) is used as
-        both a sigil for class and instance variables and in the names of
-        these operators; there is no connection).</p>
-      </section>
-
-      <section>
-        <h1 id=precedence>Precedence</h1>
-
-        <p>A compound expression might itself contain compound expressions,
-        each of which comprises an operator and its operands. For example,
-        <code>1 - 2 * 3</code>. This expression is potentially ambiguous: is
-        the intent to subtract 2 from 1, then multiply the result by 3, or
-        multiply 2 and 3, then subtract the result from 1? In evaluating such
-        an expression Ruby must apply <dfn>precedence rules</dfn> so as to
-        determine the order in which the operators should be performed.  
-        
-        <p><dfn title="operator precedence">Precedence</dfn> is a relative
-        order defined over the operators such that each operator has lower,
-        equal, or higher precedence than another. For a given statement, the
-        higher an operator’s precedence, the earlier it is evaluated. <!--
-        FIXME: This is awkward. I'm trying to clarify that precedence only
-        comes into play at the operator level; it doesn't affect the order of
-        statement evaluation --> <code>*</code> has a higher precedence than
-        <code>-</code>, as in mathematics, so the example above evaluates to
-        −5.
-        
-
-        <p>The default order of precedence may be overridden by grouping
-        sub‐expressions that should be performed earlier with parentheses,
-        again mirroring the rule in mathematics. When parenthetical groups
-        contain other parenthetical groups, the innermost is given the
-        highest precedence.</p>
-
-        <figure id=precedence-parentheses.rb>
-          <figcaption>Parentheses can be used to force precedence
-        </figure>
-      </section>
-
-      <section>
-        <h1 id=associativity>Associativity</h1>
-
-        <p>If one operator expression is followed by another with the same
-        arity, the operator’s <dfn>associativity</dfn> determines their order
-        of evaluation.
-
-        <p><dfn>Left‐associative</dfn> operators are evaluated from left to
-        right; <dfn>right‐associative</dfn> operators are evaluated in the
-        opposite direction. <dfn>Non‐associative</dfn> operators are
-        ambiguous: parentheses must be employed to specify their order of
-        evaluation.</p>
-
-        <figure id=precedence-associativity.rb>
-          <figcaption>Associativity governs the order of evaluation for
-          operators with the same arity
-        </figure>
-      </section>
-
-      <!-- section for each op -->
-      <section>
-        <h1 id=ternary-operator>Ternary Operator</h1>
-        <!-- steal from Flow? -->
-      </section>
-
-      <section>
-        <h1 id=defined><code>defined?</code></h1>
-
-        <figure id=defined.rb>
-          <figcaption>Using the <code>defined?</code> operator to test whether a
-          variable or expression is defined
-        </figure>
-
-        <p><code>defined?</code> is a unary operator which tests whether its
-        operand is defined, and if so returns a description of it.
-        <code>nil</code> is returned if the operand is an undefined variable or
-        method, an expression which uses <code>yield</code> without an
-        associated block, or an expression which uses <code>super</code> without
-        a corresponding superclass method. In all cases the test is conducted
-        without evaluating the operand.</p>
-        
-        <!-- Couldn’t use nth-child selector because of rowspan -->
-        <table>
-          <caption>The return values of the <code>defined?</code> operator
-          <thead>
-            <tr><th>Operand<th>Return Value of <code>defined?</code>
-          </thead>
-          <tbody>
-            <tr><td>Defined local variable<td><code>"local-variable"</code>
-            <tr><td>Defined global variable<td><code>"global-variable"</code>
-            <tr><td>Defined constant<td><code>"constant"</code>
-            <tr><td>Defined instance variable<td><code>"instance-variable"</code>
-            <tr><td>Defined class variable<td><code>"class variable"</code>
-            <tr><td><code>nil</code><td><code>"nil"</code>
-            <tr><td><code>true</code><td><code>"true"</code>
-            <tr><td><code>false</code><td><code>"false"</code>
-            <tr><td><code>self</code><td><code>"self"</code>
-            <tr><td>Expression using <code>yield</code>
-                correctly<td><code>"yield"</code>
-            <tr><td>Expression using <code>super</code>
-                correctly<td><code>"super"</code>
-            <tr><td>Assignment expression<td><code>"assignment"</code>
-            <tr><td>Message sending expression (doesn’t check arity)
-                 <td><code>"method"</code>
-            <tr><td>Any other legal expression<td><code>"expression"</code>
-            <tr><td>Undefined variable or invalid use of
-                <code>yield</code>/<code>super</code>
-                <td><code>nil</code>
-          </tbody>
-        </table>
-      </section>
-
+      <!-- Background on redefinable NOTs:
+           http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/14011 -->
       <!-- Unite with Methods > Operator Methods Table -->
-      <table id=operator-table class=border>
-        <caption>
-          <p>A table of Ruby operators shown in order of descending
-          precedence, where a decrease is shown by a change in background
-          colour.          
-          
-          <dl style=text-align:left class=inline-small>
+      <aside class=sidenote>    
+          <dl style=font-size:90% class='inline-small sidenote'>
             <dt id=op-tbl-mean>&dagger;
             <dd>The meaning ascribed to each operator is that which is common;
             re-definable operators may have different semantics. 
@@ -990,6 +848,13 @@
             as a method, and therefore can be overridden by defining a method
             with the same name.
           </dl>
+      </aside>
+
+      <table id=operator-table class=border>
+        <caption>
+          A table of Ruby operators shown in order of descending
+          precedence, where a decrease is shown by a change in background
+          colour.          
         </caption>
         <thead>
           <tr>
@@ -1210,6 +1075,144 @@
             <td>✖
         </tbody>
       </table>
+
+      <section>
+        <h1 id=arity>Arity</h1>
+        
+        <!-- TODO: Link with Methods > Arity -->
+        <p>An operator’s <dfn title="operator arity">arity</dfn> is the number
+        of operands on which it operates. The <code>+</code> operator shown
+        above has an arity of 2. More than two numbers can be summed together,
+        of course, but an expression such as <code>1 + 2 + 3</code> involves
+        the <code>+</code> operator twice: <code>1 + 2</code> then <code>3 +
+        3</code>.</p>
+
+        <p>An operand can be classified by its arity as follows:</p>
+
+        <dl class=inline>
+          <dt><dfn>Unary operator</dfn>
+          <dd>An arity of 1.
+          <dt><dfn>Binary operator</dfn>
+          <dd>An arity of 2.
+          <dt><dfn>Ternary operator</dfn>
+          <dd>An arity of 3.
+        </dl>
+
+        <p>A few operators are both unary and binary. They can either be used
+        with one operand or two. <code>+</code>, again, serves to illustrate:
+        in its unary form it changes the sign of its operand; in its binary
+        form it performs summation. To distinguish between these two cases,
+        the unary forms of <code>+</code> and <code>-</code> are named
+        <code>+@</code> and <code>-@</code>, respectively. (Note: it is merely
+        a coincidence that U+0040 COMMERCIAL AT (<code>@</code>) is used as
+        both a sigil for class and instance variables and in the names of
+        these operators; there is no connection).</p>
+      </section>
+
+      <section>
+        <h1 id=precedence>Precedence</h1>
+
+        <p>A compound expression might itself contain compound expressions,
+        each of which comprises an operator and its operands. For example,
+        <code>1 - 2 * 3</code>. This expression is potentially ambiguous: is
+        the intent to subtract 2 from 1, then multiply the result by 3, or
+        multiply 2 and 3, then subtract the result from 1? In evaluating such
+        an expression Ruby must apply <dfn>precedence rules</dfn> so as to
+        determine the order in which the operators should be performed.  
+        
+        <p><dfn title="operator precedence">Precedence</dfn> is a relative
+        order defined over the operators such that each operator has lower,
+        equal, or higher precedence than another. For a given statement, the
+        higher an operator’s precedence, the earlier it is evaluated. <!--
+        FIXME: This is awkward. I'm trying to clarify that precedence only
+        comes into play at the operator level; it doesn't affect the order of
+        statement evaluation --> <code>*</code> has a higher precedence than
+        <code>-</code>, as in mathematics, so the example above evaluates to
+        −5.</p>
+        
+        <figure id=precedence-parentheses.rb class=sidenote>
+          <figcaption>Parentheses can be used to force precedence
+        </figure>
+
+        <p>The default order of precedence may be overridden by grouping
+        sub‐expressions that should be performed earlier with parentheses,
+        again mirroring the rule in mathematics. When parenthetical groups
+        contain other parenthetical groups, the innermost is given the
+        highest precedence.</p>
+      </section>
+
+      <section>
+        <h1 id=associativity>Associativity</h1>
+
+        <figure id=precedence-associativity.rb class=sidenote>
+          <figcaption>Associativity governs the order of evaluation for
+          operators with the same precedence
+        </figure>
+
+        <p>If one operator expression is followed by another with the same
+        precedence, the operator’s <dfn>associativity</dfn> determines their
+        order of evaluation.
+
+        <p><dfn>Left‐associative</dfn> operators are evaluated from left to
+        right; <dfn>right‐associative</dfn> operators are evaluated in the
+        opposite direction. <dfn>Non‐associative</dfn> operators are
+        ambiguous: parentheses must be employed to specify their order of
+        evaluation.</p>
+      </section>
+
+      <!-- section for each op -->
+      <section>
+        <h1 id=ternary-operator>Ternary Operator</h1>
+        <!-- steal from Flow? -->
+      </section>
+
+      <section>
+        <h1 id=defined><code>defined?</code></h1>
+
+        <figure id=defined.rb class=sidenote>
+          <figcaption>Using the <code>defined?</code> operator to test whether a
+          variable or expression is defined
+        </figure>
+
+        <p><code>defined?</code> is a unary operator which tests whether its
+        operand is defined, and if so returns a description of it.
+        <code>nil</code> is returned if the operand is an undefined variable or
+        method, an expression which uses <code>yield</code> without an
+        associated block, or an expression which uses <code>super</code> without
+        a corresponding superclass method. In all cases the test is conducted
+        without evaluating the operand.</p>
+        
+        <!-- Couldn’t use nth-child selector because of rowspan -->
+        <table class=border>
+          <caption>The return values of the <code>defined?</code> operator
+          <thead>
+            <tr><th>Operand<th>Return Value of <code>defined?</code>
+          </thead>
+          <tbody class=zebra>
+            <tr><td>Defined local variable<td><code>"local-variable"</code>
+            <tr><td>Defined global variable<td><code>"global-variable"</code>
+            <tr><td>Defined constant<td><code>"constant"</code>
+            <tr><td>Defined instance variable<td><code>"instance-variable"</code>
+            <tr><td>Defined class variable<td><code>"class variable"</code>
+            <tr><td><code>nil</code><td><code>"nil"</code>
+            <tr><td><code>true</code><td><code>"true"</code>
+            <tr><td><code>false</code><td><code>"false"</code>
+            <tr><td><code>self</code><td><code>"self"</code>
+            <tr><td>Expression using <code>yield</code>
+                correctly<td><code>"yield"</code>
+            <tr><td>Expression using <code>super</code>
+                correctly<td><code>"super"</code>
+            <tr><td>Assignment expression<td><code>"assignment"</code>
+            <tr><td>Message sending expression (doesn’t check arity)
+                 <td><code>"method"</code>
+            <tr><td>Any other legal expression<td><code>"expression"</code>
+            <tr><td>Undefined variable or invalid use of
+                <code>yield</code>/<code>super</code>
+                <td><code>nil</code>
+          </tbody>
+        </table>
+      </section>
+
     </section>
 
     <!-- message expressions -->
@@ -1330,7 +1333,24 @@
         assigned to <var>lvalue</var>.
 
         <p>The value returned by an abbreviated assignment expression is that of
-        its expanded right‐hand side.
+        its expanded right‐hand side.</p>
+
+        <aside class=sidenote>
+          <p>The <code>||=</code> operator gives rise to a popular idiom
+          Perrotta terms a <q cite=/references#refPER10>Nil Guard</q> (<a
+          href=/references#refPER10>Perrotta</a>, pp. 243–244). Its purpose is
+          to assign the rvalue to the lvalue iff the lvalue is <a
+          href=/flow#conditionals>false</a> (<code>false</code> or
+          <code>nil</code>). That is, to initialize the lvalue only if it isn’t
+          already. Perrotta describes an <a
+          href=#instance-variables>instance variable</a> employing this
+          technique as a <q cite=/references#refPER10>Lazy Instance Variable</q>
+          (<a href=/references#refPER10>Perrotta</a>, pp. 243–244).</p>
+
+          <figure id=nil-guard.rb>
+            <figcaption>Initializing a variable only if it hasn’t been already.
+          </figure>
+        </aside>
 
         <table class=border>
           <caption>The abbreviated assignment operators
@@ -1392,23 +1412,6 @@
               <td><code><var>lvalue</var> = <var>lvalue</var> &gt;&gt; <var>rvalue</var></code>  
           </tbody>
         </table>
-
-        <aside>
-          <p>The <code>||=</code> operator gives rise to a popular idiom
-          Perrotta terms a <q cite=/references#refPER10>Nil Guard</q> (<a
-          href=/references#refPER10>Perrotta</a>, pp. 243–244). Its purpose is
-          to assign the rvalue to the lvalue iff the lvalue is <a
-          href=/flow#conditionals>false</a> (<code>false</code> or
-          <code>nil</code>). That is, to initialize the lvalue only if it isn’t
-          already. Perrotta describes an <a
-          href=#instance-variables>instance variable</a> employing this
-          technique as a <q cite=/references#refPER10>Lazy Instance Variable</q>
-          (<a href=/references#refPER10>Perrotta</a>, pp. 243–244).</p>
-
-          <figure id=nil-guard.rb>
-            <figcaption>Initializing a variable only if it hasn’t been already.
-          </figure>
-        </aside>
       </section>
 
       <section>
@@ -1424,17 +1427,17 @@
         href=#parallel-assignment-equal.rb>figure below</a>.</p>
 
         <section>
+          <figure class=sidenote id=parallel-assignment-equal.rb>
+            <figcaption>Parallel assignment when there are the same number of
+            terms on both sides
+          </figure>
+
           <h1 id=parallel-assignment-equal>Equal Number of Lvalues to Rvalues</h1>
           
           <p>When there are as many lvalues as there are rvalues, each lvalue is
           assigned the rvalue in the corresponding position on the right‐hand
           side of the expression. That is, the <var>n</var><sup>th</sup> lvalue
           is assigned the <var>n</var><sup>th</sup></var> rvalue.</p>
-          
-          <figure id=parallel-assignment-equal.rb>
-            <figcaption>Parallel assignment when there are the same number of
-            terms on both sides
-          </figure>
         </section>
 
         <section>
@@ -1447,6 +1450,11 @@
           ASTERISK (<code>*</code>), termed a <dfn>splat</dfn> hereafter.</p>
           
           <section>
+            <figure class=sidenote id=splat-lvalue.rb>
+              <figcaption>A splatted lvalue greedily consumes rvalues into an
+              <code>Array</code>
+            </figure>
+
             <h1 id=splat-lvalue>Splatting an Lvalue</h1>
             
             <p>A maximum of one lvalue may be splatted in which case it is
@@ -1457,20 +1465,15 @@
             consumes as many rvalues as possible while still allowing the
             following lvalues to receive their rvalues.</p>
 
-            <figure id=splat-lvalue.rb>
-              <figcaption>A splatted lvalue greedily consumes rvalues into an
-              <code>Array</code>
-            </figure>
-
             <section>
-              <h1 id=empty-splat>Empty Splat</h1>
+              <h1 class=runin id=empty-splat>Empty Splat</h1>
 
               <p>An lvalue may consist of sole U+002A ASTERISK (<code>*</code>),
               without any associated identifier. It behaves as described above,
               but instead of assigning the corresponding rvalues to the splatted
               lvalue, it discards them.</p>
 
-              <figure id=empty-splat.rb>
+              <figure class=centre id=empty-splat.rb>
                 <figcaption>An lvalue consisting of a sole asterisk greedily
                 consumes the associated rvalues, then discards them
               </figure>
@@ -1480,6 +1483,11 @@
           <section>
             <h1 id=splat-rvalue>Splatting an Rvalue</h1>
             
+            <figure id=splat-rvalue.rb class=sidenote>
+              <figcaption>Splatting an rvalue expands it into its constituent
+              elements
+            </figure>
+
             <p>When an rvalue is splatted it is converted to an
             <code>Array</code> with <code>Kernel.Array()</code>, the values of
             which become rvalues in their own right.
@@ -1494,64 +1502,70 @@
             <code>Range</code>, and <code>Enumerator</code>, splatting expands
             them into a list of their constituent elements.</p>
             <!-- TODO: Aside that #to_splat was previously recommended -->
-
-            <figure id=splat-rvalue.rb>
-              <figcaption>Splatting an rvalue expands it into its constituent
-              elements
-            </figure>
           </section>
         </section>
 
         <section>
           <h1 id=parallel-assignment-one-lvalue>One Lvalue, Many Rvalues</h1>
-          
+
           <p>When multiple rvalues are assigned to a single lvalue, there is an
           <a href=#splat-lvalue>implicit splat operator</a> before the lvalue.
           Therefore, assigning <var>n</var> rvalues to a single lvalue is
           equivalent to:</p>
-                  
+          
+          <figure id=parallel-assignment-one-lvalue.rb class=sidenote>
+            <figcaption>Parallel assignment when there is a sole lvalue
+          </figure>
+
           <pre class=syntax><code>
   <var>lvalue</var> = [<var>rvalue</var><sub>0</sub>,…,<var>rvalue</var><sub><var>n</var></sub>]</code></pre>
             
           <p>If this behaviour is undesirable, the lvalue can be followed by a
           trailing comma, assigning <var>rvalue</var><sub>0</sub> to
           <var>lvalue</var>, and discarding the remaining rvalues.</p>
-          
-          <figure id=parallel-assignment-one-lvalue.rb>
-            <figcaption>Parallel assignment when there is a sole lvalue
-          </figure>
         </section>
 
         <section>
-          <h1 id=parallel-assignment-one-rvalue>Many Lvalues, One Rvalue</h1>
+
+          <aside class=sidenote>
+            <span class=sidemark>†</span>Note that <code>:to_ary</code> is
+            sent rather than the <code>:to_a</code> used by the <a
+              href=#splat-rvalue>splat</a> operator. In the former case, the
+            programmer did not directly request that conversion take place so
+            the message for <a href=/objects#implicit-conversion>implicit</a>
+            conversion is sent; in the latter, his use of the splat operator
+            constitutes an <a href=/objects#explicit-conversion>explicit
+              conversion</a>, so the more liberal protocol is followed.
+          </aside>
           
-          <p>If there are multiple lvalues and a single rvalue that responds to
-          <code>:to_ary</code> with an <code>Array</code>, the elements of this
-          array become rvalues in their own right, replacing the original
-          rvalue.</p>
-          
-          <figure id=parallel-assignment-one-rvalue.rb>
+          <!--><figure class=sidenote id=parallel-assignment-one-rvalue.rb>
             <figcaption>When an <code>Array</code> with
             <var>n</var> elements is assigned to <var>n</var> lvalues, each
             lvalue is assigned one element
+            </figure>-->
+
+          <h1 id=parallel-assignment-one-rvalue>Many Lvalues, One Rvalue</h1>
+
+          <p>If there are multiple lvalues and a single rvalue that responds
+          to <code>:to_ary</code><sup>†</sup> with an <code>Array</code>, the
+          elements of this array become rvalues in their own right, replacing
+          the original rvalue.</p>
+
+
+          <figure class=sidenote id=parallel-assignment-one-rvalue-nil.rb>
+            <figcaption>When an <code>Array</code> with
+            <var>n</var> elements is assigned to fewer than <var>n</var>
+            lvalues, the first <var>n</var> elements are assigned the
+            corresponding lvalue, and the remainder discarded
           </figure>
 
-          <p>Note that <code>:to_ary</code> is sent rather than the
-          <code>:to_a</code> used by the <a
-            href=#splat-rvalue>splat</a> operator. In the former case,
-          the programmer did not directly request that conversion take place so
-          the message for <a href=/objects#implicit-conversion>implicit</a>
-          conversion is sent; in the latter, his use of the splat operator
-          constitutes an <a href=/objects#explicit-conversion>explicit
-            conversion</a>, so the more liberal protocol is followed.</p>
-          
-          <figure id=parallel-assignment-rvalue-to-ary.rb>
+          <figure class=centre id=parallel-assignment-rvalue-to-ary.rb>
             <figcaption>When an object responding to
             <code>:to_ary</code> with an <var>n</var> element <code>Array</code>
             is assigned to <var>n</var> lvalues, each lvalue is assigned one
             element
           </figure>
-          
+
           <p>If there are as many lvalues as there are
           elements in the splatted rvalue, assignment proceeds according to <a
             href=#parallel-assignment-equal>Equal Number of Lvalues to
@@ -1559,26 +1573,28 @@
             href=#parallel-assignment-unequal>Unequal Number of Lvalues to
             Rvalues</a>, applies.</p>
 
-          <figure id=parallel-assignment-one-rvalue-nil.rb>
-            <figcaption>When an <code>Array</code> with
-            <var>n</var> elements is assigned to fewer than <var>n</var>
-            lvalues, the first <var>n</var> elements are assigned the
-            corresponding lvalue, and the remainder discarded
-          </figure>
           
           <!-- Aside: car, *cdr = array -->
-          <!--<figure class=compact id=parallel-assignment-one-rvalue-non-array.rb>
-            <figcaption style=width:45%>When a non-<code>Array</code> is
+          <figure class=sidenote id=parallel-assignment-one-rvalue-non-array.rb>
+            <figcaption>When a non-<code>Array</code> is
             assigned to multiple lvalues, the first lvalue takes the sole
             rvalue, and the remaining lvalues are assigned <code>nil</code>
           </figure>
-          <br class=clear>
-          -->
         </section>
 
         <section>
           <h1 id=parallel-assignment-unequal>Unequal Number of Lvalues to Rvalues</h1>
           
+          <figure class=sidenote id=parallel-assignment-more-lvalues.rb>
+            <figcaption>When there are more lvalues than rvalues, the
+            superfluous lvalues are assigned <code>nil</code> 
+          </figure>
+
+          <figure class=centre id=parallel-assignment-more-rvalues.rb>
+            <figcaption>When there are more rvalues than lvalues, the
+            superfluous rvalues are discarded 
+          </figure>
+
           <p>When the lvalues outnumber the rvalues, assignment proceeds as with
           <a href=#parallel-assignment-equal>equal numbers of lvalues to
             rvalues</a>, with the remaining lvalues being assigned
@@ -1590,25 +1606,19 @@
           and
           <var>lvalue</var><sub><var>n</var>+1</sub>–<var>lvalue</var><sub><var>m</var></sub>
           are assigned <code>nil</code>.</p>
-
-          <figure id=parallel-assignment-more-lvalues.rb>
-            <figcaption>When there are more lvalues than rvalues, the
-            superfluous lvalues are assigned <code>nil</code> 
-          </figure>
            
           <p>Conversely, when the rvalues outnumber the lvalues, assignment
           proceeds as with <a href=#parallel-assignment-equal>equal numbers of
             lvalues to rvalues</a>, with the remaining rvalues being
           discarded.</p>
-
-          <figure id=parallel-assignment-more-rvalues.rb>
-            <figcaption>When there are more rvalues than lvalues, the
-            superfluous rvalues are discarded 
-          </figure>
         </section>
 
         <section>
           <h1 id=sub-assignment>Sub-assignment</h1>
+
+          <figure class=sidenote id=sub-assignment.rb>
+            <figcaption>Using sub‐assignment to distribute nested rvalues
+          </figure>
 
           <p>When a group of at least two lvalues are enclosed in parentheses,
           they are initially treated as a single lvalue in that, collectively,
@@ -1623,25 +1633,21 @@
           Therefore, sub‐assignment is most useful when the corresponding rvalue
           is array‐like, because it distributes the elements of potentially
           nested arrays on the right‐hand side among lvalues.</p>
-
-          <figure id=sub-assignment.rb>
-            <figcaption>Using sub‐assignment to distribute nested rvalues
-          </figure>
         </section>
 
         <section>
           <h1 id=parallel-assignment-value>Value of a Parallel Assignment Expression</h1>
+
+          <figure class=sidenote id=parallel-assignment-value.rb>
+            <figcaption>The value of a parallel assignment expression is its
+            rvalues
+          </figure>
 
           <p>A parallel assignment expression involving a single rvalue has
           that rvalue as its value. Otherwise, the value is
           an <code>Array</code> of the rvalues, including any that were
           discarded. In both cases, the rvalues are splatted as appropriate
           before being returned.</p>
-
-          <figure id=parallel-assignment-value.rb>
-            <figcaption>The value of a parallel assignment expression is its
-            rvalues
-          </figure>
         </section>
       </section>
     </section>

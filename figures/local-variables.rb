@@ -1,10 +1,9 @@
 def scope
-  variable = 1 # Initialize local variable
+  variable = 1
   3.times do
-    variable += 1 # Increment the same variable 
+    variable += 1 
   end
   variable
 end
 scope #=> 4
-# After the block the variable is no longer defined
 defined? variable #=> nil

@@ -1,129 +1,120 @@
-
-section {
-  margin-left: 2%;
-  display: block;
+body {
+  font-size: 0.8;
+  font-family: serif;
 }
 
-body > section  {
-  margin-left: 6%;
-  margin-right: 6%;
+/* Everything has a left margin of at least 4%. The content in the main column
+ * mostly has a right margin of 40%, but we let tables and large figures
+ * overflow. Additionally, the right margin holds sidenotes
+ */
+section > p, h1, table, figure.centre, figure.left, section > dl, ul {
+  margin-left: 4%;
+  margin-right: 40%;
 }
 
-aside {
-  display: block;
-  margin-left: 5%;
-  border-left: 2px solid black;
-  padding-left: 1%;
-  width: 80%;
-}
-figure {
-  display: block;
-}
+/* Short definition lists that appear in tables can be rendered such that
+ * their terms run in with their definitions */
 
-figcaption {
-  display: block;
-  margin-left: 30%;
-  margin-right: 30%;
-  width: 40%;
-  text-align: center;
-  font-style: italic;
-}
-
-figure.compact pre > code {
-  display: block;
-  float: left;
-  white-space: pre;
-  margin-bottom: 3%;
-}
-
-figure.compact figcaption {
-  float: left;
-  margin-left: 2%;
-  width: 20%;
-  display: block;
-  margin-right: 0;
-  text-align: left;
-  font-style: italic;
-}
-figure.compact {
-  clear: both;
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-figcaption.nowrap {
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-}
-
-figure.railroad > img, .centre {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body > section > h1 { 
-  font-size: 160%; 
-  text-align: center; 
-  text-transform: uppercase;
-  margin-top: 1em;
-  margin-bottom: 2em;
-}
-
-body > section > section h1 { 
-  font-size: 140%;
-  text-transform: capitalize;
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-body > section > section > section h1 { font-size: 130% }
-body > section > section > section section h1 { font-size: 120% }
-
-table {
-  margin-left: auto;
-  margin-right: auto;
-}
-table > thead > th {
-  text-align: center;
-}
-
-#operator-methods-table table, #operator-methods-table tr, #operator-methods-table td, #operator-methods-table th {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-
-#operator-methods-table th {
-  padding: 10px;
-}
-#operator-methods-table td {
-  text-align: center;
-  font-size: 120%;
+dl.inline-small > dt {
+  display:run-in;
   font-weight: bold;
 }
-#operator-methods-table td:last-child {
-  text-align: left;
-  padding: 5px;
+dl.inline-small > dt:after {
+  content: ' '
+}
+dl.inline > dt {
+  display:run-in;
+}
+dl.inline > dt:after {
+  content: ': '
+}
+
+/*********** 
+ *         *
+ * FIGURES *
+ *         *
+ ***********/
+
+/* A sidenote is a block that floats in the right margin */  
+.sidenote {
+  float: right;
+  width: 20em;
+  font-family: serif;
+  clear: both;
+}
+
+figure.sidenote {
+  font-family: inherit;
   font-size: 100%;
-  font-weight: normal;
 }
-table > caption {
-  caption-side: bottom;
-  margin-top: 2%;
-  padding-top: 2%;
+
+/* Figures containing preformatted text need a slightly larger font */
+figure pre {
+  font-size: 1.2em;
+}
+
+/* Aside sidenotes are parenthetical remarks that float in the right margin.
+ * We render them in a slightly smaller font to make them appear peripheral */
+aside.sidenote {
+  font-family: sans-serif;
+  font-size: 0.95em;
+  padding-bottom: 1em;
+}
+
+/* Figure captions should appear the same no matter where the figure is
+ * located. They should be, roughly, centered below the figure in a slightly
+ * smaller, italic font. */
+figure.centre figcaption, figure.sidenote figcaption {
+  display: block;
+  width: 15em;
   text-align: center;
+  font-family: sans-serif;
   font-style: italic;
+  font-size: 0.9em;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
 }
 
-#closures-semantics-table th { text-align: left }
-#closures-semantics-table, #closures-semantics-table tr, #closures-semantics-table td, #closures-semantics-table th { 
-  border: 1px solid black;
-  border-collapse: collapse;
-  padding-left: 5px;
-  padding-right: 5px;
+/* Centre figures appear in the main flow of the text */
+figure.centre {
+  display: block;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 36%;
 }
 
+/* Syntax diagrams appear in the main body of the text, flush with the left
+ * margin */
+figure.railroad > img {
+  margin-left: 4%;
+  display: block;
+}
+
+/* The captions for syntax diagrams are hidden */
+figure.railroad figcaption {
+  visibility: hidden;
+}
+
+/* A sidenote may be refrenced from the text with a footnote symbol. If so,
+ * the sidenote features that symbol clearly. */
+span.sidemark {
+  font-weight: bold;
+  font-size: 150%;
+}
+
+/*********** 
+ *         *
+ * TABLES  *
+ *         *
+ ***********/
+
+/* Tables are slightly indented from the left margin */  
+table.border {
+  margin-left: 5.5%;
+}
+
+/* All table cells are bordered with a thin black line */
 table.border, table.border th,  table.border tr, table.border td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -131,28 +122,127 @@ table.border, table.border th,  table.border tr, table.border td {
   padding-right: 5px;
 }
 
-tbody > tr.odd {
-    background-color: #F5F5F5;
-}
-tbody.zebra tr:nth-child(2n+1) {
-    background-color: #F5F5F5;
-}
-tbody > th {
+/* Table headings are bold and centered */
+tbody > th, th {
   text-align: center
   display: inline;
   font-weight: bold;
 }
 
-.left {
-  float: left
+/* The following two styles are for zebra striping table rows. The first is
+ * cleaner, but assumes no rowspans; the second relies on a class being
+ * applied manually to such tables. */
+
+tbody.zebra tr:nth-child(2n+1) {
+    background-color: #F5F5F5;
+}
+tbody > tr.odd {
+    background-color: #F5F5F5;
 }
 
-.inline {
-  display: inline
+/* Table captions are similar to figure captions. They are centered below the
+ * table, in a slightly smaller, italic font */
+table > caption {
+  caption-side: bottom;
+  margin-top: 2%;
+  padding-top: 2%;
+  text-align: center;
+  font-style: italic;
+  font-size: 90%;
 }
 
-.clear {
-  clear: both
+
+/************ 
+ *          *
+ * HEADINGS *
+ *          *
+ ************/
+
+/* Most headings have a bottom border */  
+h1 {
+  margin-bottom: 1em;
+}
+
+/* Chapter title */
+body > section > h1 {
+  font-size: 2em;
+  text-align: center;
+  text-transform: uppercase;
+  counter-reset: a;
+}
+
+/* First-level */
+body > section > section > h1:before {
+  display: marker;
+  content: counter(a) ". ";
+  counter-increment: a;
+}
+body > section > section > h1 {
+  counter-reset: b; 
+  font-size: 1.8em;
+  text-align: left;
+  margin-left: 0.2em;
+  font-variant: small-caps;
+}
+
+/* Second-level */
+body > section > section > section > h1:before {
+  display: marker;
+  content: counter(a) "." counter(b) " ";
+  counter-increment: b;
+}
+body > section > section > section > h1 {
+  counter-reset: c;
+  font-size: 1.6em;
+  text-align: center;
+  margin-left: 0.2em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  letter-spacing: -1px;
+
+}
+
+/* Third-level */
+body > section > section > section > section > h1:before {
+  display: marker;
+  content: counter(a) "." counter(b) "." counter(c) " ";
+  counter-increment: c;
+}
+body > section > section > section > section > h1 {
+  font-size: 1.4em;
+  margin-left: 4%;
+  padding-top: 1em;
+}
+
+/* Fourth-level */
+body > section > section > section > section > section > h1 {
+  padding-top: 1em;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  font-size: 1.3em;
+  font-weight: normal;
+  font-style: italic;
+  margin-left: 4%;
+}
+body > section > section > section > section > section > h1 + p {
+  padding-top: 0.2;
+  margin-top: 0;
+}
+
+/* Fifth-level */
+/* Headings deeper than 4th level are all displayed in the same way. Higher
+ * headings can elect for this treatment by applying the runin class. They
+ * are bold and run-in to their child paragraph. */
+body > section > section > section > section > section > section h1, h1.runin {
+  font-size: 1em;
+  font-weight: bold;
+  display: run-in;
+  padding-right: 0.5em;
+  margin-right:0;
+}
+
+body > section > section > section > section > section > section h1:after {
+  content: ". "
 }
 
 div#alpha-strip {
@@ -170,33 +260,6 @@ div#alpha-strip {
   text-size: 120%;
 }
 
-dl.inline > dt {
-  display:run-in;
-}
-dl.inline > dt:after {
-  content: ': '
-}
-
-dl.inline-small > dt {
-  display:run-in;
-  font-weight: bold;
-}
-dl.inline-small > dt:after {
-  content: ' '
-}
-
-#operator-table a {
-  color: inherit;
-}
-
-/* Comment interface. Pare down? */
-#configUI { position: absolute; z-index: 20; top: 10em; right: 0; width: 11em; padding: 0 0.5em 0 0.5em; font-size: small; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em 0 0 1em; -moz-border-radius: 1em 0 0 1em; }
- #configUI p { margin: 0.75em 0; padding: 0.3em; }
- #configUI p label { display: block; }
- #configUI #updateUI, #configUI .loginUI { text-align: center; }
- #configUI input[type=button] { display: block; margin: auto; }
- #configUI :link, #configUI :visited { color: white; }
- #configUI :link:hover, #configUI :visited:hover { background: transparent; }
  #reviewer { position: fixed; bottom: 0; right: 0; padding: 0.15em 0.25em 0em 0.5em; white-space: nowrap; overflow: hidden; z-index: 30; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em 0 0 0; -moz-border-radius: 1em 0 0 0; }
  #reviewer * { font-size: small; }
  #reviewer.off > :not(:first-child) { display: none; }
