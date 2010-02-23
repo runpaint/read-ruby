@@ -241,7 +241,12 @@
     <section>
       <h1 id=expression-syntax>Message Expression Syntax</h1>
 
-      <!-- We're using _message expression_ to describe this syntax... (dfn it?) -->
+      <figure class=railroad>
+        <img id=expression-list.png>
+        <img id=argument-list.png>
+        <img id=message-expression.png>
+        <figcaption>Syntax diagram for message expression
+      </figure>
 
       <p>The simplest <dfn title="message expression">expression for sending a
       message</dfn> is <code><var>s</var></code><sup>†</sup>, where
@@ -374,7 +379,7 @@
 
         <section>
           <h1 id=parentheses>Parentheses</h1>
-
+          
             <p>Parentheses may be omitted from message expressions when
             doing so does not introduce syntactic ambiguity.
 
@@ -432,13 +437,6 @@
             list with a message expression—so the above form represents an
             ambiguity.</p>
         </section>
-
-        <figure class=railroad>
-          <img id=expression-list.png>
-          <img id=argument-list.png>
-          <img id=message-expression.png>
-          <figcaption>Syntax diagram for message expression
-        </figure>
       </section>
       
       <section>
@@ -609,7 +607,6 @@
         expected, by default, to respond to <code>:each</code> by yielding the
         next element of the sequence. Conventionally, it returns an
         <code>Enumerator</code> when the block is omitted.</p>
-
 
         <figure class=centre id=each-selector.rb>
           <figcaption>The <code>:each</code> selector yields each
@@ -886,8 +883,9 @@
         result. For example: <code>Fixnum#*</code>, <code>String#*</code>,
         and <code>Array#*</code>.</p>
 
-        <figure class=sidenote id=asterisk-selector.rb> <figcaption>The
-        <code>:*</code> selector duplicates the receiver by the argument.
+        <figure class=sidenote id=asterisk-selector.rb> 
+          <figcaption>The <code>:*</code> selector duplicates the receiver by
+          the argument.
         </figure>
       </section>
           <!-- :/ - only used by Numerics -->
@@ -924,16 +922,15 @@
           that alters the object in place.</q> <a class=ref
           href=/references#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a></p>
 
-          <figure class=centre id=bang-messages.rb>
-            <figcaption>The <code>!</code> suffix often indicates that a
-            message will modify the receiver in place, or is otherwise
-            “dangerous”.
-          </figure>
+        <figure class=centre id=bang-messages.rb>
+          <figcaption>The <code>!</code> suffix often indicates that a
+          message will modify the receiver in place, or is otherwise
+          “dangerous”.
+        </figure>
 
-          <p>Both suffixes are merely <i>conventional</i>, however; they do not
-          guarantee that the receiver will respond in the aforementioned
-          manner.</p>
-
+        <p>Both suffixes are merely <i>conventional</i>, however; they do not
+        guarantee that the receiver will respond in the aforementioned
+        manner.</p>
       </section>
       
       <section>
@@ -960,9 +957,7 @@
         empty <code>Enumerator</code>. This property is desirable because it
         allows the returned value to be treated as <code>Enumerable</code>
         regardless of its size.
-      <section> <!-- /Plurality --> 
-    </section>
-     <!--
+      </section> <!-- /Plurality 
      <h4>A Survey of Selectors</h4>
      Enumerable
      :all?, - Determiner, predicate 
@@ -1012,13 +1007,10 @@
      :zip
 
      Hash#has_*
-     <ol>
-       <li>Typically verbs. If message has multiple senses, verbal is most
+       Typically verbs. If message has multiple senses, verbal is most
        likely.
-       <li>Nouns imply attribute accessor; don't take block?
-     </ol>
+       Nouns imply attribute accessor; don't take block?
      -->
-    </section>
 
     <section>
       <h1 id=responding-messages>Responding to Messages</h1>
