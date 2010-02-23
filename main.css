@@ -1,6 +1,6 @@
 body {
-  font-size: 0.9em;
-  font-family: serif;
+  font-size: medium;
+  font-family: Palatino, Tahoma, sans-serif; /* TODO: Create better list */
 }
 
 /* Everything has a left margin of at least 4%. The content in the main column
@@ -49,13 +49,7 @@ dl.inline > dt:after {
   padding-top: 2em;
   float: right;
   width: 20em;
-  font-family: serif;
   clear: both;
-}
-
-figure.sidenote {
-  font-family: inherit;
-  font-size: 100%;
 }
 
 /* Figures containing preformatted text need a slightly larger font */
@@ -66,8 +60,8 @@ figure pre {
 /* Aside sidenotes are parenthetical remarks that float in the right margin.
  * We render them in a slightly smaller font to make them appear peripheral */
 aside.sidenote {
-  font-family: sans-serif;
-  font-size: 0.80em;
+  font-size: 90%;
+  font-style: italic;
   padding-bottom: 1em;
 }
 
@@ -78,9 +72,8 @@ figure.centre figcaption, figure.sidenote figcaption {
   display: block;
   width: 15em;
   text-align: center;
-  font-family: sans-serif;
   font-style: italic;
-  font-size: 0.9em;
+  font-size: 90%;
   margin-left: 10%;
   margin-right: 10%;
   width: 80%;
@@ -111,8 +104,8 @@ figure.railroad figcaption {
 span.sidemark {
   font-weight: bold;
   font-size: 150%;
+  padding-right: 0.2em;
 }
-
 /*********** 
  *         *
  * TABLES  *

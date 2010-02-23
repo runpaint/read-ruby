@@ -99,8 +99,10 @@ rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies source(t)  }) do |t|
   nok = Nokogiri::HTML(File.read source)
   nok.css(*FIGURE_CSS).each do |el|
     if el['id'] and el['id'].end_with?('.rb')
-      file = target('figures/' + el['id'])
-      el.at("figcaption").before(File.read file)
+      el.at('figcaption').remove
+      el.remove
+      #file = target('figures/' + el['id'])
+      #el.at("figcaption").before(File.read file)
     elsif el['id'].end_with?('.png')
       el['src'] = path = "figures/#{el['id']}"
       el.delete('id')
