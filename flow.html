@@ -175,75 +175,6 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
         </figure>
       </section>
     </section>
-  </section>
-
-  <section>
-    <h1 id=boolean-logic>Boolean Logic</h1>
-    
-    <p>The Boolean logic operators return either <code>true</code> or
-    <code>false</code> by evaluating their operands as conditionals. For this
-    reason, Boolean expressions are often themselves used as conditionals.
-
-    <p>There are two forms of each Boolean operator—keyword (e.g.
-    <code>and</code>) and  punctuation (e.g. <code>&amp;&amp;</code>)—which
-    differ only in precedence. The former have low precedence; the latter
-    high.</p>
-
-    <section>
-      <h1 id=and-operator>AND Operator</h1>
-      
-      <figure class=railroad>
-        <img id=boolean-and-operator.png>
-        <figcaption>Syntax diagram of the Boolean AND operator
-      </figure>
-
-      <p>The binary <code>and</code>/<code>&amp;&amp;</code> operators return
-      <code>true</code> iff both operands are true. They perform short-circuit
-      evaluation, so will only evaluate the second operand if the first is
-      true.</p>
-
-      <figure id=and-operator-fig.rb>
-        <figcaption>Using the Boolean AND operator (<code>&amp;&amp;</code>)
-        and the bitwise AND operator (<code>&amp;</code>) to determine whether
-        an integer is a power of 2
-      </figure>
-    </section>
-
-    <section>
-      <h1 id=or-operator>OR Operator</h1>
-
-      <figure class=railroad>
-        <img id=boolean-or-operator.png>
-        <figcaption>Syntax diagram of the Boolean OR operator
-      </figure>
-
-      <p>The binary <code>or</code>/<code>||</code> operators return
-      <code>true</code> iff at least one operand is true. They perform
-      short-circuit evaluation, so will only evaluate the second operand if
-      the first is false.</p>
-
-      <figure id=or-operator-fig.rb>
-        <figcaption>Using the Boolean OR operator to determine whether the
-        check digit of an ISBN-13 is correct
-      </figure>
-    </section>
-
-    <section>
-      <h1 id=not-operator>NOT Operator</h1>
-
-      <figure class=railroad>
-        <img id=boolean-not-operator.png>
-        <figcaption>Syntax diagram of the Boolean NOT operator
-      </figure>
-
-      <p>The unary <code>not</code>/<code>!</code> operators return
-      <code>true</code> iff the operand is false.</p>
-
-      <figure id=not-operator-fig.rb>
-        <figcaption>Using the Boolean NOT operator to invert the value of its
-        operand
-      </figure>
-    </section>
 
     <section>
       <h1 id=ternary-operator>Ternary Operator</h1>
@@ -354,8 +285,78 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
         status code
       </figure>
     </section>
-    <!-- TODO: Boolean flip-flop -->
   </section>
+
+  <section>
+    <h1 id=boolean-logic>Boolean Logic</h1>
+    
+    <p>The Boolean logic operators return either <code>true</code> or
+    <code>false</code> by evaluating their operands as conditionals. For this
+    reason, Boolean expressions are often themselves used as conditionals.
+
+    <p>There are two forms of each Boolean operator—keyword (e.g.
+    <code>and</code>) and  punctuation (e.g. <code>&amp;&amp;</code>)—which
+    differ only in precedence. The former have low precedence; the latter
+    high.</p>
+
+    <!-- TODO: Boolean flip-flop -->
+    <section>
+      <h1 id=and-operator>AND Operator</h1>
+      
+      <figure class=railroad>
+        <img id=boolean-and-operator.png>
+        <figcaption>Syntax diagram of the Boolean AND operator
+      </figure>
+
+      <p>The binary <code>and</code>/<code>&amp;&amp;</code> operators return
+      <code>true</code> iff both operands are true. They perform short-circuit
+      evaluation, so will only evaluate the second operand if the first is
+      true.</p>
+
+      <figure id=and-operator-fig.rb>
+        <figcaption>Using the Boolean AND operator (<code>&amp;&amp;</code>)
+        and the bitwise AND operator (<code>&amp;</code>) to determine whether
+        an integer is a power of 2
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=or-operator>OR Operator</h1>
+
+      <figure class=railroad>
+        <img id=boolean-or-operator.png>
+        <figcaption>Syntax diagram of the Boolean OR operator
+      </figure>
+
+      <p>The binary <code>or</code>/<code>||</code> operators return
+      <code>true</code> iff at least one operand is true. They perform
+      short-circuit evaluation, so will only evaluate the second operand if
+      the first is false.</p>
+
+      <figure id=or-operator-fig.rb>
+        <figcaption>Using the Boolean OR operator to determine whether the
+        check digit of an ISBN-13 is correct
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=not-operator>NOT Operator</h1>
+
+      <figure class=railroad>
+        <img id=boolean-not-operator.png>
+        <figcaption>Syntax diagram of the Boolean NOT operator
+      </figure>
+
+      <p>The unary <code>not</code>/<code>!</code> operators return
+      <code>true</code> iff the operand is false.</p>
+
+      <figure id=not-operator-fig.rb>
+        <figcaption>Using the Boolean NOT operator to invert the value of its
+        operand
+      </figure>
+    </section>
+  </section>
+
 
   <section>
     <h1 id=looping>Looping</h1>
