@@ -32,7 +32,9 @@
   <section>
     <h1 id=primary-expressions>Primary Expressions</h1>
       
-    <!-- TODO: Intro -->
+    <!-- TODO: Intro. We can't simply describe them as atomic because float
+         literals, for example, can indeed be broken down into parts which are
+         themselves expressions. -->
 
     <section>
       <h1 id=literals>Literals</h1>
@@ -88,6 +90,12 @@
 
         <section>
           <h1 class=runin id=file><code>__FILE__</code></h1>
+
+          <p>Evaluates to a string consisting of the name of the source file
+          currently being executed. The strings <samp>(eval)</samp> and
+          <samp>(irb)</samp> are returned when in an <code>eval</code> context
+          and <abbr title="Interactive Ruby">IRB</abbr> session,
+          respectively.</p>
         </section>
 
         <section>
