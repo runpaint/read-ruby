@@ -12,16 +12,47 @@
 
   <section>
     <h1 id=source-files>Source Files</h1>
-    <!-- .rb, plain text -->
+
+    <p>Ruby programs are typically stored in plain text files with an
+    <code>.rb</code> filename extension.</p>
+
+    <section>
+      <h1 id=shebang>Shebang</h1>
+    </section>
+
+    <section>
+      <h1 id=source-encoding>Source Encoding</h1>
+
+      <p>The <dfn>source encoding</dfn> is the character encoding of a given
+      source file. It is US-ASCII by default. A <code>SyntaxError</code> is
+      raised when a source file contains one or more characters invalid in the
+      source encoding.
+
+      <p>A file’s source encoding may be specified inline by means of a
+      <dfn>coding comment</dfn>: a specially formatted comment that declares
+      the encoding of the lines that follow. If omitted, the default source
+      encoding is assumed. If a source file contains a shebang line, the
+      coding comment must appear on the second line; otherwise it must appear
+      on the first. 
+
+      <!-- Tabulte encoding names? -->
+      <!-- TODO: Example showing relation to Vim/Emacs encoding declarations
+      -->
+      <p>The coding comment is a US-ASCII string which begins with a U+0023
+      NUMBER SIGN (<code>#</code>) and contains the string <code>coding</code>
+      followed by an equals sign U+003D EQUALS SIGN (<code>=</code>) or U+003A
+      COLON (<code>:</code>) then the name of the source encoding. The
+      encoding name is one of those returned by
+      <code>Encoding.name_list</code> written in a case insensitive
+      fashion.
+
+      <p>The source encoding of the currently executing code can be obtained
+      with the <a href=/expressions#encoding><code>__ENCODING__</code></a>
+      keyword.
+    </section>
   </section>
 
-  <section>
-    <h1 id=source-encoding>Source Encoding</h1>
-  </section>
 
-  <section>
-    <h1 id=shebang>Shebang</h1>
-  </section>
 
   <section>
     <h1 id=interpreter>Interpreter</h1> <!-- i.e. ruby -->
