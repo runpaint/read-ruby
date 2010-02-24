@@ -104,6 +104,28 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
         operand
       </figure>
     </section>
+
+    <section>
+      <h1 id=flip-flop>Flip Flops</h1>
+
+      <p>When the <code>..</code> or <code>...</code> operators are used in a
+      conditional they don’t have their usual semantics as <a
+        href=/objects#ranges>range literals</a>; they create a
+      <dfn>flip-flop</dfn> expression: a stateful, bitstable, Boolean test
+      between two expressions. They take the form
+      <code><var>left</var>..<var>right</var></code>, where <var>left</var>
+      and <var>right</var> are both Boolean expressions. They are false until
+      <var>left</var> is true, at which point they become true, remaining true
+      until <var>right</var> is true, at which point they become false until
+      <var>left</var> becomes true again. In this way they <i>flip-flop</i>
+      between true and false. 
+      
+      <p>When a flip-flop becomes true it tests <var>right</var> to determine
+      whether its next state should be false. If <var>left</var> and
+      <var>right</var> are separated by three consecutive periods instead of
+      two, <var>right</var> is not tested until the expression is next
+      evaluated.
+    </section>
   </section>
 
   <section>
