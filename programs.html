@@ -190,6 +190,34 @@
     <section>
       <h1 id=statement-terminators>Statement Terminators</h1>
       
+      <p>Statements may be terminated with a U+003B SEMICOLON
+      (<code>;</code>). More commonly they are terminated by
+      <dfn>newlines</dfn>: one of the following character sequences:
+
+      <ul>
+        <li>U+000A (line feed)
+        <li>U+000C (form feed)
+        <li>U+000D (carriage return)
+        <li>U+000D U+000A (carriage return followed by line feed)
+      </ul>
+
+      <p>A newline does not terminate a statement if:
+      
+      <ul>
+        <li>It is immediately preceded by U+005C REVERSE SOLIDUS
+        (<code>\</code>).
+        <li>It is preceded by an <a href=/expressions#operators>operator</a>, with optional intervening
+        <a href=#whitespace>whitespace</a>.
+        <li>It is immediately preceded by a U+002C COMMA (<code>,</code>) or
+        U+002E FULL STOP (<code>.</code> in a <a
+          href=/messages#expressions>message expression</a> or <a
+          href=/objects#arrays>array</a>/<a href=/objects#hashes>hash</a>
+        literal, with optional intervening whitespace. 
+        <li>The first non-whitespace character on the following line is a
+        U+002E FULL STOP (<code>.</code>). (Allows <a
+          href=/message#chaining>chained</a> message expressions to span
+        lines).
+      </ul>
     </section>
 
     <section>

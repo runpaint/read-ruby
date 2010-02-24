@@ -196,7 +196,7 @@ body > section > section > h1 {
 /* Second-level */
 body > section > section > section > h1:before {
   display: marker;
-  content: counter(a) "." counter(b) " ";
+  content: counter(a) "." counter(b) "  ";
   counter-increment: b;
 }
 body > section > section > section > h1 {
