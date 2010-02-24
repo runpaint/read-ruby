@@ -78,7 +78,27 @@
 
 
   <section>
-    <h1 id=interpreter>Interpreter</h1> <!-- i.e. ruby -->
+    <aside class=sidenote>
+      <span class=sidemark>†</span>There are several alternative
+      implementations such as <a href=//jruby.org/>JRuby</a> and <a
+        href=//rubini.us/>Rubinius</a>.  However, for the purposes of this
+      book neither are recommended because, although JRuby is close, they are
+      not yet compatible with Ruby 1.9.
+    </aside>
+
+    <h1 id=interpreter>Interpreter</h1>
+
+    <p>The <dfn>interpreter</dfn> is the program that executes Ruby source
+    code. The reference implementation<sup>†</sup> of Ruby, or <abbr
+      title="Matz’s Ruby Implementation">MRI</abbr>, contains an interpreter
+    called <code>ruby</code>.
+
+    <p>The interpreter is typically supplied the filename of a source file as
+    an argument, which it then executes, i.e. <code>ruby
+      <var>file</var></code>. If it is supplied with the <code>-e</code>
+    switch, Ruby source code may be provided on the command line, i.e.
+    <code>ruby -e '<var>code</var>'</code>. Often the interpreter is invoked
+    implicitly via a <a href=#shebang>shebang line</a>.
   </section>
 
   <section>
