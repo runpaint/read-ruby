@@ -167,6 +167,29 @@
 
     <section>
       <h1 id=whitespace>Whitespace</h1>
+
+      <p><dfn>Whitespace</dfn> consists only of U+0009–U+000D and U+0020:
+
+      <ul>
+        <li>U+0009 (horizontal tab)
+        <li>U+000A (line feed)
+        <li>U+000B (vertical tab)
+        <li>U+000C (form feed)
+        <li>U+000D (carriage return)
+        <li>U+000D U+000A (carriage return followed by line feed)
+        <li>U+0020 SPACE
+      </ul>
+
+      <p>The primary role of whitespace in Ruby syntax is to separate tokens
+      and terminate statements. When whitespace is syntactically significant
+      it is typically collapsed to a single space. The few areas of syntax
+      where whitespace has different semantics are clearly labeled. Newlines
+      are used as <a href=#statement-terminators>statement terminators</a>.
+    </section>
+
+    <section>
+      <h1 id=statement-terminators>Statement Terminators</h1>
+      
     </section>
 
     <section>
@@ -190,9 +213,6 @@
     <h1 id=statements>Statements</h1>
   </section>
 
-  <section>
-    <h1 id=statement-terminators>Statement Terminator</h1>
-  </section>
 
   <section>
     <h1 id=block-structure>Block Structure</h1>
