@@ -17,7 +17,30 @@
     <code>.rb</code> filename extension.</p>
 
     <section>
+      <aside class=sidenote>
+        <span class=sidemark>†</span>A portmanteau of <i>sharp</i> and
+        <i>bang</i> (<a href=/references#refWALL00>Wall, Christiansen, &amp;
+          Orwant</a>, p. 1001), colloquial terms for U+0023 NUMBER SIGN
+        (<code>#</code>) and U+0021 EXCLAMATION MARK (<code>!</code>),
+        respectively.
+      </aside>    
+
       <h1 id=shebang>Shebang</h1>
+
+      <p>The <dfn>shebang</dfn><sup>†</sup> is a notation for informing a
+      UNIX-like operating system of the interpreter with which a script should
+      be executed. If present it must appear as the first line of a source
+      file. It begins with a U+0023 NUMBER SIGN (<code>#</code>), making it a
+      legal comment line therefore ignored by the interpreter, which is
+      followed by a U+0021 EXCLAMATION MARK (<code>!</code>) then the path to
+      the interpreter.
+
+      <p>A typical shebang is <code>#!/usr/bin/env ruby -w</code> which uses
+      <code>env</code> to avoid hardcoding the path to the interpreter, and
+      passes the <code>-w</code> option to the interpreter to enable warnings.
+
+      <p>If a script containing a shebang is executable it may be executed by
+      entering its filename in the shell.
     </section>
 
     <section>
