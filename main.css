@@ -38,6 +38,11 @@ dl.inline > dt:after {
   font-size: 2em;
   font-weight: bolder;
 }
+
+dfn {
+  font-variant: small-caps;
+}
+
 /*********** 
  *         *
  * FIGURES *
