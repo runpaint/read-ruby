@@ -54,28 +54,32 @@
       <p>A file’s source encoding may be specified inline by means of a
       <dfn>coding comment</dfn>: a specially formatted comment that declares
       the encoding of the lines that follow. If omitted, the default source
-      encoding is assumed. If a source file contains a shebang line, the
-      coding comment must appear on the second line; otherwise it must appear
-      on the first. 
+      encoding is assumed. If a source file contains a <a
+        href=#shebang>shebang</a> line, the coding comment must appear on the
+      second line; otherwise it must appear on the first.</p>
 
+      <aside class=sidenote>
+        <span class=sidemark>†</span>That the coding comment need only
+        <em>contain</em> <i>coding</i> allow Ruby to recognise Vim and Emacs
+        modelines which declare a file’s encoding. For example, <code># vim:
+          set fileencoding=utf-8 :</code> informs both Vim and Ruby that the
+        file is encoded in UTF-8.
+      </aside>
+      
       <!-- Tabulte encoding names? -->
       <!-- TODO: Example showing relation to Vim/Emacs encoding declarations
-      -->
-      <p>The coding comment is a US-ASCII string which begins with a U+0023
-      NUMBER SIGN (<code>#</code>) and contains the string <code>coding</code>
-      followed by an equals sign U+003D EQUALS SIGN (<code>=</code>) or U+003A
-      COLON (<code>:</code>) then the name of the source encoding. The
-      encoding name is one of those returned by
-      <code>Encoding.name_list</code> written in a case insensitive
-      fashion.
+      --> <p>The coding comment is a US-ASCII string which begins with a
+      U+0023 NUMBER SIGN (<code>#</code>) and contains<sup>†</sup> the string
+      <code>coding</code> followed by an equals sign U+003D EQUALS SIGN
+      (<code>=</code>) or U+003A COLON (<code>:</code>) then the name of the
+      source encoding. The encoding name is one of those returned by
+      <code>Encoding.name_list</code> written in a case insensitive fashion.
 
       <p>The source encoding of the currently executing code can be obtained
       with the <a href=/expressions#encoding><code>__ENCODING__</code></a>
       keyword.
     </section>
   </section>
-
-
 
   <section>
     <aside class=sidenote>
@@ -98,7 +102,17 @@
       <var>file</var></code>. If it is supplied with the <code>-e</code>
     switch, Ruby source code may be provided on the command line, i.e.
     <code>ruby -e '<var>code</var>'</code>. Often the interpreter is invoked
-    implicitly via a <a href=#shebang>shebang line</a>.
+    implicitly via a <a href=#shebang>shebang line</a>.</p>
+
+    <section>
+      <h1 id=warnings>Warnings</h1>
+
+      <p><dfn>Warnings</dfn>— notices of deprecated, ambigious, or otherwise
+      problematic, code— are enabled when the interpreter is given the
+      <code>-w</code> switch. For example, Ruby warns when a <a
+        href=/expressions#constants>constant</a> that has already been defined
+      is assigned to.
+    </section>
   </section>
 
   <section>
