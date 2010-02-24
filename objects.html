@@ -885,13 +885,19 @@
           <i>exclusive</i>: the former includes the endpoint; the latter
           does not. For example, 0–9 is a range consisting of all
           single-digit integers, expressed by specifying the start-point
-          and endpoint.
+          and endpoint.</p>
 
-          <p>A <code>Range</code> literal consists of two values
-          separated by two or three periods: the former range is
-          inclusive; the latter exclusive. For example,
-          <code>'a'...'z'</code> represents letters
-          <i>a</i>–<i>y</i>.</p>
+          <aside class=sidenote>
+            <span class=sidemark>†</span>In the conditional of a branching or looping
+              statement, two or three consecutive periods don’t create a
+              range; they constitute a <a href=/flow#flip-flop>Boolean
+                flip-flop</a>.
+          </aside>
+          
+          <p>A <code>Range</code> literal consists of two values separated by
+          two or three periods<sup>†</sup>: the former range is inclusive; the
+          latter exclusive. For example, <code>'a'...'z'</code> represents
+          letters <i>a</i>–<i>y</i>.</p>
           
           <figure class=railroad>
             <img id=range-literal.png>
