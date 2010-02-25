@@ -134,7 +134,30 @@
     <h1 id=lexical>Lexical Structure</h1>
 
     <section>
+      <aside class=sidenote>
+        <code>Ripper</code> is a class in the standard library for parsing and
+        analysing Ruby. The <code>Ripper.tokenize</code> method takes a string
+        of code as an argument and returns an array of its constituent tokens.
+        Experiment with this method in <abbr title="Interactive
+          Ruby">IRB</abbr> (<code>irb -rripper</code>) to test your
+        assumptions of how tokenization works.
+      </aside>
+
       <h1 id=tokens>Tokens</h1>
+
+      <p><dfn>Tokens</dfn> are <q>the mark or series of marks that denote one
+        symbol or word in the language</q> (<a
+        href=/references#refFISCHER92>Fischer &amp; Grodzinsky</a>, pp.
+      59–62). A Ruby program consists of a combination of the following
+      tokens:
+
+      <ul>
+        <li><a href=#comments>Comments</a>
+        <li><a href=/objects#literals>Literals</a>
+        <li>Punctuation
+        <li><a href=#identifiers>Identifiers</a>
+        <li><a href=#keywords>Keywords</a>
+      </ul>
     </section>
 
     <section>
