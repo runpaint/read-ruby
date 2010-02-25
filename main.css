@@ -1,6 +1,16 @@
 body {
   font-size: medium;
   font-family: Palatino, Tahoma, sans-serif; /* TODO: Create better list */
+  font-color: black;
+  background-color: white;
+}
+
+/* Mute the default hyperlink colours */
+a:link {
+  color: #6495ED;
+}
+a:visited {
+  color: #9966CC;
 }
 
 /* Everything has a left margin of at least 4%. The content in the main column
