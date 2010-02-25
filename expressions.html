@@ -171,9 +171,9 @@
           <p>A constant reference may also be qualified by prefixing the
           constant name with the <q cite=/references#refTHOM09><dfn>scope
           operator</dfn></q> (<a href=/references#refTHOM09>Thomas et al.</a>,
-          2009, pp. 336–339): two consecutive U+003A COLON (<code>:</code>)
-          characters. This causes the constant to be looked up in the global
-          scope.
+          2009, pp. 336–339): two consecutive colon (<code class=u
+          title=':'>U＋003A</code>) characters. This causes the constant to be
+          looked up in the global scope.
 
           <p>A reference may be qualified further by preceding the scope
           operator with an expression evaluating to the <code>Class</code> or
@@ -336,9 +336,9 @@
           
           <p>A local variable is named by an <a
           href=/programs#identifiers>identifier</a> whose first character is a
-          lowercase US‐ASCII character (<code>a</code>–<code>z</code>) or
-          U+005F LOW LINE (<code>_</code>). Conventionally, the name consists
-          of lowercase words separated by low lines.
+          lowercase US‐ASCII character (<code>a</code>–<code>z</code>) or low
+          line (<code class=u title='_'>U＋005F</code>). Conventionally, the
+          name consists of lowercase words separated by low lines.
         </section>
 
         <section>
@@ -378,13 +378,13 @@
           <h1 id=local-variables-initialization>Initialization</h1>
 
           <p>A variable is initialized if it appears on the left‐hand side
-          (before the U+003D EQUALS SIGN (<code>=</code>)) of an assignment
-          expression. However, this assignment expression need not actually
-          execute: its mere presence is enough to create the variable. For
-          example, if an assignment expression involving a local variable on the
-          left‐hand side appears within a branch that does not execute, the
-          variable comes into existence.  Variables of this sort have the value
-          <code>nil</code>.</p>
+          (before the equals sign (<code class=u title='='>U＋003D</code>)) of
+          an assignment expression. However, this assignment expression need
+          not actually execute: its mere presence is enough to create the
+          variable. For example, if an assignment expression involving a local
+          variable on the left‐hand side appears within a branch that does not
+          execute, the variable comes into existence.  Variables of this sort
+          have the value <code>nil</code>.</p>
 
           <p>Attempting to use an uninitialized local variable causes the
           identifier to be interpreted as a message selector which is sent to
@@ -405,8 +405,8 @@
           
           <!-- Cooper prefers the term <q>object variable</q>.-->
 
-          <p>An instance variable is named by an
-          identifier with a U+0040 COMMERCIAL AT (<code>@</code>) sigil:
+          <p>An instance variable is named by an identifier with a commercial
+          at (<code class=u title='@'>U＋0040</code>) character as the sigil:
           <code>@<var>identifier</var></code>. Conventionally, the name
           consists of lowercase words separated by low lines.</p>
 
@@ -460,9 +460,9 @@
           <h1 id=class-variables-name>Name</h1>
           
           <p>A class variable is named by an identifier whose sigil is two
-          consecutive U+0040 COMMERCIAL AT (<code>@</code>) characters:
-          <code>@@<var>identifier</var></code>. Conventionally, the name
-          consists of lowercase words separated by low lines.
+          consecutive commercial at (<code class=u title='@'>U＋0040</code>)
+          characters: <code>@@<var>identifier</var></code>. Conventionally,
+          the name consists of lowercase words separated by low lines.
         </section>
 
         <section>
@@ -541,10 +541,10 @@
         <section>
           <h1 id=globals-name>Name</h1>
 
-          <p>A global variable is named with a U+0024 DOLLAR SIGN
-          (<code>$</code>) sigil: <code>$<var>identifier</var></code>.
-          Conventionally, the name consists of lowercase words separated by low
-          lines.
+          <p>A global variable is named with a dollar sign (<code class=u
+          title='$'>U＋0024</code>) sigil:
+          <code>$<var>identifier</var></code>.  Conventionally, the name
+          consists of lowercase words separated by low lines.
 
           <p>A global variable should not be defined with the same name as a
           predefined global variable, and indeed cannot if that variable is
@@ -1122,9 +1122,10 @@
         form it performs summation. To distinguish between these two cases,
         the unary forms of <code>+</code> and <code>-</code> are named
         <code>+@</code> and <code>-@</code>, respectively. (Note: it is merely
-        a coincidence that U+0040 COMMERCIAL AT (<code>@</code>) is used as
-        both a sigil for class and instance variables and in the names of
-        these operators; there is no connection).</p>
+        a coincidence that a commerical at sign (<code class=u
+        title='@'>U＋0040</code>) is used as both a sigil for class and
+        instance variables and in the names of these operators; there is no
+        connection).</p>
       </section>
 
       <section>
@@ -1240,9 +1241,9 @@
 
       <p>An assignment expression sets the value of one or more <a
       href=#lvalues>lvalues</a> to their corresponding <a
-      href=#rvalues>rvalues</a>. Its general form is <code><var>lvalues</var> =
-      <var>rvalues</var></code>: one or more lvalues, a U+003D EQUALS SIGN
-      (<code>=</code>), then one or more rvalues.</p>
+      href=#rvalues>rvalues</a>. Its general form is <code><var>lvalues</var>
+      = <var>rvalues</var></code>: one or more lvalues, an equals sign (<code
+      class=u title='='>U＋003D</code>, then one or more rvalues.</p>
 
       <section>
         <h1 id=lvalues>Lvalues</h1>
@@ -1278,12 +1279,14 @@
           <h1 id=lvalue-attribute>Attributes</h1>
 
           <p>A message expression of the form
-          <code><var>receiver</var>.<var>selector</var></code> is a valid lvalue
-          unless the last character of <var>selector</var> is U+003F QUESTION
-          MARK (<code>?</code>) or U+0021 EXCLAMATION MARK (<code>!</code>). If
-          the last character of <var>selector</var> is not U+003D EQUALS SIGN
-          (<code>=</code>), it is set to be. Then, <var>receiver</var> is sent
-          <var>selector</var> with the rvalue as its argument.
+          <code><var>receiver</var>.<var>selector</var></code> is a valid
+          lvalue unless the last character of <var>selector</var> is a
+          question mark (<code class=u title='?'>U＋003F</code>) or
+          exclamation mark (<code class=u title='!'>U＋0021</code>. If the
+          last character of <var>selector</var> is not an equals sign (<code
+          class=u title='='>U＋003D</code>), it is set to be. Then,
+          <var>receiver</var> is sent <var>selector</var> with the rvalue as
+          its argument.
 
           <p>An important implication of the above is that the receiver defines
           the semantics of assignment. Typically, a selector ending with
@@ -1471,8 +1474,8 @@
           <!-- TODO: Mary this section with discussion of splat in Methods and
           elsewhere -->
           
-          <p>Lvalues and rvalues may optionally be directly preceded by a
-          U+002A ASTERISK (<code>*</code>), termed a
+          <p>Lvalues and rvalues may optionally be directly preceded by an
+          asterisk (<code class=u title='*'>U＋002A</code>), termed a
           <dfn>splat</dfn><sup>†</sup> hereafter.</p>
           
           <section>
@@ -1494,10 +1497,11 @@
             <section>
               <h1 class=runin id=empty-splat>Empty Splat</h1>
 
-              <p>An lvalue may consist of sole U+002A ASTERISK (<code>*</code>),
-              without any associated identifier. It behaves as described above,
-              but instead of assigning the corresponding rvalues to the splatted
-              lvalue, it discards them.</p>
+              <p>An lvalue may consist of a sole asterisk (<code class=u
+              title='*'>U＋002A</code>) without any associated identifier. It
+              behaves as described above, but instead of assigning the
+              corresponding rvalues to the splatted lvalue, it discards
+              them.</p>
 
               <figure class=centre id=empty-splat.rb>
                 <figcaption>An lvalue consisting of a sole asterisk greedily
