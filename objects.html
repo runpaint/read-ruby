@@ -90,13 +90,13 @@
             </figure>
             
             <p>A single-quoted <code>String</code> is a string delimited by
-            U+0027 APOSTROPHE (<code>'</code>) characters or <a
-              href=#single-quoted-strings-q><code>%q</code></a>. Its
-            contents are not subject to <a
+            apostrophe (<code class=u title="'">U＋0027</code>) characters or
+            <a href=#single-quoted-strings-q><code>%q</code></a>. Its contents
+            are not subject to <a
               href=#string-interpolation>interpolation</a>. The only
             recognised <a href=#string-escapes>escape sequences</a> are
-            <code>\\</code> and <code>\<var>delimiter</var></code>; any
-            other escape is interpreted literally, i.e. as a reverse solidus
+            <code>\\</code> and <code>\<var>delimiter</var></code>; any other
+            escape is interpreted literally, i.e. as a reverse solidus
             followed by a single character.</p>
              
             <section>
@@ -138,10 +138,11 @@
             </figure>
             
             <p>A double-quoted <code>String</code> is a <code>String</code>
-            delimited with U+0022 QUOTATION MARK (<code>"</code>) characters or <a
-              href=#double-quoted-strings-q><code>%Q</code></a>. Its contents are
-            subject to <a href=#string-interpolation>interpolation</a> and <a
-              href=#string-escapes>character escapes</a>.</p>
+            delimited with quotation marks (<code class=u
+              title='"'>U＋0022</code>) characters or <a
+              href=#double-quoted-strings-q><code>%Q</code></a>. Its contents
+            are subject to <a href=#string-interpolation>interpolation</a> and
+            <a href=#string-escapes>character escapes</a>.</p>
             
             <section>
               <h1 id=string-interpolation>String Interpolation</h1>
@@ -174,9 +175,9 @@
               </figure>
                
               <p><dfn title="backslash escape">Escape sequences</dfn> are
-              character sequences prefixed with a U+005C REVERSE SOLIDUS
-              (<code>\</code>) (“backslash”) that have a meaning other than their
-              constituent characters.</p>
+              character sequences prefixed with a reverse solidus (<code
+                class=u title='\'>U＋005C</code>) that have a meaning other
+              than their constituent characters.</p>
                
               <section>
                 <h1 id=character-escapes>Character Escapes</h1>
@@ -186,15 +187,14 @@
                   <figcaption>Syntax diagram of the string escape
                 </figure>
 
-                <p>A character escape consists of a reverse solidus followed by a
-                single character, <var>char</var>. If <var>char</var> is one of
-                [<code>abcefnrstuvxCM01234567</code>], the escape has the meaning
-                given in the table below. If <var>char</var> is a literal line
-                terminator (i.e. U+000A &lt;control&gt;, U+000D &lt;control&gt;,
-                or U+000D&nbsp;&lt;control&gt;U+000A&nbsp;&lt;control&gt;), both
-                the reverse solidus and the line terminator are removed from the
-                string. In all other cases <code>\<var>char</var></code> evaluates
-                to <var>char</var>.</p>
+                <p>A character escape consists of a reverse solidus followed
+                by a single character, <var>char</var>. If <var>char</var> is
+                one of [<code>abcefnrstuvxCM01234567</code>], the escape has
+                the meaning given in the table below. If <var>char</var> is a
+                literal <a href=/programs#newlines>line terminator</a>, both
+                the reverse solidus and the line terminator are removed from
+                the string. In all other cases <code>\<var>char</var></code>
+                evaluates to <var>char</var>.</p>
 
                 <figure id=character-escape.rb>
                   <figcaption>A character escape is a reverse solidus followed by
@@ -332,42 +332,42 @@
                 <tbody>
                   <tr class=odd>
                     <td><code>\a</code>
-                    <td>U+0007 &lt;control&gt;: The <a
+                      <td><code class=u>U＋0007</code>: The <a
                         href=//en.wikipedia.org/wiki/Bell_character>BEL</a>
                         character. Rings the console bell.
                   <tr>
                     <td><code>\b</code>
-                    <td>U+0008 &lt;control&gt;: The <a
+                    <td><code class=u>U＋0008</code>: The <a
                         href=//en.wikipedia.org/wiki/Backspace>Backspace</a>
-                        character.
-                  <tr class=odd>
-                    <td><code>\e</code>
-                    <td>U+001B &lt;control&gt;: The <a
-                        href=//en.wikipedia.org/wiki/Esc>ESC</a>
-                        character.
-                  <tr>
-                    <td><code>\f</code>
-                    <td>U+000C &lt;control&gt;: The <a
-                        href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
-                        character.
-                  <tr class=odd>
-                    <td><code>\n</code>
-                    <td>U+000A &lt;control&gt;: The <a
-                        href=//en.wikipedia.org/wiki/Newline>Newline</a> character.
-                  <tr>
-                    <td><code>\r</code>
-                    <td>U+000D &lt;control&gt;: The <a
-                        href=//en.wikipedia.org/wiki/Carriage_return>Carriage Return</a> 
                       character.
                   <tr class=odd>
+                    <td><code>\e</code>
+                    <td><code class=u>U＋001B</code>: The <a
+                        href=//en.wikipedia.org/wiki/Esc>ESC</a> character.
+                  <tr>
+                    <td><code>\f</code>
+                    <td><code class=u>U＋000C</code>: The <a
+                        href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
+                      character.
+                  <tr class=odd>
+                    <td><code>\n</code>
+                    <td><code class=u>U＋000A</code>: The <a
+                        href=//en.wikipedia.org/wiki/Newline>Newline</a>
+                      character.
+                  <tr>
+                    <td><code>\r</code>
+                    <td><code class=u>U＋000D</code>: The <a
+                        href=//en.wikipedia.org/wiki/Carriage_return>Carriage
+                        Return</a> character.
+                  <tr class=odd>
                     <td><code>\s</code>
-                    <td>U+0020 SPACE: The <a
+                    <td><code class=u title=' '>U＋0020</code>: The <a
                         href=//en.wikipedia.org/wiki/Space_key>Space</a>
                       character.
                   <tr>
                     <td><code>\t</code>
-                    <td>U+0009 &lt;control&gt;: The <a
-                        href=//en.wikipedia.org/wiki/Tab_character>Tab</a> 
+                    <td><code class=u>U＋0009</code>: The <a
+                        href=//en.wikipedia.org/wiki/Tab_character>Tab</a>
                       character
                   <tr class=odd>
                     <td><a
@@ -381,7 +381,8 @@
                       <a href=#unicode-escapes><var>codepoints</var></a>.
                   <tr class=odd>
                     <td><code>\v</code>
-                    <td>U+000B &lt;control&gt;: The vertical tab character.
+                    <td><code class=u>U＋000B</code>: The vertical tab
+                      character.
                   <tr>
                     <td><a
                     href=#octal-byte><code>\<var>octal</var><var>octal</var><var>octal</var></code></a>
@@ -414,15 +415,16 @@
                     <td><a href=#meta-escapes><code>\M-<var>char</var></code></a>
                     <td>Meta character <var>char</var>.
                   <tr class=odd>
-                    <td><code>\</code>U+000A &lt;control&gt;
+                    <td><code>\</code><code class=u>U＋000A</code>
                     <td rowspan=3>A backslash before a <a
                         href=//en.wikipedia.org/wiki/Newline>line terminator</a>
                       escapes it, removing both the line
                       terminator and backslash from the string
                   <tr class=odd>
-                    <td><code>\</code>U+000D &lt;control&gt;
+                    <td><code>\</code><code class=u>U＋000D</code>
                   <tr class=odd>
-                    <td><code>\</code>U+000D&nbsp;&lt;control&gt;U+000A&nbsp;&lt;control&gt;
+                    <td><code>\</code>〈<code class=u>U＋000D</code>,&nbsp;<code
+                        class=u>U＋000A</code>〉
                   <tr>
                     <td><code>\<var>char</var></code>
                     <td>A backslash before any other character evaluates to
@@ -506,12 +508,12 @@
           <section>
             <h1 id=backticks>Backticks</h1>
               
-            <p>A double-quoted string delimited with U+0060 GRAVE ACCENT
-            (<code>`</code>) characters, or “backticks”, executes its
-            contents as an operating system command and returns the output.
-            This is achieved by the <code>Kernel.`</code> method, which can
-            be redefined to alter these semantics. Alternative delimiters
-            can be used with the corresponding
+            <p>A double-quoted string delimited with grave accents (<code
+              class=u title='`'>U＋0060</code>) characters, or “backticks”,
+            executes its contents as an operating system command and returns
+            the output. This is achieved by the <code>Kernel.`</code> method,
+            which can be redefined to alter these semantics. Alternative
+            delimiters can be used with the corresponding
             <code>%x<var>delimiter</var>…<var>delimiter</var></code>
             construct, which follows the same rules as <a
               href=#double-quoted-strings-q><code>%Q</code></a>.</p>

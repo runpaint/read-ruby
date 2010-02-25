@@ -421,13 +421,13 @@
     </figure>
 
     <p>Method names conventionally begin with a lowercase letter or low line
-    (U+005F: <code>_</code>) (unless they name an operator method). They must
-    not begin with an ASCII integer. If they consist of multiple words, low
-    lines are used to separate. They must not contain any of the following
-    ASCII “punctuation” characters: <i>[</i>, <i>]</i>, <i>.</i>, <i>=</i>,
-    <i>*</i>, <i>!</i>, <i>~</i>, <i>@</i>, <i>-</i>, <i>+</i>, <i>/</i>,
-    <i>\</i>, <i>%</i>, <i>&lt;</i>, <i>&gt;</i>, <i>&amp;</i>, <i>^</i>,
-    <i>|</i>, <i>:</i>, <i>{</i>, <i>}</i>, however:
+    (<code class=u title='_'>U＋005F</code>) (unless they name an operator
+    method). They must not begin with an ASCII integer. If they consist of
+    multiple words, low lines are used to separate. They must not contain any
+    of the following ASCII “punctuation” characters: <i>[</i>, <i>]</i>,
+    <i>.</i>, <i>=</i>, <i>*</i>, <i>!</i>, <i>~</i>, <i>@</i>, <i>-</i>,
+    <i>+</i>, <i>/</i>, <i>\</i>, <i>%</i>, <i>&lt;</i>, <i>&gt;</i>,
+    <i>&amp;</i>, <i>^</i>, <i>|</i>, <i>:</i>, <i>{</i>, <i>}</i>, however:
     <!-- Unicode names -->
 
     <ul>
@@ -646,8 +646,9 @@
         </aside>
 
         <p>A rest parameter is specified by preceding a parameter name with an
-        asterisk (U+002A: <code>*</code>). Only one rest parameter may appear
-        in a parameter list, and any optional parameters must precede it.</p>
+        asterisk (<code class=u title='*'>U＋002A</code>). Only one rest
+        parameter may appear in a parameter list, and any optional parameters
+        must precede it.</p>
 
         <figure class=railroad>
           <img id=rest-parameter.png>
@@ -781,10 +782,10 @@
 
         <p>A method needing a reference to the block it was given, perhaps to
         pass to another method, is defined with a final parameter whose name
-        is prefixed with an ampersand (U+0026: <code>&amp;</code>). The method
-        can access the block as a <code>Proc</code> object named after the
-        parameter (sans ampersand). It may invoke the block via its
-        <code>Proc#call</code> method, or <a
+        is prefixed with an ampersand (<code class=u
+          title='&'>U＋0026</code>). The method can access the block as a
+        <code>Proc</code> object named after the parameter (sans ampersand).
+        It may invoke the block via its <code>Proc#call</code> method, or <a
           href=/flow#yield><code>yield</code></a> to it. In either case, the
         method is invoked in precisely the same way as before.</p>
 

@@ -100,7 +100,8 @@ figure.centre {
 /* Syntax diagrams appear in the main body of the text, flush with the left
  * margin */
 figure.railroad > img {
-  margin-left: 4%;
+  margin-left: auto;
+  margin-right: auto;
   display: block;
 }
 

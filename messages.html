@@ -265,11 +265,12 @@
       <aside class=sidenote>
         <p><span class=sidemark>‡</span>An alternative to the
         <code><var>receiver</var>.<var>selector</var></code> syntax is
-        <code><var>receiver</var>::<var>selector</var></code>, where the
-        full stop is replaced with a double colon (U+003A: <code>::</code>).
-        However, the latter syntax has fallen out of favour due to the
-        confusion it creates between message sending and constant reference
-        expressions.  It is not recommended for use in new code.
+        <code><var>receiver</var>::<var>selector</var></code>, where the full
+        stop is replaced with a double colon (<code class=u
+        title=':'>U＋003A</code>).  However, the latter syntax has fallen out
+        of favour due to the confusion it creates between message sending and
+        constant reference expressions.  It is not recommended for use in new
+        code.
       </aside>
 
       <figure class=centre id=bare-selector-syntax.rb>
@@ -282,7 +283,7 @@
       <code><var>receiver</var>.<var>selector</var></code> syntax<sup>‡</sup>,
       where <var>receiver</var> is an <a href=#explicit-receiver>explicit
       receiver</a> separated from the <var>selector</var> with a full stop
-      (U+002E: <code>.</code>).</p>
+      (<code class=u title='.'>U＋002E</code>).</p>
 
       <figure class=centre id=receiver-dot-selector-syntax.rb>
         <figcaption>A message can be explicitly sent to an object by
@@ -332,10 +333,12 @@
           receive a single argument (a reference to the
           <code>Enumerable</code>) rather than the constituent elements
           thereof. The solution is to prefix the <code>Enumerable</code>
-          argument with an asterisk (U+002A: <code>*</code>), which in this
-          context is termed a <dfn>splat operator</dfn>, thus expanding the
-          <code>Enumerable</code> into its individual elements.</p>
+          argument with an asterisk (<code class=u title='*'>U＋002A</code>),
+          which in this context is termed a <dfn>splat operator</dfn>, thus
+          expanding the <code>Enumerable</code> into its individual
+          elements.</p>
 
+          <!-- TODO: Link splat with discussion in Argument Expressions -->
           <p>This technique works by sending <code>:to_a</code> to the
           prefixed object, so any object that responds to this message with
           an <code>Array</code> can be used in the same fashion.  
@@ -363,8 +366,9 @@
             <aside class=note>
               <p>To send a <code>Proc</code> object along with a message
               expecting an anonymous block, prefix the object name with an
-              ampersand (U+0026: <code>&amp;</code>). If multiple arguments
-              are given the <code>Proc</code> must be specified last.</p>
+              ampersand (<code class=u title='&'>U＋0026</code>). If multiple
+              arguments are given the <code>Proc</code> must be specified
+              last.</p>
 
               <figure class=centre style=width:40em id=ampersand-prefix-with-argument.rb>
                 <figcaption>Prefix the final argument with an ampersand to
