@@ -2,7 +2,10 @@ body {
   font-size: medium;
   font-family: Palatino, Tahoma, sans-serif; /* TODO: Create better list */
   font-color: black;
-  background-color: white;
+  background-color: white; 
+  /* TODO: Consider using off-white background colour like #FFFFF0. Would
+   * require updating syntax diagrams.
+   */
 }
 
 
@@ -11,7 +14,9 @@ body {
  *  LINKS  *
  *         *
  ***********/
+
 /* Make in-book links less dominant */
+
 a[href^="#"]:link, a[href^="/"]:link {
   color: black;
   text-decoration: none;
