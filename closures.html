@@ -37,6 +37,11 @@
       <figcaption>A closure may accept arguments from its calling environment
     </figure>
 
+    <!--
+      This section is awkward. It does not describe a typical literal because
+      it can't standalone. It applies to message expressions, certain
+      keywords, and this section. Maybe introduce it in Programs?
+    -->
     <section>
       <h1 id=procs><code>Proc</code> Literals</h1>
            
@@ -63,23 +68,6 @@
         <figcaption>Syntax diagram of the block literal
       </figure>
 
-      <section>
-        <h1 id=lambdas>Lambdas</h1>
-        
-        <p>A literal of the form
-        <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
-          { <var>statements</var> }</code> instantiates a <code>Proc</code>
-        object with lambda characteristics. The parameter list takes the
-        same form as that used in method definitions <!-- link -->. It may
-        be omitted entirely.  <var>statements</var> is zero or more
-        statements. For example, <code>-&gt; { 42 }</code>, or
-        <code>-&gt;(a, b) { a + b }</code>.</p>
-
-        <figure class=railroad>
-          <img id=lambda-literal.png>
-          <figcaption>Syntax diagram of the lambda literal
-        </figure>
-      </section>
     </section>
 
     <section>
@@ -322,18 +310,23 @@
         </figure>
       </section>
 
-      <!-- FIXME: Merge with duplicate material in Objects -->
       <section>
         <h1 id=lambda-literal>Lambda Literal (<code>->(){}</code>)</h1>
 
-        <p>The expression <code>-&gt;{<var>block</var>}</code> creates a
-        <code>Proc</code> with lambda semantics for the given <var>block</var>
-        which expects no arguments. The block may be preceded by a
-        parenthetical parameter list, i.e.
-        <code>-&gt;(<var>arg</var><sub>0</sub>…<var>arg</var><sub>n</sub>){
-          <var>block</var> }</code>, in which case the resulting lambda
-        expects to receive the corresponding arguments.</p>
-        
+        <figure class=railroad>
+          <img id=lambda-literal.png>
+          <figcaption>Syntax diagram of the lambda literal
+        </figure>
+
+        <p>A literal of the form
+        <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
+          { <var>statements</var> }</code> instantiates a <code>Proc</code>
+        object with lambda characteristics. The optional parameter list takes
+        the same form as that used in method definitions <!-- link -->. It may
+        be omitted entirely.  <var>statements</var> is zero or more
+        statements. For example, <code>-&gt; { 42 }</code>, or <code>-&gt;(a,
+          b) { a + b }</code>.</p>
+
         <figure id=lambda-literal-syntax.rb>
           <figcaption><code>-&gt;(){}</code> creates a <code>Proc</code> with
           lambda characteristics
