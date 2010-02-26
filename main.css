@@ -146,6 +146,12 @@ figure.railroad figcaption {
   visibility: hidden;
 }
 
+img.railroad {
+  display: inline;
+  float: left;
+  padding-right: 1em;
+}
+
 /* A sidenote may be refrenced from the text with a footnote symbol. If so,
  * the sidenote features that symbol clearly. */
 span.sidemark {
@@ -279,8 +285,10 @@ body > section > section > section > section > section > h1 + p {
 /* Headings deeper than 4th level are all displayed in the same way. Higher
  * headings can elect for this treatment by applying the runin class. They
  * are bold and run-in to their child paragraph. */
-body > section > section > section > section > section > section h1, h1.runin {
+body > section > section > section > section > section > section h1 {
   font-size: 1em;
+}
+body > section > section > section > section > section > section h1, h1.runin {
   font-weight: bold;
   display: run-in;
   padding-right: 0.5em;
@@ -291,6 +299,12 @@ body > section > section > section > section > section > section h1, h1.runin {
 
 body > section > section > section > section > section > section h1:after {
   content: ". "
+}
+
+h1.runout {
+  display: block;
+  margin-left: 4%;
+  padding: auto;
 }
 
 div#alpha-strip {

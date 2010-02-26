@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- vim: set fdm=indent tw=78: --> 
+<title>Numerics - Read Ruby</title>
+<meta charset=utf-8>
+<link href=/style rel=stylesheet>
+<link rel=license href=//creativecommons.org/licenses/by-nc-sa/2.0/uk/>
+<link rel='index up' href=/toc>
+<!-- <link rel=next href=/enumerables> -->
+
+<section>
+  <h1 id=numerics>Numerics</h1>
+  <!-- Are immediates _instantiated_? -->
+             
+  <p>A decimal integer literal consists of an optional sign
+  (<code>+</code> or <code>-</code>) followed by one or more decimal
+  digits. Implementation limits dictate whether its a <code>Fixnum</code>
+  or <code>Bignum</code>, but the distinction can be ignored by treating
+  both as <code>Integer</code>s.</p>
+   
+  <!-- TODO: Mention optional 0d prefix -->
+
+  <figure class=railroad>
+    <div class=centre style=width:467px>
+      <img style=display:inline id=digit.png>
+      <img style=display:inline id=non-zero-digit.png>
+      <img style=display:inline id=plus-minus.png>
+    </div>
+    <img id=decimal-literal.png>
+    <figcaption>Syntax diagram of the decimal literal
+  </figure>
+   
+  <p>Hexadecimal, octal, and binary literals allow integers to be
+  expressed in base sixteen, eight, or two, respectively. A hexadecimal
+  literal begins with <code>0x</code>, and is followed by one or more hex
+  digits (0–9, a–f). An octal literal begins with <code>0o</code>, and is
+  followed by one or more octal digits (0–7). A binary literal begins with
+  <code>0b</code>, and is followed by one or more binary digits (0–1). All
+  forms ignore case and create <code>Integer</code> objects.</p>
+   
+  <figure class=railroad>
+    <img style=float:left id=hex-digit.png>
+    <img style=float:left id=octal-digit.png>
+    <img id=hexadecimal-literal.png>
+    <img id=binary-literal.png>
+    <img id=octal-literal.png>
+    <br style=clear:both>
+    <figcaption>Syntax diagrams of the hexadecimal, binary, and
+    octal literals
+  </figure>
+   
+  <p>A floating-point literal consists of two integer literals
+  separated with a period, e.g. <code>3.14</code>. It is of
+  class <code>Float</code>.</p>
+  <!-- Notes on the inacuracy of floats -->
+  
+  <figure class=railroad>
+    <img id=float-literal.png>
+    <figcaption>Syntax diagram of the floating-point literal
+  </figure>
+  
+  <p>A scientific notation literal consists of a coefficient
+  (<var>a</var>: a decimal or <code>Float</code> literal),
+  <code>e</code> or <code>E</code>, then an exponent
+  (<var>e</var>: a decimal literal). Its value is
+  <code><var>a</var> × 10<sup><var>e</var></sup></code>
+  represented as a <code>Float</code>.</p>
+  
+  <figure class=railroad>
+    <img id=scientific-notation-literal.png>
+    <figcaption>Syntax diagram of the scientific notation literal
+  </figure>
+          
+  <p><code>Rational</code> numbers are expressed with the
+  <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
+  constructor. Similarly, <code>Complex(<var>real</var>,
+    <var>imaginary</var>)</code> creates a <code>Complex</code>
+  object.</p>
+       
+  <!--        <li>Standard mathematical operations as methods
+        <li><code>/</code> performs integer division
+        <li>to_* 
+  -->
+<section>
+  <h1 id=immediates>Immediates</h1> <!-- sidebar this? -->
+
+  <p><code>Symbol</code> and <code>Fixnum</code> literals are
+  <dfn title=immediates>immediate</dfn> values. They are stored
+  as values rather than object references so are immutable and
+  cannot have singleton methods defined on them.
+</section>
+</section>

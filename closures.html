@@ -38,6 +38,51 @@
     </figure>
 
     <section>
+      <h1 id=procs><code>Proc</code> Literals</h1>
+           
+      <p>A block literal creates a <code>Proc</code> object which
+      accepts the arguments provided in the optional parameter list
+      and represents a sequence of zero or more statements. Unlike
+      the other literals in this section, block literals must not
+      appear in the top-level context; they must either terminate a
+      message expression, an appropriate keyword expression, or
+      lambda literal.</p> <!-- Is this restriction accurate? --> 
+      
+        <!-- TODO: Block local variable declarations -->
+      <figure class=railroad>
+        <img id=required-parameters.png>
+        <img id=optional-parameter.png>
+        <img id=optional-parameters.png>
+        <div style=width:590px class=centre>
+          <img class=inline id=rest-parameter.png>
+          <img class=inline id=block-parameter.png>
+        </div>
+        <img id=parameter-list.png>
+        <img id=block.png>
+        <img id=block-literal.png>
+        <figcaption>Syntax diagram of the block literal
+      </figure>
+
+      <section>
+        <h1 id=lambdas>Lambdas</h1>
+        
+        <p>A literal of the form
+        <code>-&gt;(<var>parameter<sub>0</sub></var></code>…<code><var>parameter<sub>n</sub></var>)
+          { <var>statements</var> }</code> instantiates a <code>Proc</code>
+        object with lambda characteristics. The parameter list takes the
+        same form as that used in method definitions <!-- link -->. It may
+        be omitted entirely.  <var>statements</var> is zero or more
+        statements. For example, <code>-&gt; { 42 }</code>, or
+        <code>-&gt;(a, b) { a + b }</code>.</p>
+
+        <figure class=railroad>
+          <img id=lambda-literal.png>
+          <figcaption>Syntax diagram of the lambda literal
+        </figure>
+      </section>
+    </section>
+
+    <section>
       <h1 id=semantics>Semantics</h1>
 
       <p>A <code>Proc</code> has either <a href=#proc-semantics>proc
