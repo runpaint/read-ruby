@@ -16,9 +16,68 @@
     visibility: hidden;
   }
 </style>
-
+<!-- TODO: Extract error messages from parse.y and describe them in the
+relevant sections
+-->
 <section>  
   <h1 id=programs>Programs</h1>
+
+  <p>Every entity in Ruby is an object. Objects can remember things and
+  communicate with each other by sending and receiving messages. Every object
+  belongs to a class (which is also an object). The class handles all
+  communication (receiving a message and producing a reply) for every object
+  which belongs to it.<sup>1</sup></p>
+
+  <!-- TODO: Better define class -->
+  <aside class=sidenote>
+    <span class=sidemark>1</span>This paragraph is paraphrased only slightly
+    from the superb <cite>Smalltalk-72 Instruction Manual</cite> (<a
+    href=/references#refGOLDBERG76>Goldberg &amp; Kay</a>, p 44).
+  </aside>
+
+  <!--><aside class=sidenote>
+    The use of the indefinite article is an attempt to avoid introducing a
+    contradiction with respect to eigenclasses. Even objects with singleton
+    methods belong to <em>a</em> class which handles their communication.
+    </aside>-->
+
+  <p>Messages are requests for objects to perform actions. If the object
+  understands the message it will perform the action then respond with
+  another<sup>2</sup> object.</p>
+
+  <aside class=sidenote>
+    <span class=sidemark>2</span>An object may return itself in response to a
+    message, of course.
+  </aside>
+
+  <p>Objects respond to messages if their classes<sup>3</sup> define a
+  method<sup>4</sup> with which to do so. A method describes how an object
+  must communicate with other objects in order to respond to a message.</p> 
+
+  <aside class=sidenote>
+    <span class=sidemark>3</span>A class need not define the method itself due
+    to inheritance, but for now it is sufficiently analogous to view
+    inheritance as an indirect form of method definition.
+  </aside>
+
+  <aside class=sidenote>
+    <span class=sidemark>4</span>The method need not directly correspond to
+    the message, but it must exist in order for the object to respond.
+    </aside>
+
+  <p>Objects are created by sending an appropriate message to their class
+  object, to which the class responds with the new object.<sup>5</sup></p>
+
+  <aside class=sidenote>
+    <span class=sidemark>5</span>Certain primitive objects— such as those
+    representing text, numbers, and lists—can be created with special
+    <i>literal</i> syntax, but this is simply an indirection: they are still
+    created as instances of their class.
+  </aside>
+
+  <p>If a method doesn’t know how to create an object that it needs, the
+  sender of the message must do so instead. These additional objects can then
+  be sent along with the message, allowing the method to use them.</p>
 
   <section>
     <h1 id=source-files>Source Files</h1>
