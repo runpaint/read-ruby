@@ -21,13 +21,14 @@ relevant sections
 <section>  
   <h1 id=programs>Programs</h1>
 
-
   <p>Every entity in Ruby is an object. Objects can remember things and
   communicate with each other by sending and receiving messages (<a
     href=/references#refGOLDBERG76>Goldberg &amp; Kay</a>, p 44). A Ruby
   program describes how certain objects must communicate to achieve some
-  definite ends.</p>
+  definite ends. This chapter provides an overview of the structure and
+  interpretation of Ruby programs.</p>
 
+  <!-- TODO: Note the sequential execution of statements -->
   <!--
   
   An end is a side effect
@@ -86,64 +87,11 @@ relevant sections
   sender of the message must do so instead. These additional objects can then
   be sent along with the message, allowing the method to use them.</p>
 
-  If we are to use 'statements' we need to define it. FLANAGAN08 takes the
-  vague position that its helpful to refer to "expressions that affect the
-  control flow" as statements. Another perspective is to differentiate based
-  on the intent: statements are evaluated for their side effects; expressions,
-  for their value. That is, with a statement you do not care about its value.
-  If you did, you'd chain a message expression to it, use it an rvalue in an
-  assignment expression, condition a branching statement on its value, etc.—in
-  all cases, it would no longer be a statement; it would be an expression
-  combined with another expression. This can be safely taken to one extreme:
-  we combine expressions into a larger and larger compound expression until
-  its value is no longer of interest to us. At this point the expression will
-  be evaluated exclusively for its side effects, therefore be a statement. 
-  At the other is the pathological program that, perhaps, is designed to do
-  nothing. Presumably, if such a program consisted of any expression it would
-  have failed in its goal, therefore as long as we restrict our enquiries to
-  programs with at least one definite goal—by which we mean 'side effect'— we
-  conclude that a program must contain at least one statement. If it doesn't,
-  the expression is not being evaluated for its side effects, therefore the
-  program has no side effects, therefore it is not of interest. This
-  definition does not imply an upper limit on statements or, indeed, a
-  necessary correlation between the goals of a program and the statements it
-  contains.
-
-  Turbank & Gifford seem to support this analysis. Their language FLICK
-  mirrors Ruby in that some expressions return "uninteresting" values "simply
-  because they are required to return something". They repeat the idea that
-  the important distinction is the "reason to execute", i.e. side effects or
-  values. 
-  
-  Confusing, however, is their remark that commands/statements _may_
-  have side effects. If, by their definition, such constructs do not return
-  values, then whatever purpose other than the causing of side effects, is
-  there for their evaluation?
-
-"These represent the rest of the computation for commands (also called
-statements), phrases that may have side effects but do not return values. Many
-real-world programming languages have distinct syntactic categories for
-commands (which do not return values) and expressions (which do return
-values). For example, in Ada, Fortran, and Pascal, variable assignments,
-array updates, and program output are performed via commands. C, C++, and Java
-are expression-based languages, but invocations of functions/methods with the
-void return type are effectively commands.
-
-    FLICK does not have a separate syntactic domain for commands, but some
-expressions effectively serve as commands. For example, := expressions return
-the uninteresting value #u simply because they are required to return something,
-but the reason to execute an assignment is to modify the store. Sequencing using
-begin is a natural command context: it exists to enforce an order of state trans-
-formations. In (begin E1 E2 ), the value of E1 is ignored, effectively treating it
-as a command." (p 472)
-
-There is a flaw in my reasoning in that a library, say, may exist purely to
-return a value. Such a program would be useful but also free of side effects,
-as narrowly defined above.
 -->
   <section>  
-    <h1 id=tokens>Tokens</h1>
+    <h1 id=lexical>Lexical Structure</h1>
 
+    <!-- TODO: Introduce tokenization -->
     <p><dfn>Tokens</dfn> are <q>the mark or series of marks that denote one
       symbol or word in the language</q> (<a
       href=/references#refFISCHER92>Fischer &amp; Grodzinsky</a>, pp.
@@ -162,7 +110,7 @@ as narrowly defined above.
     <ul>
       <li><a href=#comments>Comments</a>
       <li><a href=/objects#literals>Literals</a>
-      <li>Punctuation
+      <li><a href=#punctuation>Punctuation</a>
       <li><a href=#identifiers>Identifiers</a>
       <li><a href=#keywords>Keywords</a>
     </ul>
@@ -332,7 +280,6 @@ as narrowly defined above.
 
       <section>
         <h1 class=runin id=dollar-signs>Dollar Signs</h1>
-        <span class=punct>$</span>
 
         <p>A dollar sign (<code class=u title='$'>U＋0024</code>) followed by an
         identifier is a sigil denoting a global variable.
@@ -340,7 +287,6 @@ as narrowly defined above.
 
       <section>
         <h1 class=runin id=equals-signs>Equals Signs</h1>
-        <span class=punct>=</span>
 
         <p>An equals sign (<code class=u title='='>U＋003D</code>) in the
         context of…
@@ -369,7 +315,7 @@ as narrowly defined above.
 
       <section>
         <h1 class=runin id=exclamation-marks>Exclamation Marks</h1>
-        <span class=punct>!</span>
+
         <p>An exclamation mark (<code class=u title='!'>U＋0021</code>) in the
         context of…
 
@@ -436,7 +382,7 @@ as narrowly defined above.
         <p>A less‐than sign (<code class=u title='<'>U＋003C</code>) in the
         context of…
 
-        <dl>
+        <dl class=inline-small>
           <dt>An operator
           <dd>Tests for the corresponding inequality when solitary or followed
           by an equals sign (<code class=u title='='>U＋003D</code>). Serves as
@@ -577,7 +523,8 @@ as narrowly defined above.
         
       <!-- Discuss &:sym as a literal? -->
       <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
-      for the instantiation of a particular core object.</p> <!-- Doesn’t call
+      for the instantiation of a particular core object. Literals exist for
+      strings, numbers, symbols, arrays, hashes, ranges, lambdas.</p> <!-- Doesn’t call
       initialize; Performance pips pedagogy --> <!-- Cover block literals? -->
     </section>
 
@@ -593,403 +540,449 @@ as narrowly defined above.
   </section>
 
   <section>
-    <h1 id=expressions>Expressions</h1>
-
-    <p>An <dfn>expression</dfn> is a syntactical construct that produces a
-    value. Since every entity is an object, every expression evaluates to an
-    object. It is either primary or compound.</p>
-    
-    <aside class=sidenote>
-    We follow the lead of <a href=/references#refAHO86>Aho, Sethi, &amp;
-      Ullman</a> (1986) in defining <i>expression</i> by recursion rather than
-    direct description.
-    </aside>
-
-    <p><dfn>Primary expressions</dfn> comprise atomic<sup>†</sup> units such
-    as <a href=/variables>variable references</a> and <a
-      href=/numerics#literals>numeric</a>, <a
-      href=/text#string-literals>string</a><sup>‡</sup>, and symbol, <a
-      href=/text#regexp-literals>regexp</a><sup>‡</sup>, and <a
-      href=#keyword-literals>keyword</a>, literals. Expressions can be
-    combined with <a href=/messages#operators>operators</a>, <a
-      href=#keywords>keywords</a>, and <a
-      href=/enumerables#array-literals>array</a>, <a
-      href=/enumerables#hash-literals>hash</a>, <a
-      href=/enumerables#range-literals>range</a>, and interpolative literals,
-    to produce <dfn>compound expressions</dfn>.</p>
-
-    <aside class=sidenote>
-    <span class=sidemark>†</span>As <a href=/references#refTURBAK08>Turbak,
-      Gifford, &amp; Sheldon</a> (2008,
-      pp. 20–22) note, this characterisation is patently false even for toy
-      languages since, in their example, <q>numerals can be broken down into
-        digits</q>, however we, too, will <q>ignore this detail</q>.
-    </aside>
-
-    <aside class=sidenote>
-      <span class=sidemark>‡</span>Double‐quoted strings or regexps that
-      interpolate other expressions are compound expressions.
-    </aside>
-
-    <!-- TODO: Sidebar exceptions to "everything is a value" -->
+    <h1 id=syntax>Syntactical Structure</h1>
 
     <section>
-      <h1 id=keyword-literals>Keyword Literals</h1>
+      <h1 id=expressions>Expressions</h1>
 
-      <!-- TODO: Define, add __method__, __callee__, etc.-->
-      <section>
-        <h1 class=runin id=true><code>true</code></h1>
-        
-        <p>The <code>true</code> keyword returns the singleton instance of
-        <code>TrueClass</code>. Its value is, by definition, true.
-      </section>
-
-      <section>
-        <h1 class=runin id=false><code>false</code></h1>
-
-        <p>The <code>false</code> keyword returns the singleton instance of
-        <code>FalseClass</code>. Its value is, by definition, false.
-      </section>
-
-      <section>
-        <h1 class=runin id=nil><code>nil</code></h1>
-
-        <p>The <code>nil</code> keyword returns the singleton instance of
-        <code>NilClass</code>. Its value is represents the absence of a value.
-        The <code>Kernel.nil?</code> predicate returns <code>true</code> if
-        its value is <code>nil</code>; <code>false</code> otherwise.
-        <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
-        -->
-      </section>
-
-      <section>
-        <h1 class=runin id=self><code>self</code></h1>
-
-        <p><code>self</code> always evaluates to the current object. Outside
-        of any class definition, i.e. at the top‐level, the current object is
-        an instance of <code>Object</code> called <code>main</code>. Inside a
-        class definition, but outside of a method definition, the current
-        object is an instance of <code>Class</code>. Within a method
-        definition the current object is the instance of the containing
-        class.</p>
-
-        <figure class=centre id=self-as-the-implicit-receiver.rb>
-          <figcaption><code>self</code> is always defined; its value depends
-          on the enclosing context.
-        </figure>
-      </section>
-
-      <section>
-        <h1 class=runin id=file><code>__FILE__</code></h1>
-
-        <p>Evaluates to a string consisting of the name of the source file
-        currently being executed. The strings <samp>(eval)</samp> and
-        <samp>(irb)</samp> are returned when in an <code>eval</code> context
-        and <abbr title="Interactive Ruby">IRB</abbr> session,
-        respectively.</p>
-      </section>
-
-      <section>
-        <h1 class=runin id=line><code>__LINE__</code></h1>
-
-        <p>Evaluates to a <code>Fixnum</code> specifying the line number in
-        the current <a href=#file><code>__FILE__</code></a> being executed.
-      </section>
-
-      <section>
-        <h1 class=runin id=encoding><code>__ENCODING__</code></h1>
-
-        <p>Evaluates to an <code>Encoding</code> object representing the
-        current source encoding, i.e. that of <a
-        href=#file><code>__FILE__</code></a>.
-      </section>
-    </section>
-  </section>
-
-  <section>
-    <h1 id=lexical>Lexical Structure</h1>
-
-
-    <section>
-      <h1 id=statement-terminators>Statement Terminators</h1>
+      <p>An <dfn>expression</dfn> is a syntactical construct that produces a
+      value. Since every entity is an object, every expression evaluates to an
+      object. It is either primary or compound.</p>
       
-      <p>Statements may be terminated with a semicolon (<code class=u
-        title=';'>U＋003B</code>. More commonly they are terminated by <a
-        href=#newlines>newlines</a>. A newline does not terminate a statement
-      if:
-      
-      <ul>
-        <li>It is immediately preceded by a reverse solidus (<code
-          class=u title='\'>U＋005C</code>).
-        <li>It is preceded by an <a href=/expressions#operators>operator</a>,
-        with optional intervening <a href=#whitespace>whitespace</a>.
-        <li>It is immediately preceded by a comma (<code class=u
-          title=','>U＋002C</code>) or full stop (<code class=u
-          title='.'>U＋002E</code>) in a <a href=/messages#expressions>message
-          expression</a> or <a href=/objects#arrays>array</a>/<a
-          href=/objects#hashes>hash</a> literal, with optional intervening
-        whitespace. 
-        <li>The first non-whitespace character on the following line is a full
-        stop (<code class=u title='.'>U＋002E</code>). (Allows <a
-          href=/message#chaining>chained</a> message expressions to span
-        lines).
-      </ul>
-    </section>
-
-  </section>
-
-  <!-- Maybe introduce expressions, link to chapter -->
-  <section>
-    <h1 id=statements>Statements</h1>
-  </section>
-
-
-  <section>
-    <h1 id=block-structure>Block Structure</h1>
-  </section>
-
-  <section>
-    <h1 id=data><code>__END__</code></h1>
-  </section>
-
-  <section>
-    <h1 id=require><code>require</code></h1>
-  </section>
-  
-  <section>
-    <h1 id=load><code>load</code></h1>
-  </section>
-
-  <section>
-    <h1 id=eval><code>eval</code></h1>
-  </section>
-
-  <section>
-    <h1 id=keywords>Keywords</h1>
-    
-    <dl>
-      <!-- Is alias an expression given that it always returns nil? -->
-      <dt><a href=/methods#aliases><code>alias</code></a> 
-      <dd>Creates a copy of an existing method with a new name.
-      <dt><a href=/flow#and-operator><code>and</code></a> 
-      <dd>Boolean binary operator performing logical AND.
-      <dt><a href=/flow#begin-statement><code>begin</code></a> 
-      <dd>Introduces a block of code which may have <code>rescue</code>,
-      <code>ensure</code>, and <code>else</code> clauses attached.
-      <dt><a href=/flow#break-statement><code>break</code></a> 
-      <dd>Within a loop or block, transfers control to the statement
-      immediately following the construct.
-      <dt><a href=/classes#class-keyword><code>class</code></a>
-      <dd>Defines a class.
-      <dt><a href=/flow#case-statement><code>case</code></a> 
-      <dd>Multi-way conditional predicated on the value of a given expression.
-      <!-- Is def an expression given that it always returns nil? -->
-      <dt><a href=/methods#defining><code>def</code></a> 
-      <dd>Defines a method
-      <dt><a href=#defined><code>defined?</code></a> 
-      <dd>
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/messages#block-argument><code>do</code></a> <!-- ?? -->
-      <dd>Delimits a block literal
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/flow#if-else-clause><code>else</code></a> <!-- rescue else
-      clause -->
-      <dd>Optional default clause for the <code>case</code>, <code>if</code>,
-      <code>unless</code> statements. Optional clause of <code>begin</code>,
-      <code>class</code>, <code>def</code>, and <code>module</code> statements
-      for use in exception handling.
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/flow#if-elsif-clause><code>elsif</code></a>
-      <dd>Optional clause in an <code>if</code> statement.
-      <dt><a href=/flow#for><code>in</code></a> <!-- xref for in specifically?
-      -->
-      <dd>Separates a list of identifiers from the object being iterated in a
-      <code>for</code> loop.
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/flow#ensure-clause><code>ensure</code></a>
-      <dd>Optional clause of <code>begin</code>, <code>class</code>,
-      <code>def</code>, and <code>module</code> statements which is executed
-      even if sibling clauses raise an exception.
-      <dt><a href=/flow#false><code>false</code></a>
-      <dd>Singleton instance of <code>FalseClass</code> representing
-      falsehood.
-      <dt><a href=/flow#for><code>for</code></a>
-      <dd>Looping construct for iterating over an object responding to
-      <code>:each</code>.
-      <dt><a href=/flow#if-statement><code>if</code></a> <!-- postfix form, also -->
-      <dd>Conditional statement and statement modifier.
-      <dt><a href=/modules#module-keyword><code>module</code></a>
-      <dd>Defines a module.
-      <dt><a href=/flow#next-statement><code>next</code></a>
-      <dd>Ends the current iteration of a loop or iterator and begins the
-      next.
-      <dt><a href=/flow#nil><code>nil</code></a>
-      <dd>Singleton instance of <code>NilClass</code> representing the
-      absence of a value.
-      <dt><a href=/flow#not-operator><code>not</code></a>
-      <dd>Boolean unary operator performing logical NOT. 
-      <dt><a href=/flow#or-operator><code>or</code></a>
-      <dd>Boolean binary operator performing logical OR.
-      <!-- NOTE: No return value -->
-      <dt><a href=/flow#redo-statement><code>redo</code></a>
-      <dd>Restarts the current iteration of a loop without re-evaluating the
-      conditional.
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/flow#rescue><code>rescue</code></a>
-      <dd>Optional clause of <code>begin</code>, <code>class</code>,
-      <code>def</code>, or <code>module</code> statements that handles the
-      specified exceptions.
-      <!-- NOTE: No return value? -->
-      <dt><code>retry</code>
-      <dd>
-      <!-- return should be discussed in Flow > Control Statements -->
-      <dt><a href=/methods#return-values><code>return</code></a>
-      <dd>Immediately returns control from a method to its caller, along with
-      an optional value.
-      <dt><a href=/expressions#self><code>self</code></a>
-      <dd>Evaluates to the current object.
-      <dt><a href=/methods#super><code>super</code></a>
-      <dd>When used in a method body, invokes the method from a parent class
-      with the same name.
-      <dt><a href=/flow#true><code>true</code></a>
-      <dd>Singleton instance of <code>TrueClass</code> representing truth.
-      <!-- NOTE: No return value -->
-      <dt><a href=/methods#undefining><code>undef</code></a>
-      <dd>Removes the definition of a given method from the class in which it
-      was defined.
-      <dt><a href=/flow#unless-statement><code>unless</code></a>
-      <dd>Conditional statement and statement modifier.
-      <!-- NOTE: No return value -->
-      <dt><a href=/flow#until-loop><code>until</code></a>
-      <dd>Looping construct.
-      <!-- NOTE: No return value -->
-      <dt><a href=/flow#when><code>when</code></a>
-      <dd>Clause in a <code>case</code> statement.
-      <!-- NOTE: No return value -->
-      <dt><a href=/flow#while-loop><code>while</code></a>
-      <dd>Looping construct.
-      <dt><a href=/flow#yield><code>yield</code></a>
-      <dd>Transfers control from a method to an associated block then back.
-    </dl>
-  </section>
-
-  <section>
-    <h1 id=source-files>Source Files</h1>
-
-    <p>Ruby programs are typically stored in plain text files with an
-    <code>.rb</code> filename extension.</p>
-
-    <section>
       <aside class=sidenote>
-        <span class=sidemark>†</span>A portmanteau of <i>sharp</i> and
-        <i>bang</i> (<a href=/references#refWALL00>Wall, Christiansen, &amp;
-          Orwant</a>, p. 1001), colloquial terms for the number sign (<code
-          class=u title='#'>U＋0023</code>) and the exclamation mark (<code
-          class=u title='!'>U＋0021</code>), respectively.
-      </aside>    
-
-      <h1 id=shebang>Shebang</h1>
-
-      <p>The <dfn>shebang</dfn><sup>†</sup> is a notation for informing a
-      UNIX-like operating system of the interpreter with which a script should
-      be executed. If present it must appear as the first line of a source
-      file. It begins with a number sign (<code class=u
-        title='#'>U＋0023</code>) making it a legal comment line, therefore
-      ignored by the interpreter, which is followed by an exclamation mark
-      (<code class=u title='!'>U＋0021</code>) then the path to the
-      interpreter.
-
-      <p>A typical shebang is <code>#!/usr/bin/env ruby -w</code> which uses
-      <code>env</code> to avoid hardcoding the path to the interpreter, and
-      passes the <code>-w</code> option to the interpreter to enable warnings.
-
-      <p>If a script containing a shebang is executable it may be executed by
-      entering its filename in the shell.
-    </section>
-
-    <section>
-      <h1 id=source-encoding>Source Encoding</h1>
-
-      <p>The <dfn>source encoding</dfn> is the character encoding of a given
-      source file. It is US-ASCII by default. A <code>SyntaxError</code> is
-      raised when a source file contains one or more characters invalid in the
-      source encoding.
-
-      <p>A file’s source encoding may be specified inline by means of a
-      <dfn>coding comment</dfn>: a specially formatted comment that declares
-      the encoding of the lines that follow. If omitted, the default source
-      encoding is assumed. If a source file contains a <a
-        href=#shebang>shebang</a> line, the coding comment must appear on the
-      second line; otherwise it must appear on the first.</p>
-
-      <aside class=sidenote>
-        <span class=sidemark>†</span>That the coding comment need only
-        <em>contain</em> <code>coding</code> allow Ruby to recognise Vim and
-        Emacs modelines which declare a file’s encoding. For example, <code>#
-          vim: set fileencoding=utf-8 :</code> informs both Vim and Ruby that
-        the file is encoded in UTF-8.
+      We follow the lead of <a href=/references#refAHO86>Aho, Sethi, &amp;
+        Ullman</a> (1986) in defining <i>expression</i> by recursion rather than
+      direct description.
       </aside>
-      
-      <!-- Tabulte encoding names? -->
-      <!-- TODO: Example showing relation to Vim/Emacs encoding declarations
-      --> 
-      <p>The coding comment is a US-ASCII string which begins with a number
-      sign (<code class=u title='#'>U＋0023</code>) and contains<sup>†</sup>
-      the string <code>coding</code> followed by an equals sign (<code class=u
-        title='='>U＋003D</code>) or colon (<code class=u
-        title=':'>U＋003A</code>) then the name of the
-      source encoding. The encoding name is one of those returned by
-      <code>Encoding.name_list</code> written in a case insensitive fashion.
 
-      <p>The source encoding of the currently executing code can be obtained
-      with the <a href=/expressions#encoding><code>__ENCODING__</code></a>
-      keyword.
+      <p><dfn>Primary expressions</dfn> comprise atomic<sup>†</sup> units such
+      as <a href=/variables>variable references</a> and <a
+        href=/numerics#literals>numeric</a>, <a
+        href=/text#string-literals>string</a><sup>‡</sup>, and symbol, <a
+        href=/text#regexp-literals>regexp</a><sup>‡</sup>, and <a
+        href=#keyword-literals>keyword</a>, literals. Expressions can be
+      combined with <a href=/messages#operators>operators</a>, <a
+        href=#keywords>keywords</a>, and <a
+        href=/enumerables#array-literals>array</a>, <a
+        href=/enumerables#hash-literals>hash</a>, <a
+        href=/enumerables#range-literals>range</a>, and interpolative literals,
+      to produce <dfn>compound expressions</dfn>.</p>
+      <!-- How do message expressions fit into this definition? -->
+
+      <aside class=sidenote>
+      <span class=sidemark>†</span>As <a href=/references#refTURBAK08>Turbak,
+        Gifford, &amp; Sheldon</a> (2008,
+        pp. 20–22) note, this characterisation is patently false even for toy
+        languages since, in their example, <q>numerals can be broken down into
+          digits</q>, however we, too, will <q>ignore this detail</q>.
+      </aside>
+
+      <aside class=sidenote>
+        <span class=sidemark>‡</span>Double‐quoted strings or regexps that
+        interpolate other expressions are compound expressions.
+      </aside>
+
+      <!-- TODO: Sidebar exceptions to "everything is a value" -->
+
+      <section>
+        <h1 id=keyword-literals>Keyword Literals</h1>
+
+        <!-- TODO: Define, add __method__, __callee__, etc.-->
+        <section>
+          <h1 class=runin id=true><code>true</code></h1>
+          
+          <p>The <code>true</code> keyword returns the singleton instance of
+          <code>TrueClass</code>. Its value is, by definition, true.
+        </section>
+
+        <section>
+          <h1 class=runin id=false><code>false</code></h1>
+
+          <p>The <code>false</code> keyword returns the singleton instance of
+          <code>FalseClass</code>. Its value is, by definition, false.
+        </section>
+
+        <section>
+          <h1 class=runin id=nil><code>nil</code></h1>
+
+          <p>The <code>nil</code> keyword returns the singleton instance of
+          <code>NilClass</code>. Its value is represents the absence of a value.
+          The <code>Kernel.nil?</code> predicate returns <code>true</code> if
+          its value is <code>nil</code>; <code>false</code> otherwise.
+          <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
+          -->
+        </section>
+
+        <section>
+          <h1 class=runin id=self><code>self</code></h1>
+
+          <p><code>self</code> always evaluates to the current object. Outside
+          of any class definition, i.e. at the top‐level, the current object is
+          an instance of <code>Object</code> called <code>main</code>. Inside a
+          class definition, but outside of a method definition, the current
+          object is an instance of <code>Class</code>. Within a method
+          definition the current object is the instance of the containing
+          class.</p>
+
+          <figure class=centre id=self-as-the-implicit-receiver.rb>
+            <figcaption><code>self</code> is always defined; its value depends
+            on the enclosing context.
+          </figure>
+        </section>
+
+        <section>
+          <h1 class=runin id=file><code>__FILE__</code></h1>
+
+          <p>Evaluates to a string consisting of the name of the source file
+          currently being executed. The strings <samp>(eval)</samp> and
+          <samp>(irb)</samp> are returned when in an <code>eval</code> context
+          and <abbr title="Interactive Ruby">IRB</abbr> session,
+          respectively.</p>
+        </section>
+
+        <section>
+          <h1 class=runin id=line><code>__LINE__</code></h1>
+
+          <p>Evaluates to a <code>Fixnum</code> specifying the line number in
+          the current <a href=#file><code>__FILE__</code></a> being executed.
+        </section>
+
+        <section>
+          <h1 class=runin id=encoding><code>__ENCODING__</code></h1>
+
+          <p>Evaluates to an <code>Encoding</code> object representing the
+          current source encoding, i.e. that of <a
+          href=#file><code>__FILE__</code></a>.
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=statements>Statements</h1>
+
+      <p>Semantically, Ruby doesn’t distinguish between expressions and
+      statements, however as the two terms are so often used together in
+      describing the language, we will attempt a definition. <a
+        href=/references#refTURBAK08>Turbak, Gifford, and Sheldon</a> regard the
+      defining issue as whether the phrase is executed for its value: if so, it
+      is an expression; if not, it is a statement. In describing their
+      pedagogical language, <i>FLICK</i>, they offer this example:</p>
+      
+      <blockquote>
+        <p><i>FLICK</i> does not have a separate syntactic domain for [statements],
+        but some expressions effectively serve as [statements]. For example,
+        <code>:=</code> expressions return the uninteresting value #u simply
+        because they are required to return something, but the reason to execute
+        an assignment is to modify the store. (<a
+          href=/references#refTURBAK08><cite>Design Concepts in Programming
+            Languages</cite></a>, pp. 472—476)
+      </blockquote>
+
+      <p>That is, the definition depends on context. This clarifies somewhat the
+      assertion of <a href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>
+      (2008, p. 84) that <q>It is still useful, however, to distinguish syntax
+        typically used as expressions from syntax typically used as
+        statements.</q> from which
+      they appear to regard expressions that either <q>affect
+        flow-of-control</q> or <q>define methods and classes</q> as statements,
+      without explaining why. Both kinds of expressions are typically executed
+      for their side effects—i.e. altering the flow of control or defining
+      methods and classes, respectively—rather than their values, therefore can
+      generally be regarded as statements.</p>
+
+      <section>
+        <h1 id=statement-terminators>Statement Terminators</h1>
+        
+        <p>One statement must be separated from the next by a statement
+        terminator. This may be a semicolon (<code class=u
+          title=';'>U＋003B</code>) or <a href=#newlines>newline</a>. The latter
+        is preferred because it leads to a natural separation: each statement on
+        its own line. However, a newline does not terminate a statement if:
+        
+        <ul>
+          <li>It is immediately preceded by a reverse solidus (<code
+            class=u title='\'>U＋005C</code>).
+          <li>It is preceded by an <a href=/expressions#operators>operator</a>,
+          with optional intervening <a href=#whitespace>whitespace</a>.
+          <li>It is immediately preceded by a comma (<code class=u
+            title=','>U＋002C</code>) or full stop (<code class=u
+            title='.'>U＋002E</code>) in a <a href=/messages#expressions>message
+            expression</a> or <a href=/objects#arrays>array</a>/<a
+            href=/objects#hashes>hash</a> literal, with optional intervening
+          whitespace. 
+          <li>The first non-whitespace character on the following line is a full
+          stop (<code class=u title='.'>U＋002E</code>). (Allows <a
+            href=/message#chaining>chained</a> message expressions to span
+          lines).
+        </ul>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=block-structure>Block Structure</h1>
+    </section>
+
+    <section>
+      <h1 id=data><code>__END__</code></h1>
+    </section>
+
+    <section>
+      <h1 id=keywords>Keywords</h1>
+      
+      <dl>
+        <!-- Is alias an expression given that it always returns nil? -->
+        <dt><a href=/methods#aliases><code>alias</code></a> 
+        <dd>Creates a copy of an existing method with a new name.
+        <dt><a href=/flow#and-operator><code>and</code></a> 
+        <dd>Boolean binary operator performing logical AND.
+        <dt><a href=/flow#begin-statement><code>begin</code></a> 
+        <dd>Introduces a block of code which may have <code>rescue</code>,
+        <code>ensure</code>, and <code>else</code> clauses attached.
+        <dt><a href=/flow#break-statement><code>break</code></a> 
+        <dd>Within a loop or block, transfers control to the statement
+        immediately following the construct.
+        <dt><a href=/classes#class-keyword><code>class</code></a>
+        <dd>Defines a class.
+        <dt><a href=/flow#case-statement><code>case</code></a> 
+        <dd>Multi-way conditional predicated on the value of a given expression.
+        <!-- Is def an expression given that it always returns nil? -->
+        <dt><a href=/methods#defining><code>def</code></a> 
+        <dd>Defines a method
+        <dt><a href=#defined><code>defined?</code></a> 
+        <dd>
+        <!-- NOTE: Not standalone -->
+        <dt><a href=/messages#block-argument><code>do</code></a> <!-- ?? -->
+        <dd>Delimits a block literal
+        <!-- NOTE: Not standalone -->
+        <dt><a href=/flow#if-else-clause><code>else</code></a> <!-- rescue else
+        clause -->
+        <dd>Optional default clause for the <code>case</code>, <code>if</code>,
+        <code>unless</code> statements. Optional clause of <code>begin</code>,
+        <code>class</code>, <code>def</code>, and <code>module</code> statements
+        for use in exception handling.
+        <!-- NOTE: Not standalone -->
+        <dt><a href=/flow#if-elsif-clause><code>elsif</code></a>
+        <dd>Optional clause in an <code>if</code> statement.
+        <dt><a href=/flow#for><code>in</code></a> <!-- xref for in specifically?
+        -->
+        <dd>Separates a list of identifiers from the object being iterated in a
+        <code>for</code> loop.
+        <!-- NOTE: Not standalone -->
+        <dt><a href=/flow#ensure-clause><code>ensure</code></a>
+        <dd>Optional clause of <code>begin</code>, <code>class</code>,
+        <code>def</code>, and <code>module</code> statements which is executed
+        even if sibling clauses raise an exception.
+        <dt><a href=/flow#false><code>false</code></a>
+        <dd>Singleton instance of <code>FalseClass</code> representing
+        falsehood.
+        <dt><a href=/flow#for><code>for</code></a>
+        <dd>Looping construct for iterating over an object responding to
+        <code>:each</code>.
+        <dt><a href=/flow#if-statement><code>if</code></a> <!-- postfix form, also -->
+        <dd>Conditional statement and statement modifier.
+        <dt><a href=/modules#module-keyword><code>module</code></a>
+        <dd>Defines a module.
+        <dt><a href=/flow#next-statement><code>next</code></a>
+        <dd>Ends the current iteration of a loop or iterator and begins the
+        next.
+        <dt><a href=/flow#nil><code>nil</code></a>
+        <dd>Singleton instance of <code>NilClass</code> representing the
+        absence of a value.
+        <dt><a href=/flow#not-operator><code>not</code></a>
+        <dd>Boolean unary operator performing logical NOT. 
+        <dt><a href=/flow#or-operator><code>or</code></a>
+        <dd>Boolean binary operator performing logical OR.
+        <!-- NOTE: No return value -->
+        <dt><a href=/flow#redo-statement><code>redo</code></a>
+        <dd>Restarts the current iteration of a loop without re-evaluating the
+        conditional.
+        <!-- NOTE: Not standalone -->
+        <dt><a href=/flow#rescue><code>rescue</code></a>
+        <dd>Optional clause of <code>begin</code>, <code>class</code>,
+        <code>def</code>, or <code>module</code> statements that handles the
+        specified exceptions.
+        <!-- NOTE: No return value? -->
+        <dt><code>retry</code>
+        <dd>
+        <!-- return should be discussed in Flow > Control Statements -->
+        <dt><a href=/methods#return-values><code>return</code></a>
+        <dd>Immediately returns control from a method to its caller, along with
+        an optional value.
+        <dt><a href=/expressions#self><code>self</code></a>
+        <dd>Evaluates to the current object.
+        <dt><a href=/methods#super><code>super</code></a>
+        <dd>When used in a method body, invokes the method from a parent class
+        with the same name.
+        <dt><a href=/flow#true><code>true</code></a>
+        <dd>Singleton instance of <code>TrueClass</code> representing truth.
+        <!-- NOTE: No return value -->
+        <dt><a href=/methods#undefining><code>undef</code></a>
+        <dd>Removes the definition of a given method from the class in which it
+        was defined.
+        <dt><a href=/flow#unless-statement><code>unless</code></a>
+        <dd>Conditional statement and statement modifier.
+        <!-- NOTE: No return value -->
+        <dt><a href=/flow#until-loop><code>until</code></a>
+        <dd>Looping construct.
+        <!-- NOTE: No return value -->
+        <dt><a href=/flow#when><code>when</code></a>
+        <dd>Clause in a <code>case</code> statement.
+        <!-- NOTE: No return value -->
+        <dt><a href=/flow#while-loop><code>while</code></a>
+        <dd>Looping construct.
+        <dt><a href=/flow#yield><code>yield</code></a>
+        <dd>Transfers control from a method to an associated block then back.
+      </dl>
     </section>
   </section>
 
   <section>
+    <h1 id=interpretation>Interpretation</h1>
+
+    <p>The statements and expressions that comprise a program are collectively
+    known as its <dfn>source code</dfn>. To execute a program its source code
+    must be provided to a Ruby <dfn>interpreter</dfn>: the program that
+    executes Ruby source code. The reference implementation<sup>‡</sup> of
+    Ruby, or <abbr title="Matz’s Ruby Implementation">MRI</abbr>, contains an
+    interpreter called <code>ruby</code>, so when we speak of executing the
+    interpreter we are referring to running this program. The sections that
+    follow explain the various ways to execute source code.</p>
+
     <aside class=sidenote>
-      <span class=sidemark>‡</span>There are several alternative
+      <span class=sidemark>‡</span>There are several excellent alternative
       implementations such as <a href=//jruby.org/>JRuby</a> and <a
         href=//rubini.us/>Rubinius</a>. However, for the purposes of this
       book neither are recommended because, although JRuby is close, they are
       not yet compatible with Ruby 1.9.
     </aside>
+    
+    <section>
+      <h1 id=source-files>Source Files</h1>
 
-    <h1 id=interpreter>Interpreter</h1>
+      <p>Ruby programs are typically stored in plain text files with an
+      <code>.rb</code> filename extension. They are then executed by supplying
+      their filenames as arguments to the <code>ruby</code> binary, e.g.
+      <code>ruby myfile.rb</code> would execute the source code saved in
+      <code>myfile.rb</code>.</p>
 
-    <p>The <dfn>interpreter</dfn> is the program that executes Ruby source
-    code. The reference implementation<sup>‡</sup> of Ruby, or <abbr
-      title="Matz’s Ruby Implementation">MRI</abbr>, contains an interpreter
-    called <code>ruby</code>.
+      <section>
+        <h1 id=shebang>Shebang</h1>
 
-    <p>The interpreter is typically supplied the filename of a source file as
-    an argument, which it then executes, i.e. <code>ruby
-      <var>file</var></code>. If it is supplied with the <code>-e</code>
-    switch, Ruby source code may be provided on the command line, i.e.
-    <code>ruby -e '<var>code</var>'</code>. Often the interpreter is invoked
-    implicitly via a <a href=#shebang>shebang line</a>.</p>
+        <p>The <dfn>shebang</dfn><sup>†</sup> is a notation for informing a
+        UNIX-like operating system of the interpreter with which a script should
+        be executed. If present it must appear as the first line of a source
+        file. It begins with a number sign (<code class=u
+          title='#'>U＋0023</code>) making it a legal comment line, therefore
+        ignored by the interpreter, which is followed by an exclamation mark
+        (<code class=u title='!'>U＋0021</code>) then the path to the
+        interpreter.</p>
+
+        <aside class=sidenote>
+          <span class=sidemark>†</span>A portmanteau of <i>sharp</i> and
+          <i>bang</i> (<a href=/references#refWALL00>Wall, Christiansen, &amp;
+            Orwant</a>, p. 1001), colloquial terms for the number sign (<code
+            class=u title='#'>U＋0023</code>) and the exclamation mark (<code
+            class=u title='!'>U＋0021</code>), respectively.
+        </aside>    
+
+        <p>A typical shebang is <code>#!/usr/bin/env ruby -w</code> which uses
+        <code>env</code> to avoid hardcoding the path to the interpreter, and
+        passes the <code>-w</code> option to the interpreter to enable warnings.
+
+        <p>If a script containing a shebang is executable it may be executed by
+        entering its filename in the shell. This allows the interpreter to be
+        invoked implicitly, and is a common approach.
+      </section>
+
+      <section>
+        <h1 id=source-encoding>Source Encoding</h1>
+
+        <p>The <dfn>source encoding</dfn> is the character encoding of a given
+        source file. It is US-ASCII by default. A <code>SyntaxError</code> is
+        raised when a source file contains one or more characters invalid in the
+        source encoding.
+
+        <p>A file’s source encoding may be specified inline by means of a
+        <dfn>coding comment</dfn>: a specially formatted comment that declares
+        the encoding of the lines that follow. If omitted, the default source
+        encoding is assumed. If a source file contains a <a
+          href=#shebang>shebang</a> line, the coding comment must appear on the
+        second line; otherwise it must appear on the first.</p>
+
+        <aside class=sidenote>
+          <span class=sidemark>†</span>That the coding comment need only
+          <em>contain</em> <code>coding</code> allow Ruby to recognise Vim and
+          Emacs modelines which declare a file’s encoding. For example, <code>#
+            vim: set fileencoding=utf-8 :</code> informs both Vim and Ruby that
+          the file is encoded in UTF-8.
+        </aside>
+        
+        <!-- Tabulte encoding names? -->
+        <!-- TODO: Example showing relation to Vim/Emacs encoding declarations
+        --> 
+        <p>The coding comment is a US-ASCII string which begins with a number
+        sign (<code class=u title='#'>U＋0023</code>) and contains<sup>†</sup>
+        the string <code>coding</code> followed by an equals sign (<code class=u
+          title='='>U＋003D</code>) or colon (<code class=u
+          title=':'>U＋003A</code>) then the name of the
+        source encoding. The encoding name is one of those returned by
+        <code>Encoding.name_list</code> written in a case insensitive fashion.
+
+        <p>The source encoding of the currently executing code can be obtained
+        with the <a href=/expressions#encoding><code>__ENCODING__</code></a>
+        keyword.
+      </section>
+
+      <section>
+        <h1 id=warnings>Warnings</h1>
+
+        <p><dfn>Warnings</dfn>— notices of deprecated, ambiguous, or otherwise
+        problematic, code— are enabled when the interpreter is given the
+        <code>-w</code> switch, e.g. <code>ruby -w myfile.rb</code>. For
+        example, Ruby warns when a <a href=/expressions#constants>constant</a>
+        that has already been defined is assigned to.
+      </section>
+
+      <section>
+        <h1 id=require><code>require</code></h1>
+      </section>
+      
+      <section>
+        <h1 id=load><code>load</code></h1>
+      </section>
+    </section>
 
     <section>
-      <h1 id=warnings>Warnings</h1>
+      <h1 id=irb>IRB</h1> 
+      <!-- Intro to REPL; how to quit; caveats of #inspect output -->
 
-      <p><dfn>Warnings</dfn>— notices of deprecated, ambiguous, or otherwise
-      problematic, code— are enabled when the interpreter is given the
-      <code>-w</code> switch. For example, Ruby warns when a <a
-        href=/expressions#constants>constant</a> that has already been defined
-      is assigned to.
+      <p>Ruby is distributed with a program called <code>irb</code> which
+      provides an interactive shell, or read‐eval‐print loop, for the
+      interpreter. <abbr title="Interactive Ruby">IRB</abbr> works as follows:
+      
+      <ol>
+        <li>You enter a statement of Ruby and press <kbd>Enter</kbd>
+        <li>That statement is evaluated and its value printed to the screen.
+        <li>You go back to step 1.
+      </ol>
+  
+      <p>This provides a superb environment for learning Ruby. As you read
+      this book you can enter the examples in IRB and see for yourself how
+      they work.
+    </section>
+
+    <section>
+      <h1 id=eval>Evaluating Strings</h1>
+
+      <p>Source code can be provided as an command-line argument to the
+      interpreter if it is invoked with the <code>-e</code> switch, e.g.
+      <code>ruby -e 'puts 1 + 2'</code> executes the code fragment and
+      displays <samp>3</samp>.
+
+      <p>The <code>Kernel.eval</code> method provides similar functionality
+      from within a program. Pass it an arbitrary string of source code as an
+      argument and it will return the result. Continuing with the above
+      example: <code>eval 'puts 1 + 2'</code>.
     </section>
   </section>
-
-  <section>
-    <h1 id=irb>IRB</h1> 
-    <!-- Intro to REPL; how to quit; caveats of #inspect output -->
-
-    <p>
-  </section>
-
-  <section>
-    <h1 id=execution>Execution</h1> <!-- i.e. line by line -->
-  </section>
-
 </section>
