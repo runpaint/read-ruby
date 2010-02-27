@@ -22,25 +22,32 @@ relevant sections
 <section>  
   <h1 id=programs>Programs</h1>
 
+
   <p>Every entity in Ruby is an object. Objects can remember things and
-  communicate with each other by sending and receiving messages. Every object
+  communicate with each other by sending and receiving messages (<a
+    href=/references#refGOLDBERG76>Goldberg &amp; Kay</a>, p 44). A Ruby
+  program describes how certain objects must communicate to achieve some
+  definite ends.
+
+  <!--p>An end is a side effect
+  Every object
   belongs to a class (which is also an object). The class handles all
   communication (receiving a message and producing a reply) for every object
-  which belongs to it.<sup>1</sup></p>
+  which belongs to it.<sup>1</sup></p-->
 
   <!-- TODO: Better define class -->
-  <aside class=sidenote>
+  <!--aside class=sidenote>
     <span class=sidemark>1</span>This paragraph is paraphrased only slightly
     from the superb <cite>Smalltalk-72 Instruction Manual</cite> (<a
     href=/references#refGOLDBERG76>Goldberg &amp; Kay</a>, p 44).
-  </aside>
+  </aside-->
 
   <!--><aside class=sidenote>
     The use of the indefinite article is an attempt to avoid introducing a
     contradiction with respect to eigenclasses. Even objects with singleton
     methods belong to <em>a</em> class which handles their communication.
     </aside>-->
-
+    <!-->
   <p>Messages are requests for objects to perform actions. If the object
   understands the message it will perform the action then respond with
   another<sup>2</sup> object.</p>
@@ -78,7 +85,64 @@ relevant sections
   <p>If a method doesn’t know how to create an object that it needs, the
   sender of the message must do so instead. These additional objects can then
   be sent along with the message, allowing the method to use them.</p>
+  -->
+  <!--
 
+  If we are to use 'statements' we need to define it. FLANAGAN08 takes the
+  vague position that its helpful to refer to "expressions that affect the
+  control flow" as statements. Another perspective is to differentiate based
+  on the intent: statements are evaluated for their side effects; expressions,
+  for their value. That is, with a statement you do not care about its value.
+  If you did, you'd chain a message expression to it, use it an rvalue in an
+  assignment expression, condition a branching statement on its value, etc.—in
+  all cases, it would no longer be a statement; it would be an expression
+  combined with another expression. This can be safely taken to one extreme:
+  we combine expressions into a larger and larger compound expression until
+  its value is no longer of interest to us. At this point the expression will
+  be evaluated exclusively for its side effects, therefore be a statement. 
+  At the other is the pathological program that, perhaps, is designed to do
+  nothing. Presumably, if such a program consisted of any expression it would
+  have failed in its goal, therefore as long as we restrict our enquiries to
+  programs with at least one definite goal—by which we mean 'side effect'— we
+  conclude that a program must contain at least one statement. If it doesn't,
+  the expression is not being evaluated for its side effects, therefore the
+  program has no side effects, therefore it is not of interest. This
+  definition does not imply an upper limit on statements or, indeed, a
+  necessary correlation between the goals of a program and the statements it
+  contains.
+
+  Turbank & Gifford seem to support this analysis. Their language FLICK
+  mirrors Ruby in that some expressions return "uninteresting" values "simply
+  because they are required to return something". They repeat the idea that
+  the important distinction is the "reason to execute", i.e. side effects or
+  values. 
+  
+  Confusing, however, is their remark that commands/statements _may_
+  have side effects. If, by their definition, such constructs do not return
+  values, then whatever purpose other than the causing of side effects, is
+  there for their evaluation?
+
+"These represent the rest of the computation for commands (also called
+statements), phrases that may have side effects but do not return values. Many
+real-world programming languages have distinct syntactic categories for
+commands (which do not return values) and expressions (which do return
+values). For example, in Ada, Fortran, and Pascal, variable assignments,
+array updates, and program output are performed via commands. C, C++, and Java
+are expression-based languages, but invocations of functions/methods with the
+void return type are effectively commands.
+
+    FLICK does not have a separate syntactic domain for commands, but some
+expressions effectively serve as commands. For example, := expressions return
+the uninteresting value #u simply because they are required to return something,
+but the reason to execute an assignment is to modify the store. Sequencing using
+begin is a natural command context: it exists to enforce an order of state trans-
+formations. In (begin E1 E2 ), the value of E1 is ignored, effectively treating it
+as a command." (p 472)
+
+There is a flaw in my reasoning in that a library, say, may exist purely to
+return a value. Such a program would be useful but also free of side effects,
+as narrowly defined above.
+-->
   <section>
     <h1 id=source-files>Source Files</h1>
 
@@ -207,24 +271,15 @@ relevant sections
       <h1 id=statement-terminators>Statement Terminators</h1>
       
       <p>Statements may be terminated with a semicolon (<code class=u
-        title=';'>U＋003B</code>. More commonly they are terminated by <dfn
-        id=newlines>newlines</dfn>: one of the following character sequences:
-
-      <ul>
-        <li><code class=u>U＋000A</code> (line feed)
-        <li><code class=u>U＋000C</code> (form feed)
-        <li><code class=u>U＋000D</code> (carriage return)
-        <li>〈<code class=u>U＋000D</code>, <code class=u>U＋000A</code>〉
-        (carriage return followed by line feed)
-      </ul>
-      
-      <p>A newline does not terminate a statement if:
+        title=';'>U＋003B</code>. More commonly they are terminated by <a
+        href=#newlines>newlines</a>. A newline does not terminate a statement
+      if:
       
       <ul>
         <li>It is immediately preceded by a reverse solidus (<code
           class=u title='\'>U＋005C</code>).
-        <li>It is preceded by an <a href=/expressions#operators>operator</a>, with optional intervening
-        <a href=#whitespace>whitespace</a>.
+        <li>It is preceded by an <a href=/expressions#operators>operator</a>,
+        with optional intervening <a href=#whitespace>whitespace</a>.
         <li>It is immediately preceded by a comma (<code class=u
           title=','>U＋002C</code>) or full stop (<code class=u
           title='.'>U＋002E</code>) in a <a href=/messages#expressions>message
@@ -340,8 +395,8 @@ relevant sections
       <li><code class=u>U＋000B</code> (vertical tab)
       <li><code class=u>U＋000C</code> (form feed)
       <li><code class=u>U＋000D</code> (carriage return)
-      <li>〈<code class=u>U＋000D</code>,&nbsp;<code class=u>U＋000A</code>〉
-      (carriage return followed by line feed)
+      <li>&lt;<code class=u>U＋000D</code>,&nbsp;<code
+        class=u>U＋000A</code>&gt; (carriage return followed by line feed)
       <li><code class=u title=' '>U＋0020</code> (space)
     </ul>
 
@@ -558,125 +613,140 @@ relevant sections
     <section>
       <h1 class=runin id=less-than>Less‐Than Signs</h1>
 
+      <p>A less‐than sign (<code class=u title='<'>U＋003C</code>) in the
+      context of…
+
       <dl>
-        <dt>Operators
+        <dt>An operator
+        <dd>Tests for the corresponding inequality when solitary or followed
+        by an equals sign (<code class=u title='='>U＋003D</code>). Serves as
+        the spaceship operator when followed by an equals sign and
+        greater‐than sign (<code class=u title='>'>U＋003E</code>).
         <dt>Class definition
+        <dd>Specifies the parent of the class being defined.
         <dt>Eigenclass definition
+        <dd>Two consecutive less‐than signs following the <code>class</code>
+        keyword opens the eigenclass of the following expression.
       </dl>
     </section>
 
     <section>
-      <h1 id=low-lines>Low Lines</h1>
-
-      <dl>
-        <dt>Local variables
-        <dt>Indicates language keywords: __FILE__, __method__, __send__.
-        <dt>Numeric literals
-      </dl>
-    </section>
-
-    <section>
-      <h1 id=newlines>Newlines</h1>
+      <h1 class=runin id=low-lines>Low Lines</h1>
       
-      <dl>
-        <dt>Statement terminator
-        <dt>if, else, etc. separator
-      </dl>
+      <p>A low line (<code class=u title='_'>U＋005F</code>) is used to
+      separate digits in numeric literals.
+
+      <!-- TODO: Mention use in keywords such as __method__? -->
     </section>
 
     <section>
-      <h1 id=number-signs>Number Signs</h1>
+      <h1 class=runin id=newlines>Newlines</h1>
 
-      <dl>
-        <dt>Comments
-        <dt>String interpolation
-      </dl>
+      <p>A newline is one of the following character sequences:
+
+      <ul>
+        <li><code class=u>U＋000A</code> (line feed)
+        <li><code class=u>U＋000C</code> (form feed)
+        <li><code class=u>U＋000D</code> (carriage return)
+        <li>〈<code class=u>U＋000D</code>, <code class=u>U＋000A</code>〉
+        (carriage return followed by line feed)
+      </ul>
+
+      <p>It serves as a <a href=#statement-terminators>statement
+        terminator</a> and is a required component of certain special
+      syntactic forms such as <code>if</code> and <code>def</code> statements.
     </section>
 
     <section>
-      <h1 id=parentheses>Parentheses</h1>
-
-      <dl>
-        <dt>Message expressions
-        <dt>Grouping
-        <dt>Method definitions
-      </dl>
-    </section>
-
-    <section>
-      <h1 id=percent-signs>Percent Signs</h1>
-
-      <dl>
-        <dt>Operators
-        <dt>Alternative delimiters
-      </dl>
-    </section>
-
-    <section>
-      <h1 id=plus-signs>Plus Signs</h1>
-
-      <p>Operators
-    </section>
-
-    <section>
-      <h1 id=question-marks>Question Marks</h1>
-
-      <dl>
-        <dt>Selectors
-        <dt>Ternary expressions
-      </dl>
-    </section>
-
-    <section>
-      <h1 id=quotation-marks>Quotation Marks</h1>
-
-      <p>Double-quoted string literals
-    </section>
-
-    <section>
-      <h1 id=reverse-solidi>Reverse Solidi</h1>
-
-      <p>Character escapes
-    </section>
-
-    <section>
-      <h1 id=semicolons>Semicolons</h1>
-
-      <p>Statement terminators
-    </section>
-
-    <section>
-      <h1 id=solidi>Solidi</h1>
+      <h1 class=runin id=number-signs>Number Signs</h1>
       
-      <dl>
-        <dt>Regexp literals
-        <dt>Operator
-      </dl>
+      <p>A number sign (<code class=u title='#'>U＋0023</code>) inside a
+      double‐quoted string literal introduces an interpolation sequence.
+      Outside of a string literal it introduces a comment.
     </section>
 
     <section>
-      <h1 id=square-brackets>Square Brackets</h1>
-
-      <dl>
-        <dt>Array literals
-        <dt>Selector
-      </dl>
-    </section>
-
-    <section>
-      <h1 id=tildes>Tildes</h1>
+      <h1 class=runin id=parentheses>Parentheses</h1>
       
-      <p>Operators
+      <p>A balanced pair of parentheses (&lt;<code class=u
+        title='('>U＋0028</code>, <code class=u title=')'>U＋0029</code>&gt;)
+      group arguments in message expressions, enforce precedence in compound
+      expressions, and enclose the parameter list of a method definition.
     </section>
 
     <section>
-      <h1 id=vertical-lines>Vertical Lines</h1>
+      <h1 class=runin id=percent-signs>Percent Signs</h1>
 
-      <dl>
-        <dt>Selector
-        <dt>Operators
-        <dt>Block parameters
-      </dl>
+      <p>A percent sign (<code class=u title='%'>U＋0025</code>) is an
+      operator and part of a generalised quoting form for many object
+      literals.
+    </section>
+
+    <section>
+      <h1 class=runin id=plus-signs>Plus Signs</h1>
+      
+      <p>A plus sign (<code class=u title='+'>U＋002B</code>) is a binary
+      operator, which usually sums of concatenates its operands.
+    </section>
+
+    <section>
+      <h1 class=runin id=question-marks>Question Marks</h1>
+
+      <p>A question mark (<code class=u title='?'>U＋003F</code>) suffixing a
+      selector suggests the message is a predicate; as part of a ternary
+      expression it separates the conditional from the first clause.
+    </section>
+
+    <section>
+      <h1 class=runin id=quotation-marks>Quotation Marks</h1>
+
+      <p>A pair of quotation marks (<code class=u title='"'>U＋0022</code>)
+      delimit a double-quoted string literal.
+    </section>
+
+    <section>
+      <h1 class=runin id=reverse-solidi>Reverse Solidi</h1>
+
+      <p>A reverse solidus (<code class=u title='\'>U＋005C</code>) in the
+      context of a string literal introduces an escape sequence.
+    </section>
+
+    <section>
+      <h1 class=runin id=semicolons>Semicolons</h1>
+
+      <p>A semicolon (<code class=u title=';'>U＋003B</code>) is an explicit
+      statement terminator.
+    </section>
+
+    <section>
+      <h1 class=runin id=solidi>Solidi</h1>
+      
+      <p>A solidus (<code class=u title='/'>U＋002F</code>) is an operator
+      and, when appearing as part of a pair, delimits a regexp literal.
+    </section>
+
+    <section>
+      <h1 class=runin id=square-brackets>Square Brackets</h1>
+
+      <p>A pair of square brackets (&lt;<code class=u
+        title='['>U＋005B</code>, <code class=u title=']'>U＋005D</code>&gt;)
+      delimit an array literal.
+    </section>
+
+    <section>
+      <h1 class=runin id=tildes>Tildes</h1>
+      
+      <p>A tilde (<code class=u title='~'>U＋007E</code>) performs bitwise
+      complement when used as a unary operator; pattern matching when
+      preceded by an equals sign and used as a binary operator.
+    </section>
+
+    <section>
+      <h1 class=runin id=vertical-lines>Vertical Lines</h1>
+
+      <p>A vertical line (<code class=u title='|'>U＋007C</code> is an
+      operator when used singly and followed by another, and serves to delimit
+      the parameter list of a block.
     </section>
   </section>
 
