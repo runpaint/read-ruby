@@ -7,15 +7,14 @@
 <link rel=next href=/variables>
 <link rel='index up' href=/toc>
 
-<style>
-  /* Position punctuation mark being discussed in the margin? */
+<!--style>
   .punct {
     position:absolute;
     margin-left:95%;
     font-size:3em;
     visibility: hidden;
   }
-</style>
+</style-->
 <!-- TODO: Extract error messages from parse.y and describe them in the
 relevant sections
 -->
@@ -27,27 +26,28 @@ relevant sections
   communicate with each other by sending and receiving messages (<a
     href=/references#refGOLDBERG76>Goldberg &amp; Kay</a>, p 44). A Ruby
   program describes how certain objects must communicate to achieve some
-  definite ends.
+  definite ends.</p>
 
-  <!--p>An end is a side effect
+  <!--
+  
+  An end is a side effect
   Every object
   belongs to a class (which is also an object). The class handles all
   communication (receiving a message and producing a reply) for every object
-  which belongs to it.<sup>1</sup></p-->
+  which belongs to it.<sup>1</sup></p>
 
-  <!-- TODO: Better define class -->
-  <!--aside class=sidenote>
+  TODO: Better define class
+  <aside class=sidenote>
     <span class=sidemark>1</span>This paragraph is paraphrased only slightly
     from the superb <cite>Smalltalk-72 Instruction Manual</cite> (<a
     href=/references#refGOLDBERG76>Goldberg &amp; Kay</a>, p 44).
-  </aside-->
+  </aside>
 
-  <!--><aside class=sidenote>
+  <aside class=sidenote>
     The use of the indefinite article is an attempt to avoid introducing a
     contradiction with respect to eigenclasses. Even objects with singleton
     methods belong to <em>a</em> class which handles their communication.
-    </aside>-->
-    <!-->
+    </aside>
   <p>Messages are requests for objects to perform actions. If the object
   understands the message it will perform the action then respond with
   another<sup>2</sup> object.</p>
@@ -85,8 +85,6 @@ relevant sections
   <p>If a method doesn’t know how to create an object that it needs, the
   sender of the message must do so instead. These additional objects can then
   be sent along with the message, allowing the method to use them.</p>
-  -->
-  <!--
 
   If we are to use 'statements' we need to define it. FLANAGAN08 takes the
   vague position that its helpful to refer to "expressions that affect the
@@ -143,6 +141,738 @@ There is a flaw in my reasoning in that a library, say, may exist purely to
 return a value. Such a program would be useful but also free of side effects,
 as narrowly defined above.
 -->
+  <section>  
+    <h1 id=tokens>Tokens</h1>
+
+    <p><dfn>Tokens</dfn> are <q>the mark or series of marks that denote one
+      symbol or word in the language</q> (<a
+      href=/references#refFISCHER92>Fischer &amp; Grodzinsky</a>, pp.
+    59–62). A Ruby program consists of a combination of the following
+    tokens:</p> <!-- Aho, 2nd ed., p43: tokens vs. terminals -->
+
+    <aside class=sidenote>
+      <code>Ripper</code> is a class in the standard library for parsing and
+      analysing Ruby. The <code>Ripper.tokenize</code> method takes a string
+      of code as an argument and returns an array of its constituent tokens.
+      Experiment with this method in <abbr title="Interactive
+        Ruby">IRB</abbr> (<code>irb -rripper</code>) to test your
+      assumptions of how tokenization works.
+    </aside>
+
+    <ul>
+      <li><a href=#comments>Comments</a>
+      <li><a href=/objects#literals>Literals</a>
+      <li>Punctuation
+      <li><a href=#identifiers>Identifiers</a>
+      <li><a href=#keywords>Keywords</a>
+    </ul>
+
+
+    <section>
+      <h1 id=comments>Comments</h1>
+
+      <p><dfn>Comments</dfn> are remarks which do not affect the meaning of a
+      program. They are introduced with a number sign (<code class=u
+        title='#'>U＋0023</code>) and continue until the end of the line: the
+      text between <code>#</code> and the end of the line is ignored by the
+      interpreter. Comments are not recognised inside of <a
+        href=/objects#strings>string</a>/<a href=/objects#regexps>regexp</a>
+      literals—they are interpreted literally—however, regexps support an
+      alternative form of embedded comment. There is no specific construct for
+      multiline comments, but they may be approximated with <a
+        href=#embedded-doc>embedded documentation</a>.
+    </section>
+
+    <!-- Token? -->
+    <section>
+      <h1 id=embedded-doc>Embedded Documentation</h1>
+
+      <p><dfn>Embedded documentation</dfn> is a portion of a source file that
+      contains documentation intended for a postprocessor such as
+      <code>rdoc</code>, and as such is ignored by the interpreter. It is
+      introduced by a line beginning <code>=begin</code>, that is an equals
+      sign (<code class=u title='='>U＋003D</code>) followed by the string
+      <code>begin</code>, and continue until a line beginning
+      <code>=end</code> is encountered.
+
+      <p>Both <code>=begin</code> and <code>=end</code> may be followed by
+      arbitrary text, which is included in the embedded documentation, as long
+      as it is preceded by a whitespace character. Conventionally, the text
+      following <code>=begin </code> names the tool for which the
+      documentation is intended.
+    </section>
+
+    <section>
+      <h1 id=whitespace>Whitespace</h1>
+
+      <p><dfn>Whitespace</dfn> consists only of <code
+        class=u>U＋0009</code>–<code class=u>U＋000D</span> and the space
+      character (<code class=u title=' '>U＋0020):</p>
+
+      <ul>
+        <li><code class=u>U＋0009</code> (horizontal tab)
+        <li><code class=u>U＋000A</code> (line feed)
+        <li><code class=u>U＋000B</code> (vertical tab)
+        <li><code class=u>U＋000C</code> (form feed)
+        <li><code class=u>U＋000D</code> (carriage return)
+        <li>&lt;<code class=u>U＋000D</code>,&nbsp;<code
+          class=u>U＋000A</code>&gt; (carriage return followed by line feed)
+        <li><code class=u title=' '>U＋0020</code> (space)
+      </ul>
+
+      <p>The primary role of whitespace in Ruby syntax is to separate tokens
+      and terminate statements. When whitespace is syntactically significant
+      it is typically collapsed to a single space. The few areas of syntax
+      where whitespace has different semantics are clearly labeled. Newlines
+      are used as <a href=#statement-terminators>statement terminators</a>.
+    </section>
+
+    <section>
+      <h1 id=punctuation>Punctuation</h1>
+
+      <!-- Note that, unless stated otherwise, this doesn't apply to string
+      or regexp literals. Include regexp symbols? -->
+
+      <section>
+        <h1 class=runin id=ampersands>Ampersands</h1>
+        
+        <p>An ampersand (<code class=u title='&'>U＋0026</code>) in the
+        context of…
+
+        <dl class=inline-small>
+          <dt>A message expression
+          <dd>Converts a <code>Proc</code> object to a block, passing it to
+          the receiver.
+          <dt>A parameter list
+          <dd>Signifies that the identifier that follows corresponds to the
+          block sent along with the message.
+          <dt>An operator
+          <dd>Performs bitwise AND. The operator consisting of two consecutive
+          ampersands performs Boolean AND. 
+        </dl>
+      </section>
+
+      <section>
+        <h1 class=runin id=apostrophes>Apostrophes</h1>
+        
+        <p>An apostrophe (<code class=u title="'">U＋0027</code>) delimits <a
+          href=#single-quoted-strings>single-quoted strings</a>.
+      </section>
+
+      <section>
+        <h1 class=runin id=asterisks>Asterisks</h1>
+
+        <p>An asterisk (<code class=u title='*'>U＋002A</code>) in the
+        context of…
+
+        <dl class=inline-small>
+          <dt>A message expression
+          <dd>Explodes an object into its constituent elements.
+          <dt>A parameter list
+          <dd>Prefixes a parameter which may receive a variable number of
+          arguments,
+          <dt>An operator
+          <dd>Performs multiplication—when alone—or exponentiation—when
+          preceded by another asterisk.
+        </dl>
+      </section>
+
+      <section>
+        <h1 class=runin id=cicumflex-accents>Circumflex Accents</h1>
+
+        <p>The circumflex accent (<code class=u title='^'>U＋005E</code>) is an
+        binary operator that performs bitwise exclusive or.
+      </section>
+      
+      <section>
+        <h1 class=runin id=colons>Colons</h1>
+
+        <p>A colon (<code class=u title=':'>U＋003A</code>) in the context of…
+
+        <dl class=inline-small>
+          <dt>A symbol literal
+          <dd>Creates a symbol from the following identifier or string.
+          <dt>A hash literal
+          <dd>Separates symbol keys from their corresponding values.
+          <dt>Ternary conditional
+          <dd>Separates the <i>if</i> clause from the <i>else</i> clause.
+          <dt>A constant reference
+          <dd>Two consecutive colons serve as the scope operator, separating the
+          names of nested constants.
+        </dl>
+      </section>
+      
+      <section>
+        <h1 class=runin id=commas>Commas</h1>
+        
+        <p>A comma (<code class=u title=','>U＋002C</code>) separates
+        expressions in a list. It is used in message expressions, parameter
+        lists, assignment expressions, and array literals.
+      </section>
+
+      <section>
+        <h1 class=runin id=commercial-ats>Commercial At Signs</h1>
+        
+        <p>When the commercial at sign (<code class=u title='@'>U＋0040</code>)
+        prefixes an identifier it is a sigil introducing an instance variable—if
+        it appears by itself—or a class variable—if it is preceded by another.
+        In a symbol literal or method name, an <code>@</code> suffix
+        distinguishes a unary operator from a binary operator with the same
+        name. 
+      </section>
+
+      <section>
+        <h1 class=runin id=curly-brackets>Curly Brackets</h1>
+        
+        <p>A pair of curly brackets (<code class=u title='{'>U＋007B</code>,
+        <code class=u title='}'>U＋007D</code>) in the context of a message
+        expression delimit a block which is sent along with the message,
+        otherwise they delimit a hash literal.
+      </section>
+
+      <section>
+        <h1 class=runin id=dollar-signs>Dollar Signs</h1>
+        <span class=punct>$</span>
+
+        <p>A dollar sign (<code class=u title='$'>U＋0024</code>) followed by an
+        identifier is a sigil denoting a global variable.
+      </section>
+
+      <section>
+        <h1 class=runin id=equals-signs>Equals Signs</h1>
+        <span class=punct>=</span>
+
+        <p>An equals sign (<code class=u title='='>U＋003D</code>) in the
+        context of…
+
+        <dl class=inline-small>
+          <dt>An assignment expression
+          <dd>Separates the variables being assigned to from the values being
+          assigned to them.
+          <dt>An operator
+          <dd>Tests for equality if doubled, case equality if tripled, and
+          inequality if prefixed and/or suffixed with less‐than  (<code class=u
+            title='<'>U＋003C</code>) or greater‐than (<code class=u
+            title='>'>U＋003E</code>) signs; performs pattern matching if
+          followed by a tilde (<code class=u title='~'>U＋007E</code>).
+          <dt>A parameter list
+          <dd>Signifies that a parameter is optional and its default value
+          <dt>Hash literals
+          <dd>When followed by a greater‐than sign (<code class=u
+            title='>'>U＋003E</code>) separates a key from its value.
+          <dt>Embedded documentation
+          <dd>Introduces the beginning of embedded documentation when appearing
+          at the start of a line followed by <code>begin</code>, and the end
+          when appearing at the start of a line followed by <code>end</code>
+        </dl>
+      </section>
+
+      <section>
+        <h1 class=runin id=exclamation-marks>Exclamation Marks</h1>
+        <span class=punct>!</span>
+        <p>An exclamation mark (<code class=u title='!'>U＋0021</code>) in the
+        context of…
+
+        <dl class=inline-small>
+          <dt>A selector
+          <dd>Signifies the message deserves extra attention 
+          <dt>An operator
+          <dd>Negates its operand, when used as a unary operator, the sense of a
+          pattern match, when followed by a tilde (<code class=u
+            title='~'>U＋007E</code>), or a test for equality, when followed by
+          an equals sign (<code class=u title='='>U＋003D</code>). 
+        </dl>
+      </section>
+
+      <section>
+        <h1 class=runin id=full-stops>Full Stops</h1>
+        
+        <p>A full stop (<code class=u title='.'>U＋002E</code>) is used to
+        separate in the context of…
+
+        <dl class=inline-small>
+          <dt>A message expression
+          <dd>It separates the receiver from the selector
+          <dt>A range literal
+          <dd>Two or three consecutive periods separate the start value from the
+          end value
+          <dt>A float literal
+          <dd>It is the radix point separating the whole part of the number from
+          the fractional part.
+          <dt>A flip-flop operator
+          <dd>It separates the first value from the last
+        </dl>
+      </section>
+
+      <section>
+        <h1 class=runin id=grave-accents>Grave Accents</h1>
+
+        <p>Grave accents (<code class=u title='`'>U＋0060</code>) delimit a
+        double‐quoted string interpreted as a command to be executed. 
+      </section>
+
+      <section>
+        <h1 class=runin id=greater-than>Greater‐Than Signs</h1>
+
+        <p>When used as an operator, a greater‐than sign (<code class=u
+          title='>'>U＋003E</code>) represents the corresponding inequality. In
+        a hash literal, it is preceded by an equals sign to separate keys from
+        their values.    
+      </section>
+
+
+      <section>
+        <h1 class=runin id=hyphen-minus>Hyphen Minus Signs</h1>
+
+        <p>A hyphen minus sign (<code title='-' class=u>U＋002D</code>) performs
+        negation when used as a unary operator, and subtraction when used as a
+        binary operator. When followed by a greater‐than sign (<code class=u
+          title='>'>U＋003E</code>) it may represent a lambda literal.
+      </section>
+
+      <section>
+        <h1 class=runin id=less-than>Less‐Than Signs</h1>
+
+        <p>A less‐than sign (<code class=u title='<'>U＋003C</code>) in the
+        context of…
+
+        <dl>
+          <dt>An operator
+          <dd>Tests for the corresponding inequality when solitary or followed
+          by an equals sign (<code class=u title='='>U＋003D</code>). Serves as
+          the spaceship operator when followed by an equals sign and
+          greater‐than sign (<code class=u title='>'>U＋003E</code>).
+          <dt>Class definition
+          <dd>Specifies the parent of the class being defined.
+          <dt>Eigenclass definition
+          <dd>Two consecutive less‐than signs following the <code>class</code>
+          keyword opens the eigenclass of the following expression.
+        </dl>
+      </section>
+
+      <section>
+        <h1 class=runin id=low-lines>Low Lines</h1>
+        
+        <p>A low line (<code class=u title='_'>U＋005F</code>) is used to
+        separate digits in numeric literals.
+
+        <!-- TODO: Mention use in keywords such as __method__? -->
+      </section>
+
+      <section>
+        <h1 class=runin id=newlines>Newlines</h1>
+
+        <p>A newline is one of the following character sequences:
+
+        <ul>
+          <li><code class=u>U＋000A</code> (line feed)
+          <li><code class=u>U＋000C</code> (form feed)
+          <li><code class=u>U＋000D</code> (carriage return)
+          <li>〈<code class=u>U＋000D</code>, <code class=u>U＋000A</code>〉
+          (carriage return followed by line feed)
+        </ul>
+
+        <p>It serves as a <a href=#statement-terminators>statement
+          terminator</a> and is a required component of certain special
+        syntactic forms such as <code>if</code> and <code>def</code> statements.
+      </section>
+
+      <section>
+        <h1 class=runin id=number-signs>Number Signs</h1>
+        
+        <p>A number sign (<code class=u title='#'>U＋0023</code>) inside a
+        double‐quoted string literal introduces an interpolation sequence.
+        Outside of a string literal it introduces a comment.
+      </section>
+
+      <section>
+        <h1 class=runin id=parentheses>Parentheses</h1>
+        
+        <p>A balanced pair of parentheses (&lt;<code class=u
+          title='('>U＋0028</code>, <code class=u title=')'>U＋0029</code>&gt;)
+        group arguments in message expressions, enforce precedence in compound
+        expressions, and enclose the parameter list of a method definition.
+      </section>
+
+      <section>
+        <h1 class=runin id=percent-signs>Percent Signs</h1>
+
+        <p>A percent sign (<code class=u title='%'>U＋0025</code>) is an
+        operator and part of a generalised quoting form for many object
+        literals.
+      </section>
+
+      <section>
+        <h1 class=runin id=plus-signs>Plus Signs</h1>
+        
+        <p>A plus sign (<code class=u title='+'>U＋002B</code>) is a binary
+        operator, which usually sums of concatenates its operands.
+      </section>
+
+      <section>
+        <h1 class=runin id=question-marks>Question Marks</h1>
+
+        <p>A question mark (<code class=u title='?'>U＋003F</code>) suffixing a
+        selector suggests the message is a predicate; as part of a ternary
+        expression it separates the conditional from the first clause.
+      </section>
+
+      <section>
+        <h1 class=runin id=quotation-marks>Quotation Marks</h1>
+
+        <p>A pair of quotation marks (<code class=u title='"'>U＋0022</code>)
+        delimit a double-quoted string literal.
+      </section>
+
+      <section>
+        <h1 class=runin id=reverse-solidi>Reverse Solidi</h1>
+
+        <p>A reverse solidus (<code class=u title='\'>U＋005C</code>) in the
+        context of a string literal introduces an escape sequence.
+      </section>
+
+      <section>
+        <h1 class=runin id=semicolons>Semicolons</h1>
+
+        <p>A semicolon (<code class=u title=';'>U＋003B</code>) is an explicit
+        statement terminator.
+      </section>
+
+      <section>
+        <h1 class=runin id=solidi>Solidi</h1>
+        
+        <p>A solidus (<code class=u title='/'>U＋002F</code>) is an operator
+        and, when appearing as part of a pair, delimits a regexp literal.
+      </section>
+
+      <section>
+        <h1 class=runin id=square-brackets>Square Brackets</h1>
+
+        <p>A pair of square brackets (&lt;<code class=u
+          title='['>U＋005B</code>, <code class=u title=']'>U＋005D</code>&gt;)
+        delimit an array literal.
+      </section>
+
+      <section>
+        <h1 class=runin id=tildes>Tildes</h1>
+        
+        <p>A tilde (<code class=u title='~'>U＋007E</code>) performs bitwise
+        complement when used as a unary operator; pattern matching when
+        preceded by an equals sign and used as a binary operator.
+      </section>
+
+      <section>
+        <h1 class=runin id=vertical-lines>Vertical Lines</h1>
+
+        <p>A vertical line (<code class=u title='|'>U＋007C</code> is an
+        operator when used singly and followed by another, and serves to delimit
+        the parameter list of a block.
+      </section>
+    </section>
+
+
+    <!-- FIXME: Hash, Array, proc, etc., literals aren't tokens -->
+    <section>
+      <h1 id=literals>Literals</h1>
+        
+      <!-- Discuss &:sym as a literal? -->
+      <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
+      for the instantiation of a particular core object.</p> <!-- Doesn’t call
+      initialize; Performance pips pedagogy --> <!-- Cover block literals? -->
+    </section>
+
+    <section>
+      <h1 id=identifiers>Identifiers</h1>
+      
+      <p>An <dfn>identifier</dfn> is the name of a variable or constant. It
+      must not contain any US-ASCII character other than the alphanumerics
+      (A—Z, a—z, 0–9) and the low line (<code class=u
+        title='_'>U＋005F</code>), or begin with a US-ASCII digit. However, it
+      may contain any other character legal in the source encoding.</p>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=expressions>Expressions</h1>
+
+    <p>An <dfn>expression</dfn> is a syntactical construct that produces a
+    value. Since every entity is an object, every expression evaluates to an
+    object. It is either primary or compound.</p>
+    
+    <aside class=sidenote>
+    We follow the lead of <a href=/references#refAHO86>Aho, Sethi, &amp;
+      Ullman</a> (1986) in defining <i>expression</i> by recursion rather than
+    direct description.
+    </aside>
+
+    <p><dfn>Primary expressions</dfn> comprise atomic<sup>†</sup> units such
+    as <a href=/variables>variable references</a> and <a
+      href=/numerics#literals>numeric</a>, <a
+      href=/text#string-literals>string</a><sup>‡</sup>, and symbol, <a
+      href=/text#regexp-literals>regexp</a><sup>‡</sup>, and <a
+      href=#keyword-literals>keyword</a>, literals. Expressions can be
+    combined with <a href=/messages#operators>operators</a>, <a
+      href=#keywords>keywords</a>, and <a
+      href=/enumerables#array-literals>array</a>, <a
+      href=/enumerables#hash-literals>hash</a>, <a
+      href=/enumerables#range-literals>range</a>, and interpolative literals,
+    to produce <dfn>compound expressions</dfn>.</p>
+
+    <aside class=sidenote>
+    <span class=sidemark>†</span>As <a href=/references#refTURBAK08>Turbak,
+      Gifford, &amp; Sheldon</a> (2008,
+      pp. 20–22) note, this characterisation is patently false even for toy
+      languages since, in their example, <q>numerals can be broken down into
+        digits</q>, however we, too, will <q>ignore this detail</q>.
+    </aside>
+
+    <aside class=sidenote>
+      <span class=sidemark>‡</span>Double‐quoted strings or regexps that
+      interpolate other expressions are compound expressions.
+    </aside>
+
+    <!-- TODO: Sidebar exceptions to "everything is a value" -->
+
+    <section>
+      <h1 id=keyword-literals>Keyword Literals</h1>
+
+      <!-- TODO: Define, add __method__, __callee__, etc.-->
+      <section>
+        <h1 class=runin id=true><code>true</code></h1>
+        
+        <p>The <code>true</code> keyword returns the singleton instance of
+        <code>TrueClass</code>. Its value is, by definition, true.
+      </section>
+
+      <section>
+        <h1 class=runin id=false><code>false</code></h1>
+
+        <p>The <code>false</code> keyword returns the singleton instance of
+        <code>FalseClass</code>. Its value is, by definition, false.
+      </section>
+
+      <section>
+        <h1 class=runin id=nil><code>nil</code></h1>
+
+        <p>The <code>nil</code> keyword returns the singleton instance of
+        <code>NilClass</code>. Its value is represents the absence of a value.
+        The <code>Kernel.nil?</code> predicate returns <code>true</code> if
+        its value is <code>nil</code>; <code>false</code> otherwise.
+        <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
+        -->
+      </section>
+
+      <section>
+        <h1 class=runin id=self><code>self</code></h1>
+
+        <p><code>self</code> always evaluates to the current object. Outside
+        of any class definition, i.e. at the top‐level, the current object is
+        an instance of <code>Object</code> called <code>main</code>. Inside a
+        class definition, but outside of a method definition, the current
+        object is an instance of <code>Class</code>. Within a method
+        definition the current object is the instance of the containing
+        class.</p>
+
+        <figure class=centre id=self-as-the-implicit-receiver.rb>
+          <figcaption><code>self</code> is always defined; its value depends
+          on the enclosing context.
+        </figure>
+      </section>
+
+      <section>
+        <h1 class=runin id=file><code>__FILE__</code></h1>
+
+        <p>Evaluates to a string consisting of the name of the source file
+        currently being executed. The strings <samp>(eval)</samp> and
+        <samp>(irb)</samp> are returned when in an <code>eval</code> context
+        and <abbr title="Interactive Ruby">IRB</abbr> session,
+        respectively.</p>
+      </section>
+
+      <section>
+        <h1 class=runin id=line><code>__LINE__</code></h1>
+
+        <p>Evaluates to a <code>Fixnum</code> specifying the line number in
+        the current <a href=#file><code>__FILE__</code></a> being executed.
+      </section>
+
+      <section>
+        <h1 class=runin id=encoding><code>__ENCODING__</code></h1>
+
+        <p>Evaluates to an <code>Encoding</code> object representing the
+        current source encoding, i.e. that of <a
+        href=#file><code>__FILE__</code></a>.
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=lexical>Lexical Structure</h1>
+
+
+    <section>
+      <h1 id=statement-terminators>Statement Terminators</h1>
+      
+      <p>Statements may be terminated with a semicolon (<code class=u
+        title=';'>U＋003B</code>. More commonly they are terminated by <a
+        href=#newlines>newlines</a>. A newline does not terminate a statement
+      if:
+      
+      <ul>
+        <li>It is immediately preceded by a reverse solidus (<code
+          class=u title='\'>U＋005C</code>).
+        <li>It is preceded by an <a href=/expressions#operators>operator</a>,
+        with optional intervening <a href=#whitespace>whitespace</a>.
+        <li>It is immediately preceded by a comma (<code class=u
+          title=','>U＋002C</code>) or full stop (<code class=u
+          title='.'>U＋002E</code>) in a <a href=/messages#expressions>message
+          expression</a> or <a href=/objects#arrays>array</a>/<a
+          href=/objects#hashes>hash</a> literal, with optional intervening
+        whitespace. 
+        <li>The first non-whitespace character on the following line is a full
+        stop (<code class=u title='.'>U＋002E</code>). (Allows <a
+          href=/message#chaining>chained</a> message expressions to span
+        lines).
+      </ul>
+    </section>
+
+  </section>
+
+  <!-- Maybe introduce expressions, link to chapter -->
+  <section>
+    <h1 id=statements>Statements</h1>
+  </section>
+
+
+  <section>
+    <h1 id=block-structure>Block Structure</h1>
+  </section>
+
+  <section>
+    <h1 id=data><code>__END__</code></h1>
+  </section>
+
+  <section>
+    <h1 id=require><code>require</code></h1>
+  </section>
+  
+  <section>
+    <h1 id=load><code>load</code></h1>
+  </section>
+
+  <section>
+    <h1 id=eval><code>eval</code></h1>
+  </section>
+
+  <section>
+    <h1 id=keywords>Keywords</h1>
+    
+    <dl>
+      <!-- Is alias an expression given that it always returns nil? -->
+      <dt><a href=/methods#aliases><code>alias</code></a> 
+      <dd>Creates a copy of an existing method with a new name.
+      <dt><a href=/flow#and-operator><code>and</code></a> 
+      <dd>Boolean binary operator performing logical AND.
+      <dt><a href=/flow#begin-statement><code>begin</code></a> 
+      <dd>Introduces a block of code which may have <code>rescue</code>,
+      <code>ensure</code>, and <code>else</code> clauses attached.
+      <dt><a href=/flow#break-statement><code>break</code></a> 
+      <dd>Within a loop or block, transfers control to the statement
+      immediately following the construct.
+      <dt><a href=/classes#class-keyword><code>class</code></a>
+      <dd>Defines a class.
+      <dt><a href=/flow#case-statement><code>case</code></a> 
+      <dd>Multi-way conditional predicated on the value of a given expression.
+      <!-- Is def an expression given that it always returns nil? -->
+      <dt><a href=/methods#defining><code>def</code></a> 
+      <dd>Defines a method
+      <dt><a href=#defined><code>defined?</code></a> 
+      <dd>
+      <!-- NOTE: Not standalone -->
+      <dt><a href=/messages#block-argument><code>do</code></a> <!-- ?? -->
+      <dd>Delimits a block literal
+      <!-- NOTE: Not standalone -->
+      <dt><a href=/flow#if-else-clause><code>else</code></a> <!-- rescue else
+      clause -->
+      <dd>Optional default clause for the <code>case</code>, <code>if</code>,
+      <code>unless</code> statements. Optional clause of <code>begin</code>,
+      <code>class</code>, <code>def</code>, and <code>module</code> statements
+      for use in exception handling.
+      <!-- NOTE: Not standalone -->
+      <dt><a href=/flow#if-elsif-clause><code>elsif</code></a>
+      <dd>Optional clause in an <code>if</code> statement.
+      <dt><a href=/flow#for><code>in</code></a> <!-- xref for in specifically?
+      -->
+      <dd>Separates a list of identifiers from the object being iterated in a
+      <code>for</code> loop.
+      <!-- NOTE: Not standalone -->
+      <dt><a href=/flow#ensure-clause><code>ensure</code></a>
+      <dd>Optional clause of <code>begin</code>, <code>class</code>,
+      <code>def</code>, and <code>module</code> statements which is executed
+      even if sibling clauses raise an exception.
+      <dt><a href=/flow#false><code>false</code></a>
+      <dd>Singleton instance of <code>FalseClass</code> representing
+      falsehood.
+      <dt><a href=/flow#for><code>for</code></a>
+      <dd>Looping construct for iterating over an object responding to
+      <code>:each</code>.
+      <dt><a href=/flow#if-statement><code>if</code></a> <!-- postfix form, also -->
+      <dd>Conditional statement and statement modifier.
+      <dt><a href=/modules#module-keyword><code>module</code></a>
+      <dd>Defines a module.
+      <dt><a href=/flow#next-statement><code>next</code></a>
+      <dd>Ends the current iteration of a loop or iterator and begins the
+      next.
+      <dt><a href=/flow#nil><code>nil</code></a>
+      <dd>Singleton instance of <code>NilClass</code> representing the
+      absence of a value.
+      <dt><a href=/flow#not-operator><code>not</code></a>
+      <dd>Boolean unary operator performing logical NOT. 
+      <dt><a href=/flow#or-operator><code>or</code></a>
+      <dd>Boolean binary operator performing logical OR.
+      <!-- NOTE: No return value -->
+      <dt><a href=/flow#redo-statement><code>redo</code></a>
+      <dd>Restarts the current iteration of a loop without re-evaluating the
+      conditional.
+      <!-- NOTE: Not standalone -->
+      <dt><a href=/flow#rescue><code>rescue</code></a>
+      <dd>Optional clause of <code>begin</code>, <code>class</code>,
+      <code>def</code>, or <code>module</code> statements that handles the
+      specified exceptions.
+      <!-- NOTE: No return value? -->
+      <dt><code>retry</code>
+      <dd>
+      <!-- return should be discussed in Flow > Control Statements -->
+      <dt><a href=/methods#return-values><code>return</code></a>
+      <dd>Immediately returns control from a method to its caller, along with
+      an optional value.
+      <dt><a href=/expressions#self><code>self</code></a>
+      <dd>Evaluates to the current object.
+      <dt><a href=/methods#super><code>super</code></a>
+      <dd>When used in a method body, invokes the method from a parent class
+      with the same name.
+      <dt><a href=/flow#true><code>true</code></a>
+      <dd>Singleton instance of <code>TrueClass</code> representing truth.
+      <!-- NOTE: No return value -->
+      <dt><a href=/methods#undefining><code>undef</code></a>
+      <dd>Removes the definition of a given method from the class in which it
+      was defined.
+      <dt><a href=/flow#unless-statement><code>unless</code></a>
+      <dd>Conditional statement and statement modifier.
+      <!-- NOTE: No return value -->
+      <dt><a href=/flow#until-loop><code>until</code></a>
+      <dd>Looping construct.
+      <!-- NOTE: No return value -->
+      <dt><a href=/flow#when><code>when</code></a>
+      <dd>Clause in a <code>case</code> statement.
+      <!-- NOTE: No return value -->
+      <dt><a href=/flow#while-loop><code>while</code></a>
+      <dd>Looping construct.
+      <dt><a href=/flow#yield><code>yield</code></a>
+      <dd>Transfers control from a method to an associated block then back.
+    </dl>
+  </section>
+
   <section>
     <h1 id=source-files>Source Files</h1>
 
@@ -262,706 +992,4 @@ as narrowly defined above.
     <h1 id=execution>Execution</h1> <!-- i.e. line by line -->
   </section>
 
-
-  <section>
-    <h1 id=lexical>Lexical Structure</h1>
-
-
-    <section>
-      <h1 id=statement-terminators>Statement Terminators</h1>
-      
-      <p>Statements may be terminated with a semicolon (<code class=u
-        title=';'>U＋003B</code>. More commonly they are terminated by <a
-        href=#newlines>newlines</a>. A newline does not terminate a statement
-      if:
-      
-      <ul>
-        <li>It is immediately preceded by a reverse solidus (<code
-          class=u title='\'>U＋005C</code>).
-        <li>It is preceded by an <a href=/expressions#operators>operator</a>,
-        with optional intervening <a href=#whitespace>whitespace</a>.
-        <li>It is immediately preceded by a comma (<code class=u
-          title=','>U＋002C</code>) or full stop (<code class=u
-          title='.'>U＋002E</code>) in a <a href=/messages#expressions>message
-          expression</a> or <a href=/objects#arrays>array</a>/<a
-          href=/objects#hashes>hash</a> literal, with optional intervening
-        whitespace. 
-        <li>The first non-whitespace character on the following line is a full
-        stop (<code class=u title='.'>U＋002E</code>). (Allows <a
-          href=/message#chaining>chained</a> message expressions to span
-        lines).
-      </ul>
-    </section>
-
-  </section>
-
-  <!-- Maybe introduce expressions, link to chapter -->
-  <section>
-    <h1 id=statements>Statements</h1>
-  </section>
-
-
-  <section>
-    <h1 id=block-structure>Block Structure</h1>
-  </section>
-
-  <section>
-    <h1 id=data><code>__END__</code></h1>
-  </section>
-
-  <section>
-    <h1 id=require><code>require</code></h1>
-  </section>
-  
-  <section>
-    <h1 id=load><code>load</code></h1>
-  </section>
-
-  <section>
-    <h1 id=eval><code>eval</code></h1>
-  </section>
-
-<section>  
-  <h1 id=tokens>Tokens</h1>
-
-  <p><dfn>Tokens</dfn> are <q>the mark or series of marks that denote one
-    symbol or word in the language</q> (<a
-    href=/references#refFISCHER92>Fischer &amp; Grodzinsky</a>, pp.
-  59–62). A Ruby program consists of a combination of the following
-  tokens:</p>
-
-  <aside class=sidenote>
-    <code>Ripper</code> is a class in the standard library for parsing and
-    analysing Ruby. The <code>Ripper.tokenize</code> method takes a string
-    of code as an argument and returns an array of its constituent tokens.
-    Experiment with this method in <abbr title="Interactive
-      Ruby">IRB</abbr> (<code>irb -rripper</code>) to test your
-    assumptions of how tokenization works.
-  </aside>
-
-  <ul>
-    <li><a href=#comments>Comments</a>
-    <li><a href=/objects#literals>Literals</a>
-    <li>Punctuation
-    <li><a href=#identifiers>Identifiers</a>
-    <li><a href=#keywords>Keywords</a>
-  </ul>
-
-
-  <section>
-    <h1 id=comments>Comments</h1>
-
-    <p><dfn>Comments</dfn> are remarks which do not affect the meaning of a
-    program. They are introduced with a number sign (<code class=u
-      title='#'>U＋0023</code>) and continue until the end of the line: the
-    text between <code>#</code> and the end of the line is ignored by the
-    interpreter. Comments are not recognised inside of <a
-      href=/objects#strings>string</a>/<a href=/objects#regexps>regexp</a>
-    literals—they are interpreted literally—however, regexps support an
-    alternative form of embedded comment. There is no specific construct for
-    multiline comments, but they may be approximated with <a
-      href=#embedded-doc>embedded documentation</a>.
-  </section>
-
-  <!-- Token? -->
-  <section>
-    <h1 id=embedded-doc>Embedded Documentation</h1>
-
-    <p><dfn>Embedded documentation</dfn> is a portion of a source file that
-    contains documentation intended for a postprocessor such as
-    <code>rdoc</code>, and as such is ignored by the interpreter. It is
-    introduced by a line beginning <code>=begin</code>, that is an equals
-    sign (<code class=u title='='>U＋003D</code>) followed by the string
-    <code>begin</code>, and continue until a line beginning
-    <code>=end</code> is encountered.
-
-    <p>Both <code>=begin</code> and <code>=end</code> may be followed by
-    arbitrary text, which is included in the embedded documentation, as long
-    as it is preceded by a whitespace character. Conventionally, the text
-    following <code>=begin </code> names the tool for which the
-    documentation is intended.
-  </section>
-
-  <section>
-    <h1 id=whitespace>Whitespace</h1>
-
-    <p><dfn>Whitespace</dfn> consists only of <code
-      class=u>U＋0009</code>–<code class=u>U＋000D</span> and the space
-    character (<code class=u title=' '>U＋0020):</p>
-
-    <ul>
-      <li><code class=u>U＋0009</code> (horizontal tab)
-      <li><code class=u>U＋000A</code> (line feed)
-      <li><code class=u>U＋000B</code> (vertical tab)
-      <li><code class=u>U＋000C</code> (form feed)
-      <li><code class=u>U＋000D</code> (carriage return)
-      <li>&lt;<code class=u>U＋000D</code>,&nbsp;<code
-        class=u>U＋000A</code>&gt; (carriage return followed by line feed)
-      <li><code class=u title=' '>U＋0020</code> (space)
-    </ul>
-
-    <p>The primary role of whitespace in Ruby syntax is to separate tokens
-    and terminate statements. When whitespace is syntactically significant
-    it is typically collapsed to a single space. The few areas of syntax
-    where whitespace has different semantics are clearly labeled. Newlines
-    are used as <a href=#statement-terminators>statement terminators</a>.
-  </section>
-
-  <section>
-    <h1 id=punctuation>Punctuation</h1>
-
-    <!-- Note that, unless stated otherwise, this doesn't apply to string
-    or regexp literals. Include regexp symbols? -->
-
-    <section>
-      <h1 class=runin id=ampersands>Ampersands</h1>
-      
-      <p>An ampersand (<code class=u title='&'>U＋0026</code>) in the
-      context of…
-
-      <dl class=inline-small>
-        <dt>A message expression
-        <dd>Converts a <code>Proc</code> object to a block, passing it to
-        the receiver.
-        <dt>A parameter list
-        <dd>Signifies that the identifier that follows corresponds to the
-        block sent along with the message.
-        <dt>An operator
-        <dd>Performs bitwise AND. The operator consisting of two consecutive
-        ampersands performs Boolean AND. 
-      </dl>
-    </section>
-
-    <section>
-      <h1 class=runin id=apostrophes>Apostrophes</h1>
-      
-      <p>An apostrophe (<code class=u title="'">U＋0027</code>) delimits <a
-        href=#single-quoted-strings>single-quoted strings</a>.
-    </section>
-
-    <section>
-      <h1 class=runin id=asterisks>Asterisks</h1>
-
-      <p>An asterisk (<code class=u title='*'>U＋002A</code>) in the
-      context of…
-
-      <dl class=inline-small>
-        <dt>A message expression
-        <dd>Explodes an object into its constituent elements.
-        <dt>A parameter list
-        <dd>Prefixes a parameter which may receive a variable number of
-        arguments,
-        <dt>An operator
-        <dd>Performs multiplication—when alone—or exponentiation—when
-        preceded by another asterisk.
-      </dl>
-    </section>
-
-    <section>
-      <h1 class=runin id=cicumflex-accents>Circumflex Accents</h1>
-
-      <p>The circumflex accent (<code class=u title='^'>U＋005E</code>) is an
-      binary operator that performs bitwise exclusive or.
-    </section>
-    
-    <section>
-      <h1 class=runin id=colons>Colons</h1>
-
-      <p>A colon (<code class=u title=':'>U＋003A</code>) in the context of…
-
-      <dl class=inline-small>
-        <dt>A symbol literal
-        <dd>Creates a symbol from the following identifier or string.
-        <dt>A hash literal
-        <dd>Separates symbol keys from their corresponding values.
-        <dt>Ternary conditional
-        <dd>Separates the <i>if</i> clause from the <i>else</i> clause.
-        <dt>A constant reference
-        <dd>Two consecutive colons serve as the scope operator, separating the
-        names of nested constants.
-      </dl>
-    </section>
-    
-    <section>
-      <h1 class=runin id=commas>Commas</h1>
-      
-      <p>A comma (<code class=u title=','>U＋002C</code>) separates
-      expressions in a list. It is used in message expressions, parameter
-      lists, assignment expressions, and array literals.
-    </section>
-
-    <section>
-      <h1 class=runin id=commercial-ats>Commercial At Signs</h1>
-      
-      <p>When the commercial at sign (<code class=u title='@'>U＋0040</code>)
-      prefixes an identifier it is a sigil introducing an instance variable—if
-      it appears by itself—or a class variable—if it is preceded by another.
-      In a symbol literal or method name, an <code>@</code> suffix
-      distinguishes a unary operator from a binary operator with the same
-      name. 
-    </section>
-
-    <section>
-      <h1 class=runin id=curly-brackets>Curly Brackets</h1>
-      
-      <p>A pair of curly brackets (<code class=u title='{'>U＋007B</code>,
-      <code class=u title='}'>U＋007D</code>) in the context of a message
-      expression delimit a block which is sent along with the message,
-      otherwise they delimit a hash literal.
-    </section>
-
-    <section>
-      <h1 class=runin id=dollar-signs>Dollar Signs</h1>
-      <span class=punct>$</span>
-
-      <p>A dollar sign (<code class=u title='$'>U＋0024</code>) followed by an
-      identifier is a sigil denoting a global variable.
-    </section>
-
-    <section>
-      <h1 class=runin id=equals-signs>Equals Signs</h1>
-      <span class=punct>=</span>
-
-      <p>An equals sign (<code class=u title='='>U＋003D</code>) in the
-      context of…
-
-      <dl class=inline-small>
-        <dt>An assignment expression
-        <dd>Separates the variables being assigned to from the values being
-        assigned to them.
-        <dt>An operator
-        <dd>Tests for equality if doubled, case equality if tripled, and
-        inequality if prefixed and/or suffixed with less‐than  (<code class=u
-          title='<'>U＋003C</code>) or greater‐than (<code class=u
-          title='>'>U＋003E</code>) signs; performs pattern matching if
-        followed by a tilde (<code class=u title='~'>U＋007E</code>).
-        <dt>A parameter list
-        <dd>Signifies that a parameter is optional and its default value
-        <dt>Hash literals
-        <dd>When followed by a greater‐than sign (<code class=u
-          title='>'>U＋003E</code>) separates a key from its value.
-        <dt>Embedded documentation
-        <dd>Introduces the beginning of embedded documentation when appearing
-        at the start of a line followed by <code>begin</code>, and the end
-        when appearing at the start of a line followed by <code>end</code>
-      </dl>
-    </section>
-
-    <section>
-      <h1 class=runin id=exclamation-marks>Exclamation Marks</h1>
-      <span class=punct>!</span>
-      <p>An exclamation mark (<code class=u title='!'>U＋0021</code>) in the
-      context of…
-
-      <dl class=inline-small>
-        <dt>A selector
-        <dd>Signifies the message deserves extra attention 
-        <dt>An operator
-        <dd>Negates its operand, when used as a unary operator, the sense of a
-        pattern match, when followed by a tilde (<code class=u
-          title='~'>U＋007E</code>), or a test for equality, when followed by
-        an equals sign (<code class=u title='='>U＋003D</code>). 
-      </dl>
-    </section>
-
-    <section>
-      <h1 class=runin id=full-stops>Full Stops</h1>
-      
-      <p>A full stop (<code class=u title='.'>U＋002E</code>) is used to
-      separate in the context of…
-
-      <dl class=inline-small>
-        <dt>A message expression
-        <dd>It separates the receiver from the selector
-        <dt>A range literal
-        <dd>Two or three consecutive periods separate the start value from the
-        end value
-        <dt>A float literal
-        <dd>It is the radix point separating the whole part of the number from
-        the fractional part.
-        <dt>A flip-flop operator
-        <dd>It separates the first value from the last
-      </dl>
-    </section>
-
-    <section>
-      <h1 class=runin id=grave-accents>Grave Accents</h1>
-
-      <p>Grave accents (<code class=u title='`'>U＋0060</code>) delimit a
-      double‐quoted string interpreted as a command to be executed. 
-    </section>
-
-    <section>
-      <h1 class=runin id=greater-than>Greater‐Than Signs</h1>
-
-      <p>When used as an operator, a greater‐than sign (<code class=u
-        title='>'>U＋003E</code>) represents the corresponding inequality. In
-      a hash literal, it is preceded by an equals sign to separate keys from
-      their values.    
-    </section>
-
-
-    <section>
-      <h1 class=runin id=hyphen-minus>Hyphen Minus Signs</h1>
-
-      <p>A hyphen minus sign (<code title='-' class=u>U＋002D</code>) performs
-      negation when used as a unary operator, and subtraction when used as a
-      binary operator. When followed by a greater‐than sign (<code class=u
-        title='>'>U＋003E</code>) it may represent a lambda literal.
-    </section>
-
-    <section>
-      <h1 class=runin id=less-than>Less‐Than Signs</h1>
-
-      <p>A less‐than sign (<code class=u title='<'>U＋003C</code>) in the
-      context of…
-
-      <dl>
-        <dt>An operator
-        <dd>Tests for the corresponding inequality when solitary or followed
-        by an equals sign (<code class=u title='='>U＋003D</code>). Serves as
-        the spaceship operator when followed by an equals sign and
-        greater‐than sign (<code class=u title='>'>U＋003E</code>).
-        <dt>Class definition
-        <dd>Specifies the parent of the class being defined.
-        <dt>Eigenclass definition
-        <dd>Two consecutive less‐than signs following the <code>class</code>
-        keyword opens the eigenclass of the following expression.
-      </dl>
-    </section>
-
-    <section>
-      <h1 class=runin id=low-lines>Low Lines</h1>
-      
-      <p>A low line (<code class=u title='_'>U＋005F</code>) is used to
-      separate digits in numeric literals.
-
-      <!-- TODO: Mention use in keywords such as __method__? -->
-    </section>
-
-    <section>
-      <h1 class=runin id=newlines>Newlines</h1>
-
-      <p>A newline is one of the following character sequences:
-
-      <ul>
-        <li><code class=u>U＋000A</code> (line feed)
-        <li><code class=u>U＋000C</code> (form feed)
-        <li><code class=u>U＋000D</code> (carriage return)
-        <li>〈<code class=u>U＋000D</code>, <code class=u>U＋000A</code>〉
-        (carriage return followed by line feed)
-      </ul>
-
-      <p>It serves as a <a href=#statement-terminators>statement
-        terminator</a> and is a required component of certain special
-      syntactic forms such as <code>if</code> and <code>def</code> statements.
-    </section>
-
-    <section>
-      <h1 class=runin id=number-signs>Number Signs</h1>
-      
-      <p>A number sign (<code class=u title='#'>U＋0023</code>) inside a
-      double‐quoted string literal introduces an interpolation sequence.
-      Outside of a string literal it introduces a comment.
-    </section>
-
-    <section>
-      <h1 class=runin id=parentheses>Parentheses</h1>
-      
-      <p>A balanced pair of parentheses (&lt;<code class=u
-        title='('>U＋0028</code>, <code class=u title=')'>U＋0029</code>&gt;)
-      group arguments in message expressions, enforce precedence in compound
-      expressions, and enclose the parameter list of a method definition.
-    </section>
-
-    <section>
-      <h1 class=runin id=percent-signs>Percent Signs</h1>
-
-      <p>A percent sign (<code class=u title='%'>U＋0025</code>) is an
-      operator and part of a generalised quoting form for many object
-      literals.
-    </section>
-
-    <section>
-      <h1 class=runin id=plus-signs>Plus Signs</h1>
-      
-      <p>A plus sign (<code class=u title='+'>U＋002B</code>) is a binary
-      operator, which usually sums of concatenates its operands.
-    </section>
-
-    <section>
-      <h1 class=runin id=question-marks>Question Marks</h1>
-
-      <p>A question mark (<code class=u title='?'>U＋003F</code>) suffixing a
-      selector suggests the message is a predicate; as part of a ternary
-      expression it separates the conditional from the first clause.
-    </section>
-
-    <section>
-      <h1 class=runin id=quotation-marks>Quotation Marks</h1>
-
-      <p>A pair of quotation marks (<code class=u title='"'>U＋0022</code>)
-      delimit a double-quoted string literal.
-    </section>
-
-    <section>
-      <h1 class=runin id=reverse-solidi>Reverse Solidi</h1>
-
-      <p>A reverse solidus (<code class=u title='\'>U＋005C</code>) in the
-      context of a string literal introduces an escape sequence.
-    </section>
-
-    <section>
-      <h1 class=runin id=semicolons>Semicolons</h1>
-
-      <p>A semicolon (<code class=u title=';'>U＋003B</code>) is an explicit
-      statement terminator.
-    </section>
-
-    <section>
-      <h1 class=runin id=solidi>Solidi</h1>
-      
-      <p>A solidus (<code class=u title='/'>U＋002F</code>) is an operator
-      and, when appearing as part of a pair, delimits a regexp literal.
-    </section>
-
-    <section>
-      <h1 class=runin id=square-brackets>Square Brackets</h1>
-
-      <p>A pair of square brackets (&lt;<code class=u
-        title='['>U＋005B</code>, <code class=u title=']'>U＋005D</code>&gt;)
-      delimit an array literal.
-    </section>
-
-    <section>
-      <h1 class=runin id=tildes>Tildes</h1>
-      
-      <p>A tilde (<code class=u title='~'>U＋007E</code>) performs bitwise
-      complement when used as a unary operator; pattern matching when
-      preceded by an equals sign and used as a binary operator.
-    </section>
-
-    <section>
-      <h1 class=runin id=vertical-lines>Vertical Lines</h1>
-
-      <p>A vertical line (<code class=u title='|'>U＋007C</code> is an
-      operator when used singly and followed by another, and serves to delimit
-      the parameter list of a block.
-    </section>
-  </section>
-
-
-  <!-- FIXME: Hash, Array, proc, etc., literals aren't tokens -->
-  <section>
-    <h1 id=literals>Literals</h1>
-      
-    <!-- Discuss &:sym as a literal? -->
-    <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
-    for the instantiation of a particular core object.</p> <!-- Doesn’t call
-    initialize; Performance pips pedagogy --> <!-- Cover block literals? -->
-
-
-  </section>
-</section>
-  <section>
-    <h1 id=identifiers>Identifiers</h1>
-    
-    <p>An <dfn>identifier</dfn> is the name of a variable or constant. It
-    must not contain any US-ASCII character other than the alphanumerics
-    (A—Z, a—z, 0–9) and the low line (<code class=u
-      title='_'>U＋005F</code>), or begin with a US-ASCII digit. However, it
-    may contain any other character legal in the source encoding.</p>
-  </section>
-  <p>An <dfn>expression</dfn> is a syntactical construct that produces a
-  value. It is either primary or compound. <dfn>Primary expressions</dfn>
-  comprise atomic units such as <a href=/objects#literals>literals</a> and
-  variable references, which can be combined with operators to produce
-  <dfn>compound expressions</dfn>.</p>
-  <!-- Tokens -->
-
-  <!-- TODO: Sidebar exceptions to "everything is a value" -->
-
-    <!-- TODO: Intro. We can't simply describe them as atomic because float
-         literals, for example, can indeed be broken down into parts which are
-         themselves expressions. -->
-
-      <section>
-        <h1 id=keyword-literals>Keyword Literals</h1>
-
-        <section>
-          <h1 class=runin id=true><code>true</code></h1>
-          
-          <p>The <code>true</code> keyword returns the singleton instance of
-          <code>TrueClass</code>. Its value is, by definition, true.
-        </section>
-
-        <section>
-          <h1 class=runin id=false><code>false</code></h1>
-
-          <p>The <code>false</code> keyword returns the singleton instance of
-          <code>FalseClass</code>. Its value is, by definition, false.
-        </section>
-
-        <section>
-          <h1 class=runin id=nil><code>nil</code></h1>
-
-          <p>The <code>nil</code> keyword returns the singleton instance of
-          <code>NilClass</code>. Its value is represents the absence of a value.
-          The <code>Kernel.nil?</code> predicate returns <code>true</code> if
-          its value is <code>nil</code>; <code>false</code> otherwise.
-          <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
-          -->
-        </section>
-
-        <section>
-          <h1 class=runin id=self><code>self</code></h1>
-
-          <p><code>self</code> always evaluates to the current object. Outside
-          of any class definition, i.e. at the top‐level, the current object is
-          an instance of <code>Object</code> called <code>main</code>. Inside a
-          class definition, but outside of a method definition, the current
-          object is an instance of <code>Class</code>. Within a method
-          definition the current object is the instance of the containing
-          class.</p>
-
-          <figure class=centre id=self-as-the-implicit-receiver.rb>
-            <figcaption><code>self</code> is always defined; its value depends
-            on the enclosing context.
-          </figure>
-        </section>
-
-        <section>
-          <h1 class=runin id=file><code>__FILE__</code></h1>
-
-          <p>Evaluates to a string consisting of the name of the source file
-          currently being executed. The strings <samp>(eval)</samp> and
-          <samp>(irb)</samp> are returned when in an <code>eval</code> context
-          and <abbr title="Interactive Ruby">IRB</abbr> session,
-          respectively.</p>
-        </section>
-
-        <section>
-          <h1 class=runin id=line><code>__LINE__</code></h1>
-
-          <p>Evaluates to a <code>Fixnum</code> specifying the line number in
-          the current <a href=#file><code>__FILE__</code></a> being executed.
-        </section>
-
-        <section>
-          <h1 class=runin id=encoding><code>__ENCODING__</code></h1>
-
-          <p>Evaluates to an <code>Encoding</code> object representing the
-          current source encoding, i.e. that of <a
-          href=#file><code>__FILE__</code></a>.
-        </section>
-      </section>
-    </section>
-  <section>
-    <h1 id=keywords>Keywords</h1>
-    
-    <dl>
-      <!-- Is alias an expression given that it always returns nil? -->
-      <dt><a href=/methods#aliases><code>alias</code></a> 
-      <dd>Creates a copy of an existing method with a new name.
-      <dt><a href=/flow#and-operator><code>and</code></a> 
-      <dd>Boolean binary operator performing logical AND.
-      <dt><a href=/flow#begin-statement><code>begin</code></a> 
-      <dd>Introduces a block of code which may have <code>rescue</code>,
-      <code>ensure</code>, and <code>else</code> clauses attached.
-      <dt><a href=/flow#break-statement><code>break</code></a> 
-      <dd>Within a loop or block, transfers control to the statement
-      immediately following the construct.
-      <dt><a href=/classes#class-keyword><code>class</code></a>
-      <dd>Defines a class.
-      <dt><a href=/flow#case-statement><code>case</code></a> 
-      <dd>Multi-way conditional predicated on the value of a given expression.
-      <!-- Is def an expression given that it always returns nil? -->
-      <dt><a href=/methods#defining><code>def</code></a> 
-      <dd>Defines a method
-      <dt><a href=#defined><code>defined?</code></a> 
-      <dd>
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/messages#block-argument><code>do</code></a> <!-- ?? -->
-      <dd>Delimits a block literal
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/flow#if-else-clause><code>else</code></a> <!-- rescue else
-      clause -->
-      <dd>Optional default clause for the <code>case</code>, <code>if</code>,
-      <code>unless</code> statements. Optional clause of <code>begin</code>,
-      <code>class</code>, <code>def</code>, and <code>module</code> statements
-      for use in exception handling.
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/flow#if-elsif-clause><code>elsif</code></a>
-      <dd>Optional clause in an <code>if</code> statement.
-      <dt><a href=/flow#for><code>in</code></a> <!-- xref for in specifically?
-      -->
-      <dd>Separates a list of identifiers from the object being iterated in a
-      <code>for</code> loop.
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/flow#ensure-clause><code>ensure</code></a>
-      <dd>Optional clause of <code>begin</code>, <code>class</code>,
-      <code>def</code>, and <code>module</code> statements which is executed
-      even if sibling clauses raise an exception.
-      <dt><a href=/flow#false><code>false</code></a>
-      <dd>Singleton instance of <code>FalseClass</code> representing
-      falsehood.
-      <dt><a href=/flow#for><code>for</code></a>
-      <dd>Looping construct for iterating over an object responding to
-      <code>:each</code>.
-      <dt><a href=/flow#if-statement><code>if</code></a> <!-- postfix form, also -->
-      <dd>Conditional statement and statement modifier.
-      <dt><a href=/modules#module-keyword><code>module</code></a>
-      <dd>Defines a module.
-      <dt><a href=/flow#next-statement><code>next</code></a>
-      <dd>Ends the current iteration of a loop or iterator and begins the
-      next.
-      <dt><a href=/flow#nil><code>nil</code></a>
-      <dd>Singleton instance of <code>NilClass</code> representing the
-      absence of a value.
-      <dt><a href=/flow#not-operator><code>not</code></a>
-      <dd>Boolean unary operator performing logical NOT. 
-      <dt><a href=/flow#or-operator><code>or</code></a>
-      <dd>Boolean binary operator performing logical OR.
-      <!-- NOTE: No return value -->
-      <dt><a href=/flow#redo-statement><code>redo</code></a>
-      <dd>Restarts the current iteration of a loop without re-evaluating the
-      conditional.
-      <!-- NOTE: Not standalone -->
-      <dt><a href=/flow#rescue><code>rescue</code></a>
-      <dd>Optional clause of <code>begin</code>, <code>class</code>,
-      <code>def</code>, or <code>module</code> statements that handles the
-      specified exceptions.
-      <!-- NOTE: No return value? -->
-      <dt><code>retry</code>
-      <dd>
-      <!-- return should be discussed in Flow > Control Statements -->
-      <dt><a href=/methods#return-values><code>return</code></a>
-      <dd>Immediately returns control from a method to its caller, along with
-      an optional value.
-      <dt><a href=/expressions#self><code>self</code></a>
-      <dd>Evaluates to the current object.
-      <dt><a href=/methods#super><code>super</code></a>
-      <dd>When used in a method body, invokes the method from a parent class
-      with the same name.
-      <dt><a href=/flow#true><code>true</code></a>
-      <dd>Singleton instance of <code>TrueClass</code> representing truth.
-      <!-- NOTE: No return value -->
-      <dt><a href=/methods#undefining><code>undef</code></a>
-      <dd>Removes the definition of a given method from the class in which it
-      was defined.
-      <dt><a href=/flow#unless-statement><code>unless</code></a>
-      <dd>Conditional statement and statement modifier.
-      <!-- NOTE: No return value -->
-      <dt><a href=/flow#until-loop><code>until</code></a>
-      <dd>Looping construct.
-      <!-- NOTE: No return value -->
-      <dt><a href=/flow#when><code>when</code></a>
-      <dd>Clause in a <code>case</code> statement.
-      <!-- NOTE: No return value -->
-      <dt><a href=/flow#while-loop><code>while</code></a>
-      <dd>Looping construct.
-      <dt><a href=/flow#yield><code>yield</code></a>
-      <dd>Transfers control from a method to an associated block then back.
-    </dl>
-  </section>
 </section>
