@@ -161,20 +161,14 @@
           variable used by one of its ancestors, it will overwrite the value of
           its ancestor’s variable.</q> 
 
-        <!-- Is this the right place to discuss constants? -->
-
-        <p>Constants are inherited in a similar way to methods. A subclass may
-        access his superclass’s constants by referring to them with either their
-        fully— or non—qualified name. If a subclass assigns to an unqualified
-        constant name defined in his superclass, a new constant with that name is
-        defined in the subclass.</p> <!-- Refer to constant-lookup algorithm
-        description -->
-
         <section>
           <h1 id=class-inherited><code>Class#inherited</code> Hook</h1>  
 
           <p>If a class defines a singleton method named <code>:inherited</code>, it
           is invoked when the class is inherited with the subclass as its argument.
+
+          <!-- TODO: Note order re:
+          http://redmine.ruby-lang.org/issues/show/2793 -->
         </section>
       </section>
 
@@ -287,6 +281,7 @@
         <section>
           <h1 id=nesting>Nesting</h1>
      
+          <!-- TODO: Integrate better with Variables: Constants -->
           <p>A class may be defined within the body of another class. The fully
           qualified name of the inner class is
           <code><var>outer</var>::<var>inner</var></code>, where <var>outer</var> is
