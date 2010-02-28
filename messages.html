@@ -1262,6 +1262,13 @@
         <!-- Mention situation when a selector is mirrored by a predicate
         alternative? Lots of File methods fit this pattern. http://groups.google.com/group/ruby-talk-google/msg/cfdd0dca7f70c87e -->
 
+        <aside class=sidenote>
+          This convention is shared with Scheme and probably derived from that
+          of Lisp to name predicate functions with a <code>p</code> suffix,
+          e.g. Lisp’s <code>(evenp)</code> ⇒ Scheme’s <code>(even?)</code> ⇒
+          Ruby’s <code>Fixnum#even?</code>.
+        </aside>
+        
         <figure class=sidenote id=question-mark-suffix-non-predicate.rb>
           <figcaption>Selectors with a <code>?</code> suffix need not
           return <code>true</code> or <code>false</code>.
