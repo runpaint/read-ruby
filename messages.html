@@ -243,7 +243,7 @@
 
       <p>An <dfn>operator</dfn> performs an operation on one or more
       expressions, termed its <dfn>operands</dfn>, combing them into a new
-      value. It is represented by a token which describes the operation. 
+      value. It is represented by a token which describes the operation.</p>
       
       <p>For example, the compound expression <code>1 + 2</code> comprises the
       <code>+</code> operator and two integer literals as operands. Its value
@@ -268,6 +268,11 @@
             with the same name.
           </dl>
       </aside>
+
+      <figure class='railroad sidenote'>
+        <img id=operator-method-selector.png>
+        <figcaption>Syntax diagram of an operator method selector
+      </figure>
 
       <table id=operator-table class=border>
         <caption>
@@ -385,6 +390,7 @@
             <td><code>===</code>
             <td>Case equality
             <td>✔
+          <!-- TODO: Mention this inverts == unless defined explicitly -->
           <tr>
             <td><code>!=</code>
             <td>Negated equality
@@ -393,6 +399,7 @@
             <td><code>=~</code>
             <td><a href=/messages#equal-tilde>Pattern matching</a>
             <td>✔
+          <!-- TODO: Mention this inverts =~ unless defined explicitly -->
           <tr>
             <td><code>!~</code>
             <td>Negated pattern matching

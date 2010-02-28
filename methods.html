@@ -208,243 +208,36 @@
     <!-- Markup characters with code or i or something else? -->
     
     <section>
-      <h1 id=operator-methods>Operator Methods</h1>
+      <aside class=sidenote>
+        <span class=sidemark>*</span>Operators definable as methods are those
+        with a ✔ in the <i>Method?</i> column of the <a
+          href=/messages#operator-table>Operator table</a>.
+      </aside>
+
+      <aside class=sidenote>
+        <span class=sidemark>†</span>The selector name isn’t always the same as
+        the operator name; consult the <i>Operator</i> column of the <a
+          href=/messages#operator-table>Operator table</a> to check.
+      </aside>
+
+      <aside class=sidenote>
+        <span class=sidemark>‡</span>…in the sense that you <em>can</em> learn
+        Java: insanityAndScornFromYourPeers <em>will</em> result. 
+      </aside>
+      <h1 id=operators>Operator Methods</h1>
       
-      <p>Many <i>operators</i> of conventional programming languages are
-      implemented as <dfn title="operator method">operator methods</dfn> in
-      Ruby, allowing them to be <i>overloaded</i> by defining a corresponding
-      method.  Logical operators such as <code>not</code>/<code>!</code>,
-      <code>or</code>/<code>||</code>, and
-      <code>and</code>/<code>&amp;&amp;</code>, are an exception to this rule,
-      so cannot be overridden.
-
-      <p>For example, an expression such as <code>3 + 2 * 10</code> is evaluated as
-      <code>3.+(2.*(10))</code>, i.e. <code>2</code> is sent the message
-      <code>:*</code> with <code>10</code> as the argument, which returns
-      <code>20</code>, then <code>3</code>
-      is sent the message <code>:+</code> with <code>20</code> as its argument.
-      An implication is that even the fundamental arithmetical operations are
-      implemented as operator methods defined on <code>Numeric</code> objects.
-      <!-- Note derision of this concept; that it runs counter to normal
-      precedence rules (does it?) -->    
-      
-      <p>Classes can implement their own operator methods by defining a method
-      with the corresponding name, which is listed in the <i>Method</i> column
-      below. This name is generally the same as the operator symbol, e.g.
-      <code>+</code> implies a method named <code>:+</code>, but in the case of
-      unary methods, e.g. the <code>-</code> in <code>-2</code>, the method name
-      consists of the operator with an <code>@</code> suffix.
-
-      <table id=operator-methods-table>
-        <caption>Method names corresponding to operator methods.</caption>
-        <tr> <th>Method</th> <th>Operator</th> <th>Description</th> </tr>
-
-        <tr>
-          <td><code>[]</code></td>
-          <td><code>[</code>…<code>]</code></td>
-          <td>Element reference, e.g. <code>[1,2,3][1]</code> subscripting</td>
-          <!-- TODO: Link with element reference writeup -->
-        </tr>
-
-        <tr>
-          <td><code>[]=</code></td>
-          <td><code>[</code>…<code>]=</code></td>
-          <td>Element set, e.g. <code>{foo: :bar}[:glark] = :quark</code></td>
-          <!-- TODO: Link with element reference writeup -->
-        </tr>
-
-        <tr>
-          <td><code>**</code></td>
-          <td><code>**</code></td>
-          <td>Exponentiation, e.g. <code>3 ** 2</code></td>
-        </tr>
-
-        <tr>
-          <td><code>!</code></td>
-          <td><code>!</code></td>
-          <td>Not, e.g. <code>!pregnant</code></td>
-        </tr>
-
-        <tr>
-          <td><code>~</code></td>
-          <td><code>~</code></td>
-          <td>Complement, e.g. <code>~23</code></td>
-        </tr>
-
-        <tr>
-          <td><code>-@</code></td>
-          <td><code>-</code></td>
-          <td>Unary minus (negate), e.g. <code>-42</code></td>
-        </tr>
-
-        <tr>
-          <td><code>+@</code></td>
-          <td><code>+</code></td>
-          <td>Unary plus, e.g. <code>+(10-20)</code></td>
-        </tr>
-
-        <tr>
-          <td><code>*</code></td>
-          <td><code>*</code></td>
-          <td>Multiplication, e.g. <code>10 * 2</code></td>
-        </tr>
-
-        <tr>
-          <td><code>/</code></td>
-          <td><code>/</code></td>
-          <td>Division, e.g. <code>20 / 10</code></td>
-        </tr>
-
-        <tr>
-          <td><code>%</code></td>
-          <td><code>%</code></td>
-          <td>Modulo, e.g. <code>20.5 % 16</code></td>
-        </tr>
-
-        <tr>
-          <td><code>+</code></td>
-          <td><code>+</code></td>
-          <td>Addition, e.g. <code>20.5 + 5.2</code></td>
-        </tr>
-
-        <tr>
-          <td><code>-</code></td>
-          <td><code>-</code></td>
-          <td>Subtraction, e.g. <code>20.5 - 5.2</code></td>
-        </tr>
-
-        <tr>
-          <td><code>&gt;&gt;</code></td>
-          <td><code>&gt;&gt;</code></td>
-          <td>Right shift, e.g. <code>16 &gt;&gt; 1</code></td>
-        </tr>
-
-        <tr>
-          <td><code>&lt;&lt;</code></td>
-          <td><code>&lt;&lt;</code></td>
-          <td>Left shift, e.g. <code>16 &lt;&lt; 1</code></td>
-        </tr>
-
-        <tr>
-          <td><code>&amp;</code></td>
-          <td><code>&amp;</code></td>
-          <td>Bitwise AND, e.g. <code>2 &amp; 1</code></td>
-        </tr>
-
-        <tr>
-          <td><code>^</code></td>
-          <td><code>^</code></td>
-          <td>Bitwise XOR, e.g. <code>2 ^ 1</code></td>
-        </tr>
-
-        <tr>
-          <td><code>|</code></td>
-          <td><code>|</code></td>
-          <td>Bitwise OR, e.g. <code>2 | 1</code></td>
-        </tr>
-
-        <!-- TODO: Link the following with Comparable explanation -->
-        <tr>
-          <td><code>&lt;=</code></td>
-          <td><code>&lt;=</code></td>
-          <td>Less than or equal to (≤), e.g. <code>10 &lt;= 12</code></td>
-        </tr>
-
-        <tr>
-          <td><code>&lt;</code></td>
-          <td><code>&lt;</code></td>
-          <td>Less than, e.g. <code>10 &lt; 12</code></td>
-        </tr>
-
-        <tr>
-          <td><code>=&gt;</code></td>
-          <td><code>=&gt;</code></td>
-          <td>Greater than or equal to (≥), e.g. <code>12 =&gt; 10</code></td>
-        </tr>
-
-        <tr>
-          <td><code>&gt;</code></td>
-          <td><code>&gt;</code></td>
-          <td>Greater than, e.g. <code>12 &gt; 10</code></td>
-        </tr>
-
-        <tr>
-          <td><code>&lt;=&gt;</code></td>
-          <td><code>&lt;=&gt;</code></td>
-          <td><i>Spaceship</i> operator, e.g. <code>12 &lt;=&gt; 10</code></td>
-        </tr>
-
-        <tr>
-          <td><code>==</code></td>
-          <td><code>==</code></td>
-          <td>Equality, e.g. <code>"wool" == "wool"</code></td>
-        </tr>
-
-        <tr>
-          <td><code>===</code></td>
-          <td><code>===</code></td>
-          <td>Case equality, e.g. <code>Array === [1]</code></td>
-        </tr>
-
-        <!-- TODO: Mention this inverts == unless defined explicitly -->
-        <tr>
-          <td><code>!=</code></td>
-          <td><code>!=</code></td>
-          <td>Not equal, e.g. <code>"bark! != "bite"</code></td>
-        </tr>
-
-        <tr>
-          <td><code>=~</code></td>
-          <td><code>=~</code></td>
-          <td>Pattern match, e.g. <code>/\d/ =~ "99"</code></td>
-        </tr>
-
-        <!-- TODO: Mention this inverts =~ unless defined explicitly -->
-        <tr>
-          <td><code>!~</code></td>
-          <td><code>!~</code></td>
-          <td>Inverted pattern match, e.g. <code>/\d/ !~ "d"</code></td>
-        </tr>
-      </table>
-
-      <figure class=railroad>
-        <img id=operator-method-selector.png>
-        <figcaption>Syntax diagram of an operator method selector
-      </figure>
+      <p>An <dfn>operator method</dfn> is an <a
+        href=/messages#operators>operator</a> definable as a method<sup>*</sup>. By
+      defining a method with the corresponding name<sup>†</sup> an object can receive an
+      operator message like core classes do. For example, the expression
+      <code>3 + 2</code> is a syntactical shortcut for <code>3.+(2)</code>; by
+      defining a method named <code>+</code> you can<sup>‡</sup> redefine, or
+      <i>overload</i>, the fundamentals of arithmetic.</p>
     </section>
 
     <h1 id=method-names>Names</h1>
 
-    <figure class=railroad>
-      <img class=left style=margin-right:2% id=non-symbol-character.png>
-    </figure>
-
-    <p>Method names conventionally begin with a lowercase letter or low line
-    (<code class=u title='_'>U＋005F</code>) (unless they name an operator
-    method). They must not begin with an ASCII integer. If they consist of
-    multiple words, low lines are used to separate. They must not contain any
-    of the following ASCII “punctuation” characters: <i>[</i>, <i>]</i>,
-    <i>.</i>, <i>=</i>, <i>*</i>, <i>!</i>, <i>~</i>, <i>@</i>, <i>-</i>,
-    <i>+</i>, <i>/</i>, <i>\</i>, <i>%</i>, <i>&lt;</i>, <i>&gt;</i>,
-    <i>&amp;</i>, <i>^</i>, <i>|</i>, <i>:</i>, <i>{</i>, <i>}</i>, however:
-    <!-- Unicode names -->
-
-    <ul>
-      <li>An otherwise legal method name may end with <i>=</i> or <i>!</i>,
-      <i>?</i> if it doesn’t already.
-      <li>The method names enumerated in the <a
-      href=#operator-methods-table>Operator Methods</a> table are all
-      exceptions to this rule, representing the only permissible permutations
-      of these characters.
-      <!-- TODO: Mention += and friends -->
-    </ul>
-
-    <figure class=railroad>
-      <img id=symbol.png>
-      <figcaption>Syntax diagram of a method name
-    </figure>
-
-    <aside>
+    <aside class=sidenote>
       It is legal for a method name to begin with an uppercase letter, but
       then they may be confused with constants or class names. In fact,
       several core classes have methods named this way for precisely this
@@ -453,6 +246,38 @@
       which coerces its argument into an <code>Array</code> object. <!-- Quote
       from Pickaxe p. 137?--> 
     </aside>
+
+    <p>Method names conventionally begin with a lowercase letter or low line
+    (<code class=u title='_'>U＋005F</code>) (unless they name an <a
+      href=#operators>operator method</a>). They must not begin with an ASCII
+    integer. If they consist of multiple words, low lines are used to
+    separate. They must not contain any of the following ASCII “punctuation”
+    characters: <i>[</i>, <i>]</i>, <i>.</i>, <i>=</i>, <i>*</i>, <i>!</i>,
+    <i>~</i>, <i>@</i>, <i>-</i>, <i>+</i>, <i>/</i>, <i>\</i>, <i>%</i>,
+    <i>&lt;</i>, <i>&gt;</i>, <i>&amp;</i>, <i>^</i>, <i>|</i>, <i>:</i>,
+    <i>{</i>, <i>}</i>, however: <!-- simplify to _any_ other US-ASCII
+    punctuation character? -->
+    <!-- Unicode names -->
+
+    <!-- TODO: Explain element reference/set -->
+    <ul>
+      <li>An otherwise legal method name may end with <i>=</i> or <i>!</i>,
+      <i>?</i> if it doesn’t already.
+      <li>The method names enumerated in the <a
+      href=/messages/#operator-methods-table>Operator Methods</a> table are all
+      exceptions to this rule, representing the only permissible permutations
+      of these characters.
+      <!-- TODO: Mention += and friends -->
+    </ul>
+
+    <figure class='railroad'>
+      <img id=non-symbol-character.png>
+    </figure>
+
+    <figure class=railroad>
+      <img id=symbol.png>
+      <figcaption>Syntax diagram of a method name
+    </figure>
 
     <p>By implication, any other character legal in the source encoding is
     valid in a method name.</p> 
