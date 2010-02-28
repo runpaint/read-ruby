@@ -42,41 +42,26 @@
         <!-- Mention the Class::Subclass name qualification here or in Constants
         section? In same place mention Ruby's preference for flat hierarchies -->
 
-        <p>A non-anonymous <!-- Does it make sense to introduce anonymous classes
-        here? --> class is named with a constant, i.e. an identifier
-        which begins with an ASCII capital letter. <!-- Class#name returns name as
-        String; nil for anonymous classes --> <!-- Explain that names are defined
-        by a blacklist -->
+        <p>A non-anonymous <!-- Does it make sense to introduce anonymous
+        classes here? --> class is named with a <a
+          href=/variables#constants>constant</a>, i.e. an <a
+          href=/programs#identifiers>identifier</a> which begins with a <abbr
+          title='United States'>US</abbr>-<abbr title='American Standard Code
+          for Information Interchange'>ASCII</abbr> capital letter.</p>
+
+        <aside class=sidenote>
+          Class names containing non-ASCII characters cannot be referred to
+          from source files with a different <a
+            href=/programs#source-encoding>source encoding</a>. For example,
+          a class name containing character the Greek small letter lamda
+          (<code class=u title='λ'>U＋03BB</code>) can only be referenced
+          from source files using the UTF-8 source encoding. <!-- FIXME:
+          What about other Unicode character sets? -->
+        </aside>
 
         <p><code>Class#name</code> returns the class’s name as a
         <code>String</code>, or <code>nil</code> if the class is
         anonymous.</p>
-
-        <section>
-          <h1 id=names-rules>Rules</h1>
-
-          <p>The name of class must: 
-            <ul>
-              <li>Begin with an uppercase ASCII letter (A-Z).
-              <li>Not contain a colon (<code class=u title=':'>U＋003A</code>).
-              <li>Not contain an ASCII space character (<code class=u title=' '>U＋0020</code>)
-            </ul>
-            <!-- FIXME: Derive and enumerate rules -->
-
-          <p>More generally, a class name consists of an uppercase ASCII
-          character, optionally followed by a sequence of other alphanumeric
-          characters.</p>
-
-          <aside class=warning>
-            Class names containing non-ASCII characters cannot be referred to
-            from source files with a different <a
-              href=/programs#source-encoding>source encoding</a>. For example,
-            a class name containing character the Greek small letter lamda
-            (<code class=u title='λ'>U＋03BB</code>) can only be referenced
-            from source files using the UTF-8 source encoding. <!-- FIXME:
-            What about other Unicode character sets? -->
-          </aside>
-        </section>
         
         <section>
           <h1 id=names-conventions>Conventions</h1>
