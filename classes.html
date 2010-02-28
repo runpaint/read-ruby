@@ -20,6 +20,13 @@
       <!-- http://blog.rubybestpractices.com/posts/rklemme/018-Complete_Class.html -->
       <!-- What does it mean to dup or clone a class? -->
 
+      <aside class=sidenote>
+        The term <i>class</i> is roughly analogous to its biological definition
+        where it denotes a taxonomic rank, however this analogy does not extend to
+        subclasses. That is, a subclass of a class is termed a <i>subclass</i>;
+        not an <i>order</i>.
+      </aside>
+
       <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It
       constitutes a template from which such objects can be constructed. Hence
       <code>3</code> and <code>198705</code> are both instances of the
@@ -29,26 +36,7 @@
       by another integer, and both are either odd or even, etc.</p>
       <!-- snip etc. -->
 
-      <aside>
-        The term <i>class</i> is roughly analogous to its biological definition
-        where it denotes a taxonomic rank, however this analogy does not extend to
-        subclasses. That is, a subclass of a class is termed a <i>subclass</i>;
-        not an <i>order</i>.
-      </aside>
-
       <section>
-        <h1 id=names>Names</h1>
-
-        <!-- Mention the Class::Subclass name qualification here or in Constants
-        section? In same place mention Ruby's preference for flat hierarchies -->
-
-        <p>A non-anonymous <!-- Does it make sense to introduce anonymous
-        classes here? --> class is named with a <a
-          href=/variables#constants>constant</a>, i.e. an <a
-          href=/programs#identifiers>identifier</a> which begins with a <abbr
-          title='United States'>US</abbr>-<abbr title='American Standard Code
-          for Information Interchange'>ASCII</abbr> capital letter.</p>
-
         <aside class=sidenote>
           Class names containing non-ASCII characters cannot be referred to
           from source files with a different <a
@@ -57,6 +45,22 @@
           (<code class=u title='λ'>U＋03BB</code>) can only be referenced
           from source files using the UTF-8 source encoding. <!-- FIXME:
           What about other Unicode character sets? -->
+        </aside>
+
+        <h1 id=names>Names</h1>
+
+        <!-- Mention the Class::Subclass name qualification here or in Constants
+        section? In same place mention Ruby's preference for flat hierarchies -->
+
+        <p>A class<sup>†</sup> is named with a <a
+          href=/variables#constants>constant</a>, i.e. an <a
+          href=/programs#identifiers>identifier</a> which begins with a <abbr
+          title='United States'>US</abbr>-<abbr title='American Standard Code
+          for Information Interchange'>ASCII</abbr> capital letter.</p>
+
+        <aside class=sidenote>
+          <span class=sidemark>†</span>Unless it is <a
+            href=#anonymous>anonymous</a>, of course.
         </aside>
 
         <p><code>Class#name</code> returns the class’s name as a
@@ -233,7 +237,7 @@
           </figure>
 
           <section>
-            <h1 id=anonymous-classes>Anonymous Classes</h1> <!-- Is this term confusing w.r.t
+            <h1 id=anonymous>Anonymous Classes</h1> <!-- Is this term confusing w.r.t
             eigenclasses also being described as anonymous? -->
 
               <p>When a constant is used as a class name it has global <!-- This
