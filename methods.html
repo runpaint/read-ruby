@@ -247,38 +247,26 @@
       from Pickaxe p. 137?--> 
     </aside>
 
-    <p>Method names conventionally begin with a lowercase letter or low line
-    (<code class=u title='_'>U＋005F</code>) (unless they name an <a
-      href=#operators>operator method</a>). They must not begin with an ASCII
-    integer. If they consist of multiple words, low lines are used to
-    separate. They must not contain any of the following ASCII “punctuation”
-    characters: <i>[</i>, <i>]</i>, <i>.</i>, <i>=</i>, <i>*</i>, <i>!</i>,
-    <i>~</i>, <i>@</i>, <i>-</i>, <i>+</i>, <i>/</i>, <i>\</i>, <i>%</i>,
-    <i>&lt;</i>, <i>&gt;</i>, <i>&amp;</i>, <i>^</i>, <i>|</i>, <i>:</i>,
-    <i>{</i>, <i>}</i>, however: <!-- simplify to _any_ other US-ASCII
-    punctuation character? -->
-    <!-- Unicode names -->
+    <p>A valid method name is one of the following:
+      <ul>
+        <li>An <a href=/programs#identifiers>identifier</a> that is optionally
+        followed by an equals sign (<code class=u title='='>U＋003D</code>),
+        question mark (<code class=u title='?'>U＋003F</code>), or exclamation
+        mark (<code class=u title='!'>U＋0021</code>).
+        <li>An <a href=/messages#operators>operator method selector</a>. 
+        <li>The <a href=/messages#aref>element reference</a> (<code>[]</code>) selector. 
+        <li>The <a href=/messages#aref-set>element set</a> (<code>[]=</code>) selector. 
+      </ul>
 
-    <!-- TODO: Explain element reference/set -->
-    <ul>
-      <li>An otherwise legal method name may end with <i>=</i> or <i>!</i>,
-      <i>?</i> if it doesn’t already.
-      <li>The method names enumerated in the <a
-      href=/messages/#operator-methods-table>Operator Methods</a> table are all
-      exceptions to this rule, representing the only permissible permutations
-      of these characters.
-      <!-- TODO: Mention += and friends -->
-    </ul>
-
-    <figure class='railroad'>
-      <img id=non-symbol-character.png>
-    </figure>
-
-    <figure class=railroad>
+    <figure class='railroad centre'>
       <img id=symbol.png>
       <figcaption>Syntax diagram of a method name
     </figure>
 
+    <p>Names that begin with an identifier conventionally begin with a
+    lowercase letter or low line (<code class=u title='_'>U＋005F</code>).
+
+    <!-- TODO: Mention += and friends -->
     <p>By implication, any other character legal in the source encoding is
     valid in a method name.</p> 
 

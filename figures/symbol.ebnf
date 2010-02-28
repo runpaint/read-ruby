@@ -1,1 +1,1 @@
-Symbol = OperatorMethodSelector | "NOT Digit" ("NOT NonSymbolCharacter"+ ("=" | "!" | "?")?)?
+Symbol = OperatorMethodSelector | "[]" | "[]=" | Identifier ("=" | "!" | "?")?
