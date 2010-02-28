@@ -27,11 +27,21 @@
   with an <a href=/programs#identifiers>identifier</a>, possibly preceded
   by a <dfn>sigil</dfn> (a symbol denoting the variable’s scope).</p>
 
-  <!-- created via assignment -->
-
   <p>When the name of a variable appears somewhere other than the
   left‐hand side of an assignment expression it is a <dfn>variable
   reference</dfn> which evaluates to the variable’s value. </p>
+
+  <p>A variable’s <dfn>scope</dfn> <q>…is the portion of the program text in
+  which the variable may be referenced.</q> (<a
+  href=/references#refTURBAK08>Turbak, Gifford, &amp; Seldon</a>, pp. 334–335)
+  Its <dfn title='variable lifetime'>lifetime</dfn> is <q>the duration, during
+  a run of a program, during which a location is allocated as the result of a
+  specific declaration.</a> (<a href=/references#refMITCHELL04>Mitchell</a>,
+  p. 167). When the scope of a variable <q>contains another declaration of the
+  same name the inner declaration <dfn>carves out a hole</dfn> in the scope of
+  the outer one</q> (<a href=/references#refTURBAK08>Turbak, Gifford, &amp;
+  Seldon</a>, pp. 336–338). The outer’s lifetime persists through the inner
+  declaration, but its scope is hidden for the duration. 
 
   <p>The specifics of variable references are explained in the following
   sections, along with complementary treatment of variable scope,
@@ -68,9 +78,8 @@
       </figure>
       
       <p>A <dfn>constant reference</dfn> is an expression evaluating to the
-      named constant. The simplest constant reference is a primary
-      expression consisting solely of the constant’s name, e.g.
-      <code>Constant</code>.
+      named constant. The simplest constant reference is a primary expression
+      consisting solely of the constant’s name, e.g.  <code>Constant</code>.
 
       <p>A constant reference may also be qualified by prefixing the
       constant name with the <q cite=/references#refTHOM09><dfn>scope
@@ -87,10 +96,14 @@
     <section>
       <h1 id=constants-scope>Scope</h1>
       
-      <p>A constant defined in the context of a class or module is
-      accessible throughout that context by unqualified reference. It may be
-      accessed from an exterior context by qualifying its name with that of
-      the defining class/module.
+      <p>A constant’s scope is established by its lexically enclosing class or
+      module. Inner classes and modules inherit the scope of their parents,
+      and constants initialized in the former cause a hole in their parent’s
+      scope.
+      
+      <p>A constant is accessible throughout its scope by unqualified
+      reference, and may be accessed from an exterior context by qualifying
+      its name with that of the defining class/module.
 
       <p>A constant defined in another context may be referred to
       unqualified or prefixed with the scope operator. However, it is
@@ -252,20 +265,33 @@
 
       <h1 id=local-variables-scope>Scope</h1>
 
-      <p>A local variable’s scope is the method or block in which it was
-      initialized; outside of this scope it is undefined, its previous value
-      forgotten. This scope is recursive: it continues thought any
-      blocks or other constructs defined within.</p>
+      <p>The scope of a local variable is <dfn title='static
+      scope'>static</dfn> in that it <q>can always be determined from the
+      abstract syntax tree of a program</q> (<a
+      href=/references#refTURBAK08>Turbak, Gifford, &amp; Sheldon</a>, pp.
+      334–335). It is established by the block, method/class/module
+      definition, or top‐level program—hereafter a <i>scope-defining</i>
+      construct— which lexically encloses its assignment. If a scope-defining
+      construct itself contains a scope-defining construct, the local
+      variables of the former are not visible in the latter: the inner
+      construct <q>carves out a hole in the scope of the outer one</q> (ibid,
+      336–338).
+      
+      <!-->It is also hierarchical: <q>each
+      construct establishes a parent/child relationship between an outer context in
+      which the [variable] is not visible and an inner (body) context in which
+      the declaration is visible.</q>-->
 
-      <p>A block defines its own lexical scope. Local variables defined
-      within it do not persist outside of it. However, if, in the context of
-      a block, a local variable is initialized with the name of one
-      initialized in the enclosing scope, the variables refer to the same
-      storage location: having left the block’s scope the variable’s value
-      will be that which it was assigned within the block. If, instead, it
-      is desired that variables defined within a block do not clash with
-      those defined outside, <a href=/closures#block-local-variables>block
-        local variables</a> are appropriate.</p>
+      <p>However, this picture is complicated by blocks. A block both inherits
+      the scope of its parent and defines its own scope: it maintains the
+      lifetime of local variables initialized outside of it without causing a
+      hole in their scope. Therefore, if a block references, or assigns to, a
+      local variable visible in its parent scope, it refers to the parent’s
+      variable. Otherwise, a variable initialized inside a block is not
+      visible outside of it. If it is desired that variables defined within a
+      block do not clash with those defined outside, <a
+      href=/closures#block-local-variables>block local variables</a> are
+      appropriate.</p>
 
       <figure class=centre id=non-block-local-variables-example.rb>
         <figcaption>Non‐block‐local variables defined prior to the block
