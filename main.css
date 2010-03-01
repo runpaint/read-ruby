@@ -42,7 +42,7 @@ a[href^="//"]:visited, a[href^="http"]:visited {
  * mostly has a right margin of 40%, but we let tables and large figures
  * overflow. Additionally, the right margin holds sidenotes
  */
-section > p, h1, table, figure.centre, figure.left, section > dl, ul, ol, section > blockquote, section > aside.note {
+section > p, h1, table, figure.centre, figure.left, section > dl, ul, section > ol, section > blockquote, section > aside.note {
   margin-left: 4%;
   margin-right: 40%;
 }
