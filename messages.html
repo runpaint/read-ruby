@@ -238,362 +238,6 @@
 
     <!-- Arguments section? -->
 
-    <section>
-      <h1 id=operators>Operators</h1>
-
-      <p>An <dfn>operator</dfn> performs an operation on one or more
-      expressions, termed its <dfn>operands</dfn>, combing them into a new
-      value. It is represented by a token which describes the operation.</p>
-      
-      <p>For example, the compound expression <code>1 + 2</code> comprises the
-      <code>+</code> operator and two integer literals as operands. Its value
-      is the result of summing the operands: the primary expression
-      <code>3</code>.</p>
-      
-      <p>Certain operators are <a href=/methods#operators>definable as
-      methods</a> and their selector may differ from their constituent
-      characters. An <dfn>operator method selector</dfn> is the symbol with
-      which the method corresponding to a definable operator must be named.
-      They are listed in the <i>Operator</i> column of the following table, and
-      summarised in the adjacent syntax diagram.
-
-      <!-- Background on redefinable NOTs:
-           http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/14011 -->
-      <!-- Unite with Methods > Operator Methods Table -->
-      <aside class=sidenote>    
-          <dl class='inline-small sidenote'>
-            <dt id=op-tbl-mean>&dagger;
-            <dd>The meaning ascribed to each operator is that which is common;
-            re-definable operators may have different semantics. 
-            <dt id=op-tbl-unary>&Dagger;
-            <dd>Unary operators with binary equivalents are shown with a
-            <code>@</code> suffix. This is the name of their selector, but the
-            suffix is omitted in operator expressions.
-            <dt id=op-tbl-meth>⁂
-            <dd>A ✔ in this column indicates that the operator is implemented
-            as a method, and therefore can be overridden by defining a method
-            with the same name.
-          </dl>
-      </aside>
-
-      <figure class='railroad sidenote'>
-        <img id=operator-method-selector.png>
-        <figcaption>Syntax diagram of an operator method selector
-      </figure>
-
-      <table id=operator-table class=border>
-        <caption>
-          A table of Ruby operators shown in order of descending
-          precedence, where a decrease is shown by a change in background
-          colour.          
-        </caption>
-        <thead>
-          <tr>
-            <th>Operator
-            <th>Meaning <a href=#op-tbl-mean>&dagger;</a>
-            <th>Method? <a href=#op-tbl-meth>⁂</a>
-        </thead>
-        <tbody>
-          <tr class=odd>
-            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
-          <tr class=odd>
-            <td><code>!</code>
-            <td><a href=/flow#not-operator>Boolean NOT</a>
-            <td>✔
-          <tr class=odd> 
-            <td><code>~</code>
-            <td>Bitwise complement
-            <td>✔
-          <tr class=odd>
-            <td><code>+@</code>
-            <td>Unary plus <a href=#op-tbl-unary>&Dagger;</a>
-            <td>✔
-
-          <tr>
-            <th colspan=3>Binary <span title="Right associative">&rarr;</span>
-          <tr>
-            <td><code>**</code>
-            <td>Exponentiation
-            <td>✔
-
-          <tr class=odd>
-            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
-          <tr class="odd">
-            <td><code>-@</code>
-            <td>Unary minus <a href=#op-tbl-unary>&Dagger;</a>
-            <td>✔
-          <tr>
-            <th colspan=3>Binary <span title="Left associative">&larr;</span>
-          <tr>
-            <td><code>*</code>
-            <td><a href=/messages#asterisk>Multiplication</a>
-            <td>✔
-          <tr>
-            <td><code>/</code>
-            <td>Division <!--  Footnote String#/ idea -->
-            <td>✔
-          <tr>
-          
-            <td><code>%</code>
-            <td>Modulo
-            <td>✔
-
-          <tr class=odd>
-            <td><code>+</code>
-            <td><a href=/messages#plus>Addition/concatenation</a>
-            <td>✔
-          <tr class=odd>
-            <td><code>-</code>
-            <td>Subtraction
-            <td>✔
-
-          <tr>
-            <td><code>&lt;&lt;</code>
-            <td><a href=/messages#left-shift>Left shift/append</a>
-            <td>✔
-          <tr>
-            <td><code>&gt;&gt;</code>
-            <td>Right shift
-            <td>✔
-          
-          <tr class=odd>
-            <td><code>&amp;</code>
-            <td>Bitwise AND
-            <td>✔
-
-          <tr>
-            <td><code>|</code>
-            <td>Bitwise OR
-            <td>✔
-          <tr>
-            <td><code>^</code>
-            <td>Bitwise XOR
-            <td>✔
-          
-          <tr class=odd>
-            <td><code>&lt;</code>
-            <td><a href=/messages#less-than>Less than</a>
-            <td>✔
-          <tr class=odd>
-            <td><code>&lt;=</code>
-            <td>Less than or equal to
-            <td>✔
-          <tr class=odd>
-            <td><code>&gt;=</code>
-            <td>Greater than or equal to
-            <td>✔
-          <tr class=odd>
-            <td><code>&gt;</code>
-            <td><a href=/messages#greater-than>Greater than</a>
-            <td>✔
-          <tr>
-            <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
-          <tr>
-            <td><code>==</code>
-            <td><a href=/messages#equal-equal>Equality</a>
-            <td>✔
-          <tr>
-            <!-- Link with material in Flow -->
-            <td><code>===</code>
-            <td>Case equality
-            <td>✔
-          <!-- TODO: Mention this inverts == unless defined explicitly -->
-          <tr>
-            <td><code>!=</code>
-            <td>Negated equality
-            <td>✔
-          <tr>
-            <td><code>=~</code>
-            <td><a href=/messages#equal-tilde>Pattern matching</a>
-            <td>✔
-          <!-- TODO: Mention this inverts =~ unless defined explicitly -->
-          <tr>
-            <td><code>!~</code>
-            <td>Negated pattern matching
-            <td>✔
-          <tr>
-            <td><code>&lt;=&gt;</code>
-            <td><a href=/messages#spaceship>Comparison</a> (<i>spaceship</i>)
-            <td>✔
-
-          <tr class=odd>
-            <th colspan=3>Binary <span title="Left associative">&larr;</span>
-          <tr class=odd>
-            <td><code>&amp;&amp;</code>
-            <td><a href=/flow#and-operator>Boolean AND</a>
-            <td>✖
-
-          <tr>
-            <td><code>||</code>
-            <td><a href=/flow#or-operator>Boolean OR</a>
-            <td>✖
-
-          <tr class=odd>
-            <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
-          <tr class=odd>
-            <td><code>..</code>
-            <td><a href=/objects#ranges>Inclusive range</a>
-            <td>✖
-          <tr class=odd>
-            <td><code>...</code>
-            <td><a href=/objects#ranges>Exclusive range</a>
-            <td>✖
-          
-          <tr>
-            <th colspan=3>Ternary <span title="Right associative">&rarr;</span>
-          <tr>
-            <td><code>?</code>…<code>:</code>
-            <td><a href=/flow#ternary-operator>Conditional</a>
-            <td>✖
-
-          <tr class=odd>
-            <th colspan=3>Binary <span title="Right associative">&rarr;</span>
-          <tr class=odd>
-            <td><code>=</code>
-            <td><a href=#assignment>Assignment</a>
-            <td>✖
-          <tr class=odd>
-            <td><code>**=</code>
-            <td rowspan=13 style=vertical-align:top><a
-            href=#abbreviated-assignment>Abbreviated assignment</a>
-            <td rowspan=13>✖
-          <tr class=odd>
-            <td><code>*=</code>
-          <tr class=odd>
-            <td><code>/=</code>
-          <tr class=odd>
-            <td><code>%=</code>
-          <tr class=odd>
-            <td><code>+=</code>
-          <tr class=odd>
-            <td><code>-=</code>
-          <tr class=odd>
-            <td><code>&lt;&lt;=</code>
-          <tr class=odd>
-            <td><code>&gt;&gt;=</code>
-          <tr class=odd>
-            <td><code>&amp;&amp;=</code>
-          <tr class=odd>
-            <td><code>&amp;=</code>
-          <tr class=odd>
-            <td><code>||=</code>
-          <tr class=odd>
-            <td><code>|=</code>
-          <tr class=odd>
-            <td><code>^=</code>
-
-          <tr>
-            <th colspan=3>Unary <span title=Nonassociative>&harr;</span>
-          <tr>
-            <td><code>defined?</code>
-            <td><a href=#defined>Test variable definition and type</a>
-            <td>✖
-
-          <tr class=odd>
-            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
-          <tr class=odd>
-            <td><code>not</code>
-            <td><a href=/flow#not-operator>Boolean NOT</a>
-            <td>✖
-
-          <tr>
-            <th colspan=3>Binary <span title="Left associative">&larr;</span>
-          <tr>
-            <td><code>and</code>
-            <td><a href=/flow#and-operator>Boolean AND</a>
-            <td>✖
-          <tr>
-            <td><code>or</code>
-            <td><a href=/flow#or-operator>Boolean OR</a>
-            <td>✖
-        </tbody>
-      </table>
-
-      <section>
-        <h1 id=arity>Arity</h1>
-        
-        <!-- TODO: Link with Methods > Arity -->
-        <p>An operator’s <dfn title="operator arity">arity</dfn> is the number
-        of operands on which it operates. The <code>+</code> operator shown
-        above has an arity of 2. More than two numbers can be summed together,
-        of course, but an expression such as <code>1 + 2 + 3</code> involves
-        the <code>+</code> operator twice: <code>1 + 2</code> then <code>3 +
-        3</code>.</p>
-
-        <p>An operand can be classified by its arity as follows:</p>
-
-        <dl class=inline>
-          <dt><dfn>Unary operator</dfn>
-          <dd>An arity of 1.
-          <dt><dfn>Binary operator</dfn>
-          <dd>An arity of 2.
-          <dt><dfn>Ternary operator</dfn>
-          <dd>An arity of 3.
-        </dl>
-
-        <p>A few operators are both unary and binary. They can either be used
-        with one operand or two. <code>+</code>, again, serves to illustrate:
-        in its unary form it changes the sign of its operand; in its binary
-        form it performs summation. To distinguish between these two cases,
-        the unary forms of <code>+</code> and <code>-</code> are named
-        <code>+@</code> and <code>-@</code>, respectively. (Note: it is merely
-        a coincidence that a commerical at sign (<code class=u
-        title='@'>U＋0040</code>) is used as both a sigil for class and
-        instance variables and in the names of these operators; there is no
-        connection).</p>
-      </section>
-
-      <section>
-        <h1 id=precedence>Precedence</h1>
-
-        <p>A compound expression might itself contain compound expressions,
-        each of which comprises an operator and its operands. For example,
-        <code>1 - 2 * 3</code>. This expression is potentially ambiguous: is
-        the intent to subtract 2 from 1, then multiply the result by 3, or
-        multiply 2 and 3, then subtract the result from 1? In evaluating such
-        an expression Ruby must apply <dfn>precedence rules</dfn> so as to
-        determine the order in which the operators should be performed.  
-        
-        <p><dfn title="operator precedence">Precedence</dfn> is a relative
-        order defined over the operators such that each operator has lower,
-        equal, or higher precedence than another. For a given statement, the
-        higher an operator’s precedence, the earlier it is evaluated. <!--
-        FIXME: This is awkward. I'm trying to clarify that precedence only
-        comes into play at the operator level; it doesn't affect the order of
-        statement evaluation --> <code>*</code> has a higher precedence than
-        <code>-</code>, as in mathematics, so the example above evaluates to
-        −5.</p>
-        
-        <figure id=precedence-parentheses.rb class=sidenote>
-          <figcaption>Parentheses can be used to force precedence
-        </figure>
-
-        <p>The default order of precedence may be overridden by grouping
-        sub‐expressions that should be performed earlier with parentheses,
-        again mirroring the rule in mathematics. When parenthetical groups
-        contain other parenthetical groups, the innermost is given the
-        highest precedence.</p>
-      </section>
-
-      <section>
-        <h1 id=associativity>Associativity</h1>
-
-        <figure id=precedence-associativity.rb class=sidenote>
-          <figcaption>Associativity governs the order of evaluation for
-          operators with the same precedence
-        </figure>
-
-        <p>If one operator expression is followed by another with the same
-        precedence, the operator’s <dfn>associativity</dfn> determines their
-        order of evaluation.
-
-        <p><dfn>Left‐associative</dfn> operators are evaluated from left to
-        right; <dfn>right‐associative</dfn> operators are evaluated in the
-        opposite direction. <dfn>Non‐associative</dfn> operators are
-        ambiguous: parentheses must be employed to specify their order of
-        evaluation.</p>
-      </section>
-    </section>
 
     <section>
       <h1 id=expressions>Message Expression Syntax</h1>
@@ -879,6 +523,366 @@
         <p><code>Object#public_send</code> performs the same function, but
         raises a <code>NoMethodError</code> if the method is private or
         protected.
+      </section>
+    </section>
+
+    <section>
+      <h1 id=operators>Operators</h1>
+
+      <p>An <dfn>operator</dfn> is a subspecies of message with a selector
+      consisting solely† of US-ASCII punctuation characters, predefined <a
+      href=#arity>arity</a>, <a href=#associativity>associativity</a>, and <a
+      href=#precedence>precedence</a>, and an alternative expression syntax.
+      Its arguments are termed its <dfn>operands</dfn>.
+      
+      <p>For example, the compound expression <code>1 + 2</code> comprises the
+      <code>+</code> operator and two integer literals as operands. Its value
+      is the result of summing the operands: the primary expression
+      <code>3</code>.</p>
+      
+      <p>Certain operators are <a href=/methods#operators>definable as
+      methods</a> and their selector may differ from their constituent
+      characters. An <dfn>operator method selector</dfn> is the symbol with
+      which the method corresponding to a definable operator must be named.
+      They are listed in the <i>Operator</i> column of the following table, and
+      summarised in the adjacent syntax diagram.
+
+      <!-- Background on redefinable NOTs:
+           http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/14011 -->
+      <!-- Unite with Methods > Operator Methods Table -->
+      <aside class=sidenote>    
+          <dl class='inline-small sidenote'>
+            <dt id=op-tbl-mean>&dagger;
+            <dd>The meaning ascribed to each operator is that of the core
+            classes’s;re-definable operators may have different semantics. 
+            <dt id=op-tbl-unary>&Dagger;
+            <dd>Unary operators with binary equivalents are shown with a
+            <code>@</code> suffix. This is the name of their selector, but the
+            suffix is omitted in operator expressions.
+            <dt id=op-tbl-meth>⁂
+            <dd>A ✔ in this column indicates that the operator is implemented
+            as a method, and therefore can be overridden by <a
+            href=/methods#operators>defining a method</a> with the same name.
+          </dl>
+      </aside>
+
+      <figure class='railroad sidenote'>
+        <img id=operator-method-selector.png>
+        <figcaption>Syntax diagram of an operator method selector
+      </figure>
+
+      <table id=operator-table class=border>
+        <caption>
+          A table of Ruby operators shown in order of descending
+          precedence, where a decrease is shown by a change in background
+          colour.          
+        </caption>
+        <thead>
+          <tr>
+            <th>Operator
+            <th>Meaning <a href=#op-tbl-mean>&dagger;</a>
+            <th>Method? <a href=#op-tbl-meth>⁂</a>
+        </thead>
+        <tbody>
+          <tr class=odd>
+            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
+          <tr class=odd>
+            <td><code>!</code>
+            <td><a href=/flow#not-operator>Boolean NOT</a>
+            <td>✔
+          <tr class=odd> 
+            <td><code>~</code>
+            <td>Bitwise complement
+            <td>✔
+          <tr class=odd>
+            <td><code>+@</code>
+            <td>Unary plus <a href=#op-tbl-unary>&Dagger;</a>
+            <td>✔
+
+          <tr>
+            <th colspan=3>Binary <span title="Right associative">&rarr;</span>
+          <tr>
+            <td><code>**</code>
+            <td>Exponentiation
+            <td>✔
+
+          <tr class=odd>
+            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
+          <tr class="odd">
+            <td><code>-@</code>
+            <td>Unary minus <a href=#op-tbl-unary>&Dagger;</a>
+            <td>✔
+          <tr>
+            <th colspan=3>Binary <span title="Left associative">&larr;</span>
+          <tr>
+            <td><code>*</code>
+            <td><a href=/messages#asterisk>Multiplication</a>
+            <td>✔
+          <tr>
+            <td><code>/</code>
+            <td>Division <!--  Footnote String#/ idea -->
+            <td>✔
+          <tr>
+          
+            <td><code>%</code>
+            <td>Modulo
+            <td>✔
+
+          <tr class=odd>
+            <td><code>+</code>
+            <td><a href=/messages#plus>Addition/concatenation</a>
+            <td>✔
+          <tr class=odd>
+            <td><code>-</code>
+            <td>Subtraction
+            <td>✔
+
+          <tr>
+            <td><code>&lt;&lt;</code>
+            <td><a href=/messages#left-shift>Left shift/append</a>
+            <td>✔
+          <tr>
+            <td><code>&gt;&gt;</code>
+            <td>Right shift
+            <td>✔
+          
+          <tr class=odd>
+            <td><code>&amp;</code>
+            <td>Bitwise AND
+            <td>✔
+
+          <tr>
+            <td><code>|</code>
+            <td>Bitwise OR
+            <td>✔
+          <tr>
+            <td><code>^</code>
+            <td>Bitwise XOR
+            <td>✔
+          
+          <tr class=odd>
+            <td><code>&lt;</code>
+            <td><a href=/messages#less-than>Less than</a>
+            <td>✔
+          <tr class=odd>
+            <td><code>&lt;=</code>
+            <td>Less than or equal to
+            <td>✔
+          <tr class=odd>
+            <td><code>&gt;=</code>
+            <td>Greater than or equal to
+            <td>✔
+          <tr class=odd>
+            <td><code>&gt;</code>
+            <td><a href=/messages#greater-than>Greater than</a>
+            <td>✔
+          <tr>
+            <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
+          <tr>
+            <td><code>==</code>
+            <td><a href=/messages#equal-equal>Equality</a>
+            <td>✔
+          <tr>
+            <!-- Link with material in Flow -->
+            <td><code>===</code>
+            <td>Case equality
+            <td>✔
+          <!-- TODO: Mention this inverts == unless defined explicitly -->
+          <tr>
+            <td><code>!=</code>
+            <td>Negated equality
+            <td>✔
+          <tr>
+            <td><code>=~</code>
+            <td><a href=/messages#equal-tilde>Pattern matching</a>
+            <td>✔
+          <!-- TODO: Mention this inverts =~ unless defined explicitly -->
+          <tr>
+            <td><code>!~</code>
+            <td>Negated pattern matching
+            <td>✔
+          <tr>
+            <td><code>&lt;=&gt;</code>
+            <td><a href=/messages#spaceship>Comparison</a> (<i>spaceship</i>)
+            <td>✔
+
+          <tr class=odd>
+            <th colspan=3>Binary <span title="Left associative">&larr;</span>
+          <tr class=odd>
+            <td><code>&amp;&amp;</code>
+            <td><a href=/flow#and-operator>Boolean AND</a>
+            <td>✖
+
+          <tr>
+            <td><code>||</code>
+            <td><a href=/flow#or-operator>Boolean OR</a>
+            <td>✖
+
+          <tr class=odd>
+            <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
+          <tr class=odd>
+            <td><code>..</code>
+            <td><a href=/objects#ranges>Inclusive range</a>
+            <td>✖
+          <tr class=odd>
+            <td><code>...</code>
+            <td><a href=/objects#ranges>Exclusive range</a>
+            <td>✖
+          
+          <tr>
+            <th colspan=3>Ternary <span title="Right associative">&rarr;</span>
+          <tr>
+            <td><code>?</code>…<code>:</code>
+            <td><a href=/flow#ternary-operator>Conditional</a>
+            <td>✖
+
+          <tr class=odd>
+            <th colspan=3>Binary <span title="Right associative">&rarr;</span>
+          <tr class=odd>
+            <td><code>=</code>
+            <td><a href=#assignment>Assignment</a>
+            <td>✖
+          <tr class=odd>
+            <td><code>**=</code>
+            <td rowspan=13 style=vertical-align:top><a
+            href=#abbreviated-assignment>Abbreviated assignment</a>
+            <td rowspan=13>✖
+          <tr class=odd>
+            <td><code>*=</code>
+          <tr class=odd>
+            <td><code>/=</code>
+          <tr class=odd>
+            <td><code>%=</code>
+          <tr class=odd>
+            <td><code>+=</code>
+          <tr class=odd>
+            <td><code>-=</code>
+          <tr class=odd>
+            <td><code>&lt;&lt;=</code>
+          <tr class=odd>
+            <td><code>&gt;&gt;=</code>
+          <tr class=odd>
+            <td><code>&amp;&amp;=</code>
+          <tr class=odd>
+            <td><code>&amp;=</code>
+          <tr class=odd>
+            <td><code>||=</code>
+          <tr class=odd>
+            <td><code>|=</code>
+          <tr class=odd>
+            <td><code>^=</code>
+
+          <tr>
+            <th colspan=3>Unary <span title=Nonassociative>&harr;</span>
+          <tr>
+            <td><code>defined?</code>
+            <td><a href=#defined>Test variable definition and type</a>
+            <td>✖
+
+          <tr class=odd>
+            <th colspan=3>Unary <span title="Right associative">&rarr;</span>
+          <tr class=odd>
+            <td><code>not</code>
+            <td><a href=/flow#not-operator>Boolean NOT</a>
+            <td>✖
+
+          <tr>
+            <th colspan=3>Binary <span title="Left associative">&larr;</span>
+          <tr>
+            <td><code>and</code>
+            <td><a href=/flow#and-operator>Boolean AND</a>
+            <td>✖
+          <tr>
+            <td><code>or</code>
+            <td><a href=/flow#or-operator>Boolean OR</a>
+            <td>✖
+        </tbody>
+      </table>
+
+      <section>
+        <h1 id=arity>Arity</h1>
+        
+        <!-- TODO: Link with Methods > Arity -->
+        <p>An operator’s <dfn title="operator arity">arity</dfn> is the number
+        of operands on which it operates. The <code>+</code> operator shown
+        above has an arity of 2. More than two numbers can be summed together,
+        of course, but an expression such as <code>1 + 2 + 3</code> involves
+        the <code>+</code> operator twice: <code>1 + 2</code> then <code>3 +
+        3</code>.</p>
+
+        <p>An operand can be classified by its arity as follows:</p>
+
+        <dl class=inline>
+          <dt><dfn>Unary operator</dfn>
+          <dd>An arity of 1.
+          <dt><dfn>Binary operator</dfn>
+          <dd>An arity of 2.
+          <dt><dfn>Ternary operator</dfn>
+          <dd>An arity of 3.
+        </dl>
+
+        <p>A few operators are both unary and binary. They can either be used
+        with one operand or two. <code>+</code>, again, serves to illustrate:
+        in its unary form it changes the sign of its operand; in its binary
+        form it performs summation. To distinguish between these two cases,
+        the unary forms of <code>+</code> and <code>-</code> are named
+        <code>+@</code> and <code>-@</code>, respectively. (Note: it is merely
+        a coincidence that a commercial at sign (<code class=u
+        title='@'>U＋0040</code>) is used as both a sigil for <a
+        href=/variables#class>class</a> and <a
+        href=/variables#instance>instance</a> variables and in the names of
+        these operators; there is no connection).</p>
+      </section>
+
+      <section>
+        <h1 id=precedence>Precedence</h1>
+
+        <p>A compound expression might itself contain compound expressions,
+        each of which comprises an operator and its operands. For example,
+        <code>1 - 2 * 3</code>. This expression is potentially ambiguous: is
+        the intent to subtract 2 from 1, then multiply the result by 3, or
+        multiply 2 and 3, then subtract the result from 1? In evaluating such
+        an expression Ruby must apply <dfn>precedence rules</dfn> so as to
+        determine the order in which the operators should be performed.  
+        
+        <p><dfn title="operator precedence">Precedence</dfn> is a relative
+        order defined over the operators such that each operator has lower,
+        equal, or higher precedence than another. For a given statement, the
+        higher an operator’s precedence, the earlier it is evaluated. <!--
+        FIXME: This is awkward. I'm trying to clarify that precedence only
+        comes into play at the operator level; it doesn't affect the order of
+        statement evaluation --> <code>*</code> has a higher precedence than
+        <code>-</code>, as in mathematics, so the example above evaluates to
+        −5.</p>
+        
+        <figure id=precedence-parentheses.rb class=sidenote>
+          <figcaption>Parentheses can be used to force precedence
+        </figure>
+
+        <p>The default order of precedence may be overridden by grouping
+        sub‐expressions that should be performed earlier with parentheses,
+        again mirroring the rule in mathematics. When parenthetical groups
+        contain other parenthetical groups, the innermost is given the
+        highest precedence.</p>
+      </section>
+
+      <section>
+        <h1 id=associativity>Associativity</h1>
+
+        <figure id=precedence-associativity.rb class=sidenote>
+          <figcaption>Associativity governs the order of evaluation for
+          operators with the same precedence
+        </figure>
+
+        <p>If one operator expression is followed by another with the same
+        precedence, the operator’s <dfn>associativity</dfn> determines their
+        order of evaluation.
+
+        <p><dfn>Left‐associative</dfn> operators are evaluated from left to
+        right; <dfn>right‐associative</dfn> operators are evaluated in the
+        opposite direction. <dfn>Non‐associative</dfn> operators are
+        ambiguous: parentheses must be employed to specify their order of
+        evaluation.</p>
       </section>
     </section>
 
