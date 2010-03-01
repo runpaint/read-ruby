@@ -625,7 +625,7 @@
             <th colspan=3>Binary <span title="Left associative">&larr;</span>
           <tr>
             <td><code>*</code>
-            <td><a href=/messages#asterisk>Multiplication</a>
+            <td><a href=#asterisk>Multiplication</a>
             <td>✔
           <tr>
             <td><code>/</code>
@@ -639,7 +639,7 @@
 
           <tr class=odd>
             <td><code>+</code>
-            <td><a href=/messages#plus>Addition/concatenation</a>
+            <td><a href=#plus>Addition/concatenation</a>
             <td>✔
           <tr class=odd>
             <td><code>-</code>
@@ -648,7 +648,7 @@
 
           <tr>
             <td><code>&lt;&lt;</code>
-            <td><a href=/messages#left-shift>Left shift/append</a>
+            <td><a href=#left-shift>Left shift/append</a>
             <td>✔
           <tr>
             <td><code>&gt;&gt;</code>
@@ -671,7 +671,7 @@
           
           <tr class=odd>
             <td><code>&lt;</code>
-            <td><a href=/messages#less-than>Less than</a>
+            <td><a href=#less-than>Less than</a>
             <td>✔
           <tr class=odd>
             <td><code>&lt;=</code>
@@ -683,13 +683,13 @@
             <td>✔
           <tr class=odd>
             <td><code>&gt;</code>
-            <td><a href=/messages#greater-than>Greater than</a>
+            <td><a href=#greater-than>Greater than</a>
             <td>✔
           <tr>
             <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
           <tr>
             <td><code>==</code>
-            <td><a href=/messages#equal-equal>Equality</a>
+            <td><a href=#equal-equal>Equality</a>
             <td>✔
           <tr>
             <!-- Link with material in Flow -->
@@ -703,7 +703,7 @@
             <td>✔
           <tr>
             <td><code>=~</code>
-            <td><a href=/messages#equal-tilde>Pattern matching</a>
+            <td><a href=#equal-tilde>Pattern matching</a>
             <td>✔
           <!-- TODO: Mention this inverts =~ unless defined explicitly -->
           <tr>
@@ -712,7 +712,7 @@
             <td>✔
           <tr>
             <td><code>&lt;=&gt;</code>
-            <td><a href=/messages#spaceship>Comparison</a> (<i>spaceship</i>)
+            <td><a href=#spaceship>Comparison</a> (<i>spaceship</i>)
             <td>✔
 
           <tr class=odd>
@@ -731,11 +731,11 @@
             <th colspan=3>Binary <span title=Nonassociative>&harr;</span>
           <tr class=odd>
             <td><code>..</code>
-            <td><a href=/objects#ranges>Inclusive range</a>
+            <td><a href=/enumerables#ranges>Inclusive range</a>
             <td>✖
           <tr class=odd>
             <td><code>...</code>
-            <td><a href=/objects#ranges>Exclusive range</a>
+            <td><a href=/enumerables#ranges>Exclusive range</a>
             <td>✖
           
           <tr>
@@ -749,12 +749,12 @@
             <th colspan=3>Binary <span title="Right associative">&rarr;</span>
           <tr class=odd>
             <td><code>=</code>
-            <td><a href=#assignment>Assignment</a>
+            <td><a href=/variables#assignment>Assignment</a>
             <td>✖
           <tr class=odd>
             <td><code>**=</code>
             <td rowspan=13 style=vertical-align:top><a
-            href=#abbreviated-assignment>Abbreviated assignment</a>
+            href=/variables#abbreviated-assignment>Abbreviated assignment</a>
             <td rowspan=13>✖
           <tr class=odd>
             <td><code>*=</code>
@@ -785,7 +785,7 @@
             <th colspan=3>Unary <span title=Nonassociative>&harr;</span>
           <tr>
             <td><code>defined?</code>
-            <td><a href=#defined>Test variable definition and type</a>
+            <td><a href=/variables#defined>Test variable definition and type</a>
             <td>✖
 
           <tr class=odd>
@@ -1073,7 +1073,7 @@
       <section>
         <h1 class=runin id=spaceship><code class=bigsym>:&lt;=&gt;</code></h1>
 
-        <p><a href=#comparison>Compares</a> the operands.</p>
+        <p><a href=/objects#order>Compares</a> the operands.</p>
 
         <figure id=spaceship-selector.rb class=centre> 
           <figcaption><code>&lt;=&gt;</code> compares its receiver to
@@ -1092,7 +1092,7 @@
 
         <p>Determines whether the receiver is <i>less than</i> the argument.
         Normally implemented in terms of <a
-        href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&lt;</code>
+        href=#spaceship><code>&lt;=&gt;</code></a>. <code>Class#&lt;</code>
         creatively uses this selector to test whether the receiver is a
         <i>kind of</i> the argument because it mirrors the syntax for defining
         a class with a superclass, i.e. <code>class <var>name</var> &lt;
@@ -1110,7 +1110,7 @@
 
         <p>Determines whether the receiver is <i>greater than</i> the
         argument.  Normally implemented in terms of <a
-        href=#comparison><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
+        href=#spaceship><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
         provides symmetry to <code>Class#&lt;</code> by testing whether the
         argument is a <i>kind of</i> the receiver.</p>
       </section>
@@ -1248,7 +1248,7 @@
 
         <h1 class=runin id=plus><code class=bigsym>:+</code></h1>
 
-        <p>Sum the receiver with the sole argument, which should be of the
+        <p>Sums the receiver with the sole argument, which should be of the
         same class, returning a new object. Whereas <code>:&lt;&lt;</code>
         appends the argument to the receiver, <code>:+</code> combines the
         operands into a new object. For example, <code>Fixnum#+</code>,
