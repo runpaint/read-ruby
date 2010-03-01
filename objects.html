@@ -578,92 +578,80 @@
 
     <!-- Use spanning cell when an implicit message is given without an explicit
     counterpart? -->
-    <table>
-      <tr>
-        <th>Target Class</th> 
-        <th>Implicit</th> 
-        <th>Explicit</th>
-        <th>Note</th>
-      </tr>
-      <tr>
-        <td><code>Array</code></td> 
-        <td><code>:to_ary</code></td>
-        <td><code>:to_a</code></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>Complex</code></td> 
-        <td><code>:to_c</code></td>
-        <td>N/A</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>Enumerator</code></td> 
-        <td>N/A</td>
-        <td><code>:to_enum</code></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>Float</code></td> 
-        <td><code>:to_f</code></td>
-        <td>N/A</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>Hash</code></td> 
-        <td><code>:to_hash</code></td>
-        <td>N/A</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>Integer</code></td> 
-        <td><code>:to_int</code></td>
-        <td><code>:to_i</code></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>IO</code></td> 
-        <td><code>:to_open</code></td>
-        <td>N/A</td>
-        <td>Sent by <code>Kernel#open</code> to its first argument</td>
-      </tr>
-      <tr>
-        <td><code>Proc</code></td> 
-        <td><code>:to_proc</code></td>
-        <td>N/A</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>Rational</code></td> 
-        <td><code>:to_r</code></td>
-        <td>N/A</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>Regexp</code></td> 
-        <td><code>:to_regexp</code></td>
-        <td>N/A</td>
-        <td>Sent by <code>Regexp.try_convert</code></td>
-      </tr>
-      <tr>
-        <td><code>String</code></td> 
-        <td><code>:to_str</code></td>
-        <td><code>:to_s</code></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><code>String</code></td> 
-        <td><code>:to_path</code></td>
-        <td>N/A</td>
-        <td>Sent by methods expecting a file path as an argument, such as
-          the class methods of <code>File</code></td>
-      </tr>
-      <tr>
-        <td><code>Symbol</code></td> 
-        <td><code>:to_sym</code></td>
-        <td>N/A</td>
-        <td></td>
-      </tr>
+    <table class=border style=width:60%>
+      <thead>
+        <tr>
+          <th>Target Class 
+          <th>Implicit 
+          <th>Explicit
+          <th>Note
+      <tbody class=zebra>
+        <tr>
+          <td><code>Array</code></td> 
+          <td><code>:to_ary</code></td>
+          <td><code>:to_a</code></td>
+          <td>&nbsp;
+        <tr>
+          <td><code>Complex</code></td> 
+          <td><code>:to_c</code></td>
+          <td>N/A</td>
+          <td>&nbsp;</td>
+        <tr>
+          <td><code>Enumerator</code></td> 
+          <td>N/A</td>
+          <td><code>:to_enum</code></td>
+          <td>&nbsp;</td>
+        <tr>
+          <td><code>Float</code></td> 
+          <td><code>:to_f</code></td>
+          <td>N/A</td>
+          <td>&nbsp;</td>
+        <tr>
+          <td><code>Hash</code></td> 
+          <td><code>:to_hash</code></td>
+          <td>N/A</td>
+          <td>&nbsp;</td>
+        <tr>
+          <td><code>Integer</code></td> 
+          <td><code>:to_int</code></td>
+          <td><code>:to_i</code></td>
+          <td>&nbsp;</td>
+        <tr>
+          <td><code>IO</code></td> 
+          <td><code>:to_open</code></td>
+          <td>N/A</td>
+          <td>Sent by <code>Kernel#open</code> to its first argument</td>
+        <tr>
+          <td><code>Proc</code></td> 
+          <td><code>:to_proc</code></td>
+          <td>N/A</td>
+          <td>&nbsp;</td>
+        <tr>
+          <td><code>Rational</code></td> 
+          <td><code>:to_r</code></td>
+          <td>N/A</td>
+          <td>&nbsp;</td>
+        <tr>
+          <td><code>Regexp</code></td> 
+          <td><code>:to_regexp</code></td>
+          <td>N/A</td>
+          <td>Sent by <code>Regexp.try_convert</code></td>
+        <tr>
+          <td><code>String</code></td> 
+          <td><code>:to_str</code></td>
+          <td><code>:to_s</code></td>
+          <td>&nbsp;</td>
+        <tr>
+          <td><code>String</code></td> 
+          <td><code>:to_path</code></td>
+          <td>N/A</td>
+          <td>Sent by methods expecting a file path as an argument, such as
+            the class methods of <code>File</code></td>
+        <tr>
+          <td><code>Symbol</code></td> 
+          <td><code>:to_sym</code></td>
+          <td>N/A</td>
+          <td>&nbsp;</td>
     </table> 
 
     <section>
