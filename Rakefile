@@ -139,9 +139,9 @@ file 'out/figures' => ['out', 'figures'] do |t|
   ln_s '../figures', t.name
 end
 
-file 'out/chapter.css' => FileList['{main,chapter}.css'] + ['out'] do |t|
+file 'out/chapter.css' => FileList['{main,chapter,syntax}.css'] + ['out'] do |t|
   File.open(t.name, 'w') do |f| 
-    f.print FileList['*.css'].map{|n| File.read(n)}.join
+    f.print t.prerequisites[0..-2].map{|n| File.read(n)}.join
   end
 end
 

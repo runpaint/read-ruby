@@ -140,7 +140,7 @@ table.border {
 
 /* All table cells are bordered with a thin black line */
 table.border, table.border th,  table.border tr, table.border td {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   border-collapse: collapse;
   padding-left: 5px;
   padding-right: 5px;
