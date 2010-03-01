@@ -530,10 +530,19 @@
       <h1 id=operators>Operators</h1>
 
       <p>An <dfn>operator</dfn> is a subspecies of message with a selector
-      consisting solely† of US-ASCII punctuation characters, predefined <a
+      consisting solely<sup>†</sup> of <abbr title='United
+      States'>US</abbr>-<abbr title='American Standard Code for Information
+      Interchange'>ASCII</abbr> punctuation characters, predefined <a
       href=#arity>arity</a>, <a href=#associativity>associativity</a>, and <a
       href=#precedence>precedence</a>, and an alternative expression syntax.
-      Its arguments are termed its <dfn>operands</dfn>.
+      Its arguments are termed its <dfn>operands</dfn>.</p>
+
+      <aside class=sidenote>
+        <span class=sidemark>†</span>The table below contains
+        <code>and</code>, <code>or</code>, and <code>defined?</code>, but if
+        it makes you feel any better you can refer to them as <i>keywords</i>,
+        instead.
+      </aside>
       
       <p>For example, the compound expression <code>1 + 2</code> comprises the
       <code>+</code> operator and two integer literals as operands. Its value
