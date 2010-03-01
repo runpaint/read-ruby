@@ -57,6 +57,14 @@ code.u {
 .syntax {
   font-size: 1em;
 }
+
+/* Hide link decoration in code examples because the entire <pre> block is
+ * enclosed in an <a>
+ */
+.syntax a {
+  text-decoration: none;
+}
+
 /*********** 
  *         *
  * FIGURES *

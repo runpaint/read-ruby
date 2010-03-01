@@ -64,7 +64,9 @@ def chapter_dependecies(chapter)
   Nokogiri::HTML(File.read chapter).
     css(*FIGURE_CSS).
     select{|e| e['id'] =~ /\.[a-z]+$/}.
-    map{|e| 'figures/' + e['id'].sub(/\.rb$/, '.html')} << chapter
+    map{|e| 'figures/' + e['id'] }.
+    map{|f| f.end_with?('rb') ? [f, f.sub(/\.rb$/, '.html')] : f}.
+    flatten << chapter
 end
 
 def target(source)
@@ -92,6 +94,7 @@ rule(%r{figures/.+\.html} => ->(t){ source(t) }) do |t|
   sh "pygmentize -f html -O encoding=utf-8 -o #{t.name} #{t.source}"
   munged = File.read(t.name).sub(/^<div.+pre>/, '<pre class=syntax><code>').
                              sub(/<\/pre><\/div>/,'</code></pre>')
+  munged = %{<a href=/#{t.source}>#{munged}</a>}
   File.open(t.name,'w') {|f| f.print munged}
 end
 
