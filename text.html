@@ -2,7 +2,7 @@
 <!-- vim: set fdm=indent tw=78: --> 
 <title>Text - Read Ruby</title>
 <meta charset=utf-8>
-<link href=/style rel=stylesheet>
+<link href=/chapter rel=stylesheet>
 <link rel=license href=//creativecommons.org/licenses/by-nc-sa/2.0/uk/>
 <link rel=next href=/numerics>
 <link rel='index up' href=/toc>
@@ -71,7 +71,7 @@
           may appear inside the string as long as they are properly
           balanced.</p>
            
-          <figure id=single-quoted-string-literal-q.rb>
+          <figure class=centre id=single-quoted-string-literal-q.rb>
             <figcaption>Constructing a single-quoted string with alternative
             delimiters using <code>%q</code>
           </figure>
@@ -141,7 +141,7 @@
             all other cases <code>\<var>char</var></code> evaluates to
             <var>char</var>.</p>
 
-            <figure id=character-escape.rb>
+            <figure class=centre id=character-escape.rb>
               <figcaption>A character escape is a reverse solidus followed by
               a single character
             </figure>
@@ -167,7 +167,7 @@
               and 377<sub>8</sub> represents the character whose character
               code that is.</p>
 
-              <figure id=octal-byte-escape.rb>
+              <figure class=centre id=octal-byte-escape.rb>
                 <figcaption>An octal byte escape consists of a backslash
                 followed by a character code in base 8
               </figure>
@@ -180,7 +180,7 @@
               followed by a hexadecimal number ≤ FF<sub>16</sub>. It
               represents the character whose code is given by the number.</p>
 
-              <figure id=hex-byte-escape.rb>
+              <figure class=centre id=hex-byte-escape.rb>
                 <figcaption>A hexadecimal byte escape consists of a backslash
                 followed by an <code>x</code> followed by one or two
                 hexadecimal digits
@@ -203,7 +203,7 @@
             href=#octal-byte>octal</a>, escape). Its value is the character
             whose character code is that of <var>char</var> ∧ 0x9F.</p>
             
-            <figure id=control-escape.rb>
+            <figure class=centre id=control-escape.rb>
               <figcaption>The control escape represents a control key
             </figure>
           </section>
@@ -224,7 +224,7 @@
             href=#hex-byte>hexadecimal</a>, or three-digit <a
             href=#octal-byte>octal</a>, escape).</p>
 
-            <figure id=meta-escape.rb>
+            <figure class=centre id=meta-escape.rb>
               <figcaption>The meta character escape represents the given meta
               character.
             </figure>
@@ -262,7 +262,7 @@
             a string containing literal multibyte characters in that
             encoding.</p>
 
-            <figure id=unicode-escape.rb>
+            <figure class=centre id=unicode-escape.rb>
               <figcaption>A Unicode escape represents a Unicode character with
               the given codepoint(s)
             </figure>
@@ -400,7 +400,7 @@
           the same pair may appear inside the string as long as they are
           properly balanced.</p>
             
-          <figure id=double-quoted-string-literal-q.rb>
+          <figure class=centre id=double-quoted-string-literal-q.rb>
             <figcaption>Constructing a double-quoted string with
             alternative delimiters using <code>%Q</code>
           </figure>
@@ -443,7 +443,7 @@
         contents are interpreted literally: all escape sequences and
         interpolation constructs are ignored.</p>
         
-        <figure id=here-doc.rb>
+        <figure class=centre id=here-doc.rb>
           <figcaption>Using a here document to render a poem
         </figure>
       </section>
@@ -462,7 +462,7 @@
         construct, which follows the same rules as <a
           href=#double-quoted-strings-q><code>%Q</code></a>.</p>
         
-        <figure id=backticks.rb>
+        <figure class=centre id=backticks.rb>
           <figcaption>Using backticks to execute commands and retrieve
           the output
         </figure>

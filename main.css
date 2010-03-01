@@ -54,6 +54,9 @@ code.u {
   white-space: nowrap;
 }
 
+.syntax {
+  font-size: 1em;
+}
 /*********** 
  *         *
  * FIGURES *
