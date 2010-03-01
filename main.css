@@ -97,8 +97,8 @@ figure.centre figcaption, figure.sidenote figcaption {
 /* Centre figures appear in the main flow of the text */
 figure.centre {
   display: block;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: auto;
+  margin-right: auto;
   width: 36%;
 }
 
