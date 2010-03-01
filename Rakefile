@@ -83,6 +83,7 @@ rule(%r{figures/.+\.png$} => ->(t){ source(t) }) do |t|
   require 'pngrammar'
   images = PNGrammar.new(t.source).images
   raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
+  raise "Couldn't make PNG for #{t.source}" unless images.values.first
   File.open(t.name, 'w'){|f| f.print images.values.first}
   sh "optipng #{t.name}"
 end

@@ -486,8 +486,8 @@
       
       <!-- TODO: EBNF for regexp... -->
       <figure class=railroad>
-        <img class=left id=regexp-options.png>
-        <img class=inline id=regexp-literal.png>
+        <img id=regexp-literal.png>
+        <img style=float:left id=regexp-options.png>
         <figcaption>Syntax diagram of the regexp literal
       </figure>
       
@@ -547,16 +547,6 @@
     <section>
       <h1 id=symbols>Symbols</h1>
 
-      <figure class=railroad>
-        <img class=left id=operator-method-selector.png>
-        <img class=left id=non-symbol-character.png>
-        <img class=inline id=symbol.png>
-        <!-- TODO: Exclude \0 -->
-        <!-- TODO: Look for other exceptions to this rule -->
-        <img class=inline id=symbol-literal.png>
-        <figcaption class=clear>Syntax diagram of the symbol literal
-      </figure>
-
       <p>A <code>Symbol</code> represents a name.
       <code>Symbol</code>s are immutable immediates. Two symbols
       with the same content will always be represented by the same
@@ -564,19 +554,32 @@
         :glark.object_id</code>, so symbol comparisons are extremely
       efficient.  However, <code>Symbol</code> objects are not
       garbage collected, so are unsuitable for storing data from
-      unbounded collections; use <code>String</code>s instead.
+      unbounded collections; use <code>String</code>s instead.</p>
       
+      <figure class='railroad sidenote'>
+        <img id=symbol.png>
+      </figure>
+
       <p><code>Symbol</code>s are used for unique identifiers, such
       as <code>Hash</code> keys, as message selectors and method
       names, and as a substitute for constants.
 
-      <p>A <code>Symbol</code> literal consists of a colon followed
-      by an symbol or <code>String</code> literal, e.g.
-      <code>:roland_barthes</code> or <code>:'887'</code>.
-      The <code>%s<var>delimiter</var>…<var>delimiter</var></code>
-      construct enables symbols to be specified between arbitrary
-      delimiters along the same lines as <a
-        href=#single-quoted-strings-q><code>%q</code></a>.
+      <p>A symbol is an <a href=/programs#identifiers>identifier</a> or an <a
+        href=/messages#operators>operator method selector</a>. A
+      <code>Symbol</code> literal consists of a colon (<code class=u
+        title=':'>U＋003A</code>) followed by an symbol or <code>String</code>
+      literal, e.g.  <code>:roland_barthes</code> or
+      <code>:'887'</code>. The
+      <code>%s<var>delimiter</var>…<var>delimiter</var></code> construct
+      enables symbols to be specified between arbitrary delimiters along the
+      same lines as <a href=#single-quoted-strings-q><code>%q</code></a>.
+
+      <figure class='centre railroad'>
+      <!-- TODO: Exclude \0 -->
+        <!-- TODO: Look for other exceptions to this rule -->
+        <img class=inline id=symbol-literal.png>
+        <figcaption class=clear>Syntax diagram of the symbol literal
+      </figure>
 
       <!-- #to_sym -->
     </section>

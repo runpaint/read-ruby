@@ -1,1 +1,1 @@
-SingleQuotedStringLiteralQ = "%" "q" ((Delimiter ("NOT Delimiter OR '\'" | CharacterEscape)* Delimiter) | "(" ("NOT '(' OR ')'" | CharacterEscape )* ")" | "[" ("NOT '[' OR ']'" | CharacterEscape )*"]" | "{" ("NOT '{' OR '}'" | CharacterEscape)* "}" | "<" ("NOT '<' OR '>'" | CharacterEscape)* ">")
+SingleQuotedStringLiteralQ = "%" "q" Delimiter ("NOT Delimiter OR '\'" | CharacterEscape)* Delimiter
