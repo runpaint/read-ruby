@@ -344,10 +344,14 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
       behave more usefully in this context, as shown in the following
       table.</p>
 
-      <figure id=case-equality-operator-table>
-        <table>
-          <tr><th>Class (<var>a</var>)
-              <th>Semantics of <code><var>a</var> === <var>b</var></code>
+      <table id=case-equality-operator-table class=border>
+        <caption>The effect of the case equality operator on a receiver of
+          class <var>a</var> and a single operand (<var>b</var>)
+        <thead>
+          <tr>
+            <th>Class (<var>a</var>)
+            <th>Semantics of <code><var>a</var> === <var>b</var></code>
+        <tbody class=zebra>        
           <tr><td><code>Class</code>
               <td><code><var>b</var>.instance_of?(<var>a</var>)</code>
           <tr><td><code>Proc</code>
@@ -358,10 +362,7 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
               <td><code><var>a</var> =~ <var>b</var></code>
           <tr><td><code>Symbol</code>
               <td><code><var>a</var> == <var>b</var>.to_sym</code>
-          </table>
-        <figcaption>The effect of the case equality operator on a receiver of
-        class <var>a</var> and a single operand (<var>b</var>)
-      </figure>
+        </table>
 
       <p>A <code>case</code> expression is evaluated by evaluating each
       <code>when</code> branch in the order that they appear in the source
@@ -961,63 +962,61 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
 
       <br>
 
-      <figure>
-        <table class=border>
-          <thead>
-            <tr>
-              <th colspan=3>Arguments
-              <th>Raises
-            <tr>    
-              <th><var>a</var>
-              <th><var>b</var>
-              <th><var>c</var>
-              <th>&nbsp;
-          <tbody>  
-            <tr>
-              <td>&nbsp;         
-              <td>&nbsp;        
-              <td>&nbsp;        
-              <td><code>RuntimeError</code> or current exception
-            <tr>
-              <td><code>Exception</code>
-              <td>&nbsp;
-              <td>&nbsp;
-              <td><var>a</var>  
-            <tr>
-              <td><code>Exception</code>
-              <td><code>String</code>
-              <td>&nbsp;
-              <td><var>a</var> with <var>b</var> as the message 
-            <tr>
-              <td><code>Exception</code>
-              <td><code>String</code>
-              <td><code>Array</code>
-              <td><var>a</var> with <var>b</var> as the message,
-                  <var>c</var> as the backtrace 
-            <tr>
-              <td><code>String</code>
-              <td>&nbsp;
-              <td>&nbsp;
-              <td><code>RuntimeError</code> with <var>a</var> as the message
-            <tr>
-              <td><code>respond_to?(:exception)</code>
-              <td>&nbsp;
-              <td>&nbsp;
-              <td><code><var>a</var>.exception</code>
-            <tr>
-              <td><code>respond_to?(:exception)</code>
-              <td><code>String</code>
-              <td>&nbsp;
-              <td><code><var>a</var>.exception</code> with <var>b</var> as the message
-            <tr>
-              <td><code>respond_to?(:exception)</code>
-              <td><code>String</code>
-              <td><code>Array</code>
-              <td><code><var>a</var>.exception</code> with <var>b</var> as the
-                  message, <var>c</var> as the backtrace
-          </table>
-          <figcaption class=nowrap>A summary of the arguments accepted by <code>raise</code>
-       </figure>
+      <table class=border>
+        <caption>A summary of the arguments accepted by <code>raise</code>
+        <thead>
+          <tr>
+            <th colspan=3>Arguments
+            <th>Raises
+          <tr>    
+            <th><var>a</var>
+            <th><var>b</var>
+            <th><var>c</var>
+            <th>&nbsp;
+        <tbody class=zebra>  
+          <tr>
+            <td>&nbsp;         
+            <td>&nbsp;        
+            <td>&nbsp;        
+            <td><code>RuntimeError</code> or current exception
+          <tr>
+            <td><code>Exception</code>
+            <td>&nbsp;
+            <td>&nbsp;
+            <td><var>a</var>  
+          <tr>
+            <td><code>Exception</code>
+            <td><code>String</code>
+            <td>&nbsp;
+            <td><var>a</var> with <var>b</var> as the message 
+          <tr>
+            <td><code>Exception</code>
+            <td><code>String</code>
+            <td><code>Array</code>
+            <td><var>a</var> with <var>b</var> as the message,
+                <var>c</var> as the backtrace 
+          <tr>
+            <td><code>String</code>
+            <td>&nbsp;
+            <td>&nbsp;
+            <td><code>RuntimeError</code> with <var>a</var> as the message
+          <tr>
+            <td><code>respond_to?(:exception)</code>
+            <td>&nbsp;
+            <td>&nbsp;
+            <td><code><var>a</var>.exception</code>
+          <tr>
+            <td><code>respond_to?(:exception)</code>
+            <td><code>String</code>
+            <td>&nbsp;
+            <td><code><var>a</var>.exception</code> with <var>b</var> as the message
+          <tr>
+            <td><code>respond_to?(:exception)</code>
+            <td><code>String</code>
+            <td><code>Array</code>
+            <td><code><var>a</var>.exception</code> with <var>b</var> as the
+                message, <var>c</var> as the backtrace
+        </table>
     </section>
 
     <section>
