@@ -1,0 +1,30 @@
+/*********** 
+ *         *
+ *  LINKS  *
+ *         *
+ ***********/
+
+/* Make in-book links less dominant */
+
+a[href^="#"]:link, a[href^="/"]:link {
+  color: black;
+  text-decoration: none;
+  border-bottom: 1px dotted;
+}
+
+a[href^="#"]:visited, a[href^="/"]:visited {
+  color: gray;
+  text-decoration: none;
+  border-bottom: 1px dotted;
+}
+
+/* Mute the colours of external links */
+a[href^="//"]:link, a[href^="http:"]:link {
+  color: #6495ED;
+  text-decoration: underline;
+}
+
+a[href^="//"]:visited, a[href^="http"]:visited {
+  color: #9966CC;
+  text-decoration: underline;
+}

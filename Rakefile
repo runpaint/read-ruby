@@ -139,7 +139,7 @@ file 'out/figures' => ['out', 'figures'] do |t|
   ln_s '../figures', t.name
 end
 
-file 'out/style.css' => FileList['*.css'] + ['out'] do |t|
+file 'out/chapter.css' => FileList['{main,chapter}.css'] + ['out'] do |t|
   File.open(t.name, 'w') do |f| 
     f.print FileList['*.css'].map{|n| File.read(n)}.join
   end
@@ -160,7 +160,7 @@ rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
 end
 
 
-output_files = ['out', 'out/figures', 'out/style.css']
+output_files = ['out', 'out/figures', 'out/chapter.css', 'out/main.css']
 FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
   next if f.start_with?('_')
   output_files << (f_out = 'out/' + f)
