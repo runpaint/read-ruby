@@ -104,7 +104,7 @@ rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies source(t)  }) do |t|
       file = target('figures/' + el['id'])
       el.at("figcaption").before(File.read file)
     elsif el['id'].end_with?('.png')
-      el['src'] = path = "figures/#{el['id']}"
+      el['src'] = (path = "figures/#{el['id']}").sub(/\.png$/,'')
       el.delete('id')
       / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{path}`
       el['width'], el['height'] = width, height
