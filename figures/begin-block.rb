@@ -1,5 +1,5 @@
 puts 1
-BEGIN { puts 2 } if false
+BEGIN { puts 2 }
 puts 3
 # Output:
 # 2

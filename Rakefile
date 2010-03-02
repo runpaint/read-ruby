@@ -1,6 +1,8 @@
 # encoding: utf-8
 require 'rake/clean'
 require 'nokogiri'
+require 'timeout'
+require 'tempfile'
 CLOBBER.include('out')
 FIGURE_CSS = ['figure.railroad img', 'figure[@id]']
 EXTENSIONS = { '.rb' => '.html', '.ebnf' => '.png'}
@@ -90,7 +92,30 @@ rule(%r{figures/.+\.png$} => ->(t){ source(t) }) do |t|
   sh "optipng #{t.name}"
 end
 
+def raises(file)
+  Tempfile.open('spawn') do |temp|
+    pid = spawn("ruby #{file}", :err => temp.path)
+    begin
+      Timeout.timeout(2) do
+        break if Process.waitpid2(pid).last.success? 
+        /\((?<e>[A-Z][a-z]\w+)\)\n/ =~ (error = temp.read)
+        return e if e and e = Object.const_get(e) and e < Exception
+        SyntaxError
+      end
+    rescue TimeoutError => e
+      Process.kill(:KILL, pid)
+      e.class
+    end
+  end
+end
+
 rule(%r{figures/.+\.html} => ->(t){ source(t) }) do |t|
+  if ex = raises(t.source) and not File.read(t.source).include?(ex.to_s)
+    unless ex == TimeoutError and 
+           File.exist?("timeouts/#{File.basename(t.source)}")
+      raise RuntimeError, "#{ex}: #{t.source}", caller.first
+    end
+  end
   sh "pygmentize -f html -O encoding=utf-8 -o #{t.name} #{t.source}"
   munged = File.read(t.name).sub(/^<div.+pre>/, '<pre class=syntax><code>').
                              sub(/<\/pre><\/div>/,'</code></pre>')
