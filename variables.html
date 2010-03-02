@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- vim: set fdm=indent tw=78: --> 
 <title>Variables - Read Ruby</title>
-<meta charset="utf-8"/>
+<meta charset=utf-8>
 <!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
 <script src="http://html5-now.appspot.com/html5-now.js"></script>
 -->
@@ -780,6 +780,12 @@
       variable or expression is defined
     </figure>
 
+    <aside class=sidenote>
+    <span class=sidemark>†</span><code>defined?</code> <a
+      href=//redmine.ruby-lang.org/issues/show/256#note-9>doesn’t</a> call
+      <code>const_missing</code> so the constant must truly be defined.
+    </aside>
+    
     <!-- Couldn’t use nth-child selector because of rowspan -->
     <table class=border style=width:60%>
       <caption>The return values of the <code>defined?</code> operator
@@ -789,7 +795,7 @@
       <tbody class=zebra>
         <tr><td>Defined local variable<td><code>"local-variable"</code>
         <tr><td>Defined global variable<td><code>"global-variable"</code>
-        <tr><td>Defined constant<td><code>"constant"</code>
+        <tr><td>Defined<sup>†</sup> constant<td><code>"constant"</code>
         <tr><td>Defined instance variable<td><code>"instance-variable"</code>
         <tr><td>Defined class variable<td><code>"class variable"</code>
         <tr><td><code>nil</code><td><code>"nil"</code>
