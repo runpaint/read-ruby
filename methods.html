@@ -183,8 +183,15 @@
     modified by the method, their modified forms are sent. To explicitly
     invoke the superclass method without any arguments use
     <code>super()</code>. A <code>NoMethodError</code> is raised if a
-    corresponding method is not defined in the superclass.</p>
-    
+    corresponding method is not defined in the superclass<sup>†</sup>.</p>
+
+    <aside class=sidenote>
+      <span class=sidemark>†</span><code>super</code> does obey the <a
+        href=#method-missing>Method Missing</a> protocol, however, so before
+      raising the exception it will send <code>:method_missing</code> to each
+      class it encounters.
+    </aside>
+
     <figure class=railroad>
       <img id=super-statement.png>
       <figcaption>Syntax diagram of the <code>super</code> statement
