@@ -1445,12 +1445,12 @@ http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
 
       <p>A <code>BEGIN</code> block, as opposed to a <a
         href=#begin-statement><code>begin</code> statement</a>, is executed at
-      the very beginning of a program. They consist of the <code>BEGIN</code>
-      keyword followed by statements delimited by curly braces. They define
-      their own variable scope, entirely independent of any surrounding or
-      preceding statements, and hidden from statements that follow. If multiple
+      the very beginning of a program. It consists of the <code>BEGIN</code>
+      keyword at the top-level of a program, followed by statements delimited
+      by curly braces, and defines its own variable scope. If If multiple
       <code>BEGIN</code> blocks are present, they are executed in the order
       encountered by the interpreter.</p>
+      <!-- Behaviour changed as of  [ruby-core:21657] -->
 
       <figure id=begin-block.rb>
         <figcaption>Using <code>BEGIN</code> to execute a given block before
