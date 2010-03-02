@@ -182,8 +182,12 @@
     case, the arguments are sent as they currently exist: if they have been
     modified by the method, their modified forms are sent. To explicitly
     invoke the superclass method without any arguments use
-    <code>super()</code>. A <code>NoMethodError</code> is raised if a
-    corresponding method is not defined in the superclass<sup>†</sup>.</p>
+    <code>super()</code>. 
+    
+    <p>A <code>NoMethodError</code> is raised if a corresponding method is not
+    defined in the superclass<sup>†</sup>. This can be avoided by conditioning
+    the call to <code>super</code>, on <code>defined? super</code>, which
+    returns <code>nil</code> in this case.</p>
 
     <aside class=sidenote>
       <span class=sidemark>†</span><code>super</code> does obey the <a
@@ -202,9 +206,7 @@
       method with the current method’s arguments.
     </figure>
 
-    <!-- Suggest if
-    self.class.superclass.instance_methods.include?(__method__) for testing
-    whether such a method is defined -->
+    <p>A method can determine whether a corresponding 
   </section>
 
   <section>
