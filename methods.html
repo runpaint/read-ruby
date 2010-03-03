@@ -134,11 +134,11 @@
     is an <code>Array</code> the method effectively returns multiple
     values.</p>
 
-    <figure id=def-implicit-return.rb>
+    <figure class=centre id=def-implicit-return.rb>
       <figcaption>A method which returns the Symbol <code>:to_sender</code>
     </figure>
 
-    <figure id=def-implicit-return-multiple.rb>
+    <figure class=centre id=def-implicit-return-multiple.rb>
       <figcaption>A method which returns multiple values as an
       <code>Array</code>.
     </figure>
@@ -149,7 +149,7 @@
     if it has none. If multiple arguments are given they will be returned as
     an <code>Array</code>.</p> 
 
-    <figure id=def-explicit-return-multiple.rb>
+    <figure class=centre id=def-explicit-return-multiple.rb>
       <figcaption>A method which explicitly returns multiple values.
     </figure>
 
@@ -201,12 +201,10 @@
       <figcaption>Syntax diagram of the <code>super</code> statement
     </figure>
 
-    <figure id=super.rb>
+    <figure style=margin-left:4% id=super.rb>
       <figcaption><code>super</code> invokes the corresponding superclass
       method with the current method’s arguments.
     </figure>
-
-    <p>A method can determine whether a corresponding 
   </section>
 
   <section>
@@ -279,7 +277,7 @@
     <p>By implication, any other character legal in the source encoding is
     valid in a method name.</p> 
 
-    <figure id=def-non-ascii-name.rb>
+    <figure class=centre id=def-non-ascii-name.rb>
       <figcaption>Defining a method with a non-ASCII name
     </figure>
   </section>
@@ -307,7 +305,7 @@
       href=#singleton-method>singleton method</a> named <var>symbol</var> is
     defined on <var>expression</var>.</p>
 
-    <figure id=def-instance-method.rb>
+    <figure class=centre id=def-instance-method.rb>
       <figcaption>Defining an instance method named <code>bark</code> for the
       <code>Dog</code> class with the <code>def</code> keyword.
     </figure>
@@ -319,12 +317,12 @@
       <var>class</var>.<var>name</var></code> defines a method named
     <var>name</var> on the class named <var>class</var>.</p>
 
-    <figure id=def-singleton-method.rb>
+    <figure class=centre id=def-singleton-method.rb>
       <figcaption>Defining a singleton method named <code>breed</code> for the
       <code>Dog</code> class.
     </figure>
 
-    <aside class=warn>
+    <aside class=sidenote>
       Singleton methods cannot be defined on immediate values such as
       <code>Numeric</code>s and <code>Symbol</code>s. Attempting to do so raises
       a <code>TypeError</code>.
@@ -369,7 +367,7 @@
         the method modifies an object it receives the caller’s copy is
         modified, too.</p>
 
-        <figure id=pass-by-reference.rb>
+        <figure class=centre id=pass-by-reference.rb>
           <figcaption>The effect of a method’s modification of an argument on
           its caller
         </figure>
@@ -378,7 +376,7 @@
           href=/objects#duplication>duplicated</a> to create a copy
         independent of the caller’s.</p>
 
-        <figure id=pass-by-reference-dup.rb>
+        <figure class=centre id=pass-by-reference-dup.rb>
           <figcaption>The effect of a method’s modification of a
           <code>dup</code>’d argument on its caller
         </figure>
@@ -406,7 +404,7 @@
           <img id=required-parameters.png>
         </figure>
 
-        <figure id=required-arguments.rb>
+        <figure class=centre id=required-arguments.rb>
           <figcaption>Defining a method which requires exactly two arguments.
         </figure>
       </section>
@@ -432,7 +430,7 @@
           <figcaption>Syntax diagram of optional parameters
         </figure>
 
-        <figure id=optional-arguments.rb>
+        <figure class=centre id=optional-arguments.rb>
           <figcaption>Defining a method which takes an optional argument.
         </figure>
 
@@ -442,7 +440,7 @@
         both precede and follow a required argument with optional
         arguments.</p>
 
-        <figure id=required-arguments-with-optional-arguments.rb>
+        <figure class=centre id=required-arguments-with-optional-arguments.rb>
           <figcaption>Defining a method which takes both optional and required
           arguments.
         </figure>
@@ -460,7 +458,7 @@
         its position onward. It is passed to the method as an
         <code>Array</code> containing one argument per element.</p>
 
-        <aside class=note>
+        <aside class=sidenote>
           Rest parameters do not <em>require</em> any arguments, so a method
           whose parameter list consists solely of a rest parameter, for
           example, may be invoked with zero or more arguments.
@@ -476,7 +474,7 @@
           <figcaption>Syntax diagram of the rest parameter
         </figure>
 
-        <figure id=rest-arguments.rb>
+        <figure class=centre id=rest-arguments.rb>
           <figcaption>Defining a method which takes a variable number of
           arguments.
         </figure>
@@ -497,7 +495,7 @@
         define a method which accepts an arbitrary number of arguments then
         passes them all to its superclass.</p>
 
-        <figure id=rest-parameter-with-super.rb>
+        <figure class=centre id=rest-parameter-with-super.rb>
           <figcaption>A method which accepts a variable number of arguments
           then passes them to its superclass (<code>Parent</code>) with
           <code>super</code>.
@@ -521,7 +519,7 @@
         
         <!-- TODO: Mention that File/IO, String#encode use this technique -->
 
-        <figure id=named-arguments-with-hash.rb>
+        <figure class=centre id=named-arguments-with-hash.rb>
           <figcaption>A method which uses a <code>Hash</code> argument to
           simulate named arguments.
         </figure>
@@ -529,9 +527,9 @@
         <p>If the <code>Hash</code> is the final argument, other than a block,
         that a method expects, the curly braces which delimit the
         <code>Hash</code> can be omitted as long as there is white space
-        between the selector and the <code>Hash</code> contents.</p> For
+        between the selector and the <code>Hash</code> contents. For
         example, <code><var>selector</var>({ key: :value })</code> can be
-        written as <code><var>selector</var> key: :value</code>.
+        written as <code><var>selector</var> key: :value</code>.</p>
 
 
         <p>The advantages of this approach include:
@@ -543,7 +541,7 @@
             <li>Variable-length argument lists are supported.
           </ul>
 
-        <figure id=named-arguments-with-defaults.rb>
+        <figure style=margin-left:4% id=named-arguments-with-defaults.rb>
           <figcaption>A method which uses a <code>Hash</code> argument to simulate
           named arguments with default values.
         </figure>
@@ -565,7 +563,7 @@
         allowing its return value to be captured, or objectified and assigned
         to a variable.</p>
 
-        <aside class=note>
+        <aside class=sidenote>
           <a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto
             (2008, pp.  130-131)</a> insist on <q>[using] the term iterator…to
             mean any method that uses the <code>yield</code> statement</q>,
@@ -577,7 +575,7 @@
             block</i>.
         </aside>
 
-        <figure id=method-invocation-with-block-literal.rb>
+        <figure class=centre id=method-invocation-with-block-literal.rb>
           <figcaption>A method which receives, and ignores, a block specified
           with either of the block literal constructs.
         </figure>
@@ -585,7 +583,7 @@
         <p>A method may determine whether it has received a block with the
         <code>block_given?</code> predicate.</p>
 
-        <figure id=method-using-block-given.rb>
+        <figure class=centre id=method-using-block-given.rb>
           <figcaption>A method which uses the <code>block_given?</code>
           predicate to determine whether it has been passed a block.
         </figure>
@@ -595,7 +593,7 @@
         keyword to do so. An implication of this is that methods not expecting
         blocks will ignore them.</p>
 
-        <figure id=method-using-block-given-yield.rb>
+        <figure class=centre id=method-using-block-given-yield.rb>
           <figcaption>A method which uses the <code>block_given?</code>
           predicate to determine whether it has been passed a block, and if so
           calls it.
@@ -617,7 +615,7 @@
 
         <!-- Example with instance_eval ? -->
 
-        <figure id=method-using-block-argument.rb>
+        <figure class=centre id=method-using-block-argument.rb>
           <figcaption>A method which uses a <code>&amp;block</code> parameter
           to refer to the block it is given.
         </figure>
@@ -628,7 +626,7 @@
           or <code>lambda</code>, need not pay heed. Such a method employs
           precisely the same parameter list as in the previous sections.</p>
 
-          <figure id=method-receiving-block-ref.rb>
+          <figure class=centre id=method-receiving-block-ref.rb>
             <figcaption>A method which expects a reference to a block uses the
             same parameter list as it would if expecting any other type of
             variable.
@@ -648,7 +646,7 @@
         contrast to <code>def</code> which requires the method name and body
         to appear literally in the source code.</p>
 
-        <figure id=define-method.rb>
+        <figure class=centre id=define-method.rb>
           <figcaption>Using <code>define_method</code> to dynamically create a
           method with a user-supplied name and body.
         </figure>
@@ -658,7 +656,7 @@
         Alternatively, it can be invoked inside <code>class_eval</code> like
         so:</p>
     
-        <figure id=define-method-class-eval.rb>
+        <figure class=centre id=define-method-class-eval.rb>
           <figcaption>Using <code>define_method</code> inside
           <code>class_eval</code> to dynamically create a method with a
           user-supplied name and body.
@@ -668,7 +666,7 @@
         name as the receiver and the same arguments as
         <code>Module#define_method</code> for the obvious purpose.</p>
 
-        <figure id=define-singleton-method.rb>
+        <figure class=centre id=define-singleton-method.rb>
           <figcaption>Using <code>define_singleton_method</code> to
           dynamically create a method.
         </figure>
@@ -726,7 +724,7 @@
         <figcaption>Syntax diagram of the <code>undef</code> statement
       </figure>
 
-      <figure id=undef-method.rb>
+      <figure class=centre id=undef-method.rb>
         <figcaption>Undefining a method with <code>undef</code>.
       </figure>
 
@@ -743,7 +741,7 @@
       delegates the request to its superclass, whereas the latter doesn’t.</p>
       
       <!-- Use same example for undef_method so they can be contrasted -->
-      <figure id=remove-method.rb>
+      <figure class=centre id=remove-method.rb>
         <figcaption>Using <code>remove_method</code> to remove a method
         definition from a class, causing the superclass method to be invoked
         in its place.
@@ -765,7 +763,7 @@
       subsequently defined in the same class definition until another visibility
       specifier is encountered.</p>
 
-      <figure id=visibility-specifiers.rb>
+      <figure style=margin-left:4% id=visibility-specifiers.rb>
         <figcaption>Declaring the visibility of methods with visibility
         specifiers
       </figure>
@@ -774,7 +772,7 @@
       <code>Symbol</code>s or <code>String</code>s) affects only the named
       methods, which must have already been defined.</p>
 
-      <figure id=visibility-specifiers-args.rb>
+      <figure style=margin-left:4% id=visibility-specifiers-args.rb>
         <figcaption>Declaring the visibility of methods with visibility
         specifiers that take arguments
       </figure>
@@ -826,7 +824,7 @@
         where <var>private</var> is a private instance method in the same class,
         is disallowed.</p>
 
-        <aside class=note>
+        <aside class=sidenote>
           Methods created outside of a class or module definition, i.e. at the
           top level, are private by default The <code>:initialize</code> method
           is, too, because it is only intended to be invoked from the object’s
@@ -918,7 +916,7 @@
       strings). <!-- Note that super is preferred when the method is defined in
       a superclass --></p>
 
-      <figure id=alias-for-wrapping.rb>
+      <figure class=centre id=alias-for-wrapping.rb>
         <figcaption>Using <code>alias</code> to wrap a method
       </figure>
 
@@ -970,6 +968,15 @@
     <section>
       <h1 id=method-missing>Missing Methods</h1>
 
+      <aside class=sidenote>
+        The <code>NoMethodError</code> exception has an <code>#args</code>
+        method which returns the arguments sent to the original method as an
+        <code>Array</code>, and <code>#name</code> which returns the original
+        method name as a <code>Symbol</code>. This information can be used to
+        perform introspection on the caught exception and enhance error
+        messages.
+      </aside>
+
       <p>The exposition above shows that sending an object a message for which a
       corresponding method is not defined causes each object on the search path
       to be sent <code>:method_missing</code> with the original selector as the
@@ -980,16 +987,7 @@
       <code>:method_missing</code> they can intervene, averting the exception
       and responding to the message themselves.</p>
 
-      <aside class=note>
-        The <code>NoMethodError</code> exception has an <code>#args</code>
-        method which returns the arguments sent to the original method as an
-        <code>Array</code>, and <code>#name</code> which returns the original
-        method name as a <code>Symbol</code>. This information can be used to
-        perform introspection on the caught exception and enhance error
-        messages.
-      </aside>
-
-      <figure id=basicobject-method-missing.rb>
+      <figure style=margin-left:4% id=basicobject-method-missing.rb>
         <figcaption>A demonstration of <code>BasicObject#method_missing</code>
       </figure>
       
@@ -999,7 +997,7 @@
       option of responding to the message, or otherwise triggers the default
       behaviour.</p> 
 
-      <aside class=warn>
+      <aside class=sidenote>
         Logic errors inside <code>method_missing</code> can easily lead to
         infinite loops, which can be troublesome to debug. The typical mistake
         is for a statement in the body of <code>method_missing</code> to send a
@@ -1185,7 +1183,7 @@
           <p>Suppose I’ve got a class hierarchy where a method gets
           redefined:</p>
             
-          <figure id=unboundmethod-black.rb>
+          <figure class=centre id=unboundmethod-black.rb>
             <figcaption>A class hierarchy where a method is redefined
           </figure>
 
