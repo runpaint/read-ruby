@@ -123,6 +123,10 @@ rule(%r{figures/.+\.html} => ->(t){ source(t) }) do |t|
   File.open(t.name,'w') {|f| f.print munged}
 end
 
+rule(%r{^out/google} => ->(t){ source t }) do |t|
+  cp t.source, t.name
+end
+
 rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies source(t)  }) do |t|
   source = t.prerequisites.last
   nok = Nokogiri::HTML(File.read source)
@@ -186,7 +190,6 @@ end
 rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
   cp t.source, t.name
 end
-
 
 output_files = ['out', 'out/figures', 'out/chapter.css', 'out/main.css']
 FileList['*.html', '*.xml', '*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
