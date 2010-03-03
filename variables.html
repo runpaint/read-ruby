@@ -77,7 +77,7 @@
       
       <p>A <dfn>constant reference</dfn> is an expression evaluating to the
       named constant. The simplest constant reference is a primary expression
-      consisting solely of the constant’s name, e.g.  <code>Constant</code>.
+      consisting solely of the constant’s name, e.g. <code>Constant</code>.
 
       <p>A constant reference may also be qualified by prefixing the
       constant name with the <q cite=/references#refTHOM09><dfn>scope
@@ -91,6 +91,50 @@
       <code>Module</code> object in which the constant was defined.
     </section>
 
+    <p>Ruby must resolve an unqualified constant reference to its
+    corresponding definition in order to determine its value. To resolve a
+    constant reference made in a class or module named
+    <var>container</var>:</p>
+
+    <ol>
+      <li>Let <var>original-container</var> equal <var>container</var>. 
+      <li>If the constant is defined in <var>container</var>, we’ve
+      successfully resolved it.
+      <li>If <var>container</var> has an enclosing class or module, set
+      <var>container</var> to its name and repeat step 2.
+      <li>Set <var>container</var> to <var>original-container</var>.
+      <li>In the order that they were included, inspect each module mixed‐in
+      to <var>container</var>. If one contains the constant, we've
+      successfully resolved it.
+      <li>If <var>container</var> has a superclass assign it to
+      <var>container</var>; otherwise go to step 8.
+      <li>If the constant is defined in <var>container</var>, we’ve
+      successfully resolved it; otherwise, go to step 5.
+      <li>Set <var>container</var> equal to <code>Object</code>, if it hasn’t
+      already been, and repeat step 5.
+      <li>Set <var>container</var> to <var>original-container</var>
+      <li>If <var>container</var> responds to <code>:const_missing</code>, it
+      is sent it with the constant name as argument. The value of 
+      <code>const_missing</code> becomes that of the constant; we’ve
+      successfully resolved it.
+      <li>If <var>container</var> has a superclass, assign it to
+      <var>container</var> and repeat step 10.
+      <li>Raise a <code>NameError</code> exception: constant resolution
+      failed.
+    </ol>
+
+    <p>Some notes on this procedure:
+      <ul>
+        <li>In the search for a given constant no class or module is examined
+        more than once: if a previously‐seen location is suggested by the
+        above algorithm above, it is skipped.
+        <li>Step 8 is needed in the case where <var>original-container</var>
+        is a module: modules don’t inherit from <code>Object</code>, so the
+        preceeding steps wouldn’t have searched it.
+        <li>When <var>original-container</var>’s ancestors are searched for
+        <code>const_missing</code>, they are <em>not</em> sent also
+        <code>method_missing</code>.
+      </ul>
     <!-- TODO: Constants lookup algo; link with Classes -->
     <!-- TODO: const_missing (from Classes) -->
     
