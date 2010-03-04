@@ -832,6 +832,12 @@
       <code>const_missing</code> so the constant must truly be defined.
     </aside>
     
+    <aside class=sidenote>
+    <span class=sidemark>‡</span><code>defined?</code> will use <a
+      href=/methods#respond-to-missing><code>#respond_to_missing?</code></a>
+    to determine method existence
+    </aside>
+
     <!-- Couldn’t use nth-child selector because of rowspan -->
     <table class=border style=width:60%>
       <caption>The return values of the <code>defined?</code> operator
@@ -853,7 +859,8 @@
         <tr><td>Expression using <code>super</code>
             correctly<td><code>"super"</code>
         <tr><td>Assignment expression<td><code>"assignment"</code>
-        <tr><td>Message sending expression (doesn’t check arity)
+              <tr><td>Message sending expression (doesn’t check
+                  arity)<sup>‡</sup>
              <td><code>"method"</code>
         <tr><td>Any other legal expression<td><code>"expression"</code>
         <tr><td>Undefined variable or invalid use of

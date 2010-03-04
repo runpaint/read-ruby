@@ -1235,8 +1235,7 @@
         appended to the receiver, and the mutated receiver returned. For
         example, <code>Array#&lt;&lt;</code>, <code>String#&lt;&lt;</code>,
         <code>IO#&lt;&lt;</code>, and
-        <code>Enumerator::Yielder#&lt;&lt;</code> <!-- Last example doesn't
-        return mutated receiver -->.</p>
+        <code>Enumerator::Yielder#&lt;&lt;</code>.</p>
           <!-- &gt;&gt; - Process::Status#&gt;&gt; -->
       </section>
 
@@ -1419,8 +1418,8 @@
       <p>However, by defining <code>method_missing</code> an object may
       respond to a message without having a corresponding method defined,
       making the behaviour of <code>Kernel#respond_to?</code> insufficient.
-      The solution is <code>Kernel#respond_to_missing?</code>, which is
-      explained later.</p>
+      The solution is <a
+      href=/methods#respond-to-missing><code>Kernel#respond_to_missing?</code></a>.</p>
 
       <figure class=sidenote id=respond-to-method-missing.rb>
         <figcaption><code>#respond_to?</code> is not necessarily accurate
