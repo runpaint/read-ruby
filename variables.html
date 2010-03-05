@@ -77,14 +77,21 @@
       
       <p>A <dfn>constant reference</dfn> is an expression evaluating to the
       named constant. The simplest constant reference is a primary expression
-      consisting solely of the constant’s name, e.g. <code>Constant</code>.
+      consisting solely of the constant’s name, e.g. <code>Constant</code>.</p>
 
-      <p>A constant reference may also be qualified by prefixing the
-      constant name with the <q cite=/references#refTHOM09><dfn>scope
-      operator</dfn></q> (<a href=/references#refTHOM09>Thomas et al.</a>,
+      <figure class=sidenote>
+        <span class=sidemark>†</span>That is, under <code>Object</code> or
+        <code>Kernel</code>, with the former taking precedence. See <a
+          href=#resolution-algorithm>Resolution Algorithm</a> for more
+        details.
+      </figure>
+
+      <p>A constant reference may also be qualified by prefixing the constant
+      name with the <q cite=/references#refTHOM09><dfn>scope
+          operator</dfn></q> (<a href=/references#refTHOM09>Thomas et al.</a>,
       2009, pp. 336–339): two consecutive colon (<code class=u
-      title=':'>U＋003A</code>) characters. This causes the constant to be
-      looked up in the global scope.
+        title=':'>U＋003A</code>) characters. This causes the constant to be
+      looked up in the global scope<sup>†</sup>.
 
       <p>A reference may be qualified further by preceding the scope
       operator with an expression evaluating to the <code>Class</code> or
