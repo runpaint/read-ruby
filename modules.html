@@ -160,7 +160,7 @@
         behaviour</a> of <a href=/methods#singleton-method>singleton
         methods</a>.</p>
 
-      <figure id=extend-class.rb>
+      <figure class=left id=extend-class.rb>
         <figcaption>Using <code>#extend</code> to mix‐in a class method.
       </figure>
 
@@ -197,8 +197,8 @@
       href=/classes#nesting>used in the same way</a>.
 
     <p>Modules are preferable to classes in this respect when the namespace
-    cannot sensibly instantiated. The use of a module improves the clarifies
-    this aspect of the <abbr title="Application Programming
+    cannot be sensibly instantiated. The use of a module improves the
+    clarifies this aspect of the <abbr title="Application Programming
       Interface">API</abbr>.</p>
 
     <p>Methods are defined on the module’s <a
@@ -206,7 +206,7 @@
     name as the receiver:
     <code><var>module</var>.<var>selector</var></code>.</p>
 
-    <figure id=module-namespacing.rb>
+    <figure class=left id=module-namespacing.rb>
       <figcaption>Modules can be used as namespaces by defining methods on
       their eigenclass
     </figure>
@@ -235,7 +235,7 @@
     helper methods: accessible to the module methods; inaccessible from
     outside the module.</p>
 
-  <figure id=module-namespacing-extend-self.rb>
+    <figure class=left id=module-namespacing-extend-self.rb>
       <figcaption>A method can be grouped with private helper methods by
       using a module that <code>extend</code>s <code>self</code>
     </figure>
@@ -270,7 +270,7 @@
     <code>Module</code> object; the second requires them to be instance
     methods.</p>
     
-    <figure id=module-namespace-and-mixin.rb>      
+    <figure class=left id=module-namespace-and-mixin.rb>      
       <figcaption>The <code>Math</code> module can be used as both a
       namespace and a mix-in.
     </figure>
@@ -290,7 +290,7 @@
     instance methods (<a href=/references#refFLAN08 class=ref>Flanagan &amp;
       Matsumoto</a>, pp. 251–252).</p>
 
-    <figure id=module-function.rb>
+    <figure class=left id=module-function.rb>
       <figcaption><code>module_function</code> enables a module to be used
       both as a namespace and mix-in
     </figure>
@@ -299,7 +299,7 @@
     singleton method of the module from calling a private method of the same
     module.</p>
 
-    <figure id=module-function-private-method.rb>
+    <figure class=left id=module-function-private-method.rb>
       <figcaption><code>module_function</code> foils the calling of a
       private instance method from a singleton method
     </figure>
@@ -309,7 +309,7 @@
     <code>module_function</code>—it copies all instance methods into the
     eigenclass—or automatically privatise instance methods.</p>
     
-    <figure id=module-function-extend-self.rb>
+    <figure class=left id=module-function-extend-self.rb>
       <figcaption><code>extend self</code> allows the calling of a private
       instance method from a singleton method
     </figure>
