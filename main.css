@@ -98,13 +98,10 @@ aside.sidenote {
 /* Figure captions should appear the same no matter where the figure is
  * located. They should be, roughly, centered below the figure in a slightly
  * smaller, italic font. */
-figure.centre figcaption, figure.sidenote figcaption {
-  width: 15em;
+figure.centre figcaption, figure.left figcaption, figure.sidenote figcaption {
   text-align: center;
   font-style: italic;
   font-size: 90%;
-  margin-left: 10%;
-  margin-right: 10%;
   width: 80%;
 }
 
