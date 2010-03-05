@@ -38,6 +38,12 @@
     keyword is used in place of <a
       href=/classes#class-keyword><code>class</code></a>.</p>
 
+    <p>Modules are named with <a href=/variables#constants>constants</a>, so
+    the matters of constant’s name and scope are particularly relevant. An
+    implication is that modules and classes share the same namespace such that
+    a given (qualified) constant cannot name a class and a module
+    simultaneously.</p>
+
     <section>
       <h1 id=module-keyword><code>module</code> Keyword</h1>
 
@@ -73,25 +79,48 @@
 
     <section>
       <h1 id=module-new><code>Module.new</code></h1>
-  
-      <p>The <code><var>name</var> = Module.new do…end</code> constructor may
-      be used to similar effect. The principle difference being that existing
-      modules are overwritten rather than reopened.</p>
 
-      <section>
-        <h1 id=anonymous-modules>Anonymous Modules</h1>
+      <p>The <code>Module.new</code> constructor can be used to create a new
+      anonymous module. It is usually passed a block argument which is
+      evaluated in the context of the created module using
+      <code>module_eval</code>.</p>
 
-          <p>When a constant is used as a module name it has global <!-- This
-          word is problematic. How to better explain? --> scope. This
-          gives rise to the characteristic described above in <i>Reopening
-            Modules</i>. If this behaviour is not desirable, a module can be
-          made anonymous by assigning the value of <code>Module.new</code> to a
-          local variable, thus restricting the module to the local scope.
-          Subsequently assigning this variable to a constant, names the
-          module.</p>
-      </section>
+      <aside class=sidenote>
+        <span class=sidemark>†</span>And does, when supplied with a second
+        argument that is true, i.e. <code>load file, true</code>.
+      </aside>
+
+      <p><code>Kernel.load</code> can<sup>†</sup> use an anonymous module to prevent a
+      source file from affecting the global namespace. The classes and modules
+      the source file defines are created in the context of this anonymous
+      namespace, making them inaccessible to the caller. The source file must
+      explicitly specify the constants it wishes to share with the caller by
+      assigning them to global variables.
+
+      <p>A module is an object like any other, so by assigning an anonymous
+      object to a <a href=/variables#local>local variable</a>, for example, it
+      only exists for as long as the variable does, and is invisible from
+      disjoint scopes.</p>
+
+      <aside class=sidenote>
+        <span class=sidemark>†</span>…or <code>:inspect</code>,
+        <code>:name</code>, and any other method which uses <code>#to_s</code>
+        internally.
+      </aside>
+
+      <p>However, magic happens if you assign an anonymous module to a
+      constant: the module takes on its name. Specifically, sending
+      <code>:to_s</code<sup>†</sup> to an anonymous module causes a
+      search to be done for the first constant the module was assigned to:
+      if one is found, that becomes the module’s name; otherwise it remains
+      anonymous.</p>
+
+      <p>This technique cannot be used to re‐open modules. Assigning an
+      anonymous module to a constant naming another module creates a new
+      module with the same name, clobbering the old one.
     </section>
-    
+  </section>  
+  
   <section>
     <h1 id=mixins>Mixins</h1>
 
@@ -165,7 +194,7 @@
       </figure>
 
       <section>
-        <h1 id=extend-self><code>extend self</code></h1>
+        <h1 id=extend-self>Extending <code>self</code></h1>
 
         <p>An idiomatic application of <code>extend</code> is to use
         <code>extend self</code> within the context of a module. The effect
@@ -243,22 +272,11 @@
     <section>
       <h1 id=nesting>Nesting</h1>
 
-        <p>A module may be defined within the body of another class or
-        module. The fully qualified name of the inner module is
-        <code><var>outer</var>::<var>inner</var></code>, where
-        <var>outer</var> is the name of the enclosing class/module, and
-        <var>inner</var> that of the enclosed.
-
-        <p>Since module names are constants and constants are inherited,
-        modules defined at the top level, as core modules conventionally
-        are, can be referred to by their unqualified name. However, if the
-        name is shadowed at an intervening level of the hierarchy, the
-        unqualified name refers to the shadowed module.  For example, if a
-        module named <code>Products::String</code> was defined, then within
-        the context of the <code>Products</code> module, <code>String</code>
-        would refer to <code>Products::String</code>; not the core
-        <code>String</code> class (which would need referring to as
-        <code>::String</code>).
+        <p>A module may be defined within the body of another class or module.
+        The fully qualified name of the inner module is
+        <code><var>outer</var>::<var>inner</var></code>, i.e. the module names
+        are concatenated with the <a
+          href=/variables#constants-references>scope operator</a>.
     </section>
   </section>
 
