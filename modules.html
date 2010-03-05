@@ -343,6 +343,7 @@
     <section>
       <h1 id=module-eval>Module Eval</h1>
 
+      <!-- TODO: Note effect on constant lookup -->
       <p><code>Module#module_eval</code> takes a string or block which it
       evaluates in the receiver’s context, setting <code>self</code> to the
       receiver. The evaluated code can access the modules’s state, invoke its
@@ -352,6 +353,7 @@
     <section>
       <h1 id=module-exec>Module Exec</h1>
       
+      <!-- TODO: Note effect on constant lookup -->
       <p><code>Module#module_exec</code> behaves as
       <code>Module#module_eval</code> except it requires a block, to which
       it passes any arguments it has received.
