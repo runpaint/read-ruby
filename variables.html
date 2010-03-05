@@ -123,6 +123,10 @@
           failed.
         </ol>
 
+        <p>This search path can be summarised as: <code>(Module.nesting +
+          self.ancestors + Object.ancestors).uniq</code> (executed in the
+        context of <var>original-container</var>).
+
         <p>Some notes on this procedure:
           <ul>
             <li>In the search for a given constant no class or module is examined
@@ -139,7 +143,6 @@
             <code>const_missing</code>, they are <em>not</em> sent also
             <code>method_missing</code>.
           </ul>
-        <!-- TODO: Constants lookup algo; link with Classes -->
       </section>
     </section>
     <!-- TODO: const_missing (from Classes) -->
@@ -147,7 +150,8 @@
     <section>
       <h1 id=constants-scope>Scope</h1>
       
-      <p>A constant’s scope is established by its lexically enclosing class or
+      <p>We can restate the algorithm above to deduce a constant’s scope,
+      namely: it is established by its lexically enclosing class or
       module. Inner classes and modules inherit the scope of their parents,
       and constants initialized in the former cause a hole in their parent’s
       scope.
@@ -166,7 +170,7 @@
       constants to be defined in the context of a class or module from
       outside.
     </section>
-    <!-- TODO: Note that constants are never unitialized -->
+
     <section>
       <h1 id=constants-initialization>Initialization</h1>
 
@@ -176,6 +180,22 @@
       results in a <code>NameError</code>.
     </section>
 
+    <section>
+      <h1 id=constants-missing>Missing Constants</h1>
+
+      <p>As noted in <a href=#constant-resolution>Constant Resolution</a>,
+      before a search terminates a <code>:const_missing</code> message is
+      sent. This allows classes and modules to create constants on‐the‐fly or
+      otherwise influence the lookup process.</p>
+
+      <figure class=left id=const-missing.rb>
+        <figcaption>Using <code>:const_missing</code> to convert constants of
+        the form <code>Roman::<var>RomanNumeral</var></code> to the
+        corresponding integer, if valid and less than 4, 000; or raise a
+        <code>NameError</code> otherwise.
+      </figure>
+    </section>
+    
     <section>
       <h1 id=constants-predefined>Predefined</h1>
 
