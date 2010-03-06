@@ -243,7 +243,7 @@
       <h1 id=expressions>Message Expression Syntax</h1>
 
       <aside class=sidenote>
-        <p><span class=sidemark>†</span>The syntax explained above is
+        <span class=sidemark>†</span>The syntax explained above is
         potentially ambiguous. If Ruby sees a bare identifier, e.g.
         <code>glark</code>, is that a reference to a local variable or an
         attempt to send a message to <code>self</code>?  If Ruby has
@@ -557,19 +557,19 @@
            http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/14011 -->
       <!-- Unite with Methods > Operator Methods Table -->
       <aside class=sidenote>    
-          <dl class='inline-small sidenote'>
-            <dt id=op-tbl-mean>&dagger;
-            <dd>The meaning ascribed to each operator is that of the core
-            classes’s;re-definable operators may have different semantics. 
-            <dt id=op-tbl-unary>&Dagger;
-            <dd>Unary operators with binary equivalents are shown with a
-            <code>@</code> suffix. This is the name of their selector, but the
-            suffix is omitted in operator expressions.
-            <dt id=op-tbl-meth>⁂
-            <dd>A ✔ in this column indicates that the operator is implemented
-            as a method, and therefore can be overridden by <a
-            href=/methods#operators>defining a method</a> with the same name.
-          </dl>
+        <dl class='inline-small sidenote'>
+          <dt id=op-tbl-mean>&dagger;
+          <dd>The meaning ascribed to each operator is that of the core
+          classes’s;re-definable operators may have different semantics. 
+          <dt id=op-tbl-unary>&Dagger;
+          <dd>Unary operators with binary equivalents are shown with a
+          <code>@</code> suffix. This is the name of their selector, but the
+          suffix is omitted in operator expressions.
+          <dt id=op-tbl-meth>⁂
+          <dd>A ✔ in this column indicates that the operator is implemented
+          as a method, and therefore can be overridden by <a
+          href=/methods#operators>defining a method</a> with the same name.
+        </dl>
       </aside>
 
       <figure class='railroad sidenote'>
@@ -949,6 +949,27 @@
              on its use for attaching comments to symbols, i.e. Symbol#** -->
       <!-- TODO: *_missing -->
 
+          <!-- TODO: Possible Additions
+            * +@
+            * ** 
+            * -@ 
+            * /
+            * %
+            * - (Time, Array)
+            * >> [Process::Status, Bignum, Fixnum]
+            * & [Process::Status, Array, Bignum, Fixnum, FalseClass,
+            TrueClass, NilClass]
+            * | ([Array, Bignum, Fixnum, FalseClass, TrueClass, NilClass])
+            * ^ [Bignum, Fixnum, FalseClass, TrueClass, NilClass]
+            * < [Rational, Time, File::Stat, Bignum, Float, Fixnum, Integer,
+            Numeric, Symbol, String, Comparable, Class, Module]
+            * inspect
+            * name
+            * *_missing
+           :/ - only used by Numerics; String#/ http://redmine.ruby-lang.org/issues/show/2017
+          initialize, new, coerce
+          -->
+      
       <section>
         <h1 class=runin id=call><code class=bigsym>:call</code></h1>
       
@@ -1094,7 +1115,8 @@
         <h1 class=runin id=less-than><code class=bigsym>:&lt;</code></h1>
 
         <p>Determines whether the receiver is <i>less than</i> the argument.
-        Normally implemented in terms of <a
+        Normally supplied by the <code>Comparable</code> module which
+        implements it in terms of <a
         href=#spaceship><code>&lt;=&gt;</code></a>. <code>Class#&lt;</code>
         creatively uses this selector to test whether the receiver is a
         <i>kind of</i> the argument because it mirrors the syntax for defining
@@ -1112,7 +1134,8 @@
         <h1 class=runin id=greater-than><code class=bigsym>:&gt;</code></h1>
 
         <p>Determines whether the receiver is <i>greater than</i> the
-        argument.  Normally implemented in terms of <a
+        argument. Normally supplied by the <code>Comparable</code> module
+        which implements it in terms of <a
         href=#spaceship><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
         provides symmetry to <code>Class#&lt;</code> by testing whether the
         argument is a <i>kind of</i> the receiver.</p>
@@ -1128,7 +1151,9 @@
         <h1 class=runin id=equal-equal><code class=bigsym>:==</code></h1>
 
         <p>Determines whether the operands are <a
-        href=/objects#equivalence>equivalent</a>.</p>
+        href=/objects#equivalence>equivalent</a>. Normally supplied by the
+        <code>Comparable</code> module which implements it in terms of <a
+        href=#spaceship><code>&lt;=&gt;</code></a>.</p>
         
         <figure class=left id=equal-equal-selector.rb>
           <figcaption>The <code>:==</code> selector returns
@@ -1240,7 +1265,6 @@
         example, <code>Array#&lt;&lt;</code>, <code>String#&lt;&lt;</code>,
         <code>IO#&lt;&lt;</code>, and
         <code>Enumerator::Yielder#&lt;&lt;</code>.</p>
-          <!-- &gt;&gt; - Process::Status#&gt;&gt; -->
 
         <figure id=left-shift-selector.rb class=left>
           <figcaption>The <code>:&lt;&lt;</code> selector typically
@@ -1268,6 +1292,17 @@
       </section>
 
       <section>
+        <h1 class=runin id=rewind><code class=bigsym>:rewind</code></h1>
+        
+        <p><code>Enumerator</code>’s respond to this selector by resetting
+        their state to the initial element. If the object being enumerated
+        responds to <code>:rewind</code>, it is sent the message instead.
+        <code>. <code>IO</code> objects, such as <code>Dir</code> and
+        <code>File</code>, respond in a similar way by re‐position the stream
+        to the beginning.
+      </section>
+      
+      <section>
         <h1 class=runin id=asterisk><code class=bigsym>:*</code></h1>
 
         <p>Multiples the receiver by a sole numeric argument, returning the
@@ -1279,9 +1314,6 @@
           the argument.
         </figure>
       </section>
-          <!-- :/ - only used by Numerics -->
-          <!-- String#/ http://redmine.ruby-lang.org/issues/show/2017 -->
-          <!-- include?, rewind, initialize, new, coerce -->
       
       <section>
         <h1 id=tone>Tone</h1>
