@@ -636,6 +636,14 @@
     </section>
 
     <section>
+      <h1 id=global-trace>Tracing</h1>
+
+      <p><code>Kernel.trace_var(<var>global</var>)</code> accepts a
+      <code>Symbol</code> naming a global variable and a block. Every time the
+      named variable is assigned to, the block is called with the new value.
+    </section>
+
+    <section>
       <h1 id=predefined-globals>Predefined Global Variables</h1>
 
       <p>Ruby predefines certain global variables automatically. They are
