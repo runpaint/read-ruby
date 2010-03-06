@@ -998,12 +998,6 @@
         <figcaption>A demonstration of <code>BasicObject#method_missing</code>
       </figure>
       
-      <p>If <code>method_missing</code> is invoked with a message it
-      does not wish to respond to, it should use the implicit-argument form of
-      <code>super</code> to delegate to its parent. This gives the parent the
-      option of responding to the message, or otherwise triggers the default
-      behaviour.</p> 
-
       <aside class=sidenote>
         Logic errors inside <code>method_missing</code> can easily lead to
         infinite loops, which can be troublesome to debug. The typical mistake
@@ -1013,18 +1007,29 @@
         second time, and so the loop continues.
       </aside>
 
-      <p><a class=ref href=/references#FOWLER08>Fowler</a> describes the use of
-      <code>method_missing</code> to <q>respond differently to an unknown
+      <p>If <code>method_missing</code> is invoked with a message it
+      does not wish to respond to, it should use the implicit-argument form of
+      <code>super</code> to delegate to its parent. This gives the parent the
+      option of responding to the message, or otherwise triggers the default
+      behaviour.</p> 
+
+      <aside class=sidenote>
+        <span class=sidemark>†</span>The example was derived from a feature of
+        Ruby on Rails (<a href=/references#refBUCK06 class=ref>Buck</a>,
+        2006).
+      </aside>
+
+      <p><a class=ref href=/references#FOWLER08>Fowler</a> describes the use
+      of <code>method_missing</code> to <q>respond differently to an unknown
         message.</q> as “Dynamic Reception”. One use he suggests is to
-      <q>convert what might otherwise be method parameters into the name of the
-        method.</q>, contrasting <code>find_by("firstname", "martin",
+      <q>convert what might otherwise be method parameters into the name of
+        the method.</q>, contrasting <code>find_by("firstname", "martin",
         "lastname", "fowler")</code> with the
       <code>method_missing</code>-supported
-      <code>find_by_firstname_and_lastname("martin", "fowler")</code>. (The
-      example was derived from a feature of Ruby on Rails (<a href=/references#refBUCK06
-        class=ref>Buck</a>, 2006). He identifies a variation on this idea where
-      a <q>a sequence of Dynamic Receptions</q> are chained together, such that
-      each method returns an “Expression Builder”, e.g.
+      <code>find_by_firstname_and_lastname("martin",
+        "fowler")</code><sup>†</sup>. He identifies a variation on this idea
+      where a <q>a sequence of Dynamic Receptions</q> are chained together,
+      such that each method returns an “Expression Builder”, e.g.
       <code>find_by.firstname("martin").and.lastname("fowler)</code>.</p>
 
       <section>
