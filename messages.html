@@ -186,7 +186,7 @@
         <a href=/expressions#self><code>self</code></a> is assumed.</p>
 
         <!-- Figure included in Expressions#self, too; duplicate here? -->
-        <figure id=self-as-the-implicit-receiver.rb>
+        <figure class=left id=self-as-the-implicit-receiver.rb>
           <figcaption><code>self</code> is always defined; its value depends
           on the enclosing context.
         </figure>
@@ -209,7 +209,7 @@
         <p>By contrast, the implicit receiver must be used when the message is
         private.</p> <!-- Are _messages_ private? -->
         
-        <figure class=centre id=implicit-receiver-for-private-method.rb>
+        <figure class=left id=implicit-receiver-for-private-method.rb>
           <figcaption>Private messages must be sent with an implicit receiver.
         </figure>
 
@@ -296,14 +296,13 @@
       <code>method_missing</code> method that handles the message.</p>
 
       <section>
+        <h1 id=message-arguments>Arguments</h1>
         
-        <figure class='railroad sidenote' style=width:35em;padding-top:1em>
+        <figure class=railroad>
           <img id=expression-list.png>
         </figure>
 
-        <h1 id=message-arguments>Arguments</h1>
-        
-        <figure class='railroad centre'>
+        <figure class='railroad sidenote'>
           <img id=argument-list.png>
         </figure>
 
@@ -313,12 +312,12 @@
         variables separated by commas:
         <code><var>receiver</var>.<var>selector</var>(<var>arg<sub>0</sub></var>,…,<var>arg</var><sub>n</sub>)</code>.</p>
         
-        <figure class=sidenote id=splat-arguments.rb>
+        <figure class=left id=splat-arguments.rb>
           <figcaption>Prefixing an <code>Enumerable</code> argument with
           an asterisk explodes it into its constituent elements.
         </figure>
 
-        <figure class=centre id=receiver-selector-arguments-syntax.rb>
+        <figure class=left id=receiver-selector-arguments-syntax.rb>
           <figcaption>The selector may be followed by a parenthesised list
           of zero or more arguments.
         </figure>
@@ -357,7 +356,7 @@
             former for short blocks that fit on a single line, and the
             latter for multi-line blocks.</p>
 
-            <figure class=sidenote id=message-expression-with-block.rb>
+            <figure class=left id=message-expression-with-block.rb>
               <figcaption>A message expression followed by a block literal
               causes the block to be passed to the method.
             </figure>
@@ -372,7 +371,7 @@
               arguments are given the <code>Proc</code> must be specified
               last.</p>
 
-              <figure class=centre style=width:40em id=ampersand-prefix-with-argument.rb>
+              <figure class=left id=ampersand-prefix-with-argument.rb>
                 <figcaption>Prefix the final argument with an ampersand to
                 convert it to a block literal.
               </figure>
@@ -405,7 +404,7 @@
             variable when the message has an implicit receiver and both
             variable and selector share the same name.</p>
 
-            <figure class=sidenote id=parentheses-disambiguate-bare-identifiers.rb>
+            <figure class=left id=parentheses-disambiguate-bare-identifiers.rb>
               <figcaption>Parentheses are required to disambiguate an
               implicitly-received message’s selector from a local variable
               with the same name.
@@ -415,8 +414,7 @@
             involved. If so, there must be whitespace between the selector
             name and the first argument.</p>
 
-            <figure class=sidenote
-            id=parentheses-omitted-in-message-expressions.rb>              
+            <figure class=left id=parentheses-omitted-in-message-expressions.rb>              
               <figcaption>Parentheses can often be omitted from message
               expressions involving arguments.
             </figure>
@@ -433,8 +431,7 @@
             Therefore, it is recommended to employ parentheses in such cases, even if
             unnecessary, as an aid to legibility.</p>
 
-            <figure class=sidenote
-            id=message-expressions-omit-parentheses-syntaxerror.rb>
+            <figure class=left id=message-expressions-omit-parentheses-syntaxerror.rb>
               <figcaption>It is illegal to omit parentheses in nested
               message expressions when doing so introduces ambiguity.
             </figure>
@@ -464,7 +461,7 @@
         arbitrarily <dfn title="message chaining">chained</dfn> in this
         fashion.</p>
 
-        <figure class=sidenote id=message-chaining.rb>
+        <figure class=left id=message-chaining.rb>
           <figcaption>The receiver of a message may itself be a message
           expression, allowing messages to be chained.
         </figure>
@@ -482,7 +479,7 @@
         <code>nil</code> if it does not exist, make awkward links in chains
         because of their inconsistency.</p>
 
-        <figure class=sidenote id=message-chaining-inconsistent-return-value.rb>
+        <figure class=left id=message-chaining-inconsistent-return-value.rb>
           <figcaption>Messages cannot be usefully chained if they have
           inconsistent return values.
         </figure>
@@ -493,7 +490,7 @@
         return <code>self</code> so as to receive any message understood by
         their receiver. </p>
 
-        <figure class=sidenote id=message-chaining-return-self.rb>
+        <figure class=left id=message-chaining-return-self.rb>
           <figcaption>Message chaining relies on each link consistently
           returning an object of the same type.
         </figure>
@@ -511,7 +508,7 @@
         runtime, as opposed to the syntax described previously which
         requires the selector to be a literal, embedded in the source.</p>
 
-        <figure class=centre id=object-send.rb>
+        <figure class=left id=object-send.rb>
           <figcaption><code>Object#send</code> sends an object a message
           whose name can be determined at runtime.
         </figure>
@@ -864,7 +861,7 @@
         <code>-</code>, as in mathematics, so the example above evaluates to
         −5.</p>
         
-        <figure id=precedence-parentheses.rb class=sidenote>
+        <figure id=precedence-parentheses.rb class=left>
           <figcaption>Parentheses can be used to force precedence
         </figure>
 
@@ -878,7 +875,7 @@
       <section>
         <h1 id=associativity>Associativity</h1>
 
-        <figure id=precedence-associativity.rb class=sidenote>
+        <figure id=precedence-associativity.rb class=left>
           <figcaption>Associativity governs the order of evaluation for
           operators with the same precedence
         </figure>
@@ -921,7 +918,7 @@
       is equivalent to
       <code><var>receiver</var>.<var>selector</var>=(<var>value</var>).</code></p>
 
-      <aside id=ambiguous-lvalue-syntax class=sidenote>
+      <aside id=ambiguous-lvalue-syntax class=left>
         <p><span class=number>†</span>The syntax <code>name = value</code> is
         therefore ambiguous. Is the intent to assign the value
         <code>value</code> to the local variable <code>name</code> or to send
@@ -968,7 +965,7 @@
         That is, the selector’s name can be omitted from the message
         expression.</p>
         
-        <figure class=centre id=call-selector.rb>
+        <figure class=left id=call-selector.rb>
           <figcaption>Omitting the selector name in a message expression
           causes <code>:call</code> to be assumed.
         </figure>
@@ -978,12 +975,6 @@
         <!-- We're duplicating the description of #each and Enumerable with
         the _enumerables_ section... -->
 
-        <figure id=each_-selector.rb class=sidenote>
-          <figcaption>Selectors named
-          <code>:each_<var>attribute</var></code> enumerate the receiver
-          by <var>attribute</var>.
-        </figure>
-
         <h1 class=runin id=each><code class=bigsym>:each / :each_</code>*</h1>
 
         <p>Classes mixing-in the <a
@@ -992,7 +983,7 @@
         next element of the sequence. Conventionally, it returns an
         <code>Enumerator</code> when the block is omitted.</p>
 
-        <figure class=centre id=each-selector.rb>
+        <figure class=left id=each-selector.rb>
           <figcaption>The <code>:each</code> selector yields each
           element of the receiver if given a block; otherwise returns an
           <code>Enumerator</code>.
@@ -1014,6 +1005,12 @@
         <code>String#each_byte</code> is aliased to <code>String#bytes</code>;
         <code>IO#each_line</code> is aliased to <code>IO#lines</code>.</p>
         <!-- Enumerable doesn't provide this alias.  Bug? -->
+
+        <figure id=each_-selector.rb class=left>
+          <figcaption>Selectors named
+          <code>:each_<var>attribute</var></code> enumerate the receiver
+          by <var>attribute</var>.
+        </figure>
       </section>
 
       <section>
@@ -1027,11 +1024,6 @@
       </section>
 
       <section>
-        <figure id=size-selector.rb class=sidenote>
-          <figcaption>The <code>:size</code> selector returns the
-          receiver’s magnitude as an <code>Integer</code>.
-        </figure>
-
         <h1 class=runin id=size><code class=bigsym>:size / :length</code></h1>
 
         <p><code>:size</code> and <code>:length</code>, which are typically
@@ -1039,14 +1031,14 @@
         magnitude of the receiver. For example, <code>Array#size</code>
         returns the number of elements the receiver contains;
         <code>File#size</code> returns the receiver’s size in bytes.</p>
+
+        <figure id=size-selector.rb class=left>
+          <figcaption>The <code>:size</code> selector returns the
+          receiver’s magnitude as an <code>Integer</code>.
+        </figure>
       </section>
 
       <section>
-        <figure id=_by-selector.rb class=sidenote>
-          <figcaption>Selectors with a <code>_by</code> suffix accept a block
-          which constrains their computation.
-        </figure>
-
         <h1 class=runin id=by><code class=bigsym>_by</code></h1>
 
         <p>The <code>_by</code> suffix typically implies that the method
@@ -1054,6 +1046,11 @@
         example, <code>Enumerable#group_by</code>,
         <code>Enumerable#sort_by</code>, and
         <code>Enumerable#minmax_by</code>.</p>
+
+        <figure id=_by-selector.rb class=left>
+          <figcaption>Selectors with a <code>_by</code> suffix accept a block
+          which constrains their computation.
+        </figure>
       </section>
 
       <section>
@@ -1062,44 +1059,38 @@
         <p><a href=#conversion>Converts</a> the receiver into an object of the
         corresponding core type.</p>
 
-        <figure id=to_-selector.rb class=centre>            
+        <figure id=to_-selector.rb class=left>            
           <figcaption>Selectors with a <code>to_</code> prefix return the
           receiver as an object of the given type.
         </figure>
       </section>
       
       <section>
-        <figure id=try_convert-selector.rb class=sidenote>
+        <h1 class=runin id=try-convert><code class=bigsym>:try_convert</code></h1>
+
+        <p>Class method which <a href=#try-convert>implicitly converts</a> the
+        argument to the receiver.</p>
+
+        <figure id=try_convert-selector.rb class=left>
           <figcaption>The <code>:try_convert</code> selector implicitly
           converts it argument to its receiver, returning <code>nil</code>
           if unsuccessful.
         </figure>
-
-        <h1 class=runin id=try-convert><code
-        class=bigsym>:try_convert</code></h1>
-
-        <p>Class method which <a href=#try-convert>implicitly converts</a> the
-        argument to the receiver.</p>
       </section>
 
       <section>
         <h1 class=runin id=spaceship><code class=bigsym>:&lt;=&gt;</code></h1>
 
-        <p><a href=/objects#order>Compares</a> the operands.</p>
+        <p><a href=/objects#order>Compares</a> the operands. Colloquially: the
+        <dfn>spaceship operator</dfn>.</p>
 
-        <figure id=spaceship-selector.rb class=centre> 
+        <figure id=spaceship-selector.rb class=left> 
           <figcaption><code>&lt;=&gt;</code> compares its receiver to
           argument.
         </figure>
       </section>  
 
       <section>
-        <figure class=sidenote id=less-than-selector.rb>
-          <figcaption>The <code>:&lt;</code> selector returns
-          <code>true</code> if the receiver is less than the argument;
-          <code>false</code> otherwise.
-        </figure>
-
         <h1 class=runin id=less-than><code class=bigsym>:&lt;</code></h1>
 
         <p>Determines whether the receiver is <i>less than</i> the argument.
@@ -1109,15 +1100,15 @@
         <i>kind of</i> the argument because it mirrors the syntax for defining
         a class with a superclass, i.e. <code>class <var>name</var> &lt;
         <var>superclass</var>…end</code>.</p>
+
+        <figure class=left id=less-than-selector.rb>
+          <figcaption>The <code>:&lt;</code> selector returns
+          <code>true</code> if the receiver is less than the argument;
+          <code>false</code> otherwise.
+        </figure>
       </section>
 
       <section>
-        <figure class=sidenote id=greater-than-selector.rb>
-          <figcaption>The <code>:&gt;</code> selector returns
-          <code>true</code> if the receiver is greater than the argument;
-          <code>false</code> otherwise.
-        </figure>
-
         <h1 class=runin id=greater-than><code class=bigsym>:&gt;</code></h1>
 
         <p>Determines whether the receiver is <i>greater than</i> the
@@ -1125,6 +1116,12 @@
         href=#spaceship><code>&lt;=&gt;</code></a>. <code>Class#&gt;</code>
         provides symmetry to <code>Class#&lt;</code> by testing whether the
         argument is a <i>kind of</i> the receiver.</p>
+
+        <figure class=left id=greater-than-selector.rb>
+          <figcaption>The <code>:&gt;</code> selector returns
+          <code>true</code> if the receiver is greater than the argument;
+          <code>false</code> otherwise.
+        </figure>
       </section>
 
       <section>
@@ -1133,7 +1130,7 @@
         <p>Determines whether the operands are <a
         href=#equivalence>equivalent</a>.</p>
         
-        <figure class=centre id=equal-equal-selector.rb>
+        <figure class=left id=equal-equal-selector.rb>
           <figcaption>The <code>:==</code> selector returns
           <code>true</code> if its operands are logically equivalent;
           <code>false</code> otherwise.
@@ -1141,11 +1138,6 @@
       </section>
 
       <section>
-        <figure class=sidenote id=aref-music.rb>
-          <figcaption>Examples of how different objects respond to the
-          <code>:[]</code> message.
-        </figure>
-
         <h1 class=runin id=aref><code class=bigsym>:[]</code></h1>
 
         <!-- Needs to follow message expression syntax --> <p><dfn
@@ -1188,14 +1180,14 @@
         pair of <code>Integer</code>s, a <code>Range</code>, a
         <code>Regexp</code>, a <code>Regexp</code> and an
         <code>Integer</code>, or a <code>String</code>.</p>
+
+        <figure class=left id=aref-music.rb>
+          <figcaption>Examples of how different objects respond to the
+          <code>:[]</code> message.
+        </figure>
       </section>
 
       <section>
-        <figure id=element-set-selector.rb class=sidenote>
-          <figcaption>The <code>:[]=</code> selector assigns the second
-          argument to the slice of the receiver described by the first.
-        </figure>
-
         <h1 class=runin id=aref-set><code class=bigsym>:[]=</code></h1>
     
         <p>The assignment counterpart to <code>:[]</code>: the first
@@ -1215,6 +1207,11 @@
         the <code>String</code> matched by <var>regexp</var>;
         <code>Array#[<var>range</var>]= <var>value</var></code> replaces the
         elements in <var>range</var> with <var>value</var>.</p>
+
+        <figure id=element-set-selector.rb class=left>
+          <figcaption>The <code>:[]=</code> selector assigns the second
+          argument to the slice of the receiver described by the first.
+        </figure>
       </section>
 
       <section>
@@ -1227,18 +1224,13 @@
         <code>Regexp#=~</code>, and <code>Symbol#=~</code>.</p> <!-- Describe
         return value -->
 
-        <figure id=equal-tilde-selector.rb class=centre>
+        <figure id=equal-tilde-selector.rb class=left>
           <figcaption>The <code>:=~</code> selector matches its
           receiver with its argument.
         </figure>
       </section>
 
       <section>
-        <figure id=left-shift-selector.rb class=sidenote>
-          <figcaption>The <code>:&lt;&lt;</code> selector typically
-          appends the argument to the receiver.
-        </figure>
-
         <h1 class=runin id=left-shift><code class=bigsym>:&lt;&lt;</code></h1> 
         
         <!-- Mutates; behaves differently with numerics --> <p>When the
@@ -1249,14 +1241,14 @@
         <code>IO#&lt;&lt;</code>, and
         <code>Enumerator::Yielder#&lt;&lt;</code>.</p>
           <!-- &gt;&gt; - Process::Status#&gt;&gt; -->
+
+        <figure id=left-shift-selector.rb class=left>
+          <figcaption>The <code>:&lt;&lt;</code> selector typically
+          appends the argument to the receiver.
+        </figure>
       </section>
 
       <section>
-        <figure id=plus-selector.rb class=sidenote>
-          <figcaption>The <code>:+</code> selector combines the
-          operands into a new object.
-        </figure>
-
         <h1 class=runin id=plus><code class=bigsym>:+</code></h1>
 
         <p>Sums the receiver with the sole argument, which should be of the
@@ -1268,6 +1260,11 @@
         <p>Addition in this manner is not necessarily commutative when the
         operands are non-numeric. For example, <code>'a' + 'b' != 'b' +
         'a'</code>.</p>
+
+        <figure id=plus-selector.rb class=left>
+          <figcaption>The <code>:+</code> selector combines the
+          operands into a new object.
+        </figure>
       </section>
 
       <section>
@@ -1277,7 +1274,7 @@
         result. For example: <code>Fixnum#*</code>, <code>String#*</code>,
         and <code>Array#*</code>.</p>
 
-        <figure class=sidenote id=asterisk-selector.rb> 
+        <figure class=left id=asterisk-selector.rb> 
           <figcaption>The <code>:*</code> selector duplicates the receiver by
           the argument.
         </figure>
@@ -1287,11 +1284,6 @@
           <!-- empty? include?, rewind, initialize, new, coerce -->
       
       <section>
-        <figure class=sidenote id=predicate-messages.rb>
-          <figcaption>The <code>?</code> suffix often indicates that a
-          message is a predicate.
-        </figure>
-
         <h1 id=tone>Tone</h1>
 
         <p>By convention, a selector with a question mark (<code>?</code>) suffix
@@ -1300,6 +1292,11 @@
         <!-- Mention situation when a selector is mirrored by a predicate
         alternative? Lots of File methods fit this pattern. http://groups.google.com/group/ruby-talk-google/msg/cfdd0dca7f70c87e -->
 
+        <figure class=left id=predicate-messages.rb>
+          <figcaption>The <code>?</code> suffix often indicates that a
+          message is a predicate.
+        </figure>
+
         <aside class=sidenote>
           This convention is shared with Scheme and probably derived from that
           of Lisp to name predicate functions with a <code>p</code> suffix,
@@ -1307,7 +1304,7 @@
           Ruby’s <code>Fixnum#even?</code>.
         </aside>
         
-        <figure class=sidenote id=question-mark-suffix-non-predicate.rb>
+        <figure class=left id=question-mark-suffix-non-predicate.rb>
           <figcaption>Selectors with a <code>?</code> suffix need not
           return <code>true</code> or <code>false</code>.
         </figure>
@@ -1323,7 +1320,7 @@
           that alters the object in place.</q> <a class=ref
           href=/references#refFLAN08>[Flanagan &amp; Matsumoto, 2008, p. 7]</a></p>
 
-        <figure class=centre id=bang-messages.rb>
+        <figure class=left id=bang-messages.rb>
           <figcaption>The <code>!</code> suffix often indicates that a
           message will modify the receiver in place, or is otherwise
           “dangerous”.
@@ -1347,7 +1344,7 @@
         <code>Object#instance_variables</code>, and similar methods, return
         <code>Array</code>s of <code>Symbol</code>s.</p>
 
-        <figure class=sidenote id=plural-selector-splat.rb>
+        <figure class=left id=plural-selector-splat.rb>
           <figcaption>Idiomatically create an <code>Array</code> from a
           plural method with the splat operator
         </figure>
@@ -1422,7 +1419,7 @@
       <code>true</code> if a method is defined with the same name as the
       selector; <code>false</code> otherwise.</p>
 
-      <figure class=sidenote id=respond-to.rb>
+      <figure class=left id=respond-to.rb>
         <figcaption>An object <i>responds to</i> selectors for which a
         corresponding method is defined.
       </figure>
@@ -1433,7 +1430,7 @@
       The solution is <a
       href=/methods#respond-to-missing><code>Kernel#respond_to_missing?</code></a>.</p>
 
-      <figure class=sidenote id=respond-to-method-missing.rb>
+      <figure class=left id=respond-to-method-missing.rb>
         <figcaption><code>#respond_to?</code> is not necessarily accurate
         when <code>method_missing</code> has been used.
       </figure>
@@ -1442,7 +1439,7 @@
       If it is sent with a second argument of <code>true</code>, private
       methods are included in its search.</p>
 
-      <figure class=sidenote id=respond-to-private.rb>        
+      <figure class=left id=respond-to-private.rb>        
         <figcaption><code>:respond_to?</code> ignores private methods by
         default.
       </figure>
@@ -1460,7 +1457,7 @@
       that are particularly permissive in their argument handling may find
       it necessary.</p>
 
-      <figure class=sidenote id=send-if-respond-to>
+      <figure class=left id=send-if-respond-to>
         <pre class=syntax><code><var>receiver</var>.<var>selector</var> if
         <var>receiver</var>.respond_to?(:<var>selector</var>)</code></pre>
         <figcaption>Sending a message only if the receiver responds to it.
@@ -1474,7 +1471,7 @@
         href=#method-missing>Method Missing</a>, by rescuing
       <code>NoMethodError</code> if it occurs.</p>
 
-      <figure class=centre id=object-send-p.rb>
+      <figure class=left id=object-send-p.rb>
         <figcaption>An implementation of <code>Object#send?</code>, which
         returns <code>nil</code> if the named method does not exist.
       </figure>
@@ -1484,14 +1481,14 @@
       working with values which shouldn’t be <code>nil</code>, but might be.
       The general solution is one of the following constructs:</p> 
       
-      <figure class=sidenote id=ternary-nil-receiver>
+      <figure class=left id=ternary-nil-receiver>
         <pre class=syntax><code><var>receiver</var> ?
         <var>receiver</var>.<var>selector</var> : nil</code></pre>
         <figcaption>Using the ternary operator to send a receiver a message
         only if it is true; otherwise return <code>nil</code>.    
       </figure>
 
-      <figure class=centre id=and-and-nil-receiver>
+      <figure class=left id=and-and-nil-receiver>
         <pre class=syntax><code><var>receiver</var> &amp;&amp;
         <var>receiver</var>.<var>selector</var></code></pre>
         <figcaption>Using the logical and operator to send a receiver a
@@ -1505,7 +1502,7 @@
       <code>nil</code> when the receiver is <code>nil</code>, rather than
       raising a <code>NoMethodError</code>.</p>
 
-      <figure class=centre id=object-try.rb>
+      <figure class=left id=object-try.rb>
         <figcaption>An implementation of <code>Object#try</code> derived
         from <a
           href=http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/object/try.rb>Ruby
