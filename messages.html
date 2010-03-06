@@ -242,16 +242,6 @@
     <section>
       <h1 id=expressions>Message Expression Syntax</h1>
 
-      <aside class=sidenote>
-        <span class=sidemark>†</span>The syntax explained above is
-        potentially ambiguous. If Ruby sees a bare identifier, e.g.
-        <code>glark</code>, is that a reference to a local variable or an
-        attempt to send a message to <code>self</code>?  If Ruby has
-        previously seen the identifier being assigned to, e.g.  <code>glark =
-        2</code>, it is treated as a variable reference; otherwise it is a
-        message.
-      </aside>
-
       <figure class=railroad>
         <img id=message-expression.png>
         <figcaption>Syntax diagram for message expression
@@ -262,6 +252,16 @@
       <var>s</var> is the message selector.  Omitting the name of the receiver
       to which <var>s</var> should be sent causes the <a
       href=#implicit-receiver>implicit receiver</a> to be assumed.</p>
+
+      <aside class=sidenote>
+        <span class=sidemark>†</span>The syntax explained above is
+        potentially ambiguous. If Ruby sees a bare identifier, e.g.
+        <code>glark</code>, is that a reference to a local variable or an
+        attempt to send a message to <code>self</code>?  If Ruby has
+        previously seen the identifier being assigned to, e.g.  <code>glark =
+        2</code>, it is treated as a variable reference; otherwise it is a
+        message.
+      </aside>
 
       <aside class=sidenote>
         <p><span class=sidemark>‡</span>An alternative to the
@@ -918,7 +918,7 @@
       is equivalent to
       <code><var>receiver</var>.<var>selector</var>=(<var>value</var>).</code></p>
 
-      <aside id=ambiguous-lvalue-syntax class=left>
+      <aside id=ambiguous-lvalue-syntax class=sidenote>
         <p><span class=number>†</span>The syntax <code>name = value</code> is
         therefore ambiguous. Is the intent to assign the value
         <code>value</code> to the local variable <code>name</code> or to send
