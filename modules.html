@@ -90,6 +90,8 @@
         argument that is true, i.e. <code>load file, true</code>.
       </aside>
 
+      <!-- Bug related to the below's semantics:
+      http://redmine.ruby-lang.org/issues/show/1982 -->
       <p><code>Kernel.load</code> can<sup>†</sup> use an anonymous module to prevent a
       source file from affecting the global namespace. The classes and modules
       the source file defines are created in the context of this anonymous

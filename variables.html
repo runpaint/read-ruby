@@ -224,12 +224,9 @@
       an optional second argument to control whether they look for inherited
       constants. By default this argument is <code>true</code>, but if it is
       set to <code>false</code> the method only considers constants defined
-      directly in the receiver.
-
-      <p>Lastly, <code>Module#remove_const</code> takes the name of a constant
-      to remove from the receiver. The method is private, so must be either
-      sent by <code>Kernel#send</code> or used in the context of one of the
-      <code>*_eval</code> or <code>*_exec</code> methods.
+      directly in the receiver. Lastly, the <a href=/methods#private>private
+        method</a> <code>Module#remove_const</code> takes the name of a
+      constant to remove from the receiver. 
     </section>
 
     <section>
@@ -435,6 +432,8 @@
       <p>The <code>Kernel.local_variables</code> method returns an
       <code>Array</code> of <code>Symbol</code>s, each of which names a local
       variable defined in the current scope, in reverse chronological order.
+
+      <!-- TODO: Discuss eval for getting/setting local variables? -->
     </section>
   </section>
 
@@ -488,14 +487,17 @@
       <p>The names of an object’s instance variables are returned as an
       <code>Array</code> of <code>Symbol</code>s by
       <code>Kernel#instance_variables</code> in the order they were assigned.
-      <!-- http://redmine.ruby-lang.org/issues/show/2243 -->  Their values may
-      be retrieved and modified from another object with
+      <!-- http://redmine.ruby-lang.org/issues/show/2243 -->  
+      
+      <p>Their values may be retrieved and modified from another object with
       <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
       <code>Kernel#instance_variable_set(<var>ivar</var>,
-      <var>value</var>)</code>, respectively, where <var>ivar</var> is the
+        <var>value</var>)</code>, respectively, where <var>ivar</var> is the
       variable’s name as a <code>Symbol</code>, including the <code>@</code>
-      prefix. These methods should be used sparingly as they break
-      encapsulation.
+      prefix. An instance variable may be removed with the <a
+        href=/methods#private>private method</a>
+      <code>Kernel#remove_instance_variable(<var>ivar</var>)</code>. These
+      methods should be used sparingly as they break encapsulation.
     </section>
   </section>
 
@@ -580,8 +582,9 @@
       <code>Module#class_variable_set(<var>cvar</var>,
         <var>value</var>)</code>, respectively, where <var>cvar</var> is the
       variable’s name as a <code>Symbol</code>, including the <code>@@</code>
-      prefix. These methods should be used sparingly as they break
-      encapsulation.
+      prefix. A class variable may be removed from a class with
+      <code>Module#remove_class_variable(<var>cvar</var>)</code>. These
+      methods should be used sparingly as they break encapsulation.
     </section>
   </section>
 
@@ -628,6 +631,8 @@
       <p>An <code>Array</code> of global variable names as
       <code>Symbol</code>s can be obtained with
       <code>Kernel.global_variables</code></p>
+
+      <!-- TODO: Discuss eval for getting/setting gvars? -->
     </section>
 
     <section>
