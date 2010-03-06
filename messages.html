@@ -952,8 +952,6 @@
              on its use for attaching comments to symbols, i.e. Symbol#** -->
       <!-- TODO: *_missing -->
 
-      <!-- TODO: {Array,Hash,Set,SortedSet,String,Symbol}#empty? Possible addition for File,
-           Dir... -->
       <section>
         <h1 class=runin id=call><code class=bigsym>:call</code></h1>
       
@@ -1016,6 +1014,16 @@
         <code>String#each_byte</code> is aliased to <code>String#bytes</code>;
         <code>IO#each_line</code> is aliased to <code>IO#lines</code>.</p>
         <!-- Enumerable doesn't provide this alias.  Bug? -->
+      </section>
+
+      <section>
+        <h1 class=runin id=empty><code class=bigsym>:empty?</code></h1>
+
+        <p>The <code>:empty?</code> predicate is defined by
+        <code>Array</code>, <code>Hash</code>, <code>Set</code>,
+        <code>SortedSet</code>, <code>String</code>, and <code>Symbol</code>.
+        It returns <code>true</code> if the receiver doesn’t have any content;
+        <code>false</code> otherwise.
       </section>
 
       <section>
