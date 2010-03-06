@@ -1033,15 +1033,21 @@
         <p>A consequence of defining methods dynamically with
         <code>Kernel#method_missing</code> is that an object may respond to a given
         message, yet return <code>false</code> for
-        <code>Kernel#respond_to?(<var>selector</var>)</code>.
+        <code>Kernel#respond_to?(<var>selector</var>)</code>.</p>
         
-        <p>Before <code>Kernel#respond_to?</code> returns <code>false</code> it
-        tries to send itself a message named <code>:respond_to_missing?</code> with
-        a first argument of the selector in question, and the second the value of
-        <var>include_private</var>. (If <code>#respond_to?</code> is called with a
-        second argument of <code>true</code>, <var>include_private</var> is
-        <code>true</code> and private methods should be considered; otherwise its
-        <code>false</code> and they shouldn’t). If
+        <aside class=sidenote>
+          <span class=sidemark>†</span>If <code>#respond_to?</code> is called
+          with a second argument of <code>true</code>,
+          <var>include_private</var> is <code>true</code> and private methods
+          should be considered; otherwise it’s <code>false</code> and they
+          shouldn’t.
+        </aside>
+
+        <p>Before <code>Kernel#respond_to?</code> returns <code>false</code>
+        it tries to send itself a message named
+        <code>:respond_to_missing?</code> with a first argument of the
+        selector in question, and the second the value of
+        <var>include_private</var><sup>†</sup>.If
         <code>#respond_to_missing?</code> is defined and returns a true value,
         <code>#respond_to?</code> returns <code>true</code>; otherwise
         <code>#respond_to?</code> returns <code>false</code>. 
