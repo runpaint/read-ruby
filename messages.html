@@ -943,7 +943,7 @@
 
       <!-- TODO: Look in stdlib, too, e.g. Set! -->
         <!--<h1>Common Selectors</h1>--> <!-- Needs a title. Can't be
-        _common_. _core_? . Each selector should be a <section> with a h1-->
+        _common_. _core_? .-->
 
         <!-- Ruby uses ** as a glob; is there a use for :** in that area? Muse
              on its use for attaching comments to symbols, i.e. Symbol#** -->
@@ -1056,8 +1056,8 @@
       <section>
         <h1 class=runin id=to><code class=bigsym>:to_</code></h1>
 
-        <p><a href=#conversion>Converts</a> the receiver into an object of the
-        corresponding core type.</p>
+        <p><a href=/objects/#conversion>Converts</a> the receiver into an
+        object of the corresponding core type.</p>
 
         <figure id=to_-selector.rb class=left>            
           <figcaption>Selectors with a <code>to_</code> prefix return the
@@ -1068,8 +1068,8 @@
       <section>
         <h1 class=runin id=try-convert><code class=bigsym>:try_convert</code></h1>
 
-        <p>Class method which <a href=#try-convert>implicitly converts</a> the
-        argument to the receiver.</p>
+        <p>Class method which <a href=/objects#try-convert>implicitly
+        converts</a> the argument to the receiver.</p>
 
         <figure id=try_convert-selector.rb class=left>
           <figcaption>The <code>:try_convert</code> selector implicitly
@@ -1128,7 +1128,7 @@
         <h1 class=runin id=equal-equal><code class=bigsym>:==</code></h1>
 
         <p>Determines whether the operands are <a
-        href=#equivalence>equivalent</a>.</p>
+        href=/objects#equivalence>equivalent</a>.</p>
         
         <figure class=left id=equal-equal-selector.rb>
           <figcaption>The <code>:==</code> selector returns
@@ -1190,9 +1190,9 @@
       <section>
         <h1 class=runin id=aref-set><code class=bigsym>:[]=</code></h1>
     
-        <p>The assignment counterpart to <code>:[]</code>: the first
-        argument(s) describe the slice, and the final argument its new value.
-        It is expected that <code><var>obj</var>[<var>key</var>] =
+        <p>The assignment counterpart to <a href=#aref><code>:[]</code></a>:
+        the first argument(s) describe the slice, and the final argument its
+        new value.  It is expected that <code><var>obj</var>[<var>key</var>] =
         <var>value</var></code> then <code><var>obj</var>[<var>key</var>] ==
         <var>value</var></code>. For this equivalency to hold,
         <code>:[]=</code> may need to be more restrictive in the arguments it
@@ -1281,7 +1281,7 @@
       </section>
           <!-- :/ - only used by Numerics -->
           <!-- String#/ http://redmine.ruby-lang.org/issues/show/2017 -->
-          <!-- empty? include?, rewind, initialize, new, coerce -->
+          <!-- include?, rewind, initialize, new, coerce -->
       
       <section>
         <h1 id=tone>Tone</h1>
