@@ -174,18 +174,21 @@
   
     <p>The <code>super</code> keyword is used in method definitions to invoke
     a method defined in the superclass, or an ancestor thereof (collectively
-    hereafter: the <i>superclass</i> <!-- Clumsy phrasing? -->), with the same
-    name. If called without arguments it invokes the superclass method with
-    the arguments received by the current method (this is known as the
+    hereafter: an <i>ancestor</i> <!-- Clumsy phrasing? -->), with the same
+    name. An implication worth stating explicitly is that an instance method
+    in a class may use <code>super</code> to invoke an instance method in
+    an included module. 
+    
+    <p>If called without arguments it invokes the ancestor method with the
+    arguments received by the current method (this is known as the
     <dfn>implicit argument form of <code>super</code></dfn>). Otherwise, it
-    passes the arguments it has been given to the superclass method. In either
+    passes the arguments it has been given to the ancestor method. In either
     case, the arguments are sent as they currently exist: if they have been
     modified by the method, their modified forms are sent. To explicitly
-    invoke the superclass method without any arguments use
-    <code>super()</code>. 
+    invoke the ancestor method without any arguments use <code>super()</code>. 
     
     <p>A <code>NoMethodError</code> is raised if a corresponding method is not
-    defined in the superclass<sup>†</sup>. This can be avoided by conditioning
+    defined in an ancestor<sup>†</sup>. This can be avoided by conditioning
     the call to <code>super</code>, on <code>defined? super</code>, which
     returns <code>nil</code> in this case.</p>
 
@@ -202,7 +205,7 @@
     </figure>
 
     <figure style=margin-left:4% id=super.rb>
-      <figcaption><code>super</code> invokes the corresponding superclass
+      <figcaption><code>super</code> invokes the corresponding ancestor
       method with the current method’s arguments.
     </figure>
   </section>
