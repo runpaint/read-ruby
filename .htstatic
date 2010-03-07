@@ -1,6 +1,6 @@
 # vim: ft=apache
 Options +MultiViews
-AddEncoding application/x-gzip .gz
+AddEncoding application/x-gzip .html.gz
 # Stop files with .gz extension being served with a Content-Type of
 # application/x-gzip
 RemoveType .gz
