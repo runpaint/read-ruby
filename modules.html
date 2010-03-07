@@ -191,7 +191,7 @@
       <code>Class#extend</code> which, like <a
         href=#inclusion><code>Class#include</code></a>, takes one or more
       module names as arguments. The features of each module are appended to
-      the <a href=/class#eigenclass>eigenclass</a> of the receiver,
+      the <a href=/class#singleton>singleton class</a> of the receiver,
       providing the <a href=/methods#per-object-behaviour>per-object
         behaviour</a> of <a href=/methods#singleton-method>singleton
         methods</a>.</p>
@@ -207,7 +207,7 @@
         <p>An idiomatic application of <code>extend</code> is to use
         <code>extend self</code> within the context of a module. The effect
         is to mix the current module into its <a
-          href=/classes#eigenclass>eigenclass</a>:</p>
+          href=/classes#singleton>singleton class</a>:</p>
 
         <ul>
           <li><a href=/methods#public-methods>Public</a> instance methods
@@ -239,13 +239,13 @@
       Interface">API</abbr>.</p>
 
     <p>Methods are defined on the module’s <a
-      href=/classes#eigenclass>eigenclass</a>, then invoked with the module
-    name as the receiver:
+      href=/classes#singleton>singleton class</a>, then invoked with the
+    module name as the receiver:
     <code><var>module</var>.<var>selector</var></code>.</p>
 
     <figure class=left id=module-namespacing.rb>
       <figcaption>Modules can be used as namespaces by defining methods on
-      their eigenclass
+      their singleton class
     </figure>
 
     <p><a href=/references#refBROWN09 class=ref>Brown</a> (pp. 133–138)
@@ -333,7 +333,7 @@
     <p><a href=#extend-self><code>extend self</code></a> does not
     exhibit this problem, but neither does it offer the granularity of
     <code>module_function</code>—it copies all instance methods into the
-    eigenclass—or automatically privatise instance methods.</p>
+    singleton class—or automatically privatise instance methods.</p>
     
     <figure class=left id=module-function-extend-self.rb>
       <figcaption><code>extend self</code> allows the calling of a private

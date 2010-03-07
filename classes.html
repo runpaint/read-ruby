@@ -232,8 +232,9 @@
 
           <section>
             <h1 id=anonymous>Anonymous Classes</h1> <!-- Is this term confusing w.r.t
-            eigenclasses also being described as anonymous? -->
+            singleton classes also being described as anonymous? -->
 
+              <!-- TODO: Link with parallel explanation in Modules -->
               <p>When a constant is used as a class name it has global <!-- This
               word is problematic. How to better explain? --> scope. This
               gives rise to the characteristic described above in <i>Reopening
@@ -339,25 +340,27 @@
       <section>
         <!-- TODO: Switch to 'singleton class' after
         http://redmine.ruby-lang.org/issues/show/1082 has concluded -->
-        <h1 id=eigenclass>Eigenclasses</h1> <!-- "singleton class"? -->
+        <h1 id=singleton>Singleton Classes</h1>
       
         <p>Every object is associated with two classes: that with which it was
         instantiated, and an anonymous class specific to the object: its
-        <dfn title=eigenclass>eigenclass</dfn>. It is the eigenclass that holds
-        the object’s singleton methods. Class methods are, therefore, methods
-        defined in the eigenclass of a <code>Class</code> object.
+        <dfn>singleton class</dfn>. It is the singleton class that holds
+        the object’s singleton methods. Class methods, therefore, are methods
+        defined in the singleton class of a <code>Class</code> object.
 
-        <p>The eigenclass of an object is opened with the <code>class &lt;&lt;
-          <var>object</var>…end</code> construct: the <code>class</code> keyword
-        followed by two less-than signs, an expression evaluating to an object,
-        then the class body. Methods defined within the body are defined on
-        <var>object</var>. Within a standard class definition, the class’s
-        eigenclass can be opened by supplying <code>self</code> as the value for
-        <var>object</var>.
+        <p>The singleton class of an object is opened with the <code>class
+          &lt;&lt; <var>object</var>…end</code> construct: the
+        <code>class</code> keyword followed by two less-than signs, an
+        expression evaluating to an object, then the class body. Methods
+        defined within the body are defined on <var>object</var>. Within a
+        standard class definition, the class’s singleton class can be opened
+        by supplying <code>self</code> as the value for <var>object</var>.
 
         <p>It is usually clearer to define singleton methods with the <code>def
           <var>object</var>.<var>method</var></code> syntax rather than
-        explicitly opening <var>object</var>’s eigenclass.
+        explicitly opening <var>object</var>’s singleton class.
+
+        <!-- TODO: Reference priority in lookup algo. -->
       </section>
 
       <section>
@@ -399,7 +402,7 @@
 
           <figure id=module-attr-accessor.rb>
             <figcaption>Accessors for a class’s class instance variables are
-            created inside its eigenclass with <code>attr_accessor</code>.
+            created inside its singleton class with <code>attr_accessor</code>.
           </figure>
           <!-- TODO: Show more general approch for attr_ methods:
            Note:

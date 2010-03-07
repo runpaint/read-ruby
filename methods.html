@@ -59,14 +59,14 @@
     <h1 id=singleton-method>Singleton Methods</h1>
 
     <p>A <dfn>singleton method</dfn> is a method defined in the context of an
-    object’s <a href=/classes#eigenclass>eigenclass</a>. It is commonly described as a
-    method defined on a specific object, rather than all instances of a
-    certain class.</p>
+    object’s <a href=/classes#singleton>singleton nclass</a>. It is commonly
+    described as a method defined on a specific object, rather than all
+    instances of a certain class.</p>
 
     <section>
       <h1 id=class-method>Class Methods</h1>
 
-        <!-- This duplicates slightly material in Classes: Eigenclasses -->
+        <!-- This duplicates slightly material in Classes: Singleton Classes -->
         <p>Singleton methods defined on <code>Class</code> objects are known
         as <dfn title="class method">class methods</dfn>. For example,
         <code>File.absolute_path</code> is a class method defined on the
@@ -707,7 +707,7 @@
       <code>Symbol</code>s/identifiers as arguments, then undefines the
       corresponding instance methods. Undefining singleton methods requires
       <code>undef</code> to be used in the context of the corresponding
-      eigenclass.
+      singleton class.
 
       <p><dfn title="undefining a method">Undefining</dfn> a method prevents the current
       class from responding to it. If the method was defined in a superclass,
