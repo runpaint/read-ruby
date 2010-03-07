@@ -300,11 +300,10 @@ emphasis mine.
     called? -->
     
     <figure class=railroad>
-      <img id=method-parameter-list.png>
       <img id=def-expression.png>
       <figcaption>Syntax diagram of a method definition
     </figure>
-    
+
     <p>If <code><var>expression</var>.</code> is omitted, an <a
       href=#instance-method>instance method</a> named <var>symbol</var> is
     defined on the enclosing class; otherwise a <a
@@ -378,21 +377,35 @@ emphasis mine.
   <section>  
     <h1 id=arguments>Arguments</h1> 
     
-    <!-- Rephrase to foreground concept; not syntax -->
+    <figure class='centre railroad'>
+      <img id=method-parameter-list.png>
+      <figcaption>Syntax diagram of a method parameter list
+    </figure>
 
-    <p>When a method is defined with the <code>def</code> keyword its name
-    may be followed by a set of parentheses (<code>(</code>,
-    <code>)</code>). The contents thereof (hereafter: <dfn
-      title="parameter list">the parameter list</dfn>) dictate the <a
-      href=#message-arguments>arguments</a> the
-    method will accept. (The parentheses are actually optional, but their
-    omission doesn't enhance readability so they are recommended).
+    <p>We have already discussed how messages may be sent along with <a
+      href=/messages#arguments>arguments</a>. A method expecting to receive
+    these arguments must define their type and
+    quantity via a <dfn title="parameter list">parameter list</dfn>.</p>
 
-    <p>The parameter list specifies:
+    <figure class=railroad>
+      <img id=parameter-list.png>
+      <figcaption>Syntax diagram of a parameter list
+    </figure>
+
+    <aside class=sidenote>
+      <span class=sidemark>†</span>The parentheses are actually optional, but
+      their omission doesn't enhance readability so they are recommended.
+    </aside>
+
+    <p>When a method is defined with the <code>def</code> keyword, its
+    parameter list follows its name, and is usually<sup>†</sup> enclosed in a
+    set of parentheses (<code class=u title='('>U＋0028</code>, <code class=u
+      title=')'>U＋0029</code>). It specifies:
+
     <ul>
       <li>The local variable names (hereafter: <dfn title="method
         parameters">parameters</dfn>) to which the
-      corresponding argument will be aliased to inside the method.
+      corresponding argument will be aliased inside the method.
       <li>Whether the arguments are required or optional.
       <li>Whether a fixed or variable number of arguments are allowed.
       <li>The default value, if any, of each parameter.
@@ -400,12 +413,7 @@ emphasis mine.
     </ul>
 
     <p>Each parameter name must be unique in the parameter list.</p>
-
-    <figure class=railroad>
-      <img id=parameter-list.png>
-      <img id=method-parameter-list.png>
-      <figcaption>Syntax diagram of a method definition
-    </figure>
+    <!-- TODO: Mention positionality -->
 
     <section>
       <h1 id=pass-by-reference>Pass By Reference</h1>
