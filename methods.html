@@ -56,7 +56,7 @@
   </section>
 
   <section>
-    <h1 id=singleton-method>Singleton Methods</h1>
+    <h1 id=singleton>Singleton Methods</h1>
 
     <p>A <dfn>singleton method</dfn> is a method defined in the context of an
     object’s <a href=/classes#singleton>singleton nclass</a>. It is commonly
@@ -96,7 +96,7 @@
         possible to add or remove methods and variables at the level of
         individual objects.</q> (<i>ibid.</i>, pp. 8–10).
         
-        <p>Singleton methods (along with <a
+        <p><a href=#singleton>Singleton methods</a> (along with <a
           href=/variables#instance-reflection><code>Kernel#instance_variable_set</code></a>)
         afford the same abilities to the ostensibly class-based Ruby. Whereas
         inheritance allows a class to be created that specializes a more
@@ -123,18 +123,21 @@
       to singleton methods in documentation and prose. For example:
       <code>File.exists?</code>.  
     </aside>
-
-    <!-- Link to Defining where singleton methods are explained -->
   </section>
   
   <section>
     <h1 id=return-values>Return Values</h1>
 
-    <p>A method is a expression so always returns a value: the last statement
-    executed, or <code>nil</code> if the method body is empty. If this value
-    is an <code>Array</code> the method effectively returns multiple
-    values.</p>
+    <p>A method is an invoked with an expression so always returns a value:
+    the last statement executed, or <code>nil</code> if the method body is
+    empty. If this value is an <code>Array</code> the method effectively
+    returns multiple values.</p>
 
+    <aside class=sidenote>
+      A <code>def</code> expression also returns a value (<code>nil</code>), but
+      this is distinct from that of invoking the method. 
+    </aside>
+      
     <figure class=centre id=def-implicit-return.rb>
       <figcaption>A method which returns the Symbol <code>:to_sender</code>
     </figure>
