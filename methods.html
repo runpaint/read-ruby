@@ -419,28 +419,6 @@ emphasis mine.
     list. The correspondence isn’t one‐to‐one, as we will see below, but each
     parameter consumes as many arguments as it can, leaving those that remain
     for the following parameters.</p>
-
-    <section>
-      <h1 id=pass-by-reference>Pass By Reference</h1>
-
-      <p>Arguments are passed to methods by reference instead of value.  If
-      the method modifies an object it receives the caller’s copy is
-      modified, too.</p>
-
-      <figure class=centre id=pass-by-reference.rb>
-        <figcaption>The effect of a method’s modification of an argument on
-        its caller
-      </figure>
-
-      <p>Alternatively, an argument may be <a
-        href=/objects#duplication>duplicated</a> to create a copy
-      independent of the caller’s.</p>
-
-      <figure class=centre id=pass-by-reference-dup.rb>
-        <figcaption>The effect of a method’s modification of a
-        <code>dup</code>’d argument on its caller
-      </figure>
-    </section>
       
     <section>
       <h1 id=required-arguments>Required Arguments</h1>
@@ -691,6 +669,28 @@ emphasis mine.
           variable.
         </figure>
       </aside>
+    </section>
+
+    <section>
+      <h1 id=pass-by-reference>Pass By Reference</h1>
+
+      <p>Arguments are passed to methods by reference instead of value.  If
+      the method modifies an object it receives the caller’s copy is
+      modified, too.</p>
+
+      <figure class=centre id=pass-by-reference.rb>
+        <figcaption>The effect of a method’s modification of an argument on
+        its caller
+      </figure>
+
+      <p>Alternatively, an argument may be <a
+        href=/objects#duplication>duplicated</a> to create a copy
+      independent of the caller’s.</p>
+
+      <figure class=centre id=pass-by-reference-dup.rb>
+        <figcaption>The effect of a method’s modification of a
+        <code>dup</code>’d argument on its caller
+      </figure>
     </section>
   </section>    
 
