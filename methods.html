@@ -541,31 +541,29 @@ emphasis mine.
     <section>
       <h1 id=named-arguments>Named Arguments</h1>
 
-      <p>The parameter forms described above are positional in nature.  They
-      depend on the argument’s location in the parameter list to marry it
-      with the correct parameter. An alternative approach, that can aid the
-      readability of otherwise ungainly parameter lists, is <dfn>named
-        arguments</dfn>. Named arguments allow the method to be invoked with
-      a series of key-value pairs, arranged in an arbitrary order.
+      <p>The parameter forms described above are positional in nature. An
+      alternative approach, that can aid the readability of otherwise ungainly
+      parameter lists, is <dfn>named arguments</dfn>, which allow
+      the method to be invoked with a series of key-value pairs, arranged in
+      an arbitrary order.
 
       <p>This style of argument passing is not supported explicitly, but can
-      be ably approximated by defining methods that expect a
-      <code>Hash</code> argument: the keys of which become the parameter
-      names; and the values, the arguments.</p>         
+      be ably approximated by defining methods that expect a <code>Hash</code>
+      argument: the keys of which become the parameter names; and the values,
+      the arguments. This technique is used by core methods such as
+      <code>File.open</code> and <code>String#encode</code>.</p>         
       
-      <!-- TODO: Mention that File/IO, String#encode use this technique -->
-
-      <figure class=centre id=named-arguments-with-hash.rb>
+      <figure class=left id=named-arguments-with-hash.rb>
         <figcaption>A method which uses a <code>Hash</code> argument to
         simulate named arguments.
       </figure>
 
-      <p>If the <code>Hash</code> is the final argument, other than a block,
-      that a method expects, the curly braces which delimit the
-      <code>Hash</code> can be omitted as long as there is white space
-      between the selector and the <code>Hash</code> contents. For
-      example, <code><var>selector</var>({ key: :value })</code> can be
-      written as <code><var>selector</var> key: :value</code>.</p>
+      <p>If a <a href=/enumerables#hashes><code>Hash</code> literal</a> is the
+      final argument, other than a block, that a method expects, the curly
+      braces which delimit it can be omitted, as long as there is white space
+      between the selector and the first key. For example,
+      <code><var>selector</var>({ key: :value })</code> can be written as
+      <code><var>selector</var> key: :value</code>.</p>
 
       <p>The advantages of this approach include:
         <ul>
@@ -576,9 +574,9 @@ emphasis mine.
           <li>Variable-length argument lists are supported.
         </ul>
 
-      <figure style=margin-left:4% id=named-arguments-with-defaults.rb>
-        <figcaption>A method which uses a <code>Hash</code> argument to simulate
-        named arguments with default values.
+      <figure class=left id=named-arguments-with-defaults.rb>
+        <figcaption>A method which uses a <code>Hash</code> argument to
+        simulate named arguments with default values.
       </figure>
 
       <p>The primary shortcoming is that Ruby can not determine
@@ -586,7 +584,7 @@ emphasis mine.
       supplied; the programmer must validate the arguments instead. This is
       unlikely to be particularly significant, however, because a method
       expecting a variable number of arguments would otherwise use a <a
-        href=#rest-parameters>rest parameter</a>, which also precludes
+        href=#rest-parameters>rest parameter</a>, which also preclude
       automatic validation.
     </section>
     
