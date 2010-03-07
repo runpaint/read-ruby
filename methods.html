@@ -172,26 +172,18 @@
   <section>
     <h1 id=super><code>super</code></h1>
   
+    <figure class=railroad>
+      <img id=super-statement.png>
+      <figcaption>Syntax diagram of the <code>super</code> statement
+    </figure>
+
     <p>The <code>super</code> keyword is used in method definitions to invoke
     a method defined in the superclass, or an ancestor thereof (collectively
     hereafter: an <i>ancestor</i> <!-- Clumsy phrasing? -->), with the same
     name. An implication worth stating explicitly is that an instance method
     in a class may use <code>super</code> to invoke an instance method in
-    an included module. 
+    an included module.</p> 
     
-    <p>If called without arguments it invokes the ancestor method with the
-    arguments received by the current method (this is known as the
-    <dfn>implicit argument form of <code>super</code></dfn>). Otherwise, it
-    passes the arguments it has been given to the ancestor method. In either
-    case, the arguments are sent as they currently exist: if they have been
-    modified by the method, their modified forms are sent. To explicitly
-    invoke the ancestor method without any arguments use <code>super()</code>. 
-    
-    <p>A <code>NoMethodError</code> is raised if a corresponding method is not
-    defined in an ancestor<sup>†</sup>. This can be avoided by conditioning
-    the call to <code>super</code>, on <code>defined? super</code>, which
-    returns <code>nil</code> in this case.</p>
-
     <aside class=sidenote>
       <span class=sidemark>†</span><code>super</code> does obey the <a
         href=#method-missing>Method Missing</a> protocol, however, so before
@@ -199,14 +191,28 @@
       class it encounters.
     </aside>
 
-    <figure class=railroad>
-      <img id=super-statement.png>
-      <figcaption>Syntax diagram of the <code>super</code> statement
-    </figure>
-
-    <figure style=margin-left:4% id=super.rb>
+    <p>If called without arguments it invokes the ancestor method with the
+    arguments received by the current method (this is known as the
+    <dfn>implicit argument form of <code>super</code></dfn>). Otherwise, it
+    passes the arguments it has been given to the ancestor method. In either
+    case, the arguments are sent as they currently exist: if they have been
+    modified by the method, their modified forms are sent. To explicitly
+    invoke the ancestor method without any arguments use
+    <code>super()</code>.</p>
+    
+    <figure class=left id=super.rb>
       <figcaption><code>super</code> invokes the corresponding ancestor
       method with the current method’s arguments.
+    </figure>
+
+    <p>A <code>NoMethodError</code> is raised if a corresponding method is not
+    defined in an ancestor<sup>†</sup>. This can be avoided by conditioning
+    the call to <code>super</code>, on <code>defined? super</code>, which
+    returns <code>nil</code> in this case.</p>
+
+    <figure class=left id=super-module.rb>
+      <figcaption><code>super</code> adds included modules to its search path
+      in the reverse order that they were included.
     </figure>
   </section>
 
