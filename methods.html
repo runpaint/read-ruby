@@ -377,7 +377,7 @@ emphasis mine.
   <section>  
     <h1 id=arguments>Arguments</h1> 
     
-    <figure class='centre railroad'>
+    <figure class=railroad>
       <img id=method-parameter-list.png>
       <figcaption>Syntax diagram of a method parameter list
     </figure>
@@ -423,12 +423,15 @@ emphasis mine.
     <section>
       <h1 id=required-arguments>Required Arguments</h1>
 
-      <p>A <dfn>required argument</dfn> <em>must</em>
-      be supplied by the caller. A method which requires exactly 4 arguments
-      must receive them all, otherwise it raises an
-      <code>ArgumentError</code>.</p>
+      <figure class=railroad>
+        <img id=required-parameters.png>
+      </figure>
 
-      <aside class=note>
+      <p>A <dfn>required argument</dfn> <em>must</em> be supplied by the
+      caller: A method which requires exactly <var>n</var> arguments must
+      receive them all, otherwise it raises an <code>ArgumentError</code>.</p>
+
+      <aside class=sidenote>
         <code>nil</code> and <code>false</code> are as valid an argument any
         other. If a method requires an argument and <code>nil</code> is
         supplied in its place, Ruby will not complain. Methods wishing to
@@ -438,11 +441,7 @@ emphasis mine.
       <p>Required arguments are specified with a comma-separated list of
       identifiers. Each parameter represents a mandatory argument.</p>
 
-      <figure class=railroad>
-        <img id=required-parameters.png>
-      </figure>
-
-      <figure class=centre id=required-arguments.rb>
+      <figure class=left id=required-arguments.rb>
         <figcaption>Defining a method which requires exactly two arguments.
       </figure>
     </section>
