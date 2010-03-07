@@ -413,7 +413,12 @@ emphasis mine.
     </ul>
 
     <p>Each parameter name must be unique in the parameter list.</p>
-    <!-- TODO: Mention positionality -->
+
+    <p>Parameters are <dfn title='positional parameters'>positional</dfn>:
+    they describe the argument in the corresponding position of the argument
+    list. The correspondence isn’t one‐to‐one, as we will see below, but each
+    parameter consumes as many arguments as it can, leaving those that remain
+    for the following parameters.</p>
 
     <section>
       <h1 id=pass-by-reference>Pass By Reference</h1>
