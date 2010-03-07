@@ -94,10 +94,13 @@
           of <code>#initialize</code>, so as to return the initialized
           object instead.
 
-          <p>A class that has a superclass other than
-          <code>Object</code> and defines an <code>#initialize</code>
-          method should call its parent’s <code>#initialize</code> with
-          <code>super</code>.
+          <p>It is good practice for a class—particularly one with a
+          superclass other than <code>Object</code>—that defines an
+          <code>#initialize</code> method to call its parent’s
+          <code>#initialize</code> with <a
+            href=/methods#super><code>super</code></a>. This allows the
+          superclass and any included modules to perform their own
+          initialization routines.
         </section>
       </section>
         <!-- Pickaxe pp. 427: Hook for object creation -->
