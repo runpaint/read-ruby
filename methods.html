@@ -449,35 +449,39 @@ emphasis mine.
     <section>
       <h1 id=optional-arguments>Optional Arguments and Default Values</h1>
 
-      <p>An <dfn>optional argument</dfn> <em>may</em>
-      be supplied by the caller. If it is not, the corresponding parameter
-      will be assigned the value given as its default.
-
-      <p>Optional arguments are specified with a comma-separated list of
-      <code><var>name</var>=<var>value</var></code> pairs, where
-      <var>name</var> is a parameter name and <var>value</var> is its
-      default value. The <var>value</var> may be any Ruby expression, and is
-      permitted to refer to previous parameters. The default value is
-      evaluated each time the method is invoked, so may, for example,
-      instantiate an object on every invocation.</p>
-
       <figure class=railroad>
-        <img class=centre id=optional-parameter.png>
         <img class=centre id=optional-parameters.png>
         <figcaption>Syntax diagram of optional parameters
       </figure>
 
-      <figure class=centre id=optional-arguments.rb>
+      <p>An <dfn>optional argument</dfn> <em>may</em>
+      be supplied by the caller. If it is not, the corresponding parameter
+      will be assigned the value given as its default.</p>
+
+      <figure class=railroad>
+        <img class=centre id=optional-parameter.png>
+        <figcaption>Syntax diagram of an optional parameter
+      </figure>
+
+      <p>Optional arguments are specified with a comma-separated list of
+      <code><var>name</var>=<var>value</var></code> pairs, where
+      <var>name</var> is a parameter name and <var>value</var> is its default
+      value. The <var>value</var> may be any Ruby expression, and is permitted
+      to refer to previous parameters. The default value expression is
+      evaluated each time the method is invoked, so may, for example,
+      instantiate an object on every invocation.</p>
+
+      <figure class=left id=optional-arguments.rb>
         <figcaption>Defining a method which takes an optional argument.
       </figure>
 
       <p>Optional and required arguments can be specified alongside each
       other in a reasonably natural fashion. However, all optional arguments
-      must be adjacent. For instance, it is a <code>SyntaxError</code> to
+      must be adjacent. For instance, it is a syntax error to
       both precede and follow a required argument with optional
       arguments.</p>
 
-      <figure class=centre id=required-arguments-with-optional-arguments.rb>
+      <figure class=left id=required-arguments-with-optional-arguments.rb>
         <figcaption>Defining a method which takes both optional and required
         arguments.
       </figure>
