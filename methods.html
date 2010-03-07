@@ -45,7 +45,7 @@
 
     <p>An <dfn>instance method</dfn> is a method defined, without an explicit
     receiver, in the context of a class. Instances of this class invoke the
-    method when sent a message with its name as the selector.  Therefore, an
+    method when sent a message with its name as the selector. Therefore, an
     object’s instance methods determine its behaviour.</p>
      
     <aside class=sidenote> 
@@ -53,7 +53,6 @@
       referring to instance methods in documentation and prose. For example:
       <code>Integer#even?</code>.  
     </aside>
-
   </section>
 
   <section>
@@ -97,15 +96,16 @@
         possible to add or remove methods and variables at the level of
         individual objects.</q> (<i>ibid.</i>, pp. 8–10).
         
-        <p>Singleton methods (along with
-        <code>Object#instance_variable_set</code>) afford the same abilities
-        to the ostensibly class-based Ruby. Whereas inheritance allows a class
-        to be created that specializes a more general class, singleton methods
-        allow creation of an object that specializes on a more general object.
-        (Ruby can also support Taivalsaari’s observation that <q
-          cite=/references#refTAIVALSAARI96>…in
-          prototype-based languages object creation usually takes place by
-          copying…</q> (<i>ibid.</i>) through <code>Object#clone</code>). 
+        <p>Singleton methods (along with <a
+          href=/variables#instance-reflection><code>Kernel#instance_variable_set</code></a>)
+        afford the same abilities to the ostensibly class-based Ruby. Whereas
+        inheritance allows a class to be created that specializes a more
+        general class, singleton methods allow creation of an object that
+        specializes on a more general object. (Ruby can also support
+        Taivalsaari’s observation that <q
+          cite=/references#refTAIVALSAARI96>…in prototype-based languages
+          object creation usually takes place by copying…</q> (<i>ibid.</i>)
+        through <a href=/objects#clone><code>Kernel#clone</code></a>). 
        
         <p>The ability to specify per-object behaviour is an improvement Ruby
         made on her predecessors. For example, in the context of Smalltalk <a
