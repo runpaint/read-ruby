@@ -490,7 +490,10 @@ emphasis mine.
     <section>
       <h1 id=rest-parameters>Variable-Length Argument Lists</h1>
 
-      <!-- TODO: Standardise on terms: 'rest' or 'splat' -->
+      <figure class=railroad>
+        <img id=rest-parameter.png>
+        <figcaption>Syntax diagram of the rest parameter
+      </figure>
 
       <p>A <dfn>rest parameter</dfn> (or <dfn>splat parameter</dfn>)
       consumes every argument that follows it while still allowing
@@ -510,19 +513,11 @@ emphasis mine.
       parameter may appear in a parameter list, and any optional parameters
       must precede it.</p>
 
-      <figure class=railroad>
-        <img id=rest-parameter.png>
-        <figcaption>Syntax diagram of the rest parameter
-      </figure>
-
-      <figure class=centre id=rest-arguments.rb>
+      <figure class=left id=rest-arguments.rb>
         <figcaption>Defining a method which takes a variable number of
         arguments.
       </figure>
 
-      <!-- TODO: Discuss def m((a, b), c); end; m [:a, :b], :c 
-                 This would apply to blocks, too. Can we share this
-                 material better? -->
       <p>A rest parameter may be supplied as a sole asterisk, omitting the
       corresponding parameter name.  The effect is to consume the
       corresponding arguments as an ordinary rest parameter, without
@@ -536,7 +531,7 @@ emphasis mine.
       define a method which accepts an arbitrary number of arguments then
       passes them all to its superclass.</p>
 
-      <figure class=centre id=rest-parameter-with-super.rb>
+      <figure class=left id=rest-parameter-with-super.rb>
         <figcaption>A method which accepts a variable number of arguments
         then passes them to its superclass (<code>Parent</code>) with
         <code>super</code>.
@@ -695,6 +690,10 @@ emphasis mine.
         <code>dup</code>’d argument on its caller
       </figure>
     </section>
+
+      <!-- TODO: Discuss def m((a, b), c); end; m [:a, :b], :c 
+                 This would apply to blocks, too. Can we share this
+                 material better? -->
   </section>    
 
   <section>
