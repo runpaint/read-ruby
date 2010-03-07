@@ -591,10 +591,17 @@ emphasis mine.
     <section>
       <h1 id=block-arguments>Block Arguments</h1>
       
+      <figure class=railroad>
+        <img id=block-parameter.png>
+        <figcaption>Syntax diagram of a block parameter
+      </figure>
+
       <p>Any method may be sent a <a href=/messages#block-argument>block
         argument</a>. The block may be <a href=/flow#yield>yielded</a> to,
-      allowing its return value to be captured, or objectified and assigned
-      to a variable.</p>
+      allowing its return value to be captured, or objectified and assigned to
+      a variable. A method may determine whether it has received a block with
+      the <code>Kernel.block_given?</code> predicate.</p>
+
 
       <aside class=sidenote>
         <a class=ref href=/references#refFLAN08>Flanagan &amp; Matsumoto
@@ -608,25 +615,17 @@ emphasis mine.
           block</i>.
       </aside>
 
-      <figure class=centre id=method-invocation-with-block-literal.rb>
+      <figure class=left id=method-invocation-with-block-literal.rb>
         <figcaption>A method which receives, and ignores, a block specified
         with either of the block literal constructs.
       </figure>
        
-      <p>A method may determine whether it has received a block with the
-      <code>block_given?</code> predicate.</p>
-
-      <figure class=centre id=method-using-block-given.rb>
-        <figcaption>A method which uses the <code>block_given?</code>
-        predicate to determine whether it has been passed a block.
-      </figure>
-
       <p>A block passed to a method in this way is not automatically called;
       the method must use the <a href=/flow#yield><code>yield</code></a>
-      keyword to do so. An implication of this is that methods not expecting
-      blocks will ignore them.</p>
+      keyword to do so. An implication is that methods not expecting blocks
+      will ignore them.</p>
 
-      <figure class=centre id=method-using-block-given-yield.rb>
+      <figure class=left id=method-using-block-given-yield.rb>
         <figcaption>A method which uses the <code>block_given?</code>
         predicate to determine whether it has been passed a block, and if so
         calls it.
@@ -641,30 +640,23 @@ emphasis mine.
         href=/flow#yield><code>yield</code></a> to it. In either case, the
       method is invoked in precisely the same way as before.</p>
 
-      <figure class=railroad>
-        <img id=block-parameter.png>
-        <figcaption>Syntax diagram of a block parameter
-      </figure>
-
       <!-- Example with instance_eval ? -->
 
-      <figure class=centre id=method-using-block-argument.rb>
+      <figure class=left id=method-using-block-argument.rb>
         <figcaption>A method which uses a <code>&amp;block</code> parameter
         to refer to the block it is given.
       </figure>
 
-      <aside class=note>
-        <p>The discussion above applies only to block <i>literals</i>; a method
-        expecting a <em>reference</em> to a block, i.e. a <code>proc</code>
-        or <code>lambda</code>, need not pay heed. Such a method employs
-        precisely the same parameter list as in the previous sections.</p>
+      <p>The discussion above applies only to block <i>literals</i>; a method
+      expecting a <em>reference</em> to a block, i.e. a <code>proc</code>
+      or <code>lambda</code>, need not pay heed. Such a method employs
+      precisely the same parameter list as in the previous sections.</p>
 
-        <figure class=centre id=method-receiving-block-ref.rb>
-          <figcaption>A method which expects a reference to a block uses the
-          same parameter list as it would if expecting any other type of
-          variable.
-        </figure>
-      </aside>
+      <figure class=left id=method-receiving-block-ref.rb>
+        <figcaption>A method which expects a reference to a block uses the
+        same parameter list as it would if expecting any other type of
+        variable.
+      </figure>
     </section>
 
     <section>
