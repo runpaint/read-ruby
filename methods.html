@@ -122,7 +122,7 @@ emphasis mine.
   <section>
     <h1 id=return-values>Return Values</h1>
 
-    <p>A method is an invoked with an expression so always returns a value:
+    <p>A method is invoked with an expression so always returns a value:
     the last statement executed, or <code>nil</code> if the method body is
     empty. If this value is an <code>Array</code> the method effectively
     returns multiple values.</p>
@@ -216,7 +216,7 @@ emphasis mine.
 
     <aside class=sidenote>
       Pseudo operators such as <code>+=</code> and <code>||=</code> are
-      neither operator methods or methods; they are <a
+      neither operator methods nor methods; they are <a
         href=/variables#abbreviated-assignment>abbreviated assignment</a>
       operators.
     </aside>
@@ -225,11 +225,11 @@ emphasis mine.
       It is legal for a method name to begin with an uppercase letter, but
       then they may be confused with <a
         href=/variables#constants>constants</a> or class names. In fact,
-      several core classes have methods named this way for precisely this
-      reason: they provide a syntactical shortcut for constructing instances.
-      For example, <code>Array()</code> is a method of <code>Kernel</code>
-      which coerces its argument into an <code>Array</code> object. <!-- Quote
-      from Pickaxe p. 137?--> 
+      several core classes use this convention for precisely this reason: they
+      provide a syntactical shortcut for constructing instances.  For example,
+      <code>Array()</code> is a method of <code>Kernel</code> which coerces
+      its argument into an <code>Array</code> object. <!-- Quote from Pickaxe
+      p. 137?--> 
     </aside>
         
     <figure class=railroad>
@@ -252,7 +252,8 @@ emphasis mine.
     lowercase letter or low line (<code class=u title='_'>U＋005F</code>).</p>
 
     <figure class=centre id=def-non-ascii-name.rb>
-      <figcaption>Defining a method with a non-ASCII name
+      <figcaption>Defining a method with a non-<abbr title='American Standard
+        Code for Information Interchange'>ASCII name
     </figure>
 
     <section>
@@ -289,12 +290,13 @@ emphasis mine.
   <section>
     <h1 id=defining>Defining</h1>
     
-    <p>A method consists of a name, an optional parameter list, and a body.
-    <a href=#method-names>Names</a> have already been discussed, the parameter
-    list is explained in <a href=#method-arguments><i>Arguments</i></a> below.
-    The <dfn title="method body">body</dfn> is a sequence of statements
+    <p>A method consists of a <a href=#names>name</a>, an optional <a
+      href=#arguments>parameter list</a>, and a body. Names have already been
+    discussed, the parameter list is explained in <a
+      href=#method-arguments><i>Arguments</i></a> below.  The <dfn
+      title="method body">body</dfn> is a sequence of statements
     terminated with the <code>end</code> keyword.</p> <!-- TODO: Clarify here
-    that due to method_missing method’s need not be defined before they are
+    that due to method_missing, method’s need not be defined before they are
     called? -->
     
     <figure class=railroad>
@@ -317,7 +319,7 @@ emphasis mine.
     <!-- TODO: Returns value which is not a method object -->
 
     <p>Therefore, <code>def self.<var>name</var></code> defines a <a
-      href=#class-method>class method</a> for the enclosing class. <code>def
+      href=#class>class method</a> for the enclosing class. <code>def
       <var>class</var>.<var>name</var></code> defines a method named
     <var>name</var> on the class named <var>class</var>.</p>
 
@@ -328,8 +330,8 @@ emphasis mine.
 
     <aside class=sidenote>
       Singleton methods cannot be defined on immediate values such as
-      <code>Numeric</code>s and <code>Symbol</code>s. Attempting to do so raises
-      a <code>TypeError</code>.
+      <code>Numeric</code>s and <code>Symbol</code>s. Attempting to do so
+      raises a <code>TypeError</code>.
     </aside>
 
     <section>
@@ -338,11 +340,13 @@ emphasis mine.
       <p>An instance method can be defined dynamically with
       <code>Module#define_method(<var>name</var>, <var>body</var>)</code>,
       where <var>name</var> is the method’s name given as a
-      <code>Symbol</code>, and <var>body</var> is its body given as a
-      <code>Proc</code>, <code>Method</code>, <code>UnboundMethod</code>, or
-      literal block. This allows methods to be defined at runtime, in
-      contrast to <code>def</code> which requires the method name and body
-      to appear literally in the source code.</p>
+      <code>Symbol</code>, and <var>body</var> is its body given as a <a
+        href=/closures><code>Proc</code></a>, <a
+        href=#method-objects><code>Method</code>, <a
+          href=#unboundmethod-objects><code>UnboundMethod</code></a>, or <a
+          href=/closures#proc>block literal</a>. This allows methods to be
+        defined at runtime, in contrast to <code>def</code> which requires the
+        method name and body to appear literally in the source code.</p>
 
       <figure class=centre id=define-method.rb>
         <figcaption>Using <code>define_method</code> to dynamically create a
@@ -853,7 +857,7 @@ emphasis mine.
     </section>
     
     <section>
-      <h1 id=class-methods>Class Methods</h1>
+      <h1 id=class-method-privacy>Class Methods</h1>
 
       <p>A class <!-- "Singleton"? --> method named <var>name</var> can be
       privatised with <code>Module#private_class_method <var>name</var></code>.
