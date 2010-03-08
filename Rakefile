@@ -6,7 +6,6 @@ require 'tempfile'
 CLOBBER.include('out')
 FIGURE_CSS = ['figure.railroad img', 'figure[@id]']
 EXTENSIONS = { '.rb' => '.html', '.ebnf' => '.png'}
-
 directory 'out'
 
 def git_hash
@@ -16,7 +15,7 @@ end
 def headings(s, f, level=1)
   a = ''
   unless (h1 = s.xpath('./h1')).inner_html.empty?
-    href = f.sub(/\.html$/,'') + '#' + h1.first.attributes['id']
+    href = '/' + f + '#' + h1.first.attributes['id']
     a = "<a href=#{href}>#{h1.inner_html.gsub(/ /,'&nbsp;')}</a>"
   end
   titles = [a, 
@@ -28,14 +27,28 @@ def headings(s, f, level=1)
   titles.size == 1 ? titles.first : titles
 end
 
-def all_headings
-  return @chapters if defined?(@chapters)
-  nxt, @chapters = '/index', []
+def all_html_pages
+  all_pages.map{|p| p + '.html'}
+end
+
+def all_pages
+  return @pages if defined?(@pages)
+  nxt, @pages = '/index', []
   while nxt
-    nok = Nokogiri::HTML(File.read ".#{nxt}.html")
-    @chapters << headings(nok.at('section'), nxt) unless nxt.end_with?('index')
+    @pages << page = nxt[1..-1]
+    nok = Nokogiri::HTML(File.read page + '.html')
     nxt = nok.at('link[@rel=next]')
     nxt = nxt['href'] if nxt
+  end
+  @pages.compact
+end
+
+def all_headings
+  return @chapters if defined?(@chapters)
+  @chapters = []
+  all_pages.each do |page|
+    nok = Nokogiri::HTML(File.read page + '.html')
+    @chapters << headings(nok.at('section'), page) unless page.end_with?('index')
   end
   @chapters.compact
 end
@@ -145,9 +158,9 @@ rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies source(t)  }) do |t|
   write_html(nok, t.name)
 end
 
-file 'out/sitemap.xml' => FileList['*.html', 'sitemap.xml'] do |t|
+file 'out/sitemap.xml' => (all_html_pages << 'sitemap.xml') do |t|
   nok = Nokogiri::XML(File.read 'sitemap.xml')
-  FileList['*.html'].reject{|f| f == 'index.html'}.each do |f|
+  (all_html_pages.reject{|f| f == 'index.html'} << '').each do |f|
     nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
       "<url><loc>http://ruby.runpaint.org/#{f.sub(/\.html$/,'')}</loc></url>"
     )
