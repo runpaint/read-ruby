@@ -230,5 +230,11 @@
       values, therefore a <code>TypeError</code> is raised when
       attempting to iterate over it.
     </section>
-
+    <!-- TODO: Example
+module Enumerable
+  def reach(&blk)
+    each {|e| e.respond_to?(:reach) ? e.reach(&blk) : blk[e] }
+  end
+end
+    -->
 </section>
