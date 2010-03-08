@@ -3,6 +3,7 @@ require 'rake/clean'
 require 'nokogiri'
 require 'timeout'
 require 'tempfile'
+require 'uri'
 CLOBBER.include('out')
 FIGURE_CSS = ['figure.railroad img', 'figure[@id]']
 EXTENSIONS = { '.rb' => '.html', '.ebnf' => '.png'}
@@ -158,13 +159,18 @@ rule(%r{^out/.+\.html} => ->(t){ chapter_dependecies source(t)  }) do |t|
   write_html(nok, t.name)
 end
 
-file 'out/sitemap.xml' => (all_html_pages << 'sitemap.xml') do |t|
+file 'out/sitemap.xml' => (all_html_pages.map{|p| "out/#{p}"} << 'sitemap.xml') do |t|
   nok = Nokogiri::XML(File.read 'sitemap.xml')
-  (all_html_pages.reject{|f| f == 'index.html'} << '').each do |f|
-    nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
-      "<url><loc>http://ruby.runpaint.org/#{f.sub(/\.html$/,'')}</loc></url>"
-    )
-  end
+  all_html_pages.map {|h| Nokogiri::HTML(File.read File.join('out', h)).css('a') }.
+      flatten.
+      map{|a| a['href']}.
+      select{|a| a =~ %r{^(/|#)[^/]}}.
+      map{|p| URI.join('http://ruby.runpaint.org/',p).tap{|u| u.fragment = nil}}.
+      uniq.each do |url|
+        nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
+          "<url><loc>#{url.to_s}</loc></url>"
+        )
+      end
   File.open(t.name,'w'){|f| nok.write_to f}
 end
 
