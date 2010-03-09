@@ -165,7 +165,10 @@ file 'out/sitemap.xml' => (all_html_pages.map{|p| "out/#{p}"} << 'sitemap.xml') 
       flatten.
       map{|a| a['href']}.
       select{|a| a =~ %r{^(/|#)[^/]}}.
-      map{|p| URI.join('http://ruby.runpaint.org/',p).tap{|u| u.fragment = nil}}.
+      map{|p| URI.join('http://ruby.runpaint.org/',p).
+        tap{|u| u.fragment = nil}.
+        tap{|u| u.path = (u.path == '/' ? u.path : u.path.sub(%r{/$}, '')) }
+      }.
       uniq.each do |url|
         nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
           "<url><loc>#{url.to_s}</loc></url>"
