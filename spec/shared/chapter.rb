@@ -1,14 +1,12 @@
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
-require_relative './shared/no_compression'
-require_relative './shared/any_page'
-require_relative './shared/compression'
+require_relative './no_compression'
+require_relative './any_page'
+require_relative './compression'
 
-path = '/messages'
-
-describe path do
+shared_examples_for 'A chapter' do
   before(:all) do
-    @url = BASE_URL + path
+    @url = BASE_URL + @chapter.to_s
   end
 
   describe " with compression: " do
