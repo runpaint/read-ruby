@@ -4,6 +4,8 @@ require 'nokogiri'
 require 'timeout'
 require 'tempfile'
 require 'uri'
+require 'rspec/core/rake_task'
+
 CLOBBER.include('out')
 FIGURE_CSS = ['figure.railroad img', 'figure[@id]']
 EXTENSIONS = { '.rb' => '.html', '.ebnf' => '.png'}
@@ -231,3 +233,5 @@ task :upload => :gzip do
   sh "rsync --delete -vazL out/ ruby:/home/public"
   sh 'git push'
 end
+
+Rspec::Core::RakeTask.new

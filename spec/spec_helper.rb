@@ -1,4 +1,4 @@
-require 'spec'
+require 'rspec/core'
 require 'mechanize'
 require 'open-uri'
 require 'zlib'
@@ -28,7 +28,7 @@ def ua_no_gzip
   $ua_no_gzip ||= Mechanize.new.tap{|m| m.gzip_enabled = false}
 end
 
-Spec::Matchers.define :be_a_working_link do |expected|
+Rspec::Matchers.define :be_a_working_link do |expected|
   cached_status = ->(url) do
     begin
       ua_gzip.cached_get(actual).code
