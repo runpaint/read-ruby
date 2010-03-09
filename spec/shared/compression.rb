@@ -1,5 +1,9 @@
 shared_examples_for 'A compressed page' do
 
+  before(:all) do
+    @page = ua_gzip.cached_get(@url)
+  end
+
   it "should have a Content-Encoding header with the value 'gzip'" do
     @page.response['content-encoding'].should == 'gzip'
   end
