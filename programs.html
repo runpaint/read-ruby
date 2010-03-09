@@ -712,17 +712,17 @@ relevant sections
         <ul>
           <li>It is immediately preceded by a reverse solidus (<code
             class=u title='\'>U＋005C</code>).
-          <li>It is preceded by an <a href=/expressions#operators>operator</a>,
+          <li>It is preceded by an <a href=/messages#operators>operator</a>,
           with optional intervening <a href=#whitespace>whitespace</a>.
           <li>It is immediately preceded by a comma (<code class=u
             title=','>U＋002C</code>) or full stop (<code class=u
             title='.'>U＋002E</code>) in a <a href=/messages#expressions>message
-            expression</a> or <a href=/objects#arrays>array</a>/<a
-            href=/objects#hashes>hash</a> literal, with optional intervening
+            expression</a> or <a href=/enumerables#arrays>array</a>/<a
+            href=/enumerables#hashes>hash</a> literal, with optional intervening
           whitespace. 
           <li>The first non-whitespace character on the following line is a full
           stop (<code class=u title='.'>U＋002E</code>). (Allows <a
-            href=/message#chaining>chained</a> message expressions to span
+            href=/messages#chaining>chained</a> message expressions to span
           lines).
         </ul>
       </section>
@@ -818,7 +818,7 @@ relevant sections
         <dt><a href=/methods#return-values><code>return</code></a>
         <dd>Immediately returns control from a method to its caller, along with
         an optional value.
-        <dt><a href=/expressions#self><code>self</code></a>
+        <dt><a href=#self><code>self</code></a>
         <dd>Evaluates to the current object.
         <dt><a href=/methods#super><code>super</code></a>
         <dd>When used in a method body, invokes the method from a parent class
@@ -939,7 +939,7 @@ relevant sections
         <code>Encoding.name_list</code> written in a case insensitive fashion.
 
         <p>The source encoding of the currently executing code can be obtained
-        with the <a href=/expressions#encoding><code>__ENCODING__</code></a>
+        with the <a href=#encoding><code>__ENCODING__</code></a>
         keyword.
       </section>
 
@@ -949,7 +949,7 @@ relevant sections
         <p><dfn>Warnings</dfn>— notices of deprecated, ambiguous, or otherwise
         problematic, code— are enabled when the interpreter is given the
         <code>-w</code> switch, e.g. <code>ruby -w myfile.rb</code>. For
-        example, Ruby warns when a <a href=/expressions#constants>constant</a>
+        example, Ruby warns when a <a href=/variables#constants>constant</a>
         that has already been defined is assigned to.
       </section>
 
