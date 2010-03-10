@@ -201,16 +201,6 @@ file 'out/chapter.css' => FileList['{main,chapter,syntax}.css'] + ['out'] do |t|
   end
 end
 
-task :validate => FileList['out/*.html'] do |t|
-  require 'h5-valid'
-  t.prerequisites.each do |file|
-    validator = HTML5::Validator.new(file)
-    valid = validator.valid? ? 'OK' : "ERRORS (#{validator.errors.size})"
-    puts "#{file}: #{valid}"
-    puts "\t#{validator.errors_str}" unless validator.valid?
-  end
-end
-
 rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
   cp t.source, t.name
 end

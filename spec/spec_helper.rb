@@ -45,3 +45,4 @@ Rspec::Matchers.define :be_a_working_link do |expected|
     "expected that #{actual} would be a working link; status code: #{cached_status[actual]}"
   end
 end
+require 'h5-valid/rspec'

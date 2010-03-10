@@ -28,5 +28,9 @@ shared_examples_for 'An HTML page' do
     end
   end
 
+  it "should be valid HTML5" do
+    @page.body.should be_html5
+  end
+
   it_should_behave_like 'Any page'
 end
