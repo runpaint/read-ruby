@@ -132,11 +132,11 @@ emphasis mine.
       this is distinct from that of invoking the method. 
     </aside>
       
-    <figure class=centre id=def-implicit-return.rb>
+    <figure class=left id=def-implicit-return.rb>
       <figcaption>A method which returns the Symbol <code>:to_sender</code>
     </figure>
 
-    <figure class=centre id=def-implicit-return-multiple.rb>
+    <figure class=left id=def-implicit-return-multiple.rb>
       <figcaption>A method which returns multiple values as an
       <code>Array</code>.
     </figure>
@@ -147,7 +147,7 @@ emphasis mine.
     <code>nil</code> if it has none. If multiple arguments are given they will
     be returned as an <code>Array</code>.</p> 
 
-    <figure class=centre id=def-explicit-return-multiple.rb>
+    <figure class=left id=def-explicit-return-multiple.rb>
       <figcaption>A method which explicitly returns multiple values.
     </figure>
 
@@ -251,7 +251,7 @@ emphasis mine.
     <p>Names that begin with an identifier conventionally begin with a
     lowercase letter or low line (<code class=u title='_'>U＋005F</code>).</p>
 
-    <figure class=centre id=def-non-ascii-name.rb>
+    <figure class=left id=def-non-ascii-name.rb>
       <figcaption>Defining a method with a non-<abbr title='American Standard
         Code for Information Interchange'>ASCII name
     </figure>
@@ -316,7 +316,7 @@ emphasis mine.
       may be used to the same end.
     </aside>
 
-    <figure class=centre id=def-instance-method.rb>
+    <figure class=left id=def-instance-method.rb>
       <figcaption>Defining an instance method named <code>bark</code> for the
       <code>Dog</code> class with the <code>def</code> keyword.
     </figure>
@@ -328,7 +328,7 @@ emphasis mine.
       <var>class</var>.<var>name</var></code> defines a method named
     <var>name</var> on the class named <var>class</var>.</p>
 
-    <figure class=centre id=def-singleton-method.rb>
+    <figure class=left id=def-singleton-method.rb>
       <figcaption>Defining a singleton method named <code>breed</code> for the
       <code>Dog</code> class.
     </figure>
@@ -353,7 +353,7 @@ emphasis mine.
         defined at runtime, in contrast to <code>def</code> which requires the
         method name and body to appear literally in the source code.</p>
 
-      <figure class=centre id=define-method.rb>
+      <figure class=left id=define-method.rb>
         <figcaption>Using <code>define_method</code> to dynamically create a
         method with a user-supplied name and body.
       </figure>
@@ -363,7 +363,7 @@ emphasis mine.
       Alternatively, it can be invoked inside <code>class_eval</code> like
       so:</p>
 
-      <figure class=centre id=define-method-class-eval.rb>
+      <figure class=left id=define-method-class-eval.rb>
         <figcaption>Using <code>define_method</code> inside
         <code>class_eval</code> to dynamically create a method with a
         user-supplied name and body.
@@ -373,7 +373,7 @@ emphasis mine.
       arguments as <code>Module#define_method</code> to define a singleton
       method on the receiver.</p>
 
-      <figure class=centre id=define-singleton-method.rb>
+      <figure class=left id=define-singleton-method.rb>
         <figcaption>Using <code>define_singleton_method</code> to
         dynamically create a method.
       </figure>
@@ -672,7 +672,7 @@ emphasis mine.
       the method modifies an object it receives the caller’s copy is
       modified, too.</p>
 
-      <figure class=centre id=pass-by-reference.rb>
+      <figure class=left id=pass-by-reference.rb>
         <figcaption>The effect of a method’s modification of an argument on
         its caller
       </figure>
@@ -681,7 +681,7 @@ emphasis mine.
         href=/objects#duplication>duplicated</a> to create a copy
       independent of the caller’s.</p>
 
-      <figure class=centre id=pass-by-reference-dup.rb>
+      <figure class=left id=pass-by-reference-dup.rb>
         <figcaption>The effect of a method’s modification of a
         <code>dup</code>’d argument on its caller
       </figure>
@@ -743,7 +743,7 @@ emphasis mine.
       <figcaption>Syntax diagram of the <code>undef</code> statement
     </figure>
 
-    <figure class=centre id=undef-method.rb>
+    <figure class=left id=undef-method.rb>
       <figcaption>Undefining a method with <code>undef</code>.
     </figure>
 
@@ -760,7 +760,7 @@ emphasis mine.
     delegates the request to its superclass, whereas the latter doesn’t.</p>
     
     <!-- Use same example for undef_method so they can be contrasted -->
-    <figure class=centre id=remove-method.rb>
+    <figure class=left id=remove-method.rb>
       <figcaption>Using <code>remove_method</code> to remove a method
       definition from a class, causing the superclass method to be invoked
       in its place.
@@ -934,7 +934,7 @@ emphasis mine.
     strings). <!-- Note that super is preferred when the method is defined in
     a superclass --></p>
 
-    <figure class=centre id=alias-for-wrapping.rb>
+    <figure class=left id=alias-for-wrapping.rb>
       <figcaption>Using <code>alias</code> to wrap a method
     </figure>
 
@@ -983,7 +983,7 @@ emphasis mine.
       their mixins. If a class has multiple modules mixed in, the last one
       included is searched first.</q></p>
 
-    <figure class=centre id=method-lookup.rb>
+    <figure class=left id=method-lookup.rb>
       <figcaption>Identifies the order in which methods are searched when an
       object is sent a message, with 1 being first.
     </figcaption>
@@ -1222,7 +1222,7 @@ emphasis mine.
         <p>Suppose I’ve got a class hierarchy where a method gets
         redefined:</p>
           
-        <figure class=centre id=unboundmethod-black.rb>
+        <figure class=left id=unboundmethod-black.rb>
           <figcaption>A class hierarchy where a method is redefined
         </figure>
 
