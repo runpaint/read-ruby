@@ -197,6 +197,7 @@ end
 
 task :upload => :gzip do
   sh "rsync --delete -vazL out/ ruby:/home/public"
+  Rake::Task[:spec].invoke
   sh 'git push'
 end
 
