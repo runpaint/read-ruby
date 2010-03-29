@@ -1,7 +1,7 @@
 # encoding: utf-8
 class King
   @numeral = Hash.new {|h,k| h[k] = 8543.chr('utf-8') }
-  class << self; attr_accessor :numeral; end
+  singleton_class.class_eval{ attr_accessor :numeral }
 
   def initialize(name)
     King.numeral[@name = name].succ!
