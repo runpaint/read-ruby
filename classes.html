@@ -449,7 +449,44 @@
         <code>Object#methods</code> or <code>Object#instance_methods</code>. They
         are returned as an <code>Array</code> of <code>Symbol</code>s. If either
         method is given an argument of <code>false</code>, superclass methods are
-        omitted.
+        omitted.</p>
+
+        <section>
+          <h1 id=method-defined><code>method_defined?</code> Predicate</h1>
+          
+          <p>The <code>Module#method_defined?</code> predicate accepts a
+          method name as argument and returns <code>true</code> if the named
+          instance method is defined on the receiver; <code>false</code>
+          otherwise. <code>Module#public_method_defined?</code>,
+          <code>Module#private_method_defined?</code>, and
+          <code>Module#protected_method_defined?</code> behave in a similar
+          fashion, but also require the named method to have the corresponding
+          <a href=/methods#visibility>visibility</a>.
+
+          <p>These predicates are clearly similar to <a
+            href=/messages#responding><code>#respond_to?</code></a>
+          but they differ as follows:
+
+          <ul>
+            <li>They test the instance methods of a
+            class or module; <code>#respond_to?</code> tests the methods
+            defined on its receiver.             <li>They can only be used on classes or
+            modules; <code>#respond_to?</code> with any object inheriting from
+            <code>Object</code>.
+            <li>They don’t consult <a
+              href=/methods#respond-to-missing><code>#respond_to_missing?</code></a>—whereas
+            <code>#respond_to?</code> does—which means that they don’t reflect
+            methods defined with <a
+              href=/methods#method-missing><code>method_missing</code></a>.
+            <li>They return <code>true</code> for methods unimplemented on the
+            user’s platform; <code>#respond_to?</code> behaves conversely.
+          </ul>
+
+          <p>Either approach is normally preferable to
+          <code><var>object</var>.methods.include?(<var>selector</var>)</code>,
+          which has all of the disadvantages of <code>#method_defined</code>,
+          in addition to being more verbose and less efficient.
+        </section>
       </section>
 
       <section>
