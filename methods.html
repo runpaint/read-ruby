@@ -334,6 +334,16 @@ emphasis mine.
     </figure>
 
     <section>
+      <h1 id=method-added><code>method_added</code> Callback</h1>
+      
+      <p>When an instance method is defined, the receiver (i.e. the containing
+      class) is sent a <code>:method_added</code> message with the new
+      method’s name as an argument. Similarly, when a singleton method is
+      defined the receiver is sent <code>:singleton_method_added</code>
+      instead.
+    </section>
+
+    <section>
       <h1 id=dynamic-definition>Dynamic Method Definition</h1>
 
       <p>An instance method can be defined dynamically with
