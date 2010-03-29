@@ -726,33 +726,39 @@ emphasis mine.
   <section>
     <h1 id=undefining>Undefining</h1>
 
-    <p>The <code>undef</code> statement takes one or more
-    <code>Symbol</code>s/identifiers as arguments, then undefines the
-    corresponding instance methods. Undefining singleton methods requires
-    <code>undef</code> to be used in the context of the corresponding
-    singleton class.
-
-    <p><dfn title="undefining a method">Undefining</dfn> a method prevents the current
-    class from responding to it. If the method was defined in a superclass,
-    that copy is unaffected. For example, consider a <code>Rectangle</code>
-    class which defines <code>:height</code> and <code>:width</code> methods.
-    A <code>Square</code> class inherits from it, but it doesn’t make sense
-    for <code>Square</code> to have both <code>:height</code> <i>and</i>
-    <code>:width</code> methods. <code>Square</code> can <code>undef</code>
-    <code>:height</code>, preventing <code>Square#height</code> from being
-    called without affecting <code>Rectangle#height</code>.</p>
+    <p><dfn title="undefining a method">Undefining</dfn> a method prevents the
+    current class from responding to it. If the method was defined in a
+    superclass, that copy is unaffected. For example, consider a
+    <code>Rectangle</code> class which defines <code>:height</code> and
+    <code>:width</code> methods.  A <code>Square</code> class inherits from
+    it, but it doesn’t make sense for <code>Square</code> to have both
+    <code>:height</code> <i>and</i> <code>:width</code> methods.
+    <code>Square</code> can <code>undef</code> <code>:height</code>,
+    preventing <code>Square#height</code> from being called without affecting
+    <code>Rectangle#height</code>.</p>
 
     <figure class=railroad>
       <img id=undef-statement.png>
       <figcaption>Syntax diagram of the <code>undef</code> statement
     </figure>
 
+    <p>The <code>undef</code> statement takes one or more
+    <code>Symbol</code>s/identifiers as arguments, then undefines the
+    corresponding instance methods. Undefining singleton methods requires
+    <code>undef</code> to be used in the context of the corresponding
+    singleton class.
+
+    <p>Alternatively, <code>Module#undef_method</code> may be used with the
+    same effect. Unlike <code>undef</code>, <code>undef_method</code> doesn’t
+    accept an identifier as an argument; it expects to receive the method name
+    as a <code>Symbol</code> or <code>String</code>. However,
+    <code>#undef_method</code> has the advantage of being a method, as opposed
+    to <code>undef</code> which is a keyword, which allows it to be used with
+    Ruby’s reflective capabilities.</p>
+
     <figure class=left id=undef-method.rb>
       <figcaption>Undefining a method with <code>undef</code>.
     </figure>
-
-    <!-- Mention Module#undef_method? Does it offer any advantages? Better
-    symetry with remove_method? -->
 
     <section>
       <h1 id=method-undefined><code>method_undefined</code> Callback</h1>
