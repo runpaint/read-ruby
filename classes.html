@@ -282,13 +282,15 @@
         <section>
           <h1 id=nesting>Nesting</h1>
      
-          <!-- TODO: Integrate better with Variables: Constants -->
-          <p>A class may be defined within the body of another class. The fully
-          qualified name of the inner class is
-          <code><var>outer</var>::<var>inner</var></code>, where <var>outer</var> is
-          the name of the enclosing class, and <var>inner</var> that of the
-          enclosed. This <dfn title=nesting>nesting</dfn> behaviour is primarily
-          used for namespacing. Modules are another alternative.
+          <!-- TODO: Integrate better with Variables: Constants --> 
+          <p>A class may be defined within the body of another class. The
+          fully qualified name of the inner class is
+          <code><var>outer</var>::<var>inner</var></code>: the name of the
+          enclosing class (<var>outer</var>) separated from that of the
+          enclosed (<var>inner</var>) with the <a
+            href=/variables#constants-references>scope operator</a>. This
+          <dfn>nesting</dfn> behaviour is primarily used for namespacing, with
+          <a href=/modules>modules</a> being an alternative.
 
           <p>Since class names are constants and constants are inherited, classes
           defined at the top level, as core classes conventionally are, can be
