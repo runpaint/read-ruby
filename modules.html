@@ -156,7 +156,7 @@
     <section>
       <h1 id=inclusion>Inclusion</h1>
 
-      <p><code>Class#include</code> takes one or more module names as
+      <p><code>Module#include</code> takes one or more module names as
       arguments, then mixes them in to the enclosing class. Contrary to
       intuition, the named modules are mixed-in in the reverse order in
       which they are named. That is, <code>include A, B</code> appends the
@@ -164,6 +164,16 @@
       Therefore, if <code>A</code> and <code>B</code> define an instance
       method with the same name, <code>B</code>’s copy will be overwritten
       by <code>A</code>’s.</p>
+
+      <p>Specifically, when used in the context of a class named
+      <var>class</var> <code>#include</code> sends each of its arguments
+      <code>:append_features</code> with <var>class</var> as an argument. The
+      default behaviour is defined by <code>Module#append_features</code>,
+      which adds the named modules to <var>class</var>’s method search path.
+      A corollary is that if a class defines its
+      own <code>#append_features</code> method, it must call
+      <code>super</code> so as to invoke <code>Module#append_features</code>;
+      otherwise, the module is not mixed in.</p>
 
       <section>
         <h1 id=class-include><code>Class#include?</code></h1>
