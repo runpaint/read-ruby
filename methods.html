@@ -753,6 +753,16 @@ emphasis mine.
 
     <!-- Mention Module#undef_method? Does it offer any advantages? Better
     symetry with remove_method? -->
+
+    <section>
+      <h1 id=method-undefined><code>method_undefined</code> Callback</h1>
+      
+      <p>When an instance method is undefined, the receiver (i.e. the
+      containing class) is sent a <code>:method_undefined</code> message with
+      the method’s name as an argument. Similarly, when a singleton method is
+      undefined the receiver is sent <code>:singleton_method_undefined</code>
+      instead.
+    </section>
   </section>
     
   <section>
@@ -774,10 +784,9 @@ emphasis mine.
       <h1 id=method-removed><code>method_removed</code> Callback</h1>
       
       <p>When an instance method is removed, the receiver (i.e. the containing
-      class) is sent a <code>:method_removed</code> message with the new
-      method’s name as an argument. Similarly, when a singleton method is
-      removed the receiver is sent <code>:singleton_method_removed</code>
-      instead.
+      class) is sent a <code>:method_removed</code> message with the method’s
+      name as an argument. Similarly, when a singleton method is removed the
+      receiver is sent <code>:singleton_method_removed</code> instead.
     </section>
   </section>
 
