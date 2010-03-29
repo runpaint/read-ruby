@@ -69,7 +69,6 @@ def write_html(nok, file)
   end
   nok.at('section')['id'] = git_hash()
   File.open(file, 'w'){|f| nok.write_html_to(f, encoding: 'UTF-8')}
-  # Validate?
   if ENV['DEBUG']
     $stderr.puts "Not minifying HTML in debug mode"
   else
@@ -108,30 +107,7 @@ rule(%r{figures/.+\.png$} => ->(t){ source(t) }) do |t|
   sh "optipng #{t.name}"
 end
 
-def raises(file)
-  Tempfile.open('spawn') do |temp|
-    pid = spawn("ruby #{file}", :err => temp.path)
-    begin
-      Timeout.timeout(2) do
-        break if Process.waitpid2(pid).last.success? 
-        /\((?<e>[A-Z][a-z]\w+)\)\n/ =~ (error = temp.read)
-        return e if e and e = Object.const_get(e) and e < Exception
-        SyntaxError
-      end
-    rescue TimeoutError => e
-      Process.kill(:KILL, pid)
-      e.class
-    end
-  end
-end
-
 rule(%r{figures/.+\.html} => ->(t){ source(t) }) do |t|
-  if ex = raises(t.source) and not File.read(t.source).include?(ex.to_s)
-    unless ex == TimeoutError and 
-           File.exist?("timeouts/#{File.basename(t.source)}")
-      raise RuntimeError, "#{ex}: #{t.source}", caller.first
-    end
-  end
   sh "pygmentize -f html -O encoding=utf-8 -o #{t.name} #{t.source}"
   munged = File.read(t.name).sub(/^<div.+pre>/, '<pre class=syntax><code>').
                              sub(/<\/pre><\/div>/,'</code></pre>')

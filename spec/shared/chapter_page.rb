@@ -1,4 +1,5 @@
 require_relative './html_page'
+require 'tempfile'
 
 shared_examples_for 'A chapter page' do
   it "should contain the chapter name in the title" do
@@ -46,6 +47,37 @@ shared_examples_for 'A chapter page' do
 
   it "should assign IDs to each <h1>" do
     (@page.parser.css('h1') - @page.parser.css('h1[id]')).to_a.should == []
+  end
+
+  def raises(file)
+    Tempfile.open('spawn') do |temp|
+      pid = spawn("ruby #{file}", err: temp.path, out: :close)
+      begin
+        Timeout.timeout(2) do
+          break if Process.waitpid2(pid).last.success? 
+          /\((?<e>[A-Z][a-z]\w+)\)\n/ =~ (error = temp.read)
+          return e if e and e = Object.const_get(e) and e < Exception
+          SyntaxError
+        end
+      rescue TimeoutError => e
+        Process.kill(:KILL, pid)
+        e.class
+      end
+    end
+  end
+
+  it "does not contain figures that unexpectedly raise exceptions" do
+    @page.parser.css('figure[id]').each do |fig|
+      next unless fig['id'].end_with?('.rb')
+      file = "figures/#{fig['id']}"
+      if ex = raises(file) and not File.read(file).include?(ex.to_s)
+        if ex == TimeoutError
+          File.should exist("timeouts/#{File.basename fig['id']}")
+        else
+          ex.should_not be_an(Exception)
+        end
+      end
+    end
   end
 
   it_should_behave_like 'An HTML page'
