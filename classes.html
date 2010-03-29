@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>Classes - Read Ruby</title>
-    <meta charset="utf-8"/>
+    <meta charset=utf-8>
     <!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
     <script src="http://html5-now.appspot.com/html5-now.js"></script>
     -->
@@ -338,28 +338,26 @@
       </section>
 
       <section>
-        <!-- TODO: Switch to 'singleton class' after
-        http://redmine.ruby-lang.org/issues/show/1082 has concluded -->
         <h1 id=singleton>Singleton Classes</h1>
       
         <p>Every object is associated with two classes: that with which it was
         instantiated, and an anonymous class specific to the object: its
-        <dfn>singleton class</dfn>. It is the singleton class that holds
-        the object’s singleton methods. Class methods, therefore, are methods
-        defined in the singleton class of a <code>Class</code> object.
+        <dfn>singleton class</dfn>. It is the latter that holds an
+        object’s <a href=/methods#singleton>singleton methods</a>, whose
+        definition was discussed <a href=/methods#defining>previously</a>.</p>
+        
+        <aside class=sidenote>
+          <span class=sidemark>‡</span>Prior to Ruby 1.9.2 the peculiar
+          <code>class &lt;&lt; <var>object</var>…end</code> construct— the
+          <code>class</code> keyword followed by two less-than signs, an
+          expression evaluating to an object, then the class body—was used to
+          open the singleton class of <var>object</var>.
+        </aside>
 
-        <p>The singleton class of an object is opened with the <code>class
-          &lt;&lt; <var>object</var>…end</code> construct: the
-        <code>class</code> keyword followed by two less-than signs, an
-        expression evaluating to an object, then the class body. Methods
-        defined within the body are defined on <var>object</var>. Within a
-        standard class definition, the class’s singleton class can be opened
-        by supplying <code>self</code> as the value for <var>object</var>.
-
-        <p>It is usually clearer to define singleton methods with the <code>def
-          <var>object</var>.<var>method</var></code> syntax rather than
-        explicitly opening <var>object</var>’s singleton class.
-
+        <p>The <code>Kernel#singleton_class</code>‡ method returns the
+        receiver’s singleton class as a <code>Class</code> object. It is
+        typically paired with <code>#class_eval</code> so as to operate within
+        the context of the class. 
         <!-- TODO: Reference priority in lookup algo. -->
       </section>
 
@@ -375,7 +373,7 @@
         an initialization count. Show how to do this with class instance
         variables, e.g.
         self.class.class_eval{ defined?(@count) ? @count += 1 : @count = 1} 
-        Optionally with scalfholding to make accessing class variables from
+        Optionally with scaffolding to make accessing class variables from
         instance methods more palpable
         -->
         <section>
