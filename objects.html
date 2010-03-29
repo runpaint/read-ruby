@@ -338,26 +338,33 @@
     <section>
       <h1 id=duplication>Duplication</h1>
 
-      <p><code>Object#dup</code> performs a shallow copy of the
-      receiver. A new instance of the receiver’s class is allocated,
-      tainted if the original object was, then populated with shallow
-      copies of the receiver’s instance variables. Neither singleton
-      methods nor frozen state are duplicated.  Corresponding instance
-      variables will refer to the same object because they are copied by
-      reference; not referent.
+      <p><code>Object#dup</code> creates a shallow copy of the receiver. A new
+      instance of the receiver’s class is allocated, tainted if the original
+      object was, then populated with shallow copies of the receiver’s
+      instance variables. Neither singleton methods nor frozen state are
+      duplicated<sup>†</sup>. Corresponding instance variables will refer to
+      the same object because they are copied by reference; not referent.</p>
 
-      <p>If the duplicated object responds to
-      <code>:initialize_copy</code>, it will be sent this message with
-      the receiver as an argument. Its return value is ignored. A common
-      use is to perform a deep copy of instance variables by explicitly
-      duplicating them. If an object may only be duplicated under
-      certain circumstances, <code>#initialize_copy</code> may choose to
-      raise an exception.</p>
-
-      <aside class=note>
-        Another way to perform a deep copy of an object is:
-        <code>Marshal.load(Marshal.dump(<var>object</var>))</code>.
+      <aside class=sidenote>
+      <span class=sidemark>†</span>To copy these items use <a
+        href=#cloning><code>Object#clone</code></a> instead.
       </aside>
+
+      <p>If the duplicated object responds to <code>:initialize_dup</code>, it
+      will be sent this message with the receiver as an argument. Its return
+      value is ignored. A common use is to perform a deep copyَ<sup>‡</sup> of
+      instance variables by explicitly duplicating them. If an object may only
+      be duplicated under certain circumstances, <code>#initialize_dup</code>
+      may choose to raise an exception.</p>
+
+      <aside class=sidenote>
+        <span class=sidemark>‡</span>Another way to perform a deep copy of an
+        object is: <code>Marshal.load(Marshal.dump(<var>object</var>))</code>.
+      </aside>
+
+      <p>If an object doesn’t respond to <code>:initialize_dup</code>, but
+      does respond to <code>:initialize_copy</code>, it is sent the latter
+      instead, with the same semantics as <code>:initialize_dup</code>.</p>
 
       <p>Objects that shouldn’t be duplicated can privatise their
       <code>#dup</code> method or define it to raise an informative exception
@@ -370,10 +377,13 @@
     <section>
       <h1 id=cloning>Cloning</h1>
     
-      <p><code>Kernel#clone</code> behaves like <code>Kernel#dup</code>
-      except it also copies singleton methods and frozen state.
-      Therefore, cloning creates a more faithful copy of the receiver
-      than duplication.
+      <p><code>Kernel#clone</code>, behaves like
+      <a href=#duplication><code>Kernel#dup</code></a> except it:
+
+      <ul>
+        <li>Also copies singleton methods and frozen state.
+        <li>Doesn’t send <code>:initialize_dup</code> to its receiver.
+      </ul>
 
       <!-- TODO: The obvious example is prototypical programming, but we also
       discuss that in Methods... -->
