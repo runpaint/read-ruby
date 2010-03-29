@@ -54,13 +54,12 @@ emphasis mine.
 
     <p>A <dfn>singleton method</dfn> is a method defined in the context of an
     object’s <a href=/classes#singleton>singleton nclass</a>. It is commonly
-    described as a method defined on a specific object, rather than all
+    described as a method defined on a specific object, rather than on all
     instances of a certain class.</p>
 
     <section>
       <h1 id=class>Class Methods</h1>
 
-      <!-- This duplicates slightly material in Classes: Singleton Classes -->
       <p>Singleton methods defined on <code>Class</code> objects are known
       as <dfn title="class method">class methods</dfn>. For example,
       <code>File.absolute_path</code> is a class method defined on the
@@ -79,6 +78,7 @@ emphasis mine.
     <section>
       <h1 id=per-object-behaviour>Per-Object Behaviour</h1>
 
+      <!-- TODO: Blockquote below? -->
       <p><q>In [the] prototype-based [programming] paradigm…there are no
       classes. Rather, new kinds of objects are formed more directly by
       composing concrete, full-fledged objects, which are often referred to
@@ -363,9 +363,9 @@ emphasis mine.
         user-supplied name and body.
       </figure>
         
-      <p><code>Object#define_singleton_method</code> is called with a class
-      name as the receiver and the same arguments as
-      <code>Module#define_method</code> for the obvious purpose.</p>
+      <p><code>Kernel#define_singleton_method</code> is called with the same
+      arguments as <code>Module#define_method</code> to define a singleton
+      method on the receiver.</p>
 
       <figure class=centre id=define-singleton-method.rb>
         <figcaption>Using <code>define_singleton_method</code> to
