@@ -218,14 +218,25 @@
       <h1 id=extension>Extension</h1>
       
       <p>A module may be mixed-in to any object through the use of
-      <code>Class#extend</code> which, like <a
-        href=#inclusion><code>Class#include</code></a>, takes one or more
+      <code>Kernel#extend</code> which, like <a
+        href=#inclusion><code>Module#include</code></a>, takes one or more
       module names as arguments. The features of each module are appended to
       the <a href=/classes#singleton>singleton class</a> of the receiver,
       providing the <a href=/methods#per-object-behaviour>per-object
         behaviour</a> of <a href=/methods#singleton-method>singleton
         methods</a>.</p>
 
+      <p><code>Kernel#extend</code> sends each of its arguments an
+      <code>:extend_object</code> message with the receiver as an argument.
+      The default behaviour is provided by <code>Module#extend_object</code>,
+      which <a href=#inclusion>includes</a> the module into the receiver’s
+      singleton class, then sends the <a
+        href=#extended><code>:extended</code></a> message to each module. As
+      with <code>Module#append_features</code>, modules which define their own
+      <code>#append_features</code> methods must employ <code>super</code> to
+      actually effect the extension.</p>
+      
+      <!-- TODO: Explain extended callback -->
       <figure class=left id=extend-class.rb>
         <figcaption>Using <code>#extend</code> to mix‐in a class method.
       </figure>
