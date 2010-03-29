@@ -769,7 +769,18 @@ emphasis mine.
       definition from a class, causing the superclass method to be invoked
       in its place.
     </figure>
+    
+    <section>
+      <h1 id=method-removed><code>method_removed</code> Callback</h1>
+      
+      <p>When an instance method is removed, the receiver (i.e. the containing
+      class) is sent a <code>:method_removed</code> message with the new
+      method’s name as an argument. Similarly, when a singleton method is
+      removed the receiver is sent <code>:singleton_method_removed</code>
+      instead.
+    </section>
   </section>
+
   <section>
     <h1 id=visibility>Visibility</h1>
 
