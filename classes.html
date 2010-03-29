@@ -347,15 +347,15 @@
         definition was discussed <a href=/methods#defining>previously</a>.</p>
         
         <aside class=sidenote>
-          <span class=sidemark>‡</span>Prior to Ruby 1.9.2 the peculiar
+          <span class=sidemark>†</span>Prior to Ruby 1.9.2 the peculiar
           <code>class &lt;&lt; <var>object</var>…end</code> construct— the
           <code>class</code> keyword followed by two less-than signs, an
           expression evaluating to an object, then the class body—was used to
           open the singleton class of <var>object</var>.
         </aside>
 
-        <p>The <code>Kernel#singleton_class</code>‡ method returns the
-        receiver’s singleton class as a <code>Class</code> object. It is
+        <p>The <code>Kernel#singleton_class</code><sup>†</sup> method returns
+        the receiver’s singleton class as a <code>Class</code> object. It is
         typically paired with <code>#class_eval</code> so as to operate within
         the context of the class. 
         <!-- TODO: Reference priority in lookup algo. -->
