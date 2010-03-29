@@ -340,21 +340,30 @@
       <section>
         <h1 id=singleton>Singleton Classes</h1>
       
+        <aside class=sidenote>
+          <span class=sidemark>†</span><a href=/references#refFLAN08>Flanagan
+            &amp; Matsumoto</a> (2008, pp. 257–258) use the term
+          <i>eigenclass</i>, instead, but the preferred nomenclature is now
+          <i>singleton class</i>. See <a
+            href=//redmine.ruby-lang.org/issues/show/1082>Feature #1082: add
+            Object#singleton_class method</a> for the background.
+        </aside>
+
         <p>Every object is associated with two classes: that with which it was
         instantiated, and an anonymous class specific to the object: its
-        <dfn>singleton class</dfn>. It is the latter that holds an
+        <dfn>singleton class</dfn><sup>†</sup>. It is the latter that holds an
         object’s <a href=/methods#singleton>singleton methods</a>, whose
         definition was discussed <a href=/methods#defining>previously</a>.</p>
         
         <aside class=sidenote>
-          <span class=sidemark>†</span>Prior to Ruby 1.9.2 the peculiar
+          <span class=sidemark>‡</span>Prior to Ruby 1.9.2 the peculiar
           <code>class &lt;&lt; <var>object</var>…end</code> construct— the
           <code>class</code> keyword followed by two less-than signs, an
           expression evaluating to an object, then the class body—was used to
           open the singleton class of <var>object</var>.
         </aside>
 
-        <p>The <code>Kernel#singleton_class</code><sup>†</sup> method returns
+        <p>The <code>Kernel#singleton_class</code><sup>‡</sup> method returns
         the receiver’s singleton class as a <code>Class</code> object. It is
         typically paired with <code>#class_eval</code> so as to operate within
         the context of the class. 
