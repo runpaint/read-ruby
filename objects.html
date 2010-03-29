@@ -377,12 +377,12 @@
     <section>
       <h1 id=cloning>Cloning</h1>
     
-      <p><code>Kernel#clone</code>, behaves like
-      <a href=#duplication><code>Kernel#dup</code></a> except it:
-
-      <ul>
-        <li>Also copies singleton methods and frozen state.
-        <li>Doesn’t send <code>:initialize_dup</code> to its receiver.
+      <p><code>Kernel#clone</code>, behaves like <a
+        href=#duplication><code>Kernel#dup</code></a> except it also copies
+      singleton methods and frozen state. Further, instead of sending
+      <code>:initialize_dup</code> to its receiver it sends
+      <code>:initialize_clone</code>, falling back to
+      <code>:initialize_copy</code>, if the former isn’t defined.
       </ul>
 
       <!-- TODO: The obvious example is prototypical programming, but we also
