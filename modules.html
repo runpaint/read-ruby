@@ -169,11 +169,31 @@
       <var>class</var> <code>#include</code> sends each of its arguments
       <code>:append_features</code> with <var>class</var> as an argument. The
       default behaviour is defined by <code>Module#append_features</code>,
-      which adds the named modules to <var>class</var>’s method search path.
-      A corollary is that if a class defines its
-      own <code>#append_features</code> method, it must call
-      <code>super</code> so as to invoke <code>Module#append_features</code>;
-      otherwise, the module is not mixed in.</p>
+      which adds the named modules to <var>class</var>’s method search path
+      then sends the <a href=#included><code>:included</code></a> message to
+      each. A corollary is that if a class defines its own
+      <code>#append_features</code> method, it must call <code>super</code> so
+      as to invoke <code>Module#append_features</code>; otherwise, the module
+      is not mixed in.</p>
+
+      <section>
+        <h1 id=included><code>included</code> Callback</h1>
+        
+        <p>When a module has been included in a class it is sent a message
+        named <code>:included</code>, with the class name as an argument. This
+        allows the module to perform initialization such as dynamically adding
+        additional methods or variables to the named class. Be aware, however,
+        that <code>:included</code> is sent every time
+        <code>Module#include</code> is used, even if the module is already
+        included in the class. If the callback is intended to only run on the
+        original inclusion, it must arrange for this itself.
+
+        <p><code>:included</code> is sent <em>after</em> the module has been
+        included, so it is powerless to prevent the inclusion or otherwise
+        condition it on some prerequisite. Its return value
+        is ignored; <code>Module#include</code> always returns the class
+        object in which it is used. 
+      </section>
 
       <section>
         <h1 id=class-include><code>Class#include?</code></h1>
