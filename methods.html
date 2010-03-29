@@ -307,8 +307,14 @@ emphasis mine.
     <p>If <code><var>expression</var>.</code> is omitted, an <a
       href=#instance-method>instance method</a> named <var>symbol</var> is
     defined on the enclosing class; otherwise a <a
-      href=#singleton-method>singleton method</a> named <var>symbol</var> is
-    defined on <var>expression</var>.</p>
+      href=#singleton-method>singleton method</a><span>‡</span> named
+    <var>symbol</var> is defined on <var>expression</var>.</p>
+
+    <aside class=sidenote>
+    <span class=sidemark>‡</span><a
+      href=#dynamic-definition><code>Kernel#define_singleton_method</code></a>
+      may be used to the same end.
+    </aside>
 
     <figure class=centre id=def-instance-method.rb>
       <figcaption>Defining an instance method named <code>bark</code> for the
