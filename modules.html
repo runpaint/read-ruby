@@ -236,10 +236,19 @@
       <code>#append_features</code> methods must employ <code>super</code> to
       actually effect the extension.</p>
       
-      <!-- TODO: Explain extended callback -->
       <figure class=left id=extend-class.rb>
         <figcaption>Using <code>#extend</code> to mix‐in a class method.
       </figure>
+
+      <section>
+        <h1 id=extended><code>extended</code> Callback</h1>
+
+        <p>Extending an object causes an <code>:extended</code> message to be
+        sent to the named module with the object as an argument. This callback
+        behaves in the same way as <a
+          href=#included><code>:included</code></a>, so the discussion there
+        applies too.
+      </section>
 
       <!-- TODO: Explain chainability; link with Scala traits -->
       <section>
