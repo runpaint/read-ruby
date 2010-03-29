@@ -1448,10 +1448,13 @@
       <h1 id=responding>Responding to Messages</h1>
 
       <!-- Is this definition sane? --> <p>An object is said to <i>respond
-        to</i> a given selector if it expects to receive it as a message. The
+      to</i> a given selector if it expects to receive it as a message. The
       <code>Kernel#respond_to?(<var>selector</var>)</code> predicate returns
       <code>true</code> if a method is defined with the same name as the
-      selector; <code>false</code> otherwise.</p>
+      selector; <code>false</code> otherwise. In some situations, <a
+      href=/classes#method-defined><code>Module#method_defined?</code></a> is
+      an alternative, for the reasons outlined in its
+      description.</p>
 
       <figure class=left id=respond-to.rb>
         <figcaption>An object <i>responds to</i> selectors for which a
