@@ -353,8 +353,13 @@
         instantiated, and an anonymous class specific to the object: its
         <dfn>singleton class</dfn><sup>†</sup>. It is the latter that holds an
         object’s <a href=/methods#singleton>singleton methods</a>, whose
-        definition was discussed <a href=/methods#defining>previously</a>.</p>
+        definition was discussed <a href=/methods#defining>previously</a>.
         
+        <p>Instances of the <code>Integer</code>, <code>Float</code>, and
+        <code>Symbol</code> classes are the only objects not to have a
+        singleton class; attempting to open one causes a <code>TypeError</code>
+        to be raised.</p>
+
         <aside class=sidenote>
           <span class=sidemark>‡</span>Prior to Ruby 1.9.2 the peculiar
           <code>class &lt;&lt; <var>object</var>…end</code> construct— the
