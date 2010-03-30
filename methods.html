@@ -694,34 +694,34 @@ emphasis mine.
       <!-- TODO: Discuss def m((a, b), c); end; m [:a, :b], :c 
                  This would apply to blocks, too. Can we share this
                  material better? -->
+    <section>
+      <h1 id=arity>Arity</h1>
+
+      <p>The arity of a method is the number of arguments it takes. If the
+      method expects a fixed number of arguments, this number is its arity.  If
+      the method expects a variable number of arguments, its arity is the
+      additive inverse of its parameter count. Methods implemented in C, i.e.
+      most core methods, have an arity of <code>-1</code> if they accept a
+      variable number of parameters. It follows, then, that an arity ≥ 0
+      indicates a fixed number of parameters; a negative value, a variable
+      number. <code>Method</code> and <code>Proc</code> objects have
+      <code>#arity</code> methods which return the arity for the method/proc it
+      objectifies.</p>
+
+      <section>
+        <h1 id=classification-by-arity>Classification by Arity</h1>
+
+        <p>Methods with fixed arities can be classified as follows: A
+        <dfn>unary method</dfn> expects exactly one operand (its receiver),
+        a <dfn>binary method</dfn> requires two (its receiver and one
+        argument), <dfn>ternary-method</dfn> requires exactly three (its
+        receiver and two arguments), an <dfn><var>n</var>-ary method</dfn>
+        requires <var>n</var> operands (its receiver, and <var>n</var>-1
+        arguments).</p>
+      </section>
+    </section>
   </section>    
 
-  <section>
-    <h1 id=arity>Arity</h1>
-
-    <p>The arity of a method is the number of arguments it takes. If the
-    method expects a fixed number of arguments, this number is its arity.  If
-    the method expects a variable number of arguments, its arity is the
-    additive inverse of its parameter count. Methods implemented in C, i.e.
-    most core methods, have an arity of <code>-1</code> if they accept a
-    variable number of parameters. It follows, then, that an arity ≥ 0
-    indicates a fixed number of parameters; a negative value, a variable
-    number. <code>Method</code> and <code>Proc</code> objects have
-    <code>#arity</code> methods which return the arity for the method/proc it
-    objectifies.</p>
-
-    <section>
-      <h1 id=classification-by-arity>Classification by Arity</h1>
-
-      <p>Methods with fixed arities can be classified as follows: A
-      <dfn>unary method</dfn> expects exactly one operand (its receiver),
-      a <dfn>binary method</dfn> requires two (its receiver and one
-      argument), <dfn>ternary-method</dfn> requires exactly three (its
-      receiver and two arguments), an <dfn><var>n</var>-ary method</dfn>
-      requires <var>n</var> operands (its receiver, and <var>n</var>-1
-      arguments).</p>
-    </section>
-  </section>
     
   <section>
     <h1 id=undefining>Undefining</h1>
