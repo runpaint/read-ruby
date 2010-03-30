@@ -3,7 +3,7 @@ require 'mechanize'
 require 'open-uri'
 require 'zlib'
 
-HOST = 'ruby.runpaint.org'
+HOST = ENV['READ_RUBY_HOST'] or fail "Set READ_RUBY_HOST"
 BASE_URL = URI.parse('http://' + HOST + '/')
 
 class Mechanize

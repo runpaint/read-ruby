@@ -195,10 +195,22 @@ task :gzip => :default do
   end
 end
 
-task :upload => [:clobber, :gzip] do
+task :spec => :local_spec
+
+task :local_spec do
+  ENV['READ_RUBY_HOST'] = 'read-ruby'
+  Rake::Task[:rspec].invoke
+end
+
+task :live_spec do
+  ENV['READ_RUBY_HOST'] = 'ruby.runpaint.org'
+  Rake::Task[:rspec].invoke
+end
+
+task :upload => [:clobber, :gzip, :local_spec] do
   sh "rsync --delete -vazL out/ ruby:/home/public"
-  Rake::Task[:spec].invoke
+  Rake::Task[:live_spec].invoke
   sh 'git push'
 end
 
-Rspec::Core::RakeTask.new
+Rspec::Core::RakeTask.new(:rspec)
