@@ -22,7 +22,8 @@ describe " /sitemap" do
   end
   
   it "should link to the root page" do
-    @urls.should include(BASE_URL)
+    live_url = BASE_URL.tap{|u| u.host = 'ruby.runpaint.org'}
+    @urls.should include(live_url)
   end
   
   it "should link to ToC chapters" do
