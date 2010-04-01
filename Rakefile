@@ -166,17 +166,24 @@ end
 class Book
   CHAPTERS = %w{modules programs classes flow messages closures 
                 methods objects variables}
-  def build
-    chapters.each{|c| c.write}
-    toc = ToC.new(chapters)
-    toc.write
-    root = Root.new(ToC.new(chapters, 2).toc)
-    root.write
-    Sitemap.new(chapters << chapters.map(&:dependencies) << toc << root).write
-  end
-
   def chapters
     @chapters ||= CHAPTERS.map{|c| Chapter.new c}
+  end
+
+  def root
+    @root ||= Root.new(ToC.new(chapters, 2).toc)
+  end
+
+  def toc
+    @toc ||= ToC.new(chapters)
+  end
+
+  def sitemap
+    @sitemap ||= Sitemap.new(chapters + chapters.map(&:dependencies) << toc << root)
+  end
+
+  def dependencies
+    (chapters.dup << toc << root << sitemap).flatten 
   end
 end
 
@@ -224,19 +231,21 @@ class Root < Page
 end
 
 class Sitemap
-  attr_reader :pages
+  attr_reader :pages, :source, :target
   def initialize(pages)
     @pages = pages
+    @source = 'sitemap.xml'
+    @target = 'out/sitemap.xml'
   end
 
   def write
-    nok = Nokogiri::XML(File.read 'sitemap.xml')
+    nok = Nokogiri::XML(File.read source)
     pages.flatten.map do |page|
       nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
         "<url><loc>#{page.url}</loc></url>"
       )
     end
-    File.open('out/sitemap.xml','w'){|f| nok.write_to f}
+    File.open(target,'w'){|f| nok.write_to f}
   end
 end
 
@@ -271,8 +280,31 @@ FileList['*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
   output_files << (f_out = 'out/' + f)
 end
 
-task :default => output_files do
-  Book.new.build
+book = Book.new
+book.chapters.each do |chapter|
+  file chapter.target => (chapter.dependencies.map(&:target) << chapter.source) do
+    warn "In #{chapter.source} task"
+    chapter.write
+  end
+end
+chapters = book.chapters.map(&:target)
+file book.root.target => chapters.dup << book.root.source do
+  warn "Writing /index.html"
+  book.root.write
+end
+
+file book.toc.target => chapters.dup << book.toc.source do
+  warn "Writing /toc.html"
+  book.toc.write
+end
+
+file book.sitemap.target => chapters.dup << book.sitemap.source do
+  warn "Writing /sitemap"
+  book.sitemap.write
+end
+
+task :default => output_files + book.dependencies.map(&:target) do
+ warn "In default task" 
 end
 
 task :spec => :local_spec
