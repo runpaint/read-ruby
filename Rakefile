@@ -1,8 +1,6 @@
 # encoding: utf-8
 require 'rake/clean'
 require 'nokogiri'
-require 'timeout'
-require 'tempfile'
 require 'uri'
 require 'rspec/core/rake_task'
 
@@ -21,14 +19,9 @@ class Page
   end
 
   def write
-    return if exists?
     data = contents
     File.open(target, 'w'){|f| f.print data}
     minify
-  end
-
-  def exists?
-    File.exists? target
   end
 
   def url
@@ -69,26 +62,6 @@ class Chapter < Page
     titles.size == 1 ? titles.first : titles
   end
 
-  def create
-    nok.css('figure').map do |fig|
-      if fig['id'] and fig['id'].end_with?('.rb')
-          example = dependencies.select{|d| d.source.end_with? fig['id']}.first
-          example.write
-          contents = example.contents
-          fig.at("figcaption").before(example.contents)
-      elsif fig['class'] == 'railroad' 
-        fig.css('img').each do |img|
-          railroad = dependencies.select{|d| d.target.end_with? img['id']}.first
-          railroad.write
-          img['src'] = railroad.url.path
-          img.delete('id')
-          / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{railroad.target}`
-          img['width'], img['height'] = width, height
-        end
-      end
-    end
-  end
-
   def dependencies
     @deps ||= nok.css('figure').map do |fig|
       if fig['id'] and fig['id'].end_with?('.rb')
@@ -99,12 +72,21 @@ class Chapter < Page
     end.flatten.compact
   end
 
-  def exists?
-    super and dependencies.all?{|d| d.exists?}
-  end
-
   def contents
-    create
+    nok.css('figure').map do |fig|
+      if fig['id'] and fig['id'].end_with?('.rb')
+          example = dependencies.select{|d| d.source.end_with? fig['id']}.first
+          fig.at("figcaption").before(example.contents)
+      elsif fig['class'] == 'railroad' 
+        fig.css('img').each do |img|
+          railroad = dependencies.select{|d| d.target.end_with? img['id']}.first
+          img['src'] = railroad.url.path
+          img.delete('id')
+          / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{railroad.target}`
+          img['width'], img['height'] = width, height
+        end
+      end
+    end
     nok.to_s
   end
 end
@@ -115,19 +97,18 @@ class Example < Page
     super(@source, @source.sub(/\.rb$/, '.html'))
   end
     
-  def create
-    return if exists?
+  def minify?
+  end
+
+  def write
     system "pygmentize -f html -O encoding=utf-8 -o #{target} #{source}"
     munged = File.read(target).sub(/^<div.+pre>/, '<pre class=syntax><code>').
                                     sub(/<\/pre><\/div>/,'</code></pre>')
     File.open(target, 'w'){|f| f.print %{<a href=#{url.path}>#{munged}</a>}}
-  end
-
-  def minify?
+    super
   end
 
   def contents
-    create
     File.read target
   end
 
@@ -144,13 +125,8 @@ class Railroad
     @target = File.join('railroads', png)
     @source = @target.sub(/\.png$/, '.ebnf')
   end
-    
-  def exists?
-    File.exists?(target)
-  end
 
   def write
-    return if exists?
     images = PNGrammar.new(source).images
     raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
     raise "Couldn't make PNG for #{png}" unless images.values.first
@@ -195,9 +171,7 @@ class ToC < Page
   end
 
   def headings
-    chapters.reject{|c| c.name == 'index'}.map do |c|
-      c.headings
-    end.compact
+    chapters.reject{|c| c.name == 'index'}.map(&:headings).compact
   end
 
   def toc(toc=nil, depth=nil)
@@ -235,7 +209,7 @@ class Sitemap
   def initialize(pages)
     @pages = pages
     @source = 'sitemap.xml'
-    @target = 'out/sitemap.xml'
+    @target = File.join('out', @source)
   end
 
   def write
@@ -274,7 +248,7 @@ rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
   cp t.source, t.name
 end
 
-output_files = ['out', 'out/chapter.css', 'out/main.css', 'out/railroads', 'out/examples']
+output_files = ['out', 'out/main.css', 'out/railroads', 'out/examples']
 FileList['*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
   next if f.start_with?('_')
   output_files << (f_out = 'out/' + f)
@@ -282,30 +256,36 @@ end
 
 book = Book.new
 book.chapters.each do |chapter|
+  chapter.dependencies.each do |dep|
+    file dep.target => dep.source do
+      warn "In #{dep.target}"
+      dep.write
+    end
+  end
   file chapter.target => (chapter.dependencies.map(&:target) << chapter.source) do
-    warn "In #{chapter.source} task"
+    warn "In #{chapter.target}"
     chapter.write
   end
 end
+
 chapters = book.chapters.map(&:target)
+
 file book.root.target => chapters.dup << book.root.source do
-  warn "Writing /index.html"
+  warn "In #{book.root.target}"
   book.root.write
 end
 
 file book.toc.target => chapters.dup << book.toc.source do
-  warn "Writing /toc.html"
+  warn "In #{book.toc.target}"
   book.toc.write
 end
 
 file book.sitemap.target => chapters.dup << book.sitemap.source do
-  warn "Writing /sitemap"
+  warn "In #{book.sitemap.target}"
   book.sitemap.write
 end
 
-task :default => output_files + book.dependencies.map(&:target) do
- warn "In default task" 
-end
+task :default => output_files + book.dependencies.map(&:target)
 
 task :spec => :local_spec
 
