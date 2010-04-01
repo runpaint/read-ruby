@@ -6,6 +6,8 @@ require 'tempfile'
 require 'uri'
 require 'rspec/core/rake_task'
 
+ROOT_URL = URI.parse 'http://ruby.runpaint.org/'
+
 class Page
   attr_accessor :source, :target, :nok
   def initialize(source, target=nil)
@@ -27,6 +29,10 @@ class Page
 
   def exists?
     File.exists? target
+  end
+
+  def url
+    ROOT_URL.tap{|u| u.path = '/' + target.sub(%r{out/},'').sub(%r{\.html$},'') }
   end
 
   def minify?
@@ -66,21 +72,35 @@ class Chapter < Page
   def create
     nok.css('figure').map do |fig|
       if fig['id'] and fig['id'].end_with?('.rb')
-          example = Example.new(fig['id'])
+          example = dependencies.select{|d| d.source.end_with? fig['id']}.first
           example.write
           contents = example.contents
           fig.at("figcaption").before(example.contents)
       elsif fig['class'] == 'railroad' 
         fig.css('img').each do |img|
-          railroad = Railroad.new(img['id'])
+          railroad = dependencies.select{|d| d.target.end_with? img['id']}.first
           railroad.write
-          img['src'] = '/' + railroad.target
+          img['src'] = railroad.url.path
           img.delete('id')
           / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{railroad.target}`
           img['width'], img['height'] = width, height
         end
       end
     end
+  end
+
+  def dependencies
+    @deps ||= nok.css('figure').map do |fig|
+      if fig['id'] and fig['id'].end_with?('.rb')
+        Example.new(fig['id'])
+      elsif fig['class'] == 'railroad' 
+        fig.css('img').map{|img| Railroad.new(img['id'])}
+      end
+    end.flatten.compact
+  end
+
+  def exists?
+    super and dependencies.all?{|d| d.exists?}
   end
 
   def contents
@@ -100,7 +120,7 @@ class Example < Page
     system "pygmentize -f html -O encoding=utf-8 -o #{target} #{source}"
     munged = File.read(target).sub(/^<div.+pre>/, '<pre class=syntax><code>').
                                     sub(/<\/pre><\/div>/,'</code></pre>')
-    File.open(target, 'w'){|f| f.print %{<a href=/#{source}>#{munged}</a>}}
+    File.open(target, 'w'){|f| f.print %{<a href=#{url.path}>#{munged}</a>}}
   end
 
   def minify?
@@ -109,6 +129,10 @@ class Example < Page
   def contents
     create
     File.read target
+  end
+
+  def url
+    super.tap{|u| u.path = u.path + '.rb'}
   end
 end
 
@@ -121,23 +145,34 @@ class Railroad
     @source = @target.sub(/\.png$/, '.ebnf')
   end
     
+  def exists?
+    File.exists?(target)
+  end
+
   def write
-    return if File.exists?(target)
+    return if exists?
     images = PNGrammar.new(source).images
     raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
     raise "Couldn't make PNG for #{png}" unless images.values.first
     File.open(target, 'w'){|f| f.print images.values.first}
     system "optipng #{target}"
   end
+
+  def url
+    ROOT_URL.tap{|u| u.path = '/' + target.sub(/\.png$/,'')}
+  end
 end
 
 class Book
-  CHAPTERS = %w{enumerables modules programs text classes flow messages 
-                numerics closures methods objects variables}
+  CHAPTERS = %w{modules programs classes flow messages closures 
+                methods objects variables}
   def build
     chapters.each{|c| c.write}
-    ToC.new(chapters).write
-    Root.new(ToC.new(chapters, 2).toc).write
+    toc = ToC.new(chapters)
+    toc.write
+    root = Root.new(ToC.new(chapters, 2).toc)
+    root.write
+    Sitemap.new(chapters << chapters.map(&:dependencies) << toc << root).write
   end
 
   def chapters
@@ -182,6 +217,27 @@ class Root < Page
   def contents
     nok.tap{|n| n.at('section > section > h1').after(front_toc)}
   end
+
+  def url
+    super.tap{|u| u.path = '/'}
+  end
+end
+
+class Sitemap
+  attr_reader :pages
+  def initialize(pages)
+    @pages = pages
+  end
+
+  def write
+    nok = Nokogiri::XML(File.read 'sitemap.xml')
+    pages.flatten.map do |page|
+      nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
+        "<url><loc>#{page.url}</loc></url>"
+      )
+    end
+    File.open('out/sitemap.xml','w'){|f| nok.write_to f}
+  end
 end
 
 CLOBBER.include('out')
@@ -190,27 +246,6 @@ directory 'out'
 rule(%r{^out/google} => ->(t){ source t }) do |t|
   cp t.source, t.name
 end
-
-warn "Sitemap unimplemented"
-=begin
-file 'out/sitemap.xml' => (all_html_pages.map{|p| "out/#{p}"} << 'sitemap.xml') do |t|
-  nok = Nokogiri::XML(File.read 'sitemap.xml')
-  all_html_pages.map {|h| Nokogiri::HTML(File.read File.join('out', h)).css('a') }.
-      flatten.
-      map{|a| a['href']}.
-      select{|a| a =~ %r{^(/|#)[^/]}}.
-      map{|p| URI.join('http://ruby.runpaint.org/',p).
-        tap{|u| u.fragment = nil}.
-        tap{|u| u.path = (u.path == '/' ? u.path : u.path.sub(%r{/$}, '')) }
-      }.
-      uniq.each do |url|
-        nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
-          "<url><loc>#{url.to_s}</loc></url>"
-        )
-      end
-  File.open(t.name,'w'){|f| nok.write_to f}
-end
-=end
 
 %w{examples railroads}.each do |dir|
   out_dir = File.join('out', dir)
@@ -230,13 +265,13 @@ rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
   cp t.source, t.name
 end
 
-output_files = ['out', 'out/chapter.css', 'out/main.css']
-FileList['*.xml', '*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
+output_files = ['out', 'out/chapter.css', 'out/main.css', 'out/railroads', 'out/examples']
+FileList['*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
   next if f.start_with?('_')
   output_files << (f_out = 'out/' + f)
 end
 
-task :default => [*output_files, '_script.html'] do
+task :default => output_files do
   Book.new.build
 end
 
@@ -252,7 +287,7 @@ task :live_spec do
   Rake::Task[:rspec].execute
 end
 
-task :upload => [:clobber, :gzip, :local_spec] do
+task :upload => [:clobber, :local_spec] do
   sh "rsync --delete -vazL out/ ruby:/home/public"
   sleep 2
   Rake::Task[:live_spec].execute

@@ -128,8 +128,8 @@ figure.railroad > img {
   display: block;
 }
 
-/* The captions for syntax diagrams are hidden */
-figure.railroad figcaption {
+/* The captions for figures are hidden */
+figcaption {
   visibility: hidden;
 }
 
