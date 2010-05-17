@@ -273,14 +273,10 @@
       <p><code>Proc.new</code> creates a <code>Proc</code> with proc
       semantics from the given block.</p>
 
-      <aside>
-        <h1 id=creation-with-implicit-block>Implicit Block</h1>
-        
-        <p>If the block is omitted, the block with which the lexically
-        enclosing method was invoked is used in its place. If the method was
-        not invoked with a block, or there is not an enclosing method, an
-        <code>ArgumentError</code> is raised.
-      </aside>
+      <p>If the block is omitted, the block with which the lexically
+      enclosing method was invoked is used in its place. If the method was
+      not invoked with a block, or there is not an enclosing method, an
+      <code>ArgumentError</code> is raised.
     </section>
 
     <section>
@@ -493,7 +489,7 @@
       allowing other code to be executed in its context
     </figure>
 
-    <aside>
+    <aside class=note>
       <h1 id=kernel-binding><code>Kernel.binding</code></h1>
       
       <p><code>Kernel.binding</code> returns a <code>Binding</code> object
