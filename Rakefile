@@ -67,7 +67,7 @@ class Chapter < Page
       if fig['id'] and fig['id'].end_with?('.rb')
         Example.new(fig['id'])
       elsif fig['class'] == 'railroad' 
-        fig.css('img').map{|img| Railroad.new(img['id'])}
+        fig.css('img').map{|img| Railroad.new(img)}
       end
     end.flatten.compact
   end
@@ -117,21 +117,28 @@ class Example < Page
   end
 end
 
-class Railroad
+class Railroad < Page
   require 'pngrammar'
-  attr_accessor :source, :target
+  attr_accessor :source, :target, :img
   
-  def initialize(png)
-    @target = File.join('railroads', png)
+  def initialize(img)
+    @img = img
+    @target = File.join('railroads', @img['id'])
     @source = @target.sub(/\.png$/, '.ebnf')
   end
 
+  # TODO: Unfinished
   def write
     images = PNGrammar.new(source).images
     raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
     raise "Couldn't make PNG for #{png}" unless images.values.first
     File.open(target, 'w'){|f| f.print images.values.first}
     system "optipng #{target}"
+    Nokogiri::HTML(img.to_s).tap do |el|
+      el['src'] = railroad.url.path
+      / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{railroad.target}`
+      el['width'], el['height'] = width, height
+    end
   end
 
   def url
@@ -248,7 +255,7 @@ rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
   cp t.source, t.name
 end
 
-output_files = ['out', 'out/main.css', 'out/railroads', 'out/examples']
+output_files = ['out', 'out/main.css', 'out/chapter.css', 'out/railroads', 'out/examples']
 FileList['*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
   next if f.start_with?('_')
   output_files << (f_out = 'out/' + f)
@@ -258,12 +265,10 @@ book = Book.new
 book.chapters.each do |chapter|
   chapter.dependencies.each do |dep|
     file dep.target => dep.source do
-      warn "In #{dep.target}"
       dep.write
     end
   end
   file chapter.target => (chapter.dependencies.map(&:target) << chapter.source) do
-    warn "In #{chapter.target}"
     chapter.write
   end
 end
@@ -271,17 +276,14 @@ end
 chapters = book.chapters.map(&:target)
 
 file book.root.target => chapters.dup << book.root.source do
-  warn "In #{book.root.target}"
   book.root.write
 end
 
 file book.toc.target => chapters.dup << book.toc.source do
-  warn "In #{book.toc.target}"
   book.toc.write
 end
 
 file book.sitemap.target => chapters.dup << book.sitemap.source do
-  warn "In #{book.sitemap.target}"
   book.sitemap.write
 end
 

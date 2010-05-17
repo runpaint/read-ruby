@@ -132,7 +132,9 @@ figure.railroad > img {
 figcaption {
   visibility: hidden;
 }
-
+figure { 
+  margin-bottom: -2em; 
+}
 img.railroad {
   display: inline;
   float: left;
