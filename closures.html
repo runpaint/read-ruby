@@ -32,7 +32,7 @@
   the environment the closure is called, every time it is called. The figure
   below provides the typical demonstration of this concept:</p>
   
-  <figure id=closure-example.rb>
+  <figure id=closure-example.rb class=left>
     <figcaption>A closure encapsulates a block of code and its associated
     binding
   </figure>
@@ -42,7 +42,7 @@
   example shows a closure being called with <code>Proc#[]</code> and an
   <a href=#parameters>argument</a>.</p>
 
-  <figure id=closure-with-argument.rb>
+  <figure id=closure-with-argument.rb class=left>
     <figcaption>A closure may accept arguments from its calling environment
   </figure>
 
@@ -63,7 +63,7 @@
     lambda literal.</p> <!-- Is this restriction accurate? --> 
     
       <!-- TODO: Block local variable declarations -->
-    <figure class=railroad>
+    <figure class=railroad class=left>
       <img id=required-parameters.png>
       <img id=optional-parameter.png>
       <img id=optional-parameters.png>
@@ -152,7 +152,7 @@
           <p>Returns from the lexically enclosing method of the
           <code>Proc</code>’s <em>creation</em> site.</p>
 
-          <figure id=proc-semantics-return.rb>
+          <figure id=proc-semantics-return.rb class=left>
             <figcaption>Within a <code>Proc</code> with proc
             semantics, <code>return</code> jumps to the <code>Proc</code>
             creation site
@@ -162,7 +162,7 @@
           e.g. at the top level, or the method has already returned, a
           <code>LocalJumpError</code> is raised.</p>
 
-          <figure id=proc-semantics-return-localjump.rb>
+          <figure id=proc-semantics-return-localjump.rb class=left>
             <figcaption>A <code>LocalJumpError</code> is raised
             when a <code>Proc</code> with proc semantics tries to
             <code>return</code> without an enclosing method.
@@ -175,7 +175,7 @@
           <p>Returns from the lexically enclosing method of the
           <code>Proc</code>’s <em>call</em> site.</p>
 
-          <figure id=proc-semantics-break.rb>
+          <figure id=proc-semantics-break.rb class=left>
             <figcaption>Within a <code>Proc</code> with proc semantics,
             <code>break</code> jumps to the <code>Proc</code> call site
           </figure>
@@ -185,7 +185,7 @@
           e.g. at the top-level of a block created with
           <code>Proc.new</code> or <code>proc</code>.</p>
 
-          <figure id=proc-semantics-break-localjump.rb>
+          <figure id=proc-semantics-break-localjump.rb class=left>
             <figcaption>A <code>Proc</code> created with
             <code>proc</code> or <code>Proc.new</code> cannot use
             <code>break</code> at the top level
@@ -222,7 +222,7 @@
 
           <p>Returns from the <code>Proc</code> as if it were a method.</p>
 
-          <figure id=lambda-semantics-return.rb>
+          <figure id=lambda-semantics-return.rb class=left>
             <figcaption>Within a <code>Proc</code> with lambda semantics,
             <code>return</code> returns from the <code>Proc</code> itself
           </figure>
@@ -233,7 +233,7 @@
 
           <p>Acts exactly like <code>return</code>.</p>
 
-          <figure id=lambda-semantics-break.rb>
+          <figure id=lambda-semantics-break.rb class=left>
             <figcaption>Within a <code>Proc</code> with lambda semantics,
             <code>break</code> returns from the <code>Proc</code> itself
           </figure>
@@ -313,7 +313,7 @@
       block argument an <a href=#creation-with-implicit-block>implicit
         block</a> is assumed.</p>
 
-      <figure id=lambda-keyword-examples.rb>
+      <figure id=lambda-keyword-examples.rb class=left>
         <figcaption><code>lambda</code> takes a block with which it creates
         a <code>Proc</code> with lambda characteristics
       </figure>
@@ -322,7 +322,7 @@
     <section>
       <h1 id=lambda-literal>Lambda Literal (<code>->(){}</code>)</h1>
 
-      <figure class=railroad>
+      <figure class=railroad class=left>
         <img id=lambda-literal.png>
         <figcaption>Syntax diagram of the lambda literal
       </figure>
@@ -336,7 +336,7 @@
       statements. For example, <code>-&gt; { 42 }</code>, or <code>-&gt;(a,
         b) { a + b }</code>.</p>
 
-      <figure id=lambda-literal-syntax.rb>
+      <figure id=lambda-literal-syntax.rb class=left>
         <figcaption><code>-&gt;(){}</code> creates a <code>Proc</code> with
         lambda characteristics
       </figure>
@@ -366,7 +366,7 @@
         href=#lambda-semantics>lambda semantics</a> that have arities other than 1.
     </dl>
     
-    <figure id=proc-calling.rb>
+    <figure id=proc-calling.rb class=left>
       <figcaption>Syntax for invoking a <code>Proc</code>
     </figure>
   </section>
@@ -396,7 +396,7 @@
       additional arguments are explicitly ignored.
     </ul>
 
-    <figure id=proc-parameters.rb>
+    <figure id=proc-parameters.rb class=left>
       <figcaption>The parameter list for a <code>Proc</code> is enclosed
       within vertical lines
     </figure>
@@ -421,7 +421,7 @@
       closing parentheses of the parameter list, i.e.
       <code>-&gt;(<var>param</var><sub>0</sub>,…,<var>param</var><sub>n</sub>;<var>block-local</var><sub>0</sub>,…,<var>block-local</var><sub>n</sub>){}</code>.</p>
 
-      <figure id=block-local-variables-syntax.rb>
+      <figure id=block-local-variables-syntax.rb class=left>
         <figcaption>Block-local variables are specified after regular
         parameters and preceded by a semicolon
       </figure>
@@ -436,7 +436,7 @@
         </ol>
       </p>
 
-      <figure id=block-local-variables-example.rb>
+      <figure id=block-local-variables-example.rb class=left>
         <figcaption>Block-local variables are are distinct from those with
         the same name in an outer lexical scope
       </figure>
@@ -448,7 +448,7 @@
       in the outer scope. In both examples, <var>w</var> is undefined upon
       leaving the block.</p>
 
-      <figure id=non-block-local-variables-example.rb>
+      <figure id=non-block-local-variables-example.rb class=left>
         <figcaption>Non-block-local variables defined prior to the block
         retain the value they were assigned inside the block even after
         leaving it
@@ -468,7 +468,7 @@
     can be modified or re-assigned subsequently, but they must have been
     assigned.</p>
 
-    <figure id=closure-binding-nameerror.rb>
+    <figure id=closure-binding-nameerror.rb class=left>
       <figcaption>Variables referenced, but not defined, by a closure must
       have exist in its environment at creation time
     </figure>
@@ -488,7 +488,7 @@
     execute other code in the same environment with a method such as
     <code>eval</code>.</p>
 
-    <figure id=closure-proc-binding.rb>
+    <figure id=closure-proc-binding.rb class=left>
       <figcaption><code>Proc#binding</code> returns a closure’s binding,
       allowing other code to be executed in its context
     </figure>
@@ -501,7 +501,7 @@
       invoked. That is, it generalises the concept of bindings to any
       object.</p>
 
-      <figure id=kernel-binding-example.rb>
+      <figure id=kernel-binding-example.rb class=left>
         <figcaption><code>Kernel.binding</code> returns the binding of the
         call site
       </figure>

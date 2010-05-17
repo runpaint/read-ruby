@@ -140,7 +140,7 @@ relevant sections
       <code>rdoc</code>, and as such is ignored by the interpreter. It is
       introduced by a line beginning <code>=begin</code>, that is an equals
       sign (<code class=u title='='>U＋003D</code>) followed by the string
-      <code>begin</code>, and continue until a line beginning
+      <code>begin</code>, and continues until a line beginning
       <code>=end</code> is encountered.
 
       <p>Both <code>=begin</code> and <code>=end</code> may be followed by
@@ -188,13 +188,13 @@ relevant sections
         context of…
 
         <dl class=inline-small>
-          <dt>A message expression
+          <dt>A <a href=/messages#expressions>message expression</a>
           <dd>Converts a <code>Proc</code> object to a block, passing it to
           the receiver.
-          <dt>A parameter list
-          <dd>Signifies that the identifier that follows corresponds to the
+          <dt>A <a href=/methods#arguments>parameter list</a>
+          <dd>Signifies that the following identifier corresponds to the
           block sent along with the message.
-          <dt>An operator
+          <dt>An <a href=/messages#operators>operator</a>
           <dd>Performs bitwise AND. The operator consisting of two consecutive
           ampersands performs Boolean AND. 
         </dl>
@@ -214,12 +214,12 @@ relevant sections
         context of…
 
         <dl class=inline-small>
-          <dt>A message expression
+          <dt>A <a href=/messages#expressions>message expression</a>
           <dd>Explodes an object into its constituent elements.
-          <dt>A parameter list
+          <dt>A <a href=/methods#arguments>parameter list</a>
           <dd>Prefixes a parameter which may receive a variable number of
-          arguments,
-          <dt>An operator
+          arguments.
+          <dt>An <a href=/messages#operators>operator</a>
           <dd>Performs multiplication—when alone—or exponentiation—when
           preceded by another asterisk.
         </dl>
@@ -320,9 +320,9 @@ relevant sections
         context of…
 
         <dl class=inline-small>
-          <dt>A selector
+          <dt>A <a href=/messages#selectors>selector</a>
           <dd>Signifies the message deserves extra attention 
-          <dt>An operator
+          <dt>An <a href=/messages#operators>operator</a>
           <dd>Negates its operand, when used as a unary operator, the sense of a
           pattern match, when followed by a tilde (<code class=u
             title='~'>U＋007E</code>), or a test for equality, when followed by
@@ -337,7 +337,7 @@ relevant sections
         separate in the context of…
 
         <dl class=inline-small>
-          <dt>A message expression
+          <dt>A <a href=/messages#expressions>message expression</a>
           <dd>It separates the receiver from the selector
           <dt>A range literal
           <dd>Two or three consecutive periods separate the start value from the
@@ -365,7 +365,6 @@ relevant sections
         a hash literal, it is preceded by an equals sign to separate keys from
         their values.    
       </section>
-
 
       <section>
         <h1 class=runin id=hyphen-minus>Hyphen Minus Signs</h1>

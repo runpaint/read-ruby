@@ -382,7 +382,7 @@
       construct <q>carves out a hole in the scope of the outer one</q> (ibid,
       336–338).</p>
       
-      <figure class=centre id=local-variables.rb>
+      <figure class=left id=local-variables.rb>
         <figcaption>The scope of a local variable
       </figure>
 
@@ -402,7 +402,7 @@
       href=/closures#block-local-variables>block local variables</a> are
       appropriate.</p>
 
-      <figure class=centre id=non-block-local-variables-example.rb>
+      <figure class=left id=non-block-local-variables-example.rb>
         <figcaption>Non‐block‐local variables defined prior to the block
         retain the value they were assigned inside the block even after
         leaving it
@@ -421,7 +421,7 @@
       execute, the variable comes into existence.  Variables of this sort
       have the value <code>nil</code>.</p>
 
-      <figure class=centre id=local-variables-assignment.rb>
+      <figure class=left id=local-variables-assignment.rb>
         <figcaption>An assignment expression initializes a local variable
       </figure>
 
@@ -530,14 +530,14 @@
       by child classes: if a class modifies a class variable defined in its
       superclass, the change is visible in both locations.</p>
 
-      <figure id=class-variables-inherited.rb class=centre>
+      <figure id=class-variables-inherited.rb class=left>
         <figcaption>Class variables are inherited by child classes
       </figure>
 
       <p>A class variable defined at the top‐level of a program is inherited
       by all classes. It behaves like a global variable.</p>
 
-      <figure class=centre id=class-variables-inherited-top.rb>
+      <figure class=left id=class-variables-inherited-top.rb>
         <figcaption>Class variables are inherited from the top‐level
       </figure>
 
@@ -546,7 +546,7 @@
       in a child class then subsequently assigned to in a parent class, as
       shown below:</p>
 
-      <figure class=centre id=class-variables-overtaken.rb>
+      <figure class=left id=class-variables-overtaken.rb>
         <figcaption>A warning is issued if a parent seems to unintentionally
         clobber a child’s class variable
       </figure>
@@ -555,7 +555,7 @@
       unless defined in their common parent, or those without a common
       parent.</p>
 
-      <figure class=centre id=class-variables-siblings.rb>
+      <figure class=left id=class-variables-siblings.rb>
         <figcaption>Class variables are unique amongst sibling classes
       </figure>
 
@@ -617,7 +617,7 @@
       <p>A global variable is accessible in every scope. Once set it refers
       to the same object wherever it is referenced.</p>
 
-      <figure class=centre id=global-variables.rb>
+      <figure class=left id=global-variables.rb>
         <figcaption>Global variables are accessible in every scope
       </figure>
     </section>
@@ -915,7 +915,7 @@
     corresponding ancestor method. In all cases the test is conducted
     without evaluating the operand.</p>
     
-    <figure id=defined.rb class=centre>
+    <figure id=defined.rb class=left>
       <figcaption>Using the <code>defined?</code> operator to test whether a
       variable or expression is defined
     </figure>
@@ -1185,7 +1185,7 @@
         side of the expression. That is, the <var>n</var><sup>th</sup> lvalue
         is assigned the <var>n</var><sup>th</sup> rvalue.</p>
 
-        <figure class=centre id=parallel-assignment-equal.rb>
+        <figure class=left id=parallel-assignment-equal.rb>
           <figcaption>Parallel assignment when there are the same number of
           terms on both sides
         </figure>
@@ -1219,7 +1219,7 @@
           consumes as many rvalues as possible while still allowing the
           following lvalues to receive their rvalues.</p>
 
-          <figure class=centre id=splat-lvalue.rb>
+          <figure class=left id=splat-lvalue.rb>
             <figcaption>A splatted lvalue greedily consumes rvalues into an
             <code>Array</code>
           </figure>
@@ -1233,7 +1233,7 @@
             corresponding rvalues to the splatted lvalue, it discards
             them.</p>
 
-            <figure class=centre id=empty-splat.rb>
+            <figure class=left id=empty-splat.rb>
               <figcaption>An lvalue consisting of a sole asterisk greedily
               consumes the associated rvalues, then discards them
             </figure>
@@ -1247,7 +1247,7 @@
           <code>Array</code> with <code>Kernel.Array()</code>, the values of
           which become rvalues in their own right.</p>
           
-          <figure id=splat-rvalue.rb class=centre>
+          <figure id=splat-rvalue.rb class=left>
             <figcaption>Splatting an rvalue expands it into its constituent
             elements
           </figure>
@@ -1278,13 +1278,12 @@
         trailing comma, assigning <var>rvalue</var><sub>0</sub> to
         <var>lvalue</var>, and discarding the remaining rvalues.</p>
 
-        <figure id=parallel-assignment-one-lvalue.rb class=centre>
+        <figure id=parallel-assignment-one-lvalue.rb class=left>
           <figcaption>Parallel assignment when there is a sole lvalue
         </figure>
       </section>
 
       <section>
-
         <aside class=sidenote>
           <span class=sidemark>†</span>Note that <code>:to_ary</code> is
           sent rather than the <code>:to_a</code> used by the <a
@@ -1298,7 +1297,7 @@
         
         <h1 id=parallel-assignment-one-rvalue>Many Lvalues, One Rvalue</h1>
 
-        <figure class=centre id=parallel-assignment-one-rvalue.rb>
+        <figure class=left id=parallel-assignment-one-rvalue.rb>
           <figcaption>When an <code>Array</code> with
           <var>n</var> elements is assigned to <var>n</var> lvalues, each
           lvalue is assigned one element
@@ -1309,14 +1308,14 @@
         elements of this array become rvalues in their own right, replacing
         the original rvalue.</p>
 
-        <figure class=centre id=parallel-assignment-one-rvalue-nil.rb>
+        <figure class=left id=parallel-assignment-one-rvalue-nil.rb>
           <figcaption>When an <code>Array</code> with
           <var>n</var> elements is assigned to fewer than <var>n</var>
           lvalues, the first <var>n</var> elements are assigned the
           corresponding lvalue, and the remainder discarded
         </figure>
 
-        <figure class=centre id=parallel-assignment-rvalue-to-ary.rb>
+        <figure class=left id=parallel-assignment-rvalue-to-ary.rb>
           <figcaption>When an object responding to
           <code>:to_ary</code> with an <var>n</var> element <code>Array</code>
           is assigned to <var>n</var> lvalues, each lvalue is assigned one
@@ -1331,7 +1330,7 @@
           Rvalues</a>, applies.</p>
         
         <!-- Aside: car, *cdr = array -->
-        <figure class=centre id=parallel-assignment-one-rvalue-non-array.rb>
+        <figure class=left id=parallel-assignment-one-rvalue-non-array.rb>
           <figcaption>When a non-<code>Array</code> is
           assigned to multiple lvalues, the first lvalue takes the sole
           rvalue, and the remaining lvalues are assigned <code>nil</code>
@@ -1353,7 +1352,7 @@
         <var>lvalue</var><sub><var>n</var>+1</sub>–<var>lvalue</var><sub><var>m</var></sub>
         are assigned <code>nil</code>.</p>
          
-        <figure class=centre id=parallel-assignment-more-lvalues.rb>
+        <figure class=left id=parallel-assignment-more-lvalues.rb>
           <figcaption>When there are more lvalues than rvalues, the
           superfluous lvalues are assigned <code>nil</code> 
         </figure>
@@ -1363,7 +1362,7 @@
           lvalues to rvalues</a>, with the remaining rvalues being
         discarded.</p>
         
-        <figure class=centre id=parallel-assignment-more-rvalues.rb>
+        <figure class=left id=parallel-assignment-more-rvalues.rb>
           <figcaption>When there are more rvalues than lvalues, the
           superfluous rvalues are discarded 
         </figure>
@@ -1379,7 +1378,7 @@
         assignment are applied again to each of these groups, recursively for
         each level of parentheticals.</p>
 
-        <figure class=centre id=sub-assignment.rb>
+        <figure class=left id=sub-assignment.rb>
           <figcaption>Using sub‐assignment to distribute nested rvalues
         </figure>
 
@@ -1400,7 +1399,7 @@
         discarded. In both cases, the rvalues are splatted as appropriate
         before being returned.</p>
 
-        <figure class=centre id=parallel-assignment-value.rb>
+        <figure class=left id=parallel-assignment-value.rb>
           <figcaption>The value of a parallel assignment expression is its
           rvalues
         </figure>
