@@ -77,25 +77,15 @@
       <h1 id=whitespace>Whitespace</h1>
 
       <p><dfn>Whitespace</dfn> consists only of <code
-        class=u>U＋0009</code>–<code class=u>U＋000D</span> and the space
-      character (<code class=u title=' '>U＋0020):</p>
-
-      <ul>
-        <li><code class=u>U＋0009</code> (horizontal tab)
-        <li><code class=u>U＋000A</code> (line feed)
-        <li><code class=u>U＋000B</code> (vertical tab)
-        <li><code class=u>U＋000C</code> (form feed)
-        <li><code class=u>U＋000D</code> (carriage return)
-        <li>&lt;<code class=u>U＋000D</code>,&nbsp;<code
-          class=u>U＋000A</code>&gt; (carriage return followed by line feed)
-        <li><code class=u title=' '>U＋0020</code> (space)
-      </ul>
-
-      <p>The primary role of whitespace in Ruby syntax is to separate tokens
-      and terminate statements. When whitespace is syntactically significant
-      it is typically collapsed to a single space. The few areas of syntax
-      where whitespace has different semantics are clearly labeled. Newlines
-      are used as <a href=#statement-terminators>statement terminators</a>.
+        class=u>U＋0009</code>–<code class=u>U＋000D</code> and the space
+      character (<code class=u title=' '>U＋0020</code>), i.e. <abbr
+        title='American Standard Code for Information
+        Interchange'>ASCII</abbr> whitespace. Its primary role in Ruby syntax
+      is to separate tokens and terminate statements. When whitespace is
+      syntactically significant it is typically collapsed to a single space.
+      The few areas of syntax where whitespace has different semantics are
+      clearly labeled. Newlines are used as <a
+        href=#statement-terminators>statement terminators</a>.
     </section>
 
     <!-- FIXME: Hash, Array, proc, etc., literals aren't tokens -->
