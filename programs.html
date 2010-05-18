@@ -20,14 +20,6 @@
   <section>  
     <h1 id=lexical>Lexical Structure</h1>
 
-    <!-- Aho, 2nd ed., p43: tokens vs. terminals -->
-    <!-- TODO: Introduce tokenization -->
-    <p><dfn>Tokens</dfn> are <q>the mark or series of marks that denote one
-      symbol or word in the language</q> (<a
-      href=/references#refFISCHER92>Fischer &amp; Grodzinsky</a>, pp.
-    59–62). A Ruby program consists of a combination of the following
-    tokens:</p>
-
     <aside class=sidenote>
       <code>Ripper</code> is a class in the standard library for parsing and
       analysing Ruby. The <code>Ripper.tokenize</code> method takes a string
@@ -37,13 +29,15 @@
       assumptions of how tokenization works.
     </aside>
 
-    <ul>
-      <li><a href=#comments>Comments</a>
-      <li><a href=/objects#literals>Literals</a>
-      <li><a href=/punctuation>Punctuation</a>
-      <li><a href=#identifiers>Identifiers</a>
-      <li><a href=#keywords>Keywords</a>
-    </ul>
+    <!-- Aho, 2nd ed., p43: tokens vs. terminals -->
+    <!-- TODO: Introduce tokenization -->
+    <p><dfn>Tokens</dfn> are <q>the mark or series of marks that denote one
+      symbol or word in the language</q> (<a
+      href=/references#refFISCHER92>Fischer &amp; Grodzinsky</a>, pp.  59–62).
+    A Ruby program consists of a combination of the following tokens: <a
+      href=#comments>comments</a>, <a href=/objects#literals>literals</a>, <a
+      href=/punctuation>punctuation</a>, <a href=#identifiers>identifiers</a>,
+    and <a href=/keywords>keywords</a>.</p>
 
     <section>
       <h1 id=comments>Comments</h1>
