@@ -1,0 +1,19 @@
+<a href=/examples/self-as-the-implicit-receiver.rb><pre class=syntax><code><span class="nb">self</span> <span class="c1">#=&gt; main</span>
+<span class="nb">self</span><span class="o">.</span><span class="n">class</span> <span class="c1">#=&gt; Object</span>
+
+<span class="k">class</span> <span class="nc">Classy</span>
+  <span class="nb">self</span>
+<span class="k">end</span> <span class="c1">#=&gt; Classy</span>
+
+<span class="k">class</span> <span class="nc">Classy</span>
+  <span class="nb">self</span><span class="o">.</span><span class="n">class</span>
+<span class="k">end</span> <span class="c1">#=&gt; Class</span>
+
+<span class="k">class</span> <span class="nc">Classy</span>
+  <span class="k">def</span> <span class="nf">methodical</span>
+    <span class="nb">self</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Classy</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">methodical</span> <span class="c1">#=&gt; #&lt;Classy:0x90d2268&gt;</span>
+</code></pre>
+</a>

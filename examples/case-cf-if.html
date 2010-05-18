@@ -1,0 +1,26 @@
+<a href=/examples/case-cf-if.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Integer</span>
+  <span class="k">def</span> <span class="nf">ordinal</span>
+    <span class="k">if</span>    <span class="nb">to_s</span> <span class="o">=~</span> <span class="sr">/^1\d$/</span> <span class="k">then</span> <span class="s1">&#39;th&#39;</span>
+    <span class="k">elsif</span> <span class="nb">to_s</span> <span class="o">=~</span> <span class="sr">/1$/</span>    <span class="k">then</span> <span class="s1">&#39;st&#39;</span>
+    <span class="k">elsif</span> <span class="nb">to_s</span> <span class="o">=~</span> <span class="sr">/2$/</span>    <span class="k">then</span> <span class="s1">&#39;nd&#39;</span>
+    <span class="k">elsif</span> <span class="nb">to_s</span> <span class="o">=~</span> <span class="sr">/3$/</span>    <span class="k">then</span> <span class="s1">&#39;rd&#39;</span>
+    <span class="k">else</span>                       <span class="s1">&#39;th&#39;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">].</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}#{</span><span class="n">n</span><span class="o">.</span><span class="n">ordinal</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span> <span class="c1">#=&gt; [&quot;1st&quot;, &quot;2nd&quot;, &quot;3rd&quot;, &quot;4th&quot;]</span>
+
+<span class="k">class</span> <span class="nc">Integer</span>
+  <span class="k">def</span> <span class="nf">ordinal</span>
+    <span class="k">case</span> <span class="nb">to_s</span>
+      <span class="k">when</span><span class="sr"> /^1\d$/</span> <span class="k">then</span> <span class="s1">&#39;th&#39;</span>
+      <span class="k">when</span><span class="sr"> /1$/</span>    <span class="k">then</span> <span class="s1">&#39;st&#39;</span>
+      <span class="k">when</span><span class="sr"> /2$/</span>    <span class="k">then</span> <span class="s1">&#39;nd&#39;</span>
+      <span class="k">when</span><span class="sr"> /3$/</span>    <span class="k">then</span> <span class="s1">&#39;rd&#39;</span>
+      <span class="k">else</span>              <span class="s1">&#39;th&#39;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">].</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}#{</span><span class="n">n</span><span class="o">.</span><span class="n">ordinal</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span> <span class="c1">#=&gt; [&quot;1st&quot;, &quot;2nd&quot;, &quot;3rd&quot;, &quot;4th&quot;]</span>
+</code></pre>
+</a>

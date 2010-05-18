@@ -1,0 +1,18 @@
+<a href=/examples/super.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Chef</span>
+  <span class="k">def</span> <span class="nf">make</span><span class="p">(</span><span class="n">dish</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Chef: You don&#39;t want </span><span class="si">#{</span><span class="n">dish</span><span class="si">}</span><span class="s2">! Try this:&quot;</span>
+    <span class="ss">:dish_of_the_day</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Cook</span> <span class="o">&lt;</span> <span class="no">Chef</span>
+  <span class="k">def</span> <span class="nf">make</span><span class="p">(</span><span class="n">dish</span><span class="p">)</span>
+    <span class="o">[</span><span class="k">super</span><span class="p">,</span> <span class="ss">:salad</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; and &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="nb">puts</span> <span class="s2">&quot;Meal: &quot;</span> <span class="o">+</span> <span class="no">Cook</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="ss">:guinea_fowl_fricassee_with_foie_gras</span><span class="p">)</span>
+<span class="c1">#=&gt; Chef: You don&#39;t want guinea_fowl_fricassee_with_foie_gras! Try this:</span>
+<span class="c1"># Meal: dish of the day and salad</span>
+</code></pre>
+</a>

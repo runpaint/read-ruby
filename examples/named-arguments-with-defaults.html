@@ -1,0 +1,18 @@
+<a href=/examples/named-arguments-with-defaults.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Chair</span>
+  <span class="no">DEFAULT_ARGS</span> <span class="o">=</span> <span class="p">{</span><span class="n">legs</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="ss">:victorian</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="ss">:average</span><span class="p">,</span> <span class="n">colour</span><span class="p">:</span> <span class="ss">:brown</span><span class="p">}</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="vi">@attributes</span> <span class="o">=</span> <span class="no">DEFAULT_ARGS</span><span class="o">.</span><span class="n">merge</span> <span class="n">args</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Chair</span><span class="o">.</span><span class="n">new</span> <span class="n">legs</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="ss">:tall</span> <span class="c1">#=&gt;</span>
+  <span class="c1">#&lt;Chair:0x9039af4 @attributes={</span>
+  <span class="c1">#:legs=&gt;4,       :style=&gt;:victorian, </span>
+  <span class="c1">#:height=&gt;:tall, :colour=&gt;:brown</span>
+  <span class="c1">#};&gt;</span>
+<span class="no">Chair</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:color</span> <span class="o">=&gt;</span> <span class="ss">:fuschia</span><span class="p">,</span> <span class="ss">:legs</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">)</span> <span class="c1">#=&gt;</span>
+  <span class="c1">##&lt;Chair:0x998a9dc @attributes={</span>
+  <span class="c1">#:legs=&gt;7, :style=&gt;:victorian, </span>
+  <span class="c1">#:height=&gt;:average, :colour=&gt;:fuschia</span>
+  <span class="c1">#}&gt;;</span>
+</code></pre>
+</a>

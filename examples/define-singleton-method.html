@@ -1,0 +1,6 @@
+<a href=/examples/define-singleton-method.rb><pre class=syntax><code><span class="no">File</span><span class="o">.</span><span class="n">define_singleton_method</span><span class="p">(</span><span class="ss">:match</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="p">,</span> <span class="n">pattern</span><span class="o">|</span>
+  <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="no">File</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;/etc/passwd&#39;</span><span class="p">,</span><span class="sr">/root/</span><span class="p">)</span> <span class="c1">#=&gt; #&lt;MatchData &quot;root&quot;&gt;</span>
+</code></pre>
+</a>

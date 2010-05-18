@@ -1,0 +1,17 @@
+<a href=/examples/sub-assignment.rb><pre class=syntax><code><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">a</span> <span class="c1">#=&gt; 1</span>
+<span class="n">b</span> <span class="c1">#=&gt; 2</span>
+<span class="n">c</span> <span class="c1">#=&gt; nil</span>
+<span class="n">d</span> <span class="c1">#=&gt; 3</span>
+
+<span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">c</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">a</span> <span class="c1">#=&gt; 1</span>
+<span class="n">b</span> <span class="c1">#=&gt; 2</span>
+<span class="n">c</span> <span class="c1">#=&gt; 3</span>
+
+<span class="n">zero</span><span class="p">,</span> <span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="o">*</span><span class="n">rest</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">[*</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">*</span><span class="mi">6</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="o">]</span>
+<span class="n">zero</span> <span class="c1">#=&gt; 0</span>
+<span class="n">one</span> <span class="c1">#=&gt; 1</span>
+<span class="n">rest</span> <span class="c1">#=&gt; [2, 3, 4, 5, 6, 7, 8, 9, 10]</span>
+</code></pre>
+</a>

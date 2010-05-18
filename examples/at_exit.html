@@ -1,0 +1,10 @@
+<a href=/examples/at_exit.rb><pre class=syntax><code><span class="nb">at_exit</span> <span class="p">{</span> <span class="nb">puts</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="nb">puts</span> <span class="mi">2</span>
+<span class="nb">at_exit</span> <span class="p">{</span> <span class="nb">puts</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="nb">at_exit</span> <span class="p">{</span> <span class="nb">puts</span> <span class="mi">4</span> <span class="p">}</span> <span class="k">if</span> <span class="kp">false</span>
+<span class="c1"># Output:</span>
+<span class="c1"># 2</span>
+<span class="c1"># 3</span>
+<span class="c1"># 1</span>
+</code></pre>
+</a>

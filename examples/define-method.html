@@ -1,0 +1,10 @@
+<a href=/examples/define-method.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Conjure</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">conjure</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)</span>
+    <span class="n">define_method</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># Define a new instance method with a lambda as its body</span>
+<span class="no">Conjure</span><span class="o">.</span><span class="n">conjure</span><span class="p">(</span><span class="ss">:glark</span><span class="p">,</span> <span class="o">-&gt;</span><span class="p">{</span> <span class="p">(</span><span class="mi">3</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">})</span>
+<span class="no">Conjure</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">glark</span> <span class="c1">#=&gt; [3, 4, 5, 3, 4, 5]         </span>
+</code></pre>
+</a>

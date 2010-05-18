@@ -1,0 +1,8 @@
+<a href=/examples/respond-to.rb><pre class=syntax><code><span class="no">Math</span><span class="o">::</span><span class="no">PI</span> <span class="c1">#=&gt; 3.141592653589793</span>
+<span class="no">Math</span><span class="o">::</span><span class="no">PI</span><span class="o">.</span><span class="n">respond_to?</span> <span class="ss">:floor</span> <span class="c1">#=&gt; true</span>
+<span class="no">Math</span><span class="o">::</span><span class="no">PI</span><span class="o">.</span><span class="n">floor</span> <span class="c1">#=&gt; 3</span>
+<span class="no">Math</span><span class="o">::</span><span class="no">PI</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">all?</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span> <span class="no">Math</span><span class="o">::</span><span class="no">PI</span><span class="o">.</span><span class="n">respond_to?</span> <span class="n">m</span><span class="p">}</span> <span class="c1">#=&gt; true</span>
+<span class="no">Math</span><span class="o">::</span><span class="no">PI</span><span class="o">.</span><span class="n">respond_to?</span> <span class="ss">:door</span> <span class="c1">#=&gt; false</span>
+<span class="no">Math</span><span class="o">::</span><span class="no">PI</span><span class="o">.</span><span class="n">door</span> <span class="c1">#=&gt; NoMethodError: undefined method `door&#39; for 3.141592653589793:Float</span>
+</code></pre>
+</a>

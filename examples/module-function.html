@@ -1,0 +1,18 @@
+<a href=/examples/module-function.rb><pre class=syntax><code><span class="k">module</span> <span class="nn">ISBN</span>
+  <span class="kp">module_function</span>
+  <span class="c1"># Convert ISBN-13 to ISBN-10</span>
+  <span class="k">def</span> <span class="nf">thirteen_to_ten</span><span class="p">(</span><span class="n">isbn</span><span class="p">)</span>
+    <span class="n">isbn</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">isbn</span><span class="o">.</span><span class="n">to_s</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">chars</span><span class="p">,</span> <span class="mi">11</span>
+    <span class="n">csum</span> <span class="o">=</span> <span class="mi">11</span> <span class="o">-</span> <span class="n">isbn</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="mi">0</span><span class="p">){</span><span class="o">|</span><span class="n">mem</span><span class="p">,</span><span class="n">c</span><span class="o">|</span> <span class="n">mem</span> <span class="o">+</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">to_i</span> <span class="o">*</span> <span class="n">weight</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">)}</span> <span class="o">%</span> <span class="mi">11</span>
+    <span class="n">isbn</span><span class="o">.</span><span class="n">join</span> <span class="o">+</span> <span class="p">({</span><span class="mi">10</span> <span class="o">=&gt;</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="mi">11</span> <span class="o">=&gt;</span> <span class="s1">&#39;0&#39;</span><span class="p">}</span><span class="o">[</span><span class="n">csum</span><span class="o">]</span> <span class="o">||</span> <span class="n">csum</span><span class="o">.</span><span class="n">to_s</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">isbns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;9780596529260&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;0596529260&#39;</span><span class="p">,</span> 
+         <span class="s1">&#39;9780596102432&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;0596102437&#39;</span><span class="p">,</span> 
+         <span class="s1">&#39;9780596007591&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;0596007590&#39;</span><span class="p">}</span>
+<span class="n">isbns</span><span class="o">.</span><span class="n">all?</span><span class="p">{</span><span class="o">|</span><span class="n">thirteen</span><span class="p">,</span> <span class="n">ten</span><span class="o">|</span> <span class="no">ISBN</span><span class="o">.</span><span class="n">thirteen_to_ten</span><span class="p">(</span><span class="n">thirteen</span><span class="p">)</span> <span class="o">==</span> <span class="n">ten</span><span class="p">}</span> <span class="c1">#=&gt; true</span>
+<span class="kp">include</span> <span class="no">ISBN</span>
+<span class="n">isbns</span><span class="o">.</span><span class="n">all?</span><span class="p">{</span><span class="o">|</span><span class="n">thirteen</span><span class="p">,</span> <span class="n">ten</span><span class="o">|</span> <span class="n">thirteen_to_ten</span><span class="p">(</span><span class="n">thirteen</span><span class="p">)</span> <span class="o">==</span> <span class="n">ten</span><span class="p">}</span> <span class="c1">#=&gt; true</span>
+</code></pre>
+</a>

@@ -1,0 +1,23 @@
+<a href=/examples/class-variables-siblings.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Parent</span>
+  <span class="vc">@@parent</span> <span class="o">=</span> <span class="ss">:strict</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">parent</span>
+    <span class="vc">@@parent</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">Daughter</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+  <span class="vc">@@parent</span> <span class="o">=</span> <span class="ss">:unfair!</span>
+  <span class="vc">@@me</span> <span class="o">=</span> <span class="ss">:angelic</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">me</span><span class="p">;</span> <span class="vc">@@me</span> <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">Son</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+  <span class="vc">@@parent</span> <span class="o">=</span> <span class="ss">:biased</span>
+  <span class="vc">@@me</span> <span class="o">=</span> <span class="ss">:unappreciated</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">me</span><span class="p">;</span> <span class="vc">@@me</span> <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Parent</span><span class="o">.</span><span class="n">parent</span>   <span class="c1">#=&gt; :biased</span>
+<span class="no">Daughter</span><span class="o">.</span><span class="n">parent</span> <span class="c1">#=&gt; :biased</span>
+<span class="no">Son</span><span class="o">.</span><span class="n">parent</span>      <span class="c1">#=&gt; :biased</span>
+<span class="no">Daughter</span><span class="o">.</span><span class="n">me</span>     <span class="c1">#=&gt; :angelic</span>
+<span class="no">Son</span><span class="o">.</span><span class="n">me</span>          <span class="c1">#=&gt; :unappreciated</span>
+</code></pre>
+</a>

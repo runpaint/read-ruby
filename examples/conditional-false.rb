@@ -1,0 +1,1 @@
+[nil, false].none? #=> true

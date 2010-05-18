@@ -1,0 +1,1 @@
+SingleQuotedStringLiteralQ = "%" "q" Delimiter ("NOT Delimiter OR '\'" | CharacterEscape)* Delimiter

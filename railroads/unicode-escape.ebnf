@@ -1,0 +1,1 @@
+UnicodeEscape = "\\" "u" (HexDigit HexDigit HexDigit HexDigit | "{" (HexCodepoint | (HexCodepoint " ")+) "}" )

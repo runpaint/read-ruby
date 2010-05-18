@@ -1,0 +1,12 @@
+<a href=/examples/postfix-unless-statement-fig.rb><pre class=syntax><code><span class="k">def</span> <span class="nf">palindrome?</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+  <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">string</span> <span class="o">=</span> <span class="nb">String</span><span class="o">.</span><span class="n">try_convert</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="sr">/\w/</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="o">.</span><span class="n">downcase</span>
+  <span class="n">string</span> <span class="o">==</span> <span class="n">string</span><span class="o">.</span><span class="n">reverse</span>
+<span class="k">end</span>
+
+<span class="n">palindrome?</span><span class="p">(</span><span class="s2">&quot;Go hang a salami I&#39;m a lasagna hog.&quot;</span><span class="p">)</span> <span class="c1">#=&gt; true</span>
+<span class="n">palindrome?</span><span class="p">(</span><span class="s2">&quot;Level, madam, level!&quot;</span><span class="p">)</span> <span class="c1">#=&gt; true</span>
+<span class="n">palindrome?</span><span class="p">(</span><span class="s2">&quot;canon a 2 cancrizans&quot;</span><span class="p">)</span> <span class="c1">#=&gt; false</span>
+<span class="n">palindrome?</span><span class="p">(</span><span class="o">[</span><span class="s1">&#39;mad&#39;</span><span class="o">]</span><span class="p">)</span> <span class="c1">#=&gt; ArgumentError</span>
+</code></pre>
+</a>
