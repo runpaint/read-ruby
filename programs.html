@@ -240,35 +240,18 @@
     <section>
       <h1 id=statements>Statements</h1>
 
-      <p>Semantically, Ruby doesn’t distinguish between expressions and
-      statements, however as the two terms are so often used together in
-      describing the language, we will attempt a definition. <a
-        href=/references#refTURBAK08>Turbak, Gifford, and Sheldon</a> regard the
-      defining issue as whether the phrase is executed for its value: if so, it
-      is an expression; if not, it is a statement. In describing their
-      pedagogical language, <i>FLICK</i>, they offer this example:</p>
-      
-      <blockquote>
-        <p><i>FLICK</i> does not have a separate syntactic domain for [statements],
-        but some expressions effectively serve as [statements]. For example,
-        <code>:=</code> expressions return the uninteresting value #u simply
-        because they are required to return something, but the reason to execute
-        an assignment is to modify the store. (<a
+      <aside class=sidenote>
+        <span class=sidemark>†</span>A further example of distinguishing
+        between statements and expressions by considering their context is
+        found in Turbak, Gifford, and Sheldon’s <a
           href=/references#refTURBAK08><cite>Design Concepts in Programming
-            Languages</cite></a>, pp. 472—476)
-      </blockquote>
+            Languages</cite></a>, pp. 472—476.
+      </aside>
 
-      <p>That is, the definition depends on context. This clarifies somewhat the
-      assertion of <a href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>
-      (2008, p. 84) that <q>It is still useful, however, to distinguish syntax
-        typically used as expressions from syntax typically used as
-        statements.</q> from which
-      they appear to regard expressions that either <q>affect
-        flow-of-control</q> or <q>define methods and classes</q> as statements,
-      without explaining why. Both kinds of expressions are typically executed
-      for their side effects—i.e. altering the flow of control or defining
-      methods and classes, respectively—rather than their values, therefore can
-      generally be regarded as statements.</p>
+      <p>A statement is an expression whose value is ignored<sup>†</sup>. In
+      practice, this implies that a statement is executed for its
+      side-effects, because an expression executed for neither its value nor
+      effect is semantically meaningless.</p>
 
       <section>
         <h1 id=statement-terminators>Statement Terminators</h1>
@@ -296,10 +279,6 @@
           lines).
         </ul>
       </section>
-    </section>
-
-    <section>
-      <h1 id=block-structure>Block Structure</h1>
     </section>
 
     <section>
