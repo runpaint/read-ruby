@@ -248,7 +248,7 @@ file 'out/chapter.css' => FileList['{main,chapter,syntax}.css'] + ['out'] do |t|
   File.open(t.name, 'w') do |f| 
     f.print t.prerequisites[0..-2].map{|n| File.read(n)}.join
   end
-  sh "gzip --best -c #{t.name} >#{t.name}.gz"      
+  sh "yuicompressor #{t.name} | gzip --best -c >#{t.name}.gz"      
 end
 
 rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
