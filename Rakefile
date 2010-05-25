@@ -237,7 +237,7 @@ rule(%r{^out/google} => ->(t){ source t }) do |t|
   cp t.source, t.name
 end
 
-%w{examples railroads}.each do |dir|
+%w{examples railroads fonts}.each do |dir|
   out_dir = File.join('out', dir)
   file out_dir => ['out', dir] do |t|
     ln_s "../#{dir}", t.name
@@ -255,7 +255,7 @@ rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
   cp t.source, t.name
 end
 
-output_files = ['out', 'out/main.css', 'out/chapter.css', 'out/railroads', 'out/examples']
+output_files = ['out', 'out/main.css', 'out/chapter.css', 'out/railroads', 'out/examples', 'out/fonts']
 FileList['*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
   next if f.start_with?('_')
   output_files << (f_out = 'out/' + f)

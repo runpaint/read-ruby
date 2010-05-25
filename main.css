@@ -1,13 +1,40 @@
+@font-face {
+	font-family: 'Goudy Bookletter 1911';
+	src: url('/fonts/goudy_bookletter_1911-webfont.eot');
+	src: local('☺'), url('/fonts/goudy_bookletter_1911-webfont.woff') format('woff'), url('/fonts/goudy_bookletter_1911-webfont.ttf') format('truetype'), url('/fonts/goudy_bookletter_1911-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'OFL Sorts Mill Goudy';
+	src: url('/fonts/OFLGoudyStM-webfont.eot');
+	src: local('☺'), url('/fonts/OFLGoudyStM-webfont.woff') format('woff'), url('/fonts/OFLGoudyStM-webfont.ttf') format('truetype'), url('/fonts/OFLGoudyStM-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'OFL Sorts Mill Goudy Italic';
+	src: url('/fonts/OFLGoudyStM-Italic-webfont.eot');
+	src: local('☺'), url('/fonts/OFLGoudyStM-Italic-webfont.woff') format('woff'), url('/fonts/OFLGoudyStM-Italic-webfont.ttf') format('truetype'), url('/fonts/OFLGoudyStM-Italic-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
 body {
-  font-size: medium;
-  font-family: Palatino, Tahoma, sans-serif; /* TODO: Create better list */
+  font-size: 1em;
+  font-family: 'OFL Sorts Mill Goudy', Palatino, Tahoma, serif; /* TODO: Create better list */
   font-color: black;
   background-color: white; 
   /* TODO: Consider using off-white background colour like #FFFFF0. Would
    * require updating syntax diagrams.
    */
 }
-
+h1 {
+  font-family: 'Goudy Bookletter 1911', Palatino, Tahoma, serif; /* TODO: Create better list */
+  line-height: 140%;
+}
 /* Everything has a left margin of at least 4%. The content in the main column
  * mostly has a right margin of 40%, but we let tables and large figures
  * overflow. Additionally, the right margin holds sidenotes
@@ -23,7 +50,7 @@ section > ol,
 section > blockquote, 
 section > aside.note {
   margin-left: 4%;
-  margin-right: 40%;
+  margin-right: 36%;
 }
 
 section > blockquote p {
@@ -242,10 +269,10 @@ body > section > section > section > h1:before {
 }
 body > section > section > section > h1 {
   counter-reset: c;
-  font-size: 1.3em;
+  font-size: 1.4em;
   margin-top: 1em;
   margin-bottom: 0.8em;
-  letter-spacing: -1px;
+  /*letter-spacing: -1px;*/
 
 }
 
