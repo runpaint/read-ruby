@@ -28,3 +28,14 @@ a[href^="//"]:visited, a[href^="http"]:visited {
   color: #9966CC;
   text-decoration: underline;
 }
+
+/* Hardcode quotation marks. The UA should do this, of course, but for some
+   inexplicable reason, Chromium was messing up the opening mark. */   
+
+q:before {
+  content: '“';
+}
+
+q:after {
+  content: '”';
+}
