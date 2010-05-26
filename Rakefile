@@ -158,7 +158,7 @@ end
 class Book
   CHAPTERS = %w{modules programs classes flow messages closures 
                 methods objects variables}
-  APPENDICES = %w{punctuation}
+  APPENDICES = %w{punctuation keywords}
   
   def chapters
     @chapters ||= CHAPTERS.map{|c| Chapter.new c}
