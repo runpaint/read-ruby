@@ -156,8 +156,8 @@ class Railroad < Page
 end
 
 class Book
-  CHAPTERS = %w{modules programs classes flow messages closures 
-                methods objects variables}
+  CHAPTERS = %w{programs variables messages methods objects classes modules
+                closures flow}
   APPENDICES = %w{punctuation keywords}
   
   def chapters
