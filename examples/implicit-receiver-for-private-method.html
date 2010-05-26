@@ -1,0 +1,26 @@
+<a href=/examples/implicit-receiver-for-private-method.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Schneier</span>
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">blowfish</span>
+    <span class="s2">&quot;Teach a man to fish...&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Schneier</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">blowfish</span>
+<span class="c1">#=&gt; NoMethodError: private method `blowfish&#39; called for #&lt;Schneier:0x8b1d458&gt;</span>
+
+<span class="k">class</span> <span class="nc">Schneier</span>
+  <span class="k">def</span> <span class="nf">backdoor</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">blowfish</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Schneier</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">backdoor</span>
+<span class="c1">#=&gt; NoMethodError: private method `blowfish&#39; called for #&lt;Schneier:0x8c8b204&gt;</span>
+
+<span class="k">class</span> <span class="nc">Schneier</span>
+  <span class="k">def</span> <span class="nf">backdoor</span>
+    <span class="n">blowfish</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Schneier</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">backdoor</span> 
+<span class="c1">#=&gt; &quot;Teach a man to fish...&quot;</span>
+</code></pre>
+</a>

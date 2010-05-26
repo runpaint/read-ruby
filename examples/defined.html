@@ -1,0 +1,8 @@
+<a href=/examples/defined.rb><pre class=syntax><code><span class="n">defined?</span> <span class="vg">$a</span> <span class="c1">#=&gt; nil</span>
+<span class="n">defined?</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">2</span> <span class="c1">#=&gt; &quot;method&quot;</span>
+<span class="n">var</span> <span class="o">=</span> <span class="n">defined?</span> <span class="kp">true</span> <span class="ow">and</span> <span class="kp">nil</span> <span class="c1">#=&gt; &quot;true&quot;</span>
+<span class="n">defined?</span> <span class="n">var</span> <span class="c1">#=&gt; &quot;local-variable&quot;</span>
+<span class="n">defined?</span> <span class="mi">1</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="ss">:one</span> <span class="p">}</span> <span class="c1">#=&gt; &quot;expression&quot;</span>
+<span class="n">defined?</span> <span class="k">yield</span> <span class="c1">#=&gt; nil</span>
+</code></pre>
+</a>

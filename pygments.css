@@ -1,7 +1,6 @@
 .syntax { text-align: center; }
 .syntax code { 
-  background-color: #ffffcc; 
-  display:inline-block; 
+  display:inline-block;
   float:none; 
   text-align: left; 
   padding: 1%;
@@ -10,7 +9,10 @@
   white-space: -pre-wrap;      /* Opera 4-6 */
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  font:Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
 }
+.syntax .hll { background-color: #ffffcc }
+.syntax  { background: #ffffff; }
 .syntax .c { color: #808080 } /* Comment */
 .syntax .err { color: #F00000; background-color: #F0A0A0 } /* Error */
 .syntax .k { color: #008000; font-weight: bold } /* Keyword */

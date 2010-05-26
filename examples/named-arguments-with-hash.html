@@ -1,0 +1,18 @@
+<a href=/examples/named-arguments-with-hash.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Chair</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="vi">@legs</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="ss">:legs</span><span class="o">]</span> <span class="ow">or</span> <span class="k">raise</span> <span class="no">ArgumentError</span>
+    <span class="vi">@style</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="ss">:style</span><span class="o">]</span> <span class="o">||</span> <span class="ss">:victorian</span>
+    <span class="vi">@height</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="ss">:height</span><span class="o">]</span> <span class="o">||</span> <span class="ss">:average</span>
+    <span class="vi">@colour</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="ss">:colour</span><span class="o">]</span> <span class="o">||</span> <span class="n">args</span><span class="o">[</span><span class="ss">:color</span><span class="o">]</span> <span class="o">||</span> <span class="ss">:brown</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Chair</span><span class="o">.</span><span class="n">new</span> <span class="n">legs</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="ss">:tall</span> 
+<span class="c1">#=&gt; #&lt;Chair:0x8249908 @legs=4, @style=:victorian,</span>
+    <span class="c1">#                 @height=:tall, @colour=:brown&gt;</span>
+<span class="no">Chair</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:color</span> <span class="o">=&gt;</span> <span class="ss">:fuschia</span><span class="p">,</span> <span class="ss">:legs</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">)</span> 
+<span class="c1">#=&gt; #&lt;Chair:0x86958f4 @legs=7, @style=:victorian,</span>
+    <span class="c1">#                 @height=:average, @colour=:fuschia&gt;</span>
+<span class="no">Chair</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">height</span><span class="p">:</span> <span class="ss">:childs</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="ss">:fuschia</span><span class="p">)</span>
+<span class="c1">#=&gt; ArgumentError </span>
+</code></pre>
+</a>

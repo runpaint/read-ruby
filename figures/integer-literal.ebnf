@@ -1,0 +1,1 @@
+IntegerLiteral = DecimalLiteral | OctalLiteral | HexadecimalLiteral | BinaryLiteral

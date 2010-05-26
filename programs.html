@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!-- vim: set fdm=indent tw=78: --> 
+<title>Programs - Read Ruby</title>
+<meta charset=utf-8>
+<link href=/chapter rel=stylesheet>
+<link rel=license href=//creativecommons.org/licenses/by-nc-sa/2.0/uk/>
+<link rel=next href=/variables>
+<link rel='index up' href=/toc>
+
+<section>  
+  <h1 id=programs>Programs</h1>
+
+  <p>Every entity in Ruby is an object. Objects can remember things and
+  communicate with each other by sending and receiving messages (<a
+    href=/references#refGOLDBERG76>Goldberg &amp; Kay</a>, p 44). A Ruby
+  program describes how certain objects must communicate to achieve some
+  definite ends. This chapter provides an overview of the structure and
+  interpretation of Ruby programs.</p>
+
+  <section>  
+    <h1 id=lexical>Lexical Structure</h1>
+
+    <aside class=sidenote>
+      <code>Ripper</code> is a class in the standard library for parsing and
+      analysing Ruby. The <code>Ripper.tokenize</code> method takes a string
+      of code as an argument and returns an array of its constituent tokens.
+      Experiment with this method in <abbr title="Interactive
+        Ruby">IRB</abbr> (<code>irb -rripper</code>) to test your
+      assumptions of how tokenization works.
+    </aside>
+
+    <!-- Aho, 2nd ed., p43: tokens vs. terminals -->
+    <!-- TODO: Introduce tokenization -->
+    <p><dfn>Tokens</dfn> are <q>the mark or series of marks that denote one
+      symbol or word in the language</q> (<a
+      href=/references#refFISCHER92>Fischer &amp; Grodzinsky</a>, pp.  59–62).
+    A Ruby program consists of a combination of the following tokens: <a
+      href=#comments>comments</a>, <a href=/objects#literals>literals</a>, <a
+      href=/punctuation>punctuation</a>, <a href=#identifiers>identifiers</a>,
+    and <a href=/keywords>keywords</a>.</p>
+
+    <section>
+      <h1 id=comments>Comments</h1>
+
+      <p><dfn>Comments</dfn> are remarks which do not affect the meaning of a
+      program. They are introduced with a number sign (<code class=u
+        title='#'>U＋0023</code>) and continue until the end of the line: the
+      text between <code>#</code> and the end of the line is ignored by the
+      interpreter. Comments are not recognised inside of <a
+        href=/objects#strings>string</a>/<a href=/objects#regexps>regexp</a>
+      literals—they are interpreted literally—however, regexps support an
+      alternative form of embedded comment. There is no specific construct for
+      multiline comments, but they may be approximated with <a
+        href=#embedded-doc>embedded documentation</a>.
+    </section>
+
+    <!-- Token? -->
+    <section>
+      <h1 id=embedded-doc>Embedded Documentation</h1>
+
+      <p><dfn>Embedded documentation</dfn> is a portion of a source file that
+      contains documentation intended for a postprocessor such as
+      <code>rdoc</code>, and as such is ignored by the interpreter. It is
+      introduced by a line beginning <code>=begin</code>, that is an equals
+      sign (<code class=u title='='>U＋003D</code>) followed by the string
+      <code>begin</code>, and continues until a line beginning
+      <code>=end</code> is encountered.
+
+      <p>Both <code>=begin</code> and <code>=end</code> may be followed by
+      arbitrary text, which is included in the embedded documentation, as long
+      as it is preceded by a whitespace character. Conventionally, the text
+      following <code>=begin </code> names the tool for which the
+      documentation is intended.
+    </section>
+
+    <section>
+      <h1 id=whitespace>Whitespace</h1>
+
+      <p><dfn>Whitespace</dfn> consists only of <code
+        class=u>U＋0009</code>–<code class=u>U＋000D</code> and the space
+      character (<code class=u title=' '>U＋0020</code>), i.e. <abbr
+        title='American Standard Code for Information
+        Interchange'>ASCII</abbr> whitespace. Its primary role in Ruby syntax
+      is to separate tokens and terminate statements. When whitespace is
+      syntactically significant it is typically collapsed to a single space.
+      The few areas of syntax where whitespace has different semantics are
+      clearly labeled. Newlines are used as <a
+        href=#statement-terminators>statement terminators</a>.
+    </section>
+
+    <!-- FIXME: Hash, Array, proc, etc., literals aren't tokens -->
+    <section>
+      <h1 id=literals>Literals</h1>
+
+      <!-- Don't call initialize; performance pips pedagogy -->
+      <p>An <dfn title=literal>object literal</dfn> is a syntactical shortcut
+      for the instantiation of a particular core object. Literals exist for
+      strings, numbers, symbols, arrays, hashes, ranges, lambdas.</p>     
+    </section>
+
+    <section>
+      <h1 id=identifiers>Identifiers</h1>
+
+      <figure class=railroad>
+        <img id=identifier.png>
+      </figure>
+
+      <p>An <dfn>identifier</dfn> is the name of a <a
+        href=/variables>variable</a> or <a href=/methods>method</a>. It must
+      not contain any <abbr title='United States'>US</abbr>-<abbr
+        title='American Standard Code for Information
+        Interchange'>ASCII</abbr> character other than the alphanumerics (A—Z,
+      a—z, 0–9) and the low
+        line (<code class=u title='_'>U＋005F</code>), or begin with a <abbr
+          title='United States'>US</abbr>-<abbr title='American Standard Code
+          for Information Interchange'>ASCII</abbr> digit. However, it may
+        contain any other character legal in the <a
+          href=#source-encoding>source encoding</a>.</p>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=syntax>Syntactical Structure</h1>
+
+    <section>
+      <h1 id=expressions>Expressions</h1>
+
+      <p>An <dfn>expression</dfn> is a syntactical construct that produces a
+      value. Since every entity is an object, every expression evaluates to an
+      object. It is either primary or compound.</p>
+      
+      <aside class=sidenote>
+      We follow the lead of <a href=/references#refAHO86>Aho, Sethi, &amp;
+        Ullman</a> (1986) in defining <i>expression</i> by recursion rather than
+      direct description.
+      </aside>
+
+      <p><dfn>Primary expressions</dfn> comprise atomic<sup>†</sup> units such
+      as <a href=/variables>variable references</a> and <a
+        href=/numerics#literals>numeric</a>, <a
+        href=/text#string-literals>string</a><sup>‡</sup>, and symbol, <a
+        href=/text#regexp-literals>regexp</a><sup>‡</sup>, and <a
+        href=#keyword-literals>keyword</a>, literals. Expressions can be
+      combined with <a href=/messages#operators>operators</a>, <a
+        href=#keywords>keywords</a>, and <a
+        href=/enumerables#array-literals>array</a>, <a
+        href=/enumerables#hash-literals>hash</a>, <a
+        href=/enumerables#range-literals>range</a>, and interpolative literals,
+      to produce <dfn>compound expressions</dfn>.</p>
+      <!-- How do message expressions fit into this definition? -->
+
+      <aside class=sidenote>
+      <span class=sidemark>†</span>As <a href=/references#refTURBAK08>Turbak,
+        Gifford, &amp; Sheldon</a> (2008,
+        pp. 20–22) note, this characterisation is patently false even for toy
+        languages since, in their example, <q>numerals can be broken down into
+          digits</q>, however we, too, will <q>ignore this detail</q>.
+      </aside>
+
+      <aside class=sidenote>
+        <span class=sidemark>‡</span>Double‐quoted strings or regexps that
+        interpolate other expressions are compound expressions.
+      </aside>
+
+      <!-- TODO: Sidebar exceptions to "everything is a value" -->
+
+      <section>
+        <h1 id=keyword-literals>Keyword Literals</h1>
+
+        <!-- TODO: Define, add __method__, __callee__, etc.-->
+        <section>
+          <h1 class=runin id=true><code>true</code></h1>
+          
+          <p>The <code>true</code> keyword returns the singleton instance of
+          <code>TrueClass</code>. Its value is, by definition, true.
+        </section>
+
+        <section>
+          <h1 class=runin id=false><code>false</code></h1>
+
+          <p>The <code>false</code> keyword returns the singleton instance of
+          <code>FalseClass</code>. Its value is, by definition, false.
+        </section>
+
+        <section>
+          <h1 class=runin id=nil><code>nil</code></h1>
+
+          <p>The <code>nil</code> keyword returns the singleton instance of
+          <code>NilClass</code>. Its value is represents the absence of a value.
+          The <code>Kernel.nil?</code> predicate returns <code>true</code> if
+          its value is <code>nil</code>; <code>false</code> otherwise.
+          <!-- TODO: Clarify that the presence of nil does not imply trivalent logic
+          -->
+        </section>
+
+        <section>
+          <h1 class=runin id=self><code>self</code></h1>
+
+          <p><code>self</code> always evaluates to the current object. Outside
+          of any class definition, i.e. at the top‐level, the current object is
+          an instance of <code>Object</code> called <code>main</code>. Inside a
+          class definition, but outside of a method definition, the current
+          object is an instance of <code>Class</code>. Within a method
+          definition the current object is the instance of the containing
+          class.</p>
+
+          <figure class=left id=self-as-the-implicit-receiver.rb>
+            <figcaption><code>self</code> is always defined; its value depends
+            on the enclosing context.
+          </figure>
+        </section>
+
+        <section>
+          <h1 class=runin id=file><code>__FILE__</code></h1>
+
+          <p>Evaluates to a string consisting of the name of the source file
+          currently being executed. The strings <samp>(eval)</samp> and
+          <samp>(irb)</samp> are returned when in an <code>eval</code> context
+          and <abbr title="Interactive Ruby">IRB</abbr> session,
+          respectively.</p>
+        </section>
+
+        <section>
+          <h1 class=runin id=line><code>__LINE__</code></h1>
+
+          <p>Evaluates to a <code>Fixnum</code> specifying the line number in
+          the current <a href=#file><code>__FILE__</code></a> being executed.
+        </section>
+
+        <section>
+          <h1 class=runin id=encoding><code>__ENCODING__</code></h1>
+
+          <p>Evaluates to an <code>Encoding</code> object representing the
+          current source encoding, i.e. that of <a
+          href=#file><code>__FILE__</code></a>.
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=statements>Statements</h1>
+
+      <aside class=sidenote>
+        <span class=sidemark>†</span>A further example of distinguishing
+        between statements and expressions by considering their context is
+        found in Turbak, Gifford, and Sheldon’s <a
+          href=/references#refTURBAK08><cite>Design Concepts in Programming
+            Languages</cite></a>, pp. 472—476.
+      </aside>
+
+      <p>A statement is an expression whose value is ignored<sup>†</sup>. In
+      practice, this implies that a statement is executed for its
+      side-effects, because an expression executed for neither its value nor
+      effect is semantically meaningless.</p>
+
+      <section>
+        <h1 id=statement-terminators>Statement Terminators</h1>
+        
+        <p>One statement must be separated from the next by a statement
+        terminator. This may be a semicolon (<code class=u
+          title=';'>U＋003B</code>) or <a href=#newlines>newline</a>. The latter
+        is preferred because it leads to a natural separation: each statement on
+        its own line. However, a newline does not terminate a statement if:
+        
+        <ul>
+          <li>It is immediately preceded by a reverse solidus (<code
+            class=u title='\'>U＋005C</code>).
+          <li>It is preceded by an <a href=/messages#operators>operator</a>,
+          with optional intervening <a href=#whitespace>whitespace</a>.
+          <li>It is immediately preceded by a comma (<code class=u
+            title=','>U＋002C</code>) or full stop (<code class=u
+            title='.'>U＋002E</code>) in a <a href=/messages#expressions>message
+            expression</a> or <a href=/enumerables#arrays>array</a>/<a
+            href=/enumerables#hashes>hash</a> literal, with optional intervening
+          whitespace. 
+          <li>The first non-whitespace character on the following line is a full
+          stop (<code class=u title='.'>U＋002E</code>). (Allows <a
+            href=/messages#chaining>chained</a> message expressions to span
+          lines).
+        </ul>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=data><code>__END__</code></h1>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=interpretation>Interpretation</h1>
+
+    <p>The statements and expressions that comprise a program are collectively
+    known as its <dfn>source code</dfn>. To execute a program its source code
+    must be provided to a Ruby <dfn>interpreter</dfn>: the program that
+    executes Ruby source code. The reference implementation<sup>‡</sup> of
+    Ruby, or <abbr title="Matz’s Ruby Implementation">MRI</abbr>, contains an
+    interpreter called <code>ruby</code>, so when we speak of executing the
+    interpreter we are referring to running this program. The sections that
+    follow explain the various ways to execute source code.</p>
+
+    <aside class=sidenote>
+      <span class=sidemark>‡</span>There are several excellent alternative
+      implementations such as <a href=//jruby.org/>JRuby</a> and <a
+        href=//rubini.us/>Rubinius</a>. However, for the purposes of this
+      book neither are recommended because, although JRuby is close, they are
+      not yet compatible with Ruby 1.9.
+    </aside>
+    
+    <section>
+      <h1 id=source-files>Source Files</h1>
+
+      <p>Ruby programs are typically stored in plain text files with an
+      <code>.rb</code> filename extension. They are then executed by supplying
+      their filenames as arguments to the <code>ruby</code> binary, e.g.
+      <code>ruby myfile.rb</code> would execute the source code saved in
+      <code>myfile.rb</code>.</p>
+
+      <section>
+        <h1 id=shebang>Shebang</h1>
+
+        <p>The <dfn>shebang</dfn><sup>†</sup> is a notation for informing a
+        UNIX-like operating system of the interpreter with which a script should
+        be executed. If present it must appear as the first line of a source
+        file. It begins with a number sign (<code class=u
+          title='#'>U＋0023</code>) making it a legal comment line, therefore
+        ignored by the interpreter, which is followed by an exclamation mark
+        (<code class=u title='!'>U＋0021</code>) then the path to the
+        interpreter.</p>
+
+        <aside class=sidenote>
+          <span class=sidemark>†</span>A portmanteau of <i>sharp</i> and
+          <i>bang</i> (<a href=/references#refWALL00>Wall, Christiansen, &amp;
+            Orwant</a>, p. 1001), colloquial terms for the number sign (<code
+            class=u title='#'>U＋0023</code>) and the exclamation mark (<code
+            class=u title='!'>U＋0021</code>), respectively.
+        </aside>    
+
+        <p>A typical shebang is <code>#!/usr/bin/env ruby -w</code> which uses
+        <code>env</code> to avoid hardcoding the path to the interpreter, and
+        passes the <code>-w</code> option to the interpreter to enable warnings.
+
+        <p>If a script containing a shebang is executable it may be executed by
+        entering its filename in the shell. This allows the interpreter to be
+        invoked implicitly, and is a common approach.
+      </section>
+
+      <section>
+        <h1 id=source-encoding>Source Encoding</h1>
+
+        <p>The <dfn>source encoding</dfn> is the character encoding of a given
+        source file. It is US-ASCII by default. A <code>SyntaxError</code> is
+        raised when a source file contains one or more characters invalid in the
+        source encoding.
+
+        <p>A file’s source encoding may be specified inline by means of a
+        <dfn>coding comment</dfn>: a specially formatted comment that declares
+        the encoding of the lines that follow. If omitted, the default source
+        encoding is assumed. If a source file contains a <a
+          href=#shebang>shebang</a> line, the coding comment must appear on the
+        second line; otherwise it must appear on the first.</p>
+
+        <aside class=sidenote>
+          <span class=sidemark>†</span>That the coding comment need only
+          <em>contain</em> <code>coding</code> allow Ruby to recognise Vim and
+          Emacs modelines which declare a file’s encoding. For example, <code>#
+            vim: set fileencoding=utf-8 :</code> informs both Vim and Ruby that
+          the file is encoded in UTF-8.
+        </aside>
+        
+        <p>The coding comment is a US-ASCII string which begins with a number
+        sign (<code class=u title='#'>U＋0023</code>) and contains<sup>†</sup>
+        the string <code>coding</code> followed by an equals sign (<code class=u
+          title='='>U＋003D</code>) or colon (<code class=u
+          title=':'>U＋003A</code>) then the name of the
+        source encoding. The encoding name is one of those returned by
+        <code>Encoding.name_list</code> written in a case insensitive fashion.
+
+        <p>The source encoding of the currently executing code can be obtained
+        with the <a href=#encoding><code>__ENCODING__</code></a>
+        keyword.
+      </section>
+
+      <section>
+        <h1 id=warnings>Warnings</h1>
+
+        <p><dfn>Warnings</dfn>— notices of deprecated, ambiguous, or otherwise
+        problematic, code— are enabled when the interpreter is given the
+        <code>-w</code> switch, e.g. <code>ruby -w myfile.rb</code>. For
+        example, Ruby warns when a <a href=/variables#constants>constant</a>
+        that has already been defined is assigned to.
+      </section>
+
+      <section>
+        <h1 id=require><code>require</code></h1>
+      </section>
+      
+      <section>
+        <h1 id=load><code>load</code></h1>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=irb>IRB</h1> 
+
+      <p>Ruby is distributed with a program called <code>irb</code> which
+      provides an interactive shell, or read‐eval‐print loop, for the
+      interpreter. <abbr title="Interactive Ruby">IRB</abbr> works as follows:
+      
+      <ol>
+        <li>You enter a statement of Ruby and press <kbd>Enter</kbd>
+        <li>That statement is evaluated and its value printed to the screen.
+        <li>You go back to step 1.
+      </ol>
+  
+      <p>This provides a superb environment for learning Ruby. As you read
+      this book you can enter the examples in IRB and see for yourself how
+      they work.
+    </section>
+
+    <section>
+      <h1 id=eval>Evaluating Strings</h1>
+
+      <p>Source code can be provided as an command-line argument to the
+      interpreter if it is invoked with the <code>-e</code> switch, e.g.
+      <code>ruby -e 'puts 1 + 2'</code> executes the code fragment and
+      displays <samp>3</samp>.
+
+      <p>The <code>Kernel.eval</code> method provides similar functionality
+      from within a program. Pass it an arbitrary string of source code as an
+      argument and it will return the result. Continuing with the above
+      example: <code>eval 'puts 1 + 2'</code>.
+    </section>
+  </section>
+</section>

@@ -1,0 +1,12 @@
+<a href=/examples/message-chaining-inconsistent-return-value.rb><pre class=syntax><code><span class="c1"># String#strip! returns a String when it successfully strips surrounding</span>
+<span class="c1"># whitespace from its receiver. This String is then used as the receiver for</span>
+<span class="c1"># String#sub.</span>
+<span class="s2">&quot; All propositions are of equal value. &quot;</span><span class="o">.</span><span class="n">strip!</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/\.$/</span><span class="p">,</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> 
+<span class="c1">#=&gt; &quot;All propositions are of equal value!&quot;</span>
+
+<span class="c1"># However, when String#strip! doesn’t find any surrounding whitespace it</span>
+<span class="c1"># returns nil. nil does not respond to :sub, so the chain is broken.</span>
+<span class="s2">&quot;All propositions are of equal value.&quot;</span><span class="o">.</span><span class="n">strip!</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/\.$/</span><span class="p">,</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> 
+<span class="c1">#=&gt; NoMethodError: undefined method `sub&#39; for nil:NilClass</span>
+</code></pre>
+</a>

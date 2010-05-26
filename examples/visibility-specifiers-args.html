@@ -1,0 +1,32 @@
+<a href=/examples/visibility-specifiers-args.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">C</span>                
+  <span class="c1"># The three following methods are public because they haven’t been</span>
+  <span class="c1"># specified otherwise</span>
+  <span class="k">def</span> <span class="nf">pub</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">pri</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">pri2</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Both :pri and :pri2 are made private because their names are</span>
+  <span class="c1"># given as arguments to the &#39;private&#39; visibility specifier</span>
+  <span class="kp">private</span> <span class="ss">:pri</span><span class="p">,</span> <span class="ss">:pri2</span>
+
+  <span class="c1"># This method is also public; the preceding private keyword only</span>
+  <span class="c1"># acts on its arguments</span>
+  <span class="k">def</span> <span class="nf">pro</span>
+  <span class="k">end</span>
+  <span class="c1"># This method is made protected because its name is given to</span>
+  <span class="c1"># the &#39;protected&#39; visibility specifier</span>
+  <span class="kp">protected</span> <span class="s1">&#39;pro&#39;</span>
+  
+  <span class="c1"># This method is public because it hasn&#39;t been declared</span>
+  <span class="c1"># otherwise; the previous &#39;protected&#39; specifier only affects the</span>
+  <span class="c1"># method it was called for</span>
+  <span class="k">def</span> <span class="nf">pub2</span>
+  <span class="k">end</span>  
+<span class="k">end</span>  
+</code></pre>
+</a>

@@ -1,0 +1,1 @@
+HashMember = Space? (Identifier ":" Space? Expression | Expression Space? "=>" Space? Expression) Space?

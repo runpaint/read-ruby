@@ -1,0 +1,1 @@
+ConstantReference = ((Expression)? "::")? ConstantName

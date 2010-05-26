@@ -1,0 +1,1 @@
+ScientificNotationLiteral = (DecimalLiteral | FloatLiteral) ("e" | "E") Sign? (Digit ("_" Digit)?)+

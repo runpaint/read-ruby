@@ -1,0 +1,1 @@
+AliasStatement = "alias" " "+ (Symbol | SymbolLiteral) " "+ (Symbol | SymbolLiteral)

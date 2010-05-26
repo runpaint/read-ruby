@@ -1,0 +1,1 @@
+Escape = CharacterEscape | UnicodeEscape | ByteEscape | ControlEscape | MetaEscape

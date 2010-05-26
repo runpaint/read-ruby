@@ -1,0 +1,10 @@
+<a href=/examples/element-set-selector.rb><pre class=syntax><code><span class="n">tower</span> <span class="o">=</span> <span class="s1">&#39;Tower of Pisa&#39;</span>
+<span class="n">tower</span><span class="o">[/</span><span class="p">\</span><span class="n">w</span><span class="o">+</span><span class="vg">$/</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Babel&#39;</span>
+<span class="n">tower</span> <span class="c1">#=&gt; &quot;Tower of Babel&quot;</span>
+<span class="n">tower</span><span class="o">[-</span><span class="mi">5</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;London&#39;</span>
+<span class="n">tower</span> <span class="c1">#=&gt; &quot;Tower of London&quot;</span>
+<span class="n">tower</span> <span class="o">=</span> <span class="n">tower</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">//</span><span class="p">)</span>
+<span class="n">tower</span><span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">4</span><span class="o">]</span> <span class="o">=</span> <span class="sx">%w{C i t y}</span>
+<span class="n">tower</span><span class="o">.</span><span class="n">join</span> <span class="c1">#=&gt; &quot;City of London&quot;</span>
+</code></pre>
+</a>

@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<!-- vim: set fdm=indent tw=78: --> 
+<title>Variables - Read Ruby</title>
+<meta charset=utf-8>
+<!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
+<script src="http://html5-now.appspot.com/html5-now.js"></script>
+-->
+<link href=/chapter rel=stylesheet>
+<link rel=license href=//creativecommons.org/licenses/by-nc-sa/2.0/uk/>
+<link rel=next href=/messages>
+<link rel='index up' href=/toc>
+
+<!-- TODO: Discuss relationship with threads? -->
+<section>  
+  <h1 id=variables>Variables</h1>
+
+  <!-- Summary
+    * Objects can be assigned to named variables
+    * Variables are named with an identifier optionally preeceed with @,@@,or $
+    * A variable's scope is the portion of the program where it has meaning
+    * 
+  -->
+
+  <p>A <dfn>variable</dfn> is a named storage location that holds a value.
+  <!-- TODO: Employ more rigourous definition; cite source --> It is named
+  with an <a href=/programs#identifiers>identifier</a>, possibly preceded
+  by a <dfn>sigil</dfn> (a symbol denoting the variable’s scope).</p>
+
+  <p>When the name of a variable appears somewhere other than the
+  left‐hand side of an assignment expression it is a <dfn>variable
+  reference</dfn> which evaluates to the variable’s value. </p>
+
+  <p>A variable’s <dfn>scope</dfn> <q>…is the portion of the program text in
+  which the variable may be referenced.</q> (<a
+  href=/references#refTURBAK08>Turbak, Gifford, &amp; Seldon</a>, pp. 334–335)
+  Its <dfn title='variable lifetime'>lifetime</dfn> is <q>the duration, during
+  a run of a program, during which a location is allocated as the result of a
+  specific declaration.</q> (<a href=/references#refMITCHELL04>Mitchell</a>,
+  p. 167). When the scope of a variable <q>contains another declaration of the
+  same name the inner declaration <dfn>carves out a hole</dfn> in the scope of
+  the outer one</q> (<a href=/references#refTURBAK08>Turbak, Gifford, &amp;
+  Seldon</a>, pp. 336–338). The outer’s lifetime persists through the inner
+  declaration, but its scope is hidden for the duration. 
+
+  <p>The specifics of variable references are explained in the following
+  sections, along with complementary treatment of variable scope,
+  initialization, and assignment.</p>
+
+  <section>
+    <h1 id=constants>Constants</h1>
+    
+    <p>A constant is a variable whose value, once assigned, is not expected
+    to change. Its constancy is not enforced by Ruby, so repeated
+    assignments are legal, but cause a warning to be issued.</p>
+    <!-- TODO: Note that warning is implementation defined behaviour -->
+
+    <!-- Explain the dual role of constants: constants qua constants and
+         as the names of classes/modules -->
+    <section>
+      <h1 id=constants-name>Name</h1>
+      
+      <p>A constant is, by definition, named with an <a
+      href=/programs#identifiers>identifier </a>whose first character is
+      an uppercase US‐ASCII character (<code>A</code>–<code>Z</code>). It is
+      a strong convention that constants qua constants are named entirely
+      in US‐ASCII uppercase letters with low lines to separate words,
+      whereas constants used to name classes or modules are named in
+      camel‐case: title case with whitespace removed. 
+    </section>
+
+    <section>
+      <h1 id=constants-references>References</h1>
+      
+      <figure class=railroad>
+        <img id=constant-reference.png>
+        <figcaption>Syntax diagram of a constant reference
+      </figure>
+      
+      <p>A <dfn>constant reference</dfn> is an expression evaluating to the
+      named constant. The simplest constant reference is a primary expression
+      consisting solely of the constant’s name, e.g. <code>Constant</code>.</p>
+
+      <figure class=sidenote>
+        <span class=sidemark>†</span>That is, under <code>Object</code> or
+        <code>Kernel</code>, with the former taking precedence. See <a
+          href=#resolution-algorithm>Resolution Algorithm</a> for more
+        details.
+      </figure>
+
+      <p>A constant reference may also be qualified by prefixing the constant
+      name with the <q cite=/references#refTHOM09><dfn>scope
+          operator</dfn></q> (<a href=/references#refTHOM09>Thomas et al.</a>,
+      2009, pp. 336–339): two consecutive colon (<code class=u
+        title=':'>U＋003A</code>) characters. This causes the constant to be
+      looked up in the global scope<sup>†</sup>.
+
+      <p>A reference may be qualified further by preceding the scope
+      operator with an expression evaluating to the <code>Class</code> or
+      <code>Module</code> object in which the constant was defined.</p>
+
+      <figure class=left id=constant-reference.rb>
+        <figcaption>Defining the plastic number as a constant inside a module
+        then accessing it from outside with a qualified name.
+      </figure>
+
+      <section>
+        <h1 id=constant-resolution>Resolution Algorithm</h1>
+
+        <p>To resolve an unqualified constant reference made in a class or
+        module named <var>container</var>:</p>
+
+        <ol>
+          <li>Let <var>original-container</var> equal <var>container</var>. 
+          <li>If the constant is defined in <var>container</var>, we’ve
+          successfully resolved it.
+          <li>If <var>container</var> has an enclosing class or module, set
+          <var>container</var> to its name and repeat step 2.
+          <li>Set <var>container</var> to <var>original-container</var>.
+          <li>In the order that they were included, inspect each module mixed‐in
+          to <var>container</var>. If one contains the constant, we've
+          successfully resolved it.
+          <li>If <var>container</var> has a superclass assign it to
+          <var>container</var>; otherwise go to step 8.
+          <li>If the constant is defined in <var>container</var>, we’ve
+          successfully resolved it; otherwise, go to step 5.
+          <li>Set <var>container</var> equal to <code>Object</code>, if it
+          hasn’t already been, and repeat step 5.
+          <li>Set <var>container</var> to <var>original-container</var>
+          <li>If <var>container</var> responds to <code>:const_missing</code>, it
+          is sent it with the constant name as argument. The value of 
+          <code>const_missing</code> becomes that of the constant; we’ve
+          successfully resolved it.
+          <li>If <var>container</var> has a superclass, assign it to
+          <var>container</var> and repeat step 10.
+          <li>Raise a <code>NameError</code> exception: constant resolution
+          failed.
+        </ol>
+
+        <p>This search path can be summarised as: <code>(Module.nesting +
+          self.ancestors + Object.ancestors).uniq</code> (executed in the
+        context of <var>original-container</var>).
+
+        <p>Some notes on this procedure:
+          <ul>
+            <li>In the search for a given constant no class or module is examined
+            more than once: if a previously‐seen location is suggested by the
+            above algorithm above, it is skipped.
+            <li>Step 8 is needed in the case where <var>original-container</var>
+            is a module: modules don’t inherit from <code>Object</code>, so the
+            preceding steps wouldn’t have searched it.
+            <li>When a constant is referenced in an <code>*_eval</code> or
+            <code>*_exec</code> block, <var>container</var> is set to that
+            enclosing the block; not the container in whose context the block
+            is evaluated.
+            <li>When <var>original-container</var>’s ancestors are searched for
+            <code>const_missing</code>, they are <em>not</em> sent also
+            <code>method_missing</code>.
+          </ul>
+      </section>
+    </section>
+    <!-- TODO: const_missing (from Classes) -->
+    
+    <section>
+      <h1 id=constants-scope>Scope</h1>
+      
+      <p>We can restate the algorithm above to deduce a constant’s scope,
+      namely: it is established by its lexically enclosing class or
+      module. Inner classes and modules inherit the scope of their parents,
+      and constants initialized in the former cause a hole in their parent’s
+      scope.
+      
+      <p>A constant is accessible throughout its scope by unqualified
+      reference, and may be accessed from an exterior context by qualifying
+      its name with that of the defining class/module.
+
+      <p>A constant defined in another context may be referred to
+      unqualified or prefixed with the scope operator. However, it is
+      illegal to define a constant in a method body as every invocation of
+      the method would cause re‐assignment, defeating the purpose of a
+      constant. <!-- Cite FLAN08 -->
+
+      <p>A qualified constant name may be used as an lvalue, allowing
+      constants to be defined in the context of a class or module from
+      outside.
+    </section>
+
+    <section>
+      <h1 id=constants-initialization>Initialization</h1>
+
+      <p>Constants only come into existence when they are assigned a value.
+      Therefore a constant, unlike the other variables, is never in an
+      uninitialized state. Referencing a constant that does not exist
+      results in a <code>NameError</code>.
+    </section>
+
+    <section>
+      <h1 id=constants-missing>Missing Constants</h1>
+
+      <p>As noted in <a href=#constant-resolution>Constant Resolution</a>,
+      before a search terminates a <code>:const_missing</code> message is
+      sent. This allows classes and modules to create constants on‐the‐fly or
+      otherwise influence the lookup process.</p>
+
+      <figure class=left id=const-missing.rb>
+        <figcaption>Using <code>:const_missing</code> to convert constants of
+        the form <code>Roman::<var>RomanNumeral</var></code> to the
+        corresponding integer, if valid and less than 4, 000; or raise a
+        <code>NameError</code> otherwise.
+      </figure>
+    </section>
+    
+    <section>
+      <h1 id=constants-reflection>Reflection</h1>
+      
+      <p>The <code>Module#constants</code> method returns an
+      <code>Array</code> of <code>Symbol</code>s naming the constants defined
+      in the receiver.
+
+      <p>The value of a constant may be retrieved from a given class or module
+      by supplying its name to the <code>Module#const_get</code> method, e.g.
+      <code>Float.const_get :INFINITY #=&gt; Infinity</code>. Similarly, the
+      value of a constant may be set with <code>Module#const_set</code>, which
+      takes two arguments: the name of the constant and its new value.
+
+      <p>A predicate method, <code>Module#const_defined?</code>, exists for
+      determining whether a class or module defines a given constant.
+
+      <p>Both <code>#const_get</code> and <code>const_defined?</code> accept
+      an optional second argument to control whether they look for inherited
+      constants. By default this argument is <code>true</code>, but if it is
+      set to <code>false</code> the method only considers constants defined
+      directly in the receiver. Lastly, the <a href=/methods#private>private
+        method</a> <code>Module#remove_const</code> takes the name of a
+      constant to remove from the receiver. 
+    </section>
+
+    <section>
+      <h1 id=constants-predefined>Predefined</h1>
+
+      <p>The following table lists global constants that Ruby defines
+      automatically.</p>
+
+      <table class=border style=width:90%>
+        <caption>Predefined global constants</caption>
+        <thead>
+          <tr>
+            <th>Constant
+            <th>Class
+            <th>Meaning
+        </thead>
+        <tbody class=zebra>
+          <tr>
+            <td><code>DATA</code>
+            <td><code>IO</code>
+            <td>If the source file contains the line <code>__END__</code>,
+            the lines that follow are accessible by reading from
+            <code>DATA</code>.
+          <tr>
+            <td><code>FALSE</code>
+            <td><code>FalseClass</code>
+            <td><code>false</code>
+          <tr>
+            <td><code>NIL</code>
+            <td><code>NilClass</code>
+            <td><code>nil</code>
+          <tr>
+            <td><code>RUBY_COPYRIGHT</code>
+            <td><code>String</code>
+            <td>Copyright statement for the interpreter, e.g. <samp>ruby -
+            Copyright (C) 1993-2010 Yukihiro Matsumoto</samp>.
+          <tr>
+            <td><code>RUBY_DESCRIPTION</code>
+            <td><code>String</code>
+            <td>Version number and architecture of the interpreter, e.g.
+            <samp>ruby 1.9.2dev (2010-02-19 trunk 26715) [i686-linux]</samp>.
+          <tr>
+            <td><code>RUBY_ENGINE</code>
+            <td><code>String</code>
+            <td>The implementation of the interpreter, e.g.
+            <samp>ruby</samp>.
+            <dl class=inline>
+              <dt><samp>ruby</samp>
+              <dd><abbr title="Matz’s Ruby Intepreter">MRI</abbr>: official
+              implementation.
+              <dt><samp>rbx</samp>
+              <dd><a href=//rubini.us/>Rubinius</a>.
+              <dt><samp>macruby</samp>
+              <dd><a href=http://www.macruby.org/>MacRuby</a>.
+              <dt><samp>ironruby</samp>
+              <dd><a href=//ironruby.net/>IronRuby</a>.
+              <dt><samp>jruby</samp>
+              <dd><a href=//jruby.org/>JRuby</a>.
+              <dt><samp>maglev</samp> <!-- TODO: Confirm -->
+              <dd><a href=//maglev.gemstone.com/>MagLev</a>
+            </dl>
+          <tr>
+            <td><code>RUBY_PATCHLEVEL</code>
+            <td><code>Fixnum</code>
+            <td>Patch level of the interpreter, e.g. <samp>-1</samp>.
+          <tr>
+            <td><code>RUBY_PLATFORM</code>
+            <td><code>String</code>
+            <td>Platform for which the interpreter was built, e.g.
+            <samp>i686-linux</samp>.
+          <tr>
+            <td><code>RUBY_RELEASE_DATE</code>
+            <td><code>String</code>
+            <td>Release date, for point releases, or build date, for
+            trunk builds, of the interpreter, e.g. <samp>2010-02-19</samp>.
+          <tr>
+            <td><code>RUBY_REVISION</code>
+            <td><code>Fixnum</code>
+            <td>Revision of the interpreter, e.g. <samp>26715</samp>.
+            (<abbr title="Subversion">SVN</abbr> revision number on MRI).
+          <tr>
+            <td><code>RUBY_VERSION</code>
+            <td><code>String</code>
+            <td>Version number of the interpreter, e.g. <samp>1.9.2</samp>.
+          <tr>
+            <td><code>STDERR</code>
+            <td><code>IO</code>
+            <td>Standard error stream. Initial value of
+            <code>$stderr</code>.
+          <tr>
+            <td><code>STDIN</code>
+            <td><code>IO</code>
+            <td>Standard input stream. Initial value of
+            <code>$stdin</code>.
+          <tr>
+            <td><code>STDOUT</code>
+            <td><code>IO</code>
+            <td>Standard output stream. Initial value of
+            <code>$stdout</code>.
+          <tr>
+            <td><code>SCRIPT_LINES__</code>
+            <td><code>Hash</code>
+            <td>If assigned a <code>Hash</code>, each subsequent file loaded
+            or required will create an entry in the hash, whose key is the
+            filename as a <code>String</code>, and value is the file’s lines
+            as an <code>Array</code> of <code>String</code>s.
+          <tr>
+            <td><code>TOPLEVEL_BINDING</code>
+            <td><code>Binding</code>
+            <td>Represents the top‐level execution environment, i.e. outside
+            of any class, module, method, block, or other construct.
+          <tr>
+            <td><code>TRUE</code>
+            <td><code>TrueClass</code>
+            <td><code>true</code>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+        <!-- TODO: Scope section -->
+
+  <section>
+    <h1 id=local>Local Variables</h1>
+          
+    <section>
+      <h1 id=local-variables-name>Name</h1>
+      
+      <p>A local variable is named by an <a
+      href=/programs#identifiers>identifier</a> whose first character is a
+      lowercase US‐ASCII character (<code>a</code>–<code>z</code>) or low
+      line (<code class=u title='_'>U＋005F</code>). Conventionally, the
+      name consists of lowercase words separated by low lines.
+    </section>
+
+    <section>
+      <h1 id=local-variables-scope>Scope</h1>
+
+      <p>The scope of a local variable is <dfn title='static
+      scope'>static</dfn> in that it <q>can always be determined from the
+      abstract syntax tree of a program</q> (<a
+      href=/references#refTURBAK08>Turbak, Gifford, &amp; Sheldon</a>, pp.
+      334–335). It is established by the block, method/class/module
+      definition, or top‐level program—hereafter a <i>scope-defining</i>
+      construct— which lexically encloses its assignment. If a scope-defining
+      construct itself contains a scope-defining construct, the local
+      variables of the former are not visible in the latter: the inner
+      construct <q>carves out a hole in the scope of the outer one</q> (ibid,
+      336–338).</p>
+      
+      <figure class=left id=local-variables.rb>
+        <figcaption>The scope of a local variable
+      </figure>
+
+      <!--It is also hierarchical: <q>each
+      construct establishes a parent/child relationship between an outer context in
+      which the [variable] is not visible and an inner (body) context in which
+      the declaration is visible.</q>-->
+
+      <p>However, this picture is complicated by blocks. A block both inherits
+      the scope of its parent and defines its own scope: it maintains the
+      lifetime of local variables initialized outside of it without causing a
+      hole in their scope. Therefore, if a block references, or assigns to, a
+      local variable visible in its parent scope, it refers to the parent’s
+      variable. Otherwise, a variable initialized inside a block is not
+      visible outside of it. If it is desired that variables defined within a
+      block do not clash with those defined outside, <a
+      href=/closures#block-local-variables>block local variables</a> are
+      appropriate.</p>
+
+      <figure class=left id=non-block-local-variables-example.rb>
+        <figcaption>Non‐block‐local variables defined prior to the block
+        retain the value they were assigned inside the block even after
+        leaving it
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=local-variables-initialization>Initialization</h1>
+
+      <p>A variable is initialized if it appears on the left‐hand side
+      (before the equals sign (<code class=u title='='>U＋003D</code>)) of
+      an assignment expression. However, this assignment expression need
+      not actually execute: its mere presence is enough to create the
+      variable. For example, if an assignment expression involving a local
+      variable on the left‐hand side appears within a branch that does not
+      execute, the variable comes into existence.  Variables of this sort
+      have the value <code>nil</code>.</p>
+
+      <figure class=left id=local-variables-assignment.rb>
+        <figcaption>An assignment expression initializes a local variable
+      </figure>
+
+      <p>Attempting to use an uninitialized local variable causes the
+      identifier to be interpreted as a message selector which is sent to
+      the current implicit receiver. If such a method doesn’t exist a
+      <code>NameError</code> is raised.</p>
+    </section>
+     
+    <section>
+      <h1 id=local-reflection>Reflection</h1>
+
+      <p>The <code>Kernel.local_variables</code> method returns an
+      <code>Array</code> of <code>Symbol</code>s, each of which names a local
+      variable defined in the current scope, in reverse chronological order.
+
+      <!-- TODO: Discuss eval for getting/setting local variables? -->
+    </section>
+  </section>
+
+  <section>
+    <h1 id=instance>Instance Variables</h1>
+                
+    <section>
+      <h1 id=instance-variables-name>Name</h1>
+      
+      <!-- Cooper prefers the term <q>object variable</q>.-->
+
+      <p>An instance variable is named by an <a
+      href=/programs#identifiers>identifier</a> with a commercial at (<code
+      class=u title='@'>U＋0040</code>) character as the sigil:
+      <code>@<var>identifier</var></code>. Conventionally, the name consists
+      of lowercase words separated by low lines.</p>
+
+    </section>
+
+    <section>
+      <h1 id=instance-variables-scope>Scope</h1>
+      
+      <p>An instance variable defined in the body of an instance method is
+      accessible by every instance of that method’s receiver. Its scope is a
+      specific object. By corollary, an instance variable defined outside of
+      an instance method, such as in a class body, is not accessible from
+      instance methods: it is, even if named identically, entirely separate. 
+
+      <p>The above describes the typical use for instance variables, namely
+      storing an object’s state, but they may also be defined inside a class
+      or module body, outside of any method, in which case their scope is
+      delimited by the class/module in which they were defined. The former
+      are <a href=/classes#class-instance-variables>class instance
+      variables</a>; the latter module instance variables.
+    </section>
+
+    <section>
+      <h1 id=instance-variables-initialization>Initialization</h1>
+
+      <p>An instance variable is created by assigning to it a value. It is
+      not inherited from a superclass: it exists for a given object only if
+      an instance method of that object has assigned to it a value.
+
+      <p>An uninitialized instance variable has the value <code>nil</code>,
+      but its use results in a warning.
+    </section>
+     
+    <section>
+      <h1 id=instance-reflection>Reflection</h1>
+
+      <p>The names of an object’s instance variables are returned as an
+      <code>Array</code> of <code>Symbol</code>s by
+      <code>Kernel#instance_variables</code> in the order they were assigned.
+      <!-- http://redmine.ruby-lang.org/issues/show/2243 -->  
+      
+      <p>Their values may be retrieved and modified from another object with
+      <code>Kernel#instance_variable_get(<var>ivar</var>)</code> and
+      <code>Kernel#instance_variable_set(<var>ivar</var>,
+        <var>value</var>)</code>, respectively, where <var>ivar</var> is the
+      variable’s name as a <code>Symbol</code>, including the <code>@</code>
+      prefix. An instance variable may be removed with the <a
+        href=/methods#private>private method</a>
+      <code>Kernel#remove_instance_variable(<var>ivar</var>)</code>. These
+      methods should be used sparingly as they break encapsulation.
+    </section>
+  </section>
+
+  <section>
+    <h1 id=class>Class Variables</h1>
+                
+    <section>
+      <h1 id=class-variables-name>Name</h1>
+      
+      <p>A class variable is named by an identifier whose sigil is two
+      consecutive commercial at (<code class=u title='@'>U＋0040</code>)
+      characters: <code>@@<var>identifier</var></code>. Conventionally,
+      the name consists of lowercase words separated by low lines.
+    </section>
+
+    <section>
+      <h1 id=class-variables-scope>Scope</h1>
+
+      <p>A class variable’s scope is the body of the enclosing class or
+      module. It is shared between all instances of the class and accessible
+      from both the class body and its methods, but is nevertheless
+      encapsulated: concealed, by default, from the class’s users.
+
+      <p>Unlike instance variables, class variables are inherited
+      by child classes: if a class modifies a class variable defined in its
+      superclass, the change is visible in both locations.</p>
+
+      <figure id=class-variables-inherited.rb class=left>
+        <figcaption>Class variables are inherited by child classes
+      </figure>
+
+      <p>A class variable defined at the top‐level of a program is inherited
+      by all classes. It behaves like a global variable.</p>
+
+      <figure class=left id=class-variables-inherited-top.rb>
+        <figcaption>Class variables are inherited from the top‐level
+      </figure>
+
+      <p>Ruby issues a warning—e.g., <samp>class variable @@cvar of Top
+      is overtaken by Object</samp>—when a class variable is first defined
+      in a child class then subsequently assigned to in a parent class, as
+      shown below:</p>
+
+      <figure class=left id=class-variables-overtaken.rb>
+        <figcaption>A warning is issued if a parent seems to unintentionally
+        clobber a child’s class variable
+      </figure>
+
+      <p>However, a class variable is not shared between sibling classes,
+      unless defined in their common parent, or those without a common
+      parent.</p>
+
+      <figure class=left id=class-variables-siblings.rb>
+        <figcaption>Class variables are unique amongst sibling classes
+      </figure>
+
+      <p>These semantics have led <a href=/references#refTHOM09>Thomas et
+      al.</a> (pp. 337–338) to explicitly advise against the use of class
+      variables and <a href=/references#refPER10>Perrotta</a> (p. 129) to
+      regard them as having <q cite=/references#refPER10>…a nasty habit of
+      surprising you</q>. An alternative mechanism for storing class state
+      is <a href=/classes#class-instance-variables>class instance
+      variables</a>, which are not afflicted with either of the above
+      problems, but cannot be referenced from instance methods.
+    </section>
+
+    <section>
+      <h1 id=class-variables-initialization>Initialization</h1>
+      
+      <p>Class variables must be initialized before use. Referencing an
+      uninitialized class variable results in a <code>NameError</code>. 
+    </section>
+     
+    <section>
+      <h1 id=class-reflection>Reflection</h1>
+
+      <p>The names of a class’s class variables are returned as an
+      <code>Array</code> of <code>Symbol</code>s by
+      <code>Module#class_variables</code> in the order they were assigned.
+      Their values may be retrieved and modified from outside this class with
+      <code>Module#class_variable_get(<var>cvar</var>)</code> and
+      <code>Module#class_variable_set(<var>cvar</var>,
+        <var>value</var>)</code>, respectively, where <var>cvar</var> is the
+      variable’s name as a <code>Symbol</code>, including the <code>@@</code>
+      prefix. A class variable may be removed from a class with
+      <code>Module#remove_class_variable(<var>cvar</var>)</code>. These
+      methods should be used sparingly as they break encapsulation.
+    </section>
+  </section>
+
+  <section>
+    <h1 id=globals>Global Variables</h1>
+          
+    <section>
+      <h1 id=globals-name>Name</h1>
+
+      <p>A global variable is named with a dollar sign (<code class=u
+      title='$'>U＋0024</code>) sigil:
+      <code>$<var>identifier</var></code>.  Conventionally, the name
+      consists of lowercase words separated by low lines.
+
+      <p>A global variable should not be defined with the same name as a
+      predefined global variable, and indeed cannot if that variable is
+      read‐only.
+
+      <!-- TODO: summarise naming conventions of pre-defined globals -->
+    </section>
+
+    <section>
+      <h1 id=globals-scope>Scope</h1>
+
+      <p>A global variable is accessible in every scope. Once set it refers
+      to the same object wherever it is referenced.</p>
+
+      <figure class=left id=global-variables.rb>
+        <figcaption>Global variables are accessible in every scope
+      </figure>
+    </section>
+    
+    <section>
+      <h1 id=globals-initialization>Initialization</h1>
+
+      <p>An uninitialized global variable has the value <code>nil</code>,
+      although attempting to use such a variable results in a warning. The
+      predefined global variables are already initialized.
+    </section>
+
+    <section>
+      <h1 id=global-reflection>Reflection</h1>
+
+      <p>An <code>Array</code> of global variable names as
+      <code>Symbol</code>s can be obtained with
+      <code>Kernel.global_variables</code></p>
+
+      <!-- TODO: Discuss eval for getting/setting gvars? -->
+    </section>
+
+    <section>
+      <h1 id=global-trace>Tracing</h1>
+
+      <p><code>Kernel.trace_var(<var>global</var>)</code> accepts a
+      <code>Symbol</code> naming a global variable and a block. Every time the
+      named variable is assigned to, the block is called with the new value.
+    </section>
+
+    <section>
+      <h1 id=predefined-globals>Predefined Global Variables</h1>
+
+      <p>Ruby predefines certain global variables automatically. They are
+      summarised in the following table.</p>
+
+      <table class=border style=width:90%>
+        <caption>Predefined global variables
+        <thead>
+          <tr>
+            <th>Global Variable
+            <th title="Alias when the English library is required">
+              <code>English</code> Name
+            <th>Value
+            <th>Meaning
+        </thead>
+        <tbody>
+          <tr class=odd>
+            <td><code>$*</code>
+            <td><code>$ARGV</code>
+            <td><code>Array</code>
+            <td>Read‐only alias of <code>ARGV</code>
+          <tr>
+            <td><code>$$</code>
+            <td><code>$PID</code> / <code>$PROCESS_ID</code>
+            <td><code>Fixnum</code>
+            <td>ID of the current Ruby process. Read‐only.
+          <tr class=odd>
+            <td><code>$?</code>
+            <td><code>$CHILD_STATUS</code>
+            <td><code>nil</code> or <code>Process::Status</code>
+            <td>Exit status of the last terminated process. Read‐only,
+              thread‐local.
+          <tr>
+            <td><code>$-d</code>
+            <td rowspan=2>&nbsp;
+            <td rowspan=2><code>true</code> or <code>false</code>
+            <td rowspan=2>Whether Ruby was invoked with the
+                          <code>-d</code> or <code>--debug</code> switches.  
+          <tr>
+            <td><code>$DEBUG</code>
+          <tr class=odd>
+            <td><code>$"</code>
+            <td rowspan=2>&nbsp;</code>
+            <td rowspan=2><code>Array</code> of <code>String</code>s
+            <td rowspan=2>Absolute filenames of files loaded with
+                          <code>Kernel.load</code> or 
+                          <code>Kernel.require</code>. Read‐only.
+          <tr class=odd>
+            <td><code>$LOADED_FEATURES</code>
+          <tr>
+            <td><code>$:</code>
+            <td rowspan=3>&nbsp;</code>
+            <td rowspan=3><code>Array</code> of <code>String</code>s
+            <td rowspan=3>Absolute paths to directories searched by 
+                          <code>Kernel.load</code> or 
+                          <code>Kernel.require</code>. Read‐only, but the
+                          contents of the <code>Array</code> can be 
+                          modified
+          <tr>
+            <td><code>$LOAD_PATH</code>
+          <tr>
+            <td><code>$-I</code>
+          <tr class=odd>
+            <td><code>$0</code>
+            <td rowspan=2>&nbsp;</code>
+            <td rowspan=2><code>String</code>s
+            <td rowspan=2>Filename of the Ruby script being executed.
+                          Equal to <code>-</code> if the program was read
+                          from STDIN, or <code>-e</code> if
+                          <code>ruby</code> was supplied with the
+                          <code>-e</code> switch. 
+          <tr class=odd>
+            <td><code>$PROGRAM_NAME</code>
+          <tr>
+            <td><code>$SAFE</code>
+            <td>&nbsp;</code>
+            <td><code>Fixnum</code>s
+            <td>Current safe level. Thread‐local.
+          <tr class=odd>
+            <td><code>$-w</code>
+            <td rowspan=3>&nbsp;</code>
+            <td rowspan=3><code>true</code>, <code>false</code>, or
+                          <code>nil</code>
+            <td rowspan=3><code>true</code> if the <code>-v</code>, 
+                          <code>-w</code>, or <code>--verbose</code> 
+                          switches were supplied on the command line; 
+                          <code>nil</code> if the <code>-W0</code> switch 
+                          was supplied; <code>false</code>, otherwise.
+                          Assigning <code>nil</code> to this variable
+                          suppresses all warnings.
+          <tr class=odd>
+            <td><code>$-v</code>
+          <tr class=odd>
+            <td><code>$VERBOSE</code>
+          <tr>
+            <td><code>$!</code>
+            <td><code>$ERROR_INFO</code>
+            <td><code>Exception</code>
+            <td>Inside a <code>rescue</code> clause or after the
+            <code>rescue</code> modifier holds the current exception. 
+            Thread‐local.
+          <tr class=odd>
+            <td><code>$@</code>
+            <td><code>$ERROR_POSITION</code>
+            <td><code>Array</code> of <code>String</code>s
+            <td>Inside a <code>rescue</code> clause or after the
+            <code>rescue</code> modifier holds the stack trace of the
+            current exception. Thread‐local.
+          <tr>
+            <td><code>$_</code>
+            <td><code>$LAST_READ_LINE</code>
+            <td><code>String</code>
+            <td>Last string read by <code>Kernel.gets</code> or
+            <code>Kernel.readline</code>. Thread‐local, method‐local.
+          <tr class=odd>
+            <td><code>$&lt;</code>
+            <td><code>$DEFAULT_INPUT</code>
+            <td><code>ARGF</code>
+            <td>Read‐only alias for <code>ARGF</code>.
+          <tr>
+            <td><code>$stdin</code>
+            <td>&nbsp;
+            <td><code>IO</code>
+            <td>Standard input stream.
+          <tr class=odd>
+            <td><code>$&gt;</code>
+            <td rowspan=2><code>$DEFAULT_OUTPUT</code>
+            <td rowspan=2><code>IO</code>s
+            <td rowspan=2>Standard output stream.
+          <tr class=odd>
+            <td><code>$stdout</code>
+          <tr>
+            <td><code>$stderr</code>
+            <td>&nbsp;
+            <td><code>IO</code>
+            <td>Standard error stream.
+          <tr class=odd>
+            <td><code>$FILENAME</code>
+            <td>&nbsp;
+            <td><code>String</code>
+            <td>Filename of the file currently being read from
+            <code>ARGF</code>; <code>-</code> if <code>ARGF</code> is
+            empty or reading from <code>STDIN</code>. Read‐only.
+          <tr>
+            <td><code>$.</code>
+            <td><code>$NR</code> / <code>$INPUT_LINE_NUMBER</code>
+            <td><code>Fixnum</code>
+            <td>Number of the last line read from the current input file
+            in <code>ARGF</code>.
+          <tr class=odd>
+            <td><code>$/</code>
+            <td rowspan=2><code>$RS</code> /
+            <code>$INPUT_RECORD_SEPARATOR</code>
+            <td rowspan=2><code>String</code>
+            <td rowspan=2>Input record separator. Default value is
+            <code>"\n"</code>. Can be set with the <code>-0</code> switch
+          <tr class=odd>
+            <td><code>$-0</code>
+          <tr>
+            <td><code>$\</code>
+            <td><code>$ORS</code> / <code>$OUTPUT_RECORD_SEPARATOR</code>
+            <td><code>String</code> or <code>nil</code>
+            <td>Appended to <code>Kernel.print</code> output if
+            non‐<code>nil</code>. Default value is <code>nil</code>, or
+            <code>$/</code> if the <code>-l</code> switch is given.
+          <tr class=odd>
+            <td><code>$,</code>
+            <td><code>$OFS</code> / <code>$OUTPUT_FIELD_SEPARATOR</code>
+            <td><code>nil</code> or <code>String</code>
+            <td>Separator printed between the arguments of
+            <code>Kernel.print</code> and the default separator of
+            <code>Array.join</code>. Equal to <code>nil</code> by default.
+          <tr>
+            <td><code>$;</code>
+            <td rowspan=2><code>$FS</code> / <code>$FIELD_SEPARATOR</code>
+            <td rowspan=2><code>String</code> or <code>nil</code>
+            <td rowspan=2>Default field separator of
+            <code>String#split</code>. Default value is <code>nil</code>
+            or the argument to the <code>-F</code> switch.
+          <tr>
+            <td><code>$-F</code>
+          <tr class=odd>
+            <td><code>$F</code>
+            <td>&nbsp;
+            <td><code>Array</code> of <code>String</code>s
+            <td>If the <code>-a</code> and <code>-n</code>/<code>-p</code>
+            switches were given, holds the return value of
+            <code>String#split</code> for the current input line.
+          <tr>
+            <td><code>$~</code>
+            <td><code>$MATCH_INFO</code>
+            <td><code>MatchData</code> or <code>nil</code>
+            <td><code>MatchData</code> from the last regexp match. Thread‐
+            and method‐local.
+          <tr class=odd>
+            <td><code>$&amp;</code>
+            <td><code>$MATCH</code>
+            <td><code>String</code>
+            <td>Text matched by last regexp match. Read‐only. Thread‐ and
+            method‐local.
+          <tr>
+            <td><code>$`</code>
+            <td><code>$PREMATCH</code>
+            <td><code>String</code>
+            <td>Text preceding the match of the last regexp match.
+            Read‐only. Thread‐ and method‐local.
+          <tr class=odd>
+            <td><code>$'</code>
+            <td><code>$POSTMATCH</code>
+            <td><code>String</code>
+            <td>Text following the match of the last regexp match.
+            Read‐only. Thread‐ and method‐local.
+          <tr>
+            <td><code>$+</code>
+            <td><code>$LAST_PAREN_MATCH</code>
+            <td><code>String</code>
+            <td>Text enclosed in the last successfully matched group of
+            the last regexp match.  Read‐only. Thread‐ and method‐local.
+          <tr class=odd>
+            <td><code>$-a</code>
+            <td>&nbsp;
+            <td><code>true</code> or <code>false</code>
+            <td><code>true</code> if the <code>-a</code> switch was given;
+            <code>false</code> otherwise. Read‐only.
+          <tr>
+            <td><code>$-i</code>
+            <td>&nbsp;
+            <td><code>true</code> or <code>false</code>
+            <td>Argument of the <code>-i</code> switch, if given;
+            otherwise <code>nil</code>; <code>false</code> otherwise.
+          <tr class=odd>
+            <td><code>$-l</code>
+            <td>&nbsp;
+            <td><code>true</code> or <code>false</code>
+            <td><code>true</code> if the <code>-l</code> switch was given;
+            <code>false</code> otherwise. Read‐only.
+          <tr>
+            <td><code>$-p</code>
+            <td>&nbsp;
+            <td><code>true</code> or <code>false</code>
+            <td><code>true</code> if the <code>-p</code> switch was given;
+            <code>false</code> otherwise. Read‐only.
+          <tr class=odd>
+            <td><code>$-W</code>
+            <td>&nbsp;
+            <td><code>Fixnum</code>
+            <td>Current verbosity level: <code>0</code> if the
+            <code>-W0</code> switch was given; <code>2</code> if the
+            <code>-w</code>, <code>-v</code>, or <code>--verbose</code>
+            switches were given; <code>1</code> otherwise. Read‐only.
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=defined><code>defined?</code></h1>
+
+    <p><code>defined?</code> is a unary operator which tests whether its
+    operand is defined, and if so returns a description of it.
+    <code>nil</code> is returned if the operand is an undefined variable or
+    method, an expression which uses <code>yield</code> without an associated
+    block, or an expression which uses <code>super</code> without a
+    corresponding ancestor method. In all cases the test is conducted
+    without evaluating the operand.</p>
+    
+    <figure id=defined.rb class=left>
+      <figcaption>Using the <code>defined?</code> operator to test whether a
+      variable or expression is defined
+    </figure>
+
+    <aside class=sidenote>
+    <span class=sidemark>†</span><code>defined?</code> <a
+      href=//redmine.ruby-lang.org/issues/show/256#note-9>doesn’t</a> call
+      <code>const_missing</code> so the constant must truly be defined.
+    </aside>
+    
+    <aside class=sidenote>
+    <span class=sidemark>‡</span><code>defined?</code> will use <a
+      href=/methods#respond-to-missing><code>#respond_to_missing?</code></a>
+    to determine method existence
+    </aside>
+
+    <!-- Couldn’t use nth-child selector because of rowspan -->
+    <table class=border style=width:60%>
+      <caption>The return values of the <code>defined?</code> operator
+      <thead>
+        <tr><th>Operand<th>Return Value of <code>defined?</code>
+      </thead>
+      <tbody class=zebra>
+        <tr><td>Defined local variable<td><code>"local-variable"</code>
+        <tr><td>Defined global variable<td><code>"global-variable"</code>
+        <tr><td>Defined<sup>†</sup> constant<td><code>"constant"</code>
+        <tr><td>Defined instance variable<td><code>"instance-variable"</code>
+        <tr><td>Defined class variable<td><code>"class variable"</code>
+        <tr><td><code>nil</code><td><code>"nil"</code>
+        <tr><td><code>true</code><td><code>"true"</code>
+        <tr><td><code>false</code><td><code>"false"</code>
+        <tr><td><code>self</code><td><code>"self"</code>
+        <tr><td>Expression using <code>yield</code>
+            correctly<td><code>"yield"</code>
+        <tr><td>Expression using <code>super</code>
+            correctly<td><code>"super"</code>
+        <tr><td>Assignment expression<td><code>"assignment"</code>
+              <tr><td>Message sending expression (doesn’t check
+                  arity)<sup>‡</sup>
+             <td><code>"method"</code>
+        <tr><td>Any other legal expression<td><code>"expression"</code>
+        <tr><td>Undefined variable or invalid use of
+            <code>yield</code>/<code>super</code>
+            <td><code>nil</code>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h1 id=assignment>Assignment</h1>
+
+    <p>An assignment expression sets the value of one or more <a
+    href=#lvalues>lvalues</a> to their corresponding <a
+    href=#rvalues>rvalues</a>. Its general form is <code><var>lvalues</var>
+    = <var>rvalues</var></code>: one or more lvalues, an equals sign (<code
+    class=u title='='>U＋003D</code>, then one or more rvalues.</p>
+
+    <section>
+      <h1 id=lvalues>Lvalues</h1>
+
+      <p>An <dfn>lvalue</dfn> is a target of an assignment: an expression
+      that can appear on the <em>l</em>eft‐hand side of an assignment
+      expression.</p>
+
+      <section>
+        <h1 id=lvalue-variable>Variables</h1>
+
+        <p>The name of any variable is a valid lvalue. An assignment
+        expression involving a variable lvalue causes the variable to take the
+        value of the corresponding rvalue. This operation occurs without any
+        methods being invoked or messages sent: it is inbuilt and its
+        semantics cannot be overridden. 
+      </section>
+
+      <section>
+        <h1 id=lvalue-constant>Constants</h1>
+
+        <p>The name of any constant is a valid lvalue. Assignment to a
+        constant has the same semantics as assignment to a variable, with two
+        caveats:
+
+          <!-- The below duplicates material in Constants above -->
+          <ul>
+            <li>If the constant is initialized prior to the assignment, a
+            warning will be issued.
+            <li>Constant assignment is illegal in the body of a method.
+          </ul>
+      </section>
+
+      <section>
+        <h1 id=lvalue-attribute>Attributes</h1>
+
+        <p>A message expression of the form
+        <code><var>receiver</var>.<var>selector</var></code> is a valid
+        lvalue unless the last character of <var>selector</var> is a
+        question mark (<code class=u title='?'>U＋003F</code>) or
+        exclamation mark (<code class=u title='!'>U＋0021</code>. If the
+        last character of <var>selector</var> is not an equals sign (<code
+        class=u title='='>U＋003D</code>), it is set to be. Then,
+        <var>receiver</var> is sent <var>selector</var> with the rvalue as
+        its argument.
+
+        <p>An important implication of the above is that the receiver defines
+        the semantics of assignment. Typically, a selector ending with
+        <code>=</code> will assign its argument to the corresponding instance
+        variable, but it is free to do otherwise. However, the return value of
+        an attribute assignment expression is always the rvalue; the value
+        returned by the receiver is ignored.
+      </section>
+
+      <section>
+        <h1 id=lvalue-element-ref>Element Reference Lvalues</h1>
+
+        <p>An element reference expression, i.e.
+        <code><var>receiver</var>[<var>expression</var>]</code> is a special
+        case of <a href=#lvalue-attribute>attribute lvalues</a>. It is
+        equivalent to <code><var>receiver</var>.[]=(<var>expression</var>,
+        <var>rvalue</var>)</code>.
+      </section>
+    </section>
+
+    <section>
+      <h1 id=rvalues>Rvalues</h1>
+
+      <p>An <dfn>rvalue</dfn> is a value being assigned: appearing on the
+      <em>r</em>ight‐hand side of an assignment expression. Any expression is
+      a valid rvalue. The value of the expression that assigned to the
+      corresponding lvalue.
+    </section>
+
+    <section>
+      <h1 id=simple-assignment>Simple Assignment</h1>
+
+      <p>A simple assignment expression consists of a single lvalue and a
+      single rvalue: <code><var>lvalue</var> = <var>rvalue</var></code>. It
+      sets the value of <var>lvalue</var> to <var>rvalue</var>, then returns
+      <var>rvalue</var>.
+
+      <p>If the rvalue is an <code>Array</code>, the lvalue may be followed by
+      a trailing comma to set the lvalue to the first element of the rvalue,
+      discarding the remaining rvalues.
+    </section>
+
+    <section>
+      <h1 id=abbreviated-assignment>Abbreviated Assignment</h1>
+
+      <p>An <dfn>abbreviated assignment</dfn> expression is a syntactical
+      shortcut for an rvalue consisting of a binary operator whose operands
+      are the lvalue and rvalue, respectively. It takes the following general
+      form, where <var>operator</var> is one of thirteen predefined selectors
+      enumerated in the table below:
+
+      <pre><code>
+      <var>lvalue</var> <var>operator</var>= <var>rvalue</var>
+      </code></pre>
+
+      <p>This is wholly equivalent to:
+
+      <pre><code>
+      <var>lvalue</var> = <var>lvalue</var> <var>operator</var> <var>rvalue</var>
+      </code></pre> 
+
+      <p>This equivalence means that the abbreviated form results in the
+      lvalue being sent a message with the selector <var>operator</var> and
+      the argument <var>rvalue</var>, then the result of this operation being
+      assigned to <var>lvalue</var>.
+
+      <p>The value returned by an abbreviated assignment expression is that of
+      its expanded right‐hand side.</p>
+
+      <aside class=sidenote>
+        <p>The <code>||=</code> operator gives rise to a popular idiom
+        Perrotta terms a <q cite=/references#refPER10>Nil Guard</q> (<a
+        href=/references#refPER10>Perrotta</a>, pp. 243–244). Its purpose is
+        to assign the rvalue to the lvalue iff the lvalue is <a
+        href=/flow#conditionals>false</a> (<code>false</code> or
+        <code>nil</code>). That is, to initialize the lvalue only if it isn’t
+        already. Perrotta describes an <a
+        href=#instance-variables>instance variable</a> employing this
+        technique as a <q cite=/references#refPER10>Lazy Instance Variable</q>
+        (<a href=/references#refPER10>Perrotta</a>, pp. 243–244).</p>
+
+        <figure id=nil-guard.rb>
+          <figcaption>Initializing a variable only if it hasn’t been already.
+        </figure>
+      </aside>
+
+      <table class=border style=width:50%>
+        <caption>The abbreviated assignment operators
+        <thead>
+          <tr><th>Operator<th>Abbreviation<th>Expansion
+        </thead>          
+        <tbody class=zebra>
+          <tr>
+            <td><code>+</code>
+            <td><code><var>lvalue</var> += <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> + <var>rvalue</var></code>  
+          <tr>
+            <td><code>-</code>
+            <td><code><var>lvalue</var> -= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> - <var>rvalue</var></code>  
+          <tr>
+            <td><code>*</code>
+            <td><code><var>lvalue</var> *= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> * <var>rvalue</var></code>  
+          <tr>
+            <td><code>/</code>
+            <td><code><var>lvalue</var> /= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> / <var>rvalue</var></code>  
+          <tr>
+            <td><code>%</code>
+            <td><code><var>lvalue</var> %= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> % <var>rvalue</var></code>  
+          <tr>
+            <td><code>**</code>
+            <td><code><var>lvalue</var> **= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> ** <var>rvalue</var></code>  
+          <tr>
+            <td><code>&amp;&amp;</code>
+            <td><code><var>lvalue</var> &amp;&amp;= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> &amp;&amp; <var>lvalue</var> = <var>rvalue</var></code>  
+          <tr>
+            <td><code>||</code>
+            <td><code><var>lvalue</var> ||= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> || <var>lvalue</var> = <var>rvalue</var></code>  
+          <tr>
+            <td><code>&amp;</code>
+            <td><code><var>lvalue</var> &amp;= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> &amp; <var>rvalue</var></code>  
+          <tr>
+            <td><code>|</code>
+            <td><code><var>lvalue</var> |= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> | <var>rvalue</var></code>  
+          <tr>
+            <td><code>^</code>
+            <td><code><var>lvalue</var> ^= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> ^ <var>rvalue</var></code>  
+          <tr>
+            <td><code>&lt;&lt;</code>
+            <td><code><var>lvalue</var> &lt;&lt;= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> &lt;&lt; <var>rvalue</var></code>  
+          <tr>
+            <td><code>&gt;&gt;</code>
+            <td><code><var>lvalue</var> &gt;&gt;= <var>rvalue</var></code>  
+            <td><code><var>lvalue</var> = <var>lvalue</var> &gt;&gt; <var>rvalue</var></code>  
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h1 id=parallel-assignment>Parallel Assignment</h1>
+
+      <p>A parallel assignment expression involves multiple <a
+      href=#lvalues>lvalues</a> and/or multiple <a href=#rvalues>rvalues</a>.
+      The values are separated by commas.</p>
+
+      <p>The parallel aspect of this operation is that all of the rvalues are
+      evaluated, left to right, prior to assigning them. This allows the value
+      of two or more variables to be swapped, as shown in the <a
+      href=#parallel-assignment-equal.rb>figure below</a>.</p>
+
+      <section>
+        <h1 id=parallel-assignment-equal>Equal Number of Lvalues to Rvalues</h1>
+        
+        <p>When there are as many lvalues as there are rvalues, each lvalue is
+        assigned the rvalue in the corresponding position on the right‐hand
+        side of the expression. That is, the <var>n</var><sup>th</sup> lvalue
+        is assigned the <var>n</var><sup>th</sup> rvalue.</p>
+
+        <figure class=left id=parallel-assignment-equal.rb>
+          <figcaption>Parallel assignment when there are the same number of
+          terms on both sides
+        </figure>
+      </section>
+
+      <section>
+        <aside class=sidenote>
+          <span class=sidemark>†</span><q cite=/references#refRAYMOND99>This
+          may derive from the ‘squashed bug’ appearence of the asterisk on
+          many early laser printers.</q> (<a
+          href=/references#refRAYMOND99>Raymond</a>, p. 422</a>).
+        </aside>
+
+        <h1 id=splat>Splat Operator</h1>
+        
+        <!-- TODO: Mary this section with discussion of splat in Methods and
+        elsewhere -->
+        
+        <p>Lvalues and rvalues may optionally be directly preceded by an
+        asterisk (<code class=u title='*'>U＋002A</code>), termed a
+        <dfn>splat</dfn><sup>†</sup> hereafter.</p>
+        
+        <section>
+          <h1 id=splat-lvalue>Splatting an Lvalue</h1>
+          
+          <p>A maximum of one lvalue may be splatted in which case it is
+          assigned an <code>Array</code> consisting of the remaining rvalues
+          that lack corresponding lvalues. If the rightmost lvalue is splatted
+          then it consumes all rvalues which have not already been paired with
+          lvalues. If a splatted lvalue is followed by other lvalues, it
+          consumes as many rvalues as possible while still allowing the
+          following lvalues to receive their rvalues.</p>
+
+          <figure class=left id=splat-lvalue.rb>
+            <figcaption>A splatted lvalue greedily consumes rvalues into an
+            <code>Array</code>
+          </figure>
+
+          <section>
+            <h1 class=runin id=empty-splat>Empty Splat</h1>
+
+            <p>An lvalue may consist of a sole asterisk (<code class=u
+            title='*'>U＋002A</code>) without any associated identifier. It
+            behaves as described above, but instead of assigning the
+            corresponding rvalues to the splatted lvalue, it discards
+            them.</p>
+
+            <figure class=left id=empty-splat.rb>
+              <figcaption>An lvalue consisting of a sole asterisk greedily
+              consumes the associated rvalues, then discards them
+            </figure>
+          </section>
+        </section>
+
+        <section>
+          <h1 id=splat-rvalue>Splatting an Rvalue</h1>
+
+          <p>When an rvalue is splatted it is converted to an
+          <code>Array</code> with <code>Kernel.Array()</code>, the values of
+          which become rvalues in their own right.</p>
+          
+          <figure id=splat-rvalue.rb class=left>
+            <figcaption>Splatting an rvalue expands it into its constituent
+            elements
+          </figure>
+
+          <p>When given an object that does not respond to <code>:to_a</code>,
+          <code>Kernel.Array()</code> returns an <code>Array</code> with that
+          object as its sole element. Therefore, splatting such an object causes
+          it to expand to itself, effectively a no‐op.
+          
+          <p>However, for objects that do respond to <code>:to_a</code> with an
+          <code>Array</code>, such as <code>Array</code>, <code>Hash</code>,
+          <code>Range</code>, and <code>Enumerator</code>, splatting expands
+          them into a list of their constituent elements.</p>
+          <!-- TODO: Aside that #to_splat was previously recommended -->
+        </section>
+      </section>
+
+      <section>
+        <h1 id=parallel-assignment-one-lvalue>One Lvalue, Many Rvalues</h1>
+
+        <p>When multiple rvalues are assigned to a single lvalue, there is an
+        <a href=#splat-lvalue>implicit splat operator</a> before the lvalue.
+        Therefore, assigning <var>n</var> rvalues to a single lvalue is
+        equivalent to: <code><var>lvalue</var> =
+        [<var>rvalue</var><sub>0</sub>,…,<var>rvalue</var><sub><var>n</var></sub>]</code></p>
+        
+        <p>If this behaviour is undesirable, the lvalue can be followed by a
+        trailing comma, assigning <var>rvalue</var><sub>0</sub> to
+        <var>lvalue</var>, and discarding the remaining rvalues.</p>
+
+        <figure id=parallel-assignment-one-lvalue.rb class=left>
+          <figcaption>Parallel assignment when there is a sole lvalue
+        </figure>
+      </section>
+
+      <section>
+        <aside class=sidenote>
+          <span class=sidemark>†</span>Note that <code>:to_ary</code> is
+          sent rather than the <code>:to_a</code> used by the <a
+            href=#splat-rvalue>splat</a> operator. In the former case, the
+          programmer did not directly request that conversion take place so
+          the message for <a href=/objects#implicit-conversion>implicit</a>
+          conversion is sent; in the latter, his use of the splat operator
+          constitutes an <a href=/objects#explicit-conversion>explicit
+            conversion</a>, so the more liberal protocol is followed.
+        </aside>
+        
+        <h1 id=parallel-assignment-one-rvalue>Many Lvalues, One Rvalue</h1>
+
+        <figure class=left id=parallel-assignment-one-rvalue.rb>
+          <figcaption>When an <code>Array</code> with
+          <var>n</var> elements is assigned to <var>n</var> lvalues, each
+          lvalue is assigned one element
+        </figure>
+
+        <p>If there are multiple lvalues and a single rvalue that responds
+        to <code>:to_ary</code><sup>†</sup> with an <code>Array</code>, the
+        elements of this array become rvalues in their own right, replacing
+        the original rvalue.</p>
+
+        <figure class=left id=parallel-assignment-one-rvalue-nil.rb>
+          <figcaption>When an <code>Array</code> with
+          <var>n</var> elements is assigned to fewer than <var>n</var>
+          lvalues, the first <var>n</var> elements are assigned the
+          corresponding lvalue, and the remainder discarded
+        </figure>
+
+        <figure class=left id=parallel-assignment-rvalue-to-ary.rb>
+          <figcaption>When an object responding to
+          <code>:to_ary</code> with an <var>n</var> element <code>Array</code>
+          is assigned to <var>n</var> lvalues, each lvalue is assigned one
+          element
+        </figure>
+
+        <p>If there are as many lvalues as there are
+        elements in the splatted rvalue, assignment proceeds according to <a
+          href=#parallel-assignment-equal>Equal Number of Lvalues to
+          Rvalues</a>; otherwise the following section, <a
+          href=#parallel-assignment-unequal>Unequal Number of Lvalues to
+          Rvalues</a>, applies.</p>
+        
+        <!-- Aside: car, *cdr = array -->
+        <figure class=left id=parallel-assignment-one-rvalue-non-array.rb>
+          <figcaption>When a non-<code>Array</code> is
+          assigned to multiple lvalues, the first lvalue takes the sole
+          rvalue, and the remaining lvalues are assigned <code>nil</code>
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=parallel-assignment-unequal>Unequal Number of Lvalues to Rvalues</h1>
+
+        <p>When the lvalues outnumber the rvalues, assignment proceeds as with
+        <a href=#parallel-assignment-equal>equal numbers of lvalues to
+          rvalues</a>, with the remaining lvalues being assigned
+        <code>nil</code>. That is, for <var>n</var> rvalues and <var>m</var>
+        lvalues, where <var>n</var> &lt; <var>m</var>,
+        <var>lvalue</var><sub>0</sub>–<var>lvalue</var><sub><var>n</var></sub>
+        are assigned
+        <var>rvalue</var><sub>0</sub>–<var>rvalue</var><sub><var>n</var></sub>,
+        and
+        <var>lvalue</var><sub><var>n</var>+1</sub>–<var>lvalue</var><sub><var>m</var></sub>
+        are assigned <code>nil</code>.</p>
+         
+        <figure class=left id=parallel-assignment-more-lvalues.rb>
+          <figcaption>When there are more lvalues than rvalues, the
+          superfluous lvalues are assigned <code>nil</code> 
+        </figure>
+
+        <p>Conversely, when the rvalues outnumber the lvalues, assignment
+        proceeds as with <a href=#parallel-assignment-equal>equal numbers of
+          lvalues to rvalues</a>, with the remaining rvalues being
+        discarded.</p>
+        
+        <figure class=left id=parallel-assignment-more-rvalues.rb>
+          <figcaption>When there are more rvalues than lvalues, the
+          superfluous rvalues are discarded 
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=sub-assignment>Sub‐assignment</h1>
+
+        <p>When a group of at least two lvalues are enclosed in parentheses,
+        they are initially treated as a single lvalue in that, collectively,
+        they are assigned a single rvalue. After all remaining lvalues have
+        been paired with their corresponding rvalues, the rules of parallel
+        assignment are applied again to each of these groups, recursively for
+        each level of parentheticals.</p>
+
+        <figure class=left id=sub-assignment.rb>
+          <figcaption>Using sub‐assignment to distribute nested rvalues
+        </figure>
+
+        <p>Recall that if multiple lvalues are assigned a single rvalue that
+        responds to <code>:to_ary</code>, the rvalue is assigned to the first
+        lvalue, and the remaining lvalues are assigned <code>nil</code>.
+        Therefore, sub‐assignment is most useful when the corresponding rvalue
+        is array‐like, because it distributes the elements of potentially
+        nested arrays on the right‐hand side among lvalues.</p>
+      </section>
+
+      <section>
+        <h1 id=parallel-assignment-value>Value of a Parallel Assignment Expression</h1>
+
+        <p>A parallel assignment expression involving a single rvalue has
+        that rvalue as its value. Otherwise, the value is
+        an <code>Array</code> of the rvalues, including any that were
+        discarded. In both cases, the rvalues are splatted as appropriate
+        before being returned.</p>
+
+        <figure class=left id=parallel-assignment-value.rb>
+          <figcaption>The value of a parallel assignment expression is its
+          rvalues
+        </figure>
+      </section>
+    </section>
+  </section>
+</section>

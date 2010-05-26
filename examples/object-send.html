@@ -1,0 +1,9 @@
+<a href=/examples/object-send.rb><pre class=syntax><code><span class="nb">name</span> <span class="o">=</span> <span class="ss">:size</span>
+<span class="c1"># Sends &quot;wool&quot; the :name message</span>
+<span class="s2">&quot;wool&quot;</span><span class="o">.</span><span class="n">name</span> <span class="c1">#=&gt; NoMethodError: undefined method `name&#39; for &quot;wool&quot;:String</span>
+<span class="c1"># Sends &quot;wool&quot; the :size message</span>
+<span class="s2">&quot;wool&quot;</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="c1">#=&gt; 4</span>
+<span class="c1"># Additional arguments to :send are sent as the message’s arguments</span>
+<span class="mi">33</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:/</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">#=&gt; 11</span>
+</code></pre>
+</a>

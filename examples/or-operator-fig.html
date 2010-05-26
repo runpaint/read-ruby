@@ -1,0 +1,16 @@
+<a href=/examples/or-operator-fig.rb><pre class=syntax><code><span class="k">def</span> <span class="nf">valid_isbn13?</span><span class="p">(</span><span class="n">isbn</span><span class="p">)</span>
+  <span class="n">isbn</span> <span class="o">=</span> <span class="n">isbn</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="sr">/\d/</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_i</span><span class="p">)</span>
+  <span class="n">isbn</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">13</span> <span class="ow">or</span> <span class="k">return</span> <span class="kp">false</span>
+  <span class="n">check_digit</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">-</span> <span class="n">isbn</span><span class="o">.</span>
+                     <span class="n">first</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span>
+                     <span class="n">map</span><span class="o">.</span>
+                     <span class="n">with_index</span><span class="p">{</span><span class="o">|</span><span class="n">d</span><span class="p">,</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">.</span><span class="n">succ</span><span class="o">.</span><span class="n">odd?</span> <span class="p">?</span> <span class="n">d</span> <span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">d</span><span class="p">}</span><span class="o">.</span>
+                     <span class="n">reduce</span><span class="p">(</span><span class="ss">:+</span><span class="p">)</span><span class="o">.</span>
+                     <span class="n">modulo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">check_digit</span> <span class="o">==</span> <span class="n">isbn</span><span class="o">.</span><span class="n">last</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">check_digit</span> <span class="o">==</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">isbn</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">zero?</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">valid_isbn13?</span><span class="p">(</span><span class="s1">&#39;978-0-596-80948-5&#39;</span><span class="p">)</span> <span class="c1">#=&gt; true</span>
+<span class="n">valid_isbn13?</span><span class="p">(</span><span class="s1">&#39;9780596809484&#39;</span><span class="p">)</span> <span class="c1">#=&gt; false</span>
+</code></pre>
+</a>

@@ -1,0 +1,6 @@
+<a href=/examples/define-method-class-eval.rb><pre class=syntax><code><span class="nb">Array</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+  <span class="n">define_method</span><span class="p">(</span><span class="ss">:second</span><span class="p">,</span> <span class="o">-&gt;</span><span class="p">{</span> <span class="nb">self</span><span class="o">.</span><span class="n">[</span><span class="o">]</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">})</span>
+<span class="k">end</span>
+<span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">].</span><span class="n">second</span> <span class="c1">#=&gt; 4</span>
+</code></pre>
+</a>

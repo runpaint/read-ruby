@@ -1,0 +1,32 @@
+<a href=/examples/module-namespacing-extend-self.rb><pre class=syntax><code><span class="k">module</span> <span class="nn">CPU</span>
+  <span class="kp">extend</span> <span class="nb">self</span>
+  <span class="k">def</span> <span class="nf">processors</span>
+    <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;/proc/cpuinfo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">/\n\n/</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">processor</span><span class="o">|</span> <span class="no">Hash</span><span class="o">[</span>
+        <span class="n">processor</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">reject</span><span class="p">{</span><span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">line</span><span class="o">.</span><span class="n">end_with?</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)}</span><span class="o">.</span>
+                        <span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">normalise</span> <span class="o">*</span><span class="n">line</span><span class="o">.</span><span class="n">chomp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">/\t+:\s?/</span><span class="p">)}</span>
+    <span class="o">]</span><span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">normalise</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/\s/</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_sym</span>
+    <span class="k">return</span> <span class="o">[</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_sym</span><span class="p">)</span><span class="o">]</span> <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="ss">:flags</span>
+    <span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="k">case</span> <span class="n">value</span>
+      <span class="k">when</span><span class="sr"> /^\d+$/</span>      <span class="k">then</span> <span class="n">value</span><span class="o">.</span><span class="n">to_i</span>
+      <span class="k">when</span><span class="sr"> /^\d+\.\d+$/</span> <span class="k">then</span> <span class="n">value</span><span class="o">.</span><span class="n">to_f</span>
+      <span class="k">when</span> <span class="s1">&#39;no&#39;</span>         <span class="k">then</span> <span class="kp">false</span>
+      <span class="k">when</span> <span class="s1">&#39;yes&#39;</span>        <span class="k">then</span> <span class="kp">true</span>
+      <span class="k">else</span>              <span class="n">value</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">cpu</span> <span class="o">=</span> <span class="no">CPU</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">first</span>
+<span class="n">cpu</span><span class="o">[</span><span class="ss">:model_name</span><span class="o">]</span> <span class="o">+</span> <span class="s1">&#39; has the :mmx flag set&#39;</span> <span class="k">if</span> <span class="n">cpu</span><span class="o">[</span><span class="ss">:flags</span><span class="o">].</span><span class="n">include?</span><span class="p">(</span><span class="ss">:mmx</span><span class="p">)</span>
+<span class="c1">#=&gt; &quot;Intel(R) Atom(TM) CPU N270   @ 1.60GHz has the :mmx flag set&quot;</span>
+<span class="s2">&quot;It doesn&#39;t have any known bugs&quot;</span> <span class="k">if</span> <span class="n">cpu</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">/_bug/</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">bug</span><span class="o">|</span> <span class="n">cpu</span><span class="o">[</span><span class="n">bug</span><span class="o">]</span><span class="p">}</span><span class="o">.</span><span class="n">none?</span>
+<span class="c1">#=&gt; &quot;It doesn&#39;t have any known bugs&quot;</span>
+<span class="s2">&quot;Its faster than 500MHz&quot;</span> <span class="k">if</span> <span class="n">cpu</span><span class="o">[</span><span class="ss">:cpu_MHz</span><span class="o">]</span> <span class="o">&gt;</span> <span class="mi">500</span>
+<span class="c1">#=&gt; &quot;Its faster than 500MHz&quot;</span>
+</code></pre>
+</a>

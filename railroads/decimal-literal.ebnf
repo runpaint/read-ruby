@@ -1,0 +1,1 @@
+DecimalLiteral = Sign? NonZeroDigit ("_"? Digit)*

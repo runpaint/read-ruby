@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<title>Flow - Read Ruby</title>
+<link rel=license href=//creativecommons.org/licenses/by-sa/3.0/>
+<link rel=author href=mailto:runrun@runpaint.org>
+<link rel=stylesheet href=/chapter>
+<!--<link rel=next href=/text> -->
+<link rel='index up' href=/toc>
+
+<!-- http://www.engineyard.com/blog/2010/iteration-shouldnt-spin-your-wheels/
+http://blog.rubybestpractices.com/posts/rklemme/004-Control_Flow.html
+-->
+<section>
+  <h1 id=flow>Flow</h1>
+
+  <section>
+    <h1 id=conditionals>Conditionals</h1>
+
+    <p>A <dfn>conditional</dfn> is an expression evaluated as a truthbearer.
+    The conditional is <dfn title="false conditional">false</dfn> if the
+    expression’s value is <a href=/programs#nil><code>nil</code></a> or <a
+      href=/programs#false><code>false</code></a>; otherwise it is <dfn
+      title="true conditional">true</dfn>.</p>
+
+    <figure id=conditional-true.rb>
+      <!-- FIXME: Use if statement in example to show the conditionals’ truth
+      -->
+      <figcaption>Conditionals that are true
+    </figure>
+
+    <figure id=conditional-false.rb>
+      <!-- FIXME: Use unless statement in example to show the conditionals’
+      falsity -->
+      <figcaption>Conditionals that are false
+    </figure>
+
+  </section>
+
+  <section>
+    <h1 id=boolean-logic>Boolean Logic</h1>
+    
+    <p>The Boolean logic operators return either <code>true</code> or
+    <code>false</code> by evaluating their operands as conditionals. For this
+    reason, Boolean expressions are often themselves used as conditionals.
+
+    <p>There are two forms of each Boolean operator—keyword (e.g.
+    <code>and</code>) and  punctuation (e.g. <code>&amp;&amp;</code>)—which
+    differ only in precedence. The former have low precedence; the latter
+    high.</p>
+
+    <!-- TODO: Boolean flip-flop -->
+    <section>
+      <h1 id=and-operator>AND Operator</h1>
+      
+      <figure class=railroad>
+        <img id=boolean-and-operator.png>
+        <figcaption>Syntax diagram of the Boolean AND operator
+      </figure>
+
+      <p>The binary <code>and</code>/<code>&amp;&amp;</code> operators return
+      <code>true</code> iff both operands are true. They perform short-circuit
+      evaluation, so will only evaluate the second operand if the first is
+      true.</p>
+
+      <figure id=and-operator-fig.rb>
+        <figcaption>Using the Boolean AND operator (<code>&amp;&amp;</code>)
+        and the bitwise AND operator (<code>&amp;</code>) to determine whether
+        an integer is a power of 2
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=or-operator>OR Operator</h1>
+
+      <figure class=railroad>
+        <img id=boolean-or-operator.png>
+        <figcaption>Syntax diagram of the Boolean OR operator
+      </figure>
+
+      <p>The binary <code>or</code>/<code>||</code> operators return
+      <code>true</code> iff at least one operand is true. They perform
+      short-circuit evaluation, so will only evaluate the second operand if
+      the first is false.</p>
+
+      <figure id=or-operator-fig.rb>
+        <figcaption>Using the Boolean OR operator to determine whether the
+        check digit of an ISBN-13 is correct
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=not-operator>NOT Operator</h1>
+
+      <figure class=railroad>
+        <img id=boolean-not-operator.png>
+        <figcaption>Syntax diagram of the Boolean NOT operator
+      </figure>
+
+      <p>The unary <code>not</code>/<code>!</code> operators return
+      <code>true</code> iff the operand is false.</p>
+
+      <figure id=not-operator-fig.rb>
+        <figcaption>Using the Boolean NOT operator to invert the value of its
+        operand
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=flip-flop>Flip Flops</h1>
+
+      <p>When the <code>..</code> or <code>...</code> operators are used in a
+      conditional they don’t have their usual semantics as <a
+        href=/objects#ranges>range literals</a>; they create a
+      <dfn>flip-flop</dfn> expression: a stateful, bitstable, Boolean test
+      between two expressions. They take the form
+      <code><var>left</var>..<var>right</var></code>, where <var>left</var>
+      and <var>right</var> are both Boolean expressions. They are false until
+      <var>left</var> is true, at which point they become true, remaining true
+      until <var>right</var> is true, at which point they become false until
+      <var>left</var> becomes true again. In this way they <i>flip-flop</i>
+      between true and false. 
+      
+      <p>When a flip-flop becomes true it tests <var>right</var> to determine
+      whether its next state should be false. If <var>left</var> and
+      <var>right</var> are separated by three consecutive periods instead of
+      two, <var>right</var> is not tested until the expression is next
+      evaluated.
+    </section>
+  </section>
+
+  <section>
+    <h1 id=branching>Branching</h1>
+    
+    <p><dfn>Branching statements</dfn> predicate the execution of block on a
+    conditional. For example, an <code>if</code> statement executes its
+    associated code block iff its conditional is true. Each code block of an
+    branching statement is termed a <dfn>branch</dfn>, to describe the effect
+    of the statement on program execution.</p>
+
+    <section>
+      <h1 id=if-statement><code>if</code> Statement</h1>
+      
+      <figure class=railroad>
+        <img id=if-statement.png>
+        <figcaption>Syntax diagram of <code>if</code> statement
+      </figure>
+
+      <p>The <code>if</code> statement comprises a conditional, zero or more
+      statements (the branch), then, optionally, additional branches whose
+      forms are explained subsequently. The branch is executed iff the
+      conditional is true.</p>
+
+      <figure id=if-statement-simple.rb>
+        <figcaption>The simple form of the <code>if</code> statement
+      </figure>
+
+      <p>The return value of an <code>if</code> statement is that of the
+      executed branch, or <code>nil</code> if no branch was executed.</p>
+
+      <section>
+        <h1 id=postfix-if>Postfix <code>if</code></h1>
+
+        <figure class=railroad>
+          <img id=postfix-if-statement.png>
+          <figcaption>Syntax diagram of the postfix <code>if</code> statement
+        </figure>
+
+        <p>A postfix <code>if</code> statement is a concise alternative when
+        the branch consists of a sole statement. It comprises an
+        expression, the <code>if</code> keyword, then a conditional. The
+        expression is executed iff the conditional is true.</p>
+        
+        <figure id=postfix-if-statement.rb>
+          <figcaption>The postfix <code>if</code> statement executes its
+          left-hand side if its right-hand side is true
+        </figure>
+
+        <p>This syntax, as opposed to <code>if <var>conditional</var>…</code>,
+        foregrounds the expression. This is of stylistic benefit if the
+        conditional is normally true because it highlights the default
+        case.</p>
+      </section>
+
+      <section>
+        <h1 id=if-else-clause><code>else</code> Clause</h1>
+
+        <figure class=railroad>
+          <img id=else-clause.png>
+          <img id=if-statement.png>
+          <figcaption>Syntax diagram of <code>if</code> statement with an
+          <code>else</code> branch
+        </figure>
+
+        <p>Prior to an <code>if</code> statement’s <code>end</code> keyword an
+        <code>else</code> branch may appear. It is executed iff no preceding
+        branch was executed, serving as the default branch.</p>
+
+        <figure id=if-statement-with-else-clause.rb>
+          <figcaption>An <code>if</code> statement can contain an
+          <code>else</code> clause, which is executed iff no other branch was
+          executed.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=if-elsif-clause><code>elsif</code> Clause</h1>
+
+        <figure class=railroad>
+          <img id=elsif-clause.png>
+          <img id=if-statement.png>
+          <figcaption>Syntax diagram of <code>if</code> statement with an
+          <code>elsif</code> branch
+        </figure>
+
+        <p>An <code>if</code> statement may contain any number of
+        <code>elsif</code> branches between the <code>if</code> branch and
+        before the <code>else</code> branch, if present. To execute they
+        require all prior conditionals to be false and their conditional to be
+        true.</p>
+
+        <figure id=if-statement-with-elsif-and-else-clause.rb>
+          <figcaption>Using an <code>if</code> statement with
+          <code>elsif</code> and <code>else</code> branches to compute the
+          Möbius function
+        </figure>
+      </section>
+    </section>
+
+
+    <section>
+      <h1 id=unless-statement><code>unless</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=else-clause.png>
+        <img id=unless-statement.png>
+        <figcaption>Syntax diagram of <code>unless</code> statement
+      </figure>
+
+      <p>The <code>unless</code> statement executes its branch iff its
+      conditional is false. It is equivalent to an <code>if</code> statement
+      with the conditional inverted. It may be followed by an
+      <code>else</code> branch, which executes iff the <code>unless</code>
+      conditional is true.  <code>elsif</code> clauses are prohibited.</p>
+
+      <figure id=unless-statement-fig.rb>
+        <figcaption>The <code>unless</code> statement executes its body iff
+        its conditional is false.
+      </figure>
+
+      <section>
+        <h1 id=postfix-unless-statement>Postfix Form</h1>
+        
+        <figure class=railroad>
+          <img id=postfix-unless-statement.png>
+          <figcaption>Syntax diagram of the postfix <code>unless</code>
+          statement
+        </figure>
+
+        <p>The postfix form of the <code>unless</code> statement behaves as
+        the postfix <code>if</code> statement, except the expression is
+        executed iff the conditional is false.</p>
+
+        <figure id=postfix-unless-statement-fig.rb>
+          <figcaption>Using the postfix-<code>unless</code> statement to
+          <code>raise</code> an <code>ArgumentError</code> if the argument
+          can’t be converted to a <code>String</code>
+        </figure>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=ternary-operator>Ternary Operator</h1>
+
+      <figure class=railroad>
+        <img id=ternary-operator.png>
+        <figcaption>Syntax diagram of the ternary operator
+      </figure>
+
+      <p>The ternary operator is a concise alternative to <code>if
+        <var>conditional</var>…else…</code> when the conditional and branches
+      are simple. It consists of three operands, the first of which is the
+      conditional. If the conditional is true, the second expression is
+      evaluated; otherwise the third expression is evaluated.</p>
+
+      <figure id=ternary-operator-on-single-line.rb>
+        <figcaption>The ternary operator is a compact two-way branching
+        construct 
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=case-statement><code>case</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=case-statement-syntax.png>
+        <figcaption>Syntax diagram of the <code>case</code> statement
+      </figure>
+
+      <p>The <code>case</code> statement allows a single expression
+      (hereafter: the <dfn title="topic of a case statment">topic</dfn>) to be
+      tested against other expressions without having to evaluate the
+      topic each time. It begins with a <code>case
+        <var>topic</var></code> clause, where <var>topic</var> is an arbitrary
+      expression.</p>
+
+      <section>
+        <h1 id=when><code>when</code> Clause</h1>
+
+        <figure class=railroad>
+          <img id=when-clause.png>
+          <figcaption>Syntax diagram of the <code>case</code> statement’s
+          <code>when</code> clause  
+        </figure>
+        
+        <p>A branch is introduced by the <code>when</code> keyword followed by
+        a comma-separated list of one or more expressions. This list is
+        separated from the statements comprising the branch body by the
+        <code>then</code> keyword or a statement terminator.
+      </section>
+
+      <figure class=railroad>
+        <img id=else-clause.png>
+        <figcaption>Syntax diagram of the <code>case</code> statement’s
+        <code>else</code> clause  
+      </figure>
+      
+      <p>A single <code>else</code> clause may appear between the final
+      <code>when</code> clause and the <code>end</code> keyword which delimits
+      the <code>case</code> statement.</p>
+      
+      <figure id=case-cf-if.rb>
+        <figcaption>The same method implemented first with an <code>if</code>
+        statement then with a <code>case</code> statement
+      </figure>
+
+      <p>A <code>when</code> clause <dfn title="matching <code>when</code>
+        clause">matches</dfn> the topic if any of the expressions listed after
+      <code>when</code> have case equality (<code><var>expression</var> ==
+        <var>topic</var></code>) with the topic. Therefore, <code>when
+        <var>expression</var></code> is equivalent to <code>if
+        <var>expression</var> === <var>topic</var></code>. By default, the
+      <code>#===</code> message is equivalent to <code>#==</code>—they both
+      test for equality—but certain core classes redefine <code>#===</code> to
+      behave more usefully in this context, as shown in the following
+      table.</p>
+
+      <table id=case-equality-operator-table class=border>
+        <caption>The effect of the case equality operator on a receiver of
+          class <var>a</var> and a single operand (<var>b</var>)
+        <thead>
+          <tr>
+            <th>Class (<var>a</var>)
+            <th>Semantics of <code><var>a</var> === <var>b</var></code>
+        <tbody class=zebra>        
+          <tr><td><code>Class</code>
+              <td><code><var>b</var>.instance_of?(<var>a</var>)</code>
+          <tr><td><code>Proc</code>
+              <td><code><var>a</var>.call(<var>b</var>)</code>
+          <tr><td><code>Range</code>
+              <td><code><var>a</var>.include?(<var>b</var>)</code>
+          <tr><td><code>Regexp</code>
+              <td><code><var>a</var> =~ <var>b</var></code>
+          <tr><td><code>Symbol</code>
+              <td><code><var>a</var> == <var>b</var>.to_sym</code>
+        </table>
+
+      <p>A <code>case</code> expression is evaluated by evaluating each
+      <code>when</code> branch in the order that they appear in the source
+      file. If a branch matches the topic, it is executed, and its return
+      value becomes that of the <code>case</code> statement; otherwise, the
+      next branch is evaluated in the same manner. If none of the
+      <code>when</code> branches match, and an <code>else</code> branch is
+      present, the <code>case</code> statement’s return value is that of the
+      <code>else</code> branch; otherwise it is <code>nil</code>.</p>
+
+      <figure id=case-statement-fig.rb>
+        <figcaption>Using the <code>case</code> statement to classify a HTTP
+        status code
+      </figure>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=looping>Looping</h1>
+    
+    <p>Looping constructs represent repetition. They comprise a block of code
+    (hereafter: the <dfn title="loop body">body</dfn>) and a <dfn>terminating
+      condition</dfn> which governs the number of times the body will
+    execute.</p>
+
+    <p>The following constructs are materially identical in that they can all
+    be used to create any kind of loop, albeit when combined with control flow
+    statements. The purpose of having many different approaches to looping, as
+    opposed to a single, generic construct, is to allow common scenarios to be
+    expressed concisely and simply, and in doing so lessen the chance of
+    erroneous terminating conditions.</p>
+
+    <!-- TODO: loops don't create their own variable scope -->
+    <section>
+      <h1 id=count-controlled-loops>Count-Controlled Loops</h1>
+
+      <p>The constructs that follow instrument an <i>a priori</i> number of
+      repetitions.</p>
+
+      <!-- for loops are unnecessary -->
+      
+      <section>
+        <h1 id=integer-times><code>Integer#times</code></h1>
+
+        <figure class=railroad>
+          <img id=integer-times.png>
+          <figcaption>Syntax diagram of the <code>Integer#times</code> loop
+        </figure>
+
+        <p><code>Integer#times</code> creates a loop which executes
+        <var>n</var> times, where <var>n</var> is the integer’s magnitude. For
+        example, <code>10.times { … }</code> executes the block ten times,
+        passing into the block the number of the current iteration. When the
+        block is omitted an <code>Enumerator</code> is returned.</p>
+
+        <figure id=integer-times-loop.rb>
+          <figcaption><code>Integer#times</code> executes the associated block
+          the number of times specified by the receiver.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=integer-upto><code>Integer#upto</code></h1>
+
+        <figure class=railroad>
+          <img id=integer-upto.png>
+          <figcaption>Syntax diagram of the <code>Integer#upto</code> loop
+        </figure>
+
+        <p>Similarly, <code>Integer#upto(<var>limit</var>)</code> counts from
+        the value of the receiver <em>up</em> to the value of
+        <var>limit</var>, executing the loop body each time. On each iteration
+        the block is passed the current number in the progression. For,
+        example, <code>10.upto(13)</code> executes the loop body four times,
+        passing it 10, 11, 12, 13, then terminating. When the
+        block is omitted an <code>Enumerator</code> is returned.</p>
+
+        <figure id=integer-upto-loop.rb>
+          <figcaption><code>Integer#upto</code> counts from the receiver up to
+          its argument, executing the associated block each time
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=integer-downto><code>Integer#downto</code></h1>
+
+        <figure class=railroad>
+          <img id=integer-downto.png>
+          <figcaption>Syntax diagram of the <code>Integer#downto</code> loop
+        </figure>
+
+        <p>Conversely, <code>Integer#downto(<var>limit</var>)</code> counts
+        from the value of the receiver <em>down</em> to the value of
+        <var>limit</var>, executing the loop body each time. As with
+        <code>Integer#upto</code>, the block is passed the number of the
+        current progression. When the block is omitted an
+        <code>Enumerator</code> is returned.</p>
+
+        <figure id=integer-downto-loop.rb>
+          <figcaption><code>Integer#downto</code> counts from the receiver
+          down to its argument, executing the associated block each time
+        </figure>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=condition-controlled-loops>Condition-Controlled Loops</h1>
+
+      <p>A condition-controlled loop uses a conditional to determine when the
+      loop should terminate. The conditional is tested prior to each
+      repetition, its value determining whether to repeat or terminate the
+      loop.</p>
+      <!-- warn about constant conditions -->
+      <section>
+        <h1 id=while-loop><code>while</code> Loops</h1>
+
+        <figure class=railroad>
+          <img id=while-loop.png>
+          <figcaption>Syntax diagram of the <code>while</code> loop
+        </figure>
+
+        <p>The <code>while</code> loop executes its body as long as its
+        conditional is true. If the conditional is initially false the body is
+        never executed.</p>
+  
+        <figure id=while-loop-fig.rb>
+          <figcaption>Using a <code>while</code> loop to calculate the Farey
+          sequence of order <var>n</var>
+        </figure>
+
+        <section>
+          <h1 id=postfix-while-statement>Postfix <code>while</code></h1>
+
+          <figure class=railroad>
+            <img id=postfix-while-statement.png>
+            <figcaption>Syntax diagram of the postfix-<code>while</code>
+            statement
+          </figure>
+
+          <p><code>while</code> can also be used as a statement modifier in
+          which case it executes its left-hand side while its right-hand side
+          is true.</p>
+
+          <figure id=postfix-while-statement-fig.rb>
+            <figcaption>Using the postfix-<code>while</code> statement to
+            naïvely calculate the number of bits set in an integer
+          </figure>
+        </section>
+      </section>
+
+      <section>
+        <h1 id=until-loop><code>until</code> Loops</h1>
+
+        <figure class=railroad>
+          <img id=until-loop.png>
+          <figcaption>Syntax diagram of the <code>until</code> loop
+        </figure>
+
+        <p>The <code>until</code> loop executes its body as long as its
+        conditional is false. If the conditional is initially true the body is
+        never executed.</p>
+
+        <figure id=until-loop-fig.rb>
+          <figcaption>Using the <code>until</code> loop to generate the
+          <i>look-and-say</i> sequence
+        </figure>
+
+        <section>
+          <h1 id=postfix-until-statement>Postfix <code>until</code></h1>
+
+          <figure class=railroad>
+            <img id=postfix-until-statement.png>
+            <figcaption>Syntax diagram of the postfix-<code>until</code> loop
+          </figure>
+
+          <p><code>until</code> can also be used as a statement modifier in
+          which case it executes its left-hand side until its right-hand side
+          is true.</p>
+
+          <figure id=postfix-until-statement-fig.rb>
+            <figcaption>Using the postfix-<code>until</code> statement to
+            determine the next prime number following the receiver
+          </figure>
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=loop>Infinite Loops: <code>loop</code></h1>
+
+      <figure class=railroad>
+        <img id=loop-loop.png>
+        <figcaption>Syntax diagram of the <code>loop</code> loop
+      </figure>
+
+      <p>The <code>loop</code> keyword executes its body indefinitely. Unlike
+      the constructs discussed previously, there is no explicit terminating
+      condition. An infinite loop qua infinite loop is undesirable, so the
+      body will typically include statements that conditionally terminate it.
+      Such statements include the control flow statements,
+      <code>return</code>, <code>throw</code>, <code>raise</code>, and
+      <code>exit</code>. In addition, <a href=#raise>raising</a> a <a
+        href=#stop-iteration><code>StopIteration</code></a> <a
+        href=#exceptions>exception</a> inside the loop body has the same
+      effect. The principle of <code>loop</code>, therefore, is to repeat an
+      operation until explicitly told to halt.</p>
+
+      <figure id=loop-loop-fig.rb>
+        <figcaption>Using the <code>loop</code> construct to determine whether
+        an integer is <i>happy</i>
+      </figure>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=control-flow-statements>Control Flow Statements</h1>
+
+    <!-- Clarify the below applies only to loops; the remarks in Closures
+    apply to iterators. Perhaps move the Closures section to here?
+    Similarly, return is introduced in Methods... -->
+
+    <section>
+      <h1 id=break-statement><code>break</code> Statement</h1>
+      
+      <figure class=railroad>
+        <img id=break-statement.png>
+        <figcaption>Syntax diagram of the <code>break</code> statement
+      </figure>
+
+      <p>Within a loop the <code>break</code> statement transfers control to
+      the first statement following the loop. (Within a <a
+        href=/closures#return-proc-semantics>proc</a> or <a
+        href=/closures#return-lambda-semantics>lambda</a> it has different
+      semantics). The value of a <code>break</code> statement, and therefore
+      the enclosing loop, is that of its arguments—coerced into an
+      <code>Array</code> if there is a plurality—, or <code>nil</code> in
+      their absence.</p>
+
+      <figure id=break.rb>
+        <figcaption>Using <code>break</code> to exit a loop early
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=next-statement><code>next</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=next-statement.png>
+        <figcaption>Syntax diagram of the <code>next</code> statement
+      </figure>
+
+      <p>The <code>next</code> statement ends the current iteration of the
+      loop and begins the next. It raises a <code>LocalJump</code> exception
+      when used outside of a loop or closure. Any arguments it is given are
+      ignored.</p>
+
+      <figure id=next.rb>
+        <figcaption>Using <code>next</code> to skip comments in
+        <code>/etc/hosts</code>
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=redo-statement><code>redo</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=redo-statement.png>
+        <figcaption>Syntax diagram of the <code>redo</code> statement
+      </figure>
+
+      <p>The <code>redo</code> statement restarts the current iteration of
+      the loop, returning control to the first expression in the body. The
+      loop conditional is not re-evaluated.</p>
+
+      <figure id=redo.rb>
+        <figcaption>Using <code>redo</code> to conditionally repeat a password
+        prompt
+      </figcaption>
+    </section>
+
+    <section>
+      <h1 id=throw-catch><code>throw</code>/<code>catch</code> Statements</h1>
+      
+      <p>The <code>catch</code> method defines a labeled block of code. The
+      <code>throw</code> method exits a <code>catch</code> block with a
+      given label. Taken together, they form a general-purpose control
+      structure.</p>
+
+      <p>The label is normally given as a <code>Symbol</code> or
+      <code>String</code>, however any object is permissible as long as the
+      thrown object is <em>identical</em> to the caught object.</p>
+
+      <figure class=railroad>
+        <img id=catch-statement.png>
+        <figcaption>Syntax diagram of the <code>catch</code> statement
+      </figure>
+
+      <p>A <code>catch</code> block is defined with <code>catch
+        <var>label</var> <var>block</var></code>, where <var>label</var> is
+      the label which this block should catch, and <var>block</var> is a
+      block literal. The block is called immediately.</p>
+
+      <figure class=railroad>
+        <img id=throw-statement.png>
+        <figcaption>Syntax diagram of the <code>throw</code> statement
+      </figure>
+
+      <p>The syntax of <code>throw</code> is <code>throw <var>label</var>,
+        <var>value</var></code>, where <var>label</var> is the label of an
+      enclosing <code>catch</code> block, and <var>value</var> is an optional
+      expression which, if supplied, becomes the value of the corresponding
+      <code>catch</code> block. 
+      
+      <p><code>throw</code> immediately causes the current execution path to
+      terminate and a search to begin for the nearest <code>catch</code>
+      block defined with the same label. The search proceeds out through the
+      current lexical scope, then up through the call stack towards the
+      top-level of the program, crossing method boundaries if necessary. If
+      such a <code>catch</code> is found, it is exited, and execution
+      resumes from the statement that follows it. Otherwise, if the search
+      is unsuccessful, an <code>ArgumentError</code> exception is raised.</p>
+
+      <figure id=catch-throw.rb>
+        <figcaption>Using <code>throw</code> and
+        <code>catch</code> to follow URL redirection. (Based on the
+        implementation of <code>OpenURI</code>)
+      </figcaption>
+    </section>
+
+    <section>
+      <h1 id=yield><code>yield</code> Statement</h1>
+
+      <figure class=railroad>
+        <img id=yield-statement.png>
+        <figcaption>Syntax diagram of the <code>yield</code> statement
+      </figure>
+
+      <p>The <code>yield</code> statement causes control to be transferred to
+      the associated block, then resume from the statement following
+      <code>yield</code>. It effects a <em>temporary</em> transfer such that
+      the yielding method retains control; whereas <code>return</code> cedes
+      complete control of execution to its caller. This enables a method to
+      <code>yield</code> to a block multiple times, as opposed to
+      <code>return</code> which, by definition, may be executed by a method no
+      more than once.
+
+      <p>As explained in <a href=/messages#block-argument>Messages: Block
+        Literals</a> a block literal may be sent along with a message. Then,
+      as explained in <a href=/methods#block-arguments>Methods: Block
+        Arguments</a>, the receiving method may access this block, which we
+      will refer to as <i>the associated block</i>.
+
+      <p>The return value of <code>yield</code> is that of the block yielded
+      to.</p>
+
+      <section>
+        <h1 id=yield-arguments>Arguments</h1>
+
+        <p><code>yield</code> may be supplied with one or more arguments,
+        which are passed to the associated block. It is this ability that
+        enables <a href=#internal-iterators>internal iterators</a> to be <a
+          href=#custom-internal-iterators>constructed</a>. 
+
+        <p><code>yield</code>’s arguments are married with the block’s
+        parameter list with <dfn>yield semantics</dfn>: semantics similar to
+        those of <a href=/methods#method-arguments>methods</a>, with the
+        following differences:</p>
+
+        <ul>
+          <li>Superfluous arguments are silently discarded. A block wishing to
+          collect a variable number of arguments into an <code>Array</code>
+          must use a <a href=/methods#rest-parameters>rest parameter</a>. 
+          <li>Parameters representing omitted arguments are assigned
+          <code>nil</code>.
+          <li><code>Array</code> arguments are automatically exploded.
+          <li>Block literals are prohibited as arguments. That is, a block
+          cannot be yielded to another block. The workaround is to yield a
+          <code>Proc</code> object representing the block to be yielded.
+        </ul>
+
+        <p>As with message expressions, the final argument to
+        <code>yield</code> may be a <code>Hash</code> literal with or without
+        its delimiting curly braces.
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=iterators>Iterators</h1>
+
+      <!-- TODO: Define 'iterator' -->
+
+    <section>
+      <h1 id=internal-iterators>Internal</h1>
+      
+      <p>An internal iterator is a method which accepts a block to which each
+      element of a collection is <a href=#yield>yielded</a> in turn. These are
+      <em>internal</em> iterators because they “push“ elements of the
+      collection to the block; whereas <em>external</em> iterators, discussed
+      below, are objects from which the elements are “pulled”.</p>
+
+      <p>In fact, <a href=#integer-times><code>Integer#times</code></a>, <a
+        href=#integer-upto><code>Integer#upto</code></a>, and <a
+        href=#integer-downto><code>Integer#downto</code></a>, which were
+      introduced above, are themselves internal iterators. The collection
+      over which they iterate is a sequence of integers.
+
+      <p>The most common internal iterator is <code>:each</code> because its
+      presence allows a collection class to mix-in the <a
+        href=/objects#enumerables><code>Enumerable</code></a> module. It is
+      defined on all core classes that can sensibly be iterated over, with
+      the provisos noted in <a href=/messages#each-selector>Messages:
+        <code>each</code> / <code>each_</code>*</a>.
+
+      <p>An object supporting internal iteration is sent the appropriate
+      selector (e.g. <code>:each</code>) along with a block literal
+      expecting at least one argument. Each time the block is called its
+      argument will be the next element of the collection, where the
+      semantics of <i>next</i> depend on the iterator’s intent. The block is
+      a closure, so flow control statements can be used in its body in the
+      manner described in <a href=/closures>Closures</a>.</p>
+
+      <figure id=each-selector.rb>
+        <figcaption>The <code>:each</code> selector yields each
+        element of the receiver if given a block; otherwise returns an
+        <code>Enumerator</code>.
+      </figure>
+
+      <p><code>:each</code>, along with most internal iterators, can also be
+      sent without a block in which case it returns an
+      <code>Enumerator</code>.</p>
+
+      <section>
+        <h1 id=for><code>for</code></h1>
+
+        <figure class=railroad>
+          <img id=for-loop.png>
+          <figcaption>Syntax diagram of the <code>for</code> loop
+        </figure>
+        
+        <p>Objects responding to <code>:each</code> in the manner outlined
+        above may also be iterated over with the <code>for</code> keyword as
+        shown below. The only practical difference between a
+        <code>for</code> loop and using <code>:each</code> directly is that
+        the latter defines a new variable scope for the duration of the
+        block.</p>
+
+        <figure id=for-loop.rb>
+          <figcaption>Using the <code>for</code> keyword to drive an
+          internal iterator
+        </figure>
+      </section>
+      
+      <p>Internal iterators are not limited to behaving like
+      <code>:each</code>; <a href=/objects#enumerables>Objects:
+        Enumerables</a> describes some of the specialised iterators the
+      <code>Enumerable</code> module defines in terms of
+      <code>:each</code>.</p>
+      
+      <section>
+        <h1 id=custom-internal-iterators>Custom Internal Iterators</h1>
+        
+        <p>Fundamentally, an internal iterator is just a method which <a
+          href=#yield>yields</a> a value to a block. The mechanics of methods
+        accepting blocks are described in <a
+          href=/methods#block-arguments>Methods: Block Arguments</a>.</p>
+
+        <figure id=custom-internal-iterator.rb>
+          <figcaption class=nowrap>Using <code>yield</code> to create a
+          custom internal iterator
+        </figure>
+      </section>
+    </section>
+
+      <!-- TODO: External iterators -->
+  </section>
+  
+  <section>
+    <h1 id=exceptions>Exceptions</h1>
+
+    <p>An <dfn>exception</dfn> is an object representing an abnormal condition
+    that changes the typical flow of execution. A block may initiate, or
+    <dfn>raise</dfn>, an exception to signal an abnormality which it is either
+    unwilling or unable to handle locally. This suspends program execution and
+    causes a corresponding <dfn>exception handler</dfn>—a block which has
+    elected to resolve the abnormality—to be sought. If the search is
+    successful, the handler is called, then execution resumes from the
+    statement following that which raised the exception. Otherwise, the
+    program terminates.</p>
+
+    <section>
+      <h1 id=exception-objects><code>Exception</code> Objects</h1>
+
+      <p>Exceptions are instances of <code>Exception</code> or a subclass
+      thereof. These subclasses primarily exist to increase granularity in
+      <code>rescue</code> clauses, which match exceptions solely on their
+      class. They rarely augment the behaviour of their parent.
+
+      <p>Most core exceptions subclass <code>StandardError</code>, allowing
+      them to rescued by a bare <code>rescue</code> clause. The remainder are
+      not expected to be rescued in the normal course of a program, so must be
+      mentioned explicitly if they are to be rescued. The principle,
+      therefore, is that custom exception classes should inherit from
+      <code>StandardError</code> if they are generally recoverable; and
+      <code>Exception</code> otherwise.
+
+      <p>A custom exception is created by subclassing an existing
+      <code>Exception</code> class. Idiomatically this is:
+      <code><var>CustomError</var> =
+        Class.new(<var>ExceptionClass</var>)</code>, where
+      <var>CustomError</var> is the name of the new exception class and
+      <var>ExceptionClass</var> is that of an existing exception class.</p>
+
+      <p>Exception objects are generally created implicitly with
+      <code>raise</code>. An <code>Exception</code> class can be instantiated
+      manually with its <code>.new</code> constructor, which accepts an
+      optional <code>String</code> argument with which to set the exception’s
+      message.</p>
+
+      <section>
+        <h1 id=exception-message>Message</h1>
+
+        <p>An exception’s <dfn title="exception message">message</dfn> is a
+        human-readable <code>String</code> describing the nature of the
+        encapsulated error. It is intended primarily for debugging purposes.
+        
+        <p>It is retrieved with the exception’s <code>#message</code>
+        accessor. It can be set with an argument to
+        <code>raise</code> or the constructor of the exception class. The
+        default message is the name of the exception’s class.
+      </section>
+
+      <section>
+        <h1 id=exception-backtrace>Backtrace</h1>
+
+        <p>The <dfn title='exception backtrace'>backtrace</dfn> of an
+        exception describes the call stack at the moment the exception was
+        raised. It is represented as an <code>Array</code> which details the
+        call stack in reverse chronological order: the first element
+        describing the line where the exception was raised, the second, the
+        caller of the method where the exception was raised, the third, the
+        caller of that method, etc. Each element of the <code>Array</code> is
+        a <code>String</code> detailing the filename and line number of the
+        event.
+
+        <p>An exception’s backtrace is set automatically by <code>raise</code>
+        using <code>Kernel.caller</code>. It can be created manually by
+        supplying an appropriate <code>Array</code> as the third argument to
+        <code>raise</code>, or <code>Exception#set_backtrace</code>.
+
+        <p>The <code>Exception#backtrace</code> accessor returns the backtrace
+        of the receiver.
+      </section>
+    </section>
+
+    <section>
+      <h1 id=raise><code>raise</code></h1>
+
+      <figure class=railroad>
+        <img id=raise-statement.png>
+        <figcaption>Syntax diagram of the
+        <code>raise</code>/<code>fail</code> statement
+      </figure>
+      
+      <p>An exception is raised with the <code>Kernel.raise</code> method,
+      or its alias <code>Kernel.fail</code>.
+
+      <p>When <code>raise</code> is called without arguments it raises a
+      <code>RuntimeError</code>. If called thusly inside a
+      <code>rescue</code> clause, it re-raises the current exception.
+
+      <p>If the sole argument to <code>raise</code> is an
+      <code>Exception</code> object, that exception is raised. When the sole
+      argument is a <code>String</code>, a <code>RuntimeError</code> is
+      raised with that string as its message.
+
+      <p>The first argument of <code>raise</code> can be an object
+      responding to <code>:exception</code>, in which case the exception
+      raised is the <code>Exception</code> object returned by that method.
+      The <code>Exception</code> class itself defines such a method,
+      allowing any of its subclasses to be used in this manner.</p>
+
+      <figure id=raise-one-argument.rb>
+        <figcaption>Using <code>raise</code> with a single argument
+      </figure>
+
+      <p><code>raise</code> accepts a <code>String</code> as an optional
+      second argument, which becomes the exception’s message.</p>
+
+      <p>The exception’s <a href=#exception-backtrace>backtrace</a> may be set
+      explicitly by providing an <code>Array</code> of <code>String</code>s as
+      <code>raise</code>’s third argument.</p>
+
+      <figure id=raise-multiple-arguments.rb>
+        <figcaption>Using <code>raise</code> with multiple arguments
+      </figure>
+
+      <br>
+
+      <table class=border>
+        <caption>A summary of the arguments accepted by <code>raise</code>
+        <thead>
+          <tr>
+            <th colspan=3>Arguments
+            <th>Raises
+          <tr>    
+            <th><var>a</var>
+            <th><var>b</var>
+            <th><var>c</var>
+            <th>&nbsp;
+        <tbody class=zebra>  
+          <tr>
+            <td>&nbsp;         
+            <td>&nbsp;        
+            <td>&nbsp;        
+            <td><code>RuntimeError</code> or current exception
+          <tr>
+            <td><code>Exception</code>
+            <td>&nbsp;
+            <td>&nbsp;
+            <td><var>a</var>  
+          <tr>
+            <td><code>Exception</code>
+            <td><code>String</code>
+            <td>&nbsp;
+            <td><var>a</var> with <var>b</var> as the message 
+          <tr>
+            <td><code>Exception</code>
+            <td><code>String</code>
+            <td><code>Array</code>
+            <td><var>a</var> with <var>b</var> as the message,
+                <var>c</var> as the backtrace 
+          <tr>
+            <td><code>String</code>
+            <td>&nbsp;
+            <td>&nbsp;
+            <td><code>RuntimeError</code> with <var>a</var> as the message
+          <tr>
+            <td><code>respond_to?(:exception)</code>
+            <td>&nbsp;
+            <td>&nbsp;
+            <td><code><var>a</var>.exception</code>
+          <tr>
+            <td><code>respond_to?(:exception)</code>
+            <td><code>String</code>
+            <td>&nbsp;
+            <td><code><var>a</var>.exception</code> with <var>b</var> as the message
+          <tr>
+            <td><code>respond_to?(:exception)</code>
+            <td><code>String</code>
+            <td><code>Array</code>
+            <td><code><var>a</var>.exception</code> with <var>b</var> as the
+                message, <var>c</var> as the backtrace
+        </table>
+    </section>
+
+    <section>
+      <h1 id=exception-propagation>Propagation</h1>
+
+      <p>Once raised, exceptions propagate <q
+        cite=/references#refFLAN08>outward and upward</q> (<a class=ref
+        href=/references#refFLAN08>Flanagan &amp; Matsumoto</a>, pp.
+      160–161) toward the first matching exception handler. Each block
+      encountered by the search is examined for the presence of a
+      <code>rescue</code> clause that matches the class of the current
+      exception. If one is found, the exception is handled, and the search
+      halted.
+      
+      <p>The outward propagation is the passage from the <code>raise</code>
+      statement to the lexically enclosing block, to that block’s lexically
+      enclosing block, until arriving at the top-level of the program. If
+      the entire program is contained in a single file this step can be
+      visualised as the movement from <code>raise</code> toward the left
+      margin. 
+
+      <p>If the outward search completes without the current exception being
+      handled, the search continues up the call stack: to the caller of the
+      current block, to the caller of the current block’s caller, and so on
+      until the call stack is exhausted. If at this point the exception has
+      not been handled, it is printed to STDERR and the program is aborted.
+    </section>
+
+    <section>
+      <h1 id=exception-handling>Exception Handling</h1>
+
+      <p>An exception is handled with a <a
+        href=#postfix-rescue><code>rescue</code> statement modifier</a> or by
+      attaching a <a href=#rescue><code>rescue</code> clause</a> to a <a
+        href=#begin-statement><code>begin</code> statement</a>, a method
+      definition, a class definition, or a module definition.</p>
+
+      <section>
+        <h1 id=begin-statement><code>begin</code> Statements</h1>
+        
+        <figure class=railroad>
+          <img id=exception-clauses.png>
+          <img id=begin-statement.png>
+          <figcaption>Syntax diagram of a <code>begin</code> statement
+        </figure>
+
+        <p><code>rescue</code> is typically used in conjunction with a
+        <code>begin</code> statement, which simply associates a block
+        of statements with one or more <code>rescue</code> clauses. The
+        <code>rescue</code> clauses may be followed by optional
+        <a href=#rescue-else-clause><code>else</code></a> and <a
+          href=#ensure-clause><code>ensure</code></a> clauses.
+
+      </section>
+
+      <section>
+        <h1 id=rescue><code>rescue</code></h1>
+
+        <figure class=railroad>
+          <img id=rescue-clause.png>
+          <figcaption>Syntax diagram of a <code>rescue</code> clause
+        </figure>
+
+        <p>A <code>rescue</code> clause handles the exceptions described by
+        its arguments, then returns control to the statement following the
+        initiating <code>raise</code>.
+
+        <p>Without arguments, <code>rescue</code> handles only
+        <code>StandardError</code> exceptions and subclasses thereof.
+        <code>rescue</code> may be followed by <code> =&gt;
+          <var>identifier</var></code> to assign the rescued exception to a
+        local variable named <var>identifier</var>. Having done so,
+        <code>Exception</code> instance methods such as <code>#message</code>
+        and <code>#class</code> may be sent to it.</p>
+
+        <figure id=rescue-clause.rb>
+          <figcaption>Using a <code>begin</code> block with a
+          <code>rescue</code> clause to raise and rescue a
+          <code>RuntimeError</code>
+        </figure>
+
+        <p>If arguments are provided to <code>rescue</code> they must be
+        supplied as a comma-separated list of <code>Exception</code> classes
+        to be handled. A <code>rescue</code> clause so written will handle
+        exceptions of any of the named classes or their subclasses.
+
+        <p>A construct that accepts a <code>rescue</code> clause accepts any
+        number of them. They are tested against the current exception in the
+        order that they appear in the source file, so should be arranged by
+        decreasing specificity.
+      </section>
+
+      <section>
+        <h1 id=postfix-rescue>Postfix <code>rescue</code> Statement</h1>
+
+        <figure class=railroad>
+          <img id=postfix-rescue-statement.png>
+          <figcaption>Syntax diagram of the <code>rescue</code> statement
+          modifier
+        </figure>
+
+        <p><code>rescue</code> may be also used as a statement modifier. In
+        this form it is not restricted to the aforementioned constructs; it
+        may appear anywhere a statement can otherwise. Its syntax is
+        <code><var>a</var> rescue <var>b</var></code>, where <var>a</var> and
+        <var>b</var> are both expressions. It evaluates to <var>a</var> by
+        default; <var>b</var> if <var>a</var> raises an exception of
+        <code>StandardError</code> or subclass thereof.
+        
+        <p>Unlike the <code>rescue</code> clause, the <code>rescue</code>
+        modifier does not permit specifying exception classes to match or a
+        local variable to which the caught exception is aliased. However,
+        regarding the last point, if the right-hand operand of
+        <code>rescue</code> is the special variable <a
+          href=#dollar-bang><code>$!</code></a>, the statement will evaluate
+        to the rescued exception.</p>
+
+        <figure id=postfix-rescue-statement.rb>
+          <figcaption>Using the postfix <code>rescue</code> statement to
+          return <code>nil</code> when a <code>ZeroDivisionError</code> is
+          raised.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=dollar-bang><code>$!</code></h1>
+
+        <p>Within a <code>rescue</code> clause or on the right-hand side of a
+        <code>rescue</code> statement modifier, the <code>$!</code> variable
+        holds the caught exception. In other contexts it evaluates to
+        <code>nil</code>.
+      </section>
+
+
+      <section>
+        <h1 id=rescue-else-clause><code>else</code> Clause</h1>
+        
+        <figure class=railroad>
+          <img id=else-clause.png>
+          <figcaption>Syntax diagram of an <code>else</code> clause
+        </figure>
+
+        <p>A group of <code>rescue</code> statements may be followed by an
+        <code>else</code> clause, whose body is executed iff neither the
+        <code>rescue</code> clauses handled an exception nor the preceding
+        statements raised one. However, even in this case the use of flow
+        control statements in the statements preceding the
+        <code>rescue</code> clauses may cause the <code>else</code> clause
+        to be skipped.
+      </section>
+
+      <section>
+        <h1 id=ensure-clause><code>ensure</code> Clause</h1>
+        
+        <figure class=railroad>
+          <img id=ensure-clause.png>
+          <figcaption>Syntax diagram of the <code>ensure</code> clause
+        </figure>
+
+        <!-- Note that it handles exit(), too -->
+
+        <p>A construct that accepts <code>rescue</code> clauses may include
+        an <code>ensure</code> clause as its final clause. The statements in
+        an <code>ensure</code> clause will always be executed, regardless of
+        whether their previous sibling clauses raised an exception or
+        employed a flow control statement such as <code>return</code>.
+        Specifically, if the construct to which <code>ensure</code> is
+        attached…
+        
+        <dl>
+          <dt>Exits normally
+          <dd>The <code>else</code> clause, if any, is
+              executed, followed by the <code>ensure</code> clause.
+          <dt>Executes <code>return</code>
+          <dd>The <code>else</code> clause, if any, is skipped, and the
+          <code>ensure</code> clause is executed.
+          <dt>Raises an exception
+          <dd>A matching <code>rescue</code> clause, if any, is executed,
+          followed by the <code>ensure</code> clause.
+        </dl>
+
+        <p>The return value of a construct containing <code>ensure</code> is
+        that of the previously executed clause, unless the
+        <code>ensure</code> clause explicitly returns a value with
+        <code>return</code>. That is, unlike other constructs the return
+        value of <code>ensure</code> is not necessarily its last statement
+        executed.  This is to allow <code>ensure</code> clauses to be
+        attached to <code>def</code> statements, for example; otherwise the
+        method being defined would never be able to return a value.
+
+        <p>An <code>ensure</code> clause may cancel the propagation of an
+        exception by raising an exception of its own or executing a control
+        flow statement. This new transfer of control—be it to the end of the
+        current block via <code>break</code> or <code>next</code>, the
+        return of the current method via <code>return</code>, or the nearest
+        matching <code>rescue</code> clause via <code>raise</code>—replaces
+        that of the current exception, aborting its passage.</p>
+
+        <!-- TODO: State explicitly that an ensure clause containing, say,
+        return, implicitly rescues the current exception -->
+        <figure id=ensure-clause.rb>
+          <figcaption>Using an <code>ensure</code> clause to save data to disk
+          even if an exception occurs
+        </figure>
+      </section>
+    </section>
+
+    <section>
+      <h1 id=exception-class-hierarchy><code>Exception</code> Class Hierarchy</h1>
+
+      <!-- TODO: Add Math::DomainError (or whatever it ends up being called)
+      -->
+        <dl>
+          <dt><code>Exception</code>
+          <dd>
+            <dl>
+              <dt><code>NoMemoryError</code>
+              <dd>The Ruby interpreter failed to allocate memory.
+              <dt><code>ScriptError</code>
+              <dd>
+                <dl>
+                  <dt><code>LoadError</code>
+                  <dd>Raised by <code>Kernel.require</code>,
+                  <code>Kernel.load</code>, and
+                  <code>Kernel.require_relative</code> when the named file
+                  cannot be opened; by <code>require_relative</code>
+                  when called from inside <code>eval</code> or
+                  <code>irb</code>; and by the <code>ruby</code> binary when a
+                  script is expected but no supplied.
+                  <dt><code>NotImplementedError</code>
+                  <dd>Raised by methods which rely on operating system
+                  functions that are not available to the current script. For
+                  example, methods depending on the <code>fsync()</code> or
+                  <code>fork()</code> system calls may raise this exception if
+                  the underlying operating system or Ruby runtime does not
+                  support them.
+                  <dt><code>SyntaxError</code>
+                  <dd>Raised by <code>require</code>,
+                  <code>require_relative</code>, <code>load</code>, and
+                  <code>eval</code> if the script they are interpreting is
+                  syntactically invalid.
+                </dl>
+              <dt><code>SecurityError</code>
+              <dd>Raised by methods that are prohibited by the current safe
+              level.
+              <dt><code>SignalException</code>
+              <dd>
+                <dl>
+                  <dt><code>Interrupt</code>
+                  <dd>
+                </dl>
+              <dt><code>SystemExit</code>
+              <dd>Raised by <code>exit</code> and processes which attempt to
+              terminate the current script.
+              <dt><code>SystemStackError</code>
+              <dd>Raised by Ruby when a stack overflow is detected.
+              <dt><code>StandardError</code>
+              <dd>The parent class of most recoverable errors. Caught by a
+              bare <code>rescue</code> statement modifier or clause.
+                <dl>
+                  <dt><code>ArgumentError</code>
+                  <dd>Raised by Ruby when a message is sent with an unexpected
+                  number of arguments. Often raised by methods themselves for
+                  similar reasons.
+                  <dt><code>EncodingError</code>
+                  <dd>
+                    <dl>
+                      <dt><code>Encoding::CompatibilityError</code>
+                      <dd>Raised by <code>Encoding</code> and
+                      <code>String</code> methods when the source encoding is
+                      incompatiable with the target encoding.
+                      <dt><code>Encoding::ConverterNotFoundError</code>
+                      <dd>Raised by transcoding methods when a named encoding
+                      does not correspond with a known converter.
+                      <dt><code>Encoding::UndefinedConversionError</code>
+                      <dd>Raised by <code>Encoding</code> and
+                      <code>String</code> methods when a transcoding operation
+                      fails.
+                      <dt><code>Encoding::InvalidByteSequenceError</code>
+                      <dd>Raised by <code>Encoding</code> and
+                      <code>String</code> methods when the string being
+                      transcoded contains a byte invalid for the either the
+                      source or target encoding.
+                    </dl>
+                  <dt><code>FiberError</code>
+                  <dd>Raised by fibers when attempting to call/resume a dead
+                  fiber, attempting to <a href=#yield>yield</a> from the root
+                  fiber, or calling a fiber across threads.
+                  <dt><code>IOError</code>
+                  <dd>Raised by methods performing input/output operations.
+                  For example, it is raised when attempting to read from an
+                  <code>IO</code> stream not opened for reading, or when
+                  attempting to operate on a closed stream.
+                    <dl>
+                      <dt><code>EOFError</code>
+                      <dd>Raised by <code>IO</code> methods when attempting to
+                      read past the end of a file.
+                    </dl>
+                  <dt><code>IndexError</code>
+                  <dd>Raised by some <code>Array</code> and
+                  <code>String</code> methods when
+                  attempting to access a subscript that is out of bounds; by
+                  some <code>Regexp</code> methods when attempting to access a
+                  capture group by an invalid name/subscript.
+                    <dl>
+                      <dt><code>KeyError</code>
+                      <dd>Raised by certain <code>Hash</code> methods when
+                      attempting to access a value with an undefined key.
+                      <dt id=stop-iteration><code>StopIteration</code>
+                      <dd>Raised by <code>Enumerator</code>s when attempting
+                      to access an element past the end of the sequence.
+                      Caught by <code>loop</code>, causing the loop to
+                      terminate.
+                    </dl>
+                  <dt><code>LocalJumpError</code>
+                  <dd>Raised when attempting to return from a method that has
+                  already has already returned, call a <code>Proc</code> that
+                  has already returned, executing <code>retry</code> in a
+                  <code>Proc</code>, executing <code>next</code> outside of a
+                  loop or block, and by many methods which were not supplied
+                  with a required block argument.
+                  <dt><code>NameError</code>
+                  <dd>Raised when Ruby sees an identifier whose name neither
+                  corresponds to a local variable or method anywhere other
+                  than the left-hand side of the assignment operator; when an
+                  uninitialised constant is seen; when a class or instance
+                  variable is declared with an illegal name; and by
+                  <code>Object#method</code>,
+                  <code>Object#instance_method</code>, etc., when attempting
+                  to retrieve a <code>Method</code> object for a non-existent
+                  method.
+                    <dl>
+                      <dt><code>NoMethodError</code>
+                      <dd>Raised by Ruby when an attempt is made to invoke a
+                      non-existent method. <code>NameError</code> takes
+                      preference when an expression is ambiguous as to whether
+                      it represents a local variable reference or method call.
+                      For example, if there is neither method nor variable
+                      named <code>m</code>, the expression <code>m</code>
+                      would result in a <code>NameError</code>; whereas the
+                      expression <var>m()</var> would cause a
+                      <code>NoMethodError</code>. Responds to
+                      <code>#args</code> with an <code>Array</code> of the
+                      arguments sent to the method, and to <code>#name</code>
+                      with the method’s name.
+                    </dl>
+                  <dt><code>RangeError</code>
+                  <dd>Raised by methods receiving numeric arguments that fall
+                  outside of their operating limits. For example,
+                  <code>Array#combination</code> and
+                  <code>Array#product</code> raise this exception when their
+                  arguments are too large to permute.
+                    <dl>
+                      <dt><code>FloatDomainError</code>
+                      <dd>Raised by many mathematical methods which receive
+                      <abbr title="Not a Number">NaN</abbr> or Infinity (∞) as
+                      arguments.   
+                    </dl>
+                  <dt><code>RegexpError</code>
+                  <dd>Raised by <code>Regexp.new</code> when passed a
+                  syntactically invalid regular expression, and when a
+                  <code>Regexp</code> literal includes characters invalid in
+                  its encoding.
+                  <dt><code>RuntimeError</code>
+                  <dd>The default exception instantiated by
+                  <code>raise</code>, so quite generic in usage. Core classes
+                  often raise this exception when a method has receieved valid
+                  arguments yet is unable to complete. Also, this is raised
+                  when attempting to modify frozen objects or modify an object
+                  whilst iterating it.
+                  <dt><code>SystemCallError</code>
+                  <dd><p>Raised when an attempt to call an operating system
+                  function fails, despite that function being implemented and
+                  expected to work. For example, it is raised by
+                  <code>Dir</code> when unable to create a directory,
+                  <code>exec</code> when unable to execute a command, and
+                  <code>File.link</code> when unable to create a symlink.
+                  <dl>
+                    <dt><code>Errno::</code>*
+                    <dd>There are many exception classes in the
+                    <code>Errno</code> namespace which subclass
+                    <code>SystemCallError</code>. They represent low-level,
+                    operating-system-specific exceptions, and as such it is
+                    often sufficient to rescue <code>SystemCallError</code>
+                    and ignore their specifics.
+                  </dl>
+                  <dt><code>ThreadError</code>
+                  <dd>Raised by <code>Thread</code> when a thread cannot be
+                  initialised, moved to another group, manipulated on account
+                  of being dead, or when a shared mutex is unexpectedly
+                  locked. 
+                  <dt><code>TypeError</code>
+                  <dd>Common exception raised by methods who receive an
+                  argument of an unexpected type. For instance, it is raised
+                  by <code>Range</code> on attempts to iterate from
+                  <code>Float</code>s, <code>class</code> and
+                  <code>module</code> when the given constant is defined and
+                  not a <code>Class</code>, and by various classes unable to
+                  convert their argument to a specific type.
+                  <dt><code>ZeroDivisionError</code>
+                  <dd>Raised by mathematical operators when they are asked,
+                  explicitly or implicitly, to divided a number by
+                  <code>0</code>. Some
+                  methods raise this exception when a division by the
+                  <code>Float</code> <code>0.0</code>, while
+                  <code>Integer#/</code>, notably, returns
+                  <code>Float::INFINITY</code>.
+                </dl>
+            </dl>
+        </dl>
+    </section>
+  </section>
+  
+  <section>
+    <h1 id=begin-exit-handler>Begin / Exit Handlers</h1>
+
+    <p>A <dfn title="begin handler">begin</dfn> or <dfn title="exit
+      handler">exit</dfn> handler registers code to be executed at the
+    beginning or end, respectively, of a program.</p>
+
+    <section>
+      <h1 id=begin-block><code>BEGIN</code> Block</h1>
+
+      <figure class=railroad>
+        <img id=begin-block.png>
+        <figcaption>Syntax diagram of the <code>BEGIN</code> block
+      </figure>
+
+      <p>A <code>BEGIN</code> block, as opposed to a <a
+        href=#begin-statement><code>begin</code> statement</a>, is executed at
+      the very beginning of a program. It consists of the <code>BEGIN</code>
+      keyword at the top-level of a program, followed by statements delimited
+      by curly braces, and defines its own variable scope. If If multiple
+      <code>BEGIN</code> blocks are present, they are executed in the order
+      encountered by the interpreter.</p>
+      <!-- Behaviour changed as of  [ruby-core:21657] -->
+
+      <figure id=begin-block.rb>
+        <figcaption>Using <code>BEGIN</code> to execute a given block before
+        any other statement
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=end-block><code>END</code> Block</h1>
+
+      <figure class=railroad>
+        <img id=end-block.png>
+        <figcaption>Syntax diagram of the <code>END</code> block
+      </figure>
+
+      <p>An <code>END</code> block, as opposed to the <code>end</code> keyword,
+      is executed at the very end of a program. They consist of the
+      <code>END</code> keyword followed by statements delimited by curly braces.
+      Unlike <code>BEGIN</code> blocks, they share local variable scope with
+      surrounding code. A further difference is that the execution of an
+      <code>END</code> block is governed by surrounding constructs: if it
+      appears in the body of a conditional, for instance, its execution is
+      dependent on that conditional being true. However, even if enclosed in a
+      looping construct, an <code>END</code> block is still only executed
+      once.</p>
+
+      <figure id=end-block.rb>
+        <figcaption>Using <code>END</code> to execute a given block
+        after any other statement
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=at_exit><code>Kernel.at_exit</code></h1>
+      
+      <p>An alternative to <a href=#end-block><code>END</code> blocks</a> is
+      <code>Kernel.at_exit</code>. It accepts a block argument which it
+      registers to execute at the end of program execution. If called multiple
+      times the blocks are executed in reverse chronological order.</p>
+
+      <figure id=at_exit.rb>
+        <figcaption>Using <code>at_exit</code> to execute a given block after
+        any other statement
+      </figure>
+    </section>
+  </section>
+</section>
