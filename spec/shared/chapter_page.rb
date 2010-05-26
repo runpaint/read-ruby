@@ -69,7 +69,7 @@ shared_examples_for 'A chapter page' do
   it "does not contain figures that unexpectedly raise exceptions" do
     @page.parser.css('figure[id]').each do |fig|
       next unless fig['id'].end_with?('.rb')
-      file = "figures/#{fig['id']}"
+      file = "examples/#{fig['id']}"
       if ex = raises(file) and not File.read(file).include?(ex.to_s)
         if ex == TimeoutError
           File.should exist("timeouts/#{File.basename fig['id']}")
