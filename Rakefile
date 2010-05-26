@@ -158,8 +158,14 @@ end
 class Book
   CHAPTERS = %w{modules programs classes flow messages closures 
                 methods objects variables}
+  APPENDICES = %w{punctuation}
+  
   def chapters
     @chapters ||= CHAPTERS.map{|c| Chapter.new c}
+  end
+
+  def appendices
+    APPENDICES.map{|a| Page.new(a + '.html')}
   end
 
   def root
@@ -179,7 +185,7 @@ class Book
   end
 
   def dependencies
-    (chapters.dup << toc << root << sitemap << references).flatten 
+    (chapters.dup << toc << root << sitemap << references << appendices).flatten 
   end
 end
 
@@ -283,6 +289,12 @@ book.chapters.each do |chapter|
   end
   file chapter.target => (chapter.dependencies.map(&:target) << chapter.source) do
     chapter.write
+  end
+end
+
+book.appendices.each do |apdx|
+  file apdx.target => apdx.source do
+    apdx.write
   end
 end
 
