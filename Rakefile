@@ -331,10 +331,15 @@ task :live_spec do
 end
 
 task :upload => [:clobber, :local_spec] do
-  sh "rsync --delete -vazL out/ ruby:/home/public"
+  Rake::Task[:rsync].execute
   sleep 2
   Rake::Task[:live_spec].execute
   sh 'git push'
 end
+
+task :rsync => :default do
+  sh "rsync --delete -vazL out/ ruby:/home/public"
+end
+
 
 Rspec::Core::RakeTask.new(:rspec)
