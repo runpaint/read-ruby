@@ -18,7 +18,12 @@ class Page
     @nok ||= Nokogiri::HTML(File.read source) 
   end
 
+  def javascript
+    nok.at('title').after(File.read('_script.html'))
+  end
+
   def write
+    javascript
     data = contents
     File.open(target, 'w'){|f| f.print data}
     minify
