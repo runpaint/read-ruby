@@ -33,7 +33,6 @@ body {
 }
 h1 {
   font-family: 'Goudy Bookletter 1911', Palatino, Tahoma, serif; /* TODO: Create better list */
-  line-height: 140%;
 }
 /* Everything has a left margin of at least 4%. The content in the main column
  * mostly has a right margin of 40%, but we let tables and large figures
@@ -234,10 +233,6 @@ table > caption {
  *          *
  ************/
 
-/* Most headings have a bottom border */  
-h1 {
-  margin-bottom: 1em;
-}
 
 /* Chapter title */
 body > section > h1 {
@@ -245,7 +240,9 @@ body > section > h1 {
   text-align: center;
   text-transform: uppercase;
   counter-reset: a;
-  margin-bottom: 0.25em;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 80%;
 }
 
 /* First-level */
@@ -270,8 +267,8 @@ body > section > section > section > h1:before {
 body > section > section > section > h1 {
   counter-reset: c;
   font-size: 1.4em;
-  margin-top: 1em;
-  margin-bottom: 0.8em;
+  margin-top: 0em;
+  margin-bottom: 0em;
   /*letter-spacing: -1px;*/
 
 }
@@ -284,12 +281,10 @@ body > section > section > section > section > h1:before {
 }
 body > section > section > section > section > h1 {
   font-size: 1.4em;
-  padding-top: 1em;
 }
 
 /* Fourth-level */
 body > section > section > section > section > section > h1 {
-  padding-top: 1em;
   padding-bottom: 0;
   margin-bottom: 0;
   font-size: 1.3em;
@@ -297,7 +292,6 @@ body > section > section > section > section > section > h1 {
   font-style: italic;
 }
 body > section > section > section > section > section > h1 + p {
-  padding-top: 0.2;
   margin-top: 0;
 }
 
@@ -325,6 +319,10 @@ h1.runout {
   display: block;
   margin-left: 4%;
   padding: auto;
+}
+
+p {
+  margin-top: 0;
 }
 
 div#alpha-strip {
