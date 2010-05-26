@@ -984,10 +984,11 @@ emphasis mine.
   
     <p>Evaluating a message expression requires the corresponding method
     definition be located in the receiver. The steps below illustrate the
-    lookup algorithm for a message with a selector of <var>selector</var>, where
-    <var>class</var> is set to that of the receiver. When a method is found
-    whose name is equal to <var>selector</var> the process terminates. It will
-    always ultimately succeed because <code>BasicObject</code> defines a
+    lookup algorithm for a message with a selector of <var>selector</var>, and
+    arguments of <var>arguments</var>, where <var>class</var> is set the
+    receiver’s singleton class. When a method is found whose name is equal to
+    <var>selector</var> the process terminates. It will always ultimately
+    succeed because <code>BasicObject</code> defines a
     <code>:method_missing</code> method.</p>
    
     <aside class=sidenote>
@@ -996,28 +997,23 @@ emphasis mine.
     </aside>
 
     <ol>
-      <li>Search the receiver’s singleton methods.
       <li>Search the instance methods of <var>class</var>.
       <li>Search the instance methods of each module included by
       <var>class</var>, in reverse order of inclusion.
       <li>If <var>class</var> has a superclass<sup>†</sup>, assign its name
-      to <var>class</var> then go to step two.
-      <li>Set <var>selector</var> to <code>:method_missing</code>, prepend the
-      original selector to its argument list, set <var>class</var> back to the
-      receiver’s class, and go to step one.
+      to <var>class</var> then go to step one.
+      <li>Prepend <var>selector</var> to <var>arguments</var>. Set
+      <var>selector</var> to <code>:method_missing</code>, 
+      <var>class</var> back to the receiver’s singleton class, and go to step
+      one.
     </ol>
-
-    <p><a href=/references#refTHOM09 class=ref>Thomas et al.</a> describe this
-    algorithm as <q>Ruby looks first in the immediate class of an object, then
-      in the mixins included into that class, and then in superclasses and
-      their mixins. If a class has multiple modules mixed in, the last one
-      included is searched first.</q></p>
 
     <figure class=left id=method-lookup.rb>
       <figcaption>Identifies the order in which methods are searched when an
       object is sent a message, with 1 being first.
     </figcaption>
   </section>
+
   <section>
     <h1 id=method-missing>Missing Methods</h1>
 
