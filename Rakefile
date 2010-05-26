@@ -22,6 +22,10 @@ class Page
     nok.at('title').after(File.read('_script.html'))
   end
 
+  def contents
+    nok.to_s
+  end
+
   def write
     javascript
     data = contents
@@ -170,8 +174,12 @@ class Book
     @sitemap ||= Sitemap.new(chapters + chapters.map(&:dependencies) << toc << root)
   end
 
+  def references
+    Page.new('references.html')
+  end
+
   def dependencies
-    (chapters.dup << toc << root << sitemap).flatten 
+    (chapters.dup << toc << root << sitemap << references).flatten 
   end
 end
 
@@ -290,6 +298,10 @@ end
 
 file book.sitemap.target => chapters.dup << book.sitemap.source do
   book.sitemap.write
+end
+
+file book.references.target => book.references.source do
+  book.references.write
 end
 
 task :default => output_files + book.dependencies.map(&:target)
