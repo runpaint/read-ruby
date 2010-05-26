@@ -21,17 +21,6 @@
   <section>
     <h1 id=creation>Creation</h1>
     
-    <p>Modules are created in much the same way as <a
-      href=/classes#creation>classes</a>, except the <code>module</code>
-    keyword is used in place of <a
-      href=/classes#class-keyword><code>class</code></a>.</p>
-
-    <p>Modules are named with <a href=/variables#constants>constants</a>, so
-    the matters of constant’s name and scope are particularly relevant. An
-    implication is that modules and classes share the same namespace such that
-    a given (qualified) constant cannot name a class and a module
-    simultaneously.</p>
-
     <section>
       <h1 id=module-keyword><code>module</code> Keyword</h1>
 
@@ -44,7 +33,12 @@
       named <var>name</var>. If the constant <var>name</var> is already
       defined it must refer to an existing module, otherwise a
       <code>TypeError</code> is raised.  If <var>name</var> was previously
-      undefined, it is created as a <code>Module</code> object.</p>
+      undefined, it is created as a <code>Module</code> object. That both
+      modules and classes are named with constants, means they share the same
+      namespace: a given (qualified) constant cannot name a class and a module
+      simultaneously. The module body, which may be empty, is the elliptical
+      region in the expression. It introduces a new context in which
+      <code>self</code> refers to the current module.</p>
 
       <section>
         <h1 id=reopening>Reopening Modules</h1>
@@ -59,10 +53,6 @@
         <code>RuntimeError</code>s when methods are defined, or variables
         manipulated, in their context. 
       </section>
-
-      <p>The module body, which may be empty, is the elliptical region in the
-      expression. It introduces a new context in which <code>self</code> refers
-      to the class.</p>
     </section>
 
     <section>
@@ -102,8 +92,7 @@
       constant: the module takes on its name. Specifically, sending
       <code>:to_s</code<sup>†</sup> to an anonymous module causes a
       search to be done for the first constant the module was assigned to:
-      if one is found, that becomes the module’s name; otherwise it remains
-      anonymous.</p>
+      if one is found, that becomes the module’s name.</p>
 
       <p>This technique cannot be used to re‐open modules. Assigning an
       anonymous module to a constant naming another module creates a new
@@ -119,9 +108,10 @@
   <section>
     <h1 id=mixins>Mixins</h1>
 
+    <!-- Should we describe these methods as 'instance' methods? -->
     <p>The primary use of modules is <dfn>mixins</dfn>: imbuing a given
-    object with the instance methods, or <dfn>features</dfn>, of a given
-    module. An object may have any number of modules mixed in.</p>
+    class with the instance methods, or <dfn>features</dfn>, of a given
+    module. A class may have any number of modules mixed in.</p>
 
     <section>
       <h1 id=mixin-to-class>Mixing a Module into a Class</h1>
@@ -139,7 +129,7 @@
       
       <p>It is less common to mixin a module to another module, but legal
       nevertheless. The result is simply that the features of the included
-      module are copied to the including module.
+      module are copied to the other module.
       </section>
     
     <section>
@@ -172,16 +162,15 @@
         named <code>:included</code>, with the class name as an argument. This
         allows the module to perform initialization such as dynamically adding
         additional methods or variables to the named class. Be aware, however,
-        that <code>:included</code> is sent every time
+        that <code>:included</code> is sent <em>every</em> time
         <code>Module#include</code> is used, even if the module is already
-        included in the class. If the callback is intended to only run on the
-        original inclusion, it must arrange for this itself.
+        included in the class.
 
         <p><code>:included</code> is sent <em>after</em> the module has been
-        included, so it is powerless to prevent the inclusion or otherwise
-        condition it on some prerequisite. Its return value
-        is ignored; <code>Module#include</code> always returns the class
-        object in which it is used. 
+        included, so is powerless to prevent the inclusion or otherwise
+        condition it on some prerequisite. Its return value is ignored because
+        <code>Module#include</code> always returns the class object in which
+        it is used. 
       </section>
 
       <section>
@@ -206,38 +195,22 @@
     <section>
       <h1 id=extension>Extension</h1>
       
-      <p>A module may be mixed-in to any object through the use of
-      <code>Kernel#extend</code> which, like <a
-        href=#inclusion><code>Module#include</code></a>, takes one or more
-      module names as arguments. The features of each module are appended to
-      the <a href=/classes#singleton>singleton class</a> of the receiver,
-      providing the <a href=/methods#per-object-behaviour>per-object
-        behaviour</a> of <a href=/methods#singleton-method>singleton
-        methods</a>.</p>
-
-      <p><code>Kernel#extend</code> sends each of its arguments an
-      <code>:extend_object</code> message with the receiver as an argument.
-      The default behaviour is provided by <code>Module#extend_object</code>,
-      which <a href=#inclusion>includes</a> the module into the receiver’s
-      singleton class, then sends the <a
-        href=#extended><code>:extended</code></a> message to each module. As
-      with <code>Module#append_features</code>, modules which define their own
-      <code>#append_features</code> methods must employ <code>super</code> to
+      <p>Given a list of modules, <code>Kernel#extend</code> mixes them into
+      to a specific object by <a href=#inclusion>including</a> them in its
+      receiver’s <a href=/classes#singleton>singleton class</a>. Specifically,
+      it sends each of its arguments an <code>:extend_object</code> message
+      with the receiver as an argument. The default behaviour of
+      <code>:extend_object</code> is provided by <code>Module</code>, which <a
+        href=#inclusion>includes</a> the module into the receiver’s singleton
+      class, then sends the module an <a
+        href=#extended><code>:extended</code></a> message. As with
+      <code>Module#append_features</code>, modules which define their own
+      <code>#extend_object</code> methods must employ <code>super</code> to
       actually effect the extension.</p>
       
       <figure class=left id=extend-class.rb>
         <figcaption>Using <code>#extend</code> to mix‐in a class method.
       </figure>
-
-      <section>
-        <h1 id=extended><code>extended</code> Callback</h1>
-
-        <p>Extending an object causes an <code>:extended</code> message to be
-        sent to the named module with the object as an argument. This callback
-        behaves in the same way as <a
-          href=#included><code>:included</code></a>, so the discussion there
-        applies too.
-      </section>
 
       <!-- TODO: Explain chainability; link with Scala traits -->
       <section>
@@ -269,15 +242,14 @@
 
     <p>Modules can be used for <dfn>namespacing</dfn>: to combine a set of
     methods with a common purpose so their names do not clash with unrelated
-    methods, and they can share data. Classes can be <a
+    methods, and they are able to share data. Classes can be <a
       href=/classes#nesting>used in the same way</a>.
 
     <p>Modules are preferable to classes in this respect when the namespace
-    cannot be sensibly instantiated. The use of a module improves the
-    clarifies this aspect of the <abbr title="Application Programming
-      Interface">API</abbr>.</p>
+    cannot be sensibly instantiated. The use of a module clarifies this aspect
+    of the <abbr title="Application Programming Interface">API</abbr>.</p>
 
-    <p>Methods are defined on the module’s <a
+    <p>Methods are defined in the module’s <a
       href=/classes#singleton>singleton class</a>, then invoked with the
     module name as the receiver:
     <code><var>module</var>.<var>selector</var></code>.</p>
@@ -372,7 +344,7 @@
     <p><a href=#extend-self><code>extend self</code></a> does not
     exhibit this problem, but neither does it offer the granularity of
     <code>module_function</code>—it copies all instance methods into the
-    singleton class—or automatically privatise instance methods.</p>
+    singleton class—nor automatically privatise instance methods.</p>
     
     <figure class=left id=module-function-extend-self.rb>
       <figcaption><code>extend self</code> allows the calling of a private
@@ -389,7 +361,7 @@
       <p><code>Module#module_eval</code> takes a string or block which it
       evaluates in the receiver’s context, setting <code>self</code> to the
       receiver. The evaluated code can access the modules’s state, invoke its
-      singleton methods, and define instance or singleton methods.
+      singleton methods, and define methods.
     </section>
 
     <section>
@@ -397,8 +369,8 @@
       
       <!-- TODO: Note effect on constant lookup -->
       <p><code>Module#module_exec</code> behaves as
-      <code>Module#module_eval</code> except it requires a block, to which
-      it passes any arguments it has received.
+      <code>Module#module_eval</code> except it requires a block, to which it
+      passes any arguments it has received.
     </section>
       <!-- TODO: Track
       http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26774 in
