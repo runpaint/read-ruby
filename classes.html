@@ -409,19 +409,12 @@
     <h1 id=enumeration>Enumeration</h1>
 
     <p><code>ObjectSpace.each_object(Class)</code> enumerates all
-    <code>Class</code> objects currently defined. 
+    <code>Class</code> objects currently defined. Therefore, to enumerate the
+    subclasses of a given class, this list must be filtered as shown in the
+    figure below.</p>
     
-    <p>Enumerating the subclasses of a given class is slightly harder, but the
-    figure below suggests a simple approach.</p>
-
-    <figure id=enumerating-subclasses>
-      <pre><code>
-      class Module
-        def children
-          constants.map{|c| const_get(c) }.select{|c| c.is_a?(Class) }
-        end
-      end
-      </code></pre>
+    <figure id=enumerating-subclasses.rb class=left>
+      <figcaption>Enumerating a class’s subclasses.
     </figure>
   </section>
 
