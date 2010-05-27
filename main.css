@@ -80,6 +80,7 @@ dl.inline > dt:after {
 
 dfn {
   font-variant: small-caps;
+  font-style: normal;
 }
 
 code.u { 
