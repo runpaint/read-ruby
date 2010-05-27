@@ -151,6 +151,7 @@ figure.centre {
 figure.railroad > img {
   margin-left: 4%;
   display: block;
+  margin-bottom: 1em;
 }
 
 /* The captions for figures are hidden */
