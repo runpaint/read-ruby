@@ -1,10 +1,6 @@
 <!DOCTYPE html>
-<!-- vim: set fdm=indent tw=78: --> 
 <title>Enumerables - Read Ruby</title>
 <meta charset=utf-8>
-<!-- <script src="http://html5-now.appspot.com/base2-legacy.js"></script> 
-<script src="http://html5-now.appspot.com/html5-now.js"></script>
--->
 <link href=/chapter rel=stylesheet>
 <link rel=license href=//creativecommons.org/licenses/by-nc-sa/2.0/uk/>
 <link rel='index up' href=/toc>
@@ -13,118 +9,99 @@
 <!-- TODO: Note Array#* as #join shortcut -->
 <section>  
   <h1 id=enumerables>Enumerables</h1>
-    <section>
-      <h1 id=arrays>Array Literals</h1>
-       
-      <!-- TODO: Determine clear way to diagram optional spaces -->
-      <figure class=railroad>
-        <img id=array-literal.png>
-        <figcaption>Syntax diagram of the array literal
-      </figure>
-       
-      <!-- Mention #to_a? --> <p>An <code>Array</code> instance represents an
-      ordered collection of objects, which need not be homogeneous. It is
-      automatically resized as elements are added or removed.</p>
-      
-      <figure class=railroad>
-        <img id=expression-list.png>
-        <figcaption>Syntax diagram of an expression list
-      </figure>
 
-      <p>An <code>Array</code> literal is a comma-separated list of
-      expressions enclosed in square brackets (<code>[</code>,
-      <code>]</code>). For example, <code>[1, :two, 'three']</code> creates a
-      three-element <code>Array</code> object with <code>1</code> as the first
-      element.</p>
-        
-      <section>
-        <h1 id=array-literal-w>Alternative Delimiters</h1>
-                  
-        <p>The <code>%w<var>delimiter</var>…<var>delimiter</var></code>
-        construct is a syntactical shortcut for instantiating an array
-        of strings. The delimiters take the same form as those of <a
-          href=#single-quoted-string-q><code>%q</code></a>. The text
-        between them is split on whitespace, each substring becoming an
-        element on the array. <code>%w</code> interprets its contents
-        with single-quoted string semantics; its counterpart,
-        <code>%W</code>, behaves in the same way using double-quoted
-        string semantics.</p>
-         
-        <figure id=array-literal-w.rb>
-          <figcaption>Creating an array of strings with the
-          <code>%w</code> and <code>%W</code> constructs
-        </figure>
-      </section>
-      
-      <p>Arrays are indexed by integral subscripts, beginning with 0. If the
-      subscript is negative it counts backward from the last element (i.e.
-      <code>-1</code> refers to the last element).  An element with subscript
-      <var>index</var> can be retrieved with
-      <code>Array#[<var>index</var>]</code>. If the index doesn’t exist,
-      <code>nil</code> is returned. The index can be assigned to with
-      <code>Array#[<var>index</var>]=</code>. 
+  <p>Enumerables are objects that represent collections of other objects. They
+  are so named because they mix-in the <code>Enumerable</code> module, which
+  enhances such objects with powerful methods for manipulating collections. In
+  this chapter we will discuss the <code>Enumerable</code> module itself,
+  along with the core data structures that employ it: <code>Array</code>,
+  <code>Hash</code>, and <code>Range</code>.</p>
+
+  <section>
+    <h1 id=arrays>Arrays</h1>
        
-      <p>Elements are appended to an array with <code>Array#&lt;&lt;</code>;
-      and prepended with <code>Array#unshift</code>.
-      <code>Array#include?(<var>element</var>)</code> tests whether the array
-      contains <var>element</var>. The total number of elements is returned by
-      <code>Array#size</code>. <code>Array#each</code> iterates over the
-      array, <code>yield</code>ing the next element each time.</p>
-                
-      <aside>
-        <h1 id=enumerables>Enumerables</h1>
-         
-        <!-- Mention #to_enum? -->
-        <p>Core classes such as <code>Array</code>, <code>Hash</code>, and
-        <code>Range</code> mixin the <code>Enumerable</code> module. Any object
-        may do the same as long as its class defines an <code>#each</code> method
-        which <code>yield</code>s the next element in the collection on every
-        invocation.  In return, the class gains a staggering variety of methods
-        for working with collections such as the following.
-                
-        <p><code>#map {|<var>element</var>| }</code> returns an
-        <code>Array</code> created by passing each element of the collection to
-        the block, then storing the result. For example, <code>[1,2,3].map{|n|
-          n**2} #=&gt; [1,4,9]</code>. <!-- Symbol#to_proc ? -->
-         
-        <p><code>#reduce {|<var>element<sub>0</sub></var>,
-          <var>element<sub>n</sub></var>| }</code> passes the first two
-        elements to the block, then for each subsequent element the last
-        result of the block and the element itself. For example:
-        <code>[2,3,5,7].reduce(&amp;:+) =&gt; 17</code>.
-         
-        <p><code>#select {|<var>element</var>| }</code> returns an
-        <code>Array</code> of elements for which the block returned
-        <code>true</code>.
+    <p>An <code>Array</code> is a mutable, heterogeneous, ordered collection
+    of objects, termed <dfn>elements</dfn>, indexed by an <code>Integer</code>
+    subscript. Its mutability means that elements can be added to, and removed
+    from, the collection at any point in its lifetime, causing the
+    <code>Array</code> to expand or contract as needed. In keeping with her
+    philosophy of duck-typing, Ruby does not require the elements to have a
+    specific type: any permutation of objects may be stored in an
+    <code>Array</code>. That each element is indexed by a unique
+    <code>Integer</code>, enforces unambiguous order on the collection. </p>
+
+    <figure class=railroad>
+      <img id=array-literal.png>
+      <figcaption>Syntax diagram of the array literal
+    </figure>
+     
+    
+    <figure class=railroad>
+      <img id=expression-list.png>
+      <figcaption>Syntax diagram of an expression list
+    </figure>
+
+    <p>An <code>Array</code> literal is a comma-separated list of
+    expressions enclosed in square brackets (<code>[</code>,
+    <code>]</code>). For example, <code>[1, :two, 'three']</code> creates a
+    three-element <code>Array</code> object with <code>1</code> as the first
+    element.</p>
         
-        <p>Lastly, <code>#any?</code>, <code>#all?</code>, and <code>#none?</code>
-        accept a block which is called with an element of the collection. The
-        determinative indicates how many elements of the collection the block must
-        return <code>true</code> for the method to return <code>true</code>. For
-        instance, <code>#any?</code> returns <code>true</code> as soon as a single
-        element in the collection satisfies the block. 
-        <!-- History:
-        http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26301
-        --> 
-        <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
-      </aside>
+    <section>
+      <h1 id=array-literal-w>Alternative Delimiters</h1>
+                
+      <p>The <code>%w<var>delimiter</var>…<var>delimiter</var></code>
+      construct is a syntactical shortcut for instantiating an array
+      of strings. The delimiters take the same form as those of <a
+        href=/text#single-quoted-strings-q><code>%q</code></a>. The text
+      between them is split on whitespace, each substring becoming an
+      element on the array. <code>%w</code> interprets its contents
+      with single-quoted string semantics; its counterpart,
+      <code>%W</code>, behaves in the same way using double-quoted
+      string semantics.</p>
+       
+      <figure id=array-literal-w.rb class=left>
+        <figcaption>Creating an array of strings with the
+        <code>%w</code> and <code>%W</code> constructs
+      </figure>
     </section>
-
-    <section>
-      <h1 id=hashes>Hash Literals</h1>
-        
-      <!--<code>{phileas_fog: :jean_passepartout, bertie_wooster:
-          :reginald_jeeves}</code>.-->
       
-      <!-- Mention Hash#[]? -->
-      <p>A <code>Hash</code> instance represents a collection of associations
-      between unique keys and values (<i>key-value</i> pairs), both of which may
-      be any object. It is indexed by key, and ordered by insertion<sup>†</sup>. For
-      instance, a <code>Hash</code> mapping colours to corresponding fruits may
-      include a key-value pair of <code>:lemon =&gt; :yellow</code>:
-      <code>:lemon</code> is the key; <code>:yellow</code> is the value.</p>
+    <p>Arrays are indexed by integral subscripts, beginning with 0. If the
+    subscript is negative it counts backward from the last element (i.e.
+    <code>-1</code> refers to the last element). An element with subscript
+    <var>index</var> can be retrieved with the element reference syntax:
+    <code>Array#[<var>index</var>]</code>. If the index doesn’t exist,
+    <code>nil</code> is returned. The index can be assigned to with
+    <code>Array#[<var>index</var>]=</code>. However, if <var>index</var> is
+    greater than the size of the <code>Array</code>, the intervening elements
+    are created with a value of <code>nil</code> before <var>index</var> is
+    assigned. This ensures that the largest subscript is always one less than
+    the total size of the <code>Array</code>.
+       
+    <p>Elements are appended to an <code>Array</code> with
+    <code>Array#&lt;&lt;</code>; and prepended with
+    <code>Array#unshift</code>.
+    <code>Array#include?(<var>element</var>)</code> tests whether the array
+    contains <var>element</var>. The total number of elements is returned by
+    <code>Array#size</code>. <code>Array#each</code> iterates over the array,
+    <code>yield</code>ing the next element each time.</p>
+                
+    <!-- Array() / .try_convert -->
+  </section>
 
-      <aside class=footnote>
+  <section>
+    <h1 id=hashes>Hashes</h1>
+      
+    <p>A <code>Hash</code> represents a mutable, heterogeneous collection of
+    associations between pairs of objects. The collection is indexed by the
+    first element of the pair-its <dfn>key</dfn>-which uniquely identifies the
+    second element of the pair-its <dfn>value</dfn>. It is ordered by
+    insertion<sup>†</sup>. For instance, a <code>Hash</code> mapping colours
+    to corresponding fruits may include a key-value pair of <code>:lemon =&gt;
+      :yellow</code>: <code>:lemon</code> is the key; <code>:yellow</code> is
+    the value.</p>
+
+    <aside class=sidenote>
       <p><span class=number>†</span>Hash tables do not normally <a
         href=//blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12542>preserve
         order of insertion</a>, of course; a <a
@@ -135,101 +112,91 @@
           the consequences</a> of this decision.
         <!-- http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/315237
         -->
-      </aside>
+    </aside>
 
-      <figure class=railroad>
-        <img id=hash-literal.png>
-        <figcaption>Syntax diagram of the hash literal
-      </figure>
+    <figure class=railroad>
+      <img id=hash-literal.png>
+      <figcaption>Syntax diagram of the hash literal
+    </figure>
 
-      <p>A <code>Hash</code> literal consists of a comma-separated
-      list of key-value pairs enclosed in curly braces
-      (<code>{</code>, <code>}</code>).  The key is separated from
-      its value with <code>=&gt;</code>. For example: <code>{:age
-        =&gt; 30, :name =&gt; 'Marlo'}</code>. If the key is a
-      <code>Symbol</code> literal, the colon with which its prefixed
-      may be made its suffix, and <code>=&gt;</code> can be omitted.
-      The previous example can be rewritten as <code>{age: 30, name:
-        'Marlo'}</code>. (This syntactical shortcut is a reason for
-      preferring <code>Symbol</code> keys).</p>
+    <p>A <code>Hash</code> literal consists of a comma-separated list of
+    key-value pairs enclosed in curly braces (<code>{</code>, <code>}</code>).
+    The key is separated from its value with <code>=&gt;</code>. For example:
+    <code>{:age =&gt; 30, :name =&gt; 'Marlo'}</code>. If the key is a
+    <code>Symbol</code> literal, the colon with which its prefixed may be made
+    its suffix, and <code>=&gt;</code> can be omitted.  The previous example
+    can be rewritten as <code>{age: 30, name: 'Marlo'}</code>. (This
+    syntactical shortcut is a reason for preferring <code>Symbol</code>
+    keys).</p>
+    
+    <figure class=railroad>
+      <img id=hash-member.png>
+      <figcaption>Syntax diagram of an element of the hash literal
+    </figure>
       
-      <figure class=railroad>
-        <img id=hash-member.png>
-        <figcaption>Syntax diagram of an element of the hash literal
-      </figure>
-        
-      <p>A value may be retrieved for a given key with
-      <code>Hash#[<var>key</var>]</code>. A value may be associated with a given
-      key with <code>Hash#[<var>key</var>] = <var>value</var></code>. Note that
-      as keys are unique, associating a value with an existing key will delete
-      its previous value. A key’s existence may be determined
-      with <code>Hash#key?(<var>key</var>)</code>.
-      
-      <p>Hashes can be iterated over with <code>Hash#each</code>, which yields a
-      key and its associated value on each iteration. Alternatively,
-      <code>Hash#each_key</code> and <code>Hash#each_value</code> iterate over
-      the keys or values, respectively.
-      
-      <p>Uses include a dictionary, allowing values to be looked up by key; a
-      dispatch table, where the values are <code>Proc</code>s identified by
-      their key; and a cache of unique values, taking advantage of the unique
-      keys property.
-      
-      <p><code>Hash</code> is <code>Enumerable</code>, <!-- link --> so all
-      <code>Enumerable</code> methods are available as well.
-    </section>
-    <section>
-      <h1 id=ranges>Range Literals</h1>
-      
-      <p>A <code>Range</code> represents a sequence between two
-      given values.  It is either <i>inclusive</i> or
-      <i>exclusive</i>: the former includes the endpoint; the latter
-      does not. For example, 0–9 is a range consisting of all
-      single-digit integers, expressed by specifying the start-point
-      and endpoint.</p>
+    <p>A value may be retrieved for a given key with the element reference
+    syntax: <code>Hash#[<var>key</var>]</code>. A value may be associated with a given
+    key with <code>Hash#[<var>key</var>] = <var>value</var></code>. Note that
+    as keys are unique, associating a value with an existing key will replace
+    the old value with the new. A key’s existence may be determined with
+    <code>Hash#key?(<var>key</var>)</code>.
+    
+    <p>Hashes can be iterated over with <code>Hash#each</code>, which yields a
+    key and its associated value on each iteration. Alternatively,
+    <code>Hash#each_key</code> and <code>Hash#each_value</code> iterate over
+    the keys or values, respectively.
+    
+    <p>Uses include a dictionary, allowing values to be looked up by key; a
+    dispatch table, where the values are <code>Proc</code>s identified by
+    their key; and a cache of unique values, taking advantage of the unique
+    keys property.
+  </section>
 
-      <aside class=sidenote>
-        <span class=sidemark>†</span>In the conditional of a branching or looping
-          statement, two or three consecutive periods don’t create a
-          range; they constitute a <a href=/flow#flip-flop>Boolean
-            flip-flop</a>.
-      </aside>
-      
-      <p>A <code>Range</code> literal consists of two values separated by
-      two or three periods<sup>†</sup>: the former range is inclusive; the
-      latter exclusive. For example, <code>'a'...'z'</code> represents
-      letters <i>a</i>–<i>y</i>.</p>
-      
-      <figure class=railroad>
-        <img id=range-literal.png>
-        <figcaption>Syntax diagram of the range literal
-      </figure>
-       
-      <p>The start-point and endpoint must be comparable <!-- link
-      --> with <code>#&lt;=&gt;</code>. That is, for a range
-      <code><var>start</var>..<var>end</var></code>,
-      <code><var>start</var> &lt;=&gt; <var>end</var></code> must
-      return -1, 0, or 1.
-      <code>Range#include?(<var>object</var>)</code> allows ranges
-      to be used as intervals: returning <code>true</code> if
-      <var>object</var> is a member; <code>false</code> otherwise.  
-      
-      <p>A range is <dfn title="discrete ranges">discrete</dfn> if
-      it begins with a value that responds to <code>#succ</code> by
-      returning the next element of the sequence. It is so called
-      because it represents a finite set of values that can be
-      iterated over with <code>Range#each</code>.  Alternatively,
-      <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
-      passes each <var>n</var><sup>th</sup> element to the
-      block. As <code>Range</code>s are <code>Enumerable</code>, they
-      can also be converted to an <code>Array</code> with
-      <code>Range#to_a</code>. 
-       
-      <p>A non-discrete range is <dfn title="continuous
-        range">continuous</dfn>.  It represents an infinite set of
-      values, therefore a <code>TypeError</code> is raised when
-      attempting to iterate over it.
-    </section>
+  <section>
+    <h1 id=ranges>Ranges</h1>
+    
+    <p>A <code>Range</code> represents an immutable sequence between two given
+    values.  It is either <i>inclusive</i> or <i>exclusive</i>: the former
+    includes the endpoint; the latter does not. For example, 0–9 is a range
+    consisting of all single-digit integers, expressed by specifying the
+    start-point and endpoint.</p>
+
+    <aside class=sidenote>
+      <span class=sidemark>†</span>In the conditional of a branching or looping
+        statement, two or three consecutive periods don’t create a
+        range; they constitute a <a href=/flow#flip-flop>Boolean
+          flip-flop</a>.
+    </aside>
+    
+    <p>A <code>Range</code> literal consists of two values separated by two or
+    three periods<sup>†</sup>: the former range is inclusive; the latter
+    exclusive. For example, <code>'a'...'z'</code> represents letters
+    <i>a</i>–<i>y</i>.</p>
+    
+    <figure class=railroad>
+      <img id=range-literal.png>
+      <figcaption>Syntax diagram of the range literal
+    </figure>
+     
+    <p>The start-point and endpoint must be comparable <!-- link --> with
+    <code>#&lt;=&gt;</code>. That is, for a range
+    <code><var>start</var>..<var>end</var></code>, <code><var>start</var>
+      &lt;=&gt; <var>end</var></code> must return -1, 0, or 1.
+    <code>Range#include?(<var>object</var>)</code> allows ranges
+    to be used as intervals: returning <code>true</code> if <var>object</var>
+    is a member; <code>false</code> otherwise.  
+    
+    <p>A range is <dfn title="discrete ranges">discrete</dfn> if it begins
+    with a value that responds to <code>#succ</code> by returning the next
+    element of the sequence. It is so called because it represents a finite
+    set of values that can be iterated over with <code>Range#each</code>.
+    Alternatively, <code>Range#step(<var>n</var>) {|<var>el</var>| }</code>
+    passes each <var>n</var><sup>th</sup> element to the block. 
+     
+    <p>A non-discrete range is <dfn title="continuous range">continuous</dfn>.
+    It represents an infinite set of values, therefore a
+    <code>TypeError</code> is raised when attempting to iterate over it.
+  </section>
     <!-- TODO: Example
 module Enumerable
   def reach(&blk)
@@ -237,4 +204,79 @@ module Enumerable
   end
 end
     -->
+  <section>
+    <h1 id=enumerable><code>Enumerable</code></h1>
+
+    <p>The aforementioned classes-<code>Array</code>, <code>Hash</code>, and
+    <code>Range</code>-mix-in the core module <code>Enumerable</code>. The
+    methods it supplies are implemented in terms of a method named
+    <code>#each</code> which yields each element of a collection in turn.
+    <code>Enumerable</code> does not define <code>#each</code>, so a contract
+    exists: if a class provides <code>#each</code> it can mix-in
+    <code>Enumerable</code>. If a class breaches this contract, it will still
+    gain the <code>Enumerable</code> methods, but invoking them will raise an
+    exception. <code>Enumerable</code> provides nearly 50 methods, so a mere sample
+    follows. 
+    
+    <p><code>#map {|<var>element</var>| }</code> returns an
+    <code>Array</code> created by passing each element of the collection to
+    the block, then storing the result. For example, <code>[1,2,3].map{|n|
+      n**2} #=&gt; [1,4,9]</code>. <!-- Symbol#to_proc ? -->
+     
+    <p><code>#reduce {|<var>element<sub>0</sub></var>,
+      <var>element<sub>n</sub></var>| }</code> passes the first two
+    elements to the block, then for each subsequent element the last
+    result of the block and the element itself. For example:
+    <code>[2,3,5,7].reduce(&amp;:+) =&gt; 17</code>.
+     
+    <p><code>#select {|<var>element</var>| }</code> returns an
+    <code>Array</code> of elements for which the block returned
+    <code>true</code>.
+    
+    <p>Lastly, <code>#any?</code>, <code>#all?</code>, and <code>#none?</code>
+    accept a block which is called with an element of the collection. The
+    determinative indicates how many elements of the collection the block must
+    return <code>true</code> for the method to return <code>true</code>. For
+    instance, <code>#any?</code> returns <code>true</code> as soon as a single
+    element in the collection satisfies the block. 
+    <!-- History:
+    http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26301
+    --> 
+    <!-- ruby-core: 25769 (Enumerator#next in JRuby) -->
+
+    <section>
+      <h1 id=no-each>Classes with Multiple Iteration Strategies</h1>
+
+      <p>For <code>Enumerable</code> to be a sensible addition to a class, the
+      collection must support a single, obvious means of iteration. If multiple
+      approaches are plausible, the semantics of the <code>Enumerable</code>
+      methods will be confusing. 
+      
+      <p>For example, consider the <code>String</code> class. A
+      <code>String</code> of binary data will probably be iterated by byte, a
+      <code>String</code> containing a document may be iterated by line or
+      paragraph, a hyphenation algorithm would iterate by character or Unicode
+      codepoint. There is no single <code>#each</code> method that encompasses
+      these approaches. There is no objective atomic unit that can form the
+      basis of iteration. Accordingly, <code>String#each</code> does not
+      exist. In its place are alternative iterators:
+      <code>String#each_byte</code>, <code>String#each_char</code>,
+      <code>String#each_codepoint</code>, and <code>String#each_line</code>.
+
+      <p>The utility of this approach is seen when combining it with
+      <code>Object#enum_for(<var>selector</var>)</code>. This method converts
+      its receiver into an <code>Enumerator</code> object, which is an
+      iterator implemented in terms of the receiver’s <var>selector</var>
+      method. An <code>Enumerator</code> has an <code>#each</code> method and
+      mixes-in <code>Enumerable</code>. Hence, one can convert an object into
+      <code>Enumerable</code> by specifying which form of iteration should be
+      used by <code>#each</code>.</p>
+
+      <figure id=enumerable-to-enum.rb class=left>
+        <figcaption>Using an object that does not respond to
+        <code>:each</code> as an <code>Enumerable</code> by specifying which
+        of its iterator methods should be used in place of <code>#each</code>.
+      </figure>
+    </section>
+  </section>
 </section>

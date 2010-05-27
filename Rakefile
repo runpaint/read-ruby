@@ -157,7 +157,7 @@ end
 
 class Book
   CHAPTERS = %w{programs variables messages methods objects classes modules
-                closures flow}
+                closures flow enumerables}
   APPENDICES = %w{punctuation keywords}
   
   def chapters
