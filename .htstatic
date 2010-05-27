@@ -8,3 +8,7 @@ AddCharset utf-8 .html
 AddDefaultCharset utf-8
 DefaultLanguage en-GB
 DirectoryIndex index
+ExpiresActive on
+ExpiresDefault "access plus 24 hours"
+ExpiresByType image/png "access plus 1 years"
+ExpiresByType image/css "access plus 1 weeks"
