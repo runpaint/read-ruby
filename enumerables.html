@@ -35,12 +35,6 @@
       <figcaption>Syntax diagram of the array literal
     </figure>
      
-    
-    <figure class=railroad>
-      <img id=expression-list.png>
-      <figcaption>Syntax diagram of an expression list
-    </figure>
-
     <p>An <code>Array</code> literal is a comma-separated list of
     expressions enclosed in square brackets (<code>[</code>,
     <code>]</code>). For example, <code>[1, :two, 'three']</code> creates a
@@ -86,7 +80,18 @@
     <code>Array#size</code>. <code>Array#each</code> iterates over the array,
     <code>yield</code>ing the next element each time.</p>
                 
-    <!-- Array() / .try_convert -->
+    <section>
+      <h1 id=array-coercion>Coercion</h1>
+
+      <p>In <a href=/objects#conversion>Objects: Conversion</a> the
+      <code>:to_a</code> and <code>:to_ary</code> messages were introduced for
+      converting an object into an <code>Array</code> either explicitly or
+      implicitly, respectively. <code>Array.try_convert</code> was introduced
+      as a wrapper around <code>:to_ary</code>: it returns its argument
+      implicitly converted to an <code>Array</code> if possible, otherwise
+      <code>nil</code>. Lastly, <code>Kernel.Array</code> attempts to convert
+      its argument to an <code>Array</code> first implicitly, then explicitly.
+    </section>
   </section>
 
   <section>
@@ -149,7 +154,22 @@
     <p>Uses include a dictionary, allowing values to be looked up by key; a
     dispatch table, where the values are <code>Proc</code>s identified by
     their key; and a cache of unique values, taking advantage of the unique
-    keys property.
+    keys property.</p>
+
+    <section>
+      <h1 id=hash-coercion>Coercion</h1>
+
+      <p>An object that responds to <code>:to_hash</code> may be <a
+        href=/objects#implicit-conversion>implicitly converted</a> to a
+      <code>Hash</code>. <code>Hash[]</code> is another approach. If given an
+      object convertible to a <code>Hash</code>, it performs the conversion and
+      returns the new <code>Hash</code>; otherwise, when given an even number
+      of arguments, it interprets them as key-value pairs-the first argument
+      being the first key, the second argument being its corresponding value,
+      and so forth-with which it creates a new <code>Hash</code>.
+      <code>Hash.try_convert</code> coerces its argument with
+      <code>:to_hash</code>, if possible, or returns <code>nil</code>.
+    </section>
   </section>
 
   <section>
