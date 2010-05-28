@@ -342,25 +342,17 @@
       instance of the receiver’s class is allocated, tainted if the original
       object was, then populated with shallow copies of the receiver’s
       instance variables. Neither singleton methods nor frozen state are
-      duplicated<sup>†</sup>. Corresponding instance variables will refer to
-      the same object because they are copied by reference; not referent.</p>
-
-      <aside class=sidenote>
-      <span class=sidemark>†</span>To copy these items use <a
-        href=#cloning><code>Object#clone</code></a> instead.
-      </aside>
+      duplicated<a href=#fn-dup-clone>†</a>. Corresponding instance variables
+      will refer to the same object because they are copied by reference; not
+      referent.</p>
 
       <p>If the duplicated object responds to <code>:initialize_dup</code>, it
       will be sent this message with the receiver as an argument. Its return
-      value is ignored. A common use is to perform a deep copyَ<sup>‡</sup> of
-      instance variables by explicitly duplicating them. If an object may only
+      value is ignored. A common use is to perform a deep copyَ<a
+        href=#fn-deep-copy>†</a> of instance variables by explicitly
+      duplicating them. If an object may only
       be duplicated under certain circumstances, <code>#initialize_dup</code>
       may choose to raise an exception.</p>
-
-      <aside class=sidenote>
-        <span class=sidemark>‡</span>Another way to perform a deep copy of an
-        object is: <code>Marshal.load(Marshal.dump(<var>object</var>))</code>.
-      </aside>
 
       <p>If an object doesn’t respond to <code>:initialize_dup</code>, but
       does respond to <code>:initialize_copy</code>, it is sent the latter
@@ -686,4 +678,14 @@
     <!-- Explain numeric coercion -->
   </section>
 
+  <footer>
+    <h1>Footnotes</h1>
+    
+    <ol>
+      <li id=fn-dup-clone>To copy these items use <a
+        href=#cloning><code>Object#clone</code></a> instead.
+      <li id=fn-deep-copy>Another way to perform a deep copy of an object is:
+      <code>Marshal.load(Marshal.dump(<var>object</var>))</code>.
+    </ol>
+  </footer>
 </section>

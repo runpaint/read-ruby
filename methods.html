@@ -6,14 +6,12 @@
 <link rel=license href=//creativecommons.org/licenses/by-nc-sa/2.0/uk/>
 <link rel=next href=/objects>
 <link rel='index up' href=/toc>
-
 <!-- TODO
   * Standardise on term for method defined in an ancestor class or module with
   the same name as a given method. "superclass" is problematic because it
   implies a singly-inherited class, whereas multiple modules may be searched
   as well.
 -->
-
 <section>
   <h1 id=methods>Methods</h1>
   <!-- Mention __method__ -->
@@ -41,7 +39,7 @@
     method when sent a message with its name as the selector. Therefore, an
     object’s instance methods determine its behaviour.</p>
      
-    <aside class=sidenote> 
+    <aside> 
       It is conventional to employ the <code>Class#method</code> notation when
       referring to instance methods in documentation and prose. For example:
       <code>Integer#even?</code>.  
@@ -110,7 +108,7 @@
         associated with that class.</q> (pp. 5–9).</p>
     </section>
 
-    <aside class=sidenote>
+    <aside>
       It is conventional to employ the
       <code><var>Class</var>.<var>method</var></code> notation when referring
       to singleton methods in documentation and prose. For example:
@@ -121,16 +119,12 @@
   <section>
     <h1 id=return-values>Return Values</h1>
 
-    <p>A method is invoked with an expression so always returns a value:
+    <p>A method is invoked with an expression so always returns a value<a
+      href=#fn-def-value>†</a>:
     the last statement executed, or <code>nil</code> if the method body is
     empty. If this value is an <code>Array</code> the method effectively
     returns multiple values.</p>
 
-    <aside class=sidenote>
-      A <code>def</code> expression also returns a value (<code>nil</code>), but
-      this is distinct from that of invoking the method. 
-    </aside>
-      
     <figure class=left id=def-implicit-return.rb>
       <figcaption>A method which returns the Symbol <code>:to_sender</code>
     </figure>
@@ -179,13 +173,6 @@
     stating explicitly is that an instance method in a class may use
     <code>super</code> to invoke an instance method in an included module.</p> 
     
-    <aside class=sidenote>
-      <span class=sidemark>†</span><code>super</code> does obey the <a
-        href=#method-missing>Method Missing</a> protocol, however, so before
-      raising the exception it will send <code>:method_missing</code> to each
-      class it encounters.
-    </aside>
-
     <p>If called without arguments it invokes the ancestor method with the
     arguments received by the current method (this is known as the
     <dfn>implicit argument form of <code>super</code></dfn>). Otherwise, it
@@ -201,7 +188,7 @@
     </figure>
 
     <p>A <code>NoMethodError</code> is raised if a corresponding method is not
-    defined in an ancestor<sup>†</sup>. This can be avoided by conditioning
+    defined in an ancestor<a href=#fn-super-mm class=fn>†</a>. This can be avoided by conditioning
     the call to <code>super</code>, on <code>defined? super</code>, which
     returns <code>nil</code> in this case.</p>
 
@@ -213,24 +200,6 @@
   <section>
     <h1 id=names>Names</h1>
 
-    <aside class=sidenote>
-      Pseudo operators such as <code>+=</code> and <code>||=</code> are
-      neither operator methods nor methods; they are <a
-        href=/variables#abbreviated-assignment>abbreviated assignment</a>
-      operators.
-    </aside>
-
-    <aside class=sidenote>
-      It is legal for a method name to begin with an uppercase letter, but
-      then they may be confused with <a
-        href=/variables#constants>constants</a> or class names. In fact,
-      several core classes use this convention for precisely this reason: they
-      provide a syntactical shortcut for constructing instances.  For example,
-      <code>Array()</code> is a method of <code>Kernel</code> which coerces
-      its argument into an <code>Array</code> object. <!-- Quote from Pickaxe
-      p. 137?--> 
-    </aside>
-        
     <figure class=railroad>
       <img id=symbol.png>
       <figcaption>Syntax diagram of a method name
@@ -247,8 +216,16 @@
         <li>The <a href=/messages#aref-set>element set</a> (<code>[]=</code>) selector. 
       </ul>
 
+    <aside>
+      Pseudo operators such as <code>+=</code> and <code>||=</code> are
+      neither operator methods nor methods; they are <a
+        href=/variables#abbreviated-assignment>abbreviated assignment</a>
+      operators.
+    </aside>
+
     <p>Names that begin with an identifier conventionally begin with a
-    lowercase letter or low line (<code class=u title='_'>U＋005F</code>).</p>
+    lowercase<a href=#fn-name-upper>†</a> letter or low line (<code class=u
+      title='_'>U＋005F</code>).</p>
 
     <figure class=left id=def-non-ascii-name.rb>
       <figcaption>Defining a method with a non-<abbr title='American Standard
@@ -256,32 +233,16 @@
     </figure>
 
     <section>
-      <aside class=sidenote>
-        <span class=sidemark>*</span>Operators definable as methods are those
-        with a ✔ in the <i>Method?</i> column of the <a
-          href=/messages#operator-table>Operator table</a>.
-      </aside>
-
-      <aside class=sidenote>
-        <span class=sidemark>†</span>The selector name isn’t always the same as
-        the operator name; consult the <i>Operator</i> column of the <a
-          href=/messages#operator-table>Operator table</a> to check.
-      </aside>
-
-      <aside class=sidenote>
-        <span class=sidemark>‡</span>…in the sense that you <em>can</em> learn
-        Java: insanityAndScornFromYourPeers <em>will</em> result. 
-      </aside>
-
       <h1 id=operators>Operator Methods</h1>
-      
+
       <p>An <dfn>operator method</dfn> is an <a
-        href=/messages#operators>operator</a> definable as a
-      method<sup>*</sup>. By defining a method with the corresponding
-      name<sup>†</sup> an object can receive an operator message like core
-      classes do. For example, the expression <code>3 + 2</code> is a
-      syntactical shortcut for <code>3.+(2)</code>; by defining a method named
-      <code>+</code> you can<sup>‡</sup> redefine, or <i>overload</i>, the
+        href=/messages#operators>operator</a> definable as a method<a
+        href=#fn-operator-method>†</a>. By defining a method with the
+      corresponding name<a href=#fn-operator-selector>†</a> an object can
+      receive an operator message like core classes do. For example, the
+      expression <code>3 + 2</code> is a syntactical shortcut for
+      <code>3.+(2)</code>; by defining a method named <code>+</code> you can<a
+        href=#fn-operator-overload>†</a> redefine, or <i>overload</i>, the
       fundamentals of arithmetic.</p>
     </section>
   </section>
@@ -306,14 +267,9 @@
     <p>If <code><var>expression</var>.</code> is omitted, an <a
       href=#instance-method>instance method</a> named <var>symbol</var> is
     defined on the enclosing class; otherwise a <a
-      href=#singleton-method>singleton method</a><span>‡</span> named
+      href=#singleton-method>singleton method</a><a
+      href=#fn-define-singleton-method>†</a> named
     <var>symbol</var> is defined on <var>expression</var>.</p>
-
-    <aside class=sidenote>
-    <span class=sidemark>‡</span><a
-      href=#dynamic-definition><code>Kernel#define_singleton_method</code></a>
-      may be used to the same end.
-    </aside>
 
     <figure class=left id=def-instance-method.rb>
       <figcaption>Defining an instance method named <code>bark</code> for the
@@ -401,13 +357,9 @@
       <figcaption>Syntax diagram of a parameter list
     </figure>
 
-    <aside class=sidenote>
-      <span class=sidemark>†</span>The parentheses are actually optional, but
-      their omission doesn't enhance readability so they are recommended.
-    </aside>
-
     <p>When a method is defined with the <code>def</code> keyword, its
-    parameter list follows its name, and is usually<sup>†</sup> enclosed in a
+    parameter list follows its name, and is usually<a
+      href=#fn-parentheses>†</a> enclosed in a
     set of parentheses (<code class=u title='('>U＋0028</code>, <code class=u
       title=')'>U＋0029</code>). It specifies:
 
@@ -990,17 +942,13 @@
     succeed because <code>BasicObject</code> defines a
     <code>:method_missing</code> method.</p>
    
-    <aside class=sidenote>
-      <span class=sidemark>†</span><code>BasicObject</code> doesn't have a
-      superclass, so this step is guaranteed to terminate.
-    </aside>
-
     <ol>
       <li>Search the instance methods of <var>class</var>.
       <li>Search the instance methods of each module included by
       <var>class</var>, in reverse order of inclusion.
-      <li>If <var>class</var> has a superclass<sup>†</sup>, assign its name
-      to <var>class</var> then go to step one.
+      <li>If <var>class</var> has a superclass<a
+        href=#fn-basicobject-superclass>†</a>, assign its name to
+      <var>class</var> then go to step one.
       <li>Prepend <var>selector</var> to <var>arguments</var>. Set
       <var>selector</var> to <code>:method_missing</code>, 
       <var>class</var> back to the receiver’s singleton class, and go to step
@@ -1054,12 +1002,6 @@
     option of responding to the message, or otherwise triggers the default
     behaviour.</p> 
 
-    <aside class=sidenote>
-      <span class=sidemark>†</span>The example was derived from a feature of
-      Ruby on Rails (<a href=/references#refBUCK06 class=ref>Buck</a>,
-      2006).
-    </aside>
-
     <p><a class=ref href=/references#FOWLER08>Fowler</a> describes the use
     of <code>method_missing</code> to <q>respond differently to an unknown
       message.</q> as “Dynamic Reception”. One use he suggests is to
@@ -1068,7 +1010,7 @@
       "lastname", "fowler")</code> with the
     <code>method_missing</code>-supported
     <code>find_by_firstname_and_lastname("martin",
-      "fowler")</code><sup>†</sup>. He identifies a variation on this idea
+      "fowler")</code><a href=#fn-ror>†</a>. He identifies a variation on this idea
     where a <q>a sequence of Dynamic Receptions</q> are chained together,
     such that each method returns an “Expression Builder”, e.g.
     <code>find_by.firstname("martin").and.lastname("fowler)</code>.</p>
@@ -1080,20 +1022,12 @@
       <code>Kernel#method_missing</code> is that an object may respond to a given
       message, yet return <code>false</code> for
       <code>Kernel#respond_to?(<var>selector</var>)</code>.</p>
-      
-      <aside class=sidenote>
-        <span class=sidemark>†</span>If <code>#respond_to?</code> is called
-        with a second argument of <code>true</code>,
-        <var>include_private</var> is <code>true</code> and private methods
-        should be considered; otherwise it’s <code>false</code> and they
-        shouldn’t.
-      </aside>
 
       <p>Before <code>Kernel#respond_to?</code> returns <code>false</code>
       it tries to send itself a message named
       <code>:respond_to_missing?</code> with a first argument of the
       selector in question, and the second the value of
-      <var>include_private</var><sup>†</sup>.If
+      <var>include_private</var><a href=#fn-include-private>†</a>.If
       <code>#respond_to_missing?</code> is defined and returns a true value,
       <code>#respond_to?</code> returns <code>true</code>; otherwise
       <code>#respond_to?</code> returns <code>false</code>. 
@@ -1115,21 +1049,13 @@
     distinct from capturing the return value of a method.</p> <!-- TODO: Note that
     unlike procs, method objects aren't closures -->
 
-    <aside class=sidenote>
-      <span class=sidemark>†</span>By implication, if the receiver’s <a
-        href=#respond-to-missing><code>#respond_to_missing?</code></a>
-      returns <code>true</code> for the method in question, the method
-      object will be created successfully; only when the underlying method
-      needs to be called will Ruby establish the veracity of this claim.
-    </aside>
-
     <p>Method objects can be created with <code>Kernel#method</code>:
     <code><var>receiver</var>.method(<var>name</var>)</code>, where
     <var>name</var> is the method name as a <code>Symbol</code> or
     <code>String</code>. For example, <code>method(:eval)</code> returns a
     <code>Method</code> object for <code>Kernel#eval</code>. If the object
     does not <code>respond_to?</code> the given method a
-    <code>NameError</code> will be raised<sup>†</sup>. 
+    <code>NameError</code> will be raised<a href=#fn-respond-miss>†</a>. 
 
     <p><code>Kernel#public_method</code> works in the same way, but raises a
     <code>NameError</code> if the given method is private or protected.</p>
@@ -1268,4 +1194,50 @@
     </blockquote>
   </section>
   <!-- TODO: Discuss recursion; methods which contain methods -->
+  <footer>
+    <h1>Footnotes</h1>
+    <ol>
+      <li id=fn-def-value>A <code>def</code> expression also returns a value
+      (<code>nil</code>), but this is distinct from that of invoking the
+      method. 
+      <li id=fn-super-mm><code>super</code> does obey the <a
+        href=#method-missing>Method Missing</a> protocol, however, so before
+      raising the exception it will send <code>:method_missing</code> to each
+      class it encounters.
+      <li id=fn-name-upper>It is legal for a method name to begin with an
+      uppercase letter, but then they may be confused with <a
+        href=/variables#constants>constants</a> or class names. In fact,
+      several core classes use this convention for precisely this reason: they
+      provide a syntactical shortcut for constructing instances.  For example,
+      <code>Array()</code> is a method of <code>Kernel</code> which coerces
+      its argument into an <code>Array</code> object. <!-- Quote from Pickaxe
+      p. 137?--> 
+      <li id=fn-operator-method>Operators definable as methods are those with
+      a ✔ in the <i>Method?</i> column of the <a
+        href=/messages#operator-table>Operator table</a>.
+      <li id=fn-operator-selector>The selector name isn’t always the same as
+        the operator name; consult the <i>Operator</i> column of the <a
+          href=/messages#operator-table>Operator table</a> to check.
+      <li id=fn-operator-overload>…in the sense that you <em>can</em> learn
+        Java: insanityAndScornFromYourPeers <em>will</em> result. 
+      <li id=fn-define-singleton-method><a
+        href=#dynamic-definition><code>Kernel#define_singleton_method</code></a>
+      may be used to the same end.
+      <li id=fn-parentheses>The parentheses are actually optional, but their
+      omission doesn't enhance readability so they are recommended.
+      <li id=fn-basicobject-superclass><code>BasicObject</code> doesn't have a
+      superclass, so this step is guaranteed to terminate.
+      <li id=fn-ror>The example was derived from a feature of Ruby on Rails
+      (<a href=/references#refBUCK06 class=ref>Buck</a>, 2006).
+      <li id=fn-include-private>If <code>#respond_to?</code> is called with a
+      second argument of <code>true</code>, <var>include_private</var> is
+      <code>true</code> and private methods should be considered; otherwise
+      it’s <code>false</code> and they shouldn’t.
+      <li id=fn-respond-miss>By implication, if the receiver’s <a
+        href=#respond-to-missing><code>#respond_to_missing?</code></a> returns
+      <code>true</code> for the method in question, the method object will be
+      created successfully; only when the underlying method needs to be called
+      will Ruby establish the veracity of this claim.
+    </ol>
+  </footer>
 </section>

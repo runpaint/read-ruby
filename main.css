@@ -14,178 +14,114 @@
 	font-style: normal;
 }
 
-@font-face {
-	font-family: 'OFL Sorts Mill Goudy Italic';
-	src: url('/fonts/OFLGoudyStM-Italic-webfont.eot');
-	src: local('☺'), url('/fonts/OFLGoudyStM-Italic-webfont.woff') format('woff'), url('/fonts/OFLGoudyStM-Italic-webfont.ttf') format('truetype'), url('/fonts/OFLGoudyStM-Italic-webfont.svg#webfont') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
 
 body {
-  font-size: 1em;
-  font-family: 'OFL Sorts Mill Goudy', Palatino, Tahoma, serif; /* TODO: Create better list */
+  font-family: 'OFL Sorts Mill Goudy', 'Linux Libertine', Palatino, 'Palatino Linotype', 
+               'Book Antiqua', Georgia, 'Times New Roman', serif;
+  font-style: normal;
+  font-size: large;
   font-color: black;
   background-color: white; 
+  margin-left: 12%;
+  margin-right: 12%;
   /* TODO: Consider using off-white background colour like #FFFFF0. Would
    * require updating syntax diagrams.
    */
 }
-h1 {
-  font-family: 'Goudy Bookletter 1911', Palatino, Tahoma, serif; /* TODO: Create better list */
-}
-/* Everything has a left margin of at least 4%. The content in the main column
- * mostly has a right margin of 40%, but we let tables and large figures
- * overflow. Additionally, the right margin holds sidenotes
- */
-section > p, 
-h1, 
-table, 
-figure, 
-section > dl, 
-section > ul, 
-section > ol, 
-section > blockquote, 
-section > aside.note {
-  margin-left: 4%;
-  margin-right: 36%;
+h1, h1 > code {
+  font-family: 'Goudy Bookletter 1911', Palatino, 'Palatino Linotype', 
+               'Book Antiqua', Georgia, 'Times New Roman', serif;
+  font-style: bold;
 }
 
-section > blockquote p {
-  margin-left: 8%;
-  margin-right: 8%;
-}
-
-/* Short definition lists that appear in tables can be rendered such that
- * their terms run in with their definitions */
-
-dl.inline-small > dt {
-  display:run-in;
-  font-weight: bold;
-}
-dl.inline-small > dt:after {
-  content: ' '
-}
-dl.inline > dt {
-  display:run-in;
-}
-dl.inline > dt:after {
-  content: ': '
-}
-
-.bigsym {
-  font-size: 1.2em;
-  font-weight: bolder;
-}
-
-dfn {
-  font-variant: small-caps;
-  font-style: normal;
-}
-
-code.u { 
-  font-family : Cambria, Garamond, Palatino Linotype, serif; 
-  font-style : normal; 
-  white-space: nowrap;
-}
-
-.syntax {
-  font-size: 1em;
-}
-
-/* Hide link decoration in code examples because the entire <pre> block is
- * enclosed in an <a>
- */
-.syntax a {
-  text-decoration: none;
-}
-
-/*********** 
- *         *
- * FIGURES *
- *         *
- ***********/
-
-figure, aside {
+figure, figcaption, aside, section, footer {
   display: block;
 }
-
-/* A sidenote is a block that floats in the right margin */  
-.sidenote {
-  padding-top: 2em;
-  float: right;
-  width: 20em;
-  clear: both;
-}
-
-/* Figures containing preformatted text need a slightly larger font */
-figure pre {
-  font-size: 1.2em;
-}
-
-/* Aside sidenotes are parenthetical remarks that float in the right margin.
- * We render them in a slightly smaller font to make them appear peripheral */
-aside.sidenote {
-  font-size: 90%;
-  padding-bottom: 1em;
-}
-
-/* Figure captions should appear the same no matter where the figure is
- * located. They should be, roughly, centered below the figure in a slightly
- * smaller, italic font. */
-figure.centre figcaption, figure.left figcaption, figure.sidenote figcaption {
+body > section > h1 {
+  font-size: 500%;
+  text-transform: uppercase;
   text-align: center;
-  font-style: italic;
-  font-size: 90%;
-  width: 80%;
+  line-height: 80%;
+  margin: 0;
+}
+body > section > section > h1 {
+  font-size: 200%;
+  text-align: center;
 }
 
-/* Centre figures appear in the main flow of the text */
-figure.centre {
+body > section > section > section > h1 {
+  font-size: 125%;
+}
+
+body > section > section > section > section > h1 {
+  font-size: 110%;
+}
+
+h1.runin {
+  font-size: 100%;
+  font-weight: bold;
+  display: run-in;
+  padding-right: 0.5em;
+  margin-right:0;
+  margin-bottom:0;
+  margin-left: 0;
+}
+
+figure {
+  padding-left: 1em;
+}
+
+.syntax > code {
+  font-family: Iconsolata, 'Courier New', 'Courier', monospace;
+  font-size: 70%;
+}
+figure.railroad {
+  margin-right: 0;
+  margin-left: -12%;
+  border: none;
+}
+figure > img {
+  display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 36%;
 }
-
-/* Syntax diagrams appear in the main body of the text, flush with the left
- * margin */
-figure.railroad > img {
-  margin-left: 4%;
-  display: block;
-  margin-bottom: 1em;
-}
-
-/* The captions for figures are hidden */
 figcaption {
-  visibility: hidden;
+  display: none;
+  font-size: small;
+  font-style: italic;
 }
-figure { 
-  margin-bottom: -2em; 
-}
-img.railroad {
-  display: inline;
-  float: left;
-  padding-right: 1em;
+figure.railroad > figcaption {
+  text-align: center;
 }
 
-/* A sidenote may be refrenced from the text with a footnote symbol. If so,
- * the sidenote features that symbol clearly. */
-span.sidemark {
+a.fn, a.returner {
   font-weight: bold;
-  font-size: 150%;
-  padding-right: 0.2em;
 }
+
+ol.footnote-popup {
+  position: absolute;
+  width: 600px; 
+}
+
+li.footnote-container {
+  position: relative;
+  padding: 0.9em;
+  margin-top: 1em;
+  margin-bottom: 18px;
+  background-color: #fff;
+  border: 1px #cccccc solid; 
+}
+
 /*********** 
  *         *
  * TABLES  *
  *         *
  ***********/
-
-/* Tables are slightly indented from the left margin */  
-table.border {
-  margin-left: 5.5%;
+table {
+  margin-left: auto;
+  margin-right: auto;
 }
-
 table.border thead {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
@@ -226,127 +162,3 @@ table > caption {
   font-style: italic;
   font-size: 90%;
 }
-
-
-/************ 
- *          *
- * HEADINGS *
- *          *
- ************/
-
-
-/* Chapter title */
-body > section > h1 {
-  font-size: 5em;
-  text-align: center;
-  text-transform: uppercase;
-  counter-reset: a;
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 80%;
-}
-
-/* First-level */
-body > section > section > h1:before {
-  display: marker;
-  content: counter(a) ". ";
-  counter-increment: a;
-}
-body > section > section > h1 {
-  counter-reset: b; 
-  font-size: 1.6em;
-  text-align: left;
-  font-variant: small-caps;
-}
-
-/* Second-level */
-body > section > section > section > h1:before {
-  display: marker;
-  content: counter(a) "." counter(b) "  ";
-  counter-increment: b;
-}
-body > section > section > section > h1 {
-  counter-reset: c;
-  font-size: 1.4em;
-  margin-top: 0em;
-  margin-bottom: 0em;
-  /*letter-spacing: -1px;*/
-
-}
-
-/* Third-level */
-body > section > section > section > section > h1:before {
-  display: marker;
-  content: counter(a) "." counter(b) "." counter(c) " ";
-  counter-increment: c;
-}
-body > section > section > section > section > h1 {
-  font-size: 1.4em;
-}
-
-/* Fourth-level */
-body > section > section > section > section > section > h1 {
-  padding-bottom: 0;
-  margin-bottom: 0;
-  font-size: 1.3em;
-  font-weight: normal;
-  font-style: italic;
-}
-body > section > section > section > section > section > h1 + p {
-  margin-top: 0;
-}
-
-/* Fifth-level */
-/* Headings deeper than 4th level are all displayed in the same way. Higher
- * headings can elect for this treatment by applying the runin class. They
- * are bold and run-in to their child paragraph. */
-body > section > section > section > section > section > section h1 {
-  font-size: 1em;
-}
-body > section > section > section > section > section > section h1, h1.runin {
-  font-weight: bold;
-  display: run-in;
-  padding-right: 0.5em;
-  margin-right:0;
-  margin-bottom:0;
-  margin-left: 0;
-}
-
-body > section > section > section > section > section > section h1:after {
-  content: ". "
-}
-
-h1.runout {
-  display: block;
-  margin-left: 4%;
-  padding: auto;
-}
-
-p {
-  margin-top: 0;
-}
-
-div#alpha-strip {
-  background-color: #F5F5F5;
-  text-align: center;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  right: 0;
-  padding: 0.15em 0.25em 0em 0.5em;
-  overflow: hidden;
-}
-
-#alpha-strip em {
-  font-weight: bold;
-  text-size: 120%;
-}
-
- #reviewer { position: fixed; bottom: 0; right: 0; padding: 0.15em 0.25em 0em 0.5em; white-space: nowrap; overflow: hidden; z-index: 30; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em 0 0 0; -moz-border-radius: 1em 0 0 0; }
- #reviewer * { font-size: small; }
- #reviewer.off > :not(:first-child) { display: none; }
- #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 1em; -moz-border-radius: 1em; -webkit-transition: opacity 1s linear; }
- #alert.closed { opacity: 0; }
- #alert button { position: absolute; bottom: 0.5em; right: 2em; border: solid white; color: white; font-size: 0.4em; background: transparent; }
- #alert :link, #alert :visited { color: white; }
- #alert :link:hover, #alert :visited:hover { background: transparent; }

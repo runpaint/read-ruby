@@ -39,3 +39,12 @@ q:before {
 q:after {
   content: '”';
 }
+
+/* We can’t use a simple class selector because it doesn’t have high-enough
+ * specificity. !important is an option, of course...
+ */
+a[href^="#fn-"]:link, a[href^="#fn-"]:visited, a[href^="#fn-"]:hover, a[href^="#fn-"]:active {
+  text-decoration: none;
+  border-bottom: none;
+  font-weight: bold;
+}

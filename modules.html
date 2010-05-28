@@ -63,36 +63,25 @@
       evaluated in the context of the created module using
       <code>module_eval</code>.</p>
 
-      <aside class=sidenote>
-        <span class=sidemark>†</span>And does, when supplied with a second
-        argument that is true, i.e. <code>load file, true</code>.
-      </aside>
-
       <!-- Bug related to the below's semantics:
       http://redmine.ruby-lang.org/issues/show/1982 -->
-      <p><code>Kernel.load</code> can<sup>†</sup> use an anonymous module to prevent a
-      source file from affecting the global namespace. The classes and modules
-      the source file defines are created in the context of this anonymous
-      namespace, making them inaccessible to the caller. The source file must
-      explicitly specify the constants it wishes to share with the caller by
-      assigning them to global variables.
+      <p><code>Kernel.load</code> can<a href=#fn-load-true>†</a> use an
+      anonymous module to prevent a source file from affecting the global
+      namespace. The classes and modules the source file defines are created
+      in the context of this anonymous namespace, making them inaccessible to
+      the caller. The source file must explicitly specify the constants it
+      wishes to share with the caller by assigning them to global variables.
 
       <p>A module is an object like any other, so by assigning an anonymous
       object to a <a href=/variables#local>local variable</a>, for example, it
       only exists for as long as the variable does, and is invisible from
       disjoint scopes.</p>
 
-      <aside class=sidenote>
-        <span class=sidemark>†</span>…or <code>:inspect</code>,
-        <code>:name</code>, and any other method which uses <code>#to_s</code>
-        internally.
-      </aside>
-
       <p>However, magic happens if you assign an anonymous module to a
       constant: the module takes on its name. Specifically, sending
-      <code>:to_s</code<sup>†</sup> to an anonymous module causes a
-      search to be done for the first constant the module was assigned to:
-      if one is found, that becomes the module’s name.</p>
+      <code>:to_s</code><a href=#fn-module-to-s>†</a> to an anonymous module
+      causes a search to be done for the first constant the module was
+      assigned to: if one is found, that becomes the module’s name.</p>
 
       <p>This technique cannot be used to re‐open modules. Assigning an
       anonymous module to a constant naming another module creates a new
@@ -376,4 +365,15 @@
       http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/26774 in
       case this changes -->
   </section>
+
+  <footer>
+    <h1>Footnotes</h1>
+
+    <ol>
+      <li id=fn-load-true>And does, when supplied with a second argument that
+      is true, i.e. <code>load file, true</code>.
+      <li id=fn-module-to-s>…or <code>:inspect</code>, <code>:name</code>, and
+      any other method which uses <code>#to_s</code> internally.
+    </ol>
+  </footer>
 </section>

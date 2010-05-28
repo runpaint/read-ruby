@@ -101,23 +101,11 @@
     associations between pairs of objects. The collection is indexed by the
     first element of the pair-its <dfn>key</dfn>-which uniquely identifies the
     second element of the pair-its <dfn>value</dfn>. It is ordered by
-    insertion<sup>†</sup>. For instance, a <code>Hash</code> mapping colours
-    to corresponding fruits may include a key-value pair of <code>:lemon =&gt;
-      :yellow</code>: <code>:lemon</code> is the key; <code>:yellow</code> is
-    the value.</p>
+    insertion<a href=#fn-hash-order>†</a>. For instance, a <code>Hash</code>
+    mapping colours to corresponding fruits may include a key-value pair of
+    <code>:lemon =&gt; :yellow</code>: <code>:lemon</code> is the key;
+    <code>:yellow</code> is the value.</p>
 
-    <aside class=sidenote>
-      <p><span class=number>†</span>Hash tables do not normally <a
-        href=//blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12542>preserve
-        order of insertion</a>, of course; a <a
-        href=//blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12556>doubly-circularly
-        linked list</a> is used behind the scenes. Ilya Grigorik
-        <a
-          href=//www.igvita.com/2009/02/04/ruby-19-internals-ordered-hash/>examined
-          the consequences</a> of this decision.
-        <!-- http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/315237
-        -->
-    </aside>
 
     <figure class=railroad>
       <img id=hash-literal.png>
@@ -181,17 +169,10 @@
     consisting of all single-digit integers, expressed by specifying the
     start-point and endpoint.</p>
 
-    <aside class=sidenote>
-      <span class=sidemark>†</span>In the conditional of a branching or looping
-        statement, two or three consecutive periods don’t create a
-        range; they constitute a <a href=/flow#flip-flop>Boolean
-          flip-flop</a>.
-    </aside>
-    
     <p>A <code>Range</code> literal consists of two values separated by two or
-    three periods<sup>†</sup>: the former range is inclusive; the latter
-    exclusive. For example, <code>'a'...'z'</code> represents letters
-    <i>a</i>–<i>y</i>.</p>
+    three periods<a href=#fn-flip-flop>†</a>: the former range is inclusive;
+    the latter exclusive. For example, <code>'a'...'z'</code> represents
+    letters <i>a</i>–<i>y</i>.</p>
     
     <figure class=railroad>
       <img id=range-literal.png>
@@ -299,4 +280,24 @@ end
       </figure>
     </section>
   </section>
+  
+  <footer>
+    <h1>Footnotes</h1>
+    
+    <ol>
+      <li id=fn-hash-order>Hash tables do not normally <a
+        href=//blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12542>preserve
+        order of insertion</a>, of course; a <a
+        href=//blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12556>doubly-circularly
+        linked list</a> is used behind the scenes. Ilya Grigorik
+        <a
+          href=//www.igvita.com/2009/02/04/ruby-19-internals-ordered-hash/>examined
+          the consequences</a> of this decision.
+        <!-- http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/315237
+        -->
+      <li id=fn-flip-flop>In the conditional of a branching or looping
+      statement, two or three consecutive periods don’t create a range; they
+      constitute a <a href=/flow#flip-flop>Boolean flip-flop</a>.
+    </ol>
+  </footer>
 </section>

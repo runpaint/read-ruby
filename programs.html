@@ -20,18 +20,9 @@
   <section>  
     <h1 id=lexical>Lexical Structure</h1>
 
-    <aside class=sidenote>
-      <code>Ripper</code> is a class in the standard library for parsing and
-      analysing Ruby. The <code>Ripper.tokenize</code> method takes a string
-      of code as an argument and returns an array of its constituent tokens.
-      Experiment with this method in <abbr title="Interactive
-        Ruby">IRB</abbr> (<code>irb -rripper</code>) to test your
-      assumptions of how tokenization works.
-    </aside>
-
     <!-- Aho, 2nd ed., p43: tokens vs. terminals -->
-    <!-- TODO: Introduce tokenization -->
-    <p><dfn>Tokens</dfn> are <q>the mark or series of marks that denote one
+    <!-- TODO: Introduce tokenization --> <p><dfn>Tokens</dfn><a
+      href=#fn-ripper>†</a> are <q>the mark or series of marks that denote one
       symbol or word in the language</q> (<a
       href=/references#refFISCHER92>Fischer &amp; Grodzinsky</a>, pp.  59–62).
     A Ruby program consists of a combination of the following tokens: <a
@@ -125,42 +116,25 @@
     <section>
       <h1 id=expressions>Expressions</h1>
 
-      <p>An <dfn>expression</dfn> is a syntactical construct that produces a
-      value. Since every entity is an object, every expression evaluates to an
-      object. It is either primary or compound.</p>
+      <p>An <dfn>expression</dfn><a href=#fn-expression-rec>†</a> is a
+      syntactical construct that produces a value. Since every entity is an
+      object, every expression evaluates to an object. It is either primary or
+      compound.</p>
       
-      <aside class=sidenote>
-      We follow the lead of <a href=/references#refAHO86>Aho, Sethi, &amp;
-        Ullman</a> (1986) in defining <i>expression</i> by recursion rather than
-      direct description.
-      </aside>
-
-      <p><dfn>Primary expressions</dfn> comprise atomic<sup>†</sup> units such
-      as <a href=/variables>variable references</a> and <a
+      <p><dfn>Primary expressions</dfn> comprise atomic<a
+        href=#fn-expression-atomic>†</a> units such as <a
+        href=/variables>variable references</a> and <a
         href=/numerics#literals>numeric</a>, <a
-        href=/text#string-literals>string</a><sup>‡</sup>, and symbol, <a
-        href=/text#regexp-literals>regexp</a><sup>‡</sup>, and <a
+        href=/text#string-literals>string</a><a href=#fn-double-string>†</a>, and symbol, <a
+        href=/text#regexp-literals>regexp</a><a href=#fn-regexp-interp>†</a>, and <a
         href=#keyword-literals>keyword</a>, literals. Expressions can be
       combined with <a href=/messages#operators>operators</a>, <a
         href=#keywords>keywords</a>, and <a
         href=/enumerables#array-literals>array</a>, <a
         href=/enumerables#hash-literals>hash</a>, <a
-        href=/enumerables#range-literals>range</a>, and interpolative literals,
-      to produce <dfn>compound expressions</dfn>.</p>
+        href=/enumerables#range-literals>range</a>, and interpolative
+      literals, to produce <dfn>compound expressions</dfn>.</p>
       <!-- How do message expressions fit into this definition? -->
-
-      <aside class=sidenote>
-      <span class=sidemark>†</span>As <a href=/references#refTURBAK08>Turbak,
-        Gifford, &amp; Sheldon</a> (2008,
-        pp. 20–22) note, this characterisation is patently false even for toy
-        languages since, in their example, <q>numerals can be broken down into
-          digits</q>, however we, too, will <q>ignore this detail</q>.
-      </aside>
-
-      <aside class=sidenote>
-        <span class=sidemark>‡</span>Double‐quoted strings or regexps that
-        interpolate other expressions are compound expressions.
-      </aside>
 
       <!-- TODO: Sidebar exceptions to "everything is a value" -->
 
@@ -240,18 +214,11 @@
     <section>
       <h1 id=statements>Statements</h1>
 
-      <aside class=sidenote>
-        <span class=sidemark>†</span>A further example of distinguishing
-        between statements and expressions by considering their context is
-        found in Turbak, Gifford, and Sheldon’s <a
-          href=/references#refTURBAK08><cite>Design Concepts in Programming
-            Languages</cite></a>, pp. 472—476.
-      </aside>
-
-      <p>A statement is an expression whose value is ignored<sup>†</sup>. In
-      practice, this implies that a statement is executed for its
-      side-effects, because an expression executed for neither its value nor
-      effect is semantically meaningless.</p>
+      <p>A statement is an expression whose value is ignored<a
+        href=#fn-value-ignored>†</a>. In practice, this implies that a
+      statement is executed for its side-effects, because an expression
+      executed for neither its value nor effect is semantically
+      meaningless.</p>
 
       <section>
         <h1 id=statement-terminators>Statement Terminators</h1>
@@ -292,20 +259,13 @@
     <p>The statements and expressions that comprise a program are collectively
     known as its <dfn>source code</dfn>. To execute a program its source code
     must be provided to a Ruby <dfn>interpreter</dfn>: the program that
-    executes Ruby source code. The reference implementation<sup>‡</sup> of
-    Ruby, or <abbr title="Matz’s Ruby Implementation">MRI</abbr>, contains an
-    interpreter called <code>ruby</code>, so when we speak of executing the
-    interpreter we are referring to running this program. The sections that
-    follow explain the various ways to execute source code.</p>
+    executes Ruby source code. The reference implementation<a
+      href=#fn-mri-19>†</a> of Ruby, or <abbr title="Matz’s Ruby
+      Implementation">MRI</abbr>, contains an interpreter called
+    <code>ruby</code>, so when we speak of executing the interpreter we are
+    referring to running this program. The sections that follow explain the
+    various ways to execute source code.</p>
 
-    <aside class=sidenote>
-      <span class=sidemark>‡</span>There are several excellent alternative
-      implementations such as <a href=//jruby.org/>JRuby</a> and <a
-        href=//rubini.us/>Rubinius</a>. However, for the purposes of this
-      book neither are recommended because, although JRuby is close, they are
-      not yet compatible with Ruby 1.9.
-    </aside>
-    
     <section>
       <h1 id=source-files>Source Files</h1>
 
@@ -318,22 +278,14 @@
       <section>
         <h1 id=shebang>Shebang</h1>
 
-        <p>The <dfn>shebang</dfn><sup>†</sup> is a notation for informing a
-        UNIX-like operating system of the interpreter with which a script should
-        be executed. If present it must appear as the first line of a source
-        file. It begins with a number sign (<code class=u
+        <p>The <dfn>shebang</dfn><a href=#fn-shebang>†</a> is a notation for
+        informing a UNIX-like operating system of the interpreter with which a
+        script should be executed. If present it must appear as the first line
+        of a source file. It begins with a number sign (<code class=u
           title='#'>U＋0023</code>) making it a legal comment line, therefore
         ignored by the interpreter, which is followed by an exclamation mark
         (<code class=u title='!'>U＋0021</code>) then the path to the
         interpreter.</p>
-
-        <aside class=sidenote>
-          <span class=sidemark>†</span>A portmanteau of <i>sharp</i> and
-          <i>bang</i> (<a href=/references#refWALL00>Wall, Christiansen, &amp;
-            Orwant</a>, p. 1001), colloquial terms for the number sign (<code
-            class=u title='#'>U＋0023</code>) and the exclamation mark (<code
-            class=u title='!'>U＋0021</code>), respectively.
-        </aside>    
 
         <p>A typical shebang is <code>#!/usr/bin/env ruby -w</code> which uses
         <code>env</code> to avoid hardcoding the path to the interpreter, and
@@ -359,19 +311,11 @@
           href=#shebang>shebang</a> line, the coding comment must appear on the
         second line; otherwise it must appear on the first.</p>
 
-        <aside class=sidenote>
-          <span class=sidemark>†</span>That the coding comment need only
-          <em>contain</em> <code>coding</code> allow Ruby to recognise Vim and
-          Emacs modelines which declare a file’s encoding. For example, <code>#
-            vim: set fileencoding=utf-8 :</code> informs both Vim and Ruby that
-          the file is encoded in UTF-8.
-        </aside>
-        
         <p>The coding comment is a US-ASCII string which begins with a number
-        sign (<code class=u title='#'>U＋0023</code>) and contains<sup>†</sup>
-        the string <code>coding</code> followed by an equals sign (<code class=u
-          title='='>U＋003D</code>) or colon (<code class=u
-          title=':'>U＋003A</code>) then the name of the
+        sign (<code class=u title='#'>U＋0023</code>) and contains<a
+          href=#fn-coding-contain>†</a> the string <code>coding</code>
+        followed by an equals sign (<code class=u title='='>U＋003D</code>) or
+        colon (<code class=u title=':'>U＋003A</code>) then the name of the
         source encoding. The encoding name is one of those returned by
         <code>Encoding.name_list</code> written in a case insensitive fashion.
 
@@ -431,4 +375,48 @@
       example: <code>eval 'puts 1 + 2'</code>.
     </section>
   </section>
+  <footer>
+    <h1>Footnotes</h1>
+
+    <ol>
+      <li id=fn-ripper><code>Ripper</code> is a class in the standard library
+      for parsing and analysing Ruby. The <code>Ripper.tokenize</code> method
+      takes a string of code as an argument and returns an array of its
+      constituent tokens.  Experiment with this method in <abbr
+        title="Interactive Ruby">IRB</abbr> (<code>irb -rripper</code>) to
+      test your assumptions of how tokenization works.
+      <li id=fn-expression-rec>We follow the lead of <a
+        href=/references#refAHO86>Aho, Sethi, &amp; Ullman</a> (1986) in
+      defining <i>expression</i> by recursion rather than direct description.
+      <li id=fn-expression-atomic>As <a href=/references#refTURBAK08>Turbak,
+        Gifford, &amp; Sheldon</a> (2008, pp. 20–22) note, this
+      characterisation is patently false even for toy languages since, in
+      their example, <q>numerals can be broken down into digits</q>, however
+      we, too, will <q>ignore this detail</q>.
+      <li id=fn-double-string>Double‐quoted strings that interpolate other
+      expressions are compound expressions.
+      <li id=fn-regexp-interp>Regexps that interpolate other expressions are
+      also compound expressions.
+      <li id=fn-value-ignored>A further example of distinguishing between
+      statements and expressions by considering their context is found in
+      Turbak, Gifford, and Sheldon’s <a
+        href=/references#refTURBAK08><cite>Design Concepts in Programming
+          Languages</cite></a>, pp. 472—476.
+      <li id=fn-mri-19>There are several excellent alternative implementations
+      such as <a href=//jruby.org/>JRuby</a> and <a
+        href=//rubini.us/>Rubinius</a>. However, for the purposes of this book
+      neither are recommended because, although JRuby is close, they are not
+      yet compatible with Ruby 1.9.
+      <li id=fn-shebang>A portmanteau of <i>sharp</i> and <i>bang</i> (<a
+        href=/references#refWALL00>Wall, Christiansen, &amp; Orwant</a>, p.
+      1001), colloquial terms for the number sign (<code class=u
+        title='#'>U＋0023</code>) and the exclamation mark (<code class=u
+        title='!'>U＋0021</code>), respectively.
+      <li id=fn-coding-contain>That the coding comment need only
+      <em>contain</em> <code>coding</code> allow Ruby to recognise Vim and
+      Emacs modelines which declare a file’s encoding. For example, <code>#
+        vim: set fileencoding=utf-8 :</code> informs both Vim and Ruby that
+      the file is encoded in UTF-8.
+    </ol>
+  </footer>
 </section>

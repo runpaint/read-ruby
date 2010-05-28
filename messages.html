@@ -40,29 +40,13 @@
         <cite><a href=/references#refKAY98 class=ref>Dr Alan Kay</a>, 1998</cite>
       </blockquote>
 
-      <p>A message is a <q>request for an object to perform some
-      operation</q> (<a href=/references#refBUDD87 class=ref>Budd</a>, p.
-      6). It consists of <q>a <i>receiver</i>, a message <i>selector</i>,
-      and zero or more <i>arguments</i>.</q> (<a href=/references#refBUDD87
-      class=ref>Budd</a>, p. 16).</p>
+      <p>A message<a href=#fn-telegram>†</a> is a <q>request for an object to
+      perform some operation</q> (<a href=/references#refBUDD87
+      class=ref>Budd</a>, p.  6). It consists of <q>a <i>receiver</i>, a
+      message <i>selector</i>, and zero or more <i>arguments</i>.</q> (<a
+      href=/references#refBUDD87 class=ref>Budd</a>, p. 16).</p>
       
       <!-- Diagram a message send -->
-      <aside class=sidenote>
-        <p><span class=number>†</span><a href=/references#refLIU99
-        class=ref>Liu</a> (p. 2) suggests that it can be helpful to envisage
-        messages as telegrams:</p>
-        
-        <blockquote cite=/references#refLIU99>
-          <p>“Message” is too abstract a word. A better word is
-          <i>telegram</i>. A “telegram” is tangible: I can touch it, I can
-          see the information it carries, and I can picture the moment it
-          arrives at the door of its addressee. It is not some vague
-          electronic-sounding thing like a “message”. Therefore, I encourage
-          you to think of an old-fashioned telegram whenever you see the
-          term “message”.  <cite><a class=ref href=/references#refLIU99>C.
-          Liu</a>, 1999</cite> 
-        </blockquote>
-      </aside>
     </section>
 
     <section>
@@ -144,32 +128,15 @@
       <!-- TODO: Talk here about "significant names"? Decide what material moves
       from the Method > Names section to here -->
 
-      <p>The message <dfn title="message selector">selector</dfn><sup>†</sup>
-      is the name of the operation the receiver should perform in response to
-      message.</p>
+      <p>The message <dfn title="message selector">selector</dfn><a
+      href=#fn-selector-sym>†</a> is the name of the operation the receiver
+      should perform in response to message.</p>
 
-      <aside class=sidenote>
-        <p><span class=sidemark>†</span>Subsequently we will refer to a
-        specific selector with the <a href=#symbols><code>Symbol</code>
-        literal syntax</a>, i.e.  <code>:<var>selector</var></code>: the
-        selector name prefixed with a colon. This is consistent with Ruby’s
-        general use of <code>Symbol</code>s, and distinguishes a selector from
-        a bare identifier.
-      </aside>
-
-      <p>The selector is assumed to be the name of a method
-      defined<sup>‡</sup> upon the receiver or one of its superclasses. If a
-      corresponding method is not found in the receiver, the <a
-      href=#method-missing>Method Missing</a> protocol is initiated.</p>
-
-      <aside class=sidenote>
-        <p><span class=sidemark>‡</span> A message selector may consist of any
-        <code>Symbol</code>, even those which are illegal when defining a
-        method with the <code>def</code> keyword. Methods with corresponding
-        names can be defined with <code>Object#define_method</code>, or such
-        messages can be handled by <a
-        href=#method-missing><code>:method_missing</code></a>.
-      </aside>
+      <p>The selector is assumed to be the name of a method defined<a
+      href=#fn-selector-validity>†</a> upon the receiver or one of its
+      superclasses. If a corresponding method is not found in the receiver,
+      the <a href=#method-missing>Method Missing</a> protocol is
+      initiated.</p>
     </section>
 
     <section>
@@ -248,31 +215,11 @@
       </figure>
 
       <p>The simplest <dfn title="message expression">expression for sending a
-      message</dfn> is <code><var>s</var></code><sup>†</sup>, where
+      message</dfn> is <code><var>s</var></code><a
+      href=#fn-expression-ambig>†</a>, where
       <var>s</var> is the message selector.  Omitting the name of the receiver
       to which <var>s</var> should be sent causes the <a
       href=#implicit-receiver>implicit receiver</a> to be assumed.</p>
-
-      <aside class=sidenote>
-        <span class=sidemark>†</span>The syntax explained above is
-        potentially ambiguous. If Ruby sees a bare identifier, e.g.
-        <code>glark</code>, is that a reference to a local variable or an
-        attempt to send a message to <code>self</code>?  If Ruby has
-        previously seen the identifier being assigned to, e.g.  <code>glark =
-        2</code>, it is treated as a variable reference; otherwise it is a
-        message.
-      </aside>
-
-      <aside class=sidenote>
-        <p><span class=sidemark>‡</span>An alternative to the
-        <code><var>receiver</var>.<var>selector</var></code> syntax is
-        <code><var>receiver</var>::<var>selector</var></code>, where the full
-        stop is replaced with a double colon (<code class=u
-        title=':'>U＋003A</code>).  However, the latter syntax has fallen out
-        of favour due to the confusion it creates between message sending and
-        constant reference expressions.  It is not recommended for use in new
-        code.
-      </aside>
 
       <figure class=left id=bare-selector-syntax.rb>
         <figcaption>A bare identifier is interpreted as a message selector
@@ -281,10 +228,11 @@
       </figure>
 
       <p>The receiver can be specified explicitly with the
-      <code><var>receiver</var>.<var>selector</var></code> syntax<sup>‡</sup>,
-      where <var>receiver</var> is an <a href=#explicit-receiver>explicit
-      receiver</a> separated from the <var>selector</var> with a full stop
-      (<code class=u title='.'>U＋002E</code>).</p>
+      <code><var>receiver</var>.<var>selector</var></code> syntax<a
+      href=#fn-expression-colon>†</a>, where <var>receiver</var> is an <a
+      href=#explicit-receiver>explicit receiver</a> separated from the
+      <var>selector</var> with a full stop (<code class=u
+      title='.'>U＋002E</code>).</p>
 
       <figure class=left id=receiver-dot-selector-syntax.rb>
         <figcaption>A message can be explicitly sent to an object by
@@ -527,20 +475,13 @@
       <h1 id=operators>Operators</h1>
 
       <p>An <dfn>operator</dfn> is a subspecies of message with a selector
-      consisting solely<sup>†</sup> of <abbr title='United
-      States'>US</abbr>-<abbr title='American Standard Code for Information
-      Interchange'>ASCII</abbr> punctuation characters, predefined <a
-      href=#arity>arity</a>, <a href=#associativity>associativity</a>, and <a
-      href=#precedence>precedence</a>, and an alternative expression syntax.
-      Its arguments are termed its <dfn>operands</dfn>.</p>
+      consisting solely<a href=#fn-operator-keyword>†</a> of <abbr
+      title='United States'>US</abbr>-<abbr title='American Standard Code for
+      Information Interchange'>ASCII</abbr> punctuation characters, predefined
+      <a href=#arity>arity</a>, <a href=#associativity>associativity</a>, and
+      <a href=#precedence>precedence</a>, and an alternative expression
+      syntax.  Its arguments are termed its <dfn>operands</dfn>.</p>
 
-      <aside class=sidenote>
-        <span class=sidemark>†</span>The table below contains
-        <code>and</code>, <code>or</code>, and <code>defined?</code>, but if
-        it makes you feel any better you can refer to them as <i>keywords</i>,
-        instead.
-      </aside>
-      
       <p>For example, the compound expression <code>1 + 2</code> comprises the
       <code>+</code> operator and two integer literals as operands. Its value
       is the result of summing the operands: the primary expression
@@ -556,21 +497,6 @@
       <!-- Background on redefinable NOTs:
            http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/14011 -->
       <!-- Unite with Methods > Operator Methods Table -->
-      <aside class=sidenote>    
-        <dl class='inline-small sidenote'>
-          <dt id=op-tbl-mean>&dagger;
-          <dd>The meaning ascribed to each operator is that of the core
-          classes’s;re-definable operators may have different semantics. 
-          <dt id=op-tbl-unary>&Dagger;
-          <dd>Unary operators with binary equivalents are shown with a
-          <code>@</code> suffix. This is the name of their selector, but the
-          suffix is omitted in operator expressions.
-          <dt id=op-tbl-meth>⁂
-          <dd>A ✔ in this column indicates that the operator is implemented
-          as a method, and therefore can be overridden by <a
-          href=/methods#operators>defining a method</a> with the same name.
-        </dl>
-      </aside>
 
       <figure class='railroad sidenote'>
         <img id=operator-method-selector.png>
@@ -579,15 +505,18 @@
 
       <table id=operator-table class=border>
         <caption>
-          A table of Ruby operators shown in order of descending
+          <p>A table of Ruby operators<a href=#fn-op-unary>†</a> and their
+          semantics<a href=#fn-op-meaning>‡</a> shown in order of descending
           precedence, where a decrease is shown by a change in background
-          colour.          
+          colour. A ✔ in the <i>Method?</i> column indicates that the operator
+          is implemented as a method, and therefore can be overridden by <a
+          href=/methods#operators>defining a method</a> with the same name.
         </caption>
         <thead>
           <tr>
             <th>Operator
-            <th>Meaning <a href=#op-tbl-mean>&dagger;</a>
-            <th>Method? <a href=#op-tbl-meth>⁂</a>
+            <th>Meaning
+            <th>Method?
         </thead>
         <tbody>
           <tr class=odd>
@@ -602,7 +531,7 @@
             <td>✔
           <tr class=odd>
             <td><code>+@</code>
-            <td>Unary plus <a href=#op-tbl-unary>&Dagger;</a>
+            <td>Unary plus 
             <td>✔
 
           <tr>
@@ -616,7 +545,7 @@
             <th colspan=3>Unary <span title="Right associative">&rarr;</span>
           <tr class="odd">
             <td><code>-@</code>
-            <td>Unary minus <a href=#op-tbl-unary>&Dagger;</a>
+            <td>Unary minus
             <td>✔
           <tr>
             <th colspan=3>Binary <span title="Left associative">&larr;</span>
@@ -913,22 +842,11 @@
       accessor’s name suffixed with an equals sign (<code>=</code>), is called
       an <dfn>attribute setter</dfn>. It sets the attribute to the value
       supplied. A message with a selector <code><var>selector</var>=</code>
-      can be used as an lvalue<sup>†</sup>, i.e.
+      can be used as an lvalue<a href=#fn-lvalue-ambig>†</a>, i.e.
       <code><var>receiver</var>.<var>selector</var> = <var>value</var></code>
       is equivalent to
       <code><var>receiver</var>.<var>selector</var>=(<var>value</var>).</code></p>
 
-      <aside id=ambiguous-lvalue-syntax class=sidenote>
-        <p><span class=number>†</span>The syntax <code>name = value</code> is
-        therefore ambiguous. Is the intent to assign the value
-        <code>value</code> to the local variable <code>name</code> or to send
-        the message <code>name=</code> with <code>value</code> as the
-        argument?
-
-        <p>The resolution is to either send the message with an explicit
-        receiver, or make it explicit that you are sending a message with
-        the <code><var>selector</var>=(<var>value</var>)</code> syntax.  
-      </aside>
     </section>
 
     <section>
@@ -1554,4 +1472,66 @@
     </section>
 
     <!-- #respond_to? and NotImplementedError -->
+    <footer>
+      <h1>Footnotes</h1>
+
+      <ol>
+        <li id=fn-telegram><a href=/references#refLIU99
+        class=ref>Liu</a> (p. 2) suggests that it can be helpful to envisage
+        messages as telegrams:
+        
+        <blockquote cite=/references#refLIU99>
+          <p>“Message” is too abstract a word. A better word is
+          <i>telegram</i>. A “telegram” is tangible: I can touch it, I can
+          see the information it carries, and I can picture the moment it
+          arrives at the door of its addressee. It is not some vague
+          electronic-sounding thing like a “message”. Therefore, I encourage
+          you to think of an old-fashioned telegram whenever you see the
+          term “message”.  <cite><a class=ref href=/references#refLIU99>C.
+          Liu</a>, 1999</cite> 
+        </blockquote>
+        <li id=fn-selector-validity>A message selector may consist of any
+        <code>Symbol</code>, even those which are illegal when defining a
+        method with the <code>def</code> keyword. Methods with corresponding
+        names can be defined with <code>Object#define_method</code>, or such
+        messages can be handled by <a
+        href=#method-missing><code>:method_missing</code></a>.
+        <li id=fn-selector-sym>Subsequently we will refer to a specific
+        selector with the <a href=#symbols><code>Symbol</code> literal
+          syntax</a>, i.e.  <code>:<var>selector</var></code>: the selector
+        name prefixed with a colon. This is consistent with Ruby’s general use
+        of <code>Symbol</code>s, and distinguishes a selector from a bare
+        identifier.
+        <li id=fn-expression-ambig>The syntax explained above is potentially
+        ambiguous. If Ruby sees a bare identifier, e.g.  <code>glark</code>,
+        is that a reference to a local variable or an attempt to send a
+        message to <code>self</code>?  If Ruby has previously seen the
+        identifier being assigned to, e.g.  <code>glark = 2</code>, it is
+        treated as a variable reference; otherwise it is a message.
+        <li id=fn-expression-colon>An alternative to the
+        <code><var>receiver</var>.<var>selector</var></code> syntax is
+        <code><var>receiver</var>::<var>selector</var></code>, where the full
+        stop is replaced with a double colon (<code class=u
+          title=':'>U＋003A</code>).  However, the latter syntax has fallen
+        out of favour due to the confusion it creates between message sending
+        and constant reference expressions.  It is not recommended for use in
+        new code.
+        <li id=fn-operator-keyword>The table below contains <code>and</code>,
+        <code>or</code>, and <code>defined?</code>, but if it makes you feel
+        any better you can refer to them as <i>keywords</i>, instead.
+        <li id=fn-op-unary>Unary operators with binary equivalents are shown
+        with a <code>@</code> suffix. This is the name of their selector, but
+        the suffix is omitted in operator expressions.
+        <li id=fn-op-meaning>The meaning ascribed to each operator is that of
+        the core classes’s; re-definable operators may have different
+        semantics. 
+        <li id=fn-lvalue-ambig>The syntax <code>name = value</code> is
+        therefore ambiguous. Is the intent to assign the value
+        <code>value</code> to the local variable <code>name</code> or to send
+        the message <code>name=</code> with <code>value</code> as the
+        argument? The resolution is to either send the message with an
+        explicit receiver, or make it explicit that you are sending a message
+        with the <code><var>selector</var>=(<var>value</var>)</code> syntax.  
+      </ol>
+    </footer>
 </section>

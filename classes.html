@@ -12,32 +12,16 @@
   <!-- http://blog.rubybestpractices.com/posts/rklemme/018-Complete_Class.html -->
   <!-- What does it mean to dup or clone a class? -->
 
-  <aside class=sidenote>
-    The term <i>class</i> is roughly analogous to its biological definition
-    where it denotes a taxonomic rank, however this analogy does not extend to
-    subclasses. That is, a subclass of a class is termed a <i>subclass</i>;
-    not an <i>order</i>.
-  </aside>
-
-  <p>A <dfn id=class>class</dfn> is a <i>classification</i> of objects. It
-  defines a set of methods, and can mint objects in its image.</p>
+  <p>A <dfn id=class>class</dfn><a href=#fn-biological>†</a> is a
+  <i>classification</i> of objects. It defines a set of methods, and can mint
+  objects in its image.</p>
 
   <section>
-    <aside class=sidenote>
-      Class names containing non-ASCII characters cannot be referred to
-      from source files with a different <a
-        href=/programs#source-encoding>source encoding</a>. For example,
-      a class name containing character the Greek small letter lamda
-      (<code class=u title='λ'>U＋03BB</code>) can only be referenced
-      from source files using the UTF-8 source encoding. <!-- FIXME:
-      What about other Unicode character sets? -->
-    </aside>
-
     <h1 id=names>Names</h1>
 
     <!-- Mention Ruby's preference for flat hierarchies -->
 
-    <p>A class<sup>†</sup> is named with a <a
+    <p>A class<a href=#fn-non-ascii>†</a> is named with a <a
       href=/variables#constants>constant</a>, and this name can be retrieved
     as a <code>String</code> by <code>Class#name</code>. This does not apply
     to <a href=#anonymous>anonymous</a> classes, of course, which have a name
@@ -236,19 +220,10 @@
 
   <section>
     <h1 id=singleton>Singleton Classes</h1>
-  
-    <aside class=sidenote>
-      <span class=sidemark>†</span><a href=/references#refFLAN08>Flanagan
-        &amp; Matsumoto</a> (2008, pp. 257–258) use the term
-      <i>eigenclass</i>, instead, but the preferred nomenclature is now
-      <i>singleton class</i>. See <a
-        href=//redmine.ruby-lang.org/issues/show/1082>Feature #1082: add
-        Object#singleton_class method</a> for the background.
-    </aside>
 
     <p>Every object is associated with two classes: that with which it was
     instantiated, and an anonymous class specific to the object: its
-    <dfn>singleton class</dfn><sup>†</sup>. 
+    <dfn>singleton class</dfn><a href=#fn-eigenclass>†</a>. 
 
     <p>That a singleton class is unique to a particular object means that
     methods defined within it-<a href=/methods#singleton>singleton</a>
@@ -273,18 +248,10 @@
     singleton class; attempting to open one causes a <code>TypeError</code>
     to be raised.</p>
 
-    <aside class=sidenote>
-      <span class=sidemark>‡</span>Prior to Ruby 1.9.2 the peculiar
-      <code>class &lt;&lt; <var>object</var>…end</code> construct— the
-      <code>class</code> keyword followed by two less-than signs, an
-      expression evaluating to an object, then the class body—was used to
-      open the singleton class of <var>object</var>.
-    </aside>
-
-    <p>The <code>Kernel#singleton_class</code><sup>‡</sup> method returns
-    the receiver’s singleton class as a <code>Class</code> object. It is
-    typically paired with <code>#class_eval</code> so as to operate within
-    the context of the class. 
+    <p>The <code>Kernel#singleton_class</code><a
+      href=#fn-singleton-syntax>‡</a> method returns the receiver’s singleton
+    class as a <code>Class</code> object. It is typically paired with
+    <code>#class_eval</code> so as to operate within the context of the class. 
   </section>
 
   <section>
@@ -458,4 +425,31 @@
     the appropriate <code>:try_convert</code> message, raising an exception if
     <code>nil</code> is returned. 
   </section>
+  <footer>
+    <h1>Footnotes</h1>
+    
+    <ol>
+      <li id=fn-biological>The term <i>class</i> is roughly analogous to its
+      biological definition where it denotes a taxonomic rank, however this
+      analogy does not extend to subclasses. That is, a subclass of a class is
+      termed a <i>subclass</i>; not an <i>order</i>.
+      <li id=fn-non-ascii>Class names containing non-ASCII characters cannot
+      be referred to from source files with a different <a
+        href=/programs#source-encoding>source encoding</a>. For example, a
+      class name containing character the Greek small letter lamda (<code
+        class=u title='λ'>U＋03BB</code>) can only be referenced from source
+      files using the UTF-8 source encoding. <!-- FIXME: What about other
+      Unicode character sets? -->
+      <li id=fn-eigenclass><a href=/references#refFLAN08>Flanagan &amp;
+        Matsumoto</a> (2008, pp. 257–258) use the term <i>eigenclass</i>,
+      instead, but the preferred nomenclature is now <i>singleton class</i>.
+      See <a href=//redmine.ruby-lang.org/issues/show/1082>Feature #1082: add
+        Object#singleton_class method</a> for the background.
+      <li id=fn-singleton-syntax>Prior to Ruby 1.9.2 the peculiar <code>class
+        &lt;&lt; <var>object</var>…end</code> construct— the
+      <code>class</code> keyword followed by two less-than signs, an
+      expression evaluating to an object, then the class body—was used to open
+      the singleton class of <var>object</var>.
+    </ol>
+  </footer>
 </section>

@@ -20,6 +20,7 @@ class Page
 
   def javascript
     nok.at('title').after(File.read('_script.html'))
+    nok.at('section').after(File.read('_foot.html'))
   end
 
   def contents
@@ -81,7 +82,28 @@ class Chapter < Page
     end.flatten.compact
   end
 
+  def footnotes
+    nok.css('a').select{|a| a['href'].start_with? '#fn-'}.each_with_index do |a,i|
+      idx = i.succ.to_s
+      ref = a['href'][1..-1]
+      a['class'] = 'fn'
+      a['id'] = 'ref-' + ref + "-#{idx}"
+      a['title'] = 'View footnote'
+      a['href'] += "-#{idx}"
+      a.inner_html = idx
+      a.swap("<sup>#{a}</sup>")
+      returner = %Q{ <a class=returner 
+                        href=##{a['id']} 
+                        title='Return to where you left off'>&#8617;</a>}
+      nok.at("##{ref}").tap do |li|
+        li['id'] += "-#{idx}"
+        li.add_child(Nokogiri::HTML.fragment returner)
+      end
+    end
+  end
+
   def contents
+    footnotes
     nok.css('figure').map do |fig|
       if fig['id'] and fig['id'].end_with?('.rb')
           example = dependencies.select{|d| d.source.end_with? fig['id']}.first
@@ -267,7 +289,14 @@ file 'out/chapter.css' => FileList['{main,chapter,syntax}.css'] + ['out'] do |t|
   File.open(t.name, 'w') do |f| 
     f.print t.prerequisites[0..-2].map{|n| File.read(n)}.join
   end
-  sh "yuicompressor #{t.name} | gzip --best -c >#{t.name}.gz"      
+  sh "yuicompressor #{t.name} > #{t.name}.min"
+  mv "#{t.name}.min", t.name
+  sh "gzip --best -c #{t.name} >#{t.name}.gz"      
+end
+
+file 'out/ui.js' => 'ui.js' do |t|
+  sh "yuicompressor #{t.prerequisites.first} > #{t.name}"
+  sh "gzip --best -c #{t.name} >#{t.name}.gz"      
 end
 
 rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|

@@ -80,19 +80,12 @@
       named constant. The simplest constant reference is a primary expression
       consisting solely of the constant’s name, e.g. <code>Constant</code>.</p>
 
-      <figure class=sidenote>
-        <span class=sidemark>†</span>That is, under <code>Object</code> or
-        <code>Kernel</code>, with the former taking precedence. See <a
-          href=#resolution-algorithm>Resolution Algorithm</a> for more
-        details.
-      </figure>
-
       <p>A constant reference may also be qualified by prefixing the constant
       name with the <q cite=/references#refTHOM09><dfn>scope
           operator</dfn></q> (<a href=/references#refTHOM09>Thomas et al.</a>,
       2009, pp. 336–339): two consecutive colon (<code class=u
         title=':'>U＋003A</code>) characters. This causes the constant to be
-      looked up in the global scope<sup>†</sup>.
+      looked up in the global scope<a href=#fn-global-scope>†</a>.
 
       <p>A reference may be qualified further by preceding the scope
       operator with an expression evaluating to the <code>Class</code> or
@@ -240,7 +233,7 @@
       <p>The following table lists global constants that Ruby defines
       automatically.</p>
 
-      <table class=border style=width:90%>
+      <table class=border>
         <caption>Predefined global constants</caption>
         <thead>
           <tr>
@@ -654,7 +647,7 @@
       <p>Ruby predefines certain global variables automatically. They are
       summarised in the following table.</p>
 
-      <table class=border style=width:90%>
+      <table class=border>
         <caption>Predefined global variables
         <thead>
           <tr>
@@ -912,54 +905,39 @@
     <code>nil</code> is returned if the operand is an undefined variable or
     method, an expression which uses <code>yield</code> without an associated
     block, or an expression which uses <code>super</code> without a
-    corresponding ancestor method. In all cases the test is conducted
-    without evaluating the operand.</p>
-    
+    corresponding ancestor method. In all cases the test is conducted without
+    evaluating the operand. Note that although a constant argument does not
+    cause <code>:const_missing</code> to be called, when the argument is a
+    message expression, <code>#respond_to_missing?</code> will be used to
+    determine method existence.</p>
+
     <figure id=defined.rb class=left>
       <figcaption>Using the <code>defined?</code> operator to test whether a
       variable or expression is defined
     </figure>
 
-    <aside class=sidenote>
-    <span class=sidemark>†</span><code>defined?</code> <a
-      href=//redmine.ruby-lang.org/issues/show/256#note-9>doesn’t</a> call
-      <code>const_missing</code> so the constant must truly be defined.
-    </aside>
-    
-    <aside class=sidenote>
-    <span class=sidemark>‡</span><code>defined?</code> will use <a
-      href=/methods#respond-to-missing><code>#respond_to_missing?</code></a>
-    to determine method existence
-    </aside>
-
     <!-- Couldn’t use nth-child selector because of rowspan -->
-    <table class=border style=width:60%>
-      <caption>The return values of the <code>defined?</code> operator
+    <table class=border>
+      <caption>The return values of the <code>defined?</code> operator.
       <thead>
         <tr><th>Operand<th>Return Value of <code>defined?</code>
       </thead>
       <tbody class=zebra>
         <tr><td>Defined local variable<td><code>"local-variable"</code>
         <tr><td>Defined global variable<td><code>"global-variable"</code>
-        <tr><td>Defined<sup>†</sup> constant<td><code>"constant"</code>
+        <tr><td>Defined constant<td><code>"constant"</code>
         <tr><td>Defined instance variable<td><code>"instance-variable"</code>
         <tr><td>Defined class variable<td><code>"class variable"</code>
         <tr><td><code>nil</code><td><code>"nil"</code>
         <tr><td><code>true</code><td><code>"true"</code>
         <tr><td><code>false</code><td><code>"false"</code>
         <tr><td><code>self</code><td><code>"self"</code>
-        <tr><td>Expression using <code>yield</code>
-            correctly<td><code>"yield"</code>
-        <tr><td>Expression using <code>super</code>
-            correctly<td><code>"super"</code>
+        <tr><td>Expression using <code>yield</code> correctly<td><code>"yield"</code>
+        <tr><td>Expression using <code>super</code> correctly<td><code>"super"</code>
         <tr><td>Assignment expression<td><code>"assignment"</code>
-              <tr><td>Message sending expression (doesn’t check
-                  arity)<sup>‡</sup>
-             <td><code>"method"</code>
+        <tr><td>Message sending expression (doesn’t check arity)<td><code>"method"</code>
         <tr><td>Any other legal expression<td><code>"expression"</code>
-        <tr><td>Undefined variable or invalid use of
-            <code>yield</code>/<code>super</code>
-            <td><code>nil</code>
+        <tr><td>Undefined variable or invalid use of <code>yield</code>/<code>super</code><td><code>nil</code>
       </tbody>
     </table>
   </section>
@@ -1192,13 +1170,6 @@
       </section>
 
       <section>
-        <aside class=sidenote>
-          <span class=sidemark>†</span><q cite=/references#refRAYMOND99>This
-          may derive from the ‘squashed bug’ appearence of the asterisk on
-          many early laser printers.</q> (<a
-          href=/references#refRAYMOND99>Raymond</a>, p. 422</a>).
-        </aside>
-
         <h1 id=splat>Splat Operator</h1>
         
         <!-- TODO: Mary this section with discussion of splat in Methods and
@@ -1206,7 +1177,7 @@
         
         <p>Lvalues and rvalues may optionally be directly preceded by an
         asterisk (<code class=u title='*'>U＋002A</code>), termed a
-        <dfn>splat</dfn><sup>†</sup> hereafter.</p>
+        <dfn>splat</dfn><a href=#fn-splat>†</a> hereafter.</p>
         
         <section>
           <h1 id=splat-lvalue>Splatting an Lvalue</h1>
@@ -1284,17 +1255,6 @@
       </section>
 
       <section>
-        <aside class=sidenote>
-          <span class=sidemark>†</span>Note that <code>:to_ary</code> is
-          sent rather than the <code>:to_a</code> used by the <a
-            href=#splat-rvalue>splat</a> operator. In the former case, the
-          programmer did not directly request that conversion take place so
-          the message for <a href=/objects#implicit-conversion>implicit</a>
-          conversion is sent; in the latter, his use of the splat operator
-          constitutes an <a href=/objects#explicit-conversion>explicit
-            conversion</a>, so the more liberal protocol is followed.
-        </aside>
-        
         <h1 id=parallel-assignment-one-rvalue>Many Lvalues, One Rvalue</h1>
 
         <figure class=left id=parallel-assignment-one-rvalue.rb>
@@ -1303,10 +1263,10 @@
           lvalue is assigned one element
         </figure>
 
-        <p>If there are multiple lvalues and a single rvalue that responds
-        to <code>:to_ary</code><sup>†</sup> with an <code>Array</code>, the
-        elements of this array become rvalues in their own right, replacing
-        the original rvalue.</p>
+        <p>If there are multiple lvalues and a single rvalue that responds to
+        <code>:to_ary</code><a href=#fn-to-ary>†</a> with an
+        <code>Array</code>, the elements of this array become rvalues in their
+        own right, replacing the original rvalue.</p>
 
         <figure class=left id=parallel-assignment-one-rvalue-nil.rb>
           <figcaption>When an <code>Array</code> with
@@ -1406,4 +1366,26 @@
       </section>
     </section>
   </section>
+  
+  <footer>
+    <h1>Footnotes</h1>
+    
+    <ol>
+      <li id=fn-global-scope>That is, under <code>Object</code> or
+      <code>Kernel</code>, with the former taking precedence. See <a
+        href=#resolution-algorithm>Resolution Algorithm</a> for more details.
+      <li id=fn-splat><q cite=/references#refRAYMOND99>This may derive from
+        the ‘squashed bug’ appearence of the asterisk on many early laser
+        printers.</q> (<a href=/references#refRAYMOND99>Raymond</a>, p.
+      422</a>).
+      <li id=fn-to-ary>Note that <code>:to_ary</code> is sent rather than the
+      <code>:to_a</code> used by the <a href=#splat-rvalue>splat</a> operator.
+      In the former case, the programmer did not directly request that
+      conversion take place so the message for <a
+        href=/objects#implicit-conversion>implicit</a> conversion is sent; in
+      the latter, his use of the splat operator constitutes an <a
+        href=/objects#explicit-conversion>explicit conversion</a>, so the more
+      liberal protocol is followed.
+    </ol>
+  </footer>
 </section>
