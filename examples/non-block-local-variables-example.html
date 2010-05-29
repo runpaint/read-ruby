@@ -1,1 +1,9 @@
-<a href=/examples/non-block-local-variables-example.rb></a>
+<a href=/examples/non-block-local-variables-example.rb><pre class=syntax><code><span class="n">v</span> <span class="o">=</span> <span class="ss">:out</span>
+<span class="mi">1</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> 
+  <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="ss">:in</span><span class="p">,</span> <span class="ss">:in</span> 
+  <span class="nb">p</span> <span class="o">[</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="o">]</span>
+<span class="k">end</span> <span class="c1">#=&gt; [:in, :in]</span>
+<span class="n">v</span> <span class="c1">#=&gt; :in</span>
+<span class="n">w</span> <span class="c1">#=&gt; NameError</span>
+</code></pre>
+</a>

@@ -3,8 +3,12 @@ require 'rake/clean'
 require 'nokogiri'
 require 'uri'
 require 'rspec/core/rake_task'
+require 'erb'
 
 ROOT_URL = URI.parse 'http://ruby.runpaint.org/'
+CLOBBER.include('out')
+
+directory 'out'
 
 class Page
   attr_accessor :source, :target, :nok
@@ -18,17 +22,11 @@ class Page
     @nok ||= Nokogiri::HTML(File.read source) 
   end
 
-  def javascript
-    nok.at('title').after(File.read('_script.html')) if nok.at('title')
-    nok.at('section').after(File.read('_foot.html')) if nok.at('section')
-  end
-
   def contents
     nok.to_s
   end
 
   def write
-    javascript
     data = contents
     File.open(target, 'w'){|f| f.print data}
     minify
@@ -57,11 +55,13 @@ class Chapter < Page
     super(@name + '.html')
   end
 
-  def headings(s=nok.at('section'), level=1)
+  def headings(s=nok.at('article'), level=1)
     a = ''
     unless (h1 = s.xpath('./h1')).inner_html.empty?
-      href = '/' + name + '#' + h1.first.attributes['id']
-      a = "<a href=#{href}>#{h1.inner_html.gsub(/ /,'&nbsp;')}</a>"
+      href = '/' + name
+      anchor = h1.first.attributes['id'].to_s
+      href += "##{anchor}" unless name == anchor
+      a = "<a href=#{href}>#{h1.inner_html}</a>"
     end
     titles = [a, 
               s.xpath('./section').map do |s2| 
@@ -118,7 +118,15 @@ class Chapter < Page
         end
       end
     end
-    nok.to_s
+    ERB.new(File.read('templates/chapter.rhtml')).result(binding)
+  end
+
+  def title
+    nok.at('h1').inner_html
+  end
+
+  def article
+    nok.at('article').inner_html
   end
 end
 
@@ -179,15 +187,10 @@ end
 
 class Book
   CHAPTERS = %w{programs variables messages methods objects classes modules
-                closures flow text enumerables}
-  APPENDICES = %w{punctuation keywords}
+                closures flow text enumerables punctuation keywords references}
   
   def chapters
     @chapters ||= CHAPTERS.map{|c| Chapter.new c}
-  end
-
-  def appendices
-    APPENDICES.map{|a| Page.new(a + '.html')}
   end
 
   def root
@@ -202,12 +205,8 @@ class Book
     @sitemap ||= Sitemap.new(chapters + chapters.map(&:dependencies) << toc << root)
   end
 
-  def references
-    Page.new('references.html')
-  end
-
   def dependencies
-    (chapters.dup << toc << root << sitemap << references << appendices).flatten 
+    (chapters.dup << toc << root << sitemap).flatten 
   end
 end
 
@@ -232,7 +231,9 @@ class ToC < Page
   end
 
   def contents
-    nok.tap{|n| n.at('section > h1').after(toc)}
+    nok.at('section > h1').
+        after(Nokogiri::HTML::DocumentFragment.parse toc)
+    nok
   end
 end
 
@@ -244,7 +245,7 @@ class Root < Page
   end
 
   def contents
-    nok.tap{|n| n.at('section > section > h1').after(front_toc)}
+    nok.tap{|n| n.at('section > h1').after front_toc}
   end
 
   def url
@@ -271,9 +272,6 @@ class Sitemap
   end
 end
 
-CLOBBER.include('out')
-directory 'out'
-
 rule(%r{^out/google} => ->(t){ source t }) do |t|
   cp t.source, t.name
 end
@@ -285,13 +283,21 @@ end
   end
 end
 
-file 'out/chapter.css' => FileList['{main,chapter,syntax}.css'] + ['out'] do |t|
-  File.open(t.name, 'w') do |f| 
-    f.print t.prerequisites[0..-2].map{|n| File.read(n)}.join
+{
+  :toc => [:main, :chapter, :toc],
+  :index => [:main, :index],
+  :chapter => [:main, :chapter, :syntax]
+}.each do |target, files|
+  target = "out/#{target}.css"
+  files = files.map{|f| "css/#{f}.css"}
+  file target => files do |t|
+    File.open(target, 'w') do |f| 
+      f.print files.map{|n| File.read(n)}.join
+    end
+    sh "yuicompressor #{target} > #{target}.min"
+    mv "#{target}.min", target
+    sh "gzip --best -c #{target} >#{target}.gz"      
   end
-  sh "yuicompressor #{t.name} > #{t.name}.min"
-  mv "#{t.name}.min", t.name
-  sh "gzip --best -c #{t.name} >#{t.name}.gz"      
 end
 
 file 'out/ui.js' => 'ui.js' do |t|
@@ -303,9 +309,8 @@ rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
   cp t.source, t.name
 end
 
-output_files = ['out', 'out/main.css', 'out/chapter.css', 'out/railroads', 'out/examples', 'out/fonts']
+output_files = ['out','out/railroads', 'out/examples', 'out/fonts']
 FileList['*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
-  next if f.start_with?('_')
   output_files << (f_out = 'out/' + f)
 end
 
@@ -316,33 +321,25 @@ book.chapters.each do |chapter|
       dep.write
     end
   end
-  file chapter.target => (chapter.dependencies.map(&:target) << chapter.source) do
-    chapter.write
-  end
-end
 
-book.appendices.each do |apdx|
-  file apdx.target => apdx.source do
-    apdx.write
+  dependencies = chapter.dependencies.map(&:target) << chapter.source << 'out/chapter.css'
+  file chapter.target => dependencies do
+    chapter.write
   end
 end
 
 chapters = book.chapters.map(&:target)
 
-file book.root.target => chapters.dup << book.root.source do
+file book.root.target => chapters.dup << book.root.source << 'out/index.css' do
   book.root.write
 end
 
-file book.toc.target => chapters.dup << book.toc.source do
+file book.toc.target => chapters.dup << book.toc.source << 'out/toc.css' do
   book.toc.write
 end
 
 file book.sitemap.target => chapters.dup << book.sitemap.source do
   book.sitemap.write
-end
-
-file book.references.target => book.references.source do
-  book.references.write
 end
 
 task :default => output_files + book.dependencies.map(&:target)
@@ -369,6 +366,5 @@ end
 task :rsync => :default do
   sh "rsync --delete -vazL out/ ruby:/home/public"
 end
-
 
 Rspec::Core::RakeTask.new(:rspec)

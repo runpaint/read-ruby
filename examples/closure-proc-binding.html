@@ -1,1 +1,10 @@
-<a href=/examples/closure-proc-binding.rb></a>
+<a href=/examples/closure-proc-binding.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Context</span>
+  <span class="vc">@@of</span> <span class="o">=</span> <span class="ss">:class</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">closure</span>
+    <span class="o">-&gt;</span><span class="p">{</span> <span class="vc">@@of</span> <span class="o">=</span> <span class="ss">:method</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="nb">eval</span> <span class="s2">&quot;@@of&quot;</span> <span class="c1">#=&gt; uninitialized class variable @@of in Object (NameError)</span>
+<span class="nb">eval</span> <span class="s2">&quot;@@of&quot;</span><span class="p">,</span> <span class="no">Context</span><span class="o">.</span><span class="n">closure</span><span class="o">.</span><span class="n">binding</span> <span class="c1">#=&gt; :class</span>
+</code></pre>
+</a>

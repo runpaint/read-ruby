@@ -1,0 +1,41 @@
+@font-face {
+	font-family: 'Goudy Bookletter 1911';
+	src: url('/fonts/goudy_bookletter_1911-webfont.eot');
+	src: local('☺'), url('/fonts/goudy_bookletter_1911-webfont.woff') format('woff'), url('/fonts/goudy_bookletter_1911-webfont.ttf') format('truetype'), url('/fonts/goudy_bookletter_1911-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'OFL Sorts Mill Goudy';
+	src: url('/fonts/OFLGoudyStM-webfont.eot');
+	src: local('☺'), url('/fonts/OFLGoudyStM-webfont.woff') format('woff'), url('/fonts/OFLGoudyStM-webfont.ttf') format('truetype'), url('/fonts/OFLGoudyStM-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+
+body {
+  font-family: 'OFL Sorts Mill Goudy', 'Linux Libertine', Palatino, 'Palatino Linotype', 
+               'Book Antiqua', Georgia, 'Times New Roman', serif;
+  font-style: normal;
+  font-size: large;
+  font-color: black;
+  background-color: white; 
+  margin-left: 12%;
+  margin-right: 12%;
+  /* TODO: Consider using off-white background colour like #FFFFF0. Would
+   * require updating syntax diagrams.
+   */
+}
+
+h1, h1 > code {
+  font-family: 'Goudy Bookletter 1911', Palatino, 'Palatino Linotype', 
+               'Book Antiqua', Georgia, 'Times New Roman', serif;
+  font-style: bold;
+}
+
+figure, figcaption, aside, section, article, footer {
+  display: block;
+}
