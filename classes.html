@@ -223,19 +223,33 @@
 
     <p>Every object is associated with two classes: that with which it was
     instantiated, and an anonymous class specific to the object: its
-    <dfn>singleton class</dfn><a href=#fn-eigenclass>†</a>. 
-
-    <p>That a singleton class is unique to a particular object means that
-    methods defined within it-<a href=/methods#singleton>singleton</a>
-    methods-are also unique to that object. Further, an object’s class-i.e.
-    the one which instantiated it-is the superclass of its singleton class.
-    Upon receiving a message an object asks his singleton class for a method,
-    the singleton class searches its instance methods and included modules,
-    then repeats the query to his superclass. This process continues,
-    recursively, up the inheritance hierarchy until a suitable method is
-    located. Therefore, singleton methods override all others because the
-    singleton class is the first place searched.
+    <dfn>singleton class</dfn><a href=#fn-eigenclass>†</a>. That a singleton
+    class is unique to a particular object means that methods defined within
+    it-<a href=/methods#singleton>singleton</a> methods-are also unique to
+    that object. 
     
+    <p>Further, an object’s class-i.e. the one which instantiated it-is the
+    superclass of its singleton class. Upon receiving a message an object
+    asks his singleton class for a method, the singleton class searches its
+    instance methods and included modules, then repeats the query to his
+    superclass. This process continues, recursively, up the inheritance
+    hierarchy until a suitable method is located. Therefore, singleton methods
+    override all others because the singleton class is the first place
+    searched.
+
+    <p>However, the singleton classes of <code>Class</code> objects behave
+    slightly differently. Consider two classes, <var>c</var> and <var>p</var>.
+    Now, if the superclass of <var>c</var> is <var>p</var>, then the
+    superclass of the singleton class of <var>c</var> is the singleton class
+    of <var>p</var>. This seemingly convoluted arrangement creates an
+    inheritance hierarchy of singleton classes parallel to that of normal
+    classes, allowing class methods to be inherited.</p>
+
+    <figure id=class-singleton-class.rb>
+      <figcaption>A class’s singleton class inherits from that of its
+      superclass, therefore a class inherits its parent’s class methods.
+    </figure>
+
     <p>The singleton class is a curious hybrid between class and module
     because although it has a superclass, it cannot be instantiated. However,
     the latter shortcoming is surely a blessing, as without it class

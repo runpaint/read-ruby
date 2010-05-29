@@ -19,8 +19,8 @@ class Page
   end
 
   def javascript
-    nok.at('title').after(File.read('_script.html'))
-    nok.at('section').after(File.read('_foot.html'))
+    nok.at('title').after(File.read('_script.html')) if nok.at('title')
+    nok.at('section').after(File.read('_foot.html')) if nok.at('section')
   end
 
   def contents

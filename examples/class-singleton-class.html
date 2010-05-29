@@ -1,0 +1,12 @@
+<a href=/examples/class-singleton-class.rb><pre class=syntax><code><span class="c1"># coding: utf-8</span>
+<span class="k">class</span> <span class="nc">P</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">convoluted?</span>
+    <span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">C</span> <span class="o">=</span> <span class="no">Class</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">superclass</span> <span class="o">==</span> <span class="n">P</span>                                 <span class="c1">#=&gt; true</span>
+<span class="n">C</span><span class="o">.</span><span class="n">singleton_class</span><span class="o">.</span><span class="n">superclass</span> <span class="o">==</span> <span class="n">P</span><span class="o">.</span><span class="n">singleton_class</span> <span class="c1">#=&gt; true</span>
+<span class="n">C</span><span class="o">.</span><span class="n">convoluted?</span>                                     <span class="c1">#=&gt; true</span>
+</code></pre>
+</a>
