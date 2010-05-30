@@ -118,6 +118,10 @@ article > section > section > h1 {
 article > section > section > section > h1 {
   font-size: 110%;
 }
+code {
+  font-family: Inconsolata, 'Courier New', 'Courier', monospace;
+  font-size: 80%;
+}
 
 h1.runin {
   font-size: 100%;
@@ -133,10 +137,7 @@ figure {
   padding-left: 1em;
 }
 
-.syntax > code {
-  font-family: Iconsolata, 'Courier New', 'Courier', monospace;
-  font-size: 70%;
-}
+
 figure.railroad {
   margin-right: 0;
   margin-left: -12%;
