@@ -256,12 +256,6 @@
             <figcaption>Syntax diagram of a Unicode codepoint in hexadecimal
           </figure>
 
-          <p>Both escapes above force the string in which they are
-          embedded to have UTF-8 encoding. However, they are illegal
-          in a file that has both a non-UTF-8 source encoding and
-          a string containing literal multibyte characters in that
-          encoding.</p>
-
           <figure class=centre id=unicode-escape.rb>
             <figcaption>A Unicode escape represents a Unicode character with
             the given codepoint(s)
@@ -475,6 +469,122 @@
     <code>String#codepoints</code>, byte with <code>String#bytes</code>,
     character with <code>String#chars</code>, or line with
     <code>String#lines</code>.</p>
+
+    <section>
+      <h1 id=string-encoding>Encoding</h1>
+
+      <p>The encoding of a <code>String</code> literal is normally that of the
+      source file in which it appears. However, both forms of the Unicode
+      escape sequence force the string in which they are embedded to have
+      UTF-8 encoding. Therefore they are illegal in a file that has both a
+      non-UTF-8 source encoding and a string containing literal multibyte
+      characters in that encoding.</p>
+
+      <!-- String#bytes to inspect encoding -->
+      <!-- String#valid_encoding? -->
+
+      <section>
+        <h1 id=string-transcode>Transcoding</h1>
+
+        <p><dfn>Transcoding</dfn> a <code>String</code> converts its bytes to
+        the equivalent byte sequences in a given encoding, then tags the new
+        string with the new encoding. It is performed with
+        <code>String#encode</code>, which returns its receiver transcoded from
+        a <var>source</var> encoding to a <var>target</var> encoding.
+        <code>String#encode!</code> operates in the same manner, but
+        transcodes the receiver in-place.
+
+        <p>By default, <var>source</var> is the receiver’s current encoding,
+        and <var>target</var> is the default_internal encoding. When called
+        with one encoding argument, this becomes the <var>target</var>
+        encoding. When called with two encoding arguments, the first is the
+        <var>target</var>, the second is the <var>source</var>.
+
+        <p>If a character in the <code>String</code> does not exist in the
+        <var>target</var> encoding, or the <code>String</code> contains
+        bytes invalid in its current encoding, an exception is raised.
+        This behaviour can be changed by supplying an <var>options</var>
+        <code>Hash</code> as the final argument, whose form is described in
+        the table that follows.</p>
+
+        <table class=border>
+          <caption>The keys and values that are recognised in the
+            <var>options</var> <code>Hash</code> accepted by
+            <code>String#encode</code> and <code>String#encode!</code>. The
+            <i>Key</i> column names a key of the <code>Hash</code>, and the
+            <i>Values</i> column specifies its possible values.
+          <thead>
+            <tr>
+              <th>Key
+              <th>Values
+              <th>Description
+          <tbody class=zebra>
+            <tr>
+              <td><code>:cr_newline</code>
+              <td><code>true</code> or <code>false</code>
+                <td>Whether to convert <code>\n</code> to <code>\r</code>.  
+            <tr>
+              <td><code>:crlf_newline</code>
+              <td><code>true</code> or <code>false</code>
+              <td>Whether to convert <code>\n</code> to <code>\r\n</code>.  
+            <tr>
+              <td><code>:invalid</code>
+              <td><code>:replace</code> or <code>nil</code>
+              <td>A value of <code>:replace</code> causes characters invalid
+                in the source encoding to be substituted for the replacement
+                string. A value of <code>nil</code>, which is the default,
+                causes an <code>Encoding::InvalidByteSequenceError</code>
+                exception to be raised in this scenario.
+            <tr>
+              <td><code>:replace</code>
+              <td><code>String</code>
+                <td>The <dfn>replacement string</dfn> used by the
+                <code>:invalid</code> or <code>:undef</code> options. By
+                default, it is <code class=u>U+FFFD</code> for Unicode
+                encodings and <code>?</code> for others.
+            <tr>
+              <td><code>:undef</code>
+              <td><code>:replace</code> or <code>nil</code>
+              <td>A value of <code>:replace</code> causes characters invalid
+                in the destination encoding to be substituted for the
+                replacement string. A value of <code>nil</code>, which is the
+                default, causes an
+                <code>Encoding::UndefinedConversionError</code> exception to
+                be raised in this scenario.
+            <tr>
+              <td><code>:universal_newline</code>
+              <td><code>true</code> or <code>false</code>
+              <td>When true, <code>\r\n</code> and <code>\r</code> are
+                converted to <code>\n</code>.
+            <tr>
+              <td>:xml
+              <td><code>:text</code> or <code>:attr</code>
+              <td>Replaces <code>&amp;</code> with <code>&amp;amp;</code>,
+                <code>&lt;</code> with <code>&amp;lt;</code>,
+                <code>&gt;</code> with <code>&amp;gt;</code>, and undefined
+                characters with a hexadecimal entity of the form
+                <code>&amp;#x<var>hex</var>;</code>, where <var>hex</var> is
+                a sequence of hexadecimal digits. In addition, when a value
+                of <code>:attr</code> is supplied, <code>"</code> is
+                replaced with <code>&amp;quot;</code>.
+        </table>
+      </section>
+
+      <section>
+        <h1 id=string-encoding-tag>Tagging</h1>
+
+        <p>The encoding associated with a <code>String</code> may be changed
+        independently of its contents. This is necessary if the contents are
+        valid in one encoding, but associated, or <dfn>tagged</dfn>, with
+        another. Transcoding would be inappropriate because it would alter the
+        underlying bytes, which are already perfectly valid. The solution is
+        <code>String#force_encoding</code>, which tags its receiver with the
+        encoding given as an argument.
+
+        <p>Two <code>String</code>s tagged with different encodings do not
+        compare as equal even when they consist of identical byte sequences. 
+      </section>
+    </section>
   </section>
       
   <section>
