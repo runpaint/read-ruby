@@ -1,9 +1,0 @@
-<a href=/examples/closure-binding-nameerror.rb><pre class=syntax><code><span class="c1"># Create a closure referencing an undefined _array_ variable </span>
-<span class="n">size</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">{</span> <span class="n">array</span><span class="o">.</span><span class="n">size</span> <span class="p">}</span>
-<span class="c1"># Define an _array_ variable in the same scope </span>
-<span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
-<span class="c1"># A NameError is raised because _array_ was not </span>
-<span class="c1"># defined in the closure’s binding</span>
-<span class="n">size</span><span class="o">.</span><span class="n">call</span> <span class="c1">#=&gt; NameError: undefined local variable or method `array&#39; for main:Object</span>
-</code></pre>
-</a>

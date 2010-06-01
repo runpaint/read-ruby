@@ -1,8 +1,0 @@
-<a href=/examples/and-operator-fig.rb><pre class=syntax><code><span class="k">class</span> <span class="nc">Integer</span>
-  <span class="k">def</span> <span class="nf">power_of_2?</span>
-    <span class="n">nonzero?</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nb">self</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">self</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">zero?</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-<span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:power_of_2?</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 4, 8, 16, 32, 64]</span>
-</code></pre>
-</a>

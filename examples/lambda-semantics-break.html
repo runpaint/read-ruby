@@ -1,9 +1,0 @@
-<a href=/examples/lambda-semantics-break.rb><pre class=syntax><code><span class="n">hug</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">who</span><span class="p">)</span> <span class="k">do</span>
-  <span class="k">break</span> <span class="s2">&quot;{</span><span class="si">#{</span><span class="n">who</span><span class="si">}</span><span class="s2">}&quot;</span>
-  <span class="ss">:xxx</span> <span class="c1"># Not reached</span>
-<span class="k">end</span>
-<span class="nb">name</span> <span class="o">=</span> <span class="ss">:maria</span>
-<span class="nb">p</span> <span class="o">[</span><span class="s2">&quot;Hugging </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">hug</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="nb">name</span><span class="p">),</span> <span class="s2">&quot;Hugged </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">]</span>
-<span class="c1">#=&gt; [&quot;Hugging maria&quot;, &quot;{maria}&quot;, &quot;Hugged maria&quot;]</span>
-</code></pre>
-</a>

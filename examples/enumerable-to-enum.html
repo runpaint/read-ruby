@@ -1,7 +1,0 @@
-<a href=/examples/enumerable-to-enum.rb><pre class=syntax><code><span class="n">latin</span> <span class="o">=</span> <span class="s2">&quot;Tu ne cede malis, sed contra audentior ito&quot;</span>
-<span class="n">char_string</span> <span class="o">=</span> <span class="n">latin</span><span class="o">.</span><span class="n">to_enum</span><span class="p">(</span><span class="ss">:each_char</span><span class="p">)</span>
-<span class="n">vowels</span><span class="p">,</span> <span class="n">consonants</span> <span class="o">=</span> <span class="n">char_string</span><span class="o">.</span><span class="n">partition</span><span class="p">{</span><span class="o">|</span><span class="n">char</span><span class="o">|</span> <span class="n">char</span> <span class="o">=~</span> <span class="sr">/[aeiou]/</span><span class="p">}</span>
-<span class="n">vowels</span> <span class="c1">#=&gt; </span>
-<span class="c1"># [&quot;u&quot;, &quot;e&quot;, &quot;e&quot;, &quot;e&quot;, &quot;a&quot;, &quot;i&quot;, &quot;e&quot;, &quot;o&quot;, &quot;a&quot;, &quot;a&quot;, &quot;u&quot;, &quot;e&quot;, &quot;i&quot;, &quot;o&quot;, &quot;i&quot;, &quot;o&quot;]</span>
-</code></pre>
-</a>
