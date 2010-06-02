@@ -86,19 +86,32 @@
     encodings such as <i>US-ASCII</i>, or a variable number of bytes in
     encodings such as <i>UTF-8</i>. In either case, it is the encoding which
     interprets a specific sequence of bytes as a character, and the encoding
-    which specifies which character a given sequence of bytes represents.</p>
+    which specifies the character a given sequence of bytes represents.</p>
 
     <section>
       <h1 id=character>Character</h1>
-    
+
       <figure class=railroad>
         <img id=character-literal.png>
         <figcaption>Syntax diagram of the character literal
       </figure>
 
+      <!-- In early days of Ruby M17N development, Character class was on the
+      table. It was not the special case of String class, but just Character
+      class. -->
       <p>A single character prefixed with a question mark
       (<code>?<var>char</var></code>) instantiates a <code>String</code>
-      comprising the character.
+      comprising the character. Likewise, <var>char</var> may be a <a
+        href=#character-escapes>character escape</a> that results in a single
+      character, such as <code>\u<var>hex</var></code>, <code>\n</code>,
+      <code>\t</code>, or a byte escape. <code>?<var>char</var></code> is
+      equivalent to <code>"<var>char</var>"</code>.
+
+      The <code>String</code> may be treated as an <code>Array</code> of
+      characters with <code>String#[]</code>, which returns the character at a
+      given <code>Integer</code> offset. Similarly, <code>String#[]=</code>
+      allows assigning a character to a given offset.  In both cases the
+      offset is zero-based.</p>
     </section>
     
     <!-- TODO: alternative delimiters-->
@@ -263,6 +276,10 @@
               hexadecimal digits
             </figure>
           </section>
+
+          <p>Both of these byte escapes force the string in which they are
+          embedded to have <a href=#ascii-8bit>ASCII-8BIT</a> encoding if the
+          bytes are invalid in the source encoding. 
         </section>
 
         <section>
@@ -341,6 +358,11 @@
             <figcaption>A Unicode escape represents a Unicode character with
             the given codepoint(s)
           </figure>
+
+          <p>Both forms of the Unicode escape sequence force the string in
+          which they are embedded to have UTF-8 encoding. Therefore they are
+          illegal in a file that has both a non-UTF-8 source encoding and a
+          string containing literal multibyte characters in that encoding.
         </section>
 
         <table class=border>
@@ -554,12 +576,14 @@
     <section>
       <h1 id=string-encoding>Encoding</h1>
 
+      <!--
+      Originally, an ASCII-only String literal had US-ASCII encoding even in
+      a file with UTF-8 source encoding. Now it doesn't; it remains UTF-8.
+      However, regexps retain this behaviour...
+      -->
       <p>The encoding of a <code>String</code> literal is normally that of the
-      source file in which it appears. However, both forms of the Unicode
-      escape sequence force the string in which they are embedded to have
-      UTF-8 encoding. Therefore they are illegal in a file that has both a
-      non-UTF-8 source encoding and a string containing literal multibyte
-      characters in that encoding.</p>
+      source file in which it appears, with the caveats noted above for
+      Unicode and byte escapes.</p>
 
       <!-- String#bytes to inspect encoding -->
 
@@ -663,13 +687,21 @@
         valid in one encoding, but associated, or <dfn>tagged</dfn>, with
         another. Transcoding would be inappropriate because it would alter the
         underlying bytes, which are already perfectly valid. The solution is
-        <code>String#force_encoding</code>, which tags its receiver with the
-        encoding given as an argument. This operation will always succeed,
-        even if the <code>String</code>’s contents are <a
+        the destructive method <code>String#force_encoding</code>, which tags
+        its receiver with the encoding given as an argument. This operation
+        will always succeed, even if the <code>String</code>’s contents are <a
           href=#valid-encoding>invalid</a> in the new encoding.
 
-        <p>Two <code>String</code>s tagged with different encodings do not
-        compare as equal even when they consist of identical byte sequences. 
+        <p>Yui Naruse, a member of the Ruby core team, cautions against the
+        use of this method: <q><code>String#force_encoding</code> should be
+          sparsely used since Strings have already had appropriate encodings
+          assigned when those are created, or read from files specifying the
+          encoding.&hellip; If you need to use
+        <code>String#force_encoding</code> in your library, you should
+        reconsider your library design. You should not use this method
+        thoughtlessly.</q> <a href=#refHARADA09 class=ref><cite>The Design and
+          Implementation of Ruby M17N</cite>, Yui Naruse, Yoko Harada
+        trans.</a>
       </section>
 
       <section>
@@ -677,13 +709,16 @@
 
         <p>A <code>String</code>’s encoding is <dfn title='valid
           encoding'>valid</dfn> if its constituent bytes are properly formed
-        according to the encoding it is tagged with. In general, if you create
-        a <code>String</code> via a literal, or consume a
-        <code>String</code> as input that is validly encoded, manipulating it
-        as a sequence of characters will ensure its encoding remains valid.
-        However, tagging a <code>String</code> with an improper encoding,
-        treating it as <a href=#byte-arrays>byte array</a>, or consuming
-        garbage input, may all result in an invalid encoding. The
+        according to the encoding it is tagged with. This check makes no
+        claims as to whether the characters in the <code>String</code> exist
+        in the encoding, for it inspects syntax rather than semantics.
+
+        <p>In general, if you create a <code>String</code> via a literal, or
+        consume a <code>String</code> as input that is validly encoded,
+        manipulating it as a sequence of characters will ensure its encoding
+        remains valid.  However, tagging a <code>String</code> with an
+        improper encoding, treating it as <a href=#byte-arrays>byte array</a>,
+        or consuming garbage input, may all result in an invalid encoding. The
         <code>String#valid_encoding?</code> predicate returns
         <code>true</code> if the <code>String</code>’s encoding is valid;
         <code>false</code> otherwise.
@@ -714,10 +749,12 @@
       <code>String#bytes</code> returns an <code>Enumerator</code> of its
       receiver’s bytes, represented as <code>Fixnum</code>s. A specific byte
       position may be assigned to with <code>String#setbyte(<var>index</var>,
-        <var>byte</var>)</code>, where <var>index</var> is the zero-based offset
-      of the byte to be changed, and <var>byte</var> is the new value as an
-      <code>Integer</code>. A byte may be retrieved from a given offset with
-      <code>String#getbyte(<var>index</var>)</code>.
+        <var>byte</var>)</code>, where <var>index</var> is the zero-based
+      offset of the byte to be changed, and <var>byte</var> is the new value
+      as an <code>Integer</code>. A byte may be retrieved from a given offset
+      with <code>String#getbyte(<var>index</var>)</code>. The length of a
+      <code>String</code> in bytes is returned by <code>String#bytesize</code>
+      as an <code>Integer</code>.
 
       <p>Byte-level access generally assumes that the <code>String</code> is
       encoded in <a href=#ascii-8bit><i>ASCII-8BIT</i></a>; otherwise,
@@ -737,6 +774,30 @@
       encoding. <code>String#bytesize</code>, however, returns the number of
       bytes contained in its receiver. It is unaffected by
       <code>String#force_encoding</code>.
+    </section>
+
+    <section>
+      <h1 id=string-equivalence>Equivalence</h1>
+
+      <p>For two <code>String</code>s to compare as equal in terms of
+      <code>String#==</code>, they must be byte-wise identical and tagged
+      with the same encoding. This last condition is dropped when both
+      <code>String</code>s consist entirely of ASCII characters and have an
+      ASCII-compatible encoding.
+    </section>
+
+    <section>
+      <h1 id=string-concatenation>Concatenation</h1>
+
+      <p>To concatenate two <code>String</code>s one of the following
+      conditions must hold:
+
+      <ul>
+        <li>Both encodings are ASCII-compatible and one of the
+        <code>String</code>s is ASCII-only.
+        <li>One of the <code>String</code>s is empty.
+        <li>The two encodings are compatible.
+      </ul>
     </section>
   </section>
       
@@ -808,6 +869,29 @@
     <code>Symbol</code>, for a named group, or an <code>Integer</code>.
      
     <!-- String#gsub? -->
+    <section>
+      <h1 id=regexp-encoding>Encoding</h1>
+
+      <p>A <code>Regexp</code> is associated with an encoding which must be
+      compatible with that of the <code>String</code> it is matched against.
+      By default a <code>Regexp</code> has the same encoding as the source
+      file in which it is contained, with the following exceptions:
+
+      <ul>
+        <li>An ASCII-only Regexp has the encoding US-ASCII when the source
+        encoding is ASCII-compatible.
+        <li>An encoding option has been specified, in which case the
+        corresponding encoding is used, as follows:
+          <dl>
+            <dt><code>u</code><dd>UTF-8
+            <dt><code>e</code><dd>EUC-JP
+            <dt><code>s</code><dd>Windows-31J
+            <dt><code>n</code><dd>ASCII-8BIT
+          </dl>
+          <li>The use of Unicode character escapes within a pattern force the
+          <code>Regexp</code> to have UTF-8 encoding.
+        </ul>
+    </section>
   </section>
 
   <section>
