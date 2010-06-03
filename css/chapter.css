@@ -177,6 +177,17 @@ li.footnote-container {
 
 /*********** 
  *         *
+ * LISTS   *
+ *         *
+ ***********/
+
+dl.inline dt {
+  display: run-in;
+  padding-right: 1em;
+}
+
+/*********** 
+ *         *
  * TABLES  *
  *         *
  ***********/

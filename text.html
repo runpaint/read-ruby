@@ -699,9 +699,9 @@
           encoding.&hellip; If you need to use
         <code>String#force_encoding</code> in your library, you should
         reconsider your library design. You should not use this method
-        thoughtlessly.</q> <a href=#refHARADA09 class=ref><cite>The Design and
-          Implementation of Ruby M17N</cite>, Yui Naruse, Yoko Harada
-        trans.</a>
+        thoughtlessly.</q> (<a href=#refHARADA09 class=ref><cite>The Design and
+          Implementation of Ruby M17N</cite></a>, Yui Naruse, Yoko Harada
+        trans.)
       </section>
 
       <section>
@@ -729,11 +729,8 @@
 
         <p>Many operations on <code>String</code>s contain optimisations for
         <code>String</code>s that are <dfn>ASCII-only</dfn>-containing 7-bit
-        ASCII characters exclusively-regardless of the associated encoding. We
-        saw an example of this with <code>String</code> literals: they’re
-        tagged with the source encoding by default, but downgrade to
-        <i>US-ASCII</i> if the <code>String</code> is ASCII-only. Similarly,
-        two <code>String</code>s with disparate encodings can be <a
+        ASCII characters exclusively-regardless of the associated encoding.
+        For example, two <code>String</code>s with disparate encodings are <a
           href=#encoding-compatibility>compatible</a> if they’re both
         ASCII-only. In general, however, these optimisations are transparent
         so can be safely ignored. The <code>String#ascii_only?</code>
@@ -882,55 +879,107 @@
         encoding is ASCII-compatible.
         <li>An encoding option has been specified, in which case the
         corresponding encoding is used, as follows:
-          <dl>
+          <dl class=inline>
             <dt><code>u</code><dd>UTF-8
             <dt><code>e</code><dd>EUC-JP
             <dt><code>s</code><dd>Windows-31J
             <dt><code>n</code><dd>ASCII-8BIT
           </dl>
-          <li>The use of Unicode character escapes within a pattern force the
-          <code>Regexp</code> to have UTF-8 encoding.
-        </ul>
+        <li>The use of Unicode character escapes within a pattern force the
+        <code>Regexp</code> to have UTF-8 encoding.
+      </ul>
+
+      <p>In addition to the single-letter encoding options described above, a
+      <code>Regexp</code> can be encoded in any supporting encoding. This
+      requires the <code>Regexp</code> to be constructed with
+      <code>Regexp.new</code>, passing it the pattern as a <code>String</code>
+      associated with the desired encoding. The same technique, <i>mutatis
+        mutandis</i>, can be used with <code>String#force_encoding</code> to
+      tag the <code>Regexp</code> with a different encoding.</p>
+
+      <figure id=regexp-specify-encoding.rb>
+        <figcaption>Initially, this <code>Regexp</code> adopts the source
+        encoding. Passing <code>Regexp.new</code> the pattern encoded as
+        ISO-8859-1 creates a regexp with the same pattern and the given
+        encoding.
+      </figure>
+
+      <section>
+        <h1 id=regexp-fixed-encoding>Fixed Encoding</h1>
+
+        <p>The encoding of a <code>Regexp</code> is said to be <dfn
+          title='fixed encoding'>fixed</dfn> if its encoding and/or pattern is
+        incompatible with ASCII. This is significant because a
+        <code>Regexp</code> with a non-fixed encoding can match any
+        <code>String</code> whose encoding is ASCII-compatible. The
+        <code>Regexp#fixed_encoding?</code> predicate returns
+        <code>true</code> if its receiver’s encoding is fixed;
+        <code>false</code> otherwise.
+      </section>
     </section>
   </section>
 
   <section>
     <h1 id=symbols>Symbols</h1>
 
-    <p>A <code>Symbol</code> represents a name.  <code>Symbol</code>s are
-    immutable immediates. Two symbols with the same content will always be
-    represented by the same object, e.g. <code>:glark.object_id ==
-      :glark.object_id</code>, so symbol comparisons are extremely
-    efficient.  However, <code>Symbol</code> objects are not
+    <p>A <code>Symbol</code> is an immutable immediate representing an
+    identifier. Two symbols with the same content will always be represented
+    by the same object, e.g. <code>:glark.object_id ==
+      :glark.object_id</code>, so symbol comparisons are extremely efficient.
+    However, <code>Symbol</code> objects are not
     garbage collected, so are unsuitable for storing data from unbounded
-    collections; use <code>String</code>s instead.</p>
-    
-    <figure class='railroad sidenote'>
-      <img id=symbol.png>
-    </figure>
+    collections; use <code>String</code>s instead. <code>Symbol</code>s are
+    used for unique identifiers, such as <code>Hash</code> keys, as message
+    selectors and method names, and as a substitute for constants.</p>
 
-    <p><code>Symbol</code>s are used for unique identifiers, such
-    as <code>Hash</code> keys, as message selectors and method
-    names, and as a substitute for constants.
-
-    <p>A symbol is an <a href=/programs#identifiers>identifier</a> or an <a
-      href=/messages#operators>operator method selector</a>. A
-    <code>Symbol</code> literal consists of a colon (<code class=u
-      title=':'>U＋003A</code>) followed by an symbol or <code>String</code>
-    literal, e.g.  <code>:roland_barthes</code> or
-    <code>:'887'</code>. The
-    <code>%s<var>delimiter</var>…<var>delimiter</var></code> construct
-    enables symbols to be specified between arbitrary delimiters along the
-    same lines as <a href=#single-quoted-strings-q><code>%q</code></a>.</p>
-
-    <figure class='centre railroad'>
+    <figure class=railroad>
     <!-- TODO: Exclude \0 -->
       <!-- TODO: Look for other exceptions to this rule -->
-      <img class=inline id=symbol-literal.png>
-      <figcaption class=clear>Syntax diagram of the symbol literal
+      <img id=symbol.png>
+      <figcaption>Syntax diagram of a symbol
     </figure>
 
-    <!-- #to_sym -->
+    <p>A <code>Symbol</code> literal consists of a colon (<code class=u
+      title=':'>U＋003A</code>) followed by a symbol or <code>String</code>
+    literal. A symbol is an <a
+      href=/programs#identifiers>identifier</a>-optionally followed by
+    <code>=</code>, <code>?</code>, or <code>!</code>-an <a
+      href=/messages#operators>operator method selector</a>, <code>[]</code>,
+    or <code>[]=</code>. The
+    <code>%s<var>delimiter</var>…<var>delimiter</var></code> construct enables
+    symbols to be specified between arbitrary delimiters along the same lines
+    as <a href=#single-quoted-strings-q><code>%q</code></a>.</p>
+
+    <figure class=railroad>
+    <!-- TODO: Exclude \0 -->
+      <!-- TODO: Look for other exceptions to this rule -->
+      <img id=symbol-literal.png>
+      <figcaption>Syntax diagram of a symbol literal
+    </figure>
+
+    <p>A <code>Symbol</code> may also be created from a <code>String</code>
+    with <code>String#to_sym</code>, but see the remark below regarding
+    invalid encoding.</p>
+
+    <section>
+      <h1 id=symbol-encoding>Encoding</h1>
+
+      <p>A <code>Symbol</code> is associated with an encoding, but it cannot
+      be manipulated directly. <code>Symbol</code> literals adopt the source
+      encoding of the file in which they are used. If they consist exclusively
+      of ASCII characters, they have the encoding US-ASCII. If a
+      <code>Symbol</code> is created from a <code>String</code>, either via
+      the <code>:<var>string</var></code> syntax or
+      <code>String#to_sym</code>, they have the encoding of that
+      <code>String</code>. Therefore, to create a <code>Symbol</code> with a
+      given encoding, first create a <code>String</code> with that encoding,
+      then convert that <code>String</code> to a <code>Symbol</code>.
+
+      <p>The encoding of a <code>Symbol</code> must always be <a
+        href=#valid-encoding>valid</a>.  Therefore, attempting to convert a
+      <code>String</code> with invalid encoding to a <code>Symbol</code>,
+      causes an <code>EncodingError</code> to be raised.
+    </section>
   </section>
 
   <footer>
