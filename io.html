@@ -1,0 +1,399 @@
+<article>
+  <h1 id=io>Input &amp; Output</h1>
+
+  <section>
+    <h1 id=files>Files</h1>
+
+    <p>A file is a piece of content on a filesystem associated with a path.
+    This definition includes directories, block and character devices,
+    symlinks, sockets, and <abbr title='First-In First-Out'>FIFO</abbr>s
+    (named pipes), so we term its inverse a <dfn>regular file</dfn>. Files are
+    instances of <code>File</code>.</p>
+    
+    <section>
+      <h1 id=file-open>Opening</h1>
+
+      <p><code>Kernel.open</code> opens the file with the given name. It is
+      typically used with a block, which receives the opened <code>File</code>
+      object as an argument. Having executed the block, the file is
+      automatically closed, even if the block raises an exception.
+
+      <p>The second argument of <code>Kernel.open</code> may be a
+      <code>Hash</code> of options. This is summarised in the table that
+      follows, then expounded upon below.</p>
+
+      <figure id=kernel-open-opts.rb>
+        <figcaption>Creating, appending to, and reading from a file.
+      </figure>
+
+      <table class=border>
+        <caption>Options that may be specified as the second argument to
+          <code>Kernel.open</code>. Options accepted by <a
+            href=/text#encode-options-hash><code>String#encode</code></a> are
+          also accepted.
+        <thead>
+          <tr>
+            <th>Key
+            <th>Value
+            <th>Default value    
+            <th>Description
+          <tbody class=zebra>
+            <tr>
+              <td><a href=#file-mode><code>:mode</code></a>
+              <td>The mode as a <code>String</code>. <!-- or int? -->
+              <td><code>r</code>  
+              <td>Whether to open the file in read-only, read-write, or
+                write-only mode, and whether to truncate existing files or
+                append to them.  
+            <tr>
+              <td><a href=#textmode><code>:textmode</code></a>
+              <td><code>true</code> or <code>false</code>
+              <td><code>false</code>  
+              <td>Whether to perform newline conversion.
+            <tr>
+              <td><a href=#binmode><code>:binmode</code></a>
+              <td><code>true</code> or <code>false</code>
+              <td><code>false</code>  
+              <td>Whether to treat the file as a stream of bytes.
+            <tr>
+              <td><code>:perm</code>
+              <td><code>Integer</code>
+              <td>Platform-specific
+              <td>The permissions the file should be created with.
+            <tr>
+              <td><code>:external_encoding</code>
+              <td><code>Encoding</code> object or encoding name
+              <td><code>Encoding.default_external</code>
+              <td>The external encoding to apply to the stream.
+            <tr>
+              <td><code>:internal_encoding</code>
+              <td>〃  
+              <td><code>Encoding.default_internal</code>
+              <td>The external encoding to apply to the stream.
+            <tr>
+              <td><code>:encoding</code>
+              <td>Encoding name or two names separated by a colon. 
+              <td><code><var>default_external</var>:<var>default_internal</var></code>
+              <td>The external, or external and internal, encodings to apply
+                to the stream.
+            <tr>
+              <td><code>:autoclose</code>
+              <td><code>true</code> or <code>false</code> 
+              <td><code>true</code> 
+              <td>Whether to automatically close the file descriptor when the
+                  <code>File</code> object is finalised.
+      </table>
+
+      <section>
+        <h1 id=file-mode>Mode</h1>
+
+        <p>A file is opened with a particular <dfn>mode</dfn> which specifies
+        the type of action to be performed on it. The default mode is
+        <code>r</code>. The available modes are listed
+        in the following table.
+
+        <table class=border>
+          <caption>
+              <p>Mode specifiers accepted by <code>Kernel.open</code>,
+               <code>File.open</code>, and <code>IO.open</code>.
+              <p><i>Mode</i> is the
+              mode string. The <i>Read?</i> and <i>Write?</i> columns indicate
+              whether the opened file can be read from or written to,
+              respectively. <i>Truncate?</i> specifies that existing files will be
+              truncated before use. <i>Creates?</i> specifies that non-existent
+              files will be created before use. Finally, <i>Start Position</i> is
+              the position in the file reading/writing starts from:
+              <i>Beginning</i> is before the first byte; <i>End</i> is after the
+              last.
+          <thead>  
+            <tr>
+              <th>Mode
+              <th title='Opened for reading?'>Read?
+              <th title='Opened for writing?'>Write?
+              <th title='Truncated if it exists?'>Truncates?
+              <th title='Created if it doesn’t exist?'>Creates?
+              <th title='Where reading/writing starts from'>Start Position
+          <tbody class=zebra>
+            <tr>
+              <td><code>r</code>
+              <td>✔
+              <td>✖
+              <td>✖
+              <td>✖
+              <td>Beginning.
+            <tr>
+              <td><code>r+</code>
+              <td>✔
+              <td>✔
+              <td>✖
+              <td>✖
+              <td>〃  
+            <tr>
+              <td><code>w</code>
+              <td>✖
+              <td>✔
+              <td>✔
+              <td>✔
+              <td>〃  
+            <tr>
+              <td><code>w+</code>
+              <td>✔
+              <td>✔
+              <td>✔
+              <td>✔
+              <td>〃  
+            <tr>
+              <td><code>a</code>
+              <td>✖
+              <td>✔
+              <td>✖
+              <td>✔
+              <td>End.
+            <tr>
+              <td><code>a+</code>
+              <td>✔
+              <td>✔
+              <td>✖
+              <td>✔
+              <td>〃  
+        </table>
+      </section>
+
+      <p>Independently of the mode specifiers given above, a file may be
+      opened in <dfn>binary mode</dfn>, <dfn>text mode</dfn>, or neither.</p>
+
+      <section>
+        <h1 id=binmode>Binary Mode</h1>
+        
+        <p>Binary mode is disabled by default. It must be enabled when
+        reading a file with an ASCII-incompatible external encoding. When
+        enabled it has the following effects:
+
+        <ul>
+          <li>Unless an external encoding has been specified explicitly, it
+          is set to ASCII-8BIT.
+          <li><a href=#text-mode>Newline conversion</a> is disabled. <!-- Unless *_newline Hash
+          key? -->
+          <li>Transcoding is disabled unless both an internal and external
+          encoding have been specified.
+        </ul>  
+
+        <!-- File.binread -->
+      </section>
+
+      <section>
+        <h1 id=textmode>Text Mode</h1>
+        
+        <p>Text mode defaults to on under Windows, and off everywhere else.
+        Reading a file in text mode causes <code>\r\n</code> to be replaced
+        by <code>\n</code>, and other occurrences of <code>\r</code> to be
+        replaced by <code>\n</code>. Writing a file in text mode causes
+        <code>\n</code> to be replaced with <code>\r\n</code> under Windows;
+        having no effect on other platforms.
+      </section>
+
+      <section>
+        <h1 id=perm>Permissions</h1>
+        
+        <p>If a file is being created, its initial permissions may be
+        specified as an <code>Integer</code>. On UNIX-based systems, these
+        permissions bits are interpreted in the same fashion that
+        <code>chmod(1)</code> interprets octal mode arguments. For example,
+        <code>perm: 0400</code> gives the user read permission, and no
+        permissions to anybody else.
+      </section>
+
+      <section>
+        <h1 id=open-external-encoding>External Encoding</h1>
+        
+        <p>The external encoding is the encoding associated with the file’s
+        contents. Its default value is <code>Encoding.default_external</code>.
+        Data read from the file is tagged with this encoding. The external
+        encoding may be set explicitly by providing its name, or its
+        corresponding <code>Encoding</code> object, as the value of
+        the <code>:external_encoding</code> key.
+
+        <p>When a file is opened in <a href=#binmode>binary mode</a>, its
+        external encoding defaults to ASCII-8BIT, unless specified explicitly.
+        An external encoding that is ASCII-incompatible requires the file to
+        be opened in binary mode.
+      </section>
+
+      <section>
+        <h1 id=open-internal-encoding>Internal Encoding</h1>
+
+        <p>The internal encoding is the encoding the programmer wishes to
+        associate with the file’s data. The value of the
+        <code>:internal_encoding</code> key is specified as an encoding name
+        or <code>Encoding</code> object.
+        
+        <p>If this encoding differs from the file’s external encoding, Ruby
+        will automatically transcode it: when both an internal and external
+        encoding are specified, data read from the file is transcoded from
+        external to internal, and data written to the file is transcoded from
+        internal to external. The default internal encoding is
+        <code>Encoding.default_internal</code>. An internal encoding of
+        <code>nil</code>-which is the default value-prevents any automatic
+        transcoding.
+      </section>
+
+      <section>
+        <h1 id=open-encoding>Encoding</h1>
+
+        <p>The <code>:encoding</code> key allows one or both of the external
+        encoding and internal encoding to be specified at once in one of the
+        forms below.
+
+        <table class=border>
+          <caption>
+              <p>The forms the value of the <code>:encoding</code> key may take.
+              <p>Both <var>external</var> and <var>internal</var> are names of
+              encodings. The <i>Inferred from BOM</i> column indicates that the
+              external encoding is set to that specified by a <abbr
+                title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to
+              the named encoding. 
+          <thead>  
+            <tr>
+              <th>Form
+              <th colspan=2>External Encoding
+              <th>Internal Encoding    
+            <tr>
+              <th>&nbsp;
+              <th>Value
+              <th>Inferred from BOM?    
+              <th>Value    
+          <tbody>        
+            <tr class=odd>
+              <td><code><var>external</var></code>
+              <td rowspan=2><var>external</var>
+              <td rowspan=2>✖
+              <td rowspan=2><code>Encoding.default_internal</code>
+            <tr class=odd>
+              <td><code><var>external</var>:-</code>
+            <tr>
+              <td><code>BOM|<var>external</var></code>
+              <td rowspan=2><var>external</var>
+              <td rowspan=2>✔
+              <td rowspan=2><code>Encoding.default_internal</code>
+            <tr>
+              <td><code>BOM|<var>external</var>:-</code>
+            <tr class=odd>
+              <td><code><var>external</var>:<var>internal</var></code>
+              <td><var>external</var>
+              <td>✖
+              <td><var>internal</var>
+            <tr>
+              <td><code>BOM|<var>external</var>:<var>internal</var></code>
+              <td><var>external</var>
+              <td>✔
+              <td><var>internal</var>
+            <tr class=odd>
+              <td><code>:<var>internal</var></code>
+              <td>Default external
+              <td>✖
+              <td><var>internal</var>
+        </table>
+        
+        <p>The <code>BOM|</code> prefix deserves a fuller explanation. The
+        UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE encodings support
+        the presence of a byte-order mark: a special character occuring at
+        the start of the stream which indicates the byte order of the
+        encoding. This can be used to distinguish between the big-endian and
+        little-endian forms of UTF-16, for example. Prefixing one of the
+        aforementioned encoding names with the case-insensitive string
+        <code>BOM|</code> has the following result:
+
+        <ul>
+          <li>If no BOM is present, the named encoding is used.
+          <li>If a BOM is present, the encoding that it specifies is used
+          instead of the named encoding, and the BOM is stripped from the
+          data.
+        </ul>
+
+        <table class=border>
+          <caption>Encodings that support byte-order marks, and the content of
+            the corresponding BOM.
+          <thead>  
+            <tr>
+              <th>Encoding
+              <th>Byte-Order Mark
+          <tbody class=zebra>        
+            <tr>
+              <td>UTF-8
+              <td><code>\xEF\xBB\xBF</code>  
+            <tr>
+              <td>UTF-16BE
+              <td><code>\xFE\xFF</code>  
+            <tr>
+              <td>UTF-16LE
+              <td><code>\xFF\xFE</code>  
+            <tr>
+              <td>UTF-32BE
+              <td><code>\0\0\xFE\xFF</code>  
+            <tr>
+              <td>UTF-32LE
+              <td><code>\xFF\xFE\0\0</code>  
+          </table>
+      </section>
+      <!--<table class=border>
+        <caption>
+            <p>The forms a mode string may take.
+            <p><var>mode</var> denotes one of the modes given in the table
+            above. The <i>Binary?</i> column indicates whether the stream is
+            in binary mode. Both <var>internal</var> and <var>external</var>
+            are names of encodings.
+        <thead>  
+          <tr>
+            <th>Form
+            <th>Mode  
+            <th>Binary?  
+            <th>External Encoding  
+            <th>Internal Encoding  
+        <tbody class=zebra>        
+          <tr>
+            <td><code><var>mode</var></code>
+            <td><var>mode</var>
+            <td>✖
+            <td><code>Encoding.default_external</code>
+            <td><code>Encoding.default_internal</code>
+          <tr>
+            <td><code><var>mode</var>b</code>
+            <td><var>mode</var>
+            <td>✔
+            <td><code>ASCII-8BIT</code>
+            <td><code>Encoding.default_internal</code>
+          <tr>
+            <td><code><var>mode</var>:<var>external</var></code>
+            <td><var>mode</var>
+            <td>✖
+            <td><var>external</var>
+            <td><code>Encoding.default_internal</code>
+          <tr>
+            <td><code><var>mode</var>b:<var>external</var></code>
+            <td><var>mode</var>
+            <td>✔
+            <td><var>external</var>
+            <td><code>Encoding.default_internal</code>
+          <tr>
+            <td><code><var>mode</var>:<var>external</var>:<var>internal</var></code>
+            <td><var>mode</var>
+            <td>✖
+            <td><var>external</var>
+            <td><var>internal</var>
+          <tr>
+            <td><code><var>mode</var>b:<var>external</var>:<var>internal</var></code>
+            <td><var>mode</var>
+            <td>✔
+            <td><var>external</var>
+            <td><var>internal</var>
+        </table>
+
+        <p>For example, <code>r:ascii</code> reads from the beginning of a file,
+        tagging the data it reads as US-ASCII; <code>a+:ascii:utf-8</code> opens
+        the file for reading and appending, transcoding from US-ASCII to UTF-8
+        when reading, and in the opposite direction when writing.-->
+
+    </section>
+
+   </section>
+</article>
