@@ -8,15 +8,36 @@
     This definition includes directories, block and character devices,
     symlinks, sockets, and <abbr title='First-In First-Out'>FIFO</abbr>s
     (named pipes), so we term its inverse a <dfn>regular file</dfn>. Files are
-    instances of <code>File</code>.</p>
+    instances of <code>File</code>. Methods that expect filenames as arguments
+    will accept either the path as a <code>String</code> or an object that
+    responds to <code>:to_path</code> with a filename.</p>
     
+    <section>
+      <h1 id=file-read>Reading</h1>
+
+      <p>Reading a file is the process of retriving its contents. It can be
+      achieved by passing a filename argument to <code>File.read</code> which
+      returns the contents as a <code>String</code>. An optional second
+      argument specifies the number of bytes to read, and an optional third
+      argument specifies the offset from which to begin reading. An options
+      <code>Hash</code> may be supplied as the final argument, which is
+      explained in the <a href=#file-open>Opening</a> section below.
+      <code>File.binread</code> takes the same arguments but reads the file in
+      <a href=#binmode>binary mode</a>.</p>
+
+      <figure id=file-read.rb>
+        <figcaption>Reading a file with <code>File.read</code>
+      </figure>
+    </section>
+
     <section>
       <h1 id=file-open>Opening</h1>
 
-      <p><code>Kernel.open</code> opens the file with the given name. It is
-      typically used with a block, which receives the opened <code>File</code>
-      object as an argument. Having executed the block, the file is
-      automatically closed, even if the block raises an exception.
+      <p><code>Kernel.open</code> opens the given filename, returning a
+      <code>File</code> object. It is typically used with a block, which
+      receives the opened <code>File</code> object as an argument. Having
+      executed the block, the file is automatically closed, even if the block
+      raises an exception. 
 
       <p>The second argument of <code>Kernel.open</code> may be a
       <code>Hash</code> of options. This is summarised in the table that
