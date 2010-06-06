@@ -59,7 +59,7 @@
       <h1 id=whitespace>Whitespace</h1>
 
       <p><dfn>Whitespace</dfn> consists only of <code class=u>U＋0009</code>,
-      <code class=u>U＋000A</code>–<code class=u>U＋000D</code>, and the space
+      <code class=u>U＋000B</code>–<code class=u>U＋000D</code>, and the space
       character (<code class=u title=' '>U＋0020</code>), i.e. <abbr
         title='American Standard Code for Information
         Interchange'>ASCII</abbr> whitespace other than the newline. Its
@@ -248,6 +248,15 @@
           stop (<code class=u title='.'>U＋002E</code>). (Allows <a
             href=/messages#chaining>chained</a> message expressions to span
           lines).
+          <li>It is preceded by one of the following keywords:
+          <code>alias</code>, <code>and</code>, <code>begin</code>,
+          <code>def</code>, <code>defined?</code>, <code>case</code>,
+          <code>class</code>, <code>else</code>, <code>elsif</code>,
+          <code>ensure</code>, <code>for</code>, <code>if</code>,
+          <code>in</code>, <code>module</code>, <code>not</code>,
+          <code>or</code>, <code>then</code>, <code>undef</code>,
+          <code>unless</code>, <code>until</code>, <code>when</code>,
+          or <code>while</code>.          
         </ul>
       </section>
     </section>
