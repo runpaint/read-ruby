@@ -641,6 +641,112 @@
       </section>
 
       <section>
+        <h1 id=file-paths>Paths</h1>
+
+        <p>A file’s <dfn>path</dfn> or <dfn>pathname</dfn> is a
+        <code>String</code> describing its location in the filesystem. It
+        consists of one or more <dfn>components</dfn>, which in the latter
+        case are separated with the <dfn>path separator</dfn>. On non-Windows
+        platforms the path separator is the solidus character.
+
+        <p>The non-normalised path associated with a file is returned by
+        <code>File.path</code> or <code>File#path</code>.
+        <code>File.dirname</code> returns the directory name of its argument:
+        all components other than the last. Conversely, the last component of
+        a filename is returned by <code>File.basename</code>. The filename
+        extension, e.g. <code>.txt</code>, is returned by
+        <code>File.extname</code>. If these methods are given a path without
+        the requested component, they return the empty <code>String</code>.
+        <code>File.split</code> returns a two-element <code>Array</code> with
+        the file’s dirname as the first element, and its basename as the last.
+        <code>File.join</code> performs the inverse operation: given a list of
+        path components it joins them with the path separator into a
+        <code>String</code>.
+        
+        <table class=border>
+          <caption>
+            <p>Examples of how path components are interpreted by the named
+            class methods of <code>File</code>
+            <p>Each column indicates the output of the corresponding
+            <code>File</code> class method for the path given in the first
+            column.
+          <thead>
+            <tr>
+              <th><code>path</code>
+              <th><code>dirname</code>
+              <th><code>basename</code>  
+              <th><code>extname</code>  
+              <th><code>split</code>  
+          <tbody class=zebra>
+            <tr>
+              <td><code>/home/user/base64.rb</code>
+              <td><code>/home/user</code>  
+              <td><code>base64.rb</code>  
+              <td><code>.rb</code>  
+              <td><code>["/home/user", "base64.rb"]</code>
+            <tr>
+              <td><code>/etc/hosts</code>
+              <td><code>/etc</code>  
+              <td><code>hosts</code>  
+              <td>&nbsp;  
+              <td><code>["/etc", "hosts"]</code>
+            <tr>
+              <td><code>sort</code>
+              <td><code>.</code>  
+              <td><code>sort</code>  
+              <td>&nbsp;  
+              <td><code>[".", "sort"]</code>
+            <tr>
+              <td><code>~/.vimrc</code>
+              <td><code>~</code>  
+              <td><code>.vimrc</code>  
+              <td>&nbsp;  
+              <td><code>["~", ".vimrc"]</code>
+        </table>
+
+        <p>A <dfn>relative path</dfn> is a path given in terms of another
+        path, as opposed to an <dfn>absolute path</dfn> which stands alone. On
+        Unix-like systems, the former are paths that do not begin with a
+        solidus, and the latter are the opposite. A relative path may be
+        expanded to an absolute path with <code>File.expand_path</code>.
+        Absolute paths are returned as-is. Otherwise, they are assumed to be
+        relative to the current directory. If an optional second argument is
+        given, it names the directory the first argument is relative to. If
+        the relative path begins with a tilde, it is interpreted as relative
+        to the current user’s home directory (as returned by
+        <code>ENV['HOME']</code>). If the relative path begins with a tilde
+        followed by a username, it is relative to the named user’s home
+        directory. <code>File.absolute_path</code> behaves in the same fashion
+        except it doesn’t treat tildes specially, i.e. it interprets a path of
+        <code>~/glark</code> as <code>./~/glark</code>.</p>
+
+        <figure id=file-expand-path.rb>
+          <figcaption><code>File.expand_path</code> resolves relative paths
+          into absolute paths.
+        </figure>
+        
+        <p>Neither <code>File.absolute_path</code> nor
+        <code>File.expand_path</code> resolve relative paths by traversing the
+        filesystem: at most, they request the current working directory or a
+        user’s home directory from the environment. An implication is that
+        they will quite happily return paths that do not exist on the
+        filesystem. <code>File.realpath</code> is an alternative. It creates
+        an absolute path from a relative path by interrogating the filesystem,
+        and following symbolic links if necessary. It resolves relative to the
+        current working directory, or the optional second argument. An
+        exception is raised if the absolute path it resolves does not exist.
+        <code>File.realdirpath</code> accepts the same arguments, and performs
+        the same operation, but allows the last component of the path to be
+        non-existent.</p>
+
+        <figure id=file-realpath.rb>
+          <figcaption><code>File.realpath</code> and
+          <code>File.realdirpath</code> resolve relative paths by walking the
+          filesystem.
+        </figure>
+      </section>
+
+      <section>
         <h1 id=file-delete>Deletion</h1>
 
         <p>Files may be deleted by supplying a list of their names as arguments to
