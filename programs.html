@@ -58,18 +58,25 @@
     <section>
       <h1 id=whitespace>Whitespace</h1>
 
-      <p><dfn>Whitespace</dfn> consists only of <code
-        class=u>U＋0009</code>–<code class=u>U＋000D</code> and the space
+      <p><dfn>Whitespace</dfn> consists only of <code class=u>U＋0009</code>,
+      <code class=u>U＋000A</code>–<code class=u>U＋000D</code>, and the space
       character (<code class=u title=' '>U＋0020</code>), i.e. <abbr
         title='American Standard Code for Information
-        Interchange'>ASCII</abbr> whitespace. Its primary role in Ruby syntax
-      is to separate tokens and terminate statements. When whitespace is
-      syntactically significant it is typically collapsed to a single space.
-      The few areas of syntax where whitespace has different semantics are
-      clearly labeled. Newlines are used as <a
-        href=#statement-terminators>statement terminators</a>.
+        Interchange'>ASCII</abbr> whitespace other than the newline. Its
+      primary role in Ruby syntax is to separate tokens and terminate
+      statements. When whitespace is syntactically significant it is typically
+      collapsed to a single space.  The few areas of syntax where whitespace
+      has different semantics are clearly labeled. 
+      
+      <p>Newlines may function as whitespace, too, depending on the context in
+      which they are used. See the section entitled <a
+        href=#statement-terminators>Statement Terminators &amp; Newlines</a>
+      for further details.
     </section>
 
+    <section>
+    </section>
+    
     <!-- FIXME: Hash, Array, proc, etc., literals aren't tokens -->
     <section>
       <h1 id=literals>Literals</h1>
@@ -212,7 +219,7 @@
       meaningless.</p>
 
       <section>
-        <h1 id=statement-terminators>Statement Terminators</h1>
+        <h1 id=statement-terminators>Statement Terminators &amp; Newlines</h1>
         
         <p>One statement must be separated from the next by a statement
         terminator. This may be a semicolon (<code class=u
@@ -227,10 +234,16 @@
           with optional intervening <a href=#whitespace>whitespace</a>.
           <li>It is immediately preceded by a comma (<code class=u
             title=','>U＋002C</code>) or full stop (<code class=u
-            title='.'>U＋002E</code>) in a <a href=/messages#expressions>message
-            expression</a> or <a href=/enumerables#arrays>array</a>/<a
-            href=/enumerables#hashes>hash</a> literal, with optional intervening
-          whitespace. 
+            title='.'>U＋002E</code>) in a <a
+            href=/messages#expressions>message expression</a> or <a
+            href=/enumerables#arrays>array</a>/<a
+            href=/enumerables#hashes>hash</a> literal, with optional
+          intervening whitespace. 
+          <li>It is preceded by a left parenthesis, curly bracket, or square
+          bracket, with optional intervening whitespace. (Allows the
+          argument list of <a href=/messages#expressions>message
+            expressions</a>, and <a href=/enumerables#arrays>array</a> or <a
+            href=/enumerables#hashes>hash</a> literals to span multiple lines). 
           <li>The first non-whitespace character on the following line is a full
           stop (<code class=u title='.'>U＋002E</code>). (Allows <a
             href=/messages#chaining>chained</a> message expressions to span
