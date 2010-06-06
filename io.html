@@ -539,6 +539,8 @@
               <td><code>zero?</code>
               <td>Exists with size 0?  
           </table>
+
+          <!-- TODO: Kernel.test -->
       </section>
 
       <section>
@@ -562,7 +564,7 @@
           <tbody class=zebra>        
             <tr>
               <td>Last access time
-              <td><code>File::Stat#atime</code> / <code>File.atime</code>
+              <td><code>File::Stat#atime</code> / <code>File.atime</code> / <code>File#atime</code>
               <td><code>Time</code>
             <tr>
               <td>Prefered block size for I/O
@@ -574,7 +576,7 @@
               <td><code>Fixnum</code> or <code>nil</code>
             <tr>
               <td>Inode change time
-              <td><code>File::Stat#ctime</code> / <code>File.ctime</code>
+              <td><code>File::Stat#ctime</code> / <code>File.ctime</code> / <code>File#ctime</code>
               <td><code>Time</code>
             <tr>
               <td>Device number of filesystem
@@ -606,7 +608,7 @@
               <td><code>Fixnum</code>
             <tr>
               <td>Last modify time
-              <td><code>File::Stat#mtime</code> / <code>File.mtime</code>
+              <td><code>File::Stat#mtime</code> / <code>File.mtime</code> / <code>File#mtime</code>
               <td><code>Time</code>
             <tr>
               <td>Pathname
@@ -636,6 +638,51 @@
           </table>
 
           <!-- Digression on bitmasks for #mode -->
+      </section>
+
+      <section>
+        <h1 id=file-delete>Deletion</h1>
+
+        <p>Files may be deleted by supplying a list of their names as arguments to
+        <code>File.delete</code>, or its alias <code>File.unlink</code>. An
+        <code>Integer</code> is returned indicating how many files were
+        deleted.
+      </section>
+
+      <section>
+        <h1 id=file-permissions>Changing Permissions</h1>
+
+        <p>The permissions of a file may be changed with
+        <code>File.chmod</code> by providing the new permission bits as the
+        first argument, and a list of files as the subsequent arguments. Each
+        file listed has its permissions changed accordingly. The meaning of
+        the permission bits is platform-specific, but on Unix-like systems
+        they correspond to the numeric mode understood by
+        <code>chmod(1)</code>. Some systems, such as the <abbr title='Berkeley
+          Software Distribution'>BSD</abbr>s, support a variant of
+        <code>chmod</code> that does not follow symbolic links, therefore acts
+        upon the link rather than its target. If available, Ruby exposes this
+        functionality via <code>File.lchmod</code>, which takes the same
+        arguments as <code>File.chmod</code>. <code>File</code> also provides
+        the instance methods <code>File#chmod</code> and
+        <code>File#lchmod</code>, which require the permission bits to assign
+        to their receiver as their sole argument.
+
+        <p>The owner and group of a file may be changed-although the former
+        requires root permissions-with <code>File.chown</code>. It takes a
+        numeric user ID, and numeric group ID, as the first and second
+        arguments, respectively, and a list of files as the subsequent
+        arguments. The ownership of each file listed that the user has
+        permission to change is adjusted accordingly. <code>File.lchown</code>
+        functions similarly, but does not follow symlinks. Its availability
+        mirrors that of <code>File.lchmod</code>. The instance method,
+        <code>File#chown</code>, requires a numeric user ID, and numeric group
+        ID, as its arguments, which it applies to its receiver.
+
+        <p>The umask value of the current process is set by supplying
+        <code>File.umask</code> with the new value as an <code>Integer</code>
+        argument. It returns the previous umask value. When called without
+        arguments, <code>File.umask</code> returns the current umask.
       </section>
    </section>
 </article>
