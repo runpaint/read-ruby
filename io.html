@@ -540,5 +540,102 @@
               <td>Exists with size 0?  
           </table>
       </section>
+
+      <section>
+        <h1 id=file-attributes>Attributes</h1>
+
+        <p><code>File::Stat</code> objects represents file metadata. They are
+        normally created with <code>File#stat</code> or
+        <code>File.stat(<var>file</var>)</code>. <code>File#lstat</code> and
+        <code>File.lstat</code> are used to the same end, but they do not
+        follow the last symbolic link, if any, in the file path; they return
+        metadata for the link itself.
+
+        <table class=border>
+          <caption>
+            <p>Attributes of files
+          <thead>  
+            <tr>
+              <th>Attribute
+              <th>Method
+              <th>Returns
+          <tbody class=zebra>        
+            <tr>
+              <td>Last access time
+              <td><code>File::Stat#atime</code> / <code>File.atime</code>
+              <td><code>Time</code>
+            <tr>
+              <td>Prefered block size for I/O
+              <td><code>File::Stat#blksize</code>  
+              <td><code>Fixnum</code> or <code>nil</code>
+            <tr>
+              <td>Number of blocks allocated
+              <td><code>File::Stat#blocks</code>  
+              <td><code>Fixnum</code> or <code>nil</code>
+            <tr>
+              <td>Inode change time
+              <td><code>File::Stat#ctime</code> / <code>File.ctime</code>
+              <td><code>Time</code>
+            <tr>
+              <td>Device number of filesystem
+              <td><code>File::Stat#dev</code>  
+              <td><code>Fixnum</code> or <code>nil</code>
+            <tr>
+              <td>〃(major part)
+              <td><code>File::Stat#dev_major</code>  
+              <td><code>Fixnum</code> or <code>nil</code>
+            <tr>
+              <td>〃(minor part)
+              <td><code>File::Stat#dev_minor</code>  
+              <td><code>Fixnum</code> or <code>nil</code>
+            <tr>
+              <td>Type
+              <td><code>File::Stat#ftype</code>  
+              <td><code>String</code>
+            <tr>
+              <td>Owner’s group ID
+              <td><code>File::Stat#gid</code>  
+              <td><code>Fixnum</code>
+            <tr>
+              <td>Inode number
+              <td><code>File::Stat#ino</code>  
+              <td><code>Fixnum</code>
+            <tr>
+              <td>Permission bits
+              <td><code>File::Stat#mode</code>  
+              <td><code>Fixnum</code>
+            <tr>
+              <td>Last modify time
+              <td><code>File::Stat#mtime</code> / <code>File.mtime</code>
+              <td><code>Time</code>
+            <tr>
+              <td>Pathname
+              <td><code>File#path</code>  
+              <td><code>String</code>
+            <tr>
+              <td>Device ID
+              <td><code>File::Stat#rdev</code>  
+              <td><code>Fixnum</code> or <code>nil</code>
+            <tr>
+              <td>〃(major part)
+              <td><code>File::Stat#rdev_major</code>  
+              <td><code>Fixnum</code> or <code>nil</code>
+            <tr>
+              <td>〃(minor part)
+              <td><code>File::Stat#rdev_minor</code>  
+              <td><code>Fixnum</code> or <code>nil</code>
+            <tr>
+              <td>Size (bytes)
+              <td><code>File::Stat#size</code> / <code>File#size</code> /
+                <code>File.size</code>
+              <td><code>Fixnum</code> 
+            <tr>
+              <td>Owner’s user ID
+              <td><code>File::Stat#uid</code>  
+              <td><code>Fixnum</code>
+          </table>
+
+          <!-- Digression on bitmasks for #mode -->
+      </section>
    </section>
 </article>
