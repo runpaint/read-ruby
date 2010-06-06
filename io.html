@@ -356,64 +356,96 @@
               <td><code>\xFF\xFE\0\0</code>  
           </table>
       </section>
-      <!--<table class=border>
-        <caption>
-            <p>The forms a mode string may take.
-            <p><var>mode</var> denotes one of the modes given in the table
-            above. The <i>Binary?</i> column indicates whether the stream is
-            in binary mode. Both <var>internal</var> and <var>external</var>
-            are names of encodings.
-        <thead>  
-          <tr>
-            <th>Form
-            <th>Mode  
-            <th>Binary?  
-            <th>External Encoding  
-            <th>Internal Encoding  
-        <tbody class=zebra>        
-          <tr>
-            <td><code><var>mode</var></code>
-            <td><var>mode</var>
-            <td>✖
-            <td><code>Encoding.default_external</code>
-            <td><code>Encoding.default_internal</code>
-          <tr>
-            <td><code><var>mode</var>b</code>
-            <td><var>mode</var>
-            <td>✔
-            <td><code>ASCII-8BIT</code>
-            <td><code>Encoding.default_internal</code>
-          <tr>
-            <td><code><var>mode</var>:<var>external</var></code>
-            <td><var>mode</var>
-            <td>✖
-            <td><var>external</var>
-            <td><code>Encoding.default_internal</code>
-          <tr>
-            <td><code><var>mode</var>b:<var>external</var></code>
-            <td><var>mode</var>
-            <td>✔
-            <td><var>external</var>
-            <td><code>Encoding.default_internal</code>
-          <tr>
-            <td><code><var>mode</var>:<var>external</var>:<var>internal</var></code>
-            <td><var>mode</var>
-            <td>✖
-            <td><var>external</var>
-            <td><var>internal</var>
-          <tr>
-            <td><code><var>mode</var>b:<var>external</var>:<var>internal</var></code>
-            <td><var>mode</var>
-            <td>✔
-            <td><var>external</var>
-            <td><var>internal</var>
-        </table>
 
-        <p>For example, <code>r:ascii</code> reads from the beginning of a file,
-        tagging the data it reads as US-ASCII; <code>a+:ascii:utf-8</code> opens
-        the file for reading and appending, transcoding from US-ASCII to UTF-8
-        when reading, and in the opposite direction when writing.-->
+      <section>
+        <h1 id=mode-string>The Mode String</h1>
 
+        <p>There is an alternative way to specify many of the options
+        described above called a <dfn>mode string</dfn>. It may be provided as
+        the second argument to <code>Kernel.open</code> as a
+        <code>String</code>, or given as the value of the <code>:mode</code>
+        key in the options <code>Hash</code>. While the mode string is more
+        concise than the options <code>Hash</code>, it is also more cryptic
+        when specifying multiple options.
+
+        <table class=border>
+          <caption>
+              <p>The forms a mode string may take.
+              <p><var>mode</var> denotes one of the modes given in the <a
+                href=#file-mode>modes</a> table. The <i>Binary?</i> and
+              <i>Text?</i> columns indicates whether the stream is in binary
+              or text mode, respectively. Both <var>internal</var> and
+              <var>external</var> are names of encodings.
+          <thead>  
+            <tr>
+              <th>Form
+              <th>Binary?  
+              <th>Text?  
+              <th>External Encoding  
+              <th>Internal Encoding  
+          <tbody class=zebra>        
+            <tr>
+              <td><code><var>mode</var></code>
+              <td>✖
+              <td>✖
+              <td><code>Encoding.default_external</code>
+              <td><code>Encoding.default_internal</code>
+            <tr>
+              <td><code><var>mode</var>t</code>
+              <td>✖
+              <td>✔
+              <td>〃  
+              <td>〃  
+            <tr>
+              <td><code><var>mode</var>b</code>
+              <td>✔
+              <td>✖
+              <td><code>ASCII-8BIT</code>
+              <td>〃  
+            <tr>
+              <td><code><var>mode</var>:<var>external</var></code>
+              <td>✖
+              <td>✖
+              <td><var>external</var>
+              <td>〃  
+            <tr>
+              <td><code><var>mode</var>t:<var>external</var></code>
+              <td>✖
+              <td>✔
+              <td>〃  
+              <td>〃  
+            <tr>
+              <td><code><var>mode</var>b:<var>external</var></code>
+              <td>✔
+              <td>✖
+              <td>〃  
+              <td>〃  
+            <tr>
+              <td><code><var>mode</var>:<var>external</var>:<var>internal</var></code>
+              <td>✖
+              <td>✖
+              <td>〃  
+              <td><var>internal</var>
+            <tr>
+              <td><code><var>mode</var>t:<var>external</var>:<var>internal</var></code>
+              <td>✖
+              <td>✔
+              <td>〃  
+              <td>〃  
+            <tr>
+              <td><code><var>mode</var>b:<var>external</var>:<var>internal</var></code>
+              <td>✔
+              <td>✖
+              <td>〃  
+              <td>〃  
+          </table>
+
+          <!-- Include the other forms of the encoding string, e.g. BOM|? -->
+          <p>For example, <code>r:ascii</code> reads from the beginning of a file,
+          tagging the data it reads as US-ASCII; <code>a+:ascii:utf-8</code> opens
+          the file for reading and appending, transcoding from US-ASCII to UTF-8
+          when reading, and in the opposite direction when writing.
+      </section>
     </section>
 
    </section>
