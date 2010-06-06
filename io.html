@@ -746,7 +746,21 @@
         </figure>
       </section>
 
-      <!-- Symlinks -->
+      <section>
+        <h1 id=symlinks>Symbolic Links</h1>
+        
+        <p>On platforms that support symlinks, <code>File.symlink</code> will
+        create a link to the file named as its first argument, with the name
+        given as its second. The <code>File.symlink?</code> predicate can be
+        used to test whether its argument is a symlink, and
+        <code>File.readlink</code> returns the target of a given link.</p>
+
+        <figure id=file-symlink.rb>
+          <figcaption>A symbolic link can be created with
+          <code>File.symlink</code>
+        </figure>
+      </section>
+
       <section>
         <h1 id=file-delete>Deletion</h1>
 
