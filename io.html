@@ -448,5 +448,97 @@
       </section>
     </section>
 
+    <section>
+      <h1 id=file-tests>Tests</h1>
+
+      <p>The <code>FileTest</code> module is mixed-in to <code>File</code> to
+      provide a set of predicates with which files can be tested. They are
+      described in the table below, with the exception of
+      <code>File.identical?</code> which functions slightly differently. It
+      requires two filename arguments, returning <code>true</code> if they
+      both refer to the same file: directly, or indirectly via symbolic links.
+
+        <table class=border>
+          <caption>
+            <p>Predicate methods of the <code>File</code> class.
+            <p>Methods take a filename as argument and return either
+            <code>true</code> or <code>false</code> unless stated otherwise.
+          <thead>  
+            <tr>
+              <th>Class Method
+              <th>Test 
+          <tbody class=zebra>        
+            <tr>
+              <td><code>blockdev?</code>
+              <td>A block device?  
+            <tr>
+              <td><code>chardev?</code>
+              <td>A character device?  
+            <tr>
+              <td><code>directory?</code>
+              <td>A directory or symlink to a directory?  
+            <tr>
+              <td><code>executable?</code>
+              <td>Executable by our effective user ID?  
+            <tr>
+              <td><code>executable_real?</code>
+              <td>Executable by our real user ID?  
+            <tr>
+              <td><code>exists?</code>
+              <td>Do we exist?  
+            <tr>
+              <td><code>file?</code>
+              <td>Regular file?  
+            <tr>
+              <td><code>grpowned?</code>
+              <td>Owned by our effective group ID?  
+            <tr>
+              <td><code>owned?</code>
+              <td>Owned by our effective user ID?  
+            <tr>
+              <td><code>pipe?</code>
+              <td>A pipe?  
+            <tr>
+              <td><code>readable?</code>
+              <td>Readable by our effective user ID?  
+            <tr>
+              <td><code>readable_real?</code>
+              <td>Readable by our real user ID?  
+            <tr>
+              <td><code>setgid?</code>
+              <td><abbr title='Set group ID upon execution'>Setgid</abbr> bit set?  
+            <tr>
+              <td><code>setuid?</code>
+              <td><abbr title='Set user ID upon execution'>Setuid</abbr> bit set?  
+            <tr>
+              <td><code>size?</code>
+              <td>Exists with non-zero size? (Returns size or <code>nil</code>)
+            <tr>
+              <td><code>socket?</code>
+              <td>A socket?  
+            <tr>
+              <td><code>sticky?</code>
+              <td>Sticky bit set?  
+            <tr>
+              <td><code>symlink?</code>
+              <td>A symbolic link?  
+            <tr>
+              <td><code>world_readable?</code>
+              <td>Readable by others? (Returns permission bits or
+                <code>nil</code>)  
+            <tr>
+              <td><code>world_writable?</code>
+              <td>Writable by others? (Returns permission bits or <code>nil</code>)
+            <tr>
+              <td><code>writable?</code>
+              <td>Writable by our effective user ID?  
+            <tr>
+              <td><code>writable_real?</code>
+              <td>Writable by our real user ID?  
+            <tr>
+              <td><code>zero?</code>
+              <td>Exists with size 0?  
+          </table>
+      </section>
    </section>
 </article>
