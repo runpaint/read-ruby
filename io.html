@@ -15,6 +15,10 @@
     This clarifies the distinction between the mode argument, textmode, and
     binmode. -->
 
+    <!-- TODO: File.new (must exist) -->
+    <!-- TODO: Iteration -->
+    <!-- TODO: Dir -->
+
     <section>
       <h1 id=file-paths>Paths</h1>
     
@@ -57,6 +61,7 @@
           <p>Each column indicates the output of the corresponding
           <code>File</code> class method for the path given in the first
           column.
+        </caption>
         <thead>
           <tr>
             <th><code>path</code>
@@ -174,6 +179,7 @@
           <code>Kernel.open</code>. Options accepted by <a
             href=/text#encode-options-hash><code>String#encode</code></a> are
           also accepted.
+        </caption>
         <thead>
           <tr>
             <th>Key
@@ -237,17 +243,18 @@
 
         <table class=border>
           <caption>
-              <p>Mode specifiers accepted by <code>Kernel.open</code>,
-               <code>File.open</code>, and <code>IO.open</code>.
-              <p><i>Mode</i> is the
-              mode string. The <i>Read?</i> and <i>Write?</i> columns indicate
-              whether the opened file can be read from or written to,
-              respectively. <i>Truncate?</i> specifies that existing files will be
-              truncated before use. <i>Creates?</i> specifies that non-existent
-              files will be created before use. Finally, <i>Start Position</i> is
-              the position in the file reading/writing starts from:
-              <i>Beginning</i> is before the first byte; <i>End</i> is after the
-              last.
+            <p>Mode specifiers accepted by <code>Kernel.open</code>,
+            <code>File.open</code>, and <code>IO.open</code>.  <p><i>Mode</i>
+            is the mode string. The <i>Read?</i> and <i>Write?</i> columns
+            indicate whether the opened file can be read from or written to,
+            respectively. <i>Truncate?</i> specifies that existing files will
+            be truncated before use. <i>Creates?</i> specifies that
+            non-existent files will be created before use. Finally, <i>Start
+              Position</i> is the position in the file reading/writing starts
+            from:
+            <i>Beginning</i> is before the first byte; <i>End</i> is after the
+            last.
+          </caption>
           <thead>  
             <tr>
               <th>Mode
@@ -390,12 +397,13 @@
 
         <table class=border>
           <caption>
-              <p>The forms the value of the <code>:encoding</code> key may take.
-              <p>Both <var>external</var> and <var>internal</var> are names of
-              encodings. The <i>Inferred from BOM</i> column indicates that the
-              external encoding is set to that specified by a <abbr
-                title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to
-              the named encoding. 
+            <p>The forms the value of the <code>:encoding</code> key may take.
+            <p>Both <var>external</var> and <var>internal</var> are names of
+            encodings. The <i>Inferred from BOM</i> column indicates that the
+            external encoding is set to that specified by a <abbr
+              title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to the
+            named encoding. 
+          </caption>
           <thead>  
             <tr>
               <th>Form
@@ -456,7 +464,7 @@
 
         <table class=border>
           <caption>Encodings that support byte-order marks, and the content of
-            the corresponding BOM.
+            the corresponding BOM.</caption>
           <thead>  
             <tr>
               <th>Encoding
@@ -493,12 +501,13 @@
 
         <table class=border>
           <caption>
-              <p>The forms a mode string may take.
-              <p><var>mode</var> denotes one of the modes given in the <a
-                href=#file-mode>modes</a> table. The <i>Binary?</i> and
-              <i>Text?</i> columns indicates whether the stream is in binary
-              or text mode, respectively. Both <var>internal</var> and
-              <var>external</var> are names of encodings.
+            <p>The forms a mode string may take.  <p><var>mode</var> denotes
+            one of the modes given in the <a href=#file-mode>modes</a> table.
+            The <i>Binary?</i> and <i>Text?</i> columns indicates whether the
+            stream is in binary or text mode, respectively. Both
+            <var>internal</var> and <var>external</var> are names of
+            encodings.
+          </caption>
           <thead>  
             <tr>
               <th>Form
@@ -637,8 +646,7 @@
       metadata for the link itself.
 
       <table class=border>
-        <caption>
-          <p>Attributes of files
+        <caption>Attributes of files</caption>
         <thead>  
           <tr>
             <th>Attribute
@@ -748,6 +756,7 @@
           the corresponding type. The <i>Creation</i> column specifies, where
           possible, how a file of the corresponding type may be created in
           Ruby.
+        </caption>
         <thead>
           <tr>
             <th>Description
@@ -825,8 +834,10 @@
       and the predicates described later are used instead.
       
       <table class=border>
-        <caption>Permission and ownership attributes of
-          <code>File::Stat</code> objects
+        <caption>
+          Permission and ownership attributes of <code>File::Stat</code>
+          objects
+        </caption>
         <thead>  
           <tr>
             <th>Attribute
@@ -885,6 +896,7 @@
           <p>Permissions predicate methods of the <code>File</code> class.
           <p>Methods take a filename as argument and return either
           <code>true</code> or <code>false</code> unless stated otherwise.
+        </caption>
         <thead>  
           <tr>
             <th>Predicate
