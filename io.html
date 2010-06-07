@@ -4,19 +4,140 @@
   <section>
     <h1 id=files>Files</h1>
 
-    <p>A file is a piece of content on a filesystem associated with a path.
-    This definition includes directories, block and character devices,
-    symlinks, sockets, and <abbr title='First-In First-Out'>FIFO</abbr>s
-    (named pipes), so we term its inverse a <dfn>regular file</dfn>. Files are
-    instances of <code>File</code>. Methods that expect filenames as arguments
-    will accept either the path as a <code>String</code> or an object that
-    responds to <code>:to_path</code> with a filename.</p>
+    <p>A file is an entity on a filesystem addressable by a path. This
+    definition is intentionally broad-encompassing regular files along with
+    directories, block and character devices, symbolic links, sockets, and <abbr
+      title='First-In First-Out'>FIFO</abbr>s (named pipes)-because the
+    <code>File</code> class represents them all. It is this class that is the
+    subject of our present enquiry.</p>
+
+    <!-- Describe the mode argument accepted by `open` as the 'open mode'?
+    This clarifies the distinction between the mode argument, textmode, and
+    binmode. -->
+
+    <section>
+      <h1 id=file-paths>Paths</h1>
     
+      <p>A file’s <dfn>path</dfn> is a <code>String</code> describing its
+      location in the filesystem. It consists of one or more
+      <dfn>components</dfn>, which in the latter case are separated with the
+      <dfn>path separator</dfn>. On non-Windows platforms the path separator
+      is the solidus character.
+
+      <p>We use the term <i>path</i> to refer either to a <code>String</code>,
+      whose contents is a path, or an object that responds to
+      <code>:to_path</code> with such a <code>String</code>. A method that
+      expects a path as an argument will accept either of these
+      representations.
+
+      <!-- TODO: Define what we mean by path normalisation -->
+
+      <p><code>File.path</code> returns the non-normalised path of its
+      argument. If its argument is a <code>String</code>, it will be returned
+      as-is, otherwise the result of sending the argument
+      <code>:to_path</code> will be returned. The path associated with a
+      <code>File</code> object is returned by <code>File#path</code>.
+
+      <code>File.dirname</code> returns the directory name of its argument:
+      all components other than the last. Conversely, the last component of
+      a filename is returned by <code>File.basename</code>. The filename
+      extension, e.g. <code>.txt</code>, is returned by
+      <code>File.extname</code>. If these methods are given a path without
+      the requested component, they return the empty <code>String</code>.
+      <code>File.split</code> returns a two-element <code>Array</code> with
+      the file’s dirname as the first element, and its basename as the last.
+      <code>File.join</code> performs the inverse operation: given a list of
+      path components it joins them with the path separator into a
+      <code>String</code>.
+      
+      <table class=border>
+        <caption>
+          <p>Examples of how path components are interpreted by the named
+          class methods of <code>File</code>
+          <p>Each column indicates the output of the corresponding
+          <code>File</code> class method for the path given in the first
+          column.
+        <thead>
+          <tr>
+            <th><code>path</code>
+            <th><code>dirname</code>
+            <th><code>basename</code>  
+            <th><code>extname</code>  
+            <th><code>split</code>  
+        <tbody class=zebra>
+          <tr>
+            <td><code>/home/user/base64.rb</code>
+            <td><code>/home/user</code>  
+            <td><code>base64.rb</code>  
+            <td><code>.rb</code>  
+            <td><code>["/home/user", "base64.rb"]</code>
+          <tr>
+            <td><code>/etc/hosts</code>
+            <td><code>/etc</code>  
+            <td><code>hosts</code>  
+            <td>&nbsp;  
+            <td><code>["/etc", "hosts"]</code>
+          <tr>
+            <td><code>sort</code>
+            <td><code>.</code>  
+            <td><code>sort</code>  
+            <td>&nbsp;  
+            <td><code>[".", "sort"]</code>
+          <tr>
+            <td><code>~/.vimrc</code>
+            <td><code>~</code>  
+            <td><code>.vimrc</code>  
+            <td>&nbsp;  
+            <td><code>["~", ".vimrc"]</code>
+      </table>
+
+      <p>A <dfn>relative path</dfn> is a path given in terms of another
+      path, as opposed to an <dfn>absolute path</dfn> which stands alone. On
+      Unix-like systems, the former are paths that do not begin with a
+      solidus, and the latter are the opposite. A relative path may be
+      expanded to an absolute path with <code>File.expand_path</code>.
+      Absolute paths are returned as-is. Otherwise, they are assumed to be
+      relative to the current directory. If an optional second argument is
+      given, it names the directory the first argument is relative to. If
+      the relative path begins with a tilde, it is interpreted as relative
+      to the current user’s home directory (as returned by
+      <code>ENV['HOME']</code>). If the relative path begins with a tilde
+      followed by a username, it is relative to the named user’s home
+      directory. <code>File.absolute_path</code> behaves in the same fashion
+      except it doesn’t treat tildes specially, i.e. it interprets a path of
+      <code>~/glark</code> as <code>./~/glark</code>.</p>
+
+      <figure id=file-expand-path.rb>
+        <figcaption><code>File.expand_path</code> resolves relative paths
+        into absolute paths.
+      </figure>
+      
+      <p>Neither <code>File.absolute_path</code> nor
+      <code>File.expand_path</code> resolve relative paths by traversing the
+      filesystem: at most, they request the current working directory or a
+      user’s home directory from the environment. An implication is that they
+      will quite happily return paths that do not exist on the filesystem.
+      <code>File.realpath</code> is an alternative. It creates an absolute
+      path from a relative path by interrogating the filesystem, and following
+      symbolic links if necessary. It resolves relative to the current working
+      directory, or the directory given by the optional second argument. An
+      exception is raised if the absolute path it resolves does not exist.
+      <code>File.realdirpath</code> accepts the same arguments, and performs
+      the same operation, but allows the last component of the path to be
+      non-existent.</p>
+
+      <figure id=file-realpath.rb>
+        <figcaption><code>File.realpath</code> and
+        <code>File.realdirpath</code> resolve relative paths by walking the
+        filesystem.
+      </figure>
+    </section>
+
     <section>
       <h1 id=file-read>Reading</h1>
 
-      <p>Reading a file is the process of retriving its contents. It can be
-      achieved by passing a filename argument to <code>File.read</code> which
+      <p>Reading a file is the process of retrieving its contents. It can be
+      achieved by passing a path argument to <code>File.read</code> which
       returns the contents as a <code>String</code>. An optional second
       argument specifies the number of bytes to read, and an optional third
       argument specifies the offset from which to begin reading. An options
@@ -33,11 +154,12 @@
     <section>
       <h1 id=file-open>Opening</h1>
 
-      <p><code>Kernel.open</code> opens the given filename, returning a
-      <code>File</code> object. It is typically used with a block, which
-      receives the opened <code>File</code> object as an argument. Having
-      executed the block, the file is automatically closed, even if the block
-      raises an exception. 
+      <p>Opening a file enables one to read from, write to, or otherwise
+      manipulate and query, the resource. <code>Kernel.open</code> opens the
+      file with the given path, returning a corresponding <code>File</code>
+      object. It is typically used with a block, which receives the opened
+      <code>File</code> object as an argument.  Having executed the block, the
+      file is automatically closed, even if the block raises an exception. 
 
       <p>The second argument of <code>Kernel.open</code> may be a
       <code>Hash</code> of options. This is summarised in the table that
@@ -217,11 +339,12 @@
         <h1 id=perm>Permissions</h1>
         
         <p>If a file is being created, its initial permissions may be
-        specified as an <code>Integer</code>. On UNIX-based systems, these
+        specified as an <code>Integer</code>. On Unix-based systems, these
         permissions bits are interpreted in the same fashion that
         <code>chmod(1)</code> interprets octal mode arguments. For example,
         <code>perm: 0400</code> gives the user read permission, and no
-        permissions to anybody else.
+        permissions to anybody else. Permissions are covered in more detail in
+        the <a href=#file-permissions>Permissions</a> section below.
       </section>
 
       <section>
@@ -446,372 +569,383 @@
           the file for reading and appending, transcoding from US-ASCII to UTF-8
           when reading, and in the opposite direction when writing.
       </section>
+      <!-- TODO: Discuss ORing constants to specify the open mode? -->
     </section>
 
     <section>
-      <h1 id=file-tests>Tests</h1>
+      <h1 id=file-exists>Existence</h1>
 
-      <p>The <code>FileTest</code> module is mixed-in to <code>File</code> to
-      provide a set of predicates with which files can be tested. They are
-      described in the table below, with the exception of
-      <code>File.identical?</code> which functions slightly differently. It
-      requires two filename arguments, returning <code>true</code> if they
-      both refer to the same file: directly, or indirectly via symbolic links.
+      <p>It is often necessary to determine whether a given file exists as
+      methods that accept path arguments may raise exceptions otherwise.
+      To this end Ruby provides the predicate <code>File.exists?</code>, and
+      its alias <code>File.exist?</code>.
+    </section>
 
-        <table class=border>
-          <caption>
-            <p>Predicate methods of the <code>File</code> class.
-            <p>Methods take a filename as argument and return either
-            <code>true</code> or <code>false</code> unless stated otherwise.
-          <thead>  
-            <tr>
-              <th>Class Method
-              <th>Test 
-          <tbody class=zebra>        
-            <tr>
-              <td><code>blockdev?</code>
-              <td>A block device?  
-            <tr>
-              <td><code>chardev?</code>
-              <td>A character device?  
-            <tr>
-              <td><code>directory?</code>
-              <td>A directory or symlink to a directory?  
-            <tr>
-              <td><code>executable?</code>
-              <td>Executable by our effective user ID?  
-            <tr>
-              <td><code>executable_real?</code>
-              <td>Executable by our real user ID?  
-            <tr>
-              <td><code>exists?</code>
-              <td>Do we exist?  
-            <tr>
-              <td><code>file?</code>
-              <td>Regular file?  
-            <tr>
-              <td><code>grpowned?</code>
-              <td>Owned by our effective group ID?  
-            <tr>
-              <td><code>owned?</code>
-              <td>Owned by our effective user ID?  
-            <tr>
-              <td><code>pipe?</code>
-              <td>A pipe?  
-            <tr>
-              <td><code>readable?</code>
-              <td>Readable by our effective user ID?  
-            <tr>
-              <td><code>readable_real?</code>
-              <td>Readable by our real user ID?  
-            <tr>
-              <td><code>setgid?</code>
-              <td><abbr title='Set group ID upon execution'>Setgid</abbr> bit set?  
-            <tr>
-              <td><code>setuid?</code>
-              <td><abbr title='Set user ID upon execution'>Setuid</abbr> bit set?  
-            <tr>
-              <td><code>size?</code>
-              <td>Exists with non-zero size? (Returns size or <code>nil</code>)
-            <tr>
-              <td><code>socket?</code>
-              <td>A socket?  
-            <tr>
-              <td><code>sticky?</code>
-              <td>Sticky bit set?  
-            <tr>
-              <td><code>symlink?</code>
-              <td>A symbolic link?  
-            <tr>
-              <td><code>world_readable?</code>
-              <td>Readable by others? (Returns permission bits or
-                <code>nil</code>)  
-            <tr>
-              <td><code>world_writable?</code>
-              <td>Writable by others? (Returns permission bits or <code>nil</code>)
-            <tr>
-              <td><code>writable?</code>
-              <td>Writable by our effective user ID?  
-            <tr>
-              <td><code>writable_real?</code>
-              <td>Writable by our real user ID?  
-            <tr>
-              <td><code>zero?</code>
-              <td>Exists with size 0?  
-          </table>
+    <section>
+      <h1 id=file-delete>Deletion</h1>
 
-          <!-- TODO: Kernel.test -->
-      </section>
+      <p>Files may be deleted by supplying a list of their paths as arguments to
+      <code>File.delete</code>, or its alias <code>File.unlink</code>. An
+      <code>Integer</code> is returned indicating how many files were
+      deleted.
+    </section>
 
-      <section>
-        <h1 id=file-attributes>Attributes</h1>
+    <section>
+      <h1 id=file-rename>Renaming</h1>
 
-        <p><code>File::Stat</code> objects represents file metadata. They are
-        normally created with <code>File#stat</code> or
-        <code>File.stat(<var>file</var>)</code>. <code>File#lstat</code> and
-        <code>File.lstat</code> are used to the same end, but they do not
-        follow the last symbolic link, if any, in the file path; they return
-        metadata for the link itself.
+      <p>Files may be renamed by invoking <code>File.rename</code> with
+      their current path as the first argument, and their desired path as
+      the second.
+    </section>
 
-        <table class=border>
-          <caption>
-            <p>Attributes of files
-          <thead>  
-            <tr>
-              <th>Attribute
-              <th>Method
-              <th>Returns
-          <tbody class=zebra>        
-            <tr>
-              <td>Last access time
-              <td><code>File::Stat#atime</code> / <code>File.atime</code> / <code>File#atime</code>
-              <td><code>Time</code>
-            <tr>
-              <td>Prefered block size for I/O
-              <td><code>File::Stat#blksize</code>  
-              <td><code>Fixnum</code> or <code>nil</code>
-            <tr>
-              <td>Number of blocks allocated
-              <td><code>File::Stat#blocks</code>  
-              <td><code>Fixnum</code> or <code>nil</code>
-            <tr>
-              <td>Inode change time
-              <td><code>File::Stat#ctime</code> / <code>File.ctime</code> / <code>File#ctime</code>
-              <td><code>Time</code>
-            <tr>
-              <td>Device number of filesystem
-              <td><code>File::Stat#dev</code>  
-              <td><code>Fixnum</code> or <code>nil</code>
-            <tr>
-              <td>〃(major part)
-              <td><code>File::Stat#dev_major</code>  
-              <td><code>Fixnum</code> or <code>nil</code>
-            <tr>
-              <td>〃(minor part)
-              <td><code>File::Stat#dev_minor</code>  
-              <td><code>Fixnum</code> or <code>nil</code>
-            <tr>
-              <td>Type
-              <td><code>File::Stat#ftype</code>  
-              <td><code>String</code>
-            <tr>
-              <td>Owner’s group ID
-              <td><code>File::Stat#gid</code>  
-              <td><code>Fixnum</code>
-            <tr>
-              <td>Inode number
-              <td><code>File::Stat#ino</code>  
-              <td><code>Fixnum</code>
-            <tr>
-              <td>Permission bits
-              <td><code>File::Stat#mode</code>  
-              <td><code>Fixnum</code>
-            <tr>
-              <td>Last modify time
-              <td><code>File::Stat#mtime</code> / <code>File.mtime</code> / <code>File#mtime</code>
-              <td><code>Time</code>
-            <tr>
-              <td>Pathname
-              <td><code>File#path</code>  
-              <td><code>String</code>
-            <tr>
-              <td>Device ID
-              <td><code>File::Stat#rdev</code>  
-              <td><code>Fixnum</code> or <code>nil</code>
-            <tr>
-              <td>〃(major part)
-              <td><code>File::Stat#rdev_major</code>  
-              <td><code>Fixnum</code> or <code>nil</code>
-            <tr>
-              <td>〃(minor part)
-              <td><code>File::Stat#rdev_minor</code>  
-              <td><code>Fixnum</code> or <code>nil</code>
-            <tr>
-              <td>Size (bytes)
-              <td><code>File::Stat#size</code> / <code>File#size</code> /
-                <code>File.size</code>
-              <td><code>Fixnum</code> 
-            <tr>
-              <td>Owner’s user ID
-              <td><code>File::Stat#uid</code>  
-              <td><code>Fixnum</code>
-          </table>
+    <section>
+      <h1 id=file-size>Size</h1>
 
-          <!-- Digression on bitmasks for #mode -->
-      </section>
+      <p>A file that exists has a size. The <code>File.size</code> method
+      returns the size of its argument, and <code>File#size</code> returns
+      that of its receiver. In both cases, the size is an <code>Integer</code>
+      and in bytes. The <code>File.size?</code> predicate returns the size of
+      the file named by its argument if it exists and has a non-zero size, or
+      otherwise: <code>nil</code>. Similarly, <code>File.zero?</code> returns
+      <code>true</code> if the file named by its argument exists and has a
+      size of zero; <code>false</code> otherwise.
+    </section>  
+    
+    
+    <section>
+      <h1 id=file-comparison>Comparison</h1>
 
-      <section>
-        <h1 id=file-paths>Paths</h1>
+      <p>The <code>File.identical?</code> predicate is used to determine
+      whether the two files it is given as arguments are the same: returning
+      <code>true</code> if they are, <code>false</code> otherwise. Two files
+      are considered identical if their paths normalise to the same
+      path, or if one or both are symbolic links with identical targets.
+      It is not sufficient that two files merely contain the same content for
+      this method to succeed. 
 
-        <p>A file’s <dfn>path</dfn> or <dfn>pathname</dfn> is a
-        <code>String</code> describing its location in the filesystem. It
-        consists of one or more <dfn>components</dfn>, which in the latter
-        case are separated with the <dfn>path separator</dfn>. On non-Windows
-        platforms the path separator is the solidus character.
+      <!-- File::Stat <=> -->
+    </section>
 
-        <p>The non-normalised path associated with a file is returned by
-        <code>File.path</code> or <code>File#path</code>.
-        <code>File.dirname</code> returns the directory name of its argument:
-        all components other than the last. Conversely, the last component of
-        a filename is returned by <code>File.basename</code>. The filename
-        extension, e.g. <code>.txt</code>, is returned by
-        <code>File.extname</code>. If these methods are given a path without
-        the requested component, they return the empty <code>String</code>.
-        <code>File.split</code> returns a two-element <code>Array</code> with
-        the file’s dirname as the first element, and its basename as the last.
-        <code>File.join</code> performs the inverse operation: given a list of
-        path components it joins them with the path separator into a
-        <code>String</code>.
-        
-        <table class=border>
-          <caption>
-            <p>Examples of how path components are interpreted by the named
-            class methods of <code>File</code>
-            <p>Each column indicates the output of the corresponding
-            <code>File</code> class method for the path given in the first
-            column.
-          <thead>
-            <tr>
-              <th><code>path</code>
-              <th><code>dirname</code>
-              <th><code>basename</code>  
-              <th><code>extname</code>  
-              <th><code>split</code>  
-          <tbody class=zebra>
-            <tr>
-              <td><code>/home/user/base64.rb</code>
-              <td><code>/home/user</code>  
-              <td><code>base64.rb</code>  
-              <td><code>.rb</code>  
-              <td><code>["/home/user", "base64.rb"]</code>
-            <tr>
-              <td><code>/etc/hosts</code>
-              <td><code>/etc</code>  
-              <td><code>hosts</code>  
-              <td>&nbsp;  
-              <td><code>["/etc", "hosts"]</code>
-            <tr>
-              <td><code>sort</code>
-              <td><code>.</code>  
-              <td><code>sort</code>  
-              <td>&nbsp;  
-              <td><code>[".", "sort"]</code>
-            <tr>
-              <td><code>~/.vimrc</code>
-              <td><code>~</code>  
-              <td><code>.vimrc</code>  
-              <td>&nbsp;  
-              <td><code>["~", ".vimrc"]</code>
+    <section>
+      <h1 id=file-stat><code>File::Stat</code></h1>
+
+      <p><code>File::Stat</code> objects represents file metadata. They are
+      normally created with <code>File#stat</code> or
+      <code>File.stat(<var>file</var>)</code>. <code>File#lstat</code> and
+      <code>File.lstat</code> are used to the same end, but they do not
+      follow the last symbolic link, if any, in the file path; they return
+      metadata for the link itself.
+
+      <table class=border>
+        <caption>
+          <p>Attributes of files
+        <thead>  
+          <tr>
+            <th>Attribute
+            <th>Method
+            <th>Returns
+        <tbody class=zebra>        
+          <tr>
+            <td>Last access time
+            <td><code>File::Stat#atime</code> / <code>File.atime</code> / <code>File#atime</code>
+            <td><code>Time</code>
+          <tr>
+            <td>Preferred block size for I/O
+            <td><code>File::Stat#blksize</code>  
+            <td><code>Fixnum</code> or <code>nil</code>
+          <tr>
+            <td>Number of blocks allocated
+            <td><code>File::Stat#blocks</code>  
+            <td><code>Fixnum</code> or <code>nil</code>
+          <tr>
+            <td>Inode change time
+            <td><code>File::Stat#ctime</code> / <code>File.ctime</code> / <code>File#ctime</code>
+            <td><code>Time</code>
+          <tr>
+            <td>Device number of filesystem
+            <td><code>File::Stat#dev</code>  
+            <td><code>Fixnum</code> or <code>nil</code>
+          <tr>
+            <td>〃(major part)
+            <td><code>File::Stat#dev_major</code>  
+            <td><code>Fixnum</code> or <code>nil</code>
+          <tr>
+            <td>〃(minor part)
+            <td><code>File::Stat#dev_minor</code>  
+            <td><code>Fixnum</code> or <code>nil</code>
+          <tr>
+            <td>Type
+            <td><code>File::Stat#ftype</code>  
+            <td><code>String</code>  
+          <tr>
+            <td>Owner’s group ID
+            <td><code>File::Stat#gid</code>  
+            <td><code>Fixnum</code>
+          <tr>
+            <td>Inode number
+            <td><code>File::Stat#ino</code>  
+            <td><code>Fixnum</code>
+          <tr>
+            <td>Permission bits
+            <td><code>File::Stat#mode</code>  
+            <td><code>Fixnum</code>
+          <tr>
+            <td>Last modify time
+            <td><code>File::Stat#mtime</code> / <code>File.mtime</code> / <code>File#mtime</code>
+            <td><code>Time</code>
+          <tr>
+            <td>Pathname
+            <td><code>File#path</code>  
+            <td><code>String</code>
+          <tr>
+            <td>Device ID
+            <td><code>File::Stat#rdev</code>  
+            <td><code>Fixnum</code> or <code>nil</code>
+          <tr>
+            <td>〃(major part)
+            <td><code>File::Stat#rdev_major</code>  
+            <td><code>Fixnum</code> or <code>nil</code>
+          <tr>
+            <td>〃(minor part)
+            <td><code>File::Stat#rdev_minor</code>  
+            <td><code>Fixnum</code> or <code>nil</code>
+          <tr>
+            <td>Size (bytes)
+            <td><code>File::Stat#size</code> / <code>File#size</code> /
+              <code>File.size</code>
+            <td><code>Fixnum</code> 
+          <tr>
+            <td>Owner’s user ID
+            <td><code>File::Stat#uid</code>  
+            <td><code>Fixnum</code>
         </table>
 
-        <p>A <dfn>relative path</dfn> is a path given in terms of another
-        path, as opposed to an <dfn>absolute path</dfn> which stands alone. On
-        Unix-like systems, the former are paths that do not begin with a
-        solidus, and the latter are the opposite. A relative path may be
-        expanded to an absolute path with <code>File.expand_path</code>.
-        Absolute paths are returned as-is. Otherwise, they are assumed to be
-        relative to the current directory. If an optional second argument is
-        given, it names the directory the first argument is relative to. If
-        the relative path begins with a tilde, it is interpreted as relative
-        to the current user’s home directory (as returned by
-        <code>ENV['HOME']</code>). If the relative path begins with a tilde
-        followed by a username, it is relative to the named user’s home
-        directory. <code>File.absolute_path</code> behaves in the same fashion
-        except it doesn’t treat tildes specially, i.e. it interprets a path of
-        <code>~/glark</code> as <code>./~/glark</code>.</p>
+        <!-- Digression on bitmasks for #mode -->
+    </section>
 
-        <figure id=file-expand-path.rb>
-          <figcaption><code>File.expand_path</code> resolves relative paths
-          into absolute paths.
-        </figure>
-        
-        <p>Neither <code>File.absolute_path</code> nor
-        <code>File.expand_path</code> resolve relative paths by traversing the
-        filesystem: at most, they request the current working directory or a
-        user’s home directory from the environment. An implication is that
-        they will quite happily return paths that do not exist on the
-        filesystem. <code>File.realpath</code> is an alternative. It creates
-        an absolute path from a relative path by interrogating the filesystem,
-        and following symbolic links if necessary. It resolves relative to the
-        current working directory, or the optional second argument. An
-        exception is raised if the absolute path it resolves does not exist.
-        <code>File.realdirpath</code> accepts the same arguments, and performs
-        the same operation, but allows the last component of the path to be
-        non-existent.</p>
+          <!-- TODO: Kernel.test -->
 
-        <figure id=file-realpath.rb>
-          <figcaption><code>File.realpath</code> and
-          <code>File.realdirpath</code> resolve relative paths by walking the
-          filesystem.
-        </figure>
-      </section>
+    <section>
+      <h1 id=file-type>Types</h1>
 
-      <section>
-        <h1 id=symlinks>Symbolic Links</h1>
-        
-        <p>On platforms that support symlinks, <code>File.symlink</code> will
-        create a link to the file named as its first argument, with the name
-        given as its second. The <code>File.symlink?</code> predicate can be
-        used to test whether its argument is a symlink, and
-        <code>File.readlink</code> returns the target of a given link.</p>
+      <p>We began this section by enumerating the many types of file
+      objectified by <code>File</code>. To determine whether a given file is
+      of a given type, one may use the appropriate predicate method of the
+      <code>File</code> class. For example, <code>File.directory?</code>
+      determines whether its argument is a directory. Alternatively,
+      <code>File::Stat#ftype</code> returns a <code>String</code> identifying
+      the type of the represented file. In the case of a directory,
+      <code>#ftype</code> returns <code>directory</code>. These two approaches
+      are summarised in the table that follows.
 
-        <figure id=file-symlink.rb>
-          <figcaption>A symbolic link can be created with
-          <code>File.symlink</code>
-        </figure>
-      </section>
+      <table class=border>
+        <caption>
+          <p>Types of file Ruby knows about
+          <p>The <i><code>File::Stat#ftype</code></i> column contains the
+          <code>String</code> that method returns for a file of the
+          corresponding type. <i>Predicate</i> is a method that expects a path
+          as argument, returning <code>true</code> iff the named file is of
+          the corresponding type. The <i>Creation</i> column specifies, where
+          possible, how a file of the corresponding type may be created in
+          Ruby.
+        <thead>
+          <tr>
+            <th>Description
+            <th><code>File::Stat#ftype</code>
+            <th>Predicate
+            <th>Example  
+            <th>Creation
+        <tbody class=zebra>
+          <tr>    
+            <td>Block device
+            <td><code>blockSpecial</code>
+            <td><code>File.blockdev?</code>
+            <td><code>/dev/sda</code>  
+            <td>&nbsp;
+          <tr>
+            <td>Character device
+            <td><code>characterSpecial</code>
+            <td><code>File.chardev?</code>
+            <td><code>/dev/tty</code>  
+            <td>&nbsp;
+          <tr>      
+            <td>Directory
+            <td><code>directory</code>
+            <td><code>File.directory?</code>
+            <td><code>/etc</code>  
+            <td><code>Dir.mkdir</code>
+          <tr>
+            <td>FIFO (named pipe)
+            <td><code>fifo</code>
+            <td><code>File.pipe?</code>
+            <td>&nbsp;
+            <td><code>system("mkfifo <var>name</var>")</code>
+          <tr>
+            <td>Regular file
+            <td><code>file</code>
+            <td><code>File.file?</code>
+            <td><code>/etc/passwd</code>  
+            <td><code>Kernel.open</code>
+          <tr>
+            <td>Symbolic link
+            <td><code>link</code>
+            <td><code>File.symlink?</code>
+            <td><code>/dev/root</code>  
+            <td><code>File.symlink</code>
+          <tr>
+            <td>Socket
+            <td><code>socket</code>
+            <td><code>File.socket?</code>
+            <td><code>/dev/log</code>  
+            <td>Use the <code>socket</code> library 
+          <tr>
+            <td>Another type of file  
+            <td><code>unknown</code>
+            <td>&nbsp;
+            <td>&nbsp;
+            <td>&nbsp;
+            <td>&nbsp;
+      </table>
+    </section>  
 
-      <section>
-        <h1 id=file-delete>Deletion</h1>
+    <section>
+      <h1 id=file-permissions>Permissions</h1>
 
-        <p>Files may be deleted by supplying a list of their names as arguments to
-        <code>File.delete</code>, or its alias <code>File.unlink</code>. An
-        <code>Integer</code> is returned indicating how many files were
-        deleted.
-      </section>
+      <p>The permission bits associated with a file may be retrieved from
+      the corresponding <code>File::Stat</code> object. The fields of
+      interest are described below. Be aware that on non-<abbr
+        title='Portable Operating System Interface [for Unix]'>POSIX</abbr>
+      systems the semantics of file permissions are quite different,
+      and are likely to be less granular. To compensate, on these
+      disadvantaged platforms Ruby attempts to synthesize a numeric mode
+      such that it is broadly similar to what POSIX requires. However, given
+      the lack of granularity and other incompatibilities, these factitious
+      modes are cumbersome and error-prone. It is therefore recommended
+      that the permission bits are treated as opaque, as far as possible,
+      and the predicates described later are used instead.
+      
+      <table class=border>
+        <caption>Permission and ownership attributes of
+          <code>File::Stat</code> objects
+        <thead>  
+          <tr>
+            <th>Attribute
+            <th>Method
+            <th>Returns
+        <tbody class=zebra>        
+          <tr>
+            <td>Owner’s group ID
+            <td><code>File::Stat#gid</code>  
+            <td><code>Fixnum</code>
+          <tr>
+            <td>Permission bits
+            <td><code>File::Stat#mode</code>  
+            <td><code>Fixnum</code>
+          <tr>
+            <td>Owner’s user ID
+            <td><code>File::Stat#uid</code>  
+            <td><code>Fixnum</code>
+      </table>
 
-      <section>
-        <h1 id=file-rename>Renaming</h1>
+      <p>The permissions of a file may be changed with
+      <code>File.chmod</code> by providing the new permission bits as the
+      first argument, and a list of files as the subsequent arguments. Each
+      file listed has its permissions changed accordingly. The meaning of
+      the permission bits is platform-specific, but on Unix-like systems
+      they correspond to the numeric mode understood by
+      <code>chmod(1)</code>. Some systems, such as the <abbr title='Berkeley
+        Software Distribution'>BSD</abbr>s, support a variant of
+      <code>chmod</code> that does not follow symbolic links, therefore acts
+      upon the link rather than its target. If available, Ruby exposes this
+      functionality via <code>File.lchmod</code>, which takes the same
+      arguments as <code>File.chmod</code>. <code>File</code> also provides
+      the instance methods <code>File#chmod</code> and
+      <code>File#lchmod</code>, which require the permission bits to assign
+      to their receiver as their sole argument.
 
-        <p>Files may be renamed by invoking <code>File.rename</code> with
-        their current name as the first argument, and their desired name as
-        the second.
-      </section>
+      <p>The owner and group of a file may be changed-although the former
+      requires root permissions-with <code>File.chown</code>. It takes a
+      numeric user ID, and numeric group ID, as the first and second
+      arguments, respectively, and a list of files as the subsequent
+      arguments. The ownership of each file listed that the user has
+      permission to change is adjusted accordingly. <code>File.lchown</code>
+      functions similarly, but does not follow symlinks. Its availability
+      mirrors that of <code>File.lchmod</code>. The instance method,
+      <code>File#chown</code>, requires a numeric user ID, and numeric group
+      ID, as its arguments, which it applies to its receiver.
 
-      <section>
-        <h1 id=file-permissions>Changing Permissions</h1>
+      <p>The umask value of the current process is set by supplying
+      <code>File.umask</code> with the new value as an <code>Integer</code>
+      argument. It returns the previous umask value. When called without
+      arguments, <code>File.umask</code> returns the current umask.
 
-        <p>The permissions of a file may be changed with
-        <code>File.chmod</code> by providing the new permission bits as the
-        first argument, and a list of files as the subsequent arguments. Each
-        file listed has its permissions changed accordingly. The meaning of
-        the permission bits is platform-specific, but on Unix-like systems
-        they correspond to the numeric mode understood by
-        <code>chmod(1)</code>. Some systems, such as the <abbr title='Berkeley
-          Software Distribution'>BSD</abbr>s, support a variant of
-        <code>chmod</code> that does not follow symbolic links, therefore acts
-        upon the link rather than its target. If available, Ruby exposes this
-        functionality via <code>File.lchmod</code>, which takes the same
-        arguments as <code>File.chmod</code>. <code>File</code> also provides
-        the instance methods <code>File#chmod</code> and
-        <code>File#lchmod</code>, which require the permission bits to assign
-        to their receiver as their sole argument.
+      <!-- Note that permission bits are normalised -->
+      <table class=border>
+        <caption>
+          <p>Permissions predicate methods of the <code>File</code> class.
+          <p>Methods take a filename as argument and return either
+          <code>true</code> or <code>false</code> unless stated otherwise.
+        <thead>  
+          <tr>
+            <th>Predicate
+            <th>Test 
+        <tbody class=zebra>        
+          <tr>
+            <td><code>File.executable?</code>
+            <td>Executable by our effective user ID?  
+          <tr>
+            <td><code>File.executable_real?</code>
+            <td>Executable by our real user ID?  
+          <tr>
+            <td><code>File.grpowned?</code>
+            <td>Owned by our effective group ID?  
+          <tr>
+            <td><code>File.owned?</code>
+            <td>Owned by our effective user ID?  
+          <tr>
+            <td><code>File.readable?</code>
+            <td>Readable by our effective user ID?  
+          <tr>
+            <td><code>File.readable_real?</code>
+            <td>Readable by our real user ID?  
+          <tr>
+            <td><code>File.setgid?</code>
+            <td><abbr title='Set group ID upon execution'>Setgid</abbr> bit set?  
+          <tr>
+            <td><code>File.setuid?</code>
+            <td><abbr title='Set user ID upon execution'>Setuid</abbr> bit set?  
+          <tr>
+            <td><code>File.sticky?</code>
+            <td>Sticky bit set?  
+          <tr>
+            <td><code>File.world_readable?</code>
+            <td>Readable by others? (Returns permission bits or
+              <code>nil</code>)  
+          <tr>
+            <td><code>File.world_writable?</code>
+            <td>Writable by others? (Returns permission bits or <code>nil</code>)
+          <tr>
+            <td><code>File.writable?</code>
+            <td>Writable by our effective user ID?  
+          <tr>
+            <td><code>File.writable_real?</code>
+            <td>Writable by our real user ID?  
+        </table>
+    </section>
 
-        <p>The owner and group of a file may be changed-although the former
-        requires root permissions-with <code>File.chown</code>. It takes a
-        numeric user ID, and numeric group ID, as the first and second
-        arguments, respectively, and a list of files as the subsequent
-        arguments. The ownership of each file listed that the user has
-        permission to change is adjusted accordingly. <code>File.lchown</code>
-        functions similarly, but does not follow symlinks. Its availability
-        mirrors that of <code>File.lchmod</code>. The instance method,
-        <code>File#chown</code>, requires a numeric user ID, and numeric group
-        ID, as its arguments, which it applies to its receiver.
+    <section>
+      <h1 id=symlinks>Symbolic Links</h1>
+      
+      <p>On platforms that support symlinks, <code>File.symlink</code> will
+      create a link to the file named as its first argument, with the name
+      given as its second. The <code>File.symlink?</code> predicate can be
+      used to test whether its argument is a symlink, and
+      <code>File.readlink</code> returns the target of a given link.</p>
 
-        <p>The umask value of the current process is set by supplying
-        <code>File.umask</code> with the new value as an <code>Integer</code>
-        argument. It returns the previous umask value. When called without
-        arguments, <code>File.umask</code> returns the current umask.
-      </section>
-   </section>
+      <figure id=file-symlink.rb>
+        <figcaption>A symbolic link can be created with
+        <code>File.symlink</code>
+      </figure>
+    </section>
+  </section>
 </article>
