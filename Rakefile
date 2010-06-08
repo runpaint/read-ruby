@@ -367,4 +367,4 @@ task :rsync => :default do
   sh "rsync --delete -vazL out/ ruby:/home/public"
 end
 
-Rspec::Core::RakeTask.new(:rspec)
+RSpec::Core::RakeTask.new(:rspec)
