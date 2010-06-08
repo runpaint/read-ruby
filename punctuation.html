@@ -60,16 +60,23 @@
 
     <p>A colon (<code class=u title=':'>U＋003A</code>) in the context of…
 
-    <dl class=inline-small>
-      <dt>A symbol literal
-      <dd>Creates a symbol from the following identifier or string.
-      <dt>A hash literal
-      <dd>Separates symbol keys from their corresponding values.
-      <dt>Ternary conditional
-      <dd>Separates the <i>if</i> clause from the <i>else</i> clause.
-      <dt>A constant reference
-      <dd>Two consecutive colons serve as the scope operator, separating the
-      names of nested constants.
+    <dl>
+      <dt>The beginning of an expression
+      <dd>Creates a symbol from the following identifier or string. (Unless
+      followed by another colon).
+      <dt>An operator
+      <dd>Separates the <code>then</code> clause from the <code>else</code>
+      clause in a ternary expression.
+      <dt>An operator inside a <code>Hash</code> literal
+      <dd>Separates <code>Symbol</code> keys from their corresponding values.
+      <dt>A constant reference expression
+      <dd>Two consecutive colons serve as the scope operator when the
+      character to their immediate right is an uppercase US-ASCII letter:
+      either separating one constant’s name from another, or at the beginning
+      of such an expression.
+      <dt>A message expression
+      <dd>Two consecutive colons followed by a character other than an
+      uppercase US-ASCII letter may separate the receiver from the selector. 
     </dl>
   </section>
   
