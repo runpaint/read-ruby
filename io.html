@@ -1,24 +1,62 @@
 <article>
   <h1 id=io>Input &amp; Output</h1>
 
+  <!-- The Standard Trinity: In, Error, Out-->
+<!--  
+def with_verbosity(verbosity=false)
+  old, $VERBOSE = $VERBOSE, verbosity
+  yield
+ensure
+  $VERBOSE = old
+end
+
+def quietly(&block)
+  with_verbosity(nil, &block)
+end
+def loudly(&block)
+  with_verbosity(true, &block)
+end
+-->  
   <section>
     <h1 id=files>Files</h1>
 
-    <p>A file is an entity on a filesystem addressable by a path. This
-    definition is intentionally broad-encompassing regular files along with
-    directories, block and character devices, symbolic links, sockets, and <abbr
-      title='First-In First-Out'>FIFO</abbr>s (named pipes)-because the
-    <code>File</code> class represents them all. It is this class that is the
-    subject of our present enquiry.</p>
+    <p>A file is an entity on a filesystem addressable by a <a
+      href=#file-paths>path</a>. This definition is intentionally
+    broad-encompassing regular files along with directories, block and
+    character devices, symbolic links, sockets, and <abbr title='First-In
+      First-Out'>FIFO</abbr>s (named pipes)-because the <code>File</code>
+    class represents them all. It is this class that is the subject of our
+    present enquiry.</p>
 
     <!-- Describe the mode argument accepted by `open` as the 'open mode'?
     This clarifies the distinction between the mode argument, textmode, and
     binmode. -->
 
-    <!-- TODO: File.new (must exist) -->
-    <!-- TODO: Iteration -->
+    <p>A <code>File</code> object may be created with the constructor
+    <code>File.new</code>, which expects an existing path as an argument. The
+    objectified file can then be interrogated, and its contents <a
+      href=#file-read>read</a>. The <code>File</code> objects instantiated by <a
+      href=#file-open><code>Kernel.open</code></a> can be written to, as well
+    as read, with their underlying file being created if needed.
+
+    <!-- Contrast File class methods with instance methods. Introduce testing
+    methods up here, then expound on them later. -->
     <!-- TODO: Dir -->
 
+    <!-- Summary table?
+    File.read
+    File.binread
+    File.exist?
+    open(path, ?w)
+    open(path, ?a, encoding: 'from:to')
+    File.delete
+    File.rename
+    File.file?
+    File.size?
+    File.ctime/mtime/..
+    File.new()
+    File.symlink
+    -->
     <section>
       <h1 id=file-paths>Paths</h1>
     
@@ -26,7 +64,8 @@
       location in the filesystem. It consists of one or more
       <dfn>components</dfn>, which in the latter case are separated with the
       <dfn>path separator</dfn>. On non-Windows platforms the path separator
-      is the solidus character.
+      is the solidus character. <!-- Solidus used as path sep. on Windows,
+      too, but on Windows Ruby can also handle native paths -->
 
       <p>We use the term <i>path</i> to refer either to a <code>String</code>,
       whose contents is a path, or an object that responds to
@@ -99,15 +138,16 @@
       <p>A <dfn>relative path</dfn> is a path given in terms of another
       path, as opposed to an <dfn>absolute path</dfn> which stands alone. On
       Unix-like systems, the former are paths that do not begin with a
-      solidus, and the latter are the opposite. A relative path may be
-      expanded to an absolute path with <code>File.expand_path</code>.
-      Absolute paths are returned as-is. Otherwise, they are assumed to be
-      relative to the current directory. If an optional second argument is
-      given, it names the directory the first argument is relative to. If
-      the relative path begins with a tilde, it is interpreted as relative
-      to the current user’s home directory (as returned by
-      <code>ENV['HOME']</code>). If the relative path begins with a tilde
-      followed by a username, it is relative to the named user’s home
+      solidus, and the latter are the opposite. 
+      
+      <p>A relative path may be expanded to an absolute path with
+      <code>File.expand_path</code>. Absolute paths are returned as-is.
+      Otherwise, they are assumed to be relative to the current directory. If
+      an optional second argument is given, it names the directory the first
+      argument is relative to. If the relative path begins with a tilde, it is
+      interpreted as relative to the current user’s home directory (as
+      returned by <code>ENV['HOME']</code>). If the relative path begins with
+      a tilde followed by a username, it is relative to the named user’s home
       directory. <code>File.absolute_path</code> behaves in the same fashion
       except it doesn’t treat tildes specially, i.e. it interprets a path of
       <code>~/glark</code> as <code>./~/glark</code>.</p>
@@ -141,6 +181,7 @@
     <section>
       <h1 id=file-read>Reading</h1>
 
+      <!-- Move this after Opening? -->
       <p>Reading a file is the process of retrieving its contents. It can be
       achieved by passing a path argument to <code>File.read</code> which
       returns the contents as a <code>String</code>. An optional second
@@ -156,6 +197,7 @@
       </figure>
     </section>
 
+    <!-- 'Writing' section for symmetry? Show implementation of File.write? -->
     <section>
       <h1 id=file-open>Opening</h1>
 
@@ -164,7 +206,8 @@
       file with the given path, returning a corresponding <code>File</code>
       object. It is typically used with a block, which receives the opened
       <code>File</code> object as an argument.  Having executed the block, the
-      file is automatically closed, even if the block raises an exception. 
+      file is automatically closed, even if the block raises an exception.
+      <!-- Return value is that of the block -->
 
       <p>The second argument of <code>Kernel.open</code> may be a
       <code>Hash</code> of options. This is summarised in the table that
@@ -581,6 +624,8 @@
       <!-- TODO: Discuss ORing constants to specify the open mode? -->
     </section>
 
+    <!-- Iteration; or, cover this in terms of IO objects in general?  -->
+
     <section>
       <h1 id=file-exists>Existence</h1>
 
@@ -596,9 +641,10 @@
       <p>Files may be deleted by supplying a list of their paths as arguments to
       <code>File.delete</code>, or its alias <code>File.unlink</code>. An
       <code>Integer</code> is returned indicating how many files were
-      deleted.
+      deleted. <!-- File.truncate -->
     </section>
 
+    <!-- File.utime -->
     <section>
       <h1 id=file-rename>Renaming</h1>
 
@@ -620,7 +666,6 @@
       size of zero; <code>false</code> otherwise.
     </section>  
     
-    
     <section>
       <h1 id=file-comparison>Comparison</h1>
 
@@ -630,11 +675,13 @@
       are considered identical if their paths normalise to the same
       path, or if one or both are symbolic links with identical targets.
       It is not sufficient that two files merely contain the same content for
-      this method to succeed. 
+      this method to succeed. <!-- Doesn't expand paths -->
 
       <!-- File::Stat <=> -->
     </section>
 
+    <!-- Times section? -->
+    <!-- File.fnmatch  -->
     <section>
       <h1 id=file-stat><code>File::Stat</code></h1>
 
@@ -652,86 +699,103 @@
             <th>Attribute
             <th>Method
             <th>Returns
+            <th><a href=#kernel-test><code>Kernel.test</code></a>  
         <tbody class=zebra>        
           <tr>
             <td>Last access time
             <td><code>File::Stat#atime</code> / <code>File.atime</code> / <code>File#atime</code>
             <td><code>Time</code>
+            <td><code>?A</code>  
           <tr>
             <td>Preferred block size for I/O
             <td><code>File::Stat#blksize</code>  
             <td><code>Fixnum</code> or <code>nil</code>
+            <td>&nbsp;
           <tr>
             <td>Number of blocks allocated
             <td><code>File::Stat#blocks</code>  
             <td><code>Fixnum</code> or <code>nil</code>
+            <td>&nbsp;
           <tr>
             <td>Inode change time
             <td><code>File::Stat#ctime</code> / <code>File.ctime</code> / <code>File#ctime</code>
             <td><code>Time</code>
+            <td><code>?C</code>  
           <tr>
             <td>Device number of filesystem
             <td><code>File::Stat#dev</code>  
             <td><code>Fixnum</code> or <code>nil</code>
+            <td>&nbsp;
           <tr>
             <td>〃(major part)
             <td><code>File::Stat#dev_major</code>  
             <td><code>Fixnum</code> or <code>nil</code>
+            <td>&nbsp;
           <tr>
             <td>〃(minor part)
             <td><code>File::Stat#dev_minor</code>  
             <td><code>Fixnum</code> or <code>nil</code>
+            <td>&nbsp;
           <tr>
             <td>Type
             <td><code>File::Stat#ftype</code>  
             <td><code>String</code>  
+            <td>&nbsp;
           <tr>
             <td>Owner’s group ID
             <td><code>File::Stat#gid</code>  
             <td><code>Fixnum</code>
+            <td>&nbsp;
           <tr>
             <td>Inode number
             <td><code>File::Stat#ino</code>  
             <td><code>Fixnum</code>
+            <td>&nbsp;
           <tr>
             <td>Permission bits
             <td><code>File::Stat#mode</code>  
             <td><code>Fixnum</code>
+            <td>&nbsp;
           <tr>
             <td>Last modify time
             <td><code>File::Stat#mtime</code> / <code>File.mtime</code> / <code>File#mtime</code>
             <td><code>Time</code>
+            <td><code>?M</code>  
           <tr>
             <td>Pathname
             <td><code>File#path</code>  
             <td><code>String</code>
+            <td>&nbsp;
           <tr>
             <td>Device ID
             <td><code>File::Stat#rdev</code>  
             <td><code>Fixnum</code> or <code>nil</code>
+            <td>&nbsp;
           <tr>
             <td>〃(major part)
             <td><code>File::Stat#rdev_major</code>  
             <td><code>Fixnum</code> or <code>nil</code>
+            <td>&nbsp;
           <tr>
             <td>〃(minor part)
             <td><code>File::Stat#rdev_minor</code>  
             <td><code>Fixnum</code> or <code>nil</code>
+            <td>&nbsp;
           <tr>
             <td>Size (bytes)
             <td><code>File::Stat#size</code> / <code>File#size</code> /
               <code>File.size</code>
             <td><code>Fixnum</code> 
+            <td>&nbsp;
           <tr>
             <td>Owner’s user ID
             <td><code>File::Stat#uid</code>  
             <td><code>Fixnum</code>
+            <td>&nbsp;
         </table>
 
         <!-- Digression on bitmasks for #mode -->
     </section>
-
-          <!-- TODO: Kernel.test -->
 
     <section>
       <h1 id=file-type>Types</h1>
@@ -755,7 +819,7 @@
           as argument, returning <code>true</code> iff the named file is of
           the corresponding type. The <i>Creation</i> column specifies, where
           possible, how a file of the corresponding type may be created in
-          Ruby.
+          Ruby. Examples assume a Linux/Debian platform.
         </caption>
         <thead>
           <tr>
@@ -764,6 +828,7 @@
             <th>Predicate
             <th>Example  
             <th>Creation
+            <th><a href=#kernel-test><code>Kernel.test</code></a>
         <tbody class=zebra>
           <tr>    
             <td>Block device
@@ -771,42 +836,49 @@
             <td><code>File.blockdev?</code>
             <td><code>/dev/sda</code>  
             <td>&nbsp;
+            <td><code>?b</code>
           <tr>
             <td>Character device
             <td><code>characterSpecial</code>
             <td><code>File.chardev?</code>
             <td><code>/dev/tty</code>  
             <td>&nbsp;
+            <td><code>?c</code>
           <tr>      
             <td>Directory
             <td><code>directory</code>
             <td><code>File.directory?</code>
             <td><code>/etc</code>  
             <td><code>Dir.mkdir</code>
+            <td><code>?d</code>
           <tr>
             <td>FIFO (named pipe)
             <td><code>fifo</code>
             <td><code>File.pipe?</code>
             <td>&nbsp;
             <td><code>system("mkfifo <var>name</var>")</code>
+            <td><code>?p</code>
           <tr>
             <td>Regular file
             <td><code>file</code>
             <td><code>File.file?</code>
             <td><code>/etc/passwd</code>  
             <td><code>Kernel.open</code>
+            <td><code>?f</code>
           <tr>
             <td>Symbolic link
             <td><code>link</code>
             <td><code>File.symlink?</code>
             <td><code>/dev/root</code>  
             <td><code>File.symlink</code>
+            <td><code>?l</code>
           <tr>
             <td>Socket
             <td><code>socket</code>
             <td><code>File.socket?</code>
             <td><code>/dev/log</code>  
             <td>Use the <code>socket</code> library 
+            <td><code>?S</code>
           <tr>
             <td>Another type of file  
             <td><code>unknown</code>
@@ -895,59 +967,76 @@
         <caption>
           <p>Permissions predicate methods of the <code>File</code> class.
           <p>Methods take a filename as argument and return either
-          <code>true</code> or <code>false</code> unless stated otherwise.
+          <code>true</code> or <code>false</code> unless stated otherwise. The
+          <i><code>Kernel.test</code></i> column indicates the corresponding
+          command for use with <code>test</code>.
         </caption>
         <thead>  
           <tr>
             <th>Predicate
             <th>Test 
+            <th><a href=#kernel-test><code>Kernel.test</code></a> 
         <tbody class=zebra>        
           <tr>
             <td><code>File.executable?</code>
             <td>Executable by our effective user ID?  
+            <td><code>?x</code>  
           <tr>
             <td><code>File.executable_real?</code>
             <td>Executable by our real user ID?  
+            <td><code>?X</code>  
           <tr>
             <td><code>File.grpowned?</code>
             <td>Owned by our effective group ID?  
+            <td><code>?G</code>  
           <tr>
             <td><code>File.owned?</code>
             <td>Owned by our effective user ID?  
+            <td><code>?o</code>  
           <tr>
             <td><code>File.readable?</code>
             <td>Readable by our effective user ID?  
+            <td><code>?r</code>  
           <tr>
             <td><code>File.readable_real?</code>
             <td>Readable by our real user ID?  
+            <td><code>?R</code>  
           <tr>
             <td><code>File.setgid?</code>
             <td><abbr title='Set group ID upon execution'>Setgid</abbr> bit set?  
+            <td><code>?g</code>  
           <tr>
             <td><code>File.setuid?</code>
             <td><abbr title='Set user ID upon execution'>Setuid</abbr> bit set?  
+            <td><code>?u</code>  
           <tr>
             <td><code>File.sticky?</code>
             <td>Sticky bit set?  
+            <td><code>?k</code>  
           <tr>
             <td><code>File.world_readable?</code>
             <td>Readable by others? (Returns permission bits or
               <code>nil</code>)  
+            <td>&nbsp;
           <tr>
             <td><code>File.world_writable?</code>
             <td>Writable by others? (Returns permission bits or <code>nil</code>)
+            <td>&nbsp;
           <tr>
             <td><code>File.writable?</code>
             <td>Writable by our effective user ID?  
+            <td><code>?w</code>  
           <tr>
             <td><code>File.writable_real?</code>
             <td>Writable by our real user ID?  
+            <td><code>?W</code>  
         </table>
     </section>
 
     <section>
       <h1 id=symlinks>Symbolic Links</h1>
       
+      <!-- Rename to Links; mention File.link -->
       <p>On platforms that support symlinks, <code>File.symlink</code> will
       create a link to the file named as its first argument, with the name
       given as its second. The <code>File.symlink?</code> predicate can be
@@ -958,6 +1047,177 @@
         <figcaption>A symbolic link can be created with
         <code>File.symlink</code>
       </figure>
+    </section>
+
+    <section>
+      <h1 id=kernel-test><code>Kernel.test</code></h1>
+
+      <p><code>Kernel.test</code> performs a given test on a given file. It
+      accepts 2&ndash;3 arguments, the first of which is a single character
+      command, and the remainder are the files on which to perform the test. 
+
+      <table class=border>
+        <caption>Commands supported by <code>Kernel.test</code></caption>
+        <thead>
+          <tr>
+            <th>Command
+            <th>Description
+            <th>Returns
+            <th>Arity
+        <tbody class=zebra>        
+          <tr>
+            <td><code>?A</code>
+            <td>Last access time  
+            <td><code>Time</code>  
+            <td>1
+          <tr>
+            <td><code>?b</code>
+            <td>Block device?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?c</code>
+            <td>Character device?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?C</code>
+            <td>Last status change time  
+            <td><code>Time</code>  
+            <td>1
+          <tr>
+            <td><code>?d</code>
+            <td>Directory?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?e</code>
+            <td>Exists?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?f</code>
+            <td>Exists and a regular file?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?g</code>
+            <td>Has the <code>setgid</code> bit set?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?G</code>
+            <td>Exists and owned by our group?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?k</code>
+            <td>Sticky bit set?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?l</code>
+            <td>Exists and a symlink?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?M</code>
+            <td>Last modification time  
+            <td><code>Time</code>
+            <td>1
+          <tr>
+            <td><code>?o</code>
+            <td>Owned by our effective user ID?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?O</code>
+            <td>Owned by our real user ID?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?O</code>
+            <td>Owned by our real user ID?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?p</code>
+            <td>A FIFO?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?r</code>
+            <td>Readable by our effective user/group ID?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?R</code>
+            <td>Readable by our real user/group ID?  
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?s</code>
+            <td>Returns the size if non-zero 
+            <td><code>Integer</code> or <code>nil</code>
+            <td>1
+          <tr>
+            <td><code>?S</code>
+            <td>Socket? 
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?u</code>
+            <td><code>setuid</code> bit set? 
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?w</code>
+            <td>Exists and writable by our effective user/group ID? 
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?W</code>
+            <td>Exists and writable by our real user/group ID? 
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?x</code>
+            <td>Exists and executable by our effective user/group ID? 
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?X</code>
+            <td>Exists and executable by our real user/group ID? 
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?z</code>
+            <td>Exists with a size of zero? 
+            <td><code>true</code> or <code>false</code>
+            <td>1
+          <tr>
+            <td><code>?-</code>
+            <td>Are both operands identical? 
+            <td><code>true</code> or <code>false</code>
+            <td>2
+          <tr>
+            <td><code>?=</code>
+            <td>Do both operands have the same modification time? 
+            <td><code>true</code> or <code>false</code>
+            <td>2
+          <tr>
+            <td><code>?&lt;</code>
+            <td>Is the modification time of the first operand prior to that of
+              the second? 
+            <td><code>true</code> or <code>false</code>
+            <td>2
+          <tr>
+            <td><code>?&gt;</code>
+            <td>Is the modification time of the first operand after that of
+              the second? 
+            <td><code>true</code> or <code>false</code>
+            <td>2
+      </table>
     </section>
   </section>
 </article>
