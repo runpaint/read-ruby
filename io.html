@@ -28,19 +28,15 @@ end
     class represents them all. It is this class that is the subject of our
     present enquiry.</p>
 
-    <!-- Describe the mode argument accepted by `open` as the 'open mode'?
-    This clarifies the distinction between the mode argument, textmode, and
-    binmode. -->
-
     <p>A <code>File</code> object may be created with the constructor
     <code>File.new</code>, which expects an existing path as an argument. The
     objectified file can then be interrogated, and its contents <a
       href=#file-read>read</a>. The <code>File</code> objects instantiated by <a
       href=#file-open><code>Kernel.open</code></a> can be written to, as well
-    as read, with their underlying file being created if needed.
+    as read, with their underlying file being created if needed. However,
+    <code>File</code> also provides many class methods which operate on a path
+    argument without instantiating <code>File</code> a object.
 
-    <!-- Contrast File class methods with instance methods. Introduce testing
-    methods up here, then expound on them later. -->
     <!-- TODO: Dir -->
 
     <!-- Summary table?
@@ -64,8 +60,9 @@ end
       location in the filesystem. It consists of one or more
       <dfn>components</dfn>, which in the latter case are separated with the
       <dfn>path separator</dfn>. On non-Windows platforms the path separator
-      is the solidus character. <!-- Solidus used as path sep. on Windows,
-      too, but on Windows Ruby can also handle native paths -->
+      is the solidus character. Ruby expects paths to be given in the
+      Unix-style, but automatically uses the correct path separator for the
+      platform it is running on.
 
       <p>We use the term <i>path</i> to refer either to a <code>String</code>,
       whose contents is a path, or an object that responds to
@@ -181,7 +178,6 @@ end
     <section>
       <h1 id=file-read>Reading</h1>
 
-      <!-- Move this after Opening? -->
       <p>Reading a file is the process of retrieving its contents. It can be
       achieved by passing a path argument to <code>File.read</code> which
       returns the contents as a <code>String</code>. An optional second
@@ -206,8 +202,9 @@ end
       file with the given path, returning a corresponding <code>File</code>
       object. It is typically used with a block, which receives the opened
       <code>File</code> object as an argument.  Having executed the block, the
-      file is automatically closed, even if the block raises an exception.
-      <!-- Return value is that of the block -->
+      file is automatically closed, even if the block raises an exception. The
+      block-form has a return value equal to that of the block; otherwise a
+      new <code>File</code> object is returned.
 
       <p>The second argument of <code>Kernel.open</code> may be a
       <code>Hash</code> of options. This is summarised in the table that
@@ -231,8 +228,8 @@ end
             <th>Description
           <tbody class=zebra>
             <tr>
-              <td><a href=#file-mode><code>:mode</code></a>
-              <td>The mode as a <code>String</code>. <!-- or int? -->
+              <td><a href=#file-open-mode><code>:mode</code></a>
+              <td>The open mode as a <code>String</code>. <!-- or int? -->
               <td><code>r</code>  
               <td>Whether to open the file in read-only, read-write, or
                 write-only mode, and whether to truncate existing files or
@@ -277,26 +274,24 @@ end
       </table>
 
       <section>
-        <h1 id=file-mode>Mode</h1>
+        <h1 id=file-open-mode>Open Mode</h1>
 
-        <p>A file is opened with a particular <dfn>mode</dfn> which specifies
-        the type of action to be performed on it. The default mode is
-        <code>r</code>. The available modes are listed
-        in the following table.
+        <p>A file is opened with a particular <dfn>open mode</dfn> which
+        specifies the type of action to be performed on it. The default open mode
+        is <code>r</code>.
 
         <table class=border>
           <caption>
             <p>Mode specifiers accepted by <code>Kernel.open</code>,
-            <code>File.open</code>, and <code>IO.open</code>.  <p><i>Mode</i>
-            is the mode string. The <i>Read?</i> and <i>Write?</i> columns
-            indicate whether the opened file can be read from or written to,
-            respectively. <i>Truncate?</i> specifies that existing files will
-            be truncated before use. <i>Creates?</i> specifies that
-            non-existent files will be created before use. Finally, <i>Start
-              Position</i> is the position in the file reading/writing starts
-            from:
-            <i>Beginning</i> is before the first byte; <i>End</i> is after the
-            last.
+            <code>File.open</code>, and <code>IO.open</code>.  
+            <p><i>Mode</i> is the open mode string. The <i>Read?</i> and
+            <i>Write?</i> columns indicate whether the opened file can be read
+            from or written to, respectively. <i>Truncate?</i> specifies that
+            existing files will be truncated before use. <i>Creates?</i>
+            specifies that non-existent files will be created before use.
+            Finally, <i>Start Position</i> is the position in the file
+            reading/writing starts from: <i>Beginning</i> is before the first
+            byte; <i>End</i> is after the last.
           </caption>
           <thead>  
             <tr>
@@ -352,7 +347,7 @@ end
         </table>
       </section>
 
-      <p>Independently of the mode specifiers given above, a file may be
+      <p>Independently of the open mode specifiers given above, a file may be
       opened in <dfn>binary mode</dfn>, <dfn>text mode</dfn>, or neither.</p>
 
       <section>
@@ -370,8 +365,6 @@ end
           <li>Transcoding is disabled unless both an internal and external
           encoding have been specified.
         </ul>  
-
-        <!-- File.binread -->
       </section>
 
       <section>
@@ -545,11 +538,11 @@ end
         <table class=border>
           <caption>
             <p>The forms a mode string may take.  <p><var>mode</var> denotes
-            one of the modes given in the <a href=#file-mode>modes</a> table.
-            The <i>Binary?</i> and <i>Text?</i> columns indicates whether the
-            stream is in binary or text mode, respectively. Both
-            <var>internal</var> and <var>external</var> are names of
-            encodings.
+            one of the open modes given in the <a href=#file-open-mode>open
+              modes</a> table.  The <i>Binary?</i> and <i>Text?</i> columns
+            indicates whether the stream is in binary or text mode,
+            respectively. Both <var>internal</var> and <var>external</var> are
+            names of encodings.
           </caption>
           <thead>  
             <tr>
@@ -638,10 +631,14 @@ end
     <section>
       <h1 id=file-delete>Deletion</h1>
 
-      <p>Files may be deleted by supplying a list of their paths as arguments to
-      <code>File.delete</code>, or its alias <code>File.unlink</code>. An
-      <code>Integer</code> is returned indicating how many files were
-      deleted. <!-- File.truncate -->
+      <p>Files may be deleted by supplying a list of their paths as arguments
+      to <code>File.delete</code>, or its alias <code>File.unlink</code>. An
+      <code>Integer</code> is returned indicating how many files were deleted.
+      <code>File.truncate</code>, which is not available on all platforms,
+      truncates a given file to a given number of bytes. It expects a path as
+      its first argument, and the number of bytes as an <code>Integer</code>
+      for its second. <code>File#truncate</code> behaves in the same fashion,
+      but truncates its receiver to the size given as its sole argument.
     </section>
 
     <!-- File.utime -->
@@ -1034,13 +1031,13 @@ end
     </section>
 
     <section>
-      <h1 id=symlinks>Symbolic Links</h1>
+      <h1 id=file-links>Links</h1>
       
-      <!-- Rename to Links; mention File.link -->
       <p>On platforms that support symlinks, <code>File.symlink</code> will
       create a link to the file named as its first argument, with the name
-      given as its second. The <code>File.symlink?</code> predicate can be
-      used to test whether its argument is a symlink, and
+      given as its second. <code>File.link</code> takes the same arguments,
+      but creates hard links instead. The <code>File.symlink?</code> predicate
+      can be used to test whether its argument is a symlink, and
       <code>File.readlink</code> returns the target of a given link.</p>
 
       <figure id=file-symlink.rb>
