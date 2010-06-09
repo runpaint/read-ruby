@@ -1,218 +1,701 @@
 <article>
   <h1 id=io>Input &amp; Output</h1>
 
-  <!-- The Standard Trinity: In, Error, Out-->
-<!--  
-def with_verbosity(verbosity=false)
-  old, $VERBOSE = $VERBOSE, verbosity
-  yield
-ensure
-  $VERBOSE = old
-end
+  <blockquote cite=/references#refWALL00>
+    <p>Unless you're using artificial intelligence to model a solipsistic
+    philosopher, your program needs some way to communicate with the outside
+    world.
+    <p>&mdash;  Wall, Christiansen, &amp; Orwant, <a
+      href=/references#refWALL00><cite>Programming Perl, 3<sup>rd</sup>
+        ed.</cite></a>, 2000, pp. 20&ndash;22. 
+  </blockquote>
 
-def quietly(&block)
-  with_verbosity(nil, &block)
-end
-def loudly(&block)
-  with_verbosity(true, &block)
-end
--->  
+  <p>The <code>IO</code> class provides an interface to input and output on
+  the level of file descriptors, while its <code>File</code> subclass deals
+  with files on a higher level of abstraction. Accordingly, <code>File</code>,
+  which is discussed in the <a href=/files>following chapter</a>, is often
+  more appropriate, and easier to use.
+
+  <blockquote cite=/references#refKERNIGHAN84>
+    <p>All input and output is done by reading or writing files, because all
+    peripheral devices, even your terminal, are files in the file system. This
+    means that a single interface handles all communication between a program
+    and peripheral devices.
+    <p>&mdash; Kernighan &amp; Pike, <a
+      href=/references#refKERNIGHAN84><cite>The UNIX Programming
+        Environment</cite></a>, 1984, pp. 201&ndash;202
+  </blockquote>
+
+  <p>In keeping with Unix’s everything-is-a-file philosophy<a
+    href=#fn-unix-philosophy>‡</a>, Ruby allows regular files, directories,
+  block and character devices, symbolic links, hard links, sockets, unnamed
+  pipes, and <abbr title='First-In First-Out'>FIFO</abbr>s (named pipes), to
+  be treated conceptually the same. They can be read from and written to.
+  Before operating on a file, we need to <a href=#open><i>open</i></a> it by
+  providing the operating system with the pathname and asking permission to
+  read it, write to it, or both. If our request is granted, we are provided
+  with a integer <i>file descriptor</i> which we must use to refer to the file
+  in future operations. We are allowed only to use the file in the manner, or
+  <a href=#access-mode><i>access mode</i></a>, we requested: it is illegal to
+  write to a file opened for reading, or vice versa. With this file descriptor
+  we can <a href=#init>initialize an <code>IO</code> object</a>, or
+  <i>stream</i><a href=#fn-stream>†</a>, which provides an interface for
+  accessing the corresponding file.  
+  
+  <p>A stream is always associated with an <a
+    href=#external-encoding><i>external encoding</i></a>: the actual<a
+    href=#fn-actual-encoding>†</a> encoding of its contents. Data read from
+  the stream is <a href=/text#string-encoding-tag>tagged</a> with this
+  encoding<a href=fn-external-tag>†</a>. If an external encoding isn’t
+  specified explicitly, it is inferred from the user’s environment. A stream
+  may also be associated with an <a href=#internal-encoding><i>internal
+      encoding</i></a>: our desired<a href=#fn-desired-encoding>†</a> encoding
+  for its contents. If an internal encoding is specified which differs from
+  the external encoding, data read from the stream will automatically be <a
+    href=/text#string-transcode>transcoded</a> from the latter to the former,
+  and data written to the stream will be transcoded in the opposite direction.
+  The internal encoding is never inferred, so unless specified explicitly, no
+  transcoding occurs.
+
+  <p>A stream containing binary data can have its <a
+    href=#binmode><code>binmode</code></a> attribute set, which prevents it
+  from being transcoded and tags it with the <a
+    href=/text#ascii-8bit>ASCII-8BIT</a> encoding.  Conversely, a stream
+  containing textual data can have its <a
+    href=#textmode><code>textmode</code></a> attribute set, which allows
+  transcoding and newline normalisation.
+
+  <p>Also, associated with a stream is a byte offset, or <a
+    href=#position><i>file position</i></a>, which specifies where the next
+  read or write should occur. <q cite=/references#refLOVE07>When a file is
+    first opened, the file position is zero. Usually, as bytes in the file are
+    read from or written to, byte-by-byte, the file position
+  increases in kind. The file position may also be set manually to a given
+  value, even a value beyond the end of the file.</q> (Love, <a
+  href=/references#refLOVE07><cite>Linux System Programming</cite></a>, 2007,
+  pp. 9&ndash;10) Attempting to read past the end of a file (<i>EoF</i>) will
+  result in either a <code>nil</code> value or an exception being raised,
+  depending on the method used. A file is appended to by writing to a position
+  past its end. The size of a file may be reduced by truncating<a
+    href=#fn-truncate>†</a> it to a smaller size. 
+  <!-- Link truncate to description in Files of File.truncate
+  -->
+
+  <p>Finally, having used a file descriptor, we should <i>close</i> it to
+  release it back to the operating system.</p>
+
+  <!-- TODO: closing a stream -->
   <section>
-    <h1 id=files>Files</h1>
+    <h1 id=standard-streams>Standard Input, Output, &amp; Error</h1>
 
-    <p>A file is an entity on a filesystem addressable by a <a
-      href=#file-paths>path</a>. This definition is intentionally
-    broad-encompassing regular files along with directories, block and
-    character devices, symbolic links, sockets, and <abbr title='First-In
-      First-Out'>FIFO</abbr>s (named pipes)-because the <code>File</code>
-    class represents them all. It is this class that is the subject of our
-    present enquiry.</p>
+    <blockquote cite=/references#refKERNIGHAN84>
+      <p>When it is started by the shell, a program inherits three open files,
+      with file descriptors 0, 1, and 2, called the standard input, the standard
+      output, and the standard error. All of these are by default connected to
+      the terminal, so if a program only reads file descriptor 0 and writes file
+      descriptors 1 and 2, it can do I/O without having to open files. If the
+      program opens any other files, they will have file descriptors 3, 4, etc.
 
-    <p>A <code>File</code> object may be created with the constructor
-    <code>File.new</code>, which expects an existing path as an argument. The
-    objectified file can then be interrogated, and its contents <a
-      href=#file-read>read</a>. The <code>File</code> objects instantiated by <a
-      href=#file-open><code>Kernel.open</code></a> can be written to, as well
-    as read, with their underlying file being created if needed. However,
-    <code>File</code> also provides many class methods which operate on a path
-    argument without instantiating <code>File</code> a object.</p>
+      <p>&mdash; Kernighan &amp; Pike, <a
+        href=/references#refKERNIGHAN84><cite>The UNIX Programming
+          Environment</cite></a>, 1984, pp. 201&ndash;202
+    </blockquote>
 
-    <!-- TODO: Dir -->
+    <p>Ruby behaves in the same manner. The constants <code>STDIN</code>,
+    <code>STDOUT</code>, and <code>STDERR</code>, are defined automatically to
+    refer to the program’s standard input, standard output, and standard error
+    streams, respectively. The value of each constant is an <code>IO</code>
+    object associated with the corresponding file descriptor.
+    <code>IO#fileno</code> returns the file descriptor it is associated with as
+    an <code>Integer</code>, as shown below.</p>
 
-    <!-- Summary table?
-    File.read
-    File.binread
-    File.exist?
-    open(path, ?w)
-    open(path, ?a, encoding: 'from:to')
-    File.delete
-    File.rename
-    File.file?
-    File.size?
-    File.ctime/mtime/..
-    File.new()
-    File.symlink
-    -->
-    <section>
-      <h1 id=file-paths>Paths</h1>
+    <figure id=stdin-stdout-stderr.rb>
+      <figcaption>Ruby predefines three constants, referring to the standard
+      input, standard output, and standard error streams.
+    </figure>
     
-      <p>A file’s <dfn>path</dfn> is a <code>String</code> describing its
-      location in the filesystem. It consists of one or more
-      <dfn>components</dfn>, which in the latter case are separated with the
-      <dfn>path separator</dfn>. On non-Windows platforms the path separator
-      is the solidus character. Ruby expects paths to be given in the
-      Unix-style, but automatically uses the correct path separator for the
-      platform it is running on.
+    <p>Three global variables are also defined
+    automatically-<code>$stdin</code>, <code>$stdout</code>, and
+    <code>$stderr</code>-which initially hold the value of the corresponding
+    constant. We have in fact been interacting with <code>$stdout</code>
+    implicitly all along: <code>Kernel.puts</code> is equivalent to
+    <code>$stdout.puts</code>. Similarly, <code>Kernel.warn</code> writes to
+    <code>$stderr</code>. The reason for the existence of these global
+    variables in addition to the aforementioned constants is that by assigning
+    another <code>IO</code> object to one of the global variables, we can
+    temporarily redirect it elsewhere. Then, if we want to restore the
+    original behaviour, we can assign the corresponding constant to the
+    variable.</p>
 
-      <p>We use the term <i>path</i> to refer either to a <code>String</code>,
-      whose contents is a path, or an object that responds to
-      <code>:to_path</code> with such a <code>String</code>. A method that
-      expects a path as an argument will accept either of these
-      representations.
+    <figure id=stdout-redirection.rb>
+      <figcaption>By assigning <code>IO</code> objects to <code>$stdout</code> we
+      can redirect our output.
+    </figure>
 
-      <!-- TODO: Define what we mean by path normalisation -->
+    <!--  
+    def with_verbosity(verbosity=false)
+      old, $VERBOSE = $VERBOSE, verbosity
+      yield
+    ensure
+      $VERBOSE = old
+    end
 
-      <p><code>File.path</code> returns the non-normalised path of its
-      argument. If its argument is a <code>String</code>, it will be returned
-      as-is, otherwise the result of sending the argument
-      <code>:to_path</code> will be returned. The path associated with a
-      <code>File</code> object is returned by <code>File#path</code>.
+    def quietly(&block)
+      with_verbosity(nil, &block)
+    end
+    def loudly(&block)
+      with_verbosity(true, &block)
+    end
+    -->  
+  </section>
 
-      <code>File.dirname</code> returns the directory name of its argument:
-      all components other than the last. Conversely, the last component of
-      a filename is returned by <code>File.basename</code>. The filename
-      extension, e.g. <code>.txt</code>, is returned by
-      <code>File.extname</code>. If these methods are given a path without
-      the requested component, they return the empty <code>String</code>.
-      <code>File.split</code> returns a two-element <code>Array</code> with
-      the file’s dirname as the first element, and its basename as the last.
-      <code>File.join</code> performs the inverse operation: given a list of
-      path components it joins them with the path separator into a
-      <code>String</code>.</p>
-      
+  <section>
+    <h1 id=writing>Writing to a Stream</h1>
+
+    <!-- Cover warn here? -->
+    <!-- Footnote _why_ syswrite is low-level -->
+    <!-- IO#<< --> 
+    
+    <p>If a stream has been opened for writing, we can write data to it using
+    a variety of methods. We will begin, with the low-level
+    <code>IO#syswrite</code>, which requires exactly one argument that it
+    converts to a <code>String</code>, writes to the stream, then returns the
+    number of bytes written. It uses a low-level system call to perform this
+    operation, so the official documentation cautions that it should not used
+    in conjunction with other, higher-level writing methods<a
+      href=#fn-syswrite-caution>†</a>. <code>IO#write</code> behaves in the
+    same manner, but works at a higher-level, so you need fret no longer. 
+    
+    <p><code>IO#putc</code> writes a single byte to its stream, then returns
+    its argument. It interprets a <code>Numeric</code> argument as a character
+    code, writing the least-significant byte of the character corresponding to
+    its integer part. A non-numeric argument is converted to a
+    <code>String</code>, then its least-significant byte is written to the
+    stream. Please note the term <i>byte</i>: this method will only ever write
+    a single byte, even when given a multi-byte character. </p>
+
+    <figure id=syswrite-write-putc.rb>
+      <figcaption>The <code>#syswrite</code>, <code>#write</code>, and
+      <code>#putc</code> methods of <code>IO</code> write their arguments to
+      an <code>IO</code> stream.
+    </figure>
+
+    <p><code>Object#display</code> converts its receiver to a
+    <code>String</code>, then writes it to <code>$stdout</code>. If given an
+    <code>IO</code> stream as an argument, it writes to that stream
+    instead.</p>
+
+    <figure id=object-display.rb>
+    <figcaption><code>Object#display</code> writes its receiver to an
+    <code>IO</code> stream.
+    </figure>
+
+    <p><code>IO#print</code> accepts any number of arguments, each of which
+    are converted with <code>#to_s</code>, then their concatenation is written
+    to the receiver. If no arguments are supplied, an argument of
+    <code>$_</code> is assumed. <code>Kernel#print</code> behaves identically,
+    expect it writes to <code>$stdout</code>.
+
+    <p><code>IO#puts</code> also accepts any number of arguments, which it
+    converts with <code>#to_s</code>. A newline is appended to each of these
+    <code>String</code>s that do not already end with one. Then, their
+    concatenation is written to their receiver. If no arguments are
+    provided, <code>nil</code> is assumed, so by default a single newline is
+    written. <code>Array</code> arguments are automatically expanded into
+    their constituent elements, so each element is written on a line of its
+    own. <code>Kernel#puts</code> writes to <code>$stdout</code>, instead.</p>
+
+    <figure id=print-puts.rb>
+      <figcaption>The <code>#print</code> and <code>#puts</code> methods of
+      <code>IO</code> and <code>Kernel</code> write their arguments to an
+      <code>IO</code> stream.
+    </figure>
+
+    <p><code>Kernel#p</code> provides output suitable for debugging. It
+    accepts any number of arguments, which it converts with
+    <code>#inspect</code>, then writes each of them to <code>$stdout</code>
+    separated by <code>"\n"</code>.</p>
+
+    <figure id=object-p.rb>
+      <figcaption><code>Object#p</code> writes its argument’s
+      <code>#inspect</code> output to <code>$stdout</code>
+    </figure>
+
+    <table class=border>
+      <caption>
+        <p>A comparison of the methods that write to an <code>IO</code>
+        stream.
+        <p>Each method converts its input as described in the <i>Converts</i>
+        column. If multiple arguments are expected and received, they are
+        concatenated with the contents of the <i>Separator</i> column. The
+        method returns the value in <i>Returns</i>. If it can be invoked
+        without any arguments, the <i>Default Output</i> column describes
+        what it writes.
+      </caption>  
+      <thead>
+        <tr>
+          <th>Method
+          <th>Arity    
+          <th>Converts
+          <th>Separator
+          <th>Returns
+          <th>Default Output
+      <tbody class=zebra>      
+        <tr>
+          <td><code>IO#syswrite</code>
+          <td>1  
+          <td><code>#to_s</code>
+          <td>N/A  
+          <td><code>Integer</code>
+          <td>N/A  
+        <tr>
+          <td><code>IO#write</code>
+          <td>1  
+          <td><code>#to_s</code>
+          <td>N/A  
+          <td><code>Integer</code>
+          <td>N/A  
+        <tr>
+          <td><code>IO#putc</code>
+          <td>1
+          <td><code>#to_s</code> or <code>#chr</code>
+          <td>N/A
+          <td>Argument  
+          <td>N/A
+        <tr>
+          <td><code>Object#display</code>
+          <td>0&ndash;1  
+          <td><code>#to_s</code>
+          <td>N/A
+          <td><code>nil</code>  
+          <td><code>self.to_s</code>    
+        <tr>
+          <td><code>IO#print</code>
+          <td>-1
+          <td><code>#to_s</code>
+          <td><code>""</code>  
+          <td><code>nil</code>  
+          <td><code>$_.to_s</code>  
+        <tr>
+          <td><code>IO#puts</code>
+          <td>-1
+          <td><code>#to_s</code>
+          <td><code>"\n"</code> (if needed)
+          <td><code>nil</code>  
+          <td><code>"\n"</code>  
+        <tr>
+          <td><code>Object#p</code>
+          <td>-1
+          <td><code>#inspect</code>
+          <td><code>\n</code>  
+          <td>Arguments
+          <td><code>""</code>  
+    </table>
+
+    <!--TODO: Link to #printf coverage in Text -->
+  </section>
+
+
+  <section>
+    <h1 id=reading>Reading from a Stream</h1>
+
+    <section>
+      <h1 id=reading-bytes>Bytes</h1>
+
+      <p>At the most basic level, a stream can be thought of as a sequence of
+      bytes. The next byte in a stream is returned by <code>IO#getbyte</code>
+      as a <code>Fixnum</code>, or <code>nil</code> if EoF has been reached.
+      <code>IO#readbyte</code> also returns the next byte from a stream, but
+      when EoF is reached it raises an <code>EOFError</code> exception.
+
+      <p>A variable number of bytes may be read each time with
+      <code>IO#read</code>. By default it reads every byte until EoF, at which
+      point it returns <code>nil</code>. If provided with an
+      <code>Integer</code> as its first argument, it will read at most the
+      given number of bytes. When provided with a <code>String</code> as its
+      second argument, it will assign the data it reads to that
+      <code>String</code>. In all cases, the data is returned as a
+      <code>String</code> with <a href=/text#ascii-8bit>ASCII-8BIT</a>
+      encoding. <code>IO#sysread</code> behaves in a similar fashion, except
+      it requires the <code>Integer</code> first argument, and raises
+      <code>EOFError</code> at EoF.
+
+      <p>Rather than reading bytes piecemeal, <code>IO#bytes</code>, and its
+      alias <code>IO#each_byte</code>, return an <code>Enumerator</code> of the
+      stream’s bytes as <code>Fixnum</code>s. If a block is supplied, it is
+      yielded each byte in turn. 
+
       <table class=border>
-        <caption>
-          <p>Examples of how path components are interpreted by the named
-          class methods of <code>File</code>
-          <p>Each column indicates the output of the corresponding
-          <code>File</code> class method for the path given in the first
-          column.
-        </caption>
         <thead>
           <tr>
-            <th><code>path</code>
-            <th><code>dirname</code>
-            <th><code>basename</code>  
-            <th><code>extname</code>  
-            <th><code>split</code>  
+            <th>Method
+            <th>Bytes Read 
+            <th><code>String</code> Buffer?   
+            <th>At EoF   
         <tbody class=zebra>
           <tr>
-            <td><code>/home/user/base64.rb</code>
-            <td><code>/home/user</code>  
-            <td><code>base64.rb</code>  
-            <td><code>.rb</code>  
-            <td><code>["/home/user", "base64.rb"]</code>
+            <td><code>IO#read(<var>n</var> = all, &hellip;)</code>
+            <td><var>n</var>
+            <td>✔
+            <td><code>nil</code>
           <tr>
-            <td><code>/etc/hosts</code>
-            <td><code>/etc</code>  
-            <td><code>hosts</code>  
-            <td>&nbsp;  
-            <td><code>["/etc", "hosts"]</code>
+            <td><code>IO#sysread(<var>n</var>, &hellip;)</code>
+            <td><var>n</var>
+            <td>✔
+            <td><code>EOFError</code>
           <tr>
-            <td><code>sort</code>
-            <td><code>.</code>  
-            <td><code>sort</code>  
-            <td>&nbsp;  
-            <td><code>[".", "sort"]</code>
+            <td><code>IO#getbyte</code>
+            <td>1  
+            <td>✖
+            <td><code>nil</code>
           <tr>
-            <td><code>~/.vimrc</code>
-            <td><code>~</code>  
-            <td><code>.vimrc</code>  
-            <td>&nbsp;  
-            <td><code>["~", ".vimrc"]</code>
+            <td><code>IO#readbyte</code>
+            <td>1  
+            <td>✖
+            <td><code>EOFError</code>
       </table>
-
-      <p>A <dfn>relative path</dfn> is a path given in terms of another
-      path, as opposed to an <dfn>absolute path</dfn> which stands alone. On
-      Unix-like systems, the former are paths that do not begin with a
-      solidus, and the latter are the opposite. 
-      
-      <p>A relative path may be expanded to an absolute path with
-      <code>File.expand_path</code>. Absolute paths are returned as-is.
-      Otherwise, they are assumed to be relative to the current directory. If
-      an optional second argument is given, it names the directory the first
-      argument is relative to. If the relative path begins with a tilde, it is
-      interpreted as relative to the current user’s home directory (as
-      returned by <code>ENV['HOME']</code>). If the relative path begins with
-      a tilde followed by a username, it is relative to the named user’s home
-      directory. <code>File.absolute_path</code> behaves in the same fashion
-      except it doesn’t treat tildes specially, i.e. it interprets a path of
-      <code>~/glark</code> as <code>./~/glark</code>.</p>
-
-      <figure id=file-expand-path.rb>
-        <figcaption><code>File.expand_path</code> resolves relative paths
-        into absolute paths.
-      </figure>
-      
-      <p>Neither <code>File.absolute_path</code> nor
-      <code>File.expand_path</code> resolve relative paths by traversing the
-      filesystem: at most, they request the current working directory or a
-      user’s home directory from the environment. An implication is that they
-      will quite happily return paths that do not exist on the filesystem.
-      <code>File.realpath</code> is an alternative. It creates an absolute
-      path from a relative path by interrogating the filesystem, and following
-      symbolic links if necessary. It resolves relative to the current working
-      directory, or the directory given by the optional second argument. An
-      exception is raised if the absolute path it resolves does not exist.
-      <code>File.realdirpath</code> accepts the same arguments, and performs
-      the same operation, but allows the last component of the path to be
-      non-existent.</p>
-
-      <figure id=file-realpath.rb>
-        <figcaption><code>File.realpath</code> and
-        <code>File.realdirpath</code> resolve relative paths by walking the
-        filesystem.
-      </figure>
     </section>
 
     <section>
-      <h1 id=file-read>Reading</h1>
+      <h1 id=reading-chars>Characters</h1>
 
-      <p>Reading a file is the process of retrieving its contents. It can be
-      achieved by passing a path argument to <code>File.read</code> which
-      returns the contents as a <code>String</code>. An optional second
-      argument specifies the number of bytes to read, and an optional third
-      argument specifies the offset from which to begin reading. An options
-      <code>Hash</code> may be supplied as the final argument, which is
-      explained in the <a href=#file-open>Opening</a> section below.
-      <code>File.binread</code> takes the same arguments but reads the file in
-      <a href=#binmode>binary mode</a>.</p>
-
-      <figure id=file-read.rb>
-        <figcaption>Reading a file with <code>File.read</code>
-      </figure>
+      <p>A stream may be read character-by-character with either
+      <code>IO#getc</code> or <code>IO#readchar</code>, both of which return
+      one-character <code>String</code>s. When EoF is reached, the former
+      returns <code>nil</code>, while the latter raises an
+      <code>EOFError</code>. Alternatively, <code>IO#chars</code>, and its alias
+      <code>IO#each_char</code> return an <code>Enumerator</code> of the
+      stream’s characters. As is customary, they may also be supplied with a
+      block in which case they yield each character in turn.
     </section>
 
-    <!-- 'Writing' section for symmetry? Show implementation of File.write? -->
     <section>
-      <h1 id=file-open>Opening</h1>
+      <h1 id=io-reading-lines>Lines</h1>
 
-      <p>Opening a file enables one to read from, write to, or otherwise
-      manipulate and query, the resource. <code>Kernel.open</code> opens the
-      file with the given path, returning a corresponding <code>File</code>
-      object. It is typically used with a block, which receives the opened
-      <code>File</code> object as an argument.  Having executed the block, the
-      file is automatically closed, even if the block raises an exception. The
-      block-form has a return value equal to that of the block; otherwise a
-      new <code>File</code> object is returned.
+      <p><code>IO#gets</code> allows a stream to be processed as a sequence of
+      “lines”, each separated by separator, <var>sep</var>. If <var>sep</var>
+      is not given, it is assumed to have the value of <code>$/</code>, which
+      is <code>"\n"</code> by default. If an <code>Integer</code> limit is
+      supplied, at most that many bytes will be returned at a time; by default
+      there is no limit. According to Thomas et al., a negative limit makes
+      the search for <var>sep</var> more efficient by ignoring the stream’s
+      encoding (<cite>Programming Ruby 1.9: The Pragmatic Programmers’
+        Guide</cite>, 2009, p. 551).  The permutations of these arguments are
+      enumerated below:
 
-      <p>The second argument of <code>Kernel.open</code> may be a
-      <code>Hash</code> of options. This is summarised in the table that
-      follows, then expounded upon below.</p>
+      <table class=border>
+        <thead>
+          <tr>
+            <th>Arguments
+            <th>Separator
+            <th>Limit
+        <tbody class=zebra>
+          <tr>
+            <td>&nbsp;
+            <td><code>$/</code>
+            <td>None  
+          <tr>
+            <td><code>nil</code>
+            <td>None
+            <td>None  
+          <tr>
+            <td><code>""</code>
+            <td><code>"\n\n"</code>
+            <td>None  
+          <tr>
+            <td><var>sep</var> (<code>String</code>)
+            <td><var>sep</var>
+            <td>None  
+          <tr>
+            <td><var>limit</var> (<code>Integer</code> &gt; 0)
+            <td><var>$/</var>
+            <td><var>limit</var>
+          <tr>
+            <td><var>limit</var> (<code>Integer</code> &lt; 0)
+            <td><var>$/</var>
+            <td>None
+          <tr>
+            <td><var>sep</var> (<code>String</code>), <var>limit</var>
+              (<code>Integer</code> &gt; 0)
+            <td><var>sep</var>
+            <td><var>limit</var>
+      </table>
+      
+      <p><code>IO#readline</code> behaves identically, and expects the same
+      arguments, but raises an <code>EOFError</code> when EoF is reached.
+      <code>IO#readlines</code> also expects the same arguments, but returns an
+      <code>Array</code>, each element of which is a line terminated by the
+      given separator. <code>IO#lines</code>, and its alias
+      <code>IO#each_line</code>, behave like <code>IO#readlines</code>, but
+      return an <code>Enumerator</code> instead of an <code>Array</code>. When
+      either method is given a block, it yields each line in turn.
+    </section>
+  </section>
+  
+  <section>
+    <h1 id=access-mode>Access Mode</h1>
 
-      <figure id=kernel-open-opts.rb>
-        <figcaption>Creating, appending to, and reading from a file.
-      </figure>
+    <p>A file is opened with a particular <dfn>access mode</dfn> which
+    specifies the type of action that may be performed on it. It is given as
+    either a <code>String</code> or, less commonly, a <a
+      href=#open-flags>bitmask</a>, as shown in the table below. The default
+    access mode is <code>r</code>.</p>
+
+    <table class=border>
+      <caption>
+        <p>Access mode specifiers  
+        <p>The access mode is presented as both a <i>String</i> and the
+        equivalent <i>Bitmask</i>. The <i>Read?</i> and <i>Write?</i>
+        columns indicate whether the opened file can be read from or written
+        to, respectively.  <i>Truncate?</i> specifies that existing files
+        will be truncated before use. <i>Creates?</i> specifies that
+        non-existent files will be created before use.  Finally, <i>Start
+          Position</i> is the position in the file reading/writing starts
+        from: <i>Beginning</i> is before the first byte; <i>End</i> is after
+        the last.
+      </caption>
+      <thead>  
+        <tr>
+          <th>String
+          <th>Bitmask
+          <th title='Opened for reading?'>Read?
+          <th title='Opened for writing?'>Write?
+          <th title='Truncated if it exists?'>Truncates?
+          <th title='Created if it doesn’t exist?'>Creates?
+          <th title='Where reading/writing starts from'>Start Position
+      <tbody class=zebra>
+        <tr>
+          <td><code>r</code>
+          <td><code>File::RDONLY</code>  
+          <td>✔
+          <td>✖
+          <td>✖
+          <td>✖
+          <td>Beginning.
+        <tr>
+          <td><code>r+</code>
+          <td><code>File::RDWR</code>  
+          <td>✔
+          <td>✔
+          <td>✖
+          <td>✖
+          <td>〃  
+        <tr>
+          <td><code>w</code>
+          <td><code>File::WRONLY | File::TRUNC | File::CREAT</code>  
+          <td>✖
+          <td>✔
+          <td>✔
+          <td>✔
+          <td>〃  
+        <tr>
+          <td><code>w+</code>
+          <td><code>File::RDWR | File::TRUNC | File::CREAT</code>  
+          <td>✔
+          <td>✔
+          <td>✔
+          <td>✔
+          <td>〃  
+        <tr>
+          <td><code>a</code>
+          <td><code>File::APPEND | File::WRONLY | File::CREAT</code>  
+          <td>✖
+          <td>✔
+          <td>✖
+          <td>✔
+          <td>End.
+        <tr>
+          <td><code>a+</code>
+          <td><code>File::APPEND | File::RDWR | File::CREAT</code>  
+          <td>✔
+          <td>✔
+          <td>✖
+          <td>✔
+          <td>〃  
+    </table>
+  </section>        
+  
+  <section>
+    <h1 id=binmode-textmode>Binary &amp; Text Mode</h1>
+
+    <p>An <code>IO</code> stream may be configured to use binary mode or text
+    mode. These mutually exclusive options determine what automatic
+    modifications, if any, Ruby will make to data read from, and written to,
+    the stream. They have no relationship to the <a href=#access-mode>access
+      mode</a>.</p>
+
+    <section>
+      <h1 id=binmode>Binary Mode</h1>
+      
+      <p><dfn>Binary mode</dfn> is disabled by default. It must be enabled
+      when reading a file with an <a
+        href=/text#encoding-compatibility>ASCII-incompatible</a> <a
+        href=#external-encoding>external encoding</a>. When enabled it has the
+      following effects:
+
+      <ul>
+        <li>Unless an external encoding has been specified explicitly, it
+        is set to ASCII-8BIT.
+        <li><a href=#text-mode>Newline conversion</a> is disabled. <!-- Unless *_newline Hash
+        key? -->
+        <li>Transcoding is disabled unless both an internal and external
+        encoding have been specified.
+      </ul>  
+    </section>
+
+    <section>
+      <h1 id=textmode>Text Mode</h1>
+      
+      <p><dfn>Text mode</dfn> defaults to on under Microsoft Windows, and off
+      everywhere else.  Reading a file in text mode causes <code>"\r\n"</code>
+      to be replaced by <code>"\n"</code>, and other occurrences of
+      <code>"\r"</code> to be replaced by <code>"\n"</code>. Writing a file in
+      text mode causes <code>"\n"</code> to be replaced with
+      <code>"\r\n"</code> under Windows; having no effect on other platforms.
+    </section>
+  </section>
+
+  <section>
+    <h1 id=open>Opening a File</h1>
+
+    <p><code>IO.sysopen</code> <dfn>opens</dfn> a given pathname and returns a
+    corresponding file descriptor. (Use the <a href=/files><code>File</code>
+      class</a> for higher-level interface to this operation). Optionally, it
+    accepts an <a href=#access-mode>access mode</a> as the second argument,
+    and <a href=#perm>permission bits</a> as the third.</p>
+
+    <section>
+      <h1 id=perm>Permissions</h1>
+      
+      <p>If a file is being created, its initial permissions may be specified
+      as an <code>Integer</code>; otherwise, this argument is ignored. On
+      Unix-like systems, these permissions bits are interpreted in the same
+      fashion that <code>chmod(1)</code> interprets octal mode arguments. For
+      example, permissions of <code>0400</code> gives the user read
+      permission, and no permissions to anybody else. See <a
+        href=/files#permissions>Files: Permissions</a> for further details.
+    </section>
+  </section>
+
+  <section>
+    <h1 id=init>Initializing an <code>I/O</code> Stream</h1>
+
+    <p>An <code>IO</code> instance objectifies a given file descriptor. It may
+    be initialized by supplying this file descriptor as the first argument to
+    <code>IO.new</code>, or its alias <code>IO.for_fd</code>. Optionally, a <a
+      href=#mode-string>mode string</a>, or <a href=#open-flags>numeric access
+      mode</a>, can be provided as the second
+    argument, however this must agree with the <a href=#access-mode>access
+      mode</a> already associated with the file descriptor. An <a
+      href=#options-hash>options <code>Hash</code></a> may be provided as the
+    final argument.</p>
+
+    <p><code>IO.open</code> accepts the same arguments, but also expects a
+    block. It initializes an <code>IO</code> object as before, yields it to
+    the block, then ensures the stream is closed when the block exits.</p>
+
+    <section>
+      <h1 id=mode-string>The Mode String</h1>
+
+      <p>The <dfn>mode string</dfn> is a concise way to specify options for
+      opening a file. At its simplest, it consists of only the <a
+        href=#access-mode>access mode</a> as a <code>String</code>, e.g. a
+      mode string of <code>"r"</code> opens a file in read-only mode. If the
+      next character is <code>b</code>, it specifies <a href=#binmode>binary
+        mode</a>; if it is <code>t</code>, it specifies <a href=#textmode>text
+        mode</a>. Finally, the <a href=#external-encoding>external</a> and/or
+      <a
+        href=#internal-encoding>internal</a> encodings may be specified as an
+      <a href=#encoding-string>encoding string</a>.
+
+      <table class=border>
+        <caption>
+          <p>The forms a mode string may take.  
+          <p><var>mode</var> denotes one of the access modes given in the <a
+            href=#access-mode>Access Mode</a> table.  The <i>Binary?</i> and
+          <i>Text?</i> columns indicates whether the stream is in <a
+            href=#binmode>binary</a> or <a href=#textmode>text mode</a>,
+          respectively. Both <var>internal</var> and <var>external</var> are
+          names of encodings.
+        </caption>
+        <thead>  
+          <tr>
+            <th>Form
+            <th>Binary?  
+            <th>Text?  
+            <th>External Encoding  
+            <th>Internal Encoding  
+        <tbody class=zebra>        
+          <tr>
+            <td><code><var>mode</var></code>
+            <td>✖
+            <td>✖
+            <td><code>Encoding.default_external</code>
+            <td><code>Encoding.default_internal</code>
+          <tr>
+            <td><code><var>mode</var>t</code>
+            <td>✖
+            <td>✔
+            <td>〃  
+            <td>〃  
+          <tr>
+            <td><code><var>mode</var>b</code>
+            <td>✔
+            <td>✖
+            <td><code>ASCII-8BIT</code>
+            <td>〃  
+          <tr>
+            <td><code><var>mode</var>:<var>external</var></code>
+            <td>✖
+            <td>✖
+            <td><var>external</var>
+            <td>〃  
+          <tr>
+            <td><code><var>mode</var>t:<var>external</var></code>
+            <td>✖
+            <td>✔
+            <td>〃  
+            <td>〃  
+          <tr>
+            <td><code><var>mode</var>b:<var>external</var></code>
+            <td>✔
+            <td>✖
+            <td>〃  
+            <td>〃  
+          <tr>
+            <td><code><var>mode</var>:<var>external</var>:<var>internal</var></code>
+            <td>✖
+            <td>✖
+            <td>〃  
+            <td><var>internal</var>
+          <tr>
+            <td><code><var>mode</var>t:<var>external</var>:<var>internal</var></code>
+            <td>✖
+            <td>✔
+            <td>〃  
+            <td>〃  
+          <tr>
+            <td><code><var>mode</var>b:<var>external</var>:<var>internal</var></code>
+            <td>✔
+            <td>✖
+            <td>〃  
+            <td>〃  
+        </table>
+
+        <p>For example, <code>r:ascii</code> reads from the beginning of a file,
+        tagging the data it reads as US-ASCII; <code>a+:ascii:utf-8</code> opens
+        the file for reading and appending, transcoding from US-ASCII to UTF-8
+        when reading, and in the opposite direction when writing.
+    </section>
+
+    <section>
+      <h1 id=options-hash>Options <code>Hash</code></h1>
+
+      <p>Alternatively, many methods that open files accept an options
+      <code>Hash</code> as their final argument. In addition to the keys
+      listed below, those of the <a
+        href=#encode-options-hash><code>String#encode</code> options
+        <code>Hash</code></a> are also recognised.
 
       <table class=border>
         <caption>Options that may be specified as the second argument to
@@ -229,11 +712,12 @@ end
           <tbody class=zebra>
             <tr>
               <td><a href=#file-open-mode><code>:mode</code></a>
-              <td>The open mode as a <code>String</code>. <!-- or int? -->
+              <td>The mode string or the access mode as an
+                <code>Integer</code>.
               <td><code>r</code>  
               <td>Whether to open the file in read-only, read-write, or
                 write-only mode, and whether to truncate existing files or
-                append to them.  
+                append to them. 
             <tr>
               <td><a href=#textmode><code>:textmode</code></a>
               <td><code>true</code> or <code>false</code>
@@ -258,7 +742,7 @@ end
               <td><code>:internal_encoding</code>
               <td>〃  
               <td><code>Encoding.default_internal</code>
-              <td>The external encoding to apply to the stream.
+              <td>The internal encoding to apply to the stream.
             <tr>
               <td><code>:encoding</code>
               <td>Encoding name or two names separated by a colon. 
@@ -270,952 +754,586 @@ end
               <td><code>true</code> or <code>false</code> 
               <td><code>true</code> 
               <td>Whether to automatically close the file descriptor when the
-                  <code>File</code> object is finalised.
-      </table>
-
-      <section>
-        <h1 id=file-open-mode>Open Mode</h1>
-
-        <p>A file is opened with a particular <dfn>open mode</dfn> which
-        specifies the type of action to be performed on it. The default open mode
-        is <code>r</code>.</p>
-
-        <table class=border>
-          <caption>
-            <p>Mode specifiers accepted by <code>Kernel.open</code>,
-            <code>File.open</code>, and <code>IO.open</code>.  
-            <p><i>Mode</i> is the open mode string. The <i>Read?</i> and
-            <i>Write?</i> columns indicate whether the opened file can be read
-            from or written to, respectively. <i>Truncate?</i> specifies that
-            existing files will be truncated before use. <i>Creates?</i>
-            specifies that non-existent files will be created before use.
-            Finally, <i>Start Position</i> is the position in the file
-            reading/writing starts from: <i>Beginning</i> is before the first
-            byte; <i>End</i> is after the last.
-          </caption>
-          <thead>  
-            <tr>
-              <th>Mode
-              <th title='Opened for reading?'>Read?
-              <th title='Opened for writing?'>Write?
-              <th title='Truncated if it exists?'>Truncates?
-              <th title='Created if it doesn’t exist?'>Creates?
-              <th title='Where reading/writing starts from'>Start Position
-          <tbody class=zebra>
-            <tr>
-              <td><code>r</code>
-              <td>✔
-              <td>✖
-              <td>✖
-              <td>✖
-              <td>Beginning.
-            <tr>
-              <td><code>r+</code>
-              <td>✔
-              <td>✔
-              <td>✖
-              <td>✖
-              <td>〃  
-            <tr>
-              <td><code>w</code>
-              <td>✖
-              <td>✔
-              <td>✔
-              <td>✔
-              <td>〃  
-            <tr>
-              <td><code>w+</code>
-              <td>✔
-              <td>✔
-              <td>✔
-              <td>✔
-              <td>〃  
-            <tr>
-              <td><code>a</code>
-              <td>✖
-              <td>✔
-              <td>✖
-              <td>✔
-              <td>End.
-            <tr>
-              <td><code>a+</code>
-              <td>✔
-              <td>✔
-              <td>✖
-              <td>✔
-              <td>〃  
-        </table>
-      </section>
-
-      <p>Independently of the open mode specifiers given above, a file may be
-      opened in <dfn>binary mode</dfn>, <dfn>text mode</dfn>, or neither.</p>
-
-      <section>
-        <h1 id=binmode>Binary Mode</h1>
-        
-        <p>Binary mode is disabled by default. It must be enabled when
-        reading a file with an ASCII-incompatible external encoding. When
-        enabled it has the following effects:
-
-        <ul>
-          <li>Unless an external encoding has been specified explicitly, it
-          is set to ASCII-8BIT.
-          <li><a href=#text-mode>Newline conversion</a> is disabled. <!-- Unless *_newline Hash
-          key? -->
-          <li>Transcoding is disabled unless both an internal and external
-          encoding have been specified.
-        </ul>  
-      </section>
-
-      <section>
-        <h1 id=textmode>Text Mode</h1>
-        
-        <p>Text mode defaults to on under Windows, and off everywhere else.
-        Reading a file in text mode causes <code>\r\n</code> to be replaced
-        by <code>\n</code>, and other occurrences of <code>\r</code> to be
-        replaced by <code>\n</code>. Writing a file in text mode causes
-        <code>\n</code> to be replaced with <code>\r\n</code> under Windows;
-        having no effect on other platforms.
-      </section>
-
-      <section>
-        <h1 id=perm>Permissions</h1>
-        
-        <p>If a file is being created, its initial permissions may be
-        specified as an <code>Integer</code>. On Unix-based systems, these
-        permissions bits are interpreted in the same fashion that
-        <code>chmod(1)</code> interprets octal mode arguments. For example,
-        <code>perm: 0400</code> gives the user read permission, and no
-        permissions to anybody else. Permissions are covered in more detail in
-        the <a href=#file-permissions>Permissions</a> section below.
-      </section>
-
-      <section>
-        <h1 id=open-external-encoding>External Encoding</h1>
-        
-        <p>The external encoding is the encoding associated with the file’s
-        contents. Its default value is <code>Encoding.default_external</code>.
-        Data read from the file is tagged with this encoding. The external
-        encoding may be set explicitly by providing its name, or its
-        corresponding <code>Encoding</code> object, as the value of
-        the <code>:external_encoding</code> key.
-
-        <p>When a file is opened in <a href=#binmode>binary mode</a>, its
-        external encoding defaults to ASCII-8BIT, unless specified explicitly.
-        An external encoding that is ASCII-incompatible requires the file to
-        be opened in binary mode.
-      </section>
-
-      <section>
-        <h1 id=open-internal-encoding>Internal Encoding</h1>
-
-        <p>The internal encoding is the encoding the programmer wishes to
-        associate with the file’s data. The value of the
-        <code>:internal_encoding</code> key is specified as an encoding name
-        or <code>Encoding</code> object.
-        
-        <p>If this encoding differs from the file’s external encoding, Ruby
-        will automatically transcode it: when both an internal and external
-        encoding are specified, data read from the file is transcoded from
-        external to internal, and data written to the file is transcoded from
-        internal to external. The default internal encoding is
-        <code>Encoding.default_internal</code>. An internal encoding of
-        <code>nil</code>-which is the default value-prevents any automatic
-        transcoding.
-      </section>
-
-      <section>
-        <h1 id=open-encoding>Encoding</h1>
-
-        <p>The <code>:encoding</code> key allows one or both of the external
-        encoding and internal encoding to be specified at once in one of the
-        forms below.</p>
-
-        <table class=border>
-          <caption>
-            <p>The forms the value of the <code>:encoding</code> key may take.
-            <p>Both <var>external</var> and <var>internal</var> are names of
-            encodings. The <i>Inferred from BOM</i> column indicates that the
-            external encoding is set to that specified by a <abbr
-              title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to the
-            named encoding. 
-          </caption>
-          <thead>  
-            <tr>
-              <th>Form
-              <th colspan=2>External Encoding
-              <th>Internal Encoding    
-            <tr>
-              <th>&nbsp;
-              <th>Value
-              <th>Inferred from BOM?    
-              <th>Value    
-          <tbody>        
-            <tr class=odd>
-              <td><code><var>external</var></code>
-              <td rowspan=2><var>external</var>
-              <td rowspan=2>✖
-              <td rowspan=2><code>Encoding.default_internal</code>
-            <tr class=odd>
-              <td><code><var>external</var>:-</code>
-            <tr>
-              <td><code>BOM|<var>external</var></code>
-              <td rowspan=2><var>external</var>
-              <td rowspan=2>✔
-              <td rowspan=2><code>Encoding.default_internal</code>
-            <tr>
-              <td><code>BOM|<var>external</var>:-</code>
-            <tr class=odd>
-              <td><code><var>external</var>:<var>internal</var></code>
-              <td><var>external</var>
-              <td>✖
-              <td><var>internal</var>
-            <tr>
-              <td><code>BOM|<var>external</var>:<var>internal</var></code>
-              <td><var>external</var>
-              <td>✔
-              <td><var>internal</var>
-            <tr class=odd>
-              <td><code>:<var>internal</var></code>
-              <td>Default external
-              <td>✖
-              <td><var>internal</var>
-        </table>
-        
-        <p>The <code>BOM|</code> prefix deserves a fuller explanation. The
-        UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE encodings support
-        the presence of a byte-order mark: a special character occuring at
-        the start of the stream which indicates the byte order of the
-        encoding. This can be used to distinguish between the big-endian and
-        little-endian forms of UTF-16, for example. Prefixing one of the
-        aforementioned encoding names with the case-insensitive string
-        <code>BOM|</code> has the following result:
-
-        <ul>
-          <li>If no BOM is present, the named encoding is used.
-          <li>If a BOM is present, the encoding that it specifies is used
-          instead of the named encoding, and the BOM is stripped from the
-          data.
-        </ul>
-
-        <table class=border>
-          <caption>Encodings that support byte-order marks, and the content of
-            the corresponding BOM.</caption>
-          <thead>  
-            <tr>
-              <th>Encoding
-              <th>Byte-Order Mark
-          <tbody class=zebra>        
-            <tr>
-              <td>UTF-8
-              <td><code>\xEF\xBB\xBF</code>  
-            <tr>
-              <td>UTF-16BE
-              <td><code>\xFE\xFF</code>  
-            <tr>
-              <td>UTF-16LE
-              <td><code>\xFF\xFE</code>  
-            <tr>
-              <td>UTF-32BE
-              <td><code>\0\0\xFE\xFF</code>  
-            <tr>
-              <td>UTF-32LE
-              <td><code>\xFF\xFE\0\0</code>  
-          </table>
-      </section>
-
-      <section>
-        <h1 id=mode-string>The Mode String</h1>
-
-        <p>There is an alternative way to specify many of the options
-        described above called a <dfn>mode string</dfn>. It may be provided as
-        the second argument to <code>Kernel.open</code> as a
-        <code>String</code>, or given as the value of the <code>:mode</code>
-        key in the options <code>Hash</code>. While the mode string is more
-        concise than the options <code>Hash</code>, it is also more cryptic
-        when specifying multiple options.</p>
-
-        <table class=border>
-          <caption>
-            <p>The forms a mode string may take.  <p><var>mode</var> denotes
-            one of the open modes given in the <a href=#file-open-mode>open
-              modes</a> table.  The <i>Binary?</i> and <i>Text?</i> columns
-            indicates whether the stream is in binary or text mode,
-            respectively. Both <var>internal</var> and <var>external</var> are
-            names of encodings.
-          </caption>
-          <thead>  
-            <tr>
-              <th>Form
-              <th>Binary?  
-              <th>Text?  
-              <th>External Encoding  
-              <th>Internal Encoding  
-          <tbody class=zebra>        
-            <tr>
-              <td><code><var>mode</var></code>
-              <td>✖
-              <td>✖
-              <td><code>Encoding.default_external</code>
-              <td><code>Encoding.default_internal</code>
-            <tr>
-              <td><code><var>mode</var>t</code>
-              <td>✖
-              <td>✔
-              <td>〃  
-              <td>〃  
-            <tr>
-              <td><code><var>mode</var>b</code>
-              <td>✔
-              <td>✖
-              <td><code>ASCII-8BIT</code>
-              <td>〃  
-            <tr>
-              <td><code><var>mode</var>:<var>external</var></code>
-              <td>✖
-              <td>✖
-              <td><var>external</var>
-              <td>〃  
-            <tr>
-              <td><code><var>mode</var>t:<var>external</var></code>
-              <td>✖
-              <td>✔
-              <td>〃  
-              <td>〃  
-            <tr>
-              <td><code><var>mode</var>b:<var>external</var></code>
-              <td>✔
-              <td>✖
-              <td>〃  
-              <td>〃  
-            <tr>
-              <td><code><var>mode</var>:<var>external</var>:<var>internal</var></code>
-              <td>✖
-              <td>✖
-              <td>〃  
-              <td><var>internal</var>
-            <tr>
-              <td><code><var>mode</var>t:<var>external</var>:<var>internal</var></code>
-              <td>✖
-              <td>✔
-              <td>〃  
-              <td>〃  
-            <tr>
-              <td><code><var>mode</var>b:<var>external</var>:<var>internal</var></code>
-              <td>✔
-              <td>✖
-              <td>〃  
-              <td>〃  
-          </table>
-
-          <!-- Include the other forms of the encoding string, e.g. BOM|? -->
-          <p>For example, <code>r:ascii</code> reads from the beginning of a file,
-          tagging the data it reads as US-ASCII; <code>a+:ascii:utf-8</code> opens
-          the file for reading and appending, transcoding from US-ASCII to UTF-8
-          when reading, and in the opposite direction when writing.
-      </section>
-      <!-- TODO: Discuss ORing constants to specify the open mode? -->
-    </section>
-
-    <!-- Iteration; or, cover this in terms of IO objects in general?  -->
-
-    <section>
-      <h1 id=file-exists>Existence</h1>
-
-      <p>It is often necessary to determine whether a given file exists as
-      methods that accept path arguments may raise exceptions otherwise.
-      To this end Ruby provides the predicate <code>File.exists?</code>, and
-      its alias <code>File.exist?</code>.
-    </section>
-
-    <section>
-      <h1 id=file-delete>Deletion</h1>
-
-      <p>Files may be deleted by supplying a list of their paths as arguments
-      to <code>File.delete</code>, or its alias <code>File.unlink</code>. An
-      <code>Integer</code> is returned indicating how many files were deleted.
-      <code>File.truncate</code>, which is not available on all platforms,
-      truncates a given file to a given number of bytes. It expects a path as
-      its first argument, and the number of bytes as an <code>Integer</code>
-      for its second. <code>File#truncate</code> behaves in the same fashion,
-      but truncates its receiver to the size given as its sole argument.
-    </section>
-
-    <!-- File.utime -->
-    <section>
-      <h1 id=file-rename>Renaming</h1>
-
-      <p>Files may be renamed by invoking <code>File.rename</code> with
-      their current path as the first argument, and their desired path as
-      the second.
-    </section>
-
-    <section>
-      <h1 id=file-size>Size</h1>
-
-      <p>A file that exists has a size. The <code>File.size</code> method
-      returns the size of its argument, and <code>File#size</code> returns
-      that of its receiver. In both cases, the size is an <code>Integer</code>
-      and in bytes. The <code>File.size?</code> predicate returns the size of
-      the file named by its argument if it exists and has a non-zero size, or
-      otherwise: <code>nil</code>. Similarly, <code>File.zero?</code> returns
-      <code>true</code> if the file named by its argument exists and has a
-      size of zero; <code>false</code> otherwise.
-    </section>  
-    
-    <section>
-      <h1 id=file-comparison>Comparison</h1>
-
-      <p>The <code>File.identical?</code> predicate is used to determine
-      whether the two files it is given as arguments are the same: returning
-      <code>true</code> if they are, <code>false</code> otherwise. Two files
-      are considered identical if their paths normalise to the same
-      path, or if one or both are symbolic links with identical targets.
-      It is not sufficient that two files merely contain the same content for
-      this method to succeed. <!-- Doesn't expand paths -->
-
-      <!-- File::Stat <=> -->
-    </section>
-
-    <!-- Times section? -->
-    <!-- File.fnmatch  -->
-    <section>
-      <h1 id=file-stat><code>File::Stat</code></h1>
-
-      <p><code>File::Stat</code> objects represents file metadata. They are
-      normally created with <code>File#stat</code> or
-      <code>File.stat(<var>file</var>)</code>. <code>File#lstat</code> and
-      <code>File.lstat</code> are used to the same end, but they do not
-      follow the last symbolic link, if any, in the file path; they return
-      metadata for the link itself.</p>
-
-      <table class=border>
-        <caption>Attributes of files</caption>
-        <thead>  
-          <tr>
-            <th>Attribute
-            <th>Method
-            <th>Returns
-            <th><a href=#kernel-test><code>Kernel.test</code></a>  
-        <tbody class=zebra>        
-          <tr>
-            <td>Last access time
-            <td><code>File::Stat#atime</code> / <code>File.atime</code> / <code>File#atime</code>
-            <td><code>Time</code>
-            <td><code>?A</code>  
-          <tr>
-            <td>Preferred block size for I/O
-            <td><code>File::Stat#blksize</code>  
-            <td><code>Fixnum</code> or <code>nil</code>
-            <td>&nbsp;
-          <tr>
-            <td>Number of blocks allocated
-            <td><code>File::Stat#blocks</code>  
-            <td><code>Fixnum</code> or <code>nil</code>
-            <td>&nbsp;
-          <tr>
-            <td>Inode change time
-            <td><code>File::Stat#ctime</code> / <code>File.ctime</code> / <code>File#ctime</code>
-            <td><code>Time</code>
-            <td><code>?C</code>  
-          <tr>
-            <td>Device number of filesystem
-            <td><code>File::Stat#dev</code>  
-            <td><code>Fixnum</code> or <code>nil</code>
-            <td>&nbsp;
-          <tr>
-            <td>〃(major part)
-            <td><code>File::Stat#dev_major</code>  
-            <td><code>Fixnum</code> or <code>nil</code>
-            <td>&nbsp;
-          <tr>
-            <td>〃(minor part)
-            <td><code>File::Stat#dev_minor</code>  
-            <td><code>Fixnum</code> or <code>nil</code>
-            <td>&nbsp;
-          <tr>
-            <td>Type
-            <td><code>File::Stat#ftype</code>  
-            <td><code>String</code>  
-            <td>&nbsp;
-          <tr>
-            <td>Owner’s group ID
-            <td><code>File::Stat#gid</code>  
-            <td><code>Fixnum</code>
-            <td>&nbsp;
-          <tr>
-            <td>Inode number
-            <td><code>File::Stat#ino</code>  
-            <td><code>Fixnum</code>
-            <td>&nbsp;
-          <tr>
-            <td>Permission bits
-            <td><code>File::Stat#mode</code>  
-            <td><code>Fixnum</code>
-            <td>&nbsp;
-          <tr>
-            <td>Last modify time
-            <td><code>File::Stat#mtime</code> / <code>File.mtime</code> / <code>File#mtime</code>
-            <td><code>Time</code>
-            <td><code>?M</code>  
-          <tr>
-            <td>Pathname
-            <td><code>File#path</code>  
-            <td><code>String</code>
-            <td>&nbsp;
-          <tr>
-            <td>Device ID
-            <td><code>File::Stat#rdev</code>  
-            <td><code>Fixnum</code> or <code>nil</code>
-            <td>&nbsp;
-          <tr>
-            <td>〃(major part)
-            <td><code>File::Stat#rdev_major</code>  
-            <td><code>Fixnum</code> or <code>nil</code>
-            <td>&nbsp;
-          <tr>
-            <td>〃(minor part)
-            <td><code>File::Stat#rdev_minor</code>  
-            <td><code>Fixnum</code> or <code>nil</code>
-            <td>&nbsp;
-          <tr>
-            <td>Size (bytes)
-            <td><code>File::Stat#size</code> / <code>File#size</code> /
-              <code>File.size</code>
-            <td><code>Fixnum</code> 
-            <td>&nbsp;
-          <tr>
-            <td>Owner’s user ID
-            <td><code>File::Stat#uid</code>  
-            <td><code>Fixnum</code>
-            <td>&nbsp;
-        </table>
-
-        <!-- Digression on bitmasks for #mode -->
-    </section>
-
-    <section>
-      <h1 id=file-type>Types</h1>
-
-      <p>We began this section by enumerating the many types of file
-      objectified by <code>File</code>. To determine whether a given file is
-      of a given type, one may use the appropriate predicate method of the
-      <code>File</code> class. For example, <code>File.directory?</code>
-      determines whether its argument is a directory. Alternatively,
-      <code>File::Stat#ftype</code> returns a <code>String</code> identifying
-      the type of the represented file. In the case of a directory,
-      <code>#ftype</code> returns <code>directory</code>. These two approaches
-      are summarised in the table that follows.</p>
-
-      <table class=border>
-        <caption>
-          <p>Types of file Ruby knows about
-          <p>The <i><code>File::Stat#ftype</code></i> column contains the
-          <code>String</code> that method returns for a file of the
-          corresponding type. <i>Predicate</i> is a method that expects a path
-          as argument, returning <code>true</code> iff the named file is of
-          the corresponding type. The <i>Creation</i> column specifies, where
-          possible, how a file of the corresponding type may be created in
-          Ruby. Examples assume a Linux/Debian platform.
-        </caption>
-        <thead>
-          <tr>
-            <th>Description
-            <th><code>File::Stat#ftype</code>
-            <th>Predicate
-            <th>Example  
-            <th>Creation
-            <th><a href=#kernel-test><code>Kernel.test</code></a>
-        <tbody class=zebra>
-          <tr>    
-            <td>Block device
-            <td><code>blockSpecial</code>
-            <td><code>File.blockdev?</code>
-            <td><code>/dev/sda</code>  
-            <td>&nbsp;
-            <td><code>?b</code>
-          <tr>
-            <td>Character device
-            <td><code>characterSpecial</code>
-            <td><code>File.chardev?</code>
-            <td><code>/dev/tty</code>  
-            <td>&nbsp;
-            <td><code>?c</code>
-          <tr>      
-            <td>Directory
-            <td><code>directory</code>
-            <td><code>File.directory?</code>
-            <td><code>/etc</code>  
-            <td><code>Dir.mkdir</code>
-            <td><code>?d</code>
-          <tr>
-            <td>FIFO (named pipe)
-            <td><code>fifo</code>
-            <td><code>File.pipe?</code>
-            <td>&nbsp;
-            <td><code>system("mkfifo <var>name</var>")</code>
-            <td><code>?p</code>
-          <tr>
-            <td>Regular file
-            <td><code>file</code>
-            <td><code>File.file?</code>
-            <td><code>/etc/passwd</code>  
-            <td><code>Kernel.open</code>
-            <td><code>?f</code>
-          <tr>
-            <td>Symbolic link
-            <td><code>link</code>
-            <td><code>File.symlink?</code>
-            <td><code>/dev/root</code>  
-            <td><code>File.symlink</code>
-            <td><code>?l</code>
-          <tr>
-            <td>Socket
-            <td><code>socket</code>
-            <td><code>File.socket?</code>
-            <td><code>/dev/log</code>  
-            <td>Use the <code>socket</code> library 
-            <td><code>?S</code>
-          <tr>
-            <td>Another type of file  
-            <td><code>unknown</code>
-            <td>&nbsp;
-            <td>&nbsp;
-            <td>&nbsp;
-            <td>&nbsp;
-      </table>
-    </section>  
-
-    <section>
-      <h1 id=file-permissions>Permissions</h1>
-
-      <p>The permission bits associated with a file may be retrieved from
-      the corresponding <code>File::Stat</code> object. The fields of
-      interest are described below. Be aware that on non-<abbr
-        title='Portable Operating System Interface [for Unix]'>POSIX</abbr>
-      systems the semantics of file permissions are quite different,
-      and are likely to be less granular. To compensate, on these
-      disadvantaged platforms Ruby attempts to synthesize a numeric mode
-      such that it is broadly similar to what POSIX requires. However, given
-      the lack of granularity and other incompatibilities, these factitious
-      modes are cumbersome and error-prone. It is therefore recommended
-      that the permission bits are treated as opaque, as far as possible,
-      and the predicates described later are used instead.</p>
-      
-      <table class=border>
-        <caption>
-          Permission and ownership attributes of <code>File::Stat</code>
-          objects
-        </caption>
-        <thead>  
-          <tr>
-            <th>Attribute
-            <th>Method
-            <th>Returns
-        <tbody class=zebra>        
-          <tr>
-            <td>Owner’s group ID
-            <td><code>File::Stat#gid</code>  
-            <td><code>Fixnum</code>
-          <tr>
-            <td>Permission bits
-            <td><code>File::Stat#mode</code>  
-            <td><code>Fixnum</code>
-          <tr>
-            <td>Owner’s user ID
-            <td><code>File::Stat#uid</code>  
-            <td><code>Fixnum</code>
-      </table>
-
-      <p>The permissions of a file may be changed with
-      <code>File.chmod</code> by providing the new permission bits as the
-      first argument, and a list of files as the subsequent arguments. Each
-      file listed has its permissions changed accordingly. The meaning of
-      the permission bits is platform-specific, but on Unix-like systems
-      they correspond to the numeric mode understood by
-      <code>chmod(1)</code>. Some systems, such as the <abbr title='Berkeley
-        Software Distribution'>BSD</abbr>s, support a variant of
-      <code>chmod</code> that does not follow symbolic links, therefore acts
-      upon the link rather than its target. If available, Ruby exposes this
-      functionality via <code>File.lchmod</code>, which takes the same
-      arguments as <code>File.chmod</code>. <code>File</code> also provides
-      the instance methods <code>File#chmod</code> and
-      <code>File#lchmod</code>, which require the permission bits to assign
-      to their receiver as their sole argument.
-
-      <p>The owner and group of a file may be changed-although the former
-      requires root permissions-with <code>File.chown</code>. It takes a
-      numeric user ID, and numeric group ID, as the first and second
-      arguments, respectively, and a list of files as the subsequent
-      arguments. The ownership of each file listed that the user has
-      permission to change is adjusted accordingly. <code>File.lchown</code>
-      functions similarly, but does not follow symlinks. Its availability
-      mirrors that of <code>File.lchmod</code>. The instance method,
-      <code>File#chown</code>, requires a numeric user ID, and numeric group
-      ID, as its arguments, which it applies to its receiver.
-
-      <p>The umask value of the current process is set by supplying
-      <code>File.umask</code> with the new value as an <code>Integer</code>
-      argument. It returns the previous umask value. When called without
-      arguments, <code>File.umask</code> returns the current umask.</p>
-
-      <!-- Note that permission bits are normalised -->
-      <table class=border>
-        <caption>
-          <p>Permissions predicate methods of the <code>File</code> class.
-          <p>Methods take a filename as argument and return either
-          <code>true</code> or <code>false</code> unless stated otherwise. The
-          <i><code>Kernel.test</code></i> column indicates the corresponding
-          command for use with <code>test</code>.
-        </caption>
-        <thead>  
-          <tr>
-            <th>Predicate
-            <th>Test 
-            <th><a href=#kernel-test><code>Kernel.test</code></a> 
-        <tbody class=zebra>        
-          <tr>
-            <td><code>File.executable?</code>
-            <td>Executable by our effective user ID?  
-            <td><code>?x</code>  
-          <tr>
-            <td><code>File.executable_real?</code>
-            <td>Executable by our real user ID?  
-            <td><code>?X</code>  
-          <tr>
-            <td><code>File.grpowned?</code>
-            <td>Owned by our effective group ID?  
-            <td><code>?G</code>  
-          <tr>
-            <td><code>File.owned?</code>
-            <td>Owned by our effective user ID?  
-            <td><code>?o</code>  
-          <tr>
-            <td><code>File.readable?</code>
-            <td>Readable by our effective user ID?  
-            <td><code>?r</code>  
-          <tr>
-            <td><code>File.readable_real?</code>
-            <td>Readable by our real user ID?  
-            <td><code>?R</code>  
-          <tr>
-            <td><code>File.setgid?</code>
-            <td><abbr title='Set group ID upon execution'>Setgid</abbr> bit set?  
-            <td><code>?g</code>  
-          <tr>
-            <td><code>File.setuid?</code>
-            <td><abbr title='Set user ID upon execution'>Setuid</abbr> bit set?  
-            <td><code>?u</code>  
-          <tr>
-            <td><code>File.sticky?</code>
-            <td>Sticky bit set?  
-            <td><code>?k</code>  
-          <tr>
-            <td><code>File.world_readable?</code>
-            <td>Readable by others? (Returns permission bits or
-              <code>nil</code>)  
-            <td>&nbsp;
-          <tr>
-            <td><code>File.world_writable?</code>
-            <td>Writable by others? (Returns permission bits or <code>nil</code>)
-            <td>&nbsp;
-          <tr>
-            <td><code>File.writable?</code>
-            <td>Writable by our effective user ID?  
-            <td><code>?w</code>  
-          <tr>
-            <td><code>File.writable_real?</code>
-            <td>Writable by our real user ID?  
-            <td><code>?W</code>  
-        </table>
-    </section>
-
-    <section>
-      <h1 id=file-links>Links</h1>
-      
-      <p>On platforms that support symlinks, <code>File.symlink</code> will
-      create a link to the file named as its first argument, with the name
-      given as its second. <code>File.link</code> takes the same arguments,
-      but creates hard links instead. The <code>File.symlink?</code> predicate
-      can be used to test whether its argument is a symlink, and
-      <code>File.readlink</code> returns the target of a given link.</p>
-
-      <figure id=file-symlink.rb>
-        <figcaption>A symbolic link can be created with
-        <code>File.symlink</code>
-      </figure>
-    </section>
-
-    <section>
-      <h1 id=kernel-test><code>Kernel.test</code></h1>
-
-      <p><code>Kernel.test</code> performs a given test on a given file. It
-      accepts 2&ndash;3 arguments, the first of which is a single character
-      command, and the remainder are the files on which to perform the
-      test.</p>
-
-      <table class=border>
-        <caption>Commands supported by <code>Kernel.test</code></caption>
-        <thead>
-          <tr>
-            <th>Command
-            <th>Description
-            <th>Returns
-            <th>Arity
-        <tbody class=zebra>        
-          <tr>
-            <td><code>?A</code>
-            <td>Last access time  
-            <td><code>Time</code>  
-            <td>1
-          <tr>
-            <td><code>?b</code>
-            <td>Block device?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?c</code>
-            <td>Character device?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?C</code>
-            <td>Last status change time  
-            <td><code>Time</code>  
-            <td>1
-          <tr>
-            <td><code>?d</code>
-            <td>Directory?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?e</code>
-            <td>Exists?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?f</code>
-            <td>Exists and a regular file?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?g</code>
-            <td>Has the <code>setgid</code> bit set?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?G</code>
-            <td>Exists and owned by our group?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?k</code>
-            <td>Sticky bit set?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?l</code>
-            <td>Exists and a symlink?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?M</code>
-            <td>Last modification time  
-            <td><code>Time</code>
-            <td>1
-          <tr>
-            <td><code>?o</code>
-            <td>Owned by our effective user ID?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?O</code>
-            <td>Owned by our real user ID?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?O</code>
-            <td>Owned by our real user ID?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?p</code>
-            <td>A FIFO?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?r</code>
-            <td>Readable by our effective user/group ID?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?R</code>
-            <td>Readable by our real user/group ID?  
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?s</code>
-            <td>Returns the size if non-zero 
-            <td><code>Integer</code> or <code>nil</code>
-            <td>1
-          <tr>
-            <td><code>?S</code>
-            <td>Socket? 
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?u</code>
-            <td><code>setuid</code> bit set? 
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?w</code>
-            <td>Exists and writable by our effective user/group ID? 
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?W</code>
-            <td>Exists and writable by our real user/group ID? 
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?x</code>
-            <td>Exists and executable by our effective user/group ID? 
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?X</code>
-            <td>Exists and executable by our real user/group ID? 
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?z</code>
-            <td>Exists with a size of zero? 
-            <td><code>true</code> or <code>false</code>
-            <td>1
-          <tr>
-            <td><code>?-</code>
-            <td>Are both operands identical? 
-            <td><code>true</code> or <code>false</code>
-            <td>2
-          <tr>
-            <td><code>?=</code>
-            <td>Do both operands have the same modification time? 
-            <td><code>true</code> or <code>false</code>
-            <td>2
-          <tr>
-            <td><code>?&lt;</code>
-            <td>Is the modification time of the first operand prior to that of
-              the second? 
-            <td><code>true</code> or <code>false</code>
-            <td>2
-          <tr>
-            <td><code>?&gt;</code>
-            <td>Is the modification time of the first operand after that of
-              the second? 
-            <td><code>true</code> or <code>false</code>
-            <td>2
+                  <code>IO</code> object is finalised.
       </table>
     </section>
   </section>
+
+  <section>
+    <h1 id=open-flags>Open Flags</h1>
+
+    <p>The <a href=#access-mode>access mode</a> may also be given as an
+    <code>Integer</code> formed by taking the bitwise OR of one or more
+    <dfn>open flags</dfn>, each of which is represented by a constant in the
+    <code>File</code> namespace. The available flags are explained below.
+
+    <dl>
+      <dt><code>File::APPEND</code>
+      <dd>Opens the file in <dfn>append mode</dfn>. <q
+        cite=/references#refLOOSEMORE07>If set, then all
+        write operations write the data at the end of the file, extending
+        it, regardless of the current file position.  This is the only
+        reliable way to append to a file. In append mode, you are
+        guaranteed that the data you write will always go to the current end of the
+      file, regardless of other processes writing to the file. Conversely,
+      if you simply set the file position to the end of file and write,
+      then another process can extend the file after you set the file
+      position but before you write, resulting in your data appearing
+      someplace before the real end of file.</q> (Loosemore et al.,
+    <a href=/references#refLOOSEMORE07><cite>The GNU C Library Reference
+        Manual</cite></a>, 2007, p. 335).
+
+      <dt><code>File::BINARY</code>
+      <dd>Puts the stream in <a href=#binmode>binary mode</a>.
+
+      <dt><code>File::CREAT</code>
+      <dd>Creates the file if it doesn’t already exist. If the file already
+      exists, this has no effect unless <code>File::EXCL</code> is also
+      given.
+
+      <dt><code>File::DSYNC</code>
+      <dd><q>&hellip; specifies that only normal data be synchronized
+        after each write operation, not metadata.</q> (Love, <a
+        href=/references#refLOVE07><cite>Linux System
+          Programming</cite></a>, 2007, p. 40) On Linux, this is
+      synonymous with <code>File::SYNC</code>.
+
+      <dt><code>File::EXCL</code>
+      <dd>When given with <code>File::CREAT</code>, an
+      <code>Errno::EXIST</code> exception will be raised if the file
+      already exists. <q>This is used to prevent race conditions on file
+        creation.</q> (Love, <a href=/references#refLOVE07><cite>Linux System
+          Programming</cite></a>, 2007, pp. 24&ndash;26)
+
+      <dt><code>File:NOATIME</code>
+      <dd>Do not update the access time (<i>atime</i>) of the file.  <q
+        cite=/references#refLOOSEMORE07>This is used by programs that do
+        backups, so that backing a file up does not count as reading it. Only
+        the owner of the file or the superuser may use this bit.  </q>
+      (Loosemore et al.,
+      <a href=/references#refLOOSEMORE07><cite>The GNU C Library Reference
+          Manual</cite></a>, 2007, p.  335).
+      
+      <dt><code>File:NOCTTY</code> <dd><q cite=/references#refLOOSEMORE07>If
+        the named file is a terminal device, don’t make it the controlling
+        terminal for the process.</q> (Loosemore et al., <a
+        href=/references#refLOOSEMORE07><cite>The GNU C Library Reference
+          Manual</cite></a>, 2007, pp. 333&ndash;334). (<code>IO#tty?</code> 
+      can be used to determine whether the stream is a TTY).
+
+      <dt><code>File::NOFOLLOW</code>
+      <dd>If the pathname is a symbolic link, an <code>Errno::ELOOP</code>
+      exception will be raised. <q cite=/references#refLOVE07>Normally, the
+        link is resolved, and the target file is opened. If other components
+        in the given path are links, the call will still succeed. For example,
+        if name is
+        <code>/etc/ship/plank.txt</code>, the call will fail if
+        <code>plank.txt</code> is a symbolic link. It will succeed, however,
+        if <code>etc</code> or <code>ship</code> is a symbolic link, so long
+        as <code>plank.txt</code> is not.</q> (Love, <a
+        href=/references#refLOVE07><cite>Linux System Programming</cite></a>,
+      2007, pp. 24&ndash;26)
+
+      <dt><code>File:NONBLOCK</code>
+      <dd><q cite=/references#refLOVE07>If possible, the file will be opened
+        in nonblocking mode.  Neither the <code>open()</code> call, nor any
+        other operation will cause the process to block (sleep) on the I/O.
+        This behavior may be defined only for FIFOs.</q> (Love, <a
+        href=/references#refLOVE07><cite>Linux System
+          Programming</cite></a>, 2007, pp. 24&ndash;26)
+      
+      <dt><code>File:RDONLY</code>
+      <dd>Opens the file for reading.
+      
+      <dt><code>File:RDWR</code>
+      <dd>Opens the file for reading and writing.
+      
+      <dt><code>File::RSYNC</code>
+      <dd><q cite=/references#refLOVE07>&hellip;specifies the synchronization
+        of read requests as well as write requests. It must be used with one
+        of [<code>File::SYNC</code>] or [<code>File::DSYNC</code>]. As
+        mentioned earlier, reads are already synchronized—they do not return
+        until they have something to give the
+      user, after all. The [<code>File::RSYNC</code>] flag stipulates that any
+      side effects of a read operation be synchronized, too. This means that
+      metadata updates resulting from a read must be written to disk before
+      the call returns.</q> (Love, <a href=/references#refLOVE07><cite>Linux
+        System Programming</cite></a>, 2007, p. 40) On Linux, this is
+    synonymous with <code>File::SYNC</code>.
+
+      <dt><code>File:WRONLY</code>
+      <dd>Opens the file for writing.
+
+      <dt><code>File::SYNC</code>
+      <dd><q cite=/references#refLOVE07>The file will be opened for
+        synchronous I/O. No write operation will complete until the data has
+        been physically written to disk; normal read operations are already
+        synchronous, so this flag has no effect on reads.</q> (Love, <a
+        href=/references#refLOVE07><cite>Linux System Programming</cite></a>,
+      2007, pp. 24&ndash;26)
+
+      <dt><code>File::TRUNC</code>
+      <dd><q cite=/references#refLOVE07>If the file exists, it is a regular
+        file, and the given flags allow for writing, the file will be
+        truncated to zero length. Use of [<code>File::TRUNC</code>] on a FIFO
+        or terminal device is ignored. Use on other file types is undefined.
+        Specifying [<code>File::TRUNC</code>] with [<code>File::RDONLY</code>]
+        is
+      also undefined, as you need write access to the file in order to
+      truncate it.</q> (Love, <a href=/references#refLOVE07><cite>Linux System
+        Programming</cite></a>, 2007, pp. 24&ndash;26)
+    </dl>
+        <!-- Digression on bitmasks for #mode -->
+  </section>
+
+  <!-- TODO: Closing a stream -->
+
+  <!-- The Standard Trinity: In, Error, Out-->
+  <!-- TODO: ARGF (after Files?) -->
+  <!-- TODO: ARGV -->
+  <!-- TODO: Directories -->
+  <!-- TODO: Pipes -->
+    <!-- 'Writing' section for symmetry? Show implementation of File.write? -->
+
+    <!-- Iteration; or, cover this in terms of IO objects in general?  -->
+
+  <section>
+    <h1 id=encoding>Encoding</h1>
+
+    <section>
+      <h1 id=external-encoding>External Encoding</h1>
+
+      <p>The encoding of the data in an <code>IO</code> stream is known by Ruby
+      as the object’s <dfn>external encoding</dfn>. Every <code>IO</code> object
+      has an external encoding, so data read from it will be tagged with that
+      encoding.  Ruby infers the default external encoding with the following
+      steps<a href=#fn-external-encoding-algo>†</a>, stopping as soon as she
+      finds a usable encoding:
+      
+      <dl>
+        <dt><code>Encoding.default_external=</code>
+        <dd>If an <code>Encoding</code> object, or name, been assigned to
+        <code>Encoding.default_external=</code>, that is the default external
+        encoding.
+        <dt>Interpreter’s <code>-E</code> switch
+        <dd>If the Ruby interpreter was invoked with an
+        <code>-E<var>encoding</var></code> option, <var>encoding</var> is the
+        default external encoding.
+        <dt>Locale encoding
+        <dd>Use the encoding derived from the user’s environment, as explained
+        below.
+      </dl>  
+    
+      <section>
+        <h1 id=locale-encoding>Locale Encoding</h1>
+        
+        <p>The <dfn>locale encoding</dfn> is an encoding inferred from the
+        user’s environment that Ruby supports. It is determined in two distinct
+        stages, the first of which is to interrogate the user’s environment for
+        his preferred encoding:
+        
+        <ol>
+          <li>Inspect relevant environment variables, e.g.
+          <code>LANG</code>, <code>LC_CTYPE</code>, or <code>LC_ALL</code>
+          <li>Or, if the platform is Windows or Cygwin, by invoking C’s
+          <code>nl_langinfo_codeset()</code> or Windows’ <a
+            href=//msdn.microsoft.com/en-us/library/ms683162(VS.85).aspx><code>GetConsoleCP()</code></a>
+          function.
+        </ol>
+
+        <p>The result of this search, or <code>nil</code> if it failed, is the
+        <dfn>locale charmap</dfn> encoding, and is assigned to
+        <code>Encoding.locale_charmap</code>. Ruby must now correlate this
+        encoding with the encodings she supports to determine the <dfn>locale
+          encoding</dfn>:
+
+        <ol>
+          <li>If the locale charmap encoding is known to Ruby-that
+          is, <code>Encoding.find(Encoding.locale_charmap)</code> returns an
+          <code>Encoding</code> object-that becomes the locale encoding.
+          <li>If the locale charmap encoding couldn’t be determined, the locale
+          encoding is US-ASCII.
+          <li>Otherwise, the locale encoding is ASCII-8BIT.
+        </ol>
+      </section>
+
+      <!--
+      $ LANG=braile ruby -e 'p [Encoding.locale_charmap, Encoding.find("locale")]'
+      ["ANSI_X3.4-1968", #<Encoding:US-ASCII>]
+      -->
+
+      <p>By default, as the name suggests, all <code>IO</code> objects have the
+      default external encoding as their external encoding. However, this may
+      also be set on a per-stream basis by specifying an external encoding when
+      <a href=#open>opening</a> an I/O stream, or with
+      <code>IO#set_encoding(<var>encoding</var>)</code>, where
+      <var>encoding</var> is an encoding name or <code>Encoding</code> object.
+      The external encoding of a stream may be queried with
+      <code>IO#external_encoding</code>, which returns the corresponding
+      <code>Encoding</code> object. Note, however, that if the stream is in
+      write-only mode, and wasn’t explicitly assigned an external encoding, this
+      method returns <code>nil</code>.
+    </section>
+
+    <section>
+      <h1 id=internal-encoding>Internal Encoding</h1>
+
+      <p>Optionally, an <code>IO</code> object may also be associated with an
+      <dfn>internal encoding</dfn>. This is the encoding that the programmer
+      wishes to use with the data in a stream. The default value of an
+      <code>IO</code> object’s internal encoding is equal to the <dfn>default
+        internal encoding</dfn> (<code>Encoding.default_internal</code>), which
+      is determined as follows:
+
+      <dl>
+        <dt><code>Encoding.default_internal=</code>
+        <dd>If an <code>Encoding</code> object, or name, been assigned to
+        <code>Encoding.default_internal=</code>, that is the default internal
+        encoding.
+        <dt>Interpreter’s <code>-E</code> switch
+        <dd>If the Ruby interpreter was invoked with an
+        <code>-E<var>external</var>:<var>internal</var></code> or
+        <code>-E:<var>internal</var></code> option, where both
+        <var>external</var> and <var>internal</var> are valid encoding names,
+        the default internal encoding is <var>internal</var>.
+        <dt>Interpreter’s <code>-U</code> switch
+        <dd>If the interpreter was invoked with the <code>-U</code> switch, the
+        default internal encoding is UTF-8
+      </dl>  
+
+      <p>If all the above steps failed, the default internal encoding is
+      <code>nil</code>. Therefore, unlike the default external encoding which is
+      inferred automatically from one’s locale, the default internal encoding is
+      <code>nil</code> unless set explicitly.
+
+      <p>The internal encoding of an <code>IO</code> may be changed from this
+      default on a per-stream basis by specifying an internal encoding when <a
+        href=#open>opening</a> the stream, or with
+      <code>IO#set_encoding(<var>external</var>, <var>internal</var>)</code>,
+      where both <var>external</var> and <var>internal</var> are encoding names
+      or <code>Encoding</code> objects. Alternatively,
+      <code>IO#set_encoding</code> may be given a <code>String</code> of the
+      form <code><var>external</var>:<var>internal</var></code>. 
+
+      <p>An internal encoding of <code>nil</code> means that the programmer does
+      not express a preference for how the data he reads and writes via I/O is
+      encoded.  Accordingly, Ruby tags the data with the stream’s external
+      encoding, and gets out of the way.  This, too, is the situation if the
+      stream’s external encoding is equal to its internal encoding: the data
+      is already encoded how the programmer requires. 
+      
+      <p>The internal encoding is relevant when it is both set-that is, has a
+      non-<code>nil</code> value-and differs from the external encoding. To
+      honour the internal encoding, Ruby transcodes data read from a stream from
+      the external to the internal encoding, and transcodes data written to the
+      stream from the internal to the external encoding.
+
+      <p>The transcoding works exactly the same as <a
+        href=/text#string-transcode><code>String#encode</code></a>, so the <a
+        href=#encode-options-hash><code>#encode</code> options
+        <code>Hash</code></a> may be merged with the <a
+        href=#options-hash><code>IO</code></a> wherever the latter is
+      accepted. For example, it may be supplied as the final argument of <a
+        href=#init><code>IO.new</code></a> or <code>IO#set_encoding</code>. 
+    </section>
+
+    <section>
+      <h1 id=encoding-string>Encoding String</h1>
+
+      <p>Methods that expect encoding names as arguments, often accept
+      <dfn>encoding string</dfn>s, which allow one or both of the external
+      encoding and internal encoding to be specified at once in one of the
+      forms below.</p>
+
+      <table class=border>
+        <caption>
+          <p>The forms the value of the encoding string may take.
+          <p>Both <var>external</var> and <var>internal</var> are names of
+          encodings. The <i>Inferred from BOM</i> column indicates that the
+          external encoding is set to that specified by a <abbr
+            title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to the
+          named encoding. 
+        </caption>
+        <thead>  
+          <tr>
+            <th>Form
+            <th colspan=2>External Encoding
+            <th>Internal Encoding    
+          <tr>
+            <th>&nbsp;
+            <th>Value
+            <th>Inferred from BOM?    
+            <th>Value    
+        <tbody>        
+          <tr class=odd>
+            <td><code><var>external</var></code>
+            <td rowspan=2><var>external</var>
+            <td rowspan=2>✖
+            <td rowspan=2><code>Encoding.default_internal</code>
+          <tr class=odd>
+            <td><code><var>external</var>:-</code>
+          <tr>
+            <td><code>BOM|<var>external</var></code>
+            <td rowspan=2><var>external</var>
+            <td rowspan=2>✔
+            <td rowspan=2><code>Encoding.default_internal</code>
+          <tr>
+            <td><code>BOM|<var>external</var>:-</code>
+          <tr class=odd>
+            <td><code><var>external</var>:<var>internal</var></code>
+            <td><var>external</var>
+            <td>✖
+            <td><var>internal</var>
+          <tr>
+            <td><code>BOM|<var>external</var>:<var>internal</var></code>
+            <td><var>external</var>
+            <td>✔
+            <td><var>internal</var>
+          <tr class=odd>
+            <td><code>:<var>internal</var></code>
+            <td>Default external
+            <td>✖
+            <td><var>internal</var>
+      </table>
+      
+      <p>The <code>BOM|</code> prefix deserves a fuller explanation. The
+      UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE encodings support
+      the presence of a byte-order mark: a special character occuring at
+      the start of the stream which indicates the byte order of the
+      encoding. This can be used to distinguish between the big-endian and
+      little-endian forms of UTF-16, for example. Prefixing one of the
+      aforementioned encoding names with the case-insensitive string
+      <code>BOM|</code> has the following result:
+
+      <ul>
+        <li>If no BOM is present, the named encoding is used.
+        <li>If a BOM is present, the encoding that it specifies is used
+        instead of the named encoding, and the BOM is stripped from the
+        data.
+      </ul>
+
+      <table class=border>
+        <caption>Encodings that support byte-order marks, and the content of
+          the corresponding BOM.</caption>
+        <thead>  
+          <tr>
+            <th>Encoding
+            <th>Byte-Order Mark
+        <tbody class=zebra>        
+          <tr>
+            <td>UTF-8
+            <td><code>\xEF\xBB\xBF</code>  
+          <tr>
+            <td>UTF-16BE
+            <td><code>\xFE\xFF</code>  
+          <tr>
+            <td>UTF-16LE
+            <td><code>\xFF\xFE</code>  
+          <tr>
+            <td>UTF-32BE
+            <td><code>\0\0\xFE\xFF</code>  
+          <tr>
+            <td>UTF-32LE
+            <td><code>\xFF\xFE\0\0</code>  
+        </table>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=buffering>Buffering</h1>
+
+    <p><q cite=/references#refLOVE07>Buffering writes provides a <em>huge</em>
+      performance improvement, and consequently, any operating system even
+      halfway deserving the mark “modern” implements delayed writes via
+      buffers.</q> (Love, <a href=/references#refLOVE07><cite>Linux System
+        Programming</cite></a>, 2007, p. 37) Love explains the Linux
+    kernel’s approach-which is similar to that of other operating systems-to
+    write buffering as follows:
+
+    <blockquote cite=/references#refLOVE07>
+      &hellip;when a user-space application issues a <code>write()</code>
+      system call, the Linux kernel performs a few checks, and then simply
+      copies the data into a buffer.  Later, in the background, the kernel
+      gathers up all of the “dirty” buffers, sorts them optimally, and writes
+      them out to disk (a process known as <i>writeback</i>). This allows
+      write calls to occur lightning fast, returning almost immediately. It
+      also allows the kernel to defer writes to more idle periods, and batch
+      many writes together.
+    </blockquote>
+    
+    <p>Further, and for the same reasons, Ruby maintains her own I/O buffer.
+    Therefore, before data is written to disk by Ruby, it passes first through
+    her buffers, and then those of the underlying operating system. The latter
+    are beyond the scope of this text, so we shall focus on the former from
+    now on.
+
+    <p>The <code>IO</code> methods for writing that we discussed above, all
+    buffered-that is, they pass through Ruby’s buffers-with the exception of
+    <code>IO#syswrite</code>. It was for this reason that we described it as a
+    low-level method, and cautioned against its use in conjunction with other
+    methods that perform writing. To understand why combining buffered writes
+    with non-buffered writes is potentially dangerous, consider a scenario
+    where a given stream has <code>?a</code> written to it with
+    <code>IO#print</code>, then <code>?b</code> written to it with
+    <code>IO#syswrite</code>, then <code>?c</code> written to it with
+    <code>IO#print</code>. The first character written is buffered, the second
+    is written directly, and the third is buffered. When the stream is closed,
+    Ruby flushes her buffer, causing <code>"ac"</code> to be written.
+    Therefore, the data is written out of order: <code>"bac"</code>.
+
+    <p>Ruby’s buffer can be flushed manually with <code>IO#flush</code>. This
+    causes the contents of the buffer to be passed to the operating system,
+    and the buffer to be emptied. Alternatively, buffering can be disabled for
+    a given stream by setting <code>IO#sync=</code> to <code>true</code>; by
+    default, it is <code>false</code>. This value can be queried with
+    <code>IO#sync</code>.
+
+    <p>Reads are buffered by Ruby, too, hence the corresponding warning about
+    <code>IO#sysread</code>. Buffered reads make possible what Loosemore et
+    al. (<cite>The GNU C Library Reference Manual</cite>, 2007, p. 241) term
+    <dfn>unreading</dfn>:
+
+    <blockquote>
+      Using stream I/O, you can peek ahead at input by first reading it and
+      then <i>unreading</i> it (also called <i>pushing it back</i> on the
+      stream). Unreading a character makes it available to be input again from
+      the stream, by the next call to [an] input function on that stream.
+    </blockquote>
+
+    <p>Two methods are provided for this purpose: <code>IO#ungetc</code> and
+    <code>IO#ungetbyte</code>. Both expect an argument-characters for the
+    former; bytes for the latter-which they unread. Subsequent buffered reads
+    from the stream will return the unread characters/bytes in reverse
+    chronological order before reading new data from the stream. 
+
+    <!-- Needs example -->
+
+    <p><code>IO#fsync</code> wraps the system call of the same name, so may not
+    be available on some platforms. Love describes <code>fsync()</code> from
+    the perspective of the operating system (<a
+      href=/references#refLOVE07><cite>Linux System Programming</cite></a>,
+    2007, pp. 37&ndash;38):
+
+    <blockquote cite=/references#refLOVE07>
+      <p>A call to <code>fsync()</code> ensures that all dirty data associated
+      with the file mapped by the file descriptor <code>fd</code> is written
+      back to disk. The file descriptor <code>fd</code> must be open for
+      writing. The call writes back both data and metadata, such as creation
+      timestamps, and other attributes contained in the inode. It will not
+      return until the hard drive says that the data and metadata are on the
+      disk.
+
+      <p>In the case of write caches on hard disks, it is not possible for
+      <code>fsync()</code> to know whether the data is physically on the disk.
+      The hard drive can report that the data was written, but the data may in
+      fact reside in the drive’s write cache.  Fortunately, data in a hard
+      disk’s cache should be committed to the disk in short order.
+    </blockquote>
+
+    <p><code>IO#fsync</code>, therefore, controls the operating system’s
+    buffers, as opposed to <code>IO#sync</code> which controls Ruby’s. It
+    returns <code>0</code> if supported; <code>nil</code> otherwise.
+  </section>
+
+  <!-- TODO: Non-Blocking I/O -->
+  <section>
+    <h1 id=position>Positions &amp; Seeking</h1>
+
+    <p>Beck et al. explain that an attribute of a file’s structure is <q
+      cite=/references#refBECK98>the position of the read/ write pointer at
+      which the next I/O operation will be carried out. This value is updated
+      by every I/O operation and by the system calls <code>lseek</code> and
+      <code>llseek</code>.</q> (<a
+      href=/references#refBECK98><cite>Linux Kernel Internals, 2<sup>nd.</sup>
+        ed.</cite></a>, 1998, pp.  41&ndash;43). Ruby exposes the current
+    position in an I/O stream with <code>IO#pos</code>, or its more
+    declarative alias <code>IO#tell</code>, as the offset in bytes. To seek to
+    a given position in a stream, one can assign the new,
+    <code>Integer</code>, offset to <code>IO#pos=</code>.  For more control
+    over seeking, use <code>IO#seek(<var>pos</var>, <var>origin</var>)</code>,
+    where <var>pos</var> is a byte offset specified as an
+    <code>Integer</code>, and <var>origin</var> is one of the values given
+    below. If <var>origin</var> is omitted, it defaults to
+    <code>IO::SEEK_SET</code>:
+
+    <dl>
+      <dt><code>IO::SEEK_CUR</code>
+      <dd>The current position is set to its current value plus
+      <var>pos</var>, which can be negative, zero, or positive. If
+      <var>pos</var> is zero the current position is unchanged.
+      <dt><code>IO::SEEK_END</code>
+      <dd>The current position is set to the length of the file plus
+      <var>pos</var>, which can be negative, zero, or positive. If
+      <var>pos</var> is zero the current position is set to the end of the
+      file.
+      <dt><code>IO::SEEK_SET</code>
+      <dd>The current position is set to <var>pos</var>. If <var>pos</var> is
+      zero the current position is set to the beginning of the file.
+    </dl>
+
+    <p><code>IO#sysseek</code> expects the same arguments, and behaves in the
+    same manner, as <code>IO#seek</code>, except it works on a lower-level,
+    ignoring Ruby’s I/O buffer.
+
+    <!-- TODO: Seeking past the end of a file: 'holes' -->
+    <p>Ruby also keeps track of the current line number in a stream. The
+    line-orientated reading methods increment the line number when they
+    encounter the separator character. It initially has a value of zero, and
+    its current value may be retrieved with <code>IO#lineno</code>, or its
+    alias <code>$.</code>. It may be set explicitly by assigning an
+    <code>Integer</code> to <code>IO#lineno=</code>.
+
+    <p>The current position and line number for a given stream may be reset to
+    zero with <code>IO#rewind</code>. Subsequent reads and writes will then
+    occur from the beginning of the stream.
+  </section>
+
+  <footer>
+    <h1>Footnotes</h1>
+
+    <ol>
+      <li id=fn-unix-philosophy>For a thorough investigation of this metaphor,
+      see <a href=/references#refRAYMOND03><cite>The Art of UNIX
+          Programming</cite></a>, Raymond, 2003.
+      
+      <li id=fn-stream>Our using <i>stream</i> in this sense fits the spirit
+      if not the letter of its existing meaning in I/O. Loosemore et al.
+      (<a href=/references#refLOOSEMORE07><cite>The GNU C Library Reference
+          Manual</cite></a>, 2007, pp.
+      220&ndash;221), for example, differentiate strongly between operations
+      performed on file descriptors and those performed on streams. However,
+      their description of streams as providing a <q>higher-level
+      interface, layered on top of the primitive file descriptor
+      facilities.</q> and their remark that <q>You can also initially open a
+      connection as a file descriptor and then make a stream associated with
+      that file descriptor.</q>, so closely follows the model of
+      <code>IO</code>, that our minor redefinition seems justified.
+
+      <li id=fn-actual-encoding>The external encoding may be set wrongly, of
+      course, or the file may not even have a valid encoding, but
+      nevertheless, from Ruby’s perspective, the external encoding is the
+      encoding employed by the file.
+
+      <li id=fn-external-tag>If an internal encoding has been specified, the
+      data read from a stream will be tagged with that instead.
+
+      <li id=fn-desired-encoding>By “desired” we mean the encoding the
+      programmer wishes to manipulate the stream’s data in. It is by no means
+      an assertion as to the actual encoding of the data.
+
+      <li id=fn-truncate>We use <i>truncate</i> in its POSIX sense, i.e. to
+      refer to the behaviour of <code>truncate(2)</code>. On most file
+      systems, this operation can be used to increase as well as decrease the
+      size of a file, hence our clarification.
+
+      <li id=fn-syswrite-caution>The rationale for this warning is that
+      <code>IO#syswrite</code> ignores Ruby’s I/O buffer, as explained in <a
+        href=#buffering>Buffering</a>.
+
+      <li id=fn-external-encoding-algo>Derived mainly from <a
+        href=/references#refHARADA09 class=ref><cite>The Design and
+          Implementation of Ruby M17N</cite></a>, Yui Naruse, Yoko Harada
+      trans.
+      </ol>
+  </footer>
 </article>

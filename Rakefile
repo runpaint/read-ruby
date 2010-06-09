@@ -187,7 +187,7 @@ end
 
 class Book
   CHAPTERS = %w{programs variables messages methods objects classes modules
-                closures flow text enumerables io punctuation keywords references}
+                closures flow text enumerables io files punctuation keywords references}
   
   def chapters
     @chapters ||= CHAPTERS.map{|c| Chapter.new c}
@@ -367,4 +367,4 @@ task :rsync => :default do
   sh "rsync --delete -vazL out/ ruby:/home/public"
 end
 
-RSpec::Core::RakeTask.new(:rspec)
+
