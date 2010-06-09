@@ -35,7 +35,7 @@ end
       href=#file-open><code>Kernel.open</code></a> can be written to, as well
     as read, with their underlying file being created if needed. However,
     <code>File</code> also provides many class methods which operate on a path
-    argument without instantiating <code>File</code> a object.
+    argument without instantiating <code>File</code> a object.</p>
 
     <!-- TODO: Dir -->
 
@@ -88,7 +88,7 @@ end
       the file’s dirname as the first element, and its basename as the last.
       <code>File.join</code> performs the inverse operation: given a list of
       path components it joins them with the path separator into a
-      <code>String</code>.
+      <code>String</code>.</p>
       
       <table class=border>
         <caption>
@@ -278,7 +278,7 @@ end
 
         <p>A file is opened with a particular <dfn>open mode</dfn> which
         specifies the type of action to be performed on it. The default open mode
-        is <code>r</code>.
+        is <code>r</code>.</p>
 
         <table class=border>
           <caption>
@@ -429,7 +429,7 @@ end
 
         <p>The <code>:encoding</code> key allows one or both of the external
         encoding and internal encoding to be specified at once in one of the
-        forms below.
+        forms below.</p>
 
         <table class=border>
           <caption>
@@ -533,7 +533,7 @@ end
         <code>String</code>, or given as the value of the <code>:mode</code>
         key in the options <code>Hash</code>. While the mode string is more
         concise than the options <code>Hash</code>, it is also more cryptic
-        when specifying multiple options.
+        when specifying multiple options.</p>
 
         <table class=border>
           <caption>
@@ -687,7 +687,7 @@ end
       <code>File.stat(<var>file</var>)</code>. <code>File#lstat</code> and
       <code>File.lstat</code> are used to the same end, but they do not
       follow the last symbolic link, if any, in the file path; they return
-      metadata for the link itself.
+      metadata for the link itself.</p>
 
       <table class=border>
         <caption>Attributes of files</caption>
@@ -805,7 +805,7 @@ end
       <code>File::Stat#ftype</code> returns a <code>String</code> identifying
       the type of the represented file. In the case of a directory,
       <code>#ftype</code> returns <code>directory</code>. These two approaches
-      are summarised in the table that follows.
+      are summarised in the table that follows.</p>
 
       <table class=border>
         <caption>
@@ -900,7 +900,7 @@ end
       the lack of granularity and other incompatibilities, these factitious
       modes are cumbersome and error-prone. It is therefore recommended
       that the permission bits are treated as opaque, as far as possible,
-      and the predicates described later are used instead.
+      and the predicates described later are used instead.</p>
       
       <table class=border>
         <caption>
@@ -957,7 +957,7 @@ end
       <p>The umask value of the current process is set by supplying
       <code>File.umask</code> with the new value as an <code>Integer</code>
       argument. It returns the previous umask value. When called without
-      arguments, <code>File.umask</code> returns the current umask.
+      arguments, <code>File.umask</code> returns the current umask.</p>
 
       <!-- Note that permission bits are normalised -->
       <table class=border>
@@ -1051,7 +1051,8 @@ end
 
       <p><code>Kernel.test</code> performs a given test on a given file. It
       accepts 2&ndash;3 arguments, the first of which is a single character
-      command, and the remainder are the files on which to perform the test. 
+      command, and the remainder are the files on which to perform the
+      test.</p>
 
       <table class=border>
         <caption>Commands supported by <code>Kernel.test</code></caption>
