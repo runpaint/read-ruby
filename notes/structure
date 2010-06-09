@@ -1,0 +1,29 @@
+Programs
+  Structure
+  Interpretation
+  Variables
+  Closures?
+Object-Orientation
+  Messages
+  Methods
+  Objects
+  Classes
+  Modules
+Data Types
+  Text (incl. Regexps & Symbols)
+  Numerics
+  Arrays
+  Hashes
+  Ranges
+  Times and Dates*
+Flow (incl. logic)
+  Branches
+  Loops & Iteration
+  Exceptions
+  Fibers*
+  Threads*
+I/O (introduce IO class, general concept)
+  Files (file-specific I/O)
+  Directories
+  Processes & External Commands
+  Sockets

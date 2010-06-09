@@ -187,7 +187,7 @@ end
 
 class Book
   CHAPTERS = %w{programs variables messages methods objects classes modules
-                closures flow text enumerables punctuation keywords references}
+                closures flow text enumerables io punctuation keywords references}
   
   def chapters
     @chapters ||= CHAPTERS.map{|c| Chapter.new c}
