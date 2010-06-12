@@ -366,5 +366,3 @@ end
 task :rsync => :default do
   sh "rsync --delete -vazL out/ ruby:/home/public"
 end
-
-
