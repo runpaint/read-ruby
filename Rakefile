@@ -1,368 +1,57 @@
-# encoding: utf-8
-require 'rake/clean'
-require 'nokogiri'
-require 'uri'
-require 'rspec/core/rake_task'
-require 'erb'
+require_relative 'lib/read-ruby'
+include ReadRuby
 
-ROOT_URL = URI.parse 'http://ruby.runpaint.org/'
-CLOBBER.include('out')
+MINIFIER = {html: 'h5-min', css: 'yuicompressor', js: 'yuicompressor'}
 
-directory 'out'
-
-class Page
-  attr_accessor :source, :target, :nok
-  def initialize(source, target=nil)
-    @target = target || source
-    @source = source
-    @target = @target.include?('/') ? @target : File.join('out',@target)
-  end
-
-  def nok
-    @nok ||= Nokogiri::HTML(File.read source) 
-  end
-
-  def contents
-    nok.to_s
-  end
-
-  def write
-    data = contents
-    File.open(target, 'w'){|f| f.print data}
-    minify
-  end
-
-  def url
-    ROOT_URL.tap{|u| u.path = '/' + target.sub(%r{out/},'').sub(%r{\.html$},'') }
-  end
-
-  def minify?
-    true
-  end
-
-  def minify
-    return unless minify?
-    system "h5-min #{target} >#{target}.min"
-    FileUtils.mv "#{target}.min", target
-    system "gzip --best -c #{target} >#{target}.gz"      
+desc 'Rebuild HTML, CSS, and JS'
+task :default do
+  OUT_DIR.rmtree if OUT_DIR.exist?
+  cp_r PRISTINE_DIR, OUT_DIR
+  OUT_DIR.each_child do |file|
+    next unless file.symlink?
+    target, name = OUT_DIR.join(file.readlink), file
+    next unless target.extname == TEMPLATE_EXT
+    template = target.sub_ext('').basename.to_s
+    rendered = begin
+      Object.const_get(template.capitalize).new(name).render
+    rescue NameError => e
+      Mustache.render(target.read)
+    end
+    name.unlink
+    open(name, ?w){|f| f.print rendered}
   end
 end
 
-class Chapter < Page
-  attr_accessor :name
-  def initialize(name)
-    @name = name.sub(/\.html$/,'')
-    super(@name + '.html')
-  end
-
-  def headings(s=nok.at('article'), level=1)
-    a = ''
-    unless (h1 = s.xpath('./h1')).inner_html.empty?
-      href = '/' + name
-      anchor = h1.first.attributes['id'].to_s
-      href += "##{anchor}" unless name == anchor
-      a = "<a href=#{href}>#{h1.inner_html}</a>"
+desc 'Minify HTML, CSS, and JS'
+task :minify => :default do
+  OUT_DIR.each_child.select(&:file?).each do |file|
+    if min = MINIFIER[ :"#{file.extname[1..-1]}" ]
+      sh "#{min} #{file} > #{file}.min"
+      mv "#{file}.min", file
     end
-    titles = [a, 
-              s.xpath('./section').map do |s2| 
-                headings(s2, level + 1)
-              end.compact
-             ].reject(&:empty?)
-    return if titles.empty?
-    titles.size == 1 ? titles.first : titles
+    sh "gzip --best -c #{file} > #{file}.gz"
   end
+end
 
-  def dependencies
-    @deps ||= nok.css('figure').map do |fig|
-      if fig['id'] and fig['id'].end_with?('.rb')
-        Example.new(fig['id'])
-      elsif fig['class'] == 'railroad' 
-        fig.css('img').map{|img| Railroad.new(img)}
-      end
-    end.flatten.compact
-  end
-
-  def footnotes
-    nok.css('a').select{|a| a['href'].start_with? '#fn-'}.each_with_index do |a,i|
-      idx = i.succ.to_s
-      ref = a['href'][1..-1]
-      a['class'] = 'fn'
-      a['id'] = 'ref-' + ref + "-#{idx}"
-      a['title'] = 'View footnote'
-      a['href'] += "-#{idx}"
-      a.inner_html = idx
-      a.swap("<sup>#{a}</sup>")
-      returner = %Q{ <a class=returner 
-                        href=##{a['id']} 
-                        title='Return to where you left off'>&#8617;</a>}
-      nok.at("##{ref}").tap do |li|
-        li['id'] += "-#{idx}"
-        li.add_child(Nokogiri::HTML.fragment returner)
-      end
+[Example, Railroad].each do |klass|
+  name = klass.to_s.downcase + 's'
+  desc "Rebuild #{name}"
+  task name.to_sym do
+    klass.each do |source|
+      file klass.target(source) => source do
+        klass.generate source
+      end.invoke
     end
   end
-
-  def contents
-    footnotes
-    nok.css('figure').map do |fig|
-      if fig['id'] and fig['id'].end_with?('.rb')
-          example = dependencies.select{|d| d.source.end_with? fig['id']}.first
-          fig.at("figcaption").before(example.contents)
-      elsif fig['class'] == 'railroad' 
-        fig.css('img').each do |img|
-          railroad = dependencies.select{|d| d.target.end_with? img['id']}.first
-          img['src'] = railroad.url.path
-          img.delete('id')
-          / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{railroad.target}`
-          img['width'], img['height'] = width, height
-        end
-      end
-    end
-    ERB.new(File.read('templates/chapter.rhtml')).result(binding)
-  end
-
-  def title
-    nok.at('h1').inner_html
-  end
-
-  def article
-    nok.at('article').inner_html
-  end
 end
 
-class Example < Page
-  def initialize(source)
-    @source = File.join('examples', source)
-    super(@source, @source.sub(/\.rb$/, '.html'))
-  end
-    
-  def minify?
-  end
+desc 'Rebuild everything'
+task :all => [:examples, :railroads, :default, :minify]
 
-  def write
-    system "pygmentize -f html -O encoding=utf-8 -o #{target} #{source}"
-    munged = File.read(target).sub(/^<div.+pre>/, '<pre class=syntax><code>').
-                                    sub(/<\/pre><\/div>/,'</code></pre>')
-    File.open(target, 'w'){|f| f.print %{<a href=#{url.path}>#{munged}</a>}}
-    super
-  end
+desc 'Rebuild everything then upload'
+task :upload => [:all, :rsync]
 
-  def contents
-    File.read target
-  end
-
-  def url
-    super.tap{|u| u.path = u.path + '.rb'}
-  end
-end
-
-class Railroad < Page
-  require 'pngrammar'
-  attr_accessor :source, :target, :img
-  
-  def initialize(img)
-    @img = img
-    @target = File.join('railroads', @img['id'])
-    @source = @target.sub(/\.png$/, '.ebnf')
-  end
-
-  # TODO: Unfinished
-  def write
-    images = PNGrammar.new(source).images
-    raise "Generated #{images.size} PNGs; expected 1" unless images.size == 1
-    raise "Couldn't make PNG for #{png}" unless images.values.first
-    File.open(target, 'w'){|f| f.print images.values.first}
-    system "optipng #{target}"
-    Nokogiri::HTML(img.to_s).tap do |el|
-      el['src'] = railroad.url.path
-      / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{railroad.target}`
-      el['width'], el['height'] = width, height
-    end
-  end
-
-  def url
-    ROOT_URL.tap{|u| u.path = '/' + target.sub(/\.png$/,'')}
-  end
-end
-
-class Book
-  CHAPTERS = %w{programs variables messages methods objects classes modules
-                closures flow text enumerables io files punctuation keywords references}
-  
-  def chapters
-    @chapters ||= CHAPTERS.map{|c| Chapter.new c}
-  end
-
-  def root
-    @root ||= Root.new(ToC.new(chapters, 2).toc)
-  end
-
-  def toc
-    @toc ||= ToC.new(chapters)
-  end
-
-  def sitemap
-    @sitemap ||= Sitemap.new(chapters + chapters.map(&:dependencies) << toc << root)
-  end
-
-  def dependencies
-    (chapters.dup << toc << root << sitemap).flatten 
-  end
-end
-
-class ToC < Page
-  attr_accessor :chapters, :depth
-  def initialize(chapters, depth=99)
-    @chapters, @depth = chapters, depth
-    super('toc.html')
-  end
-
-  def headings
-    chapters.reject{|c| c.name == 'index'}.map(&:headings).compact
-  end
-
-  def toc(toc=nil, depth=nil)
-    toc ||= headings
-    depth ||= self.depth
-    return '' if depth < 1
-    '<ol>' + toc.map do |e|
-      '<li>' + (e.is_a?(Array) ? e.first + toc(e.last, depth-1) : e) + '</li>'
-     end.join + '</ol>'
-  end
-
-  def contents
-    nok.at('section > h1').
-        after(Nokogiri::HTML::DocumentFragment.parse toc)
-    nok
-  end
-end
-
-class Root < Page
-  attr_accessor :front_toc
-  def initialize(front_toc)
-    @front_toc = front_toc
-    super('index.html')
-  end
-
-  def contents
-    nok.tap{|n| n.at('section > h1').after front_toc}
-  end
-
-  def url
-    super.tap{|u| u.path = '/'}
-  end
-end
-
-class Sitemap
-  attr_reader :pages, :source, :target
-  def initialize(pages)
-    @pages = pages
-    @source = 'sitemap.xml'
-    @target = File.join('out', @source)
-  end
-
-  def write
-    nok = Nokogiri::XML(File.read source)
-    pages.flatten.map do |page|
-      nok.at('urlset') << Nokogiri::XML::DocumentFragment.parse(
-        "<url><loc>#{page.url}</loc></url>"
-      )
-    end
-    File.open(target,'w'){|f| nok.write_to f}
-  end
-end
-
-rule(%r{^out/google} => ->(t){ source t }) do |t|
-  cp t.source, t.name
-end
-
-%w{examples railroads fonts}.each do |dir|
-  out_dir = File.join('out', dir)
-  file out_dir => ['out', dir] do |t|
-    ln_s "../#{dir}", t.name
-  end
-end
-
-{
-  :toc => [:main, :chapter, :toc],
-  :index => [:main, :index],
-  :chapter => [:main, :chapter, :syntax]
-}.each do |target, files|
-  target = "out/#{target}.css"
-  files = files.map{|f| "css/#{f}.css"}
-  file target => files do |t|
-    File.open(target, 'w') do |f| 
-      f.print files.map{|n| File.read(n)}.join
-    end
-    sh "yuicompressor #{target} > #{target}.min"
-    mv "#{target}.min", target
-    sh "gzip --best -c #{target} >#{target}.gz"      
-  end
-end
-
-file 'out/ui.js' => 'ui.js' do |t|
-  sh "yuicompressor #{t.prerequisites.first} > #{t.name}"
-  sh "gzip --best -c #{t.name} >#{t.name}.gz"      
-end
-
-rule(%r{out/} => ->(t){ t.sub('out/','')}) do |t|
-  cp t.source, t.name
-end
-
-output_files = ['out','out/railroads', 'out/examples', 'out/fonts']
-FileList['*.txt', '.htstatic', '*.jpeg', '*.js'].each do |f|
-  output_files << (f_out = 'out/' + f)
-end
-
-book = Book.new
-book.chapters.each do |chapter|
-  chapter.dependencies.each do |dep|
-    file dep.target => dep.source do
-      dep.write
-    end
-  end
-
-  dependencies = chapter.dependencies.map(&:target) << chapter.source << 'out/chapter.css'
-  file chapter.target => dependencies do
-    chapter.write
-  end
-end
-
-chapters = book.chapters.map(&:target)
-
-file book.root.target => chapters.dup << book.root.source << 'out/index.css' do
-  book.root.write
-end
-
-file book.toc.target => chapters.dup << book.toc.source << 'out/toc.css' do
-  book.toc.write
-end
-
-file book.sitemap.target => chapters.dup << book.sitemap.source do
-  book.sitemap.write
-end
-
-task :default => output_files + book.dependencies.map(&:target)
-
-task :spec => :local_spec
-
-task :local_spec do
-  ENV['READ_RUBY_HOST'] = 'read-ruby'
-  Rake::Task[:rspec].execute
-end
-
-task :live_spec do
-  ENV['READ_RUBY_HOST'] = 'ruby.runpaint.org'
-  Rake::Task[:rspec].execute
-end
-
-task :upload => [:clobber, :local_spec] do
-  Rake::Task[:rsync].execute
-  sleep 2
-  Rake::Task[:live_spec].execute
-  sh 'git push'
-end
-
-task :rsync => :default do
-  sh "rsync --delete -vazL out/ ruby:/home/public"
+desc 'Upload current build'
+task :rsync  do
+  sh "rsync --exclude '*examples/*html' --delete -vazL out/ ruby:/home/public"
 end

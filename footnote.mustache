@@ -1,0 +1,13 @@
+{{^returner}}
+<sup>
+  <a href="#fn-{{ name }}-{{ index }}" class="fn" id="ref-{{ name }}-{{ index }}"
+     title="View footnote">{{ index }}
+  </a>
+</sup>
+{{/returner}}
+{{#returner}}
+  <a class=returner 
+     href=#ref-{{ name }}-{{ index }} 
+     title='Return to where you left off'>&#8617;
+  </a>
+{{/returner}}
