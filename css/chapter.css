@@ -237,6 +237,28 @@ table > caption {
   font-size: 90%;
 }
 
+details {
+  display: block;
+}
+
+details > * {
+  display: none;
+}
+
+details.open > *, /* sigh :-( http://twitter.com/rem/status/2178972149 */
+details[open] > * {
+  display: block;
+}
+
+details > summary:first-child {
+  display: block;
+  cursor: pointer;
+}
+
+details[open] {
+  display: block;
+}
+
 body > footer {
   text-align: center;
   font-style: italic;

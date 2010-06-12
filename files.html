@@ -65,11 +65,16 @@
       
       <table class=border>
         <caption>
-          <p>Examples of how path components are interpreted by the named
-          class methods of <code>File</code>
-          <p>Each column indicates the output of the corresponding
-          <code>File</code> class method for the path given in the first
-          column.
+          <details>
+            <summary>
+              Examples of how path components are interpreted by the named
+              class methods of <code>File</code>
+            </summary>
+
+            <p>Each column indicates the output of the corresponding
+            <code>File</code> class method for the path given in the first
+            column.
+          </details>
         </caption>
         <thead>
           <tr>
@@ -376,14 +381,17 @@
 
       <table class=border>
         <caption>
-          <p>Types of file Ruby knows about
-          <p>The <i><code>File::Stat#ftype</code></i> column contains the
-          <code>String</code> that method returns for a file of the
-          corresponding type. <i>Predicate</i> is a method that expects a path
-          as argument, returning <code>true</code> iff the named file is of
-          the corresponding type. The <i>Creation</i> column specifies, where
-          possible, how a file of the corresponding type may be created in
-          Ruby. Examples assume a Linux/Debian platform.
+          <details>
+            <summary>Types of file Ruby knows about</summary>
+
+            <p>The <i><code>File::Stat#ftype</code></i> column contains the
+            <code>String</code> that method returns for a file of the
+            corresponding type. <i>Predicate</i> is a method that expects a
+            path as argument, returning <code>true</code> iff the named file
+            is of the corresponding type. The <i>Creation</i> column
+            specifies, where possible, how a file of the corresponding type
+            may be created in Ruby. Examples assume a Linux/Debian platform.
+          </details>
         </caption>
         <thead>
           <tr>
@@ -529,11 +537,16 @@
       <!-- Note that permission bits are normalised -->
       <table class=border>
         <caption>
-          <p>Permissions predicate methods of the <code>File</code> class.
-          <p>Methods take a filename as argument and return either
-          <code>true</code> or <code>false</code> unless stated otherwise. The
-          <i><code>Kernel.test</code></i> column indicates the corresponding
-          command for use with <code>test</code>.
+          <details>
+            <summary>
+              Permissions predicate methods of the <code>File</code> class.
+            </summary>
+            
+            <p>Methods take a filename as argument and return either
+            <code>true</code> or <code>false</code> unless stated otherwise.
+            The <i><code>Kernel.test</code></i> column indicates the
+            corresponding command for use with <code>test</code>.
+          </details>
         </caption>
         <thead>  
           <tr>

@@ -223,14 +223,19 @@
 
     <table class=border>
       <caption>
-        <p>A comparison of the methods that write to an <code>IO</code>
-        stream.
-        <p>Each method converts its input as described in the <i>Converts</i>
-        column. If multiple arguments are expected and received, they are
-        concatenated with the contents of the <i>Separator</i> column. The
-        method returns the value in <i>Returns</i>. If it can be invoked
-        without any arguments, the <i>Default Output</i> column describes
-        what it writes.
+        <details>
+          <summary>
+            A comparison of the methods that write to an <code>IO</code>
+            stream.
+          </summary>
+
+          <p>Each method converts its input as described in the <i>Converts</i>
+          column. If multiple arguments are expected and received, they are
+          concatenated with the contents of the <i>Separator</i> column. The
+          method returns the value in <i>Returns</i>. If it can be invoked
+          without any arguments, the <i>Default Output</i> column describes
+          what it writes.
+        </details>
       </caption>  
       <thead>
         <tr>
@@ -443,16 +448,19 @@
 
     <table class=border>
       <caption>
-        <p>Access mode specifiers  
-        <p>The access mode is presented as both a <i>String</i> and the
-        equivalent <i>Bitmask</i>. The <i>Read?</i> and <i>Write?</i>
-        columns indicate whether the opened file can be read from or written
-        to, respectively.  <i>Truncate?</i> specifies that existing files
-        will be truncated before use. <i>Creates?</i> specifies that
-        non-existent files will be created before use.  Finally, <i>Start
-          Position</i> is the position in the file reading/writing starts
-        from: <i>Beginning</i> is before the first byte; <i>End</i> is after
-        the last.
+        <details>
+          <summary>Access mode specifiers</summary>  
+          
+          <p>The access mode is presented as both a <i>String</i> and the
+          equivalent <i>Bitmask</i>. The <i>Read?</i> and <i>Write?</i>
+          columns indicate whether the opened file can be read from or written
+          to, respectively.  <i>Truncate?</i> specifies that existing files
+          will be truncated before use. <i>Creates?</i> specifies that
+          non-existent files will be created before use.  Finally, <i>Start
+            Position</i> is the position in the file reading/writing starts
+          from: <i>Beginning</i> is before the first byte; <i>End</i> is after
+          the last.
+        </details>
       </caption>
       <thead>  
         <tr>
@@ -610,13 +618,16 @@
 
       <table class=border>
         <caption>
-          <p>The forms a mode string may take.  
-          <p><var>mode</var> denotes one of the access modes given in the <a
-            href=#access-mode>Access Mode</a> table.  The <i>Binary?</i> and
-          <i>Text?</i> columns indicates whether the stream is in <a
-            href=#binmode>binary</a> or <a href=#textmode>text mode</a>,
-          respectively. Both <var>internal</var> and <var>external</var> are
-          names of encodings.
+          <details>
+            <summary>The forms a mode string may take</summary>  
+
+            <p><var>mode</var> denotes one of the access modes given in the <a
+              href=#access-mode>Access Mode</a> table.  The <i>Binary?</i> and
+            <i>Text?</i> columns indicates whether the stream is in <a
+              href=#binmode>binary</a> or <a href=#textmode>text mode</a>,
+            respectively. Both <var>internal</var> and <var>external</var> are
+            names of encodings.
+          </details>
         </caption>
         <thead>  
           <tr>
@@ -698,10 +709,17 @@
         <code>Hash</code></a> are also recognised.
 
       <table class=border>
-        <caption>Options that may be specified as the second argument to
-          <code>Kernel.open</code>. Options accepted by <a
-            href=/text#encode-options-hash><code>String#encode</code></a> are
-          also accepted.
+        <caption>
+          <details>
+            <summary>
+              Options that may be specified as the second argument to
+              <code>Kernel.open</code>.
+            </summary>
+
+            <p>Options accepted by <a
+              href=/text#encode-options-hash><code>String#encode</code></a>
+            are also accepted.
+          </details>
         </caption>
         <thead>
           <tr>
@@ -1047,12 +1065,17 @@
 
       <table class=border>
         <caption>
-          <p>The forms the value of the encoding string may take.
-          <p>Both <var>external</var> and <var>internal</var> are names of
-          encodings. The <i>Inferred from BOM</i> column indicates that the
-          external encoding is set to that specified by a <abbr
-            title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to the
-          named encoding. 
+          <details>
+            <summary>
+              The forms the value of the encoding string may take.
+            </summary>
+
+            <p>Both <var>external</var> and <var>internal</var> are names of
+            encodings. The <i>Inferred from BOM</i> column indicates that the
+            external encoding is set to that specified by a <abbr
+              title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to the
+            named encoding.
+          </details>
         </caption>
         <thead>  
           <tr>
