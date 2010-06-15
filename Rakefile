@@ -13,7 +13,9 @@ task :default do
     next unless target.extname == TEMPLATE_EXT
     template = target.sub_ext('').basename.to_s
     rendered = begin
-      Object.const_get(template.capitalize).new(name).render
+      Object.const_get(template.capitalize).new(name).tap do |o|
+        o.fixup if o.respond_to?(:fixup)
+      end.render
     rescue NameError => e
       Mustache.render(target.read)
     end

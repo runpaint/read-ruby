@@ -49,7 +49,7 @@ class Chapter < Mustache
     end
   end
 
-  def render
+  def fixup
     footnotes
     nok.css('figure').map do |fig|
       if fig['id'] and fig['id'].end_with?('.rb')
@@ -64,6 +64,5 @@ class Chapter < Mustache
         end
       end
     end
-    super
   end
 end
