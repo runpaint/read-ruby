@@ -1,0 +1,4 @@
+AddType application/x-ruby rb
+AddType application/vnd.ms-fontobject eot
+AddType application/x-font-ttf ttf
+AddType application/octet-stream woff

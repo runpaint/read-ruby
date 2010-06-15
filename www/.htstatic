@@ -4,7 +4,6 @@ AddEncoding application/x-gzip .html.gz
 # Stop files with .gz extension being served with a Content-Type of
 # application/x-gzip
 RemoveType .gz
-AddType application/x-ruby rb
 AddCharset utf-8 .html
 AddDefaultCharset utf-8
 DefaultLanguage en-GB
