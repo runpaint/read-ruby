@@ -117,12 +117,17 @@ article > section > section > h1 {
 
 article > section > section > section > h1 {
   font-size: 110%;
-}
-code {
-  font-family: Inconsolata, 'Courier New', 'Courier', monospace;
-  font-size: 80%;
+  font-style: italic;
 }
 
+code {
+  font-family: Inconsolata, 'Courier New', 'Courier', monospace;
+  white-space: nowrap;
+}
+pre > code {
+  font-size: 80%;
+  white-space: pre;
+}
 h1.runin {
   font-size: 100%;
   font-weight: bold;
@@ -257,6 +262,13 @@ details > summary:first-child {
 
 details[open] {
   display: block;
+}
+
+/* Make single-letter variables stand out */
+/* Apply this automatically? */
+var.l {
+  font-weight: bold;
+  font-size: 105%;
 }
 
 body > footer {

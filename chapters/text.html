@@ -575,6 +575,280 @@
 
     <!-- TODO: #printf; #sprintf -->
     <section>
+      <h1 id=format-strings>Format Strings</h1>
+
+      <p>A <dfn>format string</dfn> is a template specifying how a set of
+      arguments should be interpolated into a new <code>String</code>. It
+      contains arbitrary text-which is copied to the result
+      unchanged-interspersed with <dfn>format sequences</dfn>-which describe
+      how their corresponding argument should be converted before being
+      substituted in their place.
+
+      <p><code>String#%</code> interprets its receiver as a format string, and
+      its argument-a plurality are supplied as an <code>Array</code>-as the
+      values to be interpolated, returning the expanded <code>String</code>.
+      <code>Kernel#sprintf</code>, and its alias <code>Kernel#format</code>,
+      interprets its first argument as a format string and subsequent arguments
+      as the values to be interpolated.
+
+      <p>A format sequence begins with a percent sign, then contains zero or
+      more single-character <var>flags</var>, an optional minimal field <a
+        href=#sprintf-width><var>width</var></a>, an optional <a
+        href=#sprintf-precision><var>precision</var></a>, and a mandatory
+      conversion specifier, in that order. We will discuss each conversion
+      specifier in turn, along with the flags they support, then conclude by
+      explaining the other fields.</p>
+
+      <section>
+        <h1 id=sprintf-text>Textual Conversions</h1>
+
+        <p>Firstly, the following text-based conversion specifiers are available:
+
+        <dl>
+          <dt>Character
+          <dd>Conversion specifier <code>c</code> interprets a numerical
+          argument as a character code point, which it converts into the given
+          character. An argument consisting of a one-character
+          <code>String</code> is copied into the result unchanged.
+
+          <dt>Inspect
+          <dd>Conversion specifier <code>p</code> is subsituted for the
+          result of sending <code>#inspect</code> to its argument.
+
+          <dt>String
+          <dd>Conversion specifier <code>s</code> copies the argument into
+          the result as a <code>String</code>.
+        </dl>
+
+        <p>If accompanied by a precision, both <code>p</code> and
+        <code>s</code> copy at most <var>precision</var> characters into the
+        result.</p>
+
+        <figure id=sprintf-textual.rb>
+          <figcaption>Using the text-based format sequences.
+        </figure>
+      </section>
+
+      <p>The remaining conversion specifiers format numbers. All support a
+      <code>␣</code> (a space character) flag, which prepends positive results
+      with a space, a <code>+</code> flag which prepends a plus sign to
+      positive results, and a <code>0</code> flag which <a
+        href=#sprintf-width>pads</a> fields with zeros instead of spaces. If
+      <code>␣</code> and <code>+</code> are used together, the latter has
+      precedence.</p>
+
+      <section>
+        <h1 id=sprintf-bases>Converting Between Numerical Bases</h1>
+
+        <p>Conversion specifiers can convert an argument into an integer in a
+        given base. Negative results are usually represented in two’s
+        complement, prefixed with two full stops. However, if the
+        <code>␣</code> flag is supplied they are given in their absolute form
+        and prefixed with a hyphen-minus sign. When the <code>0</code> flag is
+        given and the result is represented as two’s complement, it is padded
+        with the digit one fewer than the base. For example, negative octal
+        numbers are padded with <code>7</code>s instead of <code>0</code>s.
+
+        <dl>
+          <dt>Binary
+          <dd>Conversion specifiers <code>b</code> and <code>B</code>
+          convert their argument to base 2. The <code>#</code> flag causes
+          <code>0b</code> to be prepended to the result of <code>b</code>, and
+          <code>0B</code> to be prepended to the result of <code>B</code>,
+          i.e. these conversion specifiers differ only in the case of their
+          prefix.
+          
+          <dt>Octal
+          <dd>The <code>o</code> conversion specifier converts its argument to
+          base 8. When this conversion specifier is used in conjunction with
+          the <code>#</code> flag, and the result is positive, <code>0</code>
+          is prepended to the result. 
+
+          <dt>Decimal 
+          <dd>Conversion specifiers <code>i</code>, <code>u</code>, and
+          <code>d</code>, all of which are identical, convert their argument
+          to base 10. Negative numbers are prefixed with a hyphen-minus sign.
+
+          <dt>Hexadecimal 
+          <dd>Both the <code>x</code> and <code>X</code> conversion specifiers
+          convert their argument to base 16. The case of the conversion
+          specifier dictates the case of the characters in the result. The
+          <code>#</code> flag prepends <code>0x</code> or <code>0X</code> to
+          the result, as appropriate.
+        </dl>
+
+        <figure id=sprintf-bases.rb>
+          <figcaption>Using the format sequences to convert between numeric
+          bases.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=sprint-notation>Numerical Notation</h1>
+
+        <p>The notation used for displaying numerical arguments can also be
+        configured with conversion specifiers. The <code>␣</code> flag again
+        causes positive results to have a single space prepended, but has no
+        effect on negative results. The <code>#</code> flag forces the result
+        to contain a radix point, even if no digits follow. 
+        
+        <dl>
+          <dt>Exponential
+          <dd>The <code>e</code> conversion specifier represents the argument
+          in exponential notation in the form: <code>[-]<var
+              class=l>α</var>.<var class=l>β</var>e±<var
+              class=l>γ</var></code>, where <var class=l>α</var> is a single
+          digit, <var class=l>β</var> is the fractional part consisting of
+          <var>precision</var> (default: 6)  digits, and <var class=l>γ</var>
+          is the two-digit exponent.The <code>E</code> conversion specifier
+          behaves identically, expect a capital <code>E</code> is used to
+          introduce the exponent. 
+
+          <dt>Fixed-point
+          <dd>The <var>f</var> conversion specifier represents its argument
+          with a whole part, preceeded with a hyphen-minus sign if negative,
+          and a fractional part, separated by a radix point. There are always
+          <var>precision</var> (default: 6) digits following the radix point.
+
+          <dt>Exponential or fixed-point
+          <dd>Both the <code>g</code> and <code>G</code> conversion specifiers
+          render their argument in the notation most appropriate for its
+          magnitude: exponential if the exponent is &lt; -4 or &ge;
+          <var>precision</var>; fixed-point, otherwise. There are at most
+          <var>precision</var> (default: 6) digits in the result.
+          Trailing zeros are omitted from the fractional part of the result
+          unless the <code>#</code> flag is given. The radix point is omitted
+          unless followed by at least one digit. The exponent is introduced
+          with <code>e</code> if the <code>g</code> conversion specifier is
+          used; or <code>E</code> if <code>G</code> is used instead.
+
+          <dt>Hexadecimal exponential 
+          <dd>A conversion specifier of <code>a</code> converts the argument
+          to base-16 exponential notation (using lowercase digits) in the
+          form: <code>[-]0x<var class=l>α</var>.<var class=l>β</var>p±<var
+              class=l>γ</var></code>, where <var class=l>α</var> is a single
+          hex digit, <var class=l>β</var> is one or more hex digits, whose
+          quantity is capped at <var>precision</var>, and <var class=l>γ</var>
+          is the single-digit decimal exponent. If the <code>A</code>
+          specifier is used instead, the lowercase characters in the result
+          are converted to uppercase, i.e. it takes the form <code>[-]0X<var
+              class=l>α</var>.<var class=l>β</var>P±<var
+              class=l>γ</var></code>, where <var class=l>α</var> and <var
+            class=l>β</var> use uppercase digits.
+        </dl>
+
+        <figure id=sprintf-notation.rb>
+          <figcaption>Using the format sequences to convert between numeric
+          notations.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=sprintf-hash>Interpolating a <code>Hash</code></h1>
+
+        <p>If the arguments are given as a <code>Hash</code>, rather than an
+        <code>Array</code>, they may be referenced from a format sequence by
+        name instead of position. When a conversion specifier is immediately
+        preceeded by <code>&lt;<var>key</var>&gt;</code>, where <var>key</var>
+        names a key of the <code>Hash</code>, the corresponding value in the
+        <code>Hash</code> becomes the format sequence’s argument. A format
+        sequence with a conversion specifier of of the form
+        <code>{<var>name</var>}</code> is equivalent to
+        <code>&lt;<var>name</var>&gt;s</code>.</p> 
+
+        <figure id=sprintf-hash.rb>
+          <figcaption>Arguments for a format string can be provided as a
+          <code>Hash</code>, allowing for a rudimentary templating system.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=sprintf-width>Field Width &amp; Justification</h1>
+        
+        <p>The <var>width</var> component of a format sequence is an optional
+        decimal digit string (with non-zero first digit) specifying the
+        minimum width of the field. Alternatively, the value
+        can be specified in <a href=#sprintf-arguments>relative or absolute
+          terms</a>.
+        
+        <p>If the result has fewer characters than this width, it is padded;
+        if it has more characters, the field is expanded as needed. By
+        default, <i>␣</i> (a space character) is used for padding, but the
+        <code>0</code> flag causes an alternative character, usually a zero,
+        to be used instead. 
+        
+        <p>Fields are normally right justified, but a flag of <code>-</code>
+        justifies left instead. In the former case, padding characters are
+        prepended to the result, while in the latter they are appended. If a
+        negative width is given, this flag is implied, and the field’s width
+        is this value with the sign ignored.</p>
+
+        <figure id=sprintf-width.rb>
+          <figcaption>Specifying the minimumn width of a field in a format
+          sequence.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=sprintf-precision>Precision</h1>
+
+        <p>The optional <var>precision</var> component comprises a full stop
+        followed by an optional integer. If said integer is omitted or
+        negative, it has the value <code>0</code>. Alternatively, the value
+        can be specified in <a href=#sprintf-arguments>relative or absolute
+          terms</a>. The precision gives:
+        
+        <ul>
+          <li>The minimum number of digits to appear for <code>b</code>,
+          <code>B</code>, <code>d</code>, <code>i</code>, <code>o</code>,
+          <code>u</code>, <code>x</code>, and <code>X</code> conversions.
+          <li>The number of digits to appear after the radix point for
+          <code>a</code>,  <code>A</code>,  <code>e</code>,  <code>E</code>,
+          <code>f</code>, and <code>F</code> conversions.
+          <li>The maximum number of significant digits for <code>g</code> and
+          <code>G</code> conversions.
+          <li>The maximum number of characters to be taken from a string for
+          <code>s</code> and <code>p</code> conversions.
+        </ul>
+      </section>
+
+      <section>
+        <h1 id=sprintf-arguments>Relative &amp; Absolute Arguments</h1>
+
+        <p>Usually, an argument is mapped to a conversion specifier
+        implicitly: the <var>n</var><sup>th</sup> argument corresponds to the
+        <var>n</var><sup>th</sup> conversion specifier. However, this may be
+        made explicit so as to support arguments in a different order to their
+        conversion specifiers, and/or to use the same argument multiple times.
+
+        <p>Arguments are indexed with integers, the first argument having an
+        index of 1. To marry a conversion specifier with an argument at index
+        <var>i</var>, the format sequence should begin with
+        <code>%<var>i</var>$</code>. However, if one format sequence has this
+        form, they all must: numbered and un-numbered conversion specifiers
+        cannot be mixed in the same format string.
+
+        <p>The precision and width of a field can be provided in a similar
+        way. A width given as <code>*<var>i</var>$</code> or a precision given
+        as <code>.*<var>i</var>$</code>, specifies that the value is supplied
+        by the argument indexed by <var>i</var>. However, this construct must
+        always be paired with numbered conversion specifiers, which as noted
+        above, are an all-or-nothing deal.
+        
+        <p>Alternatively, a width given as a single asterisk, or a precision
+        given as <code>.*</code>, denote that the <var>n</var><sup>th</sup>
+        argument holds <em>their</em> value, rather than that of their
+        conversion specifier.  These constructs can be intermixed freely with
+        unnumbered conversion specifiers.</p>
+
+        <figure id=sprintf-arguments.rb>
+          <figcaption>Alternative approaches to matching arguments with format
+          sequences.
+        </figure>
+      </section>
+    </section>
+
+    <section>
       <h1 id=string-encoding>Encoding</h1>
 
       <!--
@@ -586,7 +860,7 @@
       source file in which it appears, with the caveats noted above for
       Unicode and byte escapes.</p>
 
-      <!-- String#bytes to inspect encoding -->
+      <!-- String#bytes / String#dump to inspect encoding -->
 
       <section>
         <h1 id=string-transcode>Transcoding</h1>
@@ -864,7 +1138,7 @@
     <p><code>String#match</code> returns a <code>MatchData</code> object if
     the match succeeded; <code>nil</code> otherwise. <code>MatchData#[]</code>
     returns the text captured by the capture group given as a
-    <code>Symbol</code>, for a named group, or an <code>Integer</code>.
+    <code>Symbol</code>, for a named group, or an <code>Integer</code>.</p>
      
     <!-- String#gsub? -->
     <section>

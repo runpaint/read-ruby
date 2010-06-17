@@ -10,6 +10,9 @@
 body {
   font-family: 'OFL Sorts Mill Goudy TT', 'Linux Libertine', Palatino, 'Palatino Linotype', 
                'Book Antiqua', Georgia, 'Times New Roman', serif;
+}
+
+body {
   font-style: normal;
   font-size: large;
   font-color: black;
