@@ -1061,8 +1061,22 @@
     <section>
       <h1 id=string-concatenation>Concatenation</h1>
 
-      <p>To concatenate two <code>String</code>s one of the following
-      conditions must hold:
+      <p><code>String#+</code> returns its receiver concatenated with its
+      <code>String</code> argument, without modifying the former. No coercion
+      is performed on the argument.
+
+      <p><code>String#&lt;&lt;</code> appends its argument to its receiver,
+      mutating the existing object rather than creating a new one, and returns
+      the receiver. The argument must be either an <code>Integer</code>
+      codepoint, which is converted into the corresponding character before
+      concatenation, or a <code>String</code>.</p>
+
+      <figure id=string-concat.rb>
+        <figcaption>Concatenating <code>String</code>s
+      </figure>
+
+      <p>Either approach requires at least one of the following conditions to
+      hold:
 
       <ul>
         <li>Both encodings are ASCII-compatible and one of the
