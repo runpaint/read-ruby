@@ -125,8 +125,8 @@ code {
   white-space: nowrap;
 }
 pre > code {
-  font-size: 80%;
   white-space: pre;
+  font-size: 80%;
 }
 h1.runin {
   font-size: 100%;
