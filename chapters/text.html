@@ -1059,6 +1059,27 @@
     </section>
 
     <section>
+      <h1 id=string-comparison>Comparison</h1>
+
+      <p><code>String#&lt;=&gt;</code> compares its receiver with its
+      <code>String</code> argument in terms of their character codes. Neither
+      operand is normalised. <code>String</code> mixes in
+      <code>Comparable</code>, so gains <code>String#&lt;</code>,
+      <code>String#&le;</code>, <code>String#&gt;</code>, and
+      <code>String#&ge;</code>, also.
+
+      <p>The aforementioned methods are, by implication, case sensitive.
+      <code>String#casecmp</code> provides a case-insensitive alternative for
+      ASCII <code>String</code>s; non-ASCII characters are compared as
+      above. Alternatively, one must normalise the case of the two
+      <code>String</code>s themselves before comparing them.</p>
+
+      <figure id=string-comparison.rb>
+        <figcaption>Comparing <code>String</code>s
+      </figure>
+    </section>
+
+    <section>
       <h1 id=string-concatenation>Concatenation</h1>
 
       <p><code>String#+</code> returns its receiver concatenated with its
