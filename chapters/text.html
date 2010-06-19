@@ -2,82 +2,6 @@
   <h1 id=text>Text</h1>
 
   <section>
-    <h1 id=encoding>Encoding</h1>
-
-    <p>An encoding is a mapping between byte sequences and characters<a
-      href=#fn-encoding-dfn>†</a>. Each program source file,
-    <code>String</code>, <code>Symbol</code>, <code>Regexp</code>, and
-    <code>IO</code> object is, relatively independently, associated with its
-    own encoding. Therefore, a program may consist of multiple source files,
-    each associated with a different encoding, or concatenate two
-    <code>String</code>s, one of which is encoded in <i>Windows-1250</i> and
-    the other in <i>UTF-8</i>. The encoding of program source files, i.e.
-    <dfn>source encoding</dfn>, was covered in the <a
-      href=/programs>Programs</a> chapter. The encoding of
-    <code>String</code>, <code>Symbol</code>, and <code>Regexp</code> objects
-    is discussed in the respective section of this chapter. The <a
-      href=/io>Input/Output</a> chapter deals with <code>IO</code> objects.</p>
-
-    <section>
-      <h1 id=encoding-class>The <code>Encoding</code> Class</h1>
-
-      <p>Ruby represents the encodings that she understands as instances of
-      the <code>Encoding</code> class, defining each as a constant under the
-      <code>Encoding</code> namespace. The constant is named after the
-      upper-case encoding name, with low lines replacing hyphen-minus
-      characters. For example, <code>Encoding::UTF_8</code> or
-      <code>Encoding::Windows_1250</code>. Given an encoding name as a
-      <code>String</code>, the corresponding <code>Encoding</code> object may
-      be retrieved with <code>Encoding.find(<var>name</var>)</code>.
-      
-      <p>A list of built-in encodings may be retrieved as an <code>Array</code>
-      of <code>Encoding</code> objects with the <code>Encoding.list</code>
-      method. <code>Encoding.aliases</code> returns a <code>Hash</code> whose
-      keys are encoding aliases, and values are the corresponding built-in
-      encoding. Methods that expect encodings as arguments accept instances of
-      <code>Encoding</code>, or <code>String</code>s naming a built-in encoding
-      or its alias. The <code>Encoding</code> object  associated with a
-      <code>String</code>, <code>Symbol</code>, or <code>Regexp</code> is
-      returned by their <code>#encoding</code> method.
-    </section>
-      
-    <section>
-      <h1 id=ascii-8bit>ASCII-8BIT</h1>
-
-      <p>Ruby defines an encoding named <code>ASCII-8BIT</code>, with an alias
-      of <code>BINARY</code>, which does not correspond to any known encoding.
-      It is intended to be associated with binary data, such as the bytes that
-      make up a <abbr title='Portable Network Graphics'>PNG</abbr> image, so
-      has no restrictions on content. One byte always corresponds with one
-      character.  This allows a <code>String</code> to be treated as <a
-        href=#byte-array>bag of bytes</a> rather than a sequence of
-      characters.  <code>ASCII-8BIT</code>, then, effectively corresponds to
-      the absence of an encoding, so methods that expect an encoding name
-      recognise <code>nil</code> as a synonym.
-    </section>
-
-    <section>
-      <h1 id=encoding-compatibility>Compatibility</h1>
-
-      <p>Methods of <code>String</code> and <code>Regexp</code> that take
-      another such object as an argument require the encodings associated with
-      the objects to be <dfn>compatible</dfn>. An encoding is always
-      compatible with itself, so operations involving two objects associated
-      with the same encoding are allowed. Likewise, two objects are compatible
-      if they are both <a href=#ascii-only>ASCII-only</a>.
-
-      <p>The compatibility of other combinations of encodings can be
-      determined with <code>Encoding.compatible?</code>, which compares the
-      encoding of its two arguments, which are either <code>Encoding</code>
-      objects or objects associated with encodings. If they are compatible,
-      the encoding which would result from their combination is returned;
-      otherwise, <code>nil</code> results. Operating on objects with
-      incompatible encodings causes an
-      <code>Encoding::CompatibilityError</code> exception to be raised.
-    </section>
-  </section>
-  
-  <section>
     <h1 id=strings>Strings</h1>
      
     <p><code>String</code>s are mutable sequences of characters with an
@@ -599,6 +523,7 @@
       specifier in turn, along with the flags they support, then conclude by
       explaining the other fields.</p>
 
+      <!-- TODO: %% -->
       <section>
         <h1 id=sprintf-text>Textual Conversions</h1>
 
@@ -861,98 +786,6 @@
       Unicode and byte escapes.</p>
 
       <!-- String#bytes / String#dump to inspect encoding -->
-
-      <section>
-        <h1 id=string-transcode>Transcoding</h1>
-
-        <p><dfn>Transcoding</dfn> a <code>String</code> converts its bytes to
-        the equivalent byte sequences in a given encoding, then tags the new
-        string with the new encoding. It is performed with
-        <code>String#encode</code>, which returns its receiver transcoded from
-        a <var>source</var> encoding to a <var>target</var> encoding.
-        <code>String#encode!</code> operates in the same manner, but
-        transcodes the receiver in-place.
-
-        <p>By default, <var>source</var> is the receiver’s current encoding,
-        and <var>target</var> is the default_internal encoding. When called
-        with one encoding argument, this becomes the <var>target</var>
-        encoding. When called with two encoding arguments, the first is the
-        <var>target</var>, the second is the <var>source</var>. This last form
-        is mainly useful when the <code>String</code> is tagged
-        <code>ASCII-8BIT</code>: it associates the <code>String</code> with
-        <var>source</var>, then transcodes from <var>source</var> to
-        <var>target</var>.
-
-        <p>If a character in the <code>String</code> does not exist in the
-        <var>target</var> encoding, or the <code>String</code> contains
-        bytes invalid in its current encoding, an exception is raised.
-        This behaviour can be changed by supplying an <var>options</var>
-        <code>Hash</code> as the final argument, whose form is described in
-        the table that follows.</p>
-
-        <table id=encode-options-hash class=border>
-          <caption>The keys and values that are recognised in the
-            <var>options</var> <code>Hash</code> accepted by
-            <code>String#encode</code> and <code>String#encode!</code>. The
-            <i>Key</i> column names a key of the <code>Hash</code>, and the
-            <i>Values</i> column specifies its possible values.
-          <thead>
-            <tr>
-              <th>Key
-              <th>Values
-              <th>Description
-          <tbody class=zebra>
-            <tr>
-              <td><code>:cr_newline</code>
-              <td><code>true</code> or <code>false</code>
-                <td>Whether to convert <code>\n</code> to <code>\r</code>.  
-            <tr>
-              <td><code>:crlf_newline</code>
-              <td><code>true</code> or <code>false</code>
-              <td>Whether to convert <code>\n</code> to <code>\r\n</code>.  
-            <tr>
-              <td><code>:invalid</code>
-              <td><code>:replace</code> or <code>nil</code>
-              <td>A value of <code>:replace</code> causes characters invalid
-                in the source encoding to be substituted for the replacement
-                string. A value of <code>nil</code>, which is the default,
-                causes an <code>Encoding::InvalidByteSequenceError</code>
-                exception to be raised in this scenario.
-            <tr>
-              <td><code>:replace</code>
-              <td><code>String</code>
-                <td>The <dfn>replacement string</dfn> used by the
-                <code>:invalid</code> or <code>:undef</code> options. By
-                default, it is <code class=u>U+FFFD</code> for Unicode
-                encodings and <code>?</code> for others.
-            <tr>
-              <td><code>:undef</code>
-              <td><code>:replace</code> or <code>nil</code>
-              <td>A value of <code>:replace</code> causes characters invalid
-                in the destination encoding to be substituted for the
-                replacement string. A value of <code>nil</code>, which is the
-                default, causes an
-                <code>Encoding::UndefinedConversionError</code> exception to
-                be raised in this scenario.
-            <tr>
-              <td><code>:universal_newline</code>
-              <td><code>true</code> or <code>false</code>
-              <td>When true, <code>\r\n</code> and <code>\r</code> are
-                converted to <code>\n</code>.
-            <tr>
-              <td>:xml
-              <td><code>:text</code> or <code>:attr</code>
-              <td>Replaces <code>&amp;</code> with <code>&amp;amp;</code>,
-                <code>&lt;</code> with <code>&amp;lt;</code>,
-                <code>&gt;</code> with <code>&amp;gt;</code>, and undefined
-                characters with a hexadecimal entity of the form
-                <code>&amp;#x<var>hex</var>;</code>, where <var>hex</var> is
-                a sequence of hexadecimal digits. In addition, when a value
-                of <code>:attr</code> is supplied, <code>"</code> is
-                replaced with <code>&amp;quot;</code>.
-        </table>
-        <!-- Advanced transcoding with Encoding::Converter -->
-      </section>
 
       <section>
         <h1 id=string-encoding-tag>Tagging</h1>
@@ -1307,14 +1140,4 @@
       causes an <code>EncodingError</code> to be raised.
     </section>
   </section>
-
-  <footer>
-    <h1>Footnotes</h1>
-    
-    <ol>
-      <li id=fn-encoding-dfn>In Unicode terminology, this encompasses both
-      <abbr title='Character Encoding Scheme'>CES</abbr>s and <abbr
-        title='Character Encoding Form'>CEF</abbr>s.
-    </ol>
-  </footer>
 </article>

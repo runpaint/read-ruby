@@ -104,7 +104,7 @@
           title='United States'>US</abbr>-<abbr title='American Standard Code
           for Information Interchange'>ASCII</abbr> digit. However, it may
         contain any other character legal in the <a
-          href=#source-encoding>source encoding</a>.</p>
+          href=/encoding#source>source encoding</a>.</p>
     </section>
   </section>
 
@@ -312,29 +312,10 @@
       <section>
         <h1 id=source-encoding>Source Encoding</h1>
 
-        <p>The <dfn>source encoding</dfn> is the character encoding of a given
-        source file. It is US-ASCII by default. A <code>SyntaxError</code> is
-        raised when a source file contains one or more characters invalid in the
-        source encoding.
-
-        <p>A file’s source encoding may be specified inline by means of a
-        <dfn>coding comment</dfn>: a specially formatted comment that declares
-        the encoding of the lines that follow. If omitted, the default source
-        encoding is assumed. If a source file contains a <a
-          href=#shebang>shebang</a> line, the coding comment must appear on the
-        second line; otherwise it must appear on the first.</p>
-
-        <p>The coding comment is a US-ASCII string which begins with a number
-        sign (<code class=u title='#'>U＋0023</code>) and contains<a
-          href=#fn-coding-contain>†</a> the string <code>coding</code>
-        followed by an equals sign (<code class=u title='='>U＋003D</code>) or
-        colon (<code class=u title=':'>U＋003A</code>) then the name of the
-        source encoding. The encoding name is one of those returned by
-        <code>Encoding.name_list</code> written in a case insensitive fashion.
-
-        <p>The source encoding of the currently executing code can be obtained
-        with the <a href=#encoding><code>__ENCODING__</code></a>
-        keyword.
+        <p>Source files are assumed to only contain US-ASCII characters,
+        unless they have been explicitly declared to have a different
+        encoding. This topic is explained fully in the <a
+          href=/encoding#source>Encoding</a> chapter.
       </section>
 
       <section>
@@ -425,11 +406,6 @@
       1001), colloquial terms for the number sign (<code class=u
         title='#'>U＋0023</code>) and the exclamation mark (<code class=u
         title='!'>U＋0021</code>), respectively.
-      <li id=fn-coding-contain>That the coding comment need only
-      <em>contain</em> <code>coding</code> allow Ruby to recognise Vim and
-      Emacs modelines which declare a file’s encoding. For example, <code>#
-        vim: set fileencoding=utf-8 :</code> informs both Vim and Ruby that
-      the file is encoded in UTF-8.
     </ol>
   </footer>
 </article>

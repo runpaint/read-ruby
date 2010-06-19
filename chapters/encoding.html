@@ -1,0 +1,682 @@
+<article>
+  <h1 id=encoding>Encoding</h1>
+
+  <p>An encoding is a mapping between byte sequences and characters<a
+    href=#fn-encoding-dfn>†</a>. Each program source file,
+  <code>String</code>, <code>Symbol</code>, <code>Regexp</code>, and
+  <code>IO</code> object is, relatively independently, associated with its own
+  encoding. Therefore, a program may consist of multiple source files, each
+  associated with a different encoding, or concatenate two
+  <code>String</code>s, one of which is encoded in <i>Windows-1250</i> and the
+  other in <i>UTF-8</i>.</p>
+
+  <section>
+    <h1 id=class>The <code>Encoding</code> Class</h1>
+
+    <p>Ruby represents the encodings that she understands as instances of
+    the <code>Encoding</code> class, defining each as a constant under the
+    <code>Encoding</code> namespace. The constant is named after the
+    upper-case encoding name, with low lines replacing hyphen-minus
+    characters. For example, <code>Encoding::UTF_8</code> or
+    <code>Encoding::Windows_1250</code>. Given an encoding name as a
+    <code>String</code>, the corresponding <code>Encoding</code> object may
+    be retrieved with <code>Encoding.find(<var>name</var>)</code>.
+    
+    <p>A list of built-in encodings may be retrieved as an <code>Array</code>
+    of <code>Encoding</code> objects with the <code>Encoding.list</code>
+    method. <code>Encoding.aliases</code> returns a <code>Hash</code> whose
+    keys are encoding aliases, and values are the corresponding built-in
+    encoding. Methods that expect encodings as arguments accept instances of
+    <code>Encoding</code>, or <code>String</code>s naming a built-in encoding
+    or its alias. The <code>Encoding</code> object  associated with a
+    <code>String</code>, <code>Symbol</code>, or <code>Regexp</code> is
+    returned by their <code>#encoding</code> method.
+  </section>
+
+  <section>
+    <h1 id=source>Source Encoding</h1>
+
+    <p>The <dfn>source encoding</dfn> is the character encoding of a given
+    source file. It is US-ASCII by default. A <code>SyntaxError</code> is
+    raised when a source file contains one or more characters invalid in the
+    source encoding.
+
+    <p>A file’s source encoding may be specified inline by means of a
+    <dfn>coding comment</dfn>: a specially formatted comment that declares the
+    encoding of the lines that follow. If omitted, the default source encoding
+    is assumed. If a source file contains a <a
+      href=/programs#shebang>shebang</a> line, the coding comment must appear
+    on the second line; otherwise it must appear on the first.</p>
+
+    <p>The coding comment is a US-ASCII string which begins with a number
+    sign (<code class=u title='#'>U＋0023</code>) and contains<a
+      href=#fn-coding-contain>†</a> the string <code>coding</code>
+    followed by an equals sign (<code class=u title='='>U＋003D</code>) or
+    colon (<code class=u title=':'>U＋003A</code>) then the name of the
+    source encoding. The encoding name is one of those returned by
+    <code>Encoding.name_list</code> written in a case insensitive fashion.
+
+    <p>The source encoding of the currently executing code can be obtained
+    with the <a href=/programs#encoding><code>__ENCODING__</code></a>
+    keyword.</p>
+
+    <figure id=coding-comment.rb>
+      <figcaption>Setting and querying the source encoding.
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=external>External Encoding</h1>
+
+    <p>The encoding of the data in an <code>IO</code> stream is known by Ruby
+    as the object’s <dfn>external encoding</dfn>. Every <code>IO</code> object
+    has an external encoding, so data read from it will be <a
+      href=/text#string-encoding-tag>tagged</a> with the same. Ruby infers the
+    default external encoding with the following
+    steps<a href=#fn-external-encoding-algo>*</a>, stopping as soon as she
+    finds one which is usable:
+
+    <dl>
+      <dt><code>Encoding.default_external=</code>
+      <dd>If an <code>Encoding</code> object, or name, been assigned to
+      <code>Encoding.default_external=</code>, that is the default external
+      encoding.
+      <dt>Interpreter’s <code>-E</code> switch
+      <dd>If the Ruby interpreter was invoked with an
+      <code>-E<var>encoding</var></code> option, <var>encoding</var> is the
+      default external encoding.
+      <dt>Locale encoding
+      <dd>Use the encoding derived from the user’s environment, as explained
+      below.
+    </dl>  
+  
+    <section>
+      <h1 id=locale>Locale Encoding</h1>
+      
+      <p>The <dfn>locale encoding</dfn> is an encoding inferred from the
+      user’s environment that Ruby supports. It is determined in two distinct
+      stages, the first of which is to interrogate the user’s environment for
+      his preferred encoding:
+      
+      <ol>
+        <li>Inspect relevant environment variables, e.g.
+        <code>LANG</code>, <code>LC_CTYPE</code>, or <code>LC_ALL</code>
+        <li>Or, if the platform is Windows or Cygwin, by invoking C’s
+        <code>nl_langinfo_codeset()</code> or Windows’ <a
+          href=//msdn.microsoft.com/en-us/library/ms683162(VS.85).aspx><code>GetConsoleCP()</code></a>
+        function.
+      </ol>
+
+      <p>The result of this search, or <code>nil</code> if it failed, is the
+      <dfn>locale charmap</dfn> encoding, and is assigned to
+      <code>Encoding.locale_charmap</code>. Ruby must now correlate this
+      encoding with the encodings she supports to determine the <dfn>locale
+        encoding</dfn>:
+
+      <ol>
+        <li>If the locale charmap encoding is known to Ruby-that
+        is, <code>Encoding.find(Encoding.locale_charmap)</code> returns an
+        <code>Encoding</code> object-that becomes the locale encoding.
+        <li>If the locale charmap encoding couldn’t be determined, the locale
+        encoding is US-ASCII.
+        <li>Otherwise, the locale encoding is ASCII-8BIT.
+      </ol>
+    </section>
+
+    <!--
+    $ LANG=braile ruby -e 'p [Encoding.locale_charmap, Encoding.find("locale")]'
+    ["ANSI_X3.4-1968", #<Encoding:US-ASCII>]
+    -->
+
+    <p>By default, as the name suggests, all <code>IO</code> objects have the
+    default external encoding as their external encoding. However, this may
+    also be set on a per-stream basis by specifying an external encoding when
+    <a href=/io#open>opening</a> an I/O stream, or with
+    <code>IO#set_encoding(<var>encoding</var>)</code>, where
+    <var>encoding</var> is an encoding name or <code>Encoding</code> object.
+    The external encoding of a stream may be queried with
+    <code>IO#external_encoding</code>, which returns the corresponding
+    <code>Encoding</code> object. Note, however, that if the stream is in
+    write-only mode, and wasn’t explicitly assigned an external encoding, this
+    method returns <code>nil</code>.  
+  </section>
+
+  <section>
+    <h1 id=internal>Internal Encoding</h1>
+
+    <p>Optionally, an <code>IO</code> object may also be associated with an
+    <dfn>internal encoding</dfn>. This is the encoding that the programmer
+    wishes to use with the data in a stream. The default value of an
+    <code>IO</code> object’s internal encoding is equal to the <dfn>default
+      internal encoding</dfn> (<code>Encoding.default_internal</code>), which
+    is determined as follows:</p>
+
+    <dl>
+      <dt><code>Encoding.default_internal=</code>
+      <dd>If an <code>Encoding</code> object, or name, been assigned to
+      <code>Encoding.default_internal=</code>, that is the default internal
+      encoding.
+      <dt>Interpreter’s <code>-E</code> switch
+      <dd>If the Ruby interpreter was invoked with an
+      <code>-E<var>external</var>:<var>internal</var></code> or
+      <code>-E:<var>internal</var></code> option, where both
+      <var>external</var> and <var>internal</var> are valid encoding names,
+      the default internal encoding is <var>internal</var>.
+      <dt>Interpreter’s <code>-U</code> switch
+      <dd>If the interpreter was invoked with the <code>-U</code> switch, the
+      default internal encoding is UTF-8
+    </dl>  
+
+    <p>If all the above steps failed, the default internal encoding is
+    <code>nil</code>. Therefore, unlike the default external encoding which is
+    inferred automatically from one’s locale, the default internal encoding is
+    <code>nil</code> unless set explicitly.
+
+    <p>The internal encoding of an <code>IO</code> may be changed from this
+    default on a per-stream basis by specifying an internal encoding when <a
+      href=#open>opening</a> the stream, or with
+    <code>IO#set_encoding(<var>external</var>, <var>internal</var>)</code>,
+    where both <var>external</var> and <var>internal</var> are encoding names
+    or <code>Encoding</code> objects. Alternatively,
+    <code>IO#set_encoding</code> may be given a <code>String</code> of the
+    form <code><var>external</var>:<var>internal</var></code>. 
+
+    <p>An internal encoding of <code>nil</code> means that the programmer does
+    not express a preference for how the data he reads and writes via I/O is
+    encoded.  Accordingly, Ruby tags the data with the stream’s external
+    encoding, and gets out of the way.  This, too, is the situation if the
+    stream’s external encoding is equal to its internal encoding: the data
+    is already encoded how the programmer requires. 
+    
+    <p>The internal encoding is relevant when it is both set-that is, has a
+    non-<code>nil</code> value-and differs from the <a href=#external>external
+      encoding</a>. To honour the internal encoding, Ruby <a
+      href=#transcoding>transcodes</a> data read from a stream from the
+    external to the internal encoding, and transcodes
+    data written to the stream from the internal to the external encoding.
+
+    <p>The transcoding works exactly the same as <a
+      href=#transcoding><code>String#encode</code></a>, so the <a
+      href=#encode-options-hash><code>#encode</code> options
+      <code>Hash</code></a> may be merged with the <a
+      href=#options-hash><code>IO</code></a> wherever the latter is accepted.
+    For example, it may be supplied as the final argument of <a
+      href=/io#init><code>IO.new</code></a> or <code>IO#set_encoding</code>. 
+  </section>
+
+  <section>
+    <h1 id=ascii-8bit>ASCII-8BIT</h1>
+
+    <p>Ruby defines an encoding named <code>ASCII-8BIT</code>, with an alias
+    of <code>BINARY</code>, which does not correspond to any known encoding.
+    It is intended to be associated with binary data, such as the bytes that
+    make up a <abbr title='Portable Network Graphics'>PNG</abbr> image, so has
+    no restrictions on content. One byte always corresponds with one
+    character. This allows a <code>String</code>, for instance, to be treated
+    as <a href=/text#byte-array>bag of bytes</a> rather than a sequence of
+    characters. <code>ASCII-8BIT</code>, then, effectively corresponds to the
+    absence of an encoding, so methods that expect an encoding name recognise
+    <code>nil</code> as a synonym.
+  </section>
+
+  <section>
+    <h1 id=compatibility>Compatibility</h1>
+
+    <p>Methods of <code>String</code> and <code>Regexp</code> that take
+    another such object as an argument require the encodings associated with
+    the objects to be <dfn>compatible</dfn>. An encoding is always
+    compatible with itself, so operations involving two objects associated
+    with the same encoding are allowed. Likewise, two objects are compatible
+    if they are both <a href=/text#ascii-only>ASCII-only</a>.
+
+    <p>The compatibility of other combinations of encodings can be
+    determined with <code>Encoding.compatible?</code>, which compares the
+    encoding of its two arguments, which are either <code>Encoding</code>
+    objects or objects associated with encodings. If they are compatible,
+    the encoding which would result from their combination is returned;
+    otherwise, <code>nil</code> results. Operating on objects with
+    incompatible encodings causes an
+    <code>Encoding::CompatibilityError</code> exception to be raised.
+  </section>
+
+  <section>
+    <h1 id=transcoding>Transcoding</h1>
+
+    <p><dfn>Transcoding</dfn> a <code>String</code> converts its bytes to the
+    equivalent byte sequences in a given encoding, then <a
+      href=/text#string-encoding-tag>tags</a> the new string with the new
+    encoding. It is typically performed with <code>String#encode</code>, which
+    returns its receiver transcoded from a <var>source</var> encoding to a
+    <var>target</var> encoding. <code>String#encode!</code> operates in the
+    same manner, but transcodes the receiver in-place.
+
+    <p>By default, <var>source</var> is the receiver’s current encoding, and
+    <var>target</var> is the <a href=#internal>default internal</a> encoding.
+    When called with one encoding argument, this becomes the <var>target</var>
+    encoding. When called with two encoding arguments, the first is the
+    <var>target</var>, the second is the <var>source</var>. This last form is
+    mainly useful when the <code>String</code> is tagged <a
+      href=#ascii-8bit><code>ASCII-8BIT</code></a>: it associates the
+    <code>String</code> with <var>source</var>, then transcodes from
+    <var>source</var> to <var>target</var>.
+
+    <p>If a character in the <code>String</code> does not exist in the
+    <var>target</var> encoding, or the <code>String</code> contains bytes
+    invalid in its current encoding, an exception is raised.  This behaviour
+    can be changed by supplying an <var>options</var> <code>Hash</code> as the
+    final argument, whose form is described in the table that follows.</p>
+
+    <table id=options-hash class=border>
+      <caption>The keys and values that are recognised in the
+        <var>options</var> <code>Hash</code> accepted by
+        <code>String#encode</code> and <code>String#encode!</code>. The
+        <i>Key</i> column names a key of the <code>Hash</code>, and the
+        <i>Values</i> column specifies its possible values.
+      <thead>
+        <tr>
+          <th>Key
+          <th>Values
+          <th>Description
+      <tbody class=zebra>
+        <tr>
+          <td><code>:cr_newline</code>
+          <td><code>true</code> or <code>false</code>
+            <td>Whether to convert <code>\n</code> to <code>\r</code>.  
+        <tr>
+          <td><code>:crlf_newline</code>
+          <td><code>true</code> or <code>false</code>
+          <td>Whether to convert <code>\n</code> to <code>\r\n</code>.  
+        <tr>
+          <td><code>:invalid</code>
+          <td><code>:replace</code> or <code>nil</code>
+          <td>A value of <code>:replace</code> causes characters invalid in
+            the source encoding to be substituted for the replacement string.
+            A value of <code>nil</code>, which is the default, causes an
+            <code>Encoding::InvalidByteSequenceError</code> exception to be
+            raised in this scenario.
+        <tr>
+          <td><code>:replace</code>
+          <td><code>String</code>
+          <td>The <dfn>replacement string</dfn> used by the
+            <code>:invalid</code> or <code>:undef</code> options. By default,
+            it is <code class=u>U+FFFD</code> for Unicode encodings and
+            <code>?</code> for others.
+        <tr>
+          <td><code>:undef</code>
+          <td><code>:replace</code> or <code>nil</code>
+          <td>A value of <code>:replace</code> causes characters invalid in
+            the destination encoding to be substituted for the replacement
+            string. A value of <code>nil</code>, which is the default, causes
+            an <code>Encoding::UndefinedConversionError</code> exception to be
+            raised in this scenario.
+        <tr>
+          <td><code>:universal_newline</code>
+          <td><code>true</code> or <code>false</code>
+          <td>When true, <code>\r\n</code> and <code>\r</code> are converted
+            to <code>\n</code>.
+        <tr>
+          <td>:xml
+          <td><code>:text</code> or <code>:attr</code>
+          <td>Replaces <code>&amp;</code> with <code>&amp;amp;</code>,
+            <code>&lt;</code> with <code>&amp;lt;</code>, <code>&gt;</code>
+            with <code>&amp;gt;</code>, and undefined characters with a
+            hexadecimal entity of the form
+            <code>&amp;#x<var>hex</var>;</code>, where <var>hex</var> is a
+            sequence of hexadecimal digits. In addition, when a value
+            of <code>:attr</code> is supplied, <code>"</code> is replaced with
+            <code>&amp;quot;</code>.
+    </table>
+
+    <section>
+      <h1 id=converter><code>Encoding::Converter</code></h1>
+      
+      <p>The <code>Encoding::Converter</code> class provides additional
+      control over the transcoding process.
+      <code>Encoding::Converter.new</code> takes a source encoding as its
+      first argument, and a destination encoding as its second. Both may be
+      given as encoding names or <code>Encoding</code> objects. An <a
+        href=#options-hash>options <code>Hash</code></a> may be supplied as a
+      third argument.</p>
+
+      <section>
+        <h1 id=conversion-path>Conversion Path</h1>
+
+        <p>Text is transcoded along a <dfn>conversion path</dfn>. Each step
+        involves a source encoding and a destination encoding. In the simple
+        case, the conversion path will have only one step: from the given
+        source encoding to the given destination encoding. However, more
+        complex transcoding requires intermediate stages, e.g. to transcode
+        Big5 into ISO-8859-9, we must first transcode to UTF-8: Big5 to UTF-8,
+        then UTF-8 to ISO-8859-9. The source and destination encodings that
+        are currently in use are returned by
+        <code>Encoding::Converter#source_encoding</code> and
+        <code>Encoding::Converter#destination_encoding</code>, respectively,
+        as <code>Encoding</code> objects.</p>
+
+        <p>The various newline conversion options and those which perform
+        escaping are termed <dfn title='transcoding
+          decorators'>decorators</dfn>, and also feature in the conversion
+        path. If the destination encoding is ASCII-compatible, they appear as
+        the final steps, i.e. after any encoding pairs. Otherwise, they appear
+        before the final step.
+
+        <p><code>Encoding::Converter#convpath</code> returns an
+        <code>Array</code> of steps in the conversion path. Steps which convert
+        between two encodings are represented as an <code>Array</code> of the
+        respective <code>Encoding</code> objects. A steps which applies a
+        decorator appears as a <code>String</code> naming the decorator.
+
+        <p><code>Encoding::Converter.new</code> may be invoked with an
+        <code>Array</code> in this form as an argument. The instantiated
+        converter then uses this conversion path rather than inferring one
+        from its arguments.
+      </section>
+
+      <section>
+        <h1 id=convert>Piecemeal Conversion</h1>
+
+        <p>An <code>Encoding::Converter</code> object can perform piecemeal
+        transcoding, by repeatedly calling
+        <code>Encoding::Converter#convert</code> with the next fragment of
+        input. The fragment is transcoded and returned, tagged with the
+        destination encoding. However, because each fragment is always assumed
+        to be part of a larger source, it may legitimately end mid-character,
+        i.e.  prior to a character boundary.  These trailing bytes are
+        buffered internally, and the successfully transcoded characters are
+        returned. Then, when <code>#convert</code> is called next, its
+        argument is assumed to supply the remaining bytes. If an unambiguously
+        invalid byte sequence is encountered, an exception is raised.
+
+        <p>Conceptually, we can explain this process as follows. When an
+        <code>Encoding::Converter</code> instance is created, an empty
+        <var>pending</var> buffer is created. Each time it is called,
+        <code>#convert</code> initialises two empty buffers of its own:
+        <var>source</var> and <var>destination</var>. It copies its argument
+        into <var>source</var>, which it then processes byte-by-byte:
+
+        <ol>
+          <li>The byte is appended to <var>pending</var> and removed
+          from <var>source</var>. The next action depends on the contents of
+          <var>pending</var>:
+            <ol>
+              <li>If it constitutes a valid character in the destination
+              encoding, it is transcoded and written to
+              <var>destination</var>. <var>pending</var> is emptied.
+              <li>If it constitutes a byte sequence that could be valid in the
+              source encoding, but currently isn’t, it is left in
+              <var>pending</var> in the hope that the next call to
+              <code>#convert</code> will supply the remaining bytes.
+              <li>If it is invalid in the source encoding, regardless of
+              subsequent input, an
+              <code>Encoding::InvalidByteSequenceError</code> exception is
+              raised.
+              <li>If its valid in the source encoding, but a corresponding
+              character does not exist in the destination encoding, an
+              <code>Encoding::UndefinedConversionError</code> exception is
+              raised.
+          </ol>
+          <li>When the source buffer is empty, the destination buffer is
+          returned, then emptied.
+        </ol>
+
+        <p>Thus, after <code>#convert</code> returns <var>destination</var>,
+        <var>pending</var> may not be empty. An implication is that a call to
+        <code>#convert</code> may raise an exception because, when combined
+        with the contents of <var>pending</var>, its argument was invalid.
+        i.e. an exception may be raised even if the argument is in itself
+        valid.  Therefore, when there is no more text to transcode,
+        <code>Encoding::Converter#finish</code> should be called to signal
+        that the contents of <var>pending</var> should be transcoded and
+        returned. If <var>pending</var> isn’t empty when <code>#finish</code>
+        is called, this normally results in one of the aforementioned
+        exceptions being raised, because if its contents constitute a valid
+        character, it would have already been returned by
+        <code>#convert</code>. However, if the destination encoding is a
+        stateful encoding such as ISO/IEC 2022, there may legitimately be
+        bytes left in <var>pending</var>, which <code>#finish</code> flushes
+        out. The lesson is that <code>#finish</code> should always be called
+        when there is no more text to transcode.
+      </section>
+
+      <section>
+        <h1 id=primitive-convert>Primitive Conversion</h1>
+
+        <p><code>Encoding::Converter#convert</code> is built atop
+        <code>Encoding::Converter#primitive_convert</code>, which provides
+        even more control over the process. Unlike <code>#convert</code>, the
+        source and destination buffers must be specified explicitly: the
+        former as the first argument, the latter as the second. Both should be
+        <code>String</code>s holding, respectively, the text to be transcoded,
+        and the <code>String</code> in which to store the result. If the
+        source buffer is an empty <code>String</code> it may be given as
+        <code>nil</code>, instead. Neither buffer can be frozen, as they are,
+        respectively, depleted and replenished in the course of the operation.
+
+        <p>Bytes are written from the source buffer to the destination buffer
+        via the pending buffer, as with <code>#convert</code>. However, this
+        time instead of exceptions being raised for erroneous input, a
+        <code>Symbol</code> is returned, as explained subsequently, which
+        describes the problem. Thus, the programmer may elect to resolve the
+        error before calling <code>#primitive_convert</code> again to resume
+        the conversion. Due to the use of the pending buffer,
+        <code>Encoding::Converter#finish</code> should still be used, as
+        described previously.
+        
+        <p>By default, the destination buffer is appended to. If an
+        <code>Integer</code> offset is given as the third argument to
+        <code>#primitive_convert</code>, it specifies the byte index after which
+        the transcoded text should be written. An <code>ArgumentError</code> is
+        raised if the offset is given and greater than the byte size of the
+        destination buffer. If this argument is specified as <code>nil</code>,
+        the default behaviour is followed. 
+        
+        <p>An optional fourth argument, given as an <code>Integer</code>,
+        specifies the maximum size in bytes of the destination buffer; by
+        default this value is <code>nil</code> which denotes an absence of a
+        limit. If this limit is non-<code>nil</code> and the size of the
+        destination buffer reaches it, transcoding will stop and
+        <code>:destination_buffer_full</code> will be returned.
+
+        <p>An optional fifth argument specifies one or both of the following
+        options as a <code>Hash</code> or a bitwise OR of the corresponding
+        constants:
+
+        <dl>
+          <dt><code>after_output: true</code> / <code>Encoding::Converter::AFTER_OUTPUT</code>
+          <dd>After writing a character to the destination buffer, stop, and
+          return <code>:after_output</code>.
+          <dt><code>partial_input: true</code> / <code>Encoding::Converter::PARTIAL_INPUT</code>
+          <dd>The source buffer is known to be incomplete, i.e. it ends outside
+          of a character boundary. If this option is given and the last byte(s)
+          of the source buffer don’t correspond to a character in the destination
+          encoding, <code>:source_buffer_empty</code> is returned. This
+          indicates that the remainder of the source text should be assigned to
+          the source buffer, and <code>#primitive_convert</code> called again.
+        </dl>
+
+        <p>The return value is one of the following <code>Symbol</code>s:
+
+        <dl>
+          <dt><code>:invalid_byte_sequence</code>
+          <dd>The source buffer contains a byte sequence invalid in the
+          destination encoding, regardless of any following bytes. Equivalent
+          to the <code>Encoding::InvalidByteSequenceError</code> exception
+          being raised.
+          <dt><code>:incomplete_input</code>
+          <dd>The source buffer ends prematurely, presumably prior to a
+          character boundary, but is potentially valid if additional input is
+          supplied. Nevertheless, this state is regarded as exceptional,
+          equivalent to an <code>Encoding::InvalidByteSequenceError</code>
+          being raised, because the <code>:partial_input</code> option is
+          <code>false</code>. If, as expected, no more input is supplied, the
+          result will end with an invalid byte sequence. Conversely, if
+          <code>:partial_input</code> was <code>true</code>, the unexceptional
+          <code>:source_buffer_empty</code> <code>Symbol</code> would be
+          returned instead.
+          <dt><code>:undefined_conversion</code>
+          <dd>A character has been encountered in the source buffer which,
+          although legal in the source encoding, has no equivalent in the
+          destination encoding. Equivalent to an
+          <code>Encoding::UndefinedConversionError</code> exception being
+          raised.
+          <dt><code>:after_output</code>
+          <dd>If the <code>:after_output</code> option is given, after each
+          character is converted this <code>Symbol</code> is returned.
+          <dt><code>:destination_buffer_full</code>
+          <dd>If a non-<code>nil</code> value has been given for the fourth
+          argument, this <code>Symbol</code> indicates that the destination
+          buffer has reached the given limit.
+          <dt><code>:source_buffer_empty</code>
+          <dd>The source buffer ends prematurely, presumably prior to a
+          character boundary, and the <code>:partial_input</code> option has
+          been given. The source buffer should be replenished and transcoding
+          resumed.
+          <dt><code>:finished</code>
+          <dd>Conversion is finished, either naturally or because
+          <code>Encoding::Converter#finish</code> has been called.
+        </dl>
+      </section>
+
+      <section>
+        <h1 id=error-context>Error Context</h1>
+        
+        <p>When an error occurs during transcoding, it is often necessary to
+        understand its context so as to recover. The exceptions raised by
+        <code>#convert</code>, are augmented with accessors for gleaning this
+        information. Additionally,
+        <code>Encoding::Converter#primitive_errinfo</code> provides detailed
+        information about the last error in the form of an <code>Array</code>
+        with the following elements, in this order:
+
+        <ol>
+          <li>The <code>Symbol</code> that <code>#primitive_convert</code>
+          would have returned in this situation, even if <code>#convert</code>
+          was the actual method used. The six possible values were
+          described above. If this element is <code>:after_output</code>,
+          <code>:destination_buffer_full</code>,
+          <code>:source_buffer_empty</code>, or <code>:finished</code>, all
+          remaining elements are <code>nil</code>.
+          <li>The source encoding as a <code>String</code>. This may not be
+          the given source encoding if the conversion path has multiple steps.
+          Equivalent to the <code>#source_encoding_name</code> methods of
+          <code>Encoding::UndefinedConversionError</code> and
+          <code>Encoding::InvalidByteSequenceError</code>.
+          <li>The destination encoding as a <code>String</code>. This may not be
+          the given destination encoding if the conversion path has multiple steps.
+          Equivalent to the <code>#destination_encoding_name</code> methods of
+          <code>Encoding::UndefinedConversionError</code> and
+          <code>Encoding::InvalidByteSequenceError</code>.
+          <li>The problematic bytes as a <code>String</code>: the bytes prior
+          to the invalid byte for <code>:invalid_byte_sequence</code>, the errant character
+          for <code>:undefined_conversion</code>, and the bytes read since the
+          last character for <code>:incomplete_input</code>. Equivalent to
+          <code>Encoding::UndefinedConversionError#error_char</code> and
+          <code>Encoding::InvalidByteSequenceError#error_bytes</code>.
+          <li>For <code>:invalid_byte_sequence</code>, this element holds the
+          byte that rendered the sequence invalid. i.e. the preceding element
+          held the bytes which could legitimately form a valid sequence, and
+          this element holds the byte which invalidated it. This is equivalent
+          to <code>Encoding::InvalidByteSequenceError#readagain_bytes</code>. For
+          <code>:undefined_conversion</code> and
+          <code>:incomplete_input</code>, this element is <code>""</code>.
+        </ol>
+
+        <p>So, error context can be ascertained, <i>ex post facto</i>, by
+        using <code>#convert</code>, then rescuing and examining the
+        exceptions it raises, or by using either transcoding method and
+        inspecting elements of the <code>#primitive_errinfo</code>
+        <code>Array</code>. A third approach is to use
+        <code>#last_error</code>, which returns the exception
+        <code>#convert</code> would have raised, or otherwise
+        <code>nil</code>. This saves one from having to rescue exceptions or
+        splice an <code>Array</code>, if his interest is purely the
+        exceptional situations. It also suggests a useful idiom for dealing
+        with errors: it is true the error indicates malformed input;
+        otherwise, it relates to the configuration of the transcoder.
+
+        <p>Recall, however, that the states <code>:incomplete_input</code> and
+        <code>:invalid_byte_sequence</code> both indicate that an invalid byte
+        sequence has been discovered-the former is simply optimistic that the
+        next input will correct it-so both have
+        <code>Encoding::InvalidByteSequenceError</code> as their exception.
+        They can be distinguished with the
+        <code>Encoding::InvalidByteSequenceError#incomplete_input?</code>
+        predicate, which only returns <code>true</code> in the former case.
+      </section>
+
+      <section>
+        <h1 id=invalid-byte-sequence-recovery>Recovery from an Invalid Byte Sequence</h1>
+
+        <p>When an invalid byte sequence is encountered, the transcoder saves
+        two sets of bytes: the <i>error bytes</i> and the <i>read-again
+          bytes</i>. The former are always discarded: they are, independently
+        of context, invalid in the destination encoding. The latter are the
+        buffered bytes that followed. If this error is simply ignored, and the
+        call to <code>#primitive_convert</code> repeated, the read-again bytes
+        are returned to the source buffer, and considered again. If this new
+        byte sequence is valid in the destination encoding, it will be
+        transcoded as normal. Otherwise, this process will be repeated. The
+        outcome is almost certainly undesirable. Invalid byte sequences are
+        split, and some of their constituent bytes are interpreted as
+        characters in their own right, and appended to the destination
+        buffer.</p>
+
+        <figure id=ignoring-invalid-byte-sequence.rb>
+          <figcaption>Ignoring an invalid byte sequence error is likely to
+          introduce garbage characters into the result.
+        </figure>
+
+        <p>The safer option is to drop the read-again bytes, too, with
+        <code>Encoding::Converter#putback</code>. Optionally, the maximum
+        number of bytes to put back can be given as an <code>Integer</code>
+        argument. To contrast the two approaches, juxtapose the previous
+        example with the following, taking care to note the final contents of
+        <var>dest</var>.</p>
+
+        <figure id=putback-invalid-byte-sequence.rb>
+          <figcaption>Invalid byte sequence errors can be recovered from by
+          putting back the read-again bytes.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=undefined-conversion-recover>Recovery from an Undefined Conversion Error</h1>
+
+        <p>Again, this error can be ignored by simply repeating the call to
+        <code>#primitive_convert</code>. The unknown character will be
+        dropped, and transcoding will continue. A more refined approach is to
+        substitute the unknown character for another: either a constant, such
+        as <code>"?"</code>, or an approximation determined out-of-band. To
+        support both scenarios, <code>Encoding::Converter#insert_output</code>
+        accepts an arbitrary <code>String</code> argument, which it appends to
+        the source buffer on the next call to <code>#primitive_convert</code>.
+        Accordingly, the <code>String</code> will be transcoded into the
+        target encoding and appended to the destination buffer.</p>
+
+        <figure id=insert-output.rb>
+          <figcaption>Arbitrary text can be substituted for undefined
+          characters.
+        </figure>
+      </section>
+    </section>
+  </section>
+
+  <footer>
+    <h1>Footnotes</h1>
+    
+    <ol>
+      <li id=fn-encoding-dfn>In Unicode terminology, this encompasses both
+      <abbr title='Character Encoding Scheme'>CES</abbr>s and <abbr
+        title='Character Encoding Form'>CEF</abbr>s.
+      <li id=fn-coding-contain>That the coding comment need only
+      <em>contain</em> <code>coding</code> allow Ruby to recognise Vim and
+      Emacs modelines which declare a file’s encoding. For example, <code>#
+        vim: set fileencoding=utf-8 :</code> informs both Vim and Ruby that
+      the file is encoded in UTF-8.
+      <li id=fn-external-encoding-algo>Derived mainly from <a
+        href=/references#refHARADA09 class=ref><cite>The Design and
+          Implementation of Ruby M17N</cite></a>, Yui Naruse, Yoko Harada
+      trans.
+    </ol>
+  </footer>
+</article>

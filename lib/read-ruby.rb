@@ -3,7 +3,8 @@
 module ReadRuby
   
   CHAPTERS = %w{programs variables messages methods objects classes modules
-                closures flow text enumerables io files punctuation keywords references}
+                closures flow encoding text enumerables io files punctuation 
+                keywords references}
   OUT_DIR = Pathname 'out'
   PRISTINE_DIR = Pathname 'www'
   TEMPLATE_EXT = '.mustache'

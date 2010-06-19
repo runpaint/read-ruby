@@ -586,6 +586,113 @@
   </section>
 
   <section>
+    <h1 id=string>Encoding String</h1>
+
+    <p><code>IO</code> methods that expect encoding names as arguments, often
+    accept <dfn>encoding string</dfn>s, which allow one or both of the <a
+      href=/encoding#external>external encoding</a> and <a
+      href=/encoding#internal>internal encoding</a> to be specified at once in
+    one of the forms below.</p>
+
+    <table class=border>
+      <caption>
+        <details>
+          <summary>
+            The forms the value of the encoding string may take.
+          </summary>
+
+          <p>Both <var>external</var> and <var>internal</var> are names of
+          encodings. The <i>Inferred from BOM</i> column indicates that the
+          external encoding is set to that specified by a <abbr
+            title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to the
+          named encoding.
+        </details>
+      </caption>
+      <thead>  
+        <tr>
+          <th>Form
+          <th colspan=2>External Encoding
+          <th>Internal Encoding    
+        <tr>
+          <th>&nbsp;
+          <th>Value
+          <th>Inferred from BOM?    
+          <th>Value    
+      <tbody>        
+        <tr class=odd>
+          <td><code><var>external</var></code>
+          <td rowspan=2><var>external</var>
+          <td rowspan=2>✖
+          <td rowspan=2><code>Encoding.default_internal</code>
+        <tr class=odd>
+          <td><code><var>external</var>:-</code>
+        <tr>
+          <td><code>BOM|<var>external</var></code>
+          <td rowspan=2><var>external</var>
+          <td rowspan=2>✔
+          <td rowspan=2><code>Encoding.default_internal</code>
+        <tr>
+          <td><code>BOM|<var>external</var>:-</code>
+        <tr class=odd>
+          <td><code><var>external</var>:<var>internal</var></code>
+          <td><var>external</var>
+          <td>✖
+          <td><var>internal</var>
+        <tr>
+          <td><code>BOM|<var>external</var>:<var>internal</var></code>
+          <td><var>external</var>
+          <td>✔
+          <td><var>internal</var>
+        <tr class=odd>
+          <td><code>:<var>internal</var></code>
+          <td>Default external
+          <td>✖
+          <td><var>internal</var>
+    </table>
+    
+    <p>The <code>BOM|</code> prefix deserves a fuller explanation. The
+    UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE encodings support
+    the presence of a byte-order mark: a special character occuring at
+    the start of the stream which indicates the byte order of the
+    encoding. This can be used to distinguish between the big-endian and
+    little-endian forms of UTF-16, for example. Prefixing one of the
+    aforementioned encoding names with the case-insensitive string
+    <code>BOM|</code> has the following result:
+
+    <ul>
+      <li>If no BOM is present, the named encoding is used.
+      <li>If a BOM is present, the encoding that it specifies is used
+      instead of the named encoding, and the BOM is stripped from the
+      data.
+    </ul>
+
+    <table class=border>
+      <caption>Encodings that support byte-order marks, and the content of
+        the corresponding BOM.</caption>
+      <thead>  
+        <tr>
+          <th>Encoding
+          <th>Byte-Order Mark
+      <tbody class=zebra>        
+        <tr>
+          <td>UTF-8
+          <td><code>\xEF\xBB\xBF</code>  
+        <tr>
+          <td>UTF-16BE
+          <td><code>\xFE\xFF</code>  
+        <tr>
+          <td>UTF-16LE
+          <td><code>\xFF\xFE</code>  
+        <tr>
+          <td>UTF-32BE
+          <td><code>\0\0\xFE\xFF</code>  
+        <tr>
+          <td>UTF-32LE
+          <td><code>\xFF\xFE\0\0</code>  
+      </table>
+  </section>
+
+  <section>
     <h1 id=init>Initializing an <code>I/O</code> Stream</h1>
 
     <p>An <code>IO</code> instance objectifies a given file descriptor. It may
@@ -914,253 +1021,6 @@
     <!-- 'Writing' section for symmetry? Show implementation of File.write? -->
 
     <!-- Iteration; or, cover this in terms of IO objects in general?  -->
-
-  <section>
-    <h1 id=encoding>Encoding</h1>
-
-    <section>
-      <h1 id=external-encoding>External Encoding</h1>
-
-      <p>The encoding of the data in an <code>IO</code> stream is known by Ruby
-      as the object’s <dfn>external encoding</dfn>. Every <code>IO</code> object
-      has an external encoding, so data read from it will be tagged with that
-      encoding.  Ruby infers the default external encoding with the following
-      steps<a href=#fn-external-encoding-algo>†</a>, stopping as soon as she
-      finds a usable encoding:
-      
-      <dl>
-        <dt><code>Encoding.default_external=</code>
-        <dd>If an <code>Encoding</code> object, or name, been assigned to
-        <code>Encoding.default_external=</code>, that is the default external
-        encoding.
-        <dt>Interpreter’s <code>-E</code> switch
-        <dd>If the Ruby interpreter was invoked with an
-        <code>-E<var>encoding</var></code> option, <var>encoding</var> is the
-        default external encoding.
-        <dt>Locale encoding
-        <dd>Use the encoding derived from the user’s environment, as explained
-        below.
-      </dl>  
-    
-      <section>
-        <h1 id=locale-encoding>Locale Encoding</h1>
-        
-        <p>The <dfn>locale encoding</dfn> is an encoding inferred from the
-        user’s environment that Ruby supports. It is determined in two distinct
-        stages, the first of which is to interrogate the user’s environment for
-        his preferred encoding:
-        
-        <ol>
-          <li>Inspect relevant environment variables, e.g.
-          <code>LANG</code>, <code>LC_CTYPE</code>, or <code>LC_ALL</code>
-          <li>Or, if the platform is Windows or Cygwin, by invoking C’s
-          <code>nl_langinfo_codeset()</code> or Windows’ <a
-            href=//msdn.microsoft.com/en-us/library/ms683162(VS.85).aspx><code>GetConsoleCP()</code></a>
-          function.
-        </ol>
-
-        <p>The result of this search, or <code>nil</code> if it failed, is the
-        <dfn>locale charmap</dfn> encoding, and is assigned to
-        <code>Encoding.locale_charmap</code>. Ruby must now correlate this
-        encoding with the encodings she supports to determine the <dfn>locale
-          encoding</dfn>:
-
-        <ol>
-          <li>If the locale charmap encoding is known to Ruby-that
-          is, <code>Encoding.find(Encoding.locale_charmap)</code> returns an
-          <code>Encoding</code> object-that becomes the locale encoding.
-          <li>If the locale charmap encoding couldn’t be determined, the locale
-          encoding is US-ASCII.
-          <li>Otherwise, the locale encoding is ASCII-8BIT.
-        </ol>
-      </section>
-
-      <!--
-      $ LANG=braile ruby -e 'p [Encoding.locale_charmap, Encoding.find("locale")]'
-      ["ANSI_X3.4-1968", #<Encoding:US-ASCII>]
-      -->
-
-      <p>By default, as the name suggests, all <code>IO</code> objects have the
-      default external encoding as their external encoding. However, this may
-      also be set on a per-stream basis by specifying an external encoding when
-      <a href=#open>opening</a> an I/O stream, or with
-      <code>IO#set_encoding(<var>encoding</var>)</code>, where
-      <var>encoding</var> is an encoding name or <code>Encoding</code> object.
-      The external encoding of a stream may be queried with
-      <code>IO#external_encoding</code>, which returns the corresponding
-      <code>Encoding</code> object. Note, however, that if the stream is in
-      write-only mode, and wasn’t explicitly assigned an external encoding, this
-      method returns <code>nil</code>.
-    </section>
-
-    <section>
-      <h1 id=internal-encoding>Internal Encoding</h1>
-
-      <p>Optionally, an <code>IO</code> object may also be associated with an
-      <dfn>internal encoding</dfn>. This is the encoding that the programmer
-      wishes to use with the data in a stream. The default value of an
-      <code>IO</code> object’s internal encoding is equal to the <dfn>default
-        internal encoding</dfn> (<code>Encoding.default_internal</code>), which
-      is determined as follows:
-
-      <dl>
-        <dt><code>Encoding.default_internal=</code>
-        <dd>If an <code>Encoding</code> object, or name, been assigned to
-        <code>Encoding.default_internal=</code>, that is the default internal
-        encoding.
-        <dt>Interpreter’s <code>-E</code> switch
-        <dd>If the Ruby interpreter was invoked with an
-        <code>-E<var>external</var>:<var>internal</var></code> or
-        <code>-E:<var>internal</var></code> option, where both
-        <var>external</var> and <var>internal</var> are valid encoding names,
-        the default internal encoding is <var>internal</var>.
-        <dt>Interpreter’s <code>-U</code> switch
-        <dd>If the interpreter was invoked with the <code>-U</code> switch, the
-        default internal encoding is UTF-8
-      </dl>  
-
-      <p>If all the above steps failed, the default internal encoding is
-      <code>nil</code>. Therefore, unlike the default external encoding which is
-      inferred automatically from one’s locale, the default internal encoding is
-      <code>nil</code> unless set explicitly.
-
-      <p>The internal encoding of an <code>IO</code> may be changed from this
-      default on a per-stream basis by specifying an internal encoding when <a
-        href=#open>opening</a> the stream, or with
-      <code>IO#set_encoding(<var>external</var>, <var>internal</var>)</code>,
-      where both <var>external</var> and <var>internal</var> are encoding names
-      or <code>Encoding</code> objects. Alternatively,
-      <code>IO#set_encoding</code> may be given a <code>String</code> of the
-      form <code><var>external</var>:<var>internal</var></code>. 
-
-      <p>An internal encoding of <code>nil</code> means that the programmer does
-      not express a preference for how the data he reads and writes via I/O is
-      encoded.  Accordingly, Ruby tags the data with the stream’s external
-      encoding, and gets out of the way.  This, too, is the situation if the
-      stream’s external encoding is equal to its internal encoding: the data
-      is already encoded how the programmer requires. 
-      
-      <p>The internal encoding is relevant when it is both set-that is, has a
-      non-<code>nil</code> value-and differs from the external encoding. To
-      honour the internal encoding, Ruby transcodes data read from a stream from
-      the external to the internal encoding, and transcodes data written to the
-      stream from the internal to the external encoding.
-
-      <p>The transcoding works exactly the same as <a
-        href=/text#string-transcode><code>String#encode</code></a>, so the <a
-        href=#encode-options-hash><code>#encode</code> options
-        <code>Hash</code></a> may be merged with the <a
-        href=#options-hash><code>IO</code></a> wherever the latter is
-      accepted. For example, it may be supplied as the final argument of <a
-        href=#init><code>IO.new</code></a> or <code>IO#set_encoding</code>. 
-    </section>
-
-    <section>
-      <h1 id=encoding-string>Encoding String</h1>
-
-      <p>Methods that expect encoding names as arguments, often accept
-      <dfn>encoding string</dfn>s, which allow one or both of the external
-      encoding and internal encoding to be specified at once in one of the
-      forms below.</p>
-
-      <table class=border>
-        <caption>
-          <details>
-            <summary>
-              The forms the value of the encoding string may take.
-            </summary>
-
-            <p>Both <var>external</var> and <var>internal</var> are names of
-            encodings. The <i>Inferred from BOM</i> column indicates that the
-            external encoding is set to that specified by a <abbr
-              title='Byte-Order Mark'>BOM</abbr>, if present, otherwise to the
-            named encoding.
-          </details>
-        </caption>
-        <thead>  
-          <tr>
-            <th>Form
-            <th colspan=2>External Encoding
-            <th>Internal Encoding    
-          <tr>
-            <th>&nbsp;
-            <th>Value
-            <th>Inferred from BOM?    
-            <th>Value    
-        <tbody>        
-          <tr class=odd>
-            <td><code><var>external</var></code>
-            <td rowspan=2><var>external</var>
-            <td rowspan=2>✖
-            <td rowspan=2><code>Encoding.default_internal</code>
-          <tr class=odd>
-            <td><code><var>external</var>:-</code>
-          <tr>
-            <td><code>BOM|<var>external</var></code>
-            <td rowspan=2><var>external</var>
-            <td rowspan=2>✔
-            <td rowspan=2><code>Encoding.default_internal</code>
-          <tr>
-            <td><code>BOM|<var>external</var>:-</code>
-          <tr class=odd>
-            <td><code><var>external</var>:<var>internal</var></code>
-            <td><var>external</var>
-            <td>✖
-            <td><var>internal</var>
-          <tr>
-            <td><code>BOM|<var>external</var>:<var>internal</var></code>
-            <td><var>external</var>
-            <td>✔
-            <td><var>internal</var>
-          <tr class=odd>
-            <td><code>:<var>internal</var></code>
-            <td>Default external
-            <td>✖
-            <td><var>internal</var>
-      </table>
-      
-      <p>The <code>BOM|</code> prefix deserves a fuller explanation. The
-      UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE encodings support
-      the presence of a byte-order mark: a special character occuring at
-      the start of the stream which indicates the byte order of the
-      encoding. This can be used to distinguish between the big-endian and
-      little-endian forms of UTF-16, for example. Prefixing one of the
-      aforementioned encoding names with the case-insensitive string
-      <code>BOM|</code> has the following result:
-
-      <ul>
-        <li>If no BOM is present, the named encoding is used.
-        <li>If a BOM is present, the encoding that it specifies is used
-        instead of the named encoding, and the BOM is stripped from the
-        data.
-      </ul>
-
-      <table class=border>
-        <caption>Encodings that support byte-order marks, and the content of
-          the corresponding BOM.</caption>
-        <thead>  
-          <tr>
-            <th>Encoding
-            <th>Byte-Order Mark
-        <tbody class=zebra>        
-          <tr>
-            <td>UTF-8
-            <td><code>\xEF\xBB\xBF</code>  
-          <tr>
-            <td>UTF-16BE
-            <td><code>\xFE\xFF</code>  
-          <tr>
-            <td>UTF-16LE
-            <td><code>\xFF\xFE</code>  
-          <tr>
-            <td>UTF-32BE
-            <td><code>\0\0\xFE\xFF</code>  
-          <tr>
-            <td>UTF-32LE
-            <td><code>\xFF\xFE\0\0</code>  
-        </table>
-    </section>
-  </section>
 
   <section>
     <h1 id=buffering>Buffering</h1>
