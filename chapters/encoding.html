@@ -3,12 +3,41 @@
 
   <p>An encoding is a mapping between byte sequences and characters<a
     href=#fn-encoding-dfn>†</a>. Each program source file,
-  <code>String</code>, <code>Symbol</code>, <code>Regexp</code>, and
-  <code>IO</code> object is, relatively independently, associated with its own
-  encoding. Therefore, a program may consist of multiple source files, each
-  associated with a different encoding, or concatenate two
-  <code>String</code>s, one of which is encoded in <i>Windows-1250</i> and the
-  other in <i>UTF-8</i>.</p>
+  <code>String</code>, <code>Symbol</code>, <code>Regexp</code>,
+  <code>File</code>, and <code>IO</code> object is, relatively independently,
+  associated with its own encoding. This association is simply a statement,
+  that has either been made explicitly about a specific object, or derived
+  from a corresponding default encoding. It may even be spurious. 
+
+  <p>The encoding associated with a source file-the <a href=#source><i>source
+      encoding</i></a>-is by default US-ASCII. If a source file contains
+  characters outside of this encoding, it must specify which one, otherwise
+  Ruby refuses to load it. 
+  
+  <p>The encoding associated with <a
+    href=/text#string-encoding><code>String</code></a>s, <a
+    href=/text#symbol-encoding><code>Symbol</code></a>s, and <a
+    href=/text#regexp-encoding><code>Regexp</code></a>s, is by default the
+  source encoding of the file in which they are contained. However, if their
+  literals contain certain character escapes, this is changed implicitly. As
+  with source files, this association can be overridden on a per-object basis. 
+  
+  <p>An <code>IO</code> or <code>File</code> object represents an external
+  data stream, whose encoding is termed its <a href=#external><i>external
+      encoding</i></a>. Data read from a stream is associated with this
+  encoding. Unless set explicitly, it defaults to an encoding inferred from
+  the user’s environment. Both types of object <em>may</em> also be associated
+  with an <a href=#internal><i>internal encoding</i></a>: that which the
+  programmer desires it to have. If set explicitly, data read from the stream
+  is transcoded to the internal encoding; while data written to it is
+  transcoded to the external encoding. The internal encoding is never inferred
+  or derived, so by default no transcoding occurs.
+
+  <p><a href=#transcoding><i>Transcoding</i></a> is quite distinct from mere
+  <i>association</i>. Whereas the latter changed an attribute of an object,
+  the former converts its contents: translating its underlying bytes to their
+  equivalent representation in another encoding. This chapter discusses both
+  topics, but it is essential to be cognizant of their difference.</p>
 
   <section>
     <h1 id=class>The <code>Encoding</code> Class</h1>
