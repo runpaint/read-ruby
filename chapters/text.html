@@ -788,16 +788,16 @@
       <!-- String#bytes / String#dump to inspect encoding -->
 
       <section>
-        <h1 id=string-encoding-tag>Tagging</h1>
+        <h1 id=string-associate>Forcing an Association</h1>
 
         <p>The encoding associated with a <code>String</code> may be changed
         independently of its contents. This is necessary if the contents are
-        valid in one encoding, but associated, or <dfn>tagged</dfn>, with
-        another. Transcoding would be inappropriate because it would alter the
-        underlying bytes, which are already perfectly valid. The solution is
-        the destructive method <code>String#force_encoding</code>, which tags
-        its receiver with the encoding given as an argument. This operation
-        will always succeed, even if the <code>String</code>’s contents are <a
+        valid in one encoding, but associated with another. Transcoding would
+        be inappropriate because it would alter the underlying bytes, which
+        are already perfectly valid. The solution is the destructive method
+        <code>String#force_encoding</code>, which associates its receiver with
+        the encoding given as an argument. This operation will always succeed,
+        even if the <code>String</code>’s contents are <a
           href=#valid-encoding>invalid</a> in the new encoding.
 
         <p>Yui Naruse, a member of the Ruby core team, cautions against the
@@ -817,14 +817,14 @@
 
         <p>A <code>String</code>’s encoding is <dfn title='valid
           encoding'>valid</dfn> if its constituent bytes are properly formed
-        according to the encoding it is tagged with. This check makes no
+        according to the encoding it is associated with. This check makes no
         claims as to whether the characters in the <code>String</code> exist
         in the encoding, for it inspects syntax rather than semantics.
 
         <p>In general, if you create a <code>String</code> via a literal, or
         consume a <code>String</code> as input that is validly encoded,
         manipulating it as a sequence of characters will ensure its encoding
-        remains valid.  However, tagging a <code>String</code> with an
+        remains valid.  However, associating a <code>String</code> with an
         improper encoding, treating it as <a href=#byte-arrays>byte array</a>,
         or consuming garbage input, may all result in an invalid encoding. The
         <code>String#valid_encoding?</code> predicate returns
@@ -875,7 +875,7 @@
       <code>String#length</code> and <code>String#size</code>, which are
       aliases, return the number of characters in their receiver. Therefore,
       they are dependent on the associated encoding: the length of a
-      <code>String</code> may change simply by tagging it with a different
+      <code>String</code> may change simply by associating it with a different
       encoding. <code>String#bytesize</code>, however, returns the number of
       bytes contained in its receiver. It is unaffected by
       <code>String#force_encoding</code>.
@@ -885,7 +885,7 @@
       <h1 id=string-equivalence>Equivalence</h1>
 
       <p>For two <code>String</code>s to compare as equal in terms of
-      <code>String#==</code>, they must be byte-wise identical and tagged
+      <code>String#==</code>, they must be byte-wise identical and associated
       with the same encoding. This last condition is dropped when both
       <code>String</code>s consist entirely of ASCII characters and have an
       ASCII-compatible encoding.
@@ -1050,7 +1050,7 @@
       <code>Regexp.new</code>, passing it the pattern as a <code>String</code>
       associated with the desired encoding. The same technique, <i>mutatis
         mutandis</i>, can be used with <code>String#force_encoding</code> to
-      tag the <code>Regexp</code> with a different encoding.</p>
+      associate the <code>Regexp</code> with a different encoding.</p>
 
       <figure id=regexp-specify-encoding.rb>
         <figcaption>Initially, this <code>Regexp</code> adopts the source

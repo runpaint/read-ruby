@@ -5,9 +5,10 @@
     href=#fn-encoding-dfn>†</a>. Each program source file,
   <code>String</code>, <code>Symbol</code>, <code>Regexp</code>,
   <code>File</code>, and <code>IO</code> object is, relatively independently,
-  associated with its own encoding. This association is simply a statement,
-  that has either been made explicitly about a specific object, or derived
-  from a corresponding default encoding. It may even be spurious. 
+  associated with its own encoding. This <a
+    href=/text#string-associate>association</a> is simply a statement, that
+  has either been made explicitly about a specific object, or derived from a
+  corresponding default encoding. It may even be spurious. 
 
   <p>The encoding associated with a source file-the <a href=#source><i>source
       encoding</i></a>-is by default US-ASCII. If a source file contains
@@ -99,11 +100,10 @@
 
     <p>The encoding of the data in an <code>IO</code> stream is known by Ruby
     as the object’s <dfn>external encoding</dfn>. Every <code>IO</code> object
-    has an external encoding, so data read from it will be <a
-      href=/text#string-encoding-tag>tagged</a> with the same. Ruby infers the
-    default external encoding with the following
-    steps<a href=#fn-external-encoding-algo>*</a>, stopping as soon as she
-    finds one which is usable:
+    has an external encoding, so data read from it will be associated with the
+    same. Ruby infers the default external encoding with the following steps<a
+      href=#fn-external-encoding-algo>*</a>, stopping as soon as she finds one
+    which is usable:
 
     <dl>
       <dt><code>Encoding.default_external=</code>
@@ -212,10 +212,10 @@
 
     <p>An internal encoding of <code>nil</code> means that the programmer does
     not express a preference for how the data he reads and writes via I/O is
-    encoded.  Accordingly, Ruby tags the data with the stream’s external
-    encoding, and gets out of the way.  This, too, is the situation if the
-    stream’s external encoding is equal to its internal encoding: the data
-    is already encoded how the programmer requires. 
+    encoded. Accordingly, Ruby associates the data with the stream’s external
+    encoding, and gets out of the way. This, too, is the situation if the
+    stream’s external encoding is equal to its internal encoding: the data is
+    already encoded how the programmer requires. 
     
     <p>The internal encoding is relevant when it is both set-that is, has a
     non-<code>nil</code> value-and differs from the <a href=#external>external
@@ -272,9 +272,8 @@
     <h1 id=transcoding>Transcoding</h1>
 
     <p><dfn>Transcoding</dfn> a <code>String</code> converts its bytes to the
-    equivalent byte sequences in a given encoding, then <a
-      href=/text#string-encoding-tag>tags</a> the new string with the new
-    encoding. It is typically performed with <code>String#encode</code>, which
+    equivalent byte sequences in a given encoding, with which it associates
+    the result. It is typically performed with <code>String#encode</code>, which
     returns its receiver transcoded from a <var>source</var> encoding to a
     <var>target</var> encoding. <code>String#encode!</code> operates in the
     same manner, but transcodes the receiver in-place.
@@ -284,7 +283,7 @@
     When called with one encoding argument, this becomes the <var>target</var>
     encoding. When called with two encoding arguments, the first is the
     <var>target</var>, the second is the <var>source</var>. This last form is
-    mainly useful when the <code>String</code> is tagged <a
+    mainly useful when the <code>String</code> is associated with <a
       href=#ascii-8bit><code>ASCII-8BIT</code></a>: it associates the
     <code>String</code> with <var>source</var>, then transcodes from
     <var>source</var> to <var>target</var>.
@@ -407,7 +406,7 @@
         <p>An <code>Encoding::Converter</code> object can perform piecemeal
         transcoding, by repeatedly calling
         <code>Encoding::Converter#convert</code> with the next fragment of
-        input. The fragment is transcoded and returned, tagged with the
+        input. The fragment is transcoded and returned, associated with the
         destination encoding. However, because each fragment is always assumed
         to be part of a larger source, it may legitimately end mid-character,
         i.e.  prior to a character boundary.  These trailing bytes are
