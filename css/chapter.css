@@ -128,6 +128,15 @@ pre > code {
   white-space: pre;
   font-size: 80%;
 }
+
+samp {
+  font-weight: bold;
+}
+
+kbd {
+  font-style: italic;
+}
+
 h1.runin {
   font-size: 100%;
   font-weight: bold;

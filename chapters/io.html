@@ -1156,6 +1156,42 @@
     occur from the beginning of the stream.
   </section>
 
+  <section>
+    <h1 id=argv><code>ARGV</code></h1>
+
+    <p>The command-line arguments given to a program are available as elements
+    of the <code>ARGV</code> <code>Array</code>. If <code>ARGV</code> is
+    empty, no arguments were provided. Therefore, unlike C,
+    <code>ARGV[0]</code> does not hold the program name, which is available as
+    <code>$0</code> instead. This <code>Array</code> can be modified, so
+    programs may remove an element after they have processed it.</p>
+
+
+    <figure id=argv.rb>
+      <figcaption>Using <code>ARGV</code> to examine our command-line
+      arguments
+    </figure>
+
+    <figure>
+      <pre>run@paint →  <kbd>ruby -w argv.rb -n 3 "bags full"</kbd>
+<samp>3
+-n
+argv.rb: ["-n", "3", "bags full"]</samp>
+run@paint →  <kbd>ln -s argv.rb argv</kbd>
+run@paint →  <kbd>chmod +x argv</kbd>
+run@paint →  <kbd>./argv</kbd>
+<samp>0
+nil
+"./argv: []"</samp>
+run@paint →  <kbd>./argv -n 3 "bags full"</kbd>
+<samp>3
+-n
+./argv: ["-n", "3", "bags full"]</samp></pre>
+    <figcaption>How command-line arguments are interpreted by
+    <code>ARGV</code>.
+    </figure>
+  </section>
+
   <footer>
     <h1>Footnotes</h1>
 
