@@ -138,7 +138,6 @@
     <h1 id=writing>Writing to a Stream</h1>
 
     <!-- Cover warn here? -->
-    <!-- IO#<< --> 
     
     <p>If a stream has been opened for writing, we can write data to it using
     a variety of methods. We will begin, with the low-level
@@ -158,6 +157,12 @@
       <code>#syswrite</code>, and <code>#printf</code>
     </figure>
     
+    <p><code>IO#&lt;&lt;</code> accepts a single argument, which it writes to
+    its receiver, then returns its receiver. This is a more common way to
+    write to a stream because the selector is polymorphic, <a
+      href=/messages#left-shift>conventionally</a> appending its argument to
+    its receiver.
+
     <p><code>IO#putc</code> writes a single byte to its stream, then returns
     its argument. It interprets a <code>Numeric</code> argument as a character
     code, writing the least-significant byte of the character corresponding to
