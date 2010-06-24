@@ -138,7 +138,6 @@
     <h1 id=writing>Writing to a Stream</h1>
 
     <!-- Cover warn here? -->
-    <!-- Footnote _why_ syswrite is low-level -->
     <!-- IO#<< --> 
     
     <p>If a stream has been opened for writing, we can write data to it using
@@ -149,7 +148,15 @@
     operation, so the official documentation cautions that it should not used
     in conjunction with other, higher-level writing methods<a
       href=#fn-syswrite-caution>†</a>. <code>IO#write</code> behaves in the
-    same manner, but works at a higher-level, so you need fret no longer. 
+    same manner, but works at a higher-level, so you need not fret.
+    <code>IO#printf</code> behaves like <code>#write</code>, but formats its
+    arguments with <a
+      href=/text#format-strings><code>Kernel#sprintf</code></a>.</p>
+
+    <figure id=write-syswrite-printf.rb>
+      <figcaption>Displaying output with <code>#write</code>,
+      <code>#syswrite</code>, and <code>#printf</code>
+    </figure>
     
     <p><code>IO#putc</code> writes a single byte to its stream, then returns
     its argument. It interprets a <code>Numeric</code> argument as a character
