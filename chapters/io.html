@@ -1192,6 +1192,40 @@ run@paint →  <kbd>./argv -n 3 "bags full"</kbd>
     </figure>
   </section>
 
+  <section>
+    <h1 id=argf><code>ARGF</code></h1>
+    
+    <p><code>ARGF</code> is an <code>IO</code> stream abstracting the contents
+    of a program’s file arguments. If <code>ARGV</code> is empty,
+    <code>ARGF</code> refers to <code>STDIN</code>. Otherwise, each element of
+    <code>ARGV</code> is assumed to name a file, and <code>ARGF</code>
+    represents the concatenation of their contents. An implication of this
+    behaviour is that non-file arguments should be removed from
+    <code>ARGV</code> prior to using <code>ARGF</code>.</p>
+
+    <figure id=argf.rb>
+      <figcaption><code>ARGF</code> encapsulates the file arguments of a
+      program
+    </figure>
+
+    <figure>
+      <pre>run@paint →  <kbd>for l in "a" "b" "c"; do echo $l &gt; $l; done</kbd>
+run@paint →  <kbd>ruby argf.rb</kbd> # Hangs; blocking on STDIN
+run@paint →  <kbd>ruby argf.rb &lt; a</kbd>
+<samp>[]
+"a\n"</samp>
+run@paint →  <kbd>ruby argf.rb a b &lt; c</kbd>
+<samp>["a", "b"]
+"a\nb\n"
+</samp>
+run@paint →  <kbd>ruby argf.rb --help</kbd>
+<samp>["--help"]
+/tmp/argf.rb:4:in `read': No such file or directory - --help (Errno::ENOENT)
+  from /tmp/argf.rb:4:in `&lt;main&gt;'</samp>
+</pre>
+      <figcaption>How <code>ARGF</code> interprets command-line arguments
+    </figure>
+  </section>
   <footer>
     <h1>Footnotes</h1>
 
