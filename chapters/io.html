@@ -42,24 +42,9 @@
   <i>stream</i><a href=#fn-stream>†</a>, which provides an interface for
   accessing the corresponding file.  
   
-  <p>A stream is always associated with an <a
-    href=#external-encoding><i>external encoding</i></a>: the actual<a
-    href=#fn-actual-encoding>†</a> encoding of its contents. Data read from
-  the stream is <a href=/text#string-encoding-tag>tagged</a> with this
-  encoding<a href=#fn-external-tag>†</a>. If an external encoding isn’t
-  specified explicitly, it is inferred from the user’s environment. A stream
-  may also be associated with an <a href=#internal-encoding><i>internal
-      encoding</i></a>: our desired<a href=#fn-desired-encoding>†</a> encoding
-  for its contents. If an internal encoding is specified which differs from
-  the external encoding, data read from the stream will automatically be <a
-    href=/text#string-transcode>transcoded</a> from the latter to the former,
-  and data written to the stream will be transcoded in the opposite direction.
-  The internal encoding is never inferred, so unless specified explicitly, no
-  transcoding occurs.
-
   <p>A stream containing binary data can have its <a
     href=#binmode><code>binmode</code></a> attribute set, which prevents it
-  from being transcoded and tags it with the <a
+  from being transcoded and associates it with the <a
     href=/text#ascii-8bit>ASCII-8BIT</a> encoding.  Conversely, a stream
   containing textual data can have its <a
     href=#textmode><code>textmode</code></a> attribute set, which allows
@@ -1192,18 +1177,6 @@
       that file descriptor.</q>, so closely follows the model of
       <code>IO</code>, that our minor redefinition seems justified.
 
-      <li id=fn-actual-encoding>The external encoding may be set wrongly, of
-      course, or the file may not even have a valid encoding, but
-      nevertheless, from Ruby’s perspective, the external encoding is the
-      encoding employed by the file.
-
-      <li id=fn-external-tag>If an internal encoding has been specified, the
-      data read from a stream will be tagged with that instead.
-
-      <li id=fn-desired-encoding>By “desired” we mean the encoding the
-      programmer wishes to manipulate the stream’s data in. It is by no means
-      an assertion as to the actual encoding of the data.
-
       <li id=fn-truncate>We use <i>truncate</i> in its POSIX sense, i.e. to
       refer to the behaviour of <code>truncate(2)</code>. On most file
       systems, this operation can be used to increase as well as decrease the
@@ -1212,11 +1185,6 @@
       <li id=fn-syswrite-caution>The rationale for this warning is that
       <code>IO#syswrite</code> ignores Ruby’s I/O buffer, as explained in <a
         href=#buffering>Buffering</a>.
-
-      <li id=fn-external-encoding-algo>Derived mainly from <a
-        href=/references#refHARADA09 class=ref><cite>The Design and
-          Implementation of Ruby M17N</cite></a>, Yui Naruse, Yoko Harada
-      trans.
       </ol>
   </footer>
 </article>
