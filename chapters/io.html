@@ -144,24 +144,24 @@
     <code>IO#syswrite</code>, which requires exactly one argument that it
     converts to a <code>String</code>, writes to the stream, then returns the
     number of bytes written. It uses a low-level system call to perform this
-    operation, so the official documentation cautions that it should not used
-    in conjunction with other, higher-level writing methods<a
+    operation, so the official documentation cautions that it should not be
+    used in conjunction with other, higher-level writing methods<a
       href=#fn-syswrite-caution>†</a>. <code>IO#write</code> behaves in the
-    same manner, but works at a higher-level, so you need not fret.
-    <code>IO#printf</code> behaves like <code>#write</code>, but formats its
-    arguments with <a
-      href=/text#format-strings><code>Kernel#sprintf</code></a>.</p>
+    same manner, but without the risks. In fact, all other writing methods are
+    implemented in terms of <code>#write</code>. For example,
+    <code>IO#printf</code> formats its arguments with <a
+      href=/text#format-strings><code>Kernel#sprintf</code></a> before passing
+    the result to <code>#write</code>, i.e. <code>write(sprintf *args)</code>.</p>
 
     <figure id=write-syswrite-printf.rb>
       <figcaption>Displaying output with <code>#write</code>,
       <code>#syswrite</code>, and <code>#printf</code>
     </figure>
     
-    <p><code>IO#&lt;&lt;</code> accepts a single argument, which it writes to
-    its receiver, then returns its receiver. This is a more common way to
-    write to a stream because the selector is polymorphic, <a
-      href=/messages#left-shift>conventionally</a> appending its argument to
-    its receiver.
+    <p><code>IO#&lt;&lt;</code> writes its argument to its receiver, which it
+    then returns. This is a more common way to write to a stream because the
+    selector is polymorphic, <a href=/messages#left-shift>conventionally</a>
+    appending its argument to its receiver.
 
     <p><code>IO#putc</code> writes a single byte to its stream, then returns
     its argument. It interprets a <code>Numeric</code> argument as a character
