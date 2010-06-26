@@ -13,7 +13,7 @@
     which specifies the character a given sequence of bytes represents.</p>
 
     <section>
-      <h1 id=character>Character</h1>
+      <h1 id=character>Characters</h1>
 
       <figure class=railroad>
         <img id=character-literal.png>
@@ -491,11 +491,41 @@
       => "55%" -->
     </section>
 
-    <!-- TODO: Snip below paragraph? -->
-    <p>A string may be iterated over by Unicode codepoint with
-    <code>String#codepoints</code>, byte with <code>String#bytes</code>,
-    character with <code>String#chars</code>, or line with
-    <code>String#lines</code>.</p>
+    <section>
+      <h1 id=string-iteration>Iteration</h1>
+
+      <p>A <code>String</code> can be iterated in the following ways. Each
+      method returns an <code>Enumerator</code>, or yields each element in
+      turn to a given block:
+
+      <dl>
+        <dt>Byte
+        <dd>A <code>String</code> comprises zero or more 8-bit bytes.
+        They are enumerated by <code>String#bytes</code>, or its alias
+        <code>String#each_byte</code>, as <code>Fixnum</code>s between
+        <code>0</code> and <code>255</code>.
+
+        <dt>Character 
+        <dd>A <code>String</code>’s encoding designates certain sequences of
+        bytes as specific characters. They are enumerated by
+        <code>String#chars</code>, or its alias <code>String#each_char</code>,
+        as single-character <code>String</code>s.
+
+        <dt>Unicode codepoint
+        <dd>Unicode assigns each character a unique, ordinal number, which is
+        independent of its encoding. A <code>String</code>’s codepoints are
+        enumerated by <code>String#codepoints</code>, or its alias
+        <code>String#each_codepoint</code>, as <code>Fixnum</code>s between
+        <code>0</code> and <code>0x10FFFF</code>.
+
+        <dt>Lines
+        <dd>A <i>line</i> is a sequence of characters terminated by
+        <code>"\n"</code>. The lines comprising a <code>String</code> are
+        enumerated by <code>String#lines</code>, and its alias
+        <code>String#each_line</code>, as <code>String</code>s including the
+        trailing <code>"\n"</code>.
+      </dl>
+    </section>
 
     <section>
       <h1 id=format-strings>Format Strings</h1>
