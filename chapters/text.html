@@ -12,6 +12,60 @@
     interprets a specific sequence of bytes as a character, and the encoding
     which specifies the character a given sequence of bytes represents.</p>
 
+    <p>Fundamentally a <code>String</code> is an array of bytes. An ordered
+    sequence of numbers, each of which is in the range 0&ndash;255. Bytes have
+    no inherent meaning. Humans, however, prefer to imagine
+    <code>String</code>s as arrays of characters. Therefore, a mapping, called
+    an encoding, is needed to associate bytes with characters. At its
+    simplest, an encoding is a table with bytes in one column and the
+    corresponding characters in the other. Indeed, this is pretty much how the
+    ASCII encoding works: byte 103 represents <i>g</i>, byte 56 represents
+    <i>8</i>, and so on. However, the size of a byte places a particularly low
+    ceiling on such a system, namely only 256 characters can be represented.
+    There are a myriad of approaches for increasing this limit, most of which
+    appear to have spawned a new encoding, incompatible with its forerunners
+    and peers. Each had their own idea of what character a specific byte, or
+    sequence thereof, should represent. So, a character is the interpretation
+    of a specific byte sequence in an encoding. That same byte sequence may
+    represent an entirely different character in a different encoding.
+    Likewise, a given character may be represented by a different byte
+    sequence according to which encoding is used.
+
+    <p>Unicode brings a great deal of sanity to this morass. It distinguishes
+    between identifying a specific character, and mapping that character to a
+    byte sequence. Each character, irrespective of its encoding and abstract
+    from any representation, is assigned a cardinal number, termed a
+    <dfn>codepoint</dfn>. In theory, codepoints are integers in the range
+    0&ndash;1,&thinsp;114,&thinsp;111, however the majority of these are
+    unassigned. Therefore, while the byte sequence representing a character
+    may differ according to the encoding, its codepoint will remain constant.</p>
+
+    <dl>
+      <dt>Byte
+      <dd>An <code>Fixnum</code> in the range 0&ndash;255.
+      <dt>Encoding
+      <dd>A scheme for mapping a byte sequence to a character. Instances of
+      <code>Encoding</code>.
+      Officially termed a <dfn>coded character set</dfn>: <q>A set of unambiguous rules that establishes a character
+      set and the relationship between the characters of the set and their
+      coded representation.</q> (ISO/IEC TR 1528: <i>Information
+        technology — An operational model for characters and glyphs</i>)
+
+      <dt>Character
+      <dt><q>A member of a set of elements used for the organisation, control,
+        or representation of data.</q> (ISO/IEC TR 1528: <i>Information
+        technology — An operational model for characters and glyphs</i>)
+
+
+      <dt>Codepoint
+    </dl>
+
+    <!-- Thematic sections:
+      Characters
+        Define term, relate to encodings, explain literal, 1-char strings, and
+        iteration
+     ...   
+    -->
     <section>
       <h1 id=character>Characters</h1>
 
