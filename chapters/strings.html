@@ -604,6 +604,165 @@
   </section>
 
   <section>
+    <h1 id=size>Size</h1>
+
+    <p>“How long is a piece of string.” isn’t always a rhetorical question,
+    but in Ruby the answer depends on your unit of measurement.
+    <code>String#length</code> and <code>String#size</code>, which are
+    aliases, return the number of characters in their receiver. Therefore,
+    they are dependent on the associated encoding: the length of a
+    <code>String</code> may change simply by associating it with a different
+    encoding. <code>String#bytesize</code>, however, returns the number of
+    bytes contained in its receiver. It is unaffected by
+    <code>String#force_encoding</code>.
+  </section>
+
+  <section>
+    <h1 id=equivalence>Equivalence</h1>
+
+    <p>For two <code>String</code>s to compare as equal in terms of
+    <code>String#==</code>, they must be byte-wise identical and associated
+    with the same encoding. This last condition is dropped when both
+    <code>String</code>s consist entirely of ASCII characters and have an
+    ASCII-compatible encoding.
+  </section>
+
+  <section>
+    <h1 id=comparison>Comparison</h1>
+
+    <p><code>String#&lt;=&gt;</code> compares its receiver with its
+    <code>String</code> argument in terms of their character codes. Neither
+    operand is normalised. <code>String</code> mixes in
+    <code>Comparable</code>, so gains <code>String#&lt;</code>,
+    <code>String#&le;</code>, <code>String#&gt;</code>, and
+    <code>String#&ge;</code>, also.
+
+    <p>The aforementioned methods are, by implication, case sensitive.
+    <code>String#casecmp</code> provides a case-insensitive alternative for
+    ASCII <code>String</code>s; non-ASCII characters are compared as
+    above. Alternatively, one must normalise the case of the two
+    <code>String</code>s themselves before comparing them.</p>
+
+    <figure id=string-comparison.rb>
+      <figcaption>Comparing <code>String</code>s
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=concatenation>Concatenation</h1>
+
+    <p><code>String#+</code> returns its receiver concatenated with its
+    <code>String</code> argument, without modifying the former. No coercion
+    is performed on the argument.
+
+    <p><code>String#&lt;&lt;</code> appends its argument to its receiver,
+    mutating the existing object rather than creating a new one, and returns
+    the receiver. The argument must be either an <code>Integer</code>
+    codepoint, which is converted into the corresponding character before
+    concatenation, or a <code>String</code>.</p>
+
+    <figure id=string-concat.rb>
+      <figcaption>Concatenating <code>String</code>s
+    </figure>
+
+    <p>Either approach requires at least one of the following conditions to
+    hold:
+
+    <ul>
+      <li>Both encodings are ASCII-compatible and one of the
+      <code>String</code>s is ASCII-only.
+      <li>One of the <code>String</code>s is empty.
+      <li>The two encodings are compatible.
+    </ul>
+  </section>
+
+  <section>
+    <h1 id=repetition>Repetition</h1>
+    
+    <p><code>String#*</code> returns a new <code>String</code> comprising
+    <var>n</var> copies of itself, where <var>n</var> is given by an
+    <code>Integer</code> argument. The receiver is not modified.</p>
+
+    <figure id=string-repetition.rb>
+      <figcaption>Using <code>String#*</code> to multiply its receiver.
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=encoding>Encoding</h1>
+
+    <!--
+    Originally, an ASCII-only String literal had US-ASCII encoding even in
+    a file with UTF-8 source encoding. Now it doesn't; it remains UTF-8.
+    However, regexps retain this behaviour...
+    -->
+    <p>The encoding of a <code>String</code> literal is normally that of the
+    source file in which it appears, with the caveats noted above for
+    Unicode and byte escapes.</p>
+
+    <!-- String#bytes / String#dump to inspect encoding -->
+
+    <section>
+      <h1 id=associate>Forcing an Association</h1>
+
+      <p>The encoding associated with a <code>String</code> may be changed
+      independently of its contents. This is necessary if the contents are
+      valid in one encoding, but associated with another. Transcoding would
+      be inappropriate because it would alter the underlying bytes, which
+      are already perfectly valid. The solution is the destructive method
+      <code>String#force_encoding</code>, which associates its receiver with
+      the encoding given as an argument. This operation will always succeed,
+      even if the <code>String</code>’s contents are <a
+        href=#valid-encoding>invalid</a> in the new encoding.
+
+      <p>Yui Naruse, a member of the Ruby core team, cautions against the
+      use of this method: <q><code>String#force_encoding</code> should be
+        sparsely used since Strings have already had appropriate encodings
+        assigned when those are created, or read from files specifying the
+        encoding.&hellip; If you need to use
+      <code>String#force_encoding</code> in your library, you should
+      reconsider your library design. You should not use this method
+      thoughtlessly.</q> (<a href=/references#refHARADA09 class=ref><cite>The Design and
+        Implementation of Ruby M17N</cite></a>, Yui Naruse, Yoko Harada
+      trans.)
+    </section>
+
+    <section>
+      <h1 id=valid-encoding>Valid Encodings</h1>
+
+      <p>A <code>String</code>’s encoding is <dfn title='valid
+        encoding'>valid</dfn> if its constituent bytes are properly formed
+      according to the encoding it is associated with. This check makes no
+      claims as to whether the characters in the <code>String</code> exist
+      in the encoding, for it inspects syntax rather than semantics.
+
+      <p>In general, if you create a <code>String</code> via a literal, or
+      consume a <code>String</code> as input that is validly encoded,
+      manipulating it as a sequence of characters will ensure its encoding
+      remains valid.  However, associating a <code>String</code> with an
+      improper encoding, treating it as <a href=#byte-arrays>byte array</a>,
+      or consuming garbage input, may all result in an invalid encoding. The
+      <code>String#valid_encoding?</code> predicate returns
+      <code>true</code> if the <code>String</code>’s encoding is valid;
+      <code>false</code> otherwise.
+    </section>
+
+    <section>
+      <h1 id=ascii-only>ASCII Only</h1>
+
+      <p>Many operations on <code>String</code>s contain optimisations for
+      <code>String</code>s that are <dfn>ASCII-only</dfn>-containing 7-bit
+      ASCII characters exclusively-regardless of the associated encoding.
+      For example, two <code>String</code>s with disparate encodings are <a
+        href=#encoding-compatibility>compatible</a> if they’re both
+      ASCII-only. In general, however, these optimisations are transparent
+      so can be safely ignored. The <code>String#ascii_only?</code>
+      predicate can be useful if you wish to perform your own optimisations
+      along these lines.
+    </section>
+  </section>
+
+  <section>
     <h1 id=format>Format Strings</h1>
 
     <p>A <dfn>format string</dfn> is a template specifying how a set of
@@ -878,162 +1037,4 @@
     </section>
   </section>
 
-  <section>
-    <h1 id=encoding>Encoding</h1>
-
-    <!--
-    Originally, an ASCII-only String literal had US-ASCII encoding even in
-    a file with UTF-8 source encoding. Now it doesn't; it remains UTF-8.
-    However, regexps retain this behaviour...
-    -->
-    <p>The encoding of a <code>String</code> literal is normally that of the
-    source file in which it appears, with the caveats noted above for
-    Unicode and byte escapes.</p>
-
-    <!-- String#bytes / String#dump to inspect encoding -->
-
-    <section>
-      <h1 id=associate>Forcing an Association</h1>
-
-      <p>The encoding associated with a <code>String</code> may be changed
-      independently of its contents. This is necessary if the contents are
-      valid in one encoding, but associated with another. Transcoding would
-      be inappropriate because it would alter the underlying bytes, which
-      are already perfectly valid. The solution is the destructive method
-      <code>String#force_encoding</code>, which associates its receiver with
-      the encoding given as an argument. This operation will always succeed,
-      even if the <code>String</code>’s contents are <a
-        href=#valid-encoding>invalid</a> in the new encoding.
-
-      <p>Yui Naruse, a member of the Ruby core team, cautions against the
-      use of this method: <q><code>String#force_encoding</code> should be
-        sparsely used since Strings have already had appropriate encodings
-        assigned when those are created, or read from files specifying the
-        encoding.&hellip; If you need to use
-      <code>String#force_encoding</code> in your library, you should
-      reconsider your library design. You should not use this method
-      thoughtlessly.</q> (<a href=/references#refHARADA09 class=ref><cite>The Design and
-        Implementation of Ruby M17N</cite></a>, Yui Naruse, Yoko Harada
-      trans.)
-    </section>
-
-    <section>
-      <h1 id=valid-encoding>Valid Encodings</h1>
-
-      <p>A <code>String</code>’s encoding is <dfn title='valid
-        encoding'>valid</dfn> if its constituent bytes are properly formed
-      according to the encoding it is associated with. This check makes no
-      claims as to whether the characters in the <code>String</code> exist
-      in the encoding, for it inspects syntax rather than semantics.
-
-      <p>In general, if you create a <code>String</code> via a literal, or
-      consume a <code>String</code> as input that is validly encoded,
-      manipulating it as a sequence of characters will ensure its encoding
-      remains valid.  However, associating a <code>String</code> with an
-      improper encoding, treating it as <a href=#byte-arrays>byte array</a>,
-      or consuming garbage input, may all result in an invalid encoding. The
-      <code>String#valid_encoding?</code> predicate returns
-      <code>true</code> if the <code>String</code>’s encoding is valid;
-      <code>false</code> otherwise.
-    </section>
-
-    <section>
-      <h1 id=ascii-only>ASCII Only</h1>
-
-      <p>Many operations on <code>String</code>s contain optimisations for
-      <code>String</code>s that are <dfn>ASCII-only</dfn>-containing 7-bit
-      ASCII characters exclusively-regardless of the associated encoding.
-      For example, two <code>String</code>s with disparate encodings are <a
-        href=#encoding-compatibility>compatible</a> if they’re both
-      ASCII-only. In general, however, these optimisations are transparent
-      so can be safely ignored. The <code>String#ascii_only?</code>
-      predicate can be useful if you wish to perform your own optimisations
-      along these lines.
-    </section>
-  </section>
-
-  <section>
-    <h1 id=size>Size</h1>
-
-    <p>“How long is a piece of string.” isn’t always a rhetorical question,
-    but in Ruby the answer depends on your unit of measurement.
-    <code>String#length</code> and <code>String#size</code>, which are
-    aliases, return the number of characters in their receiver. Therefore,
-    they are dependent on the associated encoding: the length of a
-    <code>String</code> may change simply by associating it with a different
-    encoding. <code>String#bytesize</code>, however, returns the number of
-    bytes contained in its receiver. It is unaffected by
-    <code>String#force_encoding</code>.
-  </section>
-
-  <section>
-    <h1 id=equivalence>Equivalence</h1>
-
-    <p>For two <code>String</code>s to compare as equal in terms of
-    <code>String#==</code>, they must be byte-wise identical and associated
-    with the same encoding. This last condition is dropped when both
-    <code>String</code>s consist entirely of ASCII characters and have an
-    ASCII-compatible encoding.
-  </section>
-
-  <section>
-    <h1 id=comparison>Comparison</h1>
-
-    <p><code>String#&lt;=&gt;</code> compares its receiver with its
-    <code>String</code> argument in terms of their character codes. Neither
-    operand is normalised. <code>String</code> mixes in
-    <code>Comparable</code>, so gains <code>String#&lt;</code>,
-    <code>String#&le;</code>, <code>String#&gt;</code>, and
-    <code>String#&ge;</code>, also.
-
-    <p>The aforementioned methods are, by implication, case sensitive.
-    <code>String#casecmp</code> provides a case-insensitive alternative for
-    ASCII <code>String</code>s; non-ASCII characters are compared as
-    above. Alternatively, one must normalise the case of the two
-    <code>String</code>s themselves before comparing them.</p>
-
-    <figure id=string-comparison.rb>
-      <figcaption>Comparing <code>String</code>s
-    </figure>
-  </section>
-
-  <section>
-    <h1 id=concatenation>Concatenation</h1>
-
-    <p><code>String#+</code> returns its receiver concatenated with its
-    <code>String</code> argument, without modifying the former. No coercion
-    is performed on the argument.
-
-    <p><code>String#&lt;&lt;</code> appends its argument to its receiver,
-    mutating the existing object rather than creating a new one, and returns
-    the receiver. The argument must be either an <code>Integer</code>
-    codepoint, which is converted into the corresponding character before
-    concatenation, or a <code>String</code>.</p>
-
-    <figure id=string-concat.rb>
-      <figcaption>Concatenating <code>String</code>s
-    </figure>
-
-    <p>Either approach requires at least one of the following conditions to
-    hold:
-
-    <ul>
-      <li>Both encodings are ASCII-compatible and one of the
-      <code>String</code>s is ASCII-only.
-      <li>One of the <code>String</code>s is empty.
-      <li>The two encodings are compatible.
-    </ul>
-  </section>
-
-  <section>
-    <h1 id=repetition>Repetition</h1>
-    
-    <p><code>String#*</code> returns a new <code>String</code> comprising
-    <var>n</var> copies of itself, where <var>n</var> is given by an
-    <code>Integer</code> argument. The receiver is not modified.</p>
-
-    <figure id=string-repetition.rb>
-      <figcaption>Using <code>String#*</code> to multiply its receiver.
-    </figure>
-  </section>
 </article>
