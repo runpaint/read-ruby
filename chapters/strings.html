@@ -2,94 +2,11 @@
 
   <h1 id=strings>Strings</h1>
    
-  <p><code>String</code>s are mutable sequences of characters with an
-  associated encoding. A <dfn>character</dfn> is a <code>String</code> with
-  a <a href=#string-size>length</a> of 1: it may correspond to one byte in
-  encodings such as <i>US-ASCII</i>, or a variable number of bytes in
-  encodings such as <i>UTF-8</i>. In either case, it is the encoding which
-  interprets a specific sequence of bytes as a character, and the encoding
-  which specifies the character a given sequence of bytes represents.</p>
+  <p><code>String</code>s are mutable sequences of <a
+    href=#characters>characters</a> with an associated <a
+    href=/encoding>encoding</a>. They are generally created with literals, as
+  explained below.</p>
 
-  <p>Fundamentally a <code>String</code> is an array of bytes. An ordered
-  sequence of numbers, each of which is in the range 0&ndash;255. Bytes have
-  no inherent meaning. Humans, however, prefer to imagine
-  <code>String</code>s as arrays of characters. Therefore, a mapping, called
-  an encoding, is needed to associate bytes with characters. At its
-  simplest, an encoding is a table with bytes in one column and the
-  corresponding characters in the other. Indeed, this is pretty much how the
-  ASCII encoding works: byte 103 represents <i>g</i>, byte 56 represents
-  <i>8</i>, and so on. However, the size of a byte places a particularly low
-  ceiling on such a system, namely only 256 characters can be represented.
-  There are a myriad of approaches for increasing this limit, most of which
-  appear to have spawned a new encoding, incompatible with its forerunners
-  and peers. Each had their own idea of what character a specific byte, or
-  sequence thereof, should represent. So, a character is the interpretation
-  of a specific byte sequence in an encoding. That same byte sequence may
-  represent an entirely different character in a different encoding.
-  Likewise, a given character may be represented by a different byte
-  sequence according to which encoding is used.
-
-  <p>Unicode brings a great deal of sanity to this morass. It distinguishes
-  between identifying a specific character, and mapping that character to a
-  byte sequence. Each character, irrespective of its encoding and abstract
-  from any representation, is assigned a cardinal number, termed a
-  <dfn>codepoint</dfn>. In theory, codepoints are integers in the range
-  0&ndash;1,&thinsp;114,&thinsp;111, however the majority of these are
-  unassigned. Therefore, while the byte sequence representing a character
-  may differ according to the encoding, its codepoint will remain constant.</p>
-
-  <dl>
-    <dt>Byte
-    <dd>An <code>Fixnum</code> in the range 0&ndash;255.
-    <dt>Encoding
-    <dd>A scheme for mapping a byte sequence to a character. Instances of
-    <code>Encoding</code>.
-    Officially termed a <dfn>coded character set</dfn>: <q>A set of unambiguous rules that establishes a character
-    set and the relationship between the characters of the set and their
-    coded representation.</q> (ISO/IEC TR 1528: <i>Information
-      technology — An operational model for characters and glyphs</i>)
-
-    <dt>Character
-    <dt><q>A member of a set of elements used for the organisation, control,
-      or representation of data.</q> (ISO/IEC TR 1528: <i>Information
-      technology — An operational model for characters and glyphs</i>)
-
-
-    <dt>Codepoint
-  </dl>
-
-  <!-- Thematic sections:
-    Characters
-      Define term, relate to encodings, explain literal, 1-char strings, and
-      iteration
-   ...   
-  -->
-  <section>
-    <h1 id=characters>Characters</h1>
-
-    <figure class=railroad>
-      <img id=character-literal.png>
-      <figcaption>Syntax diagram of the character literal
-    </figure>
-
-    <!-- In early days of Ruby M17N development, Character class was on the
-    table. It was not the special case of String class, but just Character
-    class. -->
-    <p>A single character prefixed with a question mark
-    (<code>?<var>char</var></code>) instantiates a <code>String</code>
-    comprising the character. Likewise, <var>char</var> may be a <a
-      href=#character-escapes>character escape</a> that results in a single
-    character, such as <code>\u<var>hex</var></code>, <code>\n</code>,
-    <code>\t</code>, or a byte escape. <code>?<var>char</var></code> is
-    equivalent to <code>"<var>char</var>"</code>.
-
-    The <code>String</code> may be treated as an <code>Array</code> of
-    characters with <code>String#[]</code>, which returns the character at a
-    given <code>Integer</code> offset. Similarly, <code>String#[]=</code>
-    allows assigning a character to a given offset.  In both cases the
-    offset is zero-based.</p>
-  </section>
-  
   <!-- TODO: alternative delimiters-->
 
   <section>
@@ -544,39 +461,146 @@
   </section>
 
   <section>
+    <h1 id=characters>Characters</h1>
+
+    <p><i>Character</i> is defined by the ISO/IEC as <q>A member of a set of
+      elements used for the organisation, control, or representation of
+      data.</q> (<a href=/references#refTR15285><cite>Information technology —
+        An operational model for characters and glyphs</cite></a>). The
+    <i>set</i> of which they are members is an encoding. Therefore, in Ruby, a
+    character is a specific byte sequence interpreted according to a given
+    encoding. An implication is that by changing the encoding of a
+    <code>String</code>, one also changes what characters it contains.
+    
+    <figure class=railroad>
+      <img id=character-literal.png>
+      <figcaption>Syntax diagram of the character literal
+    </figure>
+
+    <p>A character is represented as a <code>String</code> of <a
+      href=#size>length</a> 1, i.e. there is no explicit <i>Character</i>
+    class. It can be created with the standard <code>String</code> literal
+    syntax, e.g. <code>'l'</code>, or via a <dfn>character literal</dfn>. The
+    latter comprises a question mark followed by a single character, i.e.
+    <code>?<var>char</var></code>, where <var>char</var> is a literal
+    character, or a <a href=#character-escapes>character escape</a> that
+    results in a single character, such as <code>\u<var>hex</var></code>,
+    <code>\n</code>, <code>\t</code>, or a byte escape.
+    <code>?<var>char</var></code> is entirely equivalent to
+    <code>"<var>char</var>"</code>. To create a character for a given
+    codepoint, see <a href=#codepoints>Codepoints</a>.
+
+    <p>A <code>String</code> may be treated as an <code>Array</code> of
+    characters with <code>String#[]</code>, which returns the character at a
+    given <code>Integer</code> offset. Similarly, <code>String#[]=</code>
+    allows assigning a character to a given offset.  In both cases the
+    offset is zero-based.
+
+    <p><code>String#chars</code>, and its alias <code>String#each_char</code>,
+    return an <code>Enumerator</code> of the receiver’s characters. Both yield
+    each character in turn if a block is given.
+  </section>
+
+  <section>
+    <h1 id=bytes>Bytes</h1>
+
+    <p>Fundamentally a <code>String</code> is an array of bytes. An ordered
+    sequence of numbers, each of which is in the range 0&ndash;255. Bytes have
+    no inherent meaning, so are typically used in conjunction with a
+    scheme that ascribes them semantics or values. In the case of a binary
+    data format, this scheme may be embodied in a program’s algorithms, or be
+    otherwise out-of-band. For textual data, this scheme is termed an <a
+      href=#encoding>encoding</a>. 
+
+    <p>Byte-level access generally assumes, but does not enforce, that the
+    <code>String</code>’s encoding is <a
+      href=/encoding#ascii-8bit>ASCII-8BIT</a>. Explicitly manipulating byte
+    sequences in a <code>String</code> containing text is at best ill-advised.
+    It breaks the abstraction of an encoding, and may result in
+    <code>String</code>s with invalid encodings and spurious exceptions being
+    raised.
+    
+    <code>String#bytes</code>, and its alias <code>String#each_byte</code>,
+    returns an <code>Enumerator</code> of its receiver’s bytes, represented as
+    <code>Fixnum</code>s. A specific byte position may be assigned to with
+    <code>String#setbyte(<var>index</var>, <var>byte</var>)</code>, where
+    <var>index</var> is the zero-based offset of the byte to be changed, and
+    <var>byte</var> is the new value as an <code>Integer</code>. A byte may be
+    retrieved from a given offset with
+    <code>String#getbyte(<var>index</var>)</code>. The length of a
+    <code>String</code> in bytes is returned by <code>String#bytesize</code>
+    as an <code>Integer</code>.
+  </section>
+
+  <section>
+    <h1 id=codepoints>Codepoints</h1>
+
+    <p>Unicode assigns each character in its repertoire a unique integer
+    <dfn>codepoint</dfn>. This identifies a character, irrespective of its
+    encoding. It is typically represented with the
+    notation <code class=u>U＋<var>hex</var></code>, where <var>hex</var> is
+    the codepoint in uppercase hexadecimal digits. For example, <code class=u
+      title='Ď'>U＋010E</code> is the codepoint for Ď (<i>Latin Capital Letter
+      D with Carron</i>). In the UTF-8 encoding this character is represented
+    by the byte sequence <code>"\xc4\x8e"</code>, in EUC-JP it is represented
+    as <code>"\x8f\xaa\xb0"</code>, and in ISO-8859-2 it is simply
+    <code>"\xcf"</code>. However, all three cases represent the same
+    character, so all three consist of the codepoint 270.
+
+    <p>The Unicode character escape allows a character with a given codepoint
+    to be embedded into a <code>String</code>. Similarly,
+    <code>Integer#chr(<var>encoding</var>)</code> interprets its receiver as a
+    codepoint in the named encoding, and returns the corresponding character.
+    If the codepoint does not exist in the given encoding, an
+    <code>ArgumentError</code> is raised.
+
+    <p>Conversely, <code>String#ord</code> returns the codepoint of the first
+    character in its receiver as an <code>Integer</code>. More generally,
+    <code>String#codepoints</code>, and its alias
+    <code>String#each_codepoint</code>, return an <code>Enumerator</code> of
+    its receiver’s codepoints represented as <code>Integer</code>s. If given a
+    block, each codepoint is yielded to it in turn. All three methods will
+    raise an <code>ArgumentError</code> if their receiver has an invalid
+    encoding.
+  </section>
+
+  <!-- section: Lines. #lines, #chomp, etc. -->
+
+  <section>
     <h1 id=iteration>Iteration</h1>
 
-    <p>A <code>String</code> can be iterated in the following ways. Each
-    method returns an <code>Enumerator</code>, or yields each element in
-    turn to a given block:
+    <p>A <code>String</code> can be iterated over by <a href=#bytes>byte</a>,
+    <a href=#characters>character</a>, <a href=#codepoints>codepoint</a>, or
+    line, using the methods summarised below. Each method returns an
+    <code>Enumerator</code>, or yields each element in turn to a given block.
 
-    <dl>
-      <dt>Byte
-      <dd>A <code>String</code> comprises zero or more 8-bit bytes.
-      They are enumerated by <code>String#bytes</code>, or its alias
-      <code>String#each_byte</code>, as <code>Fixnum</code>s between
-      <code>0</code> and <code>255</code>.
-
-      <dt>Character 
-      <dd>A <code>String</code>’s encoding designates certain sequences of
-      bytes as specific characters. They are enumerated by
-      <code>String#chars</code>, or its alias <code>String#each_char</code>,
-      as single-character <code>String</code>s.
-
-      <dt>Unicode codepoint
-      <dd>Unicode assigns each character a unique, ordinal number, which is
-      independent of its encoding. A <code>String</code>’s codepoints are
-      enumerated by <code>String#codepoints</code>, or its alias
-      <code>String#each_codepoint</code>, as <code>Fixnum</code>s between
-      <code>0</code> and <code>0x10FFFF</code>.
-
-      <dt>Lines
-      <dd>A <i>line</i> is a sequence of characters terminated by
-      <code>"\n"</code>. The lines comprising a <code>String</code> are
-      enumerated by <code>String#lines</code>, and its alias
-      <code>String#each_line</code>, as <code>String</code>s including the
-      trailing <code>"\n"</code>.
-    </dl>
+    <table class=border>
+      <thead>
+        <tr>
+          <th>Method
+          <th>Iterates  
+      <tbody>
+        <tr>
+          <td><code>String#bytes</code>
+          <td rowspan=2>Bytes as <code>Fixnum</code>s
+        <tr>
+          <td><code>String#each_byte</code>
+        <tr class=odd>
+          <td><code>String#chars</code>
+          <td rowspan=2>Characters as <code>String</code>s
+        <tr class=odd>
+          <td><code>String#each_char</code>
+        <tr>
+          <td><code>String#codepoints</code>
+          <td rowspan=2>Codepoints as <code>Fixnum</code>s
+        <tr>
+          <td><code>String#each_codepoint</code>
+        <tr class=odd>
+          <td><code>String#lines</code>
+          <td rowspan=2>Lines as <code>String</code>s
+        <tr class=odd>
+          <td><code>String#each_line</code>
+    </table>
   </section>
 
   <section>
@@ -926,26 +950,6 @@
       predicate can be useful if you wish to perform your own optimisations
       along these lines.
     </section>
-  </section>
-
-  <section>
-    <h1 id=byte-arrays>Byte Arrays</h1>
-    
-    <p>A <code>String</code> may be treated as a sequence of bytes.
-    <code>String#bytes</code> returns an <code>Enumerator</code> of its
-    receiver’s bytes, represented as <code>Fixnum</code>s. A specific byte
-    position may be assigned to with <code>String#setbyte(<var>index</var>,
-      <var>byte</var>)</code>, where <var>index</var> is the zero-based
-    offset of the byte to be changed, and <var>byte</var> is the new value
-    as an <code>Integer</code>. A byte may be retrieved from a given offset
-    with <code>String#getbyte(<var>index</var>)</code>. The length of a
-    <code>String</code> in bytes is returned by <code>String#bytesize</code>
-    as an <code>Integer</code>.
-
-    <p>Byte-level access generally assumes that the <code>String</code> is
-    encoded in <a href=#ascii-8bit><i>ASCII-8BIT</i></a>; otherwise,
-    modifying arbitrary bytes is liable to result in a <code>String</code>
-    with an <a href=#valid-encoding>invalid encoding</a>.
   </section>
 
   <section>
