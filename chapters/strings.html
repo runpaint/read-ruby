@@ -1,0 +1,1035 @@
+<article>
+
+  <h1 id=strings>Strings</h1>
+   
+  <p><code>String</code>s are mutable sequences of characters with an
+  associated encoding. A <dfn>character</dfn> is a <code>String</code> with
+  a <a href=#string-size>length</a> of 1: it may correspond to one byte in
+  encodings such as <i>US-ASCII</i>, or a variable number of bytes in
+  encodings such as <i>UTF-8</i>. In either case, it is the encoding which
+  interprets a specific sequence of bytes as a character, and the encoding
+  which specifies the character a given sequence of bytes represents.</p>
+
+  <p>Fundamentally a <code>String</code> is an array of bytes. An ordered
+  sequence of numbers, each of which is in the range 0&ndash;255. Bytes have
+  no inherent meaning. Humans, however, prefer to imagine
+  <code>String</code>s as arrays of characters. Therefore, a mapping, called
+  an encoding, is needed to associate bytes with characters. At its
+  simplest, an encoding is a table with bytes in one column and the
+  corresponding characters in the other. Indeed, this is pretty much how the
+  ASCII encoding works: byte 103 represents <i>g</i>, byte 56 represents
+  <i>8</i>, and so on. However, the size of a byte places a particularly low
+  ceiling on such a system, namely only 256 characters can be represented.
+  There are a myriad of approaches for increasing this limit, most of which
+  appear to have spawned a new encoding, incompatible with its forerunners
+  and peers. Each had their own idea of what character a specific byte, or
+  sequence thereof, should represent. So, a character is the interpretation
+  of a specific byte sequence in an encoding. That same byte sequence may
+  represent an entirely different character in a different encoding.
+  Likewise, a given character may be represented by a different byte
+  sequence according to which encoding is used.
+
+  <p>Unicode brings a great deal of sanity to this morass. It distinguishes
+  between identifying a specific character, and mapping that character to a
+  byte sequence. Each character, irrespective of its encoding and abstract
+  from any representation, is assigned a cardinal number, termed a
+  <dfn>codepoint</dfn>. In theory, codepoints are integers in the range
+  0&ndash;1,&thinsp;114,&thinsp;111, however the majority of these are
+  unassigned. Therefore, while the byte sequence representing a character
+  may differ according to the encoding, its codepoint will remain constant.</p>
+
+  <dl>
+    <dt>Byte
+    <dd>An <code>Fixnum</code> in the range 0&ndash;255.
+    <dt>Encoding
+    <dd>A scheme for mapping a byte sequence to a character. Instances of
+    <code>Encoding</code>.
+    Officially termed a <dfn>coded character set</dfn>: <q>A set of unambiguous rules that establishes a character
+    set and the relationship between the characters of the set and their
+    coded representation.</q> (ISO/IEC TR 1528: <i>Information
+      technology — An operational model for characters and glyphs</i>)
+
+    <dt>Character
+    <dt><q>A member of a set of elements used for the organisation, control,
+      or representation of data.</q> (ISO/IEC TR 1528: <i>Information
+      technology — An operational model for characters and glyphs</i>)
+
+
+    <dt>Codepoint
+  </dl>
+
+  <!-- Thematic sections:
+    Characters
+      Define term, relate to encodings, explain literal, 1-char strings, and
+      iteration
+   ...   
+  -->
+  <section>
+    <h1 id=characters>Characters</h1>
+
+    <figure class=railroad>
+      <img id=character-literal.png>
+      <figcaption>Syntax diagram of the character literal
+    </figure>
+
+    <!-- In early days of Ruby M17N development, Character class was on the
+    table. It was not the special case of String class, but just Character
+    class. -->
+    <p>A single character prefixed with a question mark
+    (<code>?<var>char</var></code>) instantiates a <code>String</code>
+    comprising the character. Likewise, <var>char</var> may be a <a
+      href=#character-escapes>character escape</a> that results in a single
+    character, such as <code>\u<var>hex</var></code>, <code>\n</code>,
+    <code>\t</code>, or a byte escape. <code>?<var>char</var></code> is
+    equivalent to <code>"<var>char</var>"</code>.
+
+    The <code>String</code> may be treated as an <code>Array</code> of
+    characters with <code>String#[]</code>, which returns the character at a
+    given <code>Integer</code> offset. Similarly, <code>String#[]=</code>
+    allows assigning a character to a given offset.  In both cases the
+    offset is zero-based.</p>
+  </section>
+  
+  <!-- TODO: alternative delimiters-->
+
+  <section>
+    <h1 id=single-quoted>Single-Quoted Strings</h1>
+    
+    <figure class=railroad>
+      <img id=single-quoted-string-literal.png>
+      <figcaption>Syntax diagram of the single-quoted string literal
+    </figure>
+    
+    <p>A single-quoted <code>String</code> is a string delimited by
+    apostrophe (<code class=u title="'">U＋0027</code>) characters or
+    <a href=#single-quoted-strings-q><code>%q</code></a>. Its contents
+    are not subject to <a
+      href=#string-interpolation>interpolation</a>. The only
+    recognised <a href=#string-escapes>escape sequences</a> are
+    <code>\\</code> and <code>\<var>delimiter</var></code>; any other
+    escape is interpreted literally, i.e. as a reverse solidus
+    followed by a single character.</p>
+     
+    <section>
+      <h1 id=q>Alternative Delimiters</h1>
+      
+      <figure class=railroad>
+        <img id=single-quoted-string-literal-q.png>
+        <figcaption>Syntax diagram of the <code>%q</code>
+        single-quoted string literal
+      </figure>
+      
+      <p>A single-quoted string may also be delimited by arbitrary
+      delimiters with the
+      <code>%q<var>delimiter</var>…<var>delimiter</var></code> construct,
+      where <var>delimiter</var> is a single character.  If
+      <var>delimiter</var> appears in the string it must be escaped.
+      
+      <p>If the opening delimiter is <code>(</code>, <code>[</code>,
+      <code>&lt;</code>, or <code>{</code>, the closing delimiter must be
+      the corresponding closing bracket. For example, if the opening
+      delimiter is <code>[</code>, the closing delimiter must be
+      <code>]</code>. When these paired delimiters are used, the same pair
+      may appear inside the string as long as they are properly
+      balanced.</p>
+       
+      <figure class=centre id=single-quoted-string-literal-q.rb>
+        <figcaption>Constructing a single-quoted string with alternative
+        delimiters using <code>%q</code>
+      </figure>
+    </section>
+  </section>
+  
+  <section>
+    <h1 id=double-quoted>Double-Quoted Strings</h1>
+    
+    <figure class=railroad>
+      <img id=double-quoted-string-literal.png>
+      <figcaption>Syntax diagram of the double-quoted string literal
+    </figure>
+    
+    <p>A double-quoted <code>String</code> is a <code>String</code>
+    delimited with quotation marks (<code class=u
+      title='"'>U＋0022</code>) characters or <a
+      href=#double-quoted-strings-q><code>%Q</code></a>. Its contents
+    are subject to <a href=#string-interpolation>interpolation</a> and
+    <a href=#string-escapes>character escapes</a>.</p>
+    
+    <section>
+      <h1 id=interpolation>String Interpolation</h1>
+      
+      <figure class=railroad>
+        <img id=string-interpolation.png>
+        <figcaption>Syntax diagram of the string interpolation
+        construct
+      </figure>
+      
+      <p><dfn title="string interpolation">Interpolation</dfn> is
+      the embedding of the value of an expression within a string.
+      The general form of the syntax is
+      <code>#{<var>expression</var>}</code>.  It is common for
+      <var>expression</var> to be simply the name of a local
+      variable which is to be substituted for its value.
+      
+      <p>The braces can be omitted if <var>expression</var> is the
+      name of a global—, class—, or instance variable. However, in
+      this case the variable name cannot be immediately followed by
+      a character legal in an identifier, as ambiguity results. </p>
+    </section>
+
+    <section>
+      <h1 id=escapes>String Escapes</h1>
+       
+      <figure class=railroad>
+        <img id=escape.png>
+        <figcaption>Syntax diagram of the string escape
+      </figure>
+       
+      <p><dfn title="backslash escape">Escape sequences</dfn> are
+      character sequences prefixed with a reverse solidus (<code
+        class=u title='\'>U＋005C</code>) that have a meaning other
+      than their constituent characters.</p>
+       
+      <section>
+        <h1 class=runout id=character-escapes>Character Escapes</h1>
+
+        <figure class=railroad>
+          <img id=character-escape.png>
+          <figcaption>Syntax diagram of a character escape
+        </figure>
+
+        <p>A character escape consists of a reverse solidus followed by a
+        single character, <var>char</var>. If <var>char</var> is one of
+        [<code>abcefnrstuvxCM01234567</code>], the escape has the meaning
+        given in the table below. If <var>char</var> is a literal <a
+          href=/programs#newlines>line terminator</a>, both the reverse
+        solidus and the line terminator are removed from the string. In all
+        other cases <code>\<var>char</var></code> evaluates to
+        <var>char</var>.</p>
+
+        <figure class=centre id=character-escape.rb>
+          <figcaption>A character escape is a reverse solidus followed by
+          a single character
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=byte-escapes>Byte Escapes</h1>
+
+        <!-- intro para -->
+        <p>&nbsp;</p>
+
+        <figure class=railroad>
+          <!-- TODO: Incorporate maximumn value of octal integer: 377
+          -->
+          <img id=byte-escape.png>
+          <figcaption>Syntax diagram of the byte escape
+        </figure>
+
+        <section>
+          <h1 id=octal-byte>Octal Byte Escapes</h1>
+
+          <p>A reverse solidus followed by an octal number between zero
+          and 377<sub>8</sub> represents the character whose character
+          code that is.</p>
+
+          <figure class=centre id=octal-byte-escape.rb>
+            <figcaption>An octal byte escape consists of a backslash
+            followed by a character code in base 8
+          </figure>
+        </section>
+
+        <section>
+          <h1 id=hex-byte>Hexadecimal Byte Escapes</h1>
+
+          <p>A hexadecimal byte escape consists of <code>\x</code>
+          followed by a hexadecimal number ≤ FF<sub>16</sub>. It
+          represents the character whose code is given by the number.</p>
+
+          <figure class=centre id=hex-byte-escape.rb>
+            <figcaption>A hexadecimal byte escape consists of a backslash
+            followed by an <code>x</code> followed by one or two
+            hexadecimal digits
+          </figure>
+        </section>
+
+        <p>Both of these byte escapes force the string in which they are
+        embedded to have <a href=#ascii-8bit>ASCII-8BIT</a> encoding if the
+        bytes are invalid in the source encoding. 
+      </section>
+
+      <section>
+        <h1 id=control-escapes class=runout>Control Escapes</h1>
+
+        <figure class=railroad>
+          <img id=control-escape.png>
+          <figcaption>Syntax diagram for the control escape
+        </figure>
+
+        <p>The escape sequence for <a
+          href=//en.wikipedia.org/wiki/Control_character>control
+          character</a>
+        <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd> consists of a
+        reverse solidus, either <code>c</code> or <code>C-</code>, then
+        <var>char</var>, which may be a character or escape.
+        (<var>char</var> must not be a <a href=#control-escape>control</a>,
+        Unicode, <a href=#hex-byte>hexadecimal</a>, or three-digit <a
+          href=#octal-byte>octal</a>, escape). Its value is the character
+        whose character code is <var>char</var> ∧ 0x9F.</p>
+        
+        <figure class=centre id=control-escape.rb>
+          <figcaption>The control escape represents a control key
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=meta-escapes>Meta Character Escapes</h1>
+
+        <figure class=railroad>
+          <img id=meta-escape.png>
+          <figcaption>Syntax diagram of the meta character escape
+        </figure>
+
+        <p>The meta character escape <code>\M-<var>char</var></code>
+        represents the character whose character code is that of
+        <var>char</var> ∨ 0x80, where <var>char</var> is a single
+        character or escape. (<var>char</var> must not be a <a
+        href=#meta-escape>meta character</a>, Unicode, <a
+        href=#hex-byte>hexadecimal</a>, or three-digit <a
+        href=#octal-byte>octal</a>, escape).</p>
+
+        <figure class=centre id=meta-escape.rb>
+          <figcaption>The meta character escape represents the given meta
+          character.
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=unicode-escapes>Unicode Escapes</h1>
+           
+        <figure class=railroad>
+          <img id=unicode-escape.png>
+          <figcaption>Syntax diagram of the Unicode <code>\u</code>
+          escape
+        </figure>
+        
+        <p>An arbitrary <a
+        href=//en.wikipedia.org/wiki/Unicode>Unicode</a> character may be
+        embedded in a string by specifying its <a
+        href=//en.wikipedia.org/wiki/Codepoint>codepoint</a> as four
+        hexadecimal digits following <code>\u</code>.            
+
+        <p>The <code>\u{}</code> construct extends this ability to
+        embedding multiple codepoints with the same escape.
+        The curly braces delimit one or more hexadecimal codepoints
+        separated by whitespace. This form does not restrict a
+        codepoint to four digits.</p>             
+
+        <figure class=railroad>
+          <img id=hex-codepoint.png>
+          <figcaption>Syntax diagram of a Unicode codepoint in hexadecimal
+        </figure>
+
+        <figure class=centre id=unicode-escape.rb>
+          <figcaption>A Unicode escape represents a Unicode character with
+          the given codepoint(s)
+        </figure>
+
+        <p>Both forms of the Unicode escape sequence force the string in
+        which they are embedded to have UTF-8 encoding. Therefore they are
+        illegal in a file that has both a non-UTF-8 source encoding and a
+        string containing literal multibyte characters in that encoding.
+      </section>
+
+      <table class=border>
+        <thead>
+          <tr><th>Escape Sequence<th>Interpretation
+        </thead>
+        <tbody>
+          <tr class=odd>
+            <td><code>\a</code>
+              <td><code class=u>U＋0007</code>: The <a
+                href=//en.wikipedia.org/wiki/Bell_character>BEL</a>
+                character. Rings the console bell.
+          <tr>
+            <td><code>\b</code>
+            <td><code class=u>U＋0008</code>: The <a
+                href=//en.wikipedia.org/wiki/Backspace>Backspace</a>
+              character.
+          <tr class=odd>
+            <td><code>\e</code>
+            <td><code class=u>U＋001B</code>: The <a
+                href=//en.wikipedia.org/wiki/Esc>ESC</a> character.
+          <tr>
+            <td><code>\f</code>
+            <td><code class=u>U＋000C</code>: The <a
+                href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
+              character.
+          <tr class=odd>
+            <td><code>\n</code>
+            <td><code class=u>U＋000A</code>: The <a
+                href=//en.wikipedia.org/wiki/Newline>Newline</a>
+              character.
+          <tr>
+            <td><code>\r</code>
+            <td><code class=u>U＋000D</code>: The <a
+                href=//en.wikipedia.org/wiki/Carriage_return>Carriage
+                Return</a> character.
+          <tr class=odd>
+            <td><code>\s</code>
+            <td><code class=u title=' '>U＋0020</code>: The <a
+                href=//en.wikipedia.org/wiki/Space_key>Space</a>
+              character.
+          <tr>
+            <td><code>\t</code>
+            <td><code class=u>U＋0009</code>: The <a
+                href=//en.wikipedia.org/wiki/Tab_character>Tab</a>
+              character
+          <tr class=odd>
+            <td><a
+            href=#unicode-escapes><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code></a>
+              <td>The Unicode codepoint specified by the four given
+              hexadecimal digits.
+          <tr>
+            <td><a
+            href=#unicode-escapes><code>\u{<var>codepoints</var>}</code></a>
+            <td>The Unicode codepoint(s) specified by
+              <a href=#unicode-escapes><var>codepoints</var></a>.
+          <tr class=odd>
+            <td><code>\v</code>
+            <td><code class=u>U＋000B</code>: The vertical tab
+              character.
+          <tr>
+            <td><a
+            href=#octal-byte><code>\<var>octal</var><var>octal</var><var>octal</var></code></a>
+            <td>The byte specified by the three given octal digits,
+              whose combined value does not exceed 377<sub>8</sub>.
+          <tr class=odd>
+            <td><a
+            href=#octal-byte><code>\<var>octal</var><var>octal</var></code></a>
+            <td>The byte specified by the two given octal digits.
+          <tr>
+            <td><a href=#octal-byte><code>\<var>octal</var></code></a>
+            <td>The byte specified by the given octal digit.
+          <tr class=odd>
+            <td><a
+            href=#hex-byte><code>\x<var>hex</var><var>hex</var></code></a>
+            <td>The byte specified by the two given hexadecimal
+              digits.
+          <tr>
+            <td><a href=#hex-byte><code>\x<var>hex</var></code></a>
+            <td>The byte specified by the given hexadecimal digit.
+          <tr class=odd>
+            <td><a
+            href=#control-escapes><code>\c<var>char</var></code></a>
+            <td rowspan=2>The control character
+            <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd>.
+          <tr class=odd>
+            <td><a
+            href=#control-escapes><code>\C-<var>char</var></code></a>
+          <tr>
+            <td><a href=#meta-escapes><code>\M-<var>char</var></code></a>
+            <td>Meta character <var>char</var>.
+          <tr class=odd>
+            <td><code>\</code><code class=u>U＋000A</code>
+            <td rowspan=3>A backslash before a <a
+                href=//en.wikipedia.org/wiki/Newline>line terminator</a>
+              escapes it, removing both the line
+              terminator and backslash from the string
+          <tr class=odd>
+            <td><code>\</code><code class=u>U＋000D</code>
+          <tr class=odd>
+            <td><code>\</code>〈<code class=u>U＋000D</code>,&nbsp;<code
+                class=u>U＋000A</code>〉
+          <tr>
+            <td><code>\<var>char</var></code>
+            <td>A backslash before any other character evaluates to
+              the character itself
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h1 id=double-quoted-q>Alternative Delimiters</h1>
+      
+      <figure class=railroad>
+        <img id=double-quoted-string-literal-q.png>
+        <figcaption>Syntax diagram of the <code>%Q</code>
+        double-quoted string literal
+      </figure>
+      
+      <p>A double-quoted string may also be delimited by arbitrary
+      delimiters with the
+      <code>%Q<var>delimiter</var>…<var>delimiter</var></code> and
+      <code>%<var>delimiter</var>…<var>delimiter</var></code>constructs,
+      where <var>delimiter</var> is a single character.  If
+      <var>delimiter</var> appears in the string it must be escaped.
+       
+      <p>If the opening delimiter is <code>(</code>, <code>[</code>,
+      <code>&lt;</code>, or <code>{</code>, the closing delimiter
+      must be the corresponding closing bracket. For example, if the
+      opening delimiter is <code>[</code>, the closing delimiter
+      must be <code>]</code>. When these paired delimiters are used,
+      the same pair may appear inside the string as long as they are
+      properly balanced.</p>
+        
+      <figure class=centre id=double-quoted-string-literal-q.rb>
+        <figcaption>Constructing a double-quoted string with
+        alternative delimiters using <code>%Q</code>
+      </figure>
+    </section>
+  </section>
+  
+  <p>Therefore, a <dfn>string literal</dfn> is either a double-quoted
+  string literal or a single-quoted string literal.</p>
+  
+  <figure class=railroad>
+    <img id=string-literal.png>
+    <figcaption>Syntax diagram of the string literal
+  </figure>
+   
+  <section>
+    <h1 id=here-documents>Here Documents</h1>
+    
+    <figure class=railroad>
+      <img id=here-doc.png>
+      <figcaption>Syntax diagram of the here document
+    </figure>
+     
+    <p><dfn>Here documents</dfn> extend the concept of alternative
+    delimiters to allow an arbitrary <em>sequence</em> of characters
+    as a delimiter. They begin with <code>&lt;&lt;</code> followed
+    immediately by an arbitary identifier or string literal. Their
+    content begins on the following line and continues until that
+    same identifier/string is seen on a line by itself with no
+    intervening whitespace. If there is a hyphen between the
+    opening <code>&lt;&lt;</code> and the delimiter, i.e.
+    <code>&lt;&lt;-<var>delimiter</var></code>, the closing
+    delimiter may be preceded with whitespace. The final newline
+    character before the closing delimiter is part of the here
+    document’s contents: a minimal here document is equivalent to
+    <code>"\n"</code>.
+    
+    <p>If the delimiter is an identifier or double quoted string,
+    the contents of the here document is interpreted with
+    double-quoted string semantics. Otherwise, the here document’s
+    contents are interpreted literally: all escape sequences and
+    interpolation constructs are ignored.</p>
+    
+    <figure class=centre id=here-doc.rb>
+      <figcaption>Using a here document to render a poem
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=backticks>Backticks</h1>
+      
+    <p>A double-quoted string delimited with grave accents (<code
+      class=u title='`'>U＋0060</code>) characters, or “backticks”,
+    executes its contents as an operating system command and returns
+    the output. This is achieved by the <code>Kernel.`</code> method,
+    which can be redefined to alter these semantics. <!-- Note: only
+    redefinable literal -->Alternative
+    delimiters can be used with the corresponding
+    <code>%x<var>delimiter</var>…<var>delimiter</var></code>
+    construct, which follows the same rules as <a
+      href=#double-quoted-strings-q><code>%Q</code></a>.</p>
+    
+    <figure class=centre id=backticks.rb>
+      <figcaption>Using backticks to execute commands and retrieve
+      the output
+    </figure>
+    <!-- Example: `df .`.split("\n")[1].split[4]
+    => "55%" -->
+  </section>
+
+  <section>
+    <h1 id=iteration>Iteration</h1>
+
+    <p>A <code>String</code> can be iterated in the following ways. Each
+    method returns an <code>Enumerator</code>, or yields each element in
+    turn to a given block:
+
+    <dl>
+      <dt>Byte
+      <dd>A <code>String</code> comprises zero or more 8-bit bytes.
+      They are enumerated by <code>String#bytes</code>, or its alias
+      <code>String#each_byte</code>, as <code>Fixnum</code>s between
+      <code>0</code> and <code>255</code>.
+
+      <dt>Character 
+      <dd>A <code>String</code>’s encoding designates certain sequences of
+      bytes as specific characters. They are enumerated by
+      <code>String#chars</code>, or its alias <code>String#each_char</code>,
+      as single-character <code>String</code>s.
+
+      <dt>Unicode codepoint
+      <dd>Unicode assigns each character a unique, ordinal number, which is
+      independent of its encoding. A <code>String</code>’s codepoints are
+      enumerated by <code>String#codepoints</code>, or its alias
+      <code>String#each_codepoint</code>, as <code>Fixnum</code>s between
+      <code>0</code> and <code>0x10FFFF</code>.
+
+      <dt>Lines
+      <dd>A <i>line</i> is a sequence of characters terminated by
+      <code>"\n"</code>. The lines comprising a <code>String</code> are
+      enumerated by <code>String#lines</code>, and its alias
+      <code>String#each_line</code>, as <code>String</code>s including the
+      trailing <code>"\n"</code>.
+    </dl>
+  </section>
+
+  <section>
+    <h1 id=format>Format Strings</h1>
+
+    <p>A <dfn>format string</dfn> is a template specifying how a set of
+    arguments should be interpolated into a new <code>String</code>. It
+    contains arbitrary text-which is copied to the result
+    unchanged-interspersed with <dfn>format sequences</dfn>-which describe
+    how their corresponding argument should be converted before being
+    substituted in their place.
+
+    <p><code>String#%</code> interprets its receiver as a format string, and
+    its argument-a plurality are supplied as an <code>Array</code>-as the
+    values to be interpolated, returning the expanded <code>String</code>.
+    <code>Kernel#sprintf</code>, and its alias <code>Kernel#format</code>,
+    interprets its first argument as a format string and subsequent arguments
+    as the values to be interpolated.
+
+    <p>A format sequence begins with a percent sign, then contains zero or
+    more single-character <var>flags</var>, an optional minimal field <a
+      href=#sprintf-width><var>width</var></a>, an optional <a
+      href=#sprintf-precision><var>precision</var></a>, and a mandatory
+    conversion specifier, in that order. We will discuss each conversion
+    specifier in turn, along with the flags they support, then conclude by
+    explaining the other fields.</p>
+
+    <!-- TODO: %% -->
+    <section>
+      <h1 id=sprintf-text>Textual Conversions</h1>
+
+      <p>Firstly, the following text-based conversion specifiers are available:
+
+      <dl>
+        <dt>Character
+        <dd>Conversion specifier <code>c</code> interprets a numerical
+        argument as a character code point, which it converts into the given
+        character. An argument consisting of a one-character
+        <code>String</code> is copied into the result unchanged.
+
+        <dt>Inspect
+        <dd>Conversion specifier <code>p</code> is substituted for the
+        result of sending <code>#inspect</code> to its argument.
+
+        <dt>String
+        <dd>Conversion specifier <code>s</code> copies the argument into
+        the result as a <code>String</code>.
+      </dl>
+
+      <p>If accompanied by a precision, both <code>p</code> and
+      <code>s</code> copy at most <var>precision</var> characters into the
+      result.</p>
+
+      <figure id=sprintf-textual.rb>
+        <figcaption>Using the text-based format sequences.
+      </figure>
+    </section>
+
+    <p>The remaining conversion specifiers format numbers. All support a
+    <code>␣</code> (a space character) flag, which prepends positive results
+    with a space, a <code>+</code> flag which prepends a plus sign to
+    positive results, and a <code>0</code> flag which <a
+      href=#sprintf-width>pads</a> fields with zeros instead of spaces. If
+    <code>␣</code> and <code>+</code> are used together, the latter has
+    precedence.</p>
+
+    <section>
+      <h1 id=sprintf-bases>Converting Between Numerical Bases</h1>
+
+      <p>Conversion specifiers can convert an argument into an integer in a
+      given base. Negative results are usually represented in two’s
+      complement, prefixed with two full stops. However, if the
+      <code>␣</code> flag is supplied they are given in their absolute form
+      and prefixed with a hyphen-minus sign. When the <code>0</code> flag is
+      given and the result is represented as two’s complement, it is padded
+      with the digit one fewer than the base. For example, negative octal
+      numbers are padded with <code>7</code>s instead of <code>0</code>s.
+
+      <dl>
+        <dt>Binary
+        <dd>Conversion specifiers <code>b</code> and <code>B</code>
+        convert their argument to base 2. The <code>#</code> flag causes
+        <code>0b</code> to be prepended to the result of <code>b</code>, and
+        <code>0B</code> to be prepended to the result of <code>B</code>,
+        i.e. these conversion specifiers differ only in the case of their
+        prefix.
+        
+        <dt>Octal
+        <dd>The <code>o</code> conversion specifier converts its argument to
+        base 8. When this conversion specifier is used in conjunction with
+        the <code>#</code> flag, and the result is positive, <code>0</code>
+        is prepended to the result. 
+
+        <dt>Decimal 
+        <dd>Conversion specifiers <code>i</code>, <code>u</code>, and
+        <code>d</code>, all of which are identical, convert their argument
+        to base 10. Negative numbers are prefixed with a hyphen-minus sign.
+
+        <dt>Hexadecimal 
+        <dd>Both the <code>x</code> and <code>X</code> conversion specifiers
+        convert their argument to base 16. The case of the conversion
+        specifier dictates the case of the characters in the result. The
+        <code>#</code> flag prepends <code>0x</code> or <code>0X</code> to
+        the result, as appropriate.
+      </dl>
+
+      <figure id=sprintf-bases.rb>
+        <figcaption>Using the format sequences to convert between numeric
+        bases.
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=sprint-notation>Numerical Notation</h1>
+
+      <p>The notation used for displaying numerical arguments can also be
+      configured with conversion specifiers. The <code>␣</code> flag again
+      causes positive results to have a single space prepended, but has no
+      effect on negative results. The <code>#</code> flag forces the result
+      to contain a radix point, even if no digits follow. 
+      
+      <dl>
+        <dt>Exponential
+        <dd>The <code>e</code> conversion specifier represents the argument
+        in exponential notation in the form: <code>[-]<var
+            class=l>α</var>.<var class=l>β</var>e±<var
+            class=l>γ</var></code>, where <var class=l>α</var> is a single
+        digit, <var class=l>β</var> is the fractional part consisting of
+        <var>precision</var> (default: 6)  digits, and <var class=l>γ</var>
+        is the two-digit exponent.The <code>E</code> conversion specifier
+        behaves identically, expect a capital <code>E</code> is used to
+        introduce the exponent. 
+
+        <dt>Fixed-point
+        <dd>The <var>f</var> conversion specifier represents its argument
+        with a whole part, preceded with a hyphen-minus sign if negative,
+        and a fractional part, separated by a radix point. There are always
+        <var>precision</var> (default: 6) digits following the radix point.
+
+        <dt>Exponential or fixed-point
+        <dd>Both the <code>g</code> and <code>G</code> conversion specifiers
+        render their argument in the notation most appropriate for its
+        magnitude: exponential if the exponent is &lt; -4 or &ge;
+        <var>precision</var>; fixed-point, otherwise. There are at most
+        <var>precision</var> (default: 6) digits in the result.
+        Trailing zeros are omitted from the fractional part of the result
+        unless the <code>#</code> flag is given. The radix point is omitted
+        unless followed by at least one digit. The exponent is introduced
+        with <code>e</code> if the <code>g</code> conversion specifier is
+        used; or <code>E</code> if <code>G</code> is used instead.
+
+        <dt>Hexadecimal exponential 
+        <dd>A conversion specifier of <code>a</code> converts the argument
+        to base-16 exponential notation (using lowercase digits) in the
+        form: <code>[-]0x<var class=l>α</var>.<var class=l>β</var>p±<var
+            class=l>γ</var></code>, where <var class=l>α</var> is a single
+        hex digit, <var class=l>β</var> is one or more hex digits, whose
+        quantity is capped at <var>precision</var>, and <var class=l>γ</var>
+        is the single-digit decimal exponent. If the <code>A</code>
+        specifier is used instead, the lowercase characters in the result
+        are converted to uppercase, i.e. it takes the form <code>[-]0X<var
+            class=l>α</var>.<var class=l>β</var>P±<var
+            class=l>γ</var></code>, where <var class=l>α</var> and <var
+          class=l>β</var> use uppercase digits.
+      </dl>
+
+      <figure id=sprintf-notation.rb>
+        <figcaption>Using the format sequences to convert between numeric
+        notations.
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=sprintf-hash>Interpolating a <code>Hash</code></h1>
+
+      <p>If the arguments are given as a <code>Hash</code>, rather than an
+      <code>Array</code>, they may be referenced from a format sequence by
+      name instead of position. When a conversion specifier is immediately
+      preceeded by <code>&lt;<var>key</var>&gt;</code>, where <var>key</var>
+      names a key of the <code>Hash</code>, the corresponding value in the
+      <code>Hash</code> becomes the format sequence’s argument. A format
+      sequence with a conversion specifier of of the form
+      <code>{<var>name</var>}</code> is equivalent to
+      <code>&lt;<var>name</var>&gt;s</code>.</p> 
+
+      <figure id=sprintf-hash.rb>
+        <figcaption>Arguments for a format string can be provided as a
+        <code>Hash</code>, allowing for a rudimentary templating system.
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=sprintf-width>Field Width &amp; Justification</h1>
+      
+      <p>The <var>width</var> component of a format sequence is an optional
+      decimal digit string (with non-zero first digit) specifying the
+      minimum width of the field. Alternatively, the value
+      can be specified in <a href=#sprintf-arguments>relative or absolute
+        terms</a>.
+      
+      <p>If the result has fewer characters than this width, it is padded;
+      if it has more characters, the field is expanded as needed. By
+      default, <i>␣</i> (a space character) is used for padding, but the
+      <code>0</code> flag causes an alternative character, usually a zero,
+      to be used instead. 
+      
+      <p>Fields are normally right justified, but a flag of <code>-</code>
+      justifies left instead. In the former case, padding characters are
+      prepended to the result, while in the latter they are appended. If a
+      negative width is given, this flag is implied, and the field’s width
+      is this value with the sign ignored.</p>
+
+      <figure id=sprintf-width.rb>
+        <figcaption>Specifying the minimum width of a field in a format
+        sequence.
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=sprintf-precision>Precision</h1>
+
+      <p>The optional <var>precision</var> component comprises a full stop
+      followed by an optional integer. If said integer is omitted or
+      negative, it has the value <code>0</code>. Alternatively, the value
+      can be specified in <a href=#sprintf-arguments>relative or absolute
+        terms</a>. The precision gives:
+      
+      <ul>
+        <li>The minimum number of digits to appear for <code>b</code>,
+        <code>B</code>, <code>d</code>, <code>i</code>, <code>o</code>,
+        <code>u</code>, <code>x</code>, and <code>X</code> conversions.
+        <li>The number of digits to appear after the radix point for
+        <code>a</code>,  <code>A</code>,  <code>e</code>,  <code>E</code>,
+        <code>f</code>, and <code>F</code> conversions.
+        <li>The maximum number of significant digits for <code>g</code> and
+        <code>G</code> conversions.
+        <li>The maximum number of characters to be taken from a string for
+        <code>s</code> and <code>p</code> conversions.
+      </ul>
+    </section>
+
+    <section>
+      <h1 id=sprintf-arguments>Relative &amp; Absolute Arguments</h1>
+
+      <p>Usually, an argument is mapped to a conversion specifier
+      implicitly: the <var>n</var><sup>th</sup> argument corresponds to the
+      <var>n</var><sup>th</sup> conversion specifier. However, this may be
+      made explicit so as to support arguments in a different order to their
+      conversion specifiers, and/or to use the same argument multiple times.
+
+      <p>Arguments are indexed with integers, the first argument having an
+      index of 1. To marry a conversion specifier with an argument at index
+      <var>i</var>, the format sequence should begin with
+      <code>%<var>i</var>$</code>. However, if one format sequence has this
+      form, they all must: numbered and un-numbered conversion specifiers
+      cannot be mixed in the same format string.
+
+      <p>The precision and width of a field can be provided in a similar
+      way. A width given as <code>*<var>i</var>$</code> or a precision given
+      as <code>.*<var>i</var>$</code>, specifies that the value is supplied
+      by the argument indexed by <var>i</var>. However, this construct must
+      always be paired with numbered conversion specifiers, which as noted
+      above, are an all-or-nothing deal.
+      
+      <p>Alternatively, a width given as a single asterisk, or a precision
+      given as <code>.*</code>, denote that the <var>n</var><sup>th</sup>
+      argument holds <em>their</em> value, rather than that of their
+      conversion specifier.  These constructs can be intermixed freely with
+      unnumbered conversion specifiers.</p>
+
+      <figure id=sprintf-arguments.rb>
+        <figcaption>Alternative approaches to matching arguments with format
+        sequences.
+      </figure>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=encoding>Encoding</h1>
+
+    <!--
+    Originally, an ASCII-only String literal had US-ASCII encoding even in
+    a file with UTF-8 source encoding. Now it doesn't; it remains UTF-8.
+    However, regexps retain this behaviour...
+    -->
+    <p>The encoding of a <code>String</code> literal is normally that of the
+    source file in which it appears, with the caveats noted above for
+    Unicode and byte escapes.</p>
+
+    <!-- String#bytes / String#dump to inspect encoding -->
+
+    <section>
+      <h1 id=associate>Forcing an Association</h1>
+
+      <p>The encoding associated with a <code>String</code> may be changed
+      independently of its contents. This is necessary if the contents are
+      valid in one encoding, but associated with another. Transcoding would
+      be inappropriate because it would alter the underlying bytes, which
+      are already perfectly valid. The solution is the destructive method
+      <code>String#force_encoding</code>, which associates its receiver with
+      the encoding given as an argument. This operation will always succeed,
+      even if the <code>String</code>’s contents are <a
+        href=#valid-encoding>invalid</a> in the new encoding.
+
+      <p>Yui Naruse, a member of the Ruby core team, cautions against the
+      use of this method: <q><code>String#force_encoding</code> should be
+        sparsely used since Strings have already had appropriate encodings
+        assigned when those are created, or read from files specifying the
+        encoding.&hellip; If you need to use
+      <code>String#force_encoding</code> in your library, you should
+      reconsider your library design. You should not use this method
+      thoughtlessly.</q> (<a href=/references#refHARADA09 class=ref><cite>The Design and
+        Implementation of Ruby M17N</cite></a>, Yui Naruse, Yoko Harada
+      trans.)
+    </section>
+
+    <section>
+      <h1 id=valid-encoding>Valid Encodings</h1>
+
+      <p>A <code>String</code>’s encoding is <dfn title='valid
+        encoding'>valid</dfn> if its constituent bytes are properly formed
+      according to the encoding it is associated with. This check makes no
+      claims as to whether the characters in the <code>String</code> exist
+      in the encoding, for it inspects syntax rather than semantics.
+
+      <p>In general, if you create a <code>String</code> via a literal, or
+      consume a <code>String</code> as input that is validly encoded,
+      manipulating it as a sequence of characters will ensure its encoding
+      remains valid.  However, associating a <code>String</code> with an
+      improper encoding, treating it as <a href=#byte-arrays>byte array</a>,
+      or consuming garbage input, may all result in an invalid encoding. The
+      <code>String#valid_encoding?</code> predicate returns
+      <code>true</code> if the <code>String</code>’s encoding is valid;
+      <code>false</code> otherwise.
+    </section>
+
+    <section>
+      <h1 id=ascii-only>ASCII Only</h1>
+
+      <p>Many operations on <code>String</code>s contain optimisations for
+      <code>String</code>s that are <dfn>ASCII-only</dfn>-containing 7-bit
+      ASCII characters exclusively-regardless of the associated encoding.
+      For example, two <code>String</code>s with disparate encodings are <a
+        href=#encoding-compatibility>compatible</a> if they’re both
+      ASCII-only. In general, however, these optimisations are transparent
+      so can be safely ignored. The <code>String#ascii_only?</code>
+      predicate can be useful if you wish to perform your own optimisations
+      along these lines.
+    </section>
+  </section>
+
+  <section>
+    <h1 id=byte-arrays>Byte Arrays</h1>
+    
+    <p>A <code>String</code> may be treated as a sequence of bytes.
+    <code>String#bytes</code> returns an <code>Enumerator</code> of its
+    receiver’s bytes, represented as <code>Fixnum</code>s. A specific byte
+    position may be assigned to with <code>String#setbyte(<var>index</var>,
+      <var>byte</var>)</code>, where <var>index</var> is the zero-based
+    offset of the byte to be changed, and <var>byte</var> is the new value
+    as an <code>Integer</code>. A byte may be retrieved from a given offset
+    with <code>String#getbyte(<var>index</var>)</code>. The length of a
+    <code>String</code> in bytes is returned by <code>String#bytesize</code>
+    as an <code>Integer</code>.
+
+    <p>Byte-level access generally assumes that the <code>String</code> is
+    encoded in <a href=#ascii-8bit><i>ASCII-8BIT</i></a>; otherwise,
+    modifying arbitrary bytes is liable to result in a <code>String</code>
+    with an <a href=#valid-encoding>invalid encoding</a>.
+  </section>
+
+  <section>
+    <h1 id=size>Size</h1>
+
+    <p>“How long is a piece of string.” isn’t always a rhetorical question,
+    but in Ruby the answer depends on your unit of measurement.
+    <code>String#length</code> and <code>String#size</code>, which are
+    aliases, return the number of characters in their receiver. Therefore,
+    they are dependent on the associated encoding: the length of a
+    <code>String</code> may change simply by associating it with a different
+    encoding. <code>String#bytesize</code>, however, returns the number of
+    bytes contained in its receiver. It is unaffected by
+    <code>String#force_encoding</code>.
+  </section>
+
+  <section>
+    <h1 id=equivalence>Equivalence</h1>
+
+    <p>For two <code>String</code>s to compare as equal in terms of
+    <code>String#==</code>, they must be byte-wise identical and associated
+    with the same encoding. This last condition is dropped when both
+    <code>String</code>s consist entirely of ASCII characters and have an
+    ASCII-compatible encoding.
+  </section>
+
+  <section>
+    <h1 id=comparison>Comparison</h1>
+
+    <p><code>String#&lt;=&gt;</code> compares its receiver with its
+    <code>String</code> argument in terms of their character codes. Neither
+    operand is normalised. <code>String</code> mixes in
+    <code>Comparable</code>, so gains <code>String#&lt;</code>,
+    <code>String#&le;</code>, <code>String#&gt;</code>, and
+    <code>String#&ge;</code>, also.
+
+    <p>The aforementioned methods are, by implication, case sensitive.
+    <code>String#casecmp</code> provides a case-insensitive alternative for
+    ASCII <code>String</code>s; non-ASCII characters are compared as
+    above. Alternatively, one must normalise the case of the two
+    <code>String</code>s themselves before comparing them.</p>
+
+    <figure id=string-comparison.rb>
+      <figcaption>Comparing <code>String</code>s
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=concatenation>Concatenation</h1>
+
+    <p><code>String#+</code> returns its receiver concatenated with its
+    <code>String</code> argument, without modifying the former. No coercion
+    is performed on the argument.
+
+    <p><code>String#&lt;&lt;</code> appends its argument to its receiver,
+    mutating the existing object rather than creating a new one, and returns
+    the receiver. The argument must be either an <code>Integer</code>
+    codepoint, which is converted into the corresponding character before
+    concatenation, or a <code>String</code>.</p>
+
+    <figure id=string-concat.rb>
+      <figcaption>Concatenating <code>String</code>s
+    </figure>
+
+    <p>Either approach requires at least one of the following conditions to
+    hold:
+
+    <ul>
+      <li>Both encodings are ASCII-compatible and one of the
+      <code>String</code>s is ASCII-only.
+      <li>One of the <code>String</code>s is empty.
+      <li>The two encodings are compatible.
+    </ul>
+  </section>
+
+  <section>
+    <h1 id=repetition>Repetition</h1>
+    
+    <p><code>String#*</code> returns a new <code>String</code> comprising
+    <var>n</var> copies of itself, where <var>n</var> is given by an
+    <code>Integer</code> argument. The receiver is not modified.</p>
+
+    <figure id=string-repetition.rb>
+      <figcaption>Using <code>String#*</code> to multiply its receiver.
+    </figure>
+  </section>
+</article>
