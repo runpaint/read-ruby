@@ -25,7 +25,7 @@ task :default do
 end
 
 desc 'Minify HTML, CSS, and JS'
-task :minify => :default do
+task :minify do
   OUT_DIR.each_child.select(&:file?).each do |file|
     if min = MINIFIER[ :"#{file.extname[1..-1]}" ]
       sh "#{min} #{file} > #{file}.min"

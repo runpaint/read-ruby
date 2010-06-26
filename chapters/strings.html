@@ -10,434 +10,437 @@
   <!-- TODO: alternative delimiters-->
 
   <section>
-    <h1 id=single-quoted>Single-Quoted Strings</h1>
+    <h1 id=literals>Literals</h1>
+
+    <section>
+      <h1 id=single-quoted>Single-Quoted Strings</h1>
+      
+      <figure class=railroad>
+        <img id=single-quoted-string-literal.png>
+        <figcaption>Syntax diagram of the single-quoted string literal
+      </figure>
+      
+      <p>A single-quoted <code>String</code> is a string delimited by apostrophe
+      (<code class=u title="'">U＋0027</code>) characters or <a
+        href=#single-quoted-q><code>%q</code></a>. Its contents are not subject
+      to <a href=#interpolation>interpolation</a>. The only recognised <a
+        href=#escapes>escape sequences</a> are <code>\\</code> and
+      <code>\<var>delimiter</var></code>; any other escape is interpreted
+      literally, i.e. as a reverse solidus followed by a single character.</p>
+       
+      <section>
+        <h1 id=single-quoted-q>Alternative Delimiters</h1>
+        
+        <figure class=railroad>
+          <img id=single-quoted-string-literal-q.png>
+          <figcaption>Syntax diagram of the <code>%q</code>
+          single-quoted string literal
+        </figure>
+        
+        <p>A single-quoted string may also be delimited by arbitrary
+        delimiters with the
+        <code>%q<var>delimiter</var>…<var>delimiter</var></code> construct,
+        where <var>delimiter</var> is a single character.  If
+        <var>delimiter</var> appears in the string it must be escaped.
+        
+        <p>If the opening delimiter is <code>(</code>, <code>[</code>,
+        <code>&lt;</code>, or <code>{</code>, the closing delimiter must be
+        the corresponding closing bracket. For example, if the opening
+        delimiter is <code>[</code>, the closing delimiter must be
+        <code>]</code>. When these paired delimiters are used, the same pair
+        may appear inside the string as long as they are properly
+        balanced.</p>
+         
+        <figure class=centre id=single-quoted-string-literal-q.rb>
+          <figcaption>Constructing a single-quoted string with alternative
+          delimiters using <code>%q</code>
+        </figure>
+      </section>
+    </section>
+    
+    <section>
+      <h1 id=double-quoted>Double-Quoted Strings</h1>
+      
+      <figure class=railroad>
+        <img id=double-quoted-string-literal.png>
+        <figcaption>Syntax diagram of the double-quoted string literal
+      </figure>
+      
+      <p>A double-quoted <code>String</code> is a <code>String</code>
+      delimited with quotation marks (<code class=u
+        title='"'>U＋0022</code>) characters or <a
+        href=#double-quoted-strings-q><code>%Q</code></a>. Its contents
+      are subject to <a href=#string-interpolation>interpolation</a> and
+      <a href=#string-escapes>character escapes</a>.</p>
+      
+      <section>
+        <h1 id=interpolation>String Interpolation</h1>
+        
+        <figure class=railroad>
+          <img id=string-interpolation.png>
+          <figcaption>Syntax diagram of the string interpolation
+          construct
+        </figure>
+        
+        <p><dfn title="string interpolation">Interpolation</dfn> is
+        the embedding of the value of an expression within a string.
+        The general form of the syntax is
+        <code>#{<var>expression</var>}</code>.  It is common for
+        <var>expression</var> to be simply the name of a local
+        variable which is to be substituted for its value.
+        
+        <p>The braces can be omitted if <var>expression</var> is the
+        name of a global—, class—, or instance variable. However, in
+        this case the variable name cannot be immediately followed by
+        a character legal in an identifier, as ambiguity results. </p>
+      </section>
+
+      <section>
+        <h1 id=double-quoted-q>Alternative Delimiters</h1>
+        
+        <figure class=railroad>
+          <img id=double-quoted-string-literal-q.png>
+          <figcaption>Syntax diagram of the <code>%Q</code>
+          double-quoted string literal
+        </figure>
+        
+        <p>A double-quoted string may also be delimited by arbitrary
+        delimiters with the
+        <code>%Q<var>delimiter</var>…<var>delimiter</var></code> and
+        <code>%<var>delimiter</var>…<var>delimiter</var></code>constructs,
+        where <var>delimiter</var> is a single character.  If
+        <var>delimiter</var> appears in the string it must be escaped.
+         
+        <p>If the opening delimiter is <code>(</code>, <code>[</code>,
+        <code>&lt;</code>, or <code>{</code>, the closing delimiter
+        must be the corresponding closing bracket. For example, if the
+        opening delimiter is <code>[</code>, the closing delimiter
+        must be <code>]</code>. When these paired delimiters are used,
+        the same pair may appear inside the string as long as they are
+        properly balanced.</p>
+          
+        <figure class=centre id=double-quoted-string-literal-q.rb>
+          <figcaption>Constructing a double-quoted string with
+          alternative delimiters using <code>%Q</code>
+        </figure>
+      </section>
+    </section>
+  
+    <section>
+      <h1 id=here-documents>Here Documents</h1>
+      
+      <figure class=railroad>
+        <img id=here-doc.png>
+        <figcaption>Syntax diagram of the here document
+      </figure>
+       
+      <p><dfn>Here documents</dfn> extend the concept of alternative
+      delimiters to allow an arbitrary <em>sequence</em> of characters
+      as a delimiter. They begin with <code>&lt;&lt;</code> followed
+      immediately by an arbitrary identifier or string literal. Their
+      content begins on the following line and continues until that
+      same identifier/string is seen on a line by itself with no
+      intervening whitespace. If there is a hyphen between the
+      opening <code>&lt;&lt;</code> and the delimiter, i.e.
+      <code>&lt;&lt;-<var>delimiter</var></code>, the closing
+      delimiter may be preceded with whitespace. The final newline
+      character before the closing delimiter is part of the here
+      document’s contents: a minimal here document is equivalent to
+      <code>"\n"</code>.
+      
+      <p>If the delimiter is an identifier or double quoted string,
+      the contents of the here document is interpreted with
+      double-quoted string semantics. Otherwise, the here document’s
+      contents are interpreted literally: all escape sequences and
+      interpolation constructs are ignored.</p>
+      
+      <figure class=centre id=here-doc.rb>
+        <figcaption>Using a here document to render a poem
+      </figure>
+    </section>
+
+    <p>Therefore, a <dfn>string literal</dfn> is either a double-quoted
+    string literal or a single-quoted string literal.</p>
     
     <figure class=railroad>
-      <img id=single-quoted-string-literal.png>
-      <figcaption>Syntax diagram of the single-quoted string literal
+      <img id=string-literal.png>
+      <figcaption>Syntax diagram of the string literal
     </figure>
-    
-    <p>A single-quoted <code>String</code> is a string delimited by
-    apostrophe (<code class=u title="'">U＋0027</code>) characters or
-    <a href=#single-quoted-strings-q><code>%q</code></a>. Its contents
-    are not subject to <a
-      href=#string-interpolation>interpolation</a>. The only
-    recognised <a href=#string-escapes>escape sequences</a> are
-    <code>\\</code> and <code>\<var>delimiter</var></code>; any other
-    escape is interpreted literally, i.e. as a reverse solidus
-    followed by a single character.</p>
+  </section>
+
+  <section>
+    <h1 id=escapes>String Escapes</h1>
      
-    <section>
-      <h1 id=q>Alternative Delimiters</h1>
-      
-      <figure class=railroad>
-        <img id=single-quoted-string-literal-q.png>
-        <figcaption>Syntax diagram of the <code>%q</code>
-        single-quoted string literal
-      </figure>
-      
-      <p>A single-quoted string may also be delimited by arbitrary
-      delimiters with the
-      <code>%q<var>delimiter</var>…<var>delimiter</var></code> construct,
-      where <var>delimiter</var> is a single character.  If
-      <var>delimiter</var> appears in the string it must be escaped.
-      
-      <p>If the opening delimiter is <code>(</code>, <code>[</code>,
-      <code>&lt;</code>, or <code>{</code>, the closing delimiter must be
-      the corresponding closing bracket. For example, if the opening
-      delimiter is <code>[</code>, the closing delimiter must be
-      <code>]</code>. When these paired delimiters are used, the same pair
-      may appear inside the string as long as they are properly
-      balanced.</p>
-       
-      <figure class=centre id=single-quoted-string-literal-q.rb>
-        <figcaption>Constructing a single-quoted string with alternative
-        delimiters using <code>%q</code>
-      </figure>
-    </section>
-  </section>
-  
-  <section>
-    <h1 id=double-quoted>Double-Quoted Strings</h1>
-    
     <figure class=railroad>
-      <img id=double-quoted-string-literal.png>
-      <figcaption>Syntax diagram of the double-quoted string literal
-    </figure>
-    
-    <p>A double-quoted <code>String</code> is a <code>String</code>
-    delimited with quotation marks (<code class=u
-      title='"'>U＋0022</code>) characters or <a
-      href=#double-quoted-strings-q><code>%Q</code></a>. Its contents
-    are subject to <a href=#string-interpolation>interpolation</a> and
-    <a href=#string-escapes>character escapes</a>.</p>
-    
-    <section>
-      <h1 id=interpolation>String Interpolation</h1>
-      
-      <figure class=railroad>
-        <img id=string-interpolation.png>
-        <figcaption>Syntax diagram of the string interpolation
-        construct
-      </figure>
-      
-      <p><dfn title="string interpolation">Interpolation</dfn> is
-      the embedding of the value of an expression within a string.
-      The general form of the syntax is
-      <code>#{<var>expression</var>}</code>.  It is common for
-      <var>expression</var> to be simply the name of a local
-      variable which is to be substituted for its value.
-      
-      <p>The braces can be omitted if <var>expression</var> is the
-      name of a global—, class—, or instance variable. However, in
-      this case the variable name cannot be immediately followed by
-      a character legal in an identifier, as ambiguity results. </p>
-    </section>
-
-    <section>
-      <h1 id=escapes>String Escapes</h1>
-       
-      <figure class=railroad>
-        <img id=escape.png>
-        <figcaption>Syntax diagram of the string escape
-      </figure>
-       
-      <p><dfn title="backslash escape">Escape sequences</dfn> are
-      character sequences prefixed with a reverse solidus (<code
-        class=u title='\'>U＋005C</code>) that have a meaning other
-      than their constituent characters.</p>
-       
-      <section>
-        <h1 class=runout id=character-escapes>Character Escapes</h1>
-
-        <figure class=railroad>
-          <img id=character-escape.png>
-          <figcaption>Syntax diagram of a character escape
-        </figure>
-
-        <p>A character escape consists of a reverse solidus followed by a
-        single character, <var>char</var>. If <var>char</var> is one of
-        [<code>abcefnrstuvxCM01234567</code>], the escape has the meaning
-        given in the table below. If <var>char</var> is a literal <a
-          href=/programs#newlines>line terminator</a>, both the reverse
-        solidus and the line terminator are removed from the string. In all
-        other cases <code>\<var>char</var></code> evaluates to
-        <var>char</var>.</p>
-
-        <figure class=centre id=character-escape.rb>
-          <figcaption>A character escape is a reverse solidus followed by
-          a single character
-        </figure>
-      </section>
-
-      <section>
-        <h1 id=byte-escapes>Byte Escapes</h1>
-
-        <!-- intro para -->
-        <p>&nbsp;</p>
-
-        <figure class=railroad>
-          <!-- TODO: Incorporate maximumn value of octal integer: 377
-          -->
-          <img id=byte-escape.png>
-          <figcaption>Syntax diagram of the byte escape
-        </figure>
-
-        <section>
-          <h1 id=octal-byte>Octal Byte Escapes</h1>
-
-          <p>A reverse solidus followed by an octal number between zero
-          and 377<sub>8</sub> represents the character whose character
-          code that is.</p>
-
-          <figure class=centre id=octal-byte-escape.rb>
-            <figcaption>An octal byte escape consists of a backslash
-            followed by a character code in base 8
-          </figure>
-        </section>
-
-        <section>
-          <h1 id=hex-byte>Hexadecimal Byte Escapes</h1>
-
-          <p>A hexadecimal byte escape consists of <code>\x</code>
-          followed by a hexadecimal number ≤ FF<sub>16</sub>. It
-          represents the character whose code is given by the number.</p>
-
-          <figure class=centre id=hex-byte-escape.rb>
-            <figcaption>A hexadecimal byte escape consists of a backslash
-            followed by an <code>x</code> followed by one or two
-            hexadecimal digits
-          </figure>
-        </section>
-
-        <p>Both of these byte escapes force the string in which they are
-        embedded to have <a href=#ascii-8bit>ASCII-8BIT</a> encoding if the
-        bytes are invalid in the source encoding. 
-      </section>
-
-      <section>
-        <h1 id=control-escapes class=runout>Control Escapes</h1>
-
-        <figure class=railroad>
-          <img id=control-escape.png>
-          <figcaption>Syntax diagram for the control escape
-        </figure>
-
-        <p>The escape sequence for <a
-          href=//en.wikipedia.org/wiki/Control_character>control
-          character</a>
-        <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd> consists of a
-        reverse solidus, either <code>c</code> or <code>C-</code>, then
-        <var>char</var>, which may be a character or escape.
-        (<var>char</var> must not be a <a href=#control-escape>control</a>,
-        Unicode, <a href=#hex-byte>hexadecimal</a>, or three-digit <a
-          href=#octal-byte>octal</a>, escape). Its value is the character
-        whose character code is <var>char</var> ∧ 0x9F.</p>
-        
-        <figure class=centre id=control-escape.rb>
-          <figcaption>The control escape represents a control key
-        </figure>
-      </section>
-
-      <section>
-        <h1 id=meta-escapes>Meta Character Escapes</h1>
-
-        <figure class=railroad>
-          <img id=meta-escape.png>
-          <figcaption>Syntax diagram of the meta character escape
-        </figure>
-
-        <p>The meta character escape <code>\M-<var>char</var></code>
-        represents the character whose character code is that of
-        <var>char</var> ∨ 0x80, where <var>char</var> is a single
-        character or escape. (<var>char</var> must not be a <a
-        href=#meta-escape>meta character</a>, Unicode, <a
-        href=#hex-byte>hexadecimal</a>, or three-digit <a
-        href=#octal-byte>octal</a>, escape).</p>
-
-        <figure class=centre id=meta-escape.rb>
-          <figcaption>The meta character escape represents the given meta
-          character.
-        </figure>
-      </section>
-
-      <section>
-        <h1 id=unicode-escapes>Unicode Escapes</h1>
-           
-        <figure class=railroad>
-          <img id=unicode-escape.png>
-          <figcaption>Syntax diagram of the Unicode <code>\u</code>
-          escape
-        </figure>
-        
-        <p>An arbitrary <a
-        href=//en.wikipedia.org/wiki/Unicode>Unicode</a> character may be
-        embedded in a string by specifying its <a
-        href=//en.wikipedia.org/wiki/Codepoint>codepoint</a> as four
-        hexadecimal digits following <code>\u</code>.            
-
-        <p>The <code>\u{}</code> construct extends this ability to
-        embedding multiple codepoints with the same escape.
-        The curly braces delimit one or more hexadecimal codepoints
-        separated by whitespace. This form does not restrict a
-        codepoint to four digits.</p>             
-
-        <figure class=railroad>
-          <img id=hex-codepoint.png>
-          <figcaption>Syntax diagram of a Unicode codepoint in hexadecimal
-        </figure>
-
-        <figure class=centre id=unicode-escape.rb>
-          <figcaption>A Unicode escape represents a Unicode character with
-          the given codepoint(s)
-        </figure>
-
-        <p>Both forms of the Unicode escape sequence force the string in
-        which they are embedded to have UTF-8 encoding. Therefore they are
-        illegal in a file that has both a non-UTF-8 source encoding and a
-        string containing literal multibyte characters in that encoding.
-      </section>
-
-      <table class=border>
-        <thead>
-          <tr><th>Escape Sequence<th>Interpretation
-        </thead>
-        <tbody>
-          <tr class=odd>
-            <td><code>\a</code>
-              <td><code class=u>U＋0007</code>: The <a
-                href=//en.wikipedia.org/wiki/Bell_character>BEL</a>
-                character. Rings the console bell.
-          <tr>
-            <td><code>\b</code>
-            <td><code class=u>U＋0008</code>: The <a
-                href=//en.wikipedia.org/wiki/Backspace>Backspace</a>
-              character.
-          <tr class=odd>
-            <td><code>\e</code>
-            <td><code class=u>U＋001B</code>: The <a
-                href=//en.wikipedia.org/wiki/Esc>ESC</a> character.
-          <tr>
-            <td><code>\f</code>
-            <td><code class=u>U＋000C</code>: The <a
-                href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
-              character.
-          <tr class=odd>
-            <td><code>\n</code>
-            <td><code class=u>U＋000A</code>: The <a
-                href=//en.wikipedia.org/wiki/Newline>Newline</a>
-              character.
-          <tr>
-            <td><code>\r</code>
-            <td><code class=u>U＋000D</code>: The <a
-                href=//en.wikipedia.org/wiki/Carriage_return>Carriage
-                Return</a> character.
-          <tr class=odd>
-            <td><code>\s</code>
-            <td><code class=u title=' '>U＋0020</code>: The <a
-                href=//en.wikipedia.org/wiki/Space_key>Space</a>
-              character.
-          <tr>
-            <td><code>\t</code>
-            <td><code class=u>U＋0009</code>: The <a
-                href=//en.wikipedia.org/wiki/Tab_character>Tab</a>
-              character
-          <tr class=odd>
-            <td><a
-            href=#unicode-escapes><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code></a>
-              <td>The Unicode codepoint specified by the four given
-              hexadecimal digits.
-          <tr>
-            <td><a
-            href=#unicode-escapes><code>\u{<var>codepoints</var>}</code></a>
-            <td>The Unicode codepoint(s) specified by
-              <a href=#unicode-escapes><var>codepoints</var></a>.
-          <tr class=odd>
-            <td><code>\v</code>
-            <td><code class=u>U＋000B</code>: The vertical tab
-              character.
-          <tr>
-            <td><a
-            href=#octal-byte><code>\<var>octal</var><var>octal</var><var>octal</var></code></a>
-            <td>The byte specified by the three given octal digits,
-              whose combined value does not exceed 377<sub>8</sub>.
-          <tr class=odd>
-            <td><a
-            href=#octal-byte><code>\<var>octal</var><var>octal</var></code></a>
-            <td>The byte specified by the two given octal digits.
-          <tr>
-            <td><a href=#octal-byte><code>\<var>octal</var></code></a>
-            <td>The byte specified by the given octal digit.
-          <tr class=odd>
-            <td><a
-            href=#hex-byte><code>\x<var>hex</var><var>hex</var></code></a>
-            <td>The byte specified by the two given hexadecimal
-              digits.
-          <tr>
-            <td><a href=#hex-byte><code>\x<var>hex</var></code></a>
-            <td>The byte specified by the given hexadecimal digit.
-          <tr class=odd>
-            <td><a
-            href=#control-escapes><code>\c<var>char</var></code></a>
-            <td rowspan=2>The control character
-            <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd>.
-          <tr class=odd>
-            <td><a
-            href=#control-escapes><code>\C-<var>char</var></code></a>
-          <tr>
-            <td><a href=#meta-escapes><code>\M-<var>char</var></code></a>
-            <td>Meta character <var>char</var>.
-          <tr class=odd>
-            <td><code>\</code><code class=u>U＋000A</code>
-            <td rowspan=3>A backslash before a <a
-                href=//en.wikipedia.org/wiki/Newline>line terminator</a>
-              escapes it, removing both the line
-              terminator and backslash from the string
-          <tr class=odd>
-            <td><code>\</code><code class=u>U＋000D</code>
-          <tr class=odd>
-            <td><code>\</code>〈<code class=u>U＋000D</code>,&nbsp;<code
-                class=u>U＋000A</code>〉
-          <tr>
-            <td><code>\<var>char</var></code>
-            <td>A backslash before any other character evaluates to
-              the character itself
-        </tbody>
-      </table>
-    </section>
-
-    <section>
-      <h1 id=double-quoted-q>Alternative Delimiters</h1>
-      
-      <figure class=railroad>
-        <img id=double-quoted-string-literal-q.png>
-        <figcaption>Syntax diagram of the <code>%Q</code>
-        double-quoted string literal
-      </figure>
-      
-      <p>A double-quoted string may also be delimited by arbitrary
-      delimiters with the
-      <code>%Q<var>delimiter</var>…<var>delimiter</var></code> and
-      <code>%<var>delimiter</var>…<var>delimiter</var></code>constructs,
-      where <var>delimiter</var> is a single character.  If
-      <var>delimiter</var> appears in the string it must be escaped.
-       
-      <p>If the opening delimiter is <code>(</code>, <code>[</code>,
-      <code>&lt;</code>, or <code>{</code>, the closing delimiter
-      must be the corresponding closing bracket. For example, if the
-      opening delimiter is <code>[</code>, the closing delimiter
-      must be <code>]</code>. When these paired delimiters are used,
-      the same pair may appear inside the string as long as they are
-      properly balanced.</p>
-        
-      <figure class=centre id=double-quoted-string-literal-q.rb>
-        <figcaption>Constructing a double-quoted string with
-        alternative delimiters using <code>%Q</code>
-      </figure>
-    </section>
-  </section>
-  
-  <p>Therefore, a <dfn>string literal</dfn> is either a double-quoted
-  string literal or a single-quoted string literal.</p>
-  
-  <figure class=railroad>
-    <img id=string-literal.png>
-    <figcaption>Syntax diagram of the string literal
-  </figure>
-   
-  <section>
-    <h1 id=here-documents>Here Documents</h1>
-    
-    <figure class=railroad>
-      <img id=here-doc.png>
-      <figcaption>Syntax diagram of the here document
+      <img id=escape.png>
+      <figcaption>Syntax diagram of the string escape
     </figure>
      
-    <p><dfn>Here documents</dfn> extend the concept of alternative
-    delimiters to allow an arbitrary <em>sequence</em> of characters
-    as a delimiter. They begin with <code>&lt;&lt;</code> followed
-    immediately by an arbitary identifier or string literal. Their
-    content begins on the following line and continues until that
-    same identifier/string is seen on a line by itself with no
-    intervening whitespace. If there is a hyphen between the
-    opening <code>&lt;&lt;</code> and the delimiter, i.e.
-    <code>&lt;&lt;-<var>delimiter</var></code>, the closing
-    delimiter may be preceded with whitespace. The final newline
-    character before the closing delimiter is part of the here
-    document’s contents: a minimal here document is equivalent to
-    <code>"\n"</code>.
-    
-    <p>If the delimiter is an identifier or double quoted string,
-    the contents of the here document is interpreted with
-    double-quoted string semantics. Otherwise, the here document’s
-    contents are interpreted literally: all escape sequences and
-    interpolation constructs are ignored.</p>
-    
-    <figure class=centre id=here-doc.rb>
-      <figcaption>Using a here document to render a poem
-    </figure>
+    <p><dfn title="backslash escape">Escape sequences</dfn> are
+    character sequences prefixed with a reverse solidus (<code
+      class=u title='\'>U＋005C</code>) that have a meaning other
+    than their constituent characters when appearing in double-quoted
+    <code>String</code>s.</p>
+     
+    <section>
+      <h1 class=runout id=character-escapes>Character Escapes</h1>
+
+      <figure class=railroad>
+        <img id=character-escape.png>
+        <figcaption>Syntax diagram of a character escape
+      </figure>
+
+      <p>A character escape consists of a reverse solidus followed by a
+      single character, <var>char</var>. If <var>char</var> is one of
+      [<code>abcefnrstuvxCM01234567</code>], the escape has the meaning
+      given in the table below. If <var>char</var> is a literal <a
+        href=/programs#newlines>line terminator</a>, both the reverse
+      solidus and the line terminator are removed from the string. In all
+      other cases <code>\<var>char</var></code> evaluates to
+      <var>char</var>.</p>
+
+      <figure class=centre id=character-escape.rb>
+        <figcaption>A character escape is a reverse solidus followed by
+        a single character
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=byte-escapes>Byte Escapes</h1>
+
+      <!-- intro para -->
+      <p>&nbsp;</p>
+
+      <figure class=railroad>
+        <!-- TODO: Incorporate maximumn value of octal integer: 377
+        -->
+        <img id=byte-escape.png>
+        <figcaption>Syntax diagram of the byte escape
+      </figure>
+
+      <section>
+        <h1 id=octal-byte>Octal Byte Escapes</h1>
+
+        <p>A reverse solidus followed by an octal number between zero and
+        377<sub>8</sub> represents the given byte.</p>
+
+        <figure class=centre id=octal-byte-escape.rb>
+          <figcaption>An octal byte escape consists of a backslash
+          followed by a character code in base 8
+        </figure>
+      </section>
+
+      <section>
+        <h1 id=hex-byte>Hexadecimal Byte Escapes</h1>
+
+        <p>A hexadecimal byte escape consists of <code>\x</code> followed by
+        a hexadecimal number ≤ FF<sub>16</sub>. It represents the given
+        byte.</p>
+
+        <figure class=centre id=hex-byte-escape.rb>
+          <figcaption>A hexadecimal byte escape consists of a backslash
+          followed by an <code>x</code> followed by one or two
+          hexadecimal digits
+        </figure>
+      </section>
+
+      <p>Both of these byte escapes force the string in which they are
+      embedded to have <a href=/encoding#ascii-8bit>ASCII-8BIT</a> encoding
+      if the bytes are invalid in the <a href=/encoding#source>source
+        encoding</a>. 
+    </section>
+
+    <section>
+      <h1 id=control-escapes class=runout>Control Escapes</h1>
+
+      <figure class=railroad>
+        <img id=control-escape.png>
+        <figcaption>Syntax diagram for the control escape
+      </figure>
+
+      <p>The escape sequence for <a
+        href=//en.wikipedia.org/wiki/Control_character>control
+        character</a>
+      <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd> consists of a
+      reverse solidus, either <code>c</code> or <code>C-</code>, then
+      <var>char</var>, which may be a character or escape.
+      (<var>char</var> must not be a <a href=#control-escape>control</a>,
+      Unicode, <a href=#hex-byte>hexadecimal</a>, or three-digit <a
+        href=#octal-byte>octal</a>, escape). Its value is the character
+      whose character code is <var>char</var> ∧ 0x9F.</p>
+      
+      <figure class=centre id=control-escape.rb>
+        <figcaption>The control escape represents a control key
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=meta-escapes>Meta Character Escapes</h1>
+
+      <figure class=railroad>
+        <img id=meta-escape.png>
+        <figcaption>Syntax diagram of the meta character escape
+      </figure>
+
+      <p>The meta character escape <code>\M-<var>char</var></code>
+      represents the character whose character code is that of
+      <var>char</var> ∨ 0x80, where <var>char</var> is a single
+      character or escape. (<var>char</var> must not be a <a
+      href=#meta-escape>meta character</a>, Unicode, <a
+      href=#hex-byte>hexadecimal</a>, or three-digit <a
+      href=#octal-byte>octal</a>, escape).</p>
+
+      <figure class=centre id=meta-escape.rb>
+        <figcaption>The meta character escape represents the given meta
+        character.
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=unicode-escapes>Unicode Escapes</h1>
+         
+      <figure class=railroad>
+        <img id=unicode-escape.png>
+        <figcaption>Syntax diagram of the Unicode <code>\u</code>
+        escape
+      </figure>
+      
+      <p>An arbitrary <a href=//en.wikipedia.org/wiki/Unicode>Unicode</a>
+      character may be embedded in a string by specifying its <a
+        href=#codepoints>codepoint</a> as four hexadecimal digits following
+      <code>\u</code>.            
+
+      <p>The <code>\u{}</code> construct extends this ability to
+      embedding multiple codepoints with the same escape.
+      The curly braces delimit one or more hexadecimal codepoints
+      separated by whitespace. This form does not restrict a
+      codepoint to four digits.</p>             
+
+      <figure class=railroad>
+        <img id=hex-codepoint.png>
+        <figcaption>Syntax diagram of a Unicode codepoint in hexadecimal
+      </figure>
+
+      <figure class=centre id=unicode-escape.rb>
+        <figcaption>A Unicode escape represents a Unicode character with
+        the given codepoint(s)
+      </figure>
+
+      <p>Both forms of the Unicode escape sequence force the string in
+      which they are embedded to have UTF-8 encoding. Therefore they are
+      illegal in a file that has both a non-UTF-8 source encoding and a
+      string containing literal multibyte characters in that encoding.
+    </section>
+
+    <table class=border>
+      <thead>
+        <tr><th>Escape Sequence<th>Interpretation
+      </thead>
+      <tbody>
+        <tr class=odd>
+          <td><code>\a</code>
+            <td><code class=u>U＋0007</code>: The <a
+              href=//en.wikipedia.org/wiki/Bell_character>BEL</a>
+              character. Rings the console bell.
+        <tr>
+          <td><code>\b</code>
+          <td><code class=u>U＋0008</code>: The <a
+              href=//en.wikipedia.org/wiki/Backspace>Backspace</a>
+            character.
+        <tr class=odd>
+          <td><code>\e</code>
+          <td><code class=u>U＋001B</code>: The <a
+              href=//en.wikipedia.org/wiki/Esc>ESC</a> character.
+        <tr>
+          <td><code>\f</code>
+          <td><code class=u>U＋000C</code>: The <a
+              href=//en.wikipedia.org/wiki/Form_feed>Form Feed</a>
+            character.
+        <tr class=odd>
+          <td><code>\n</code>
+          <td><code class=u>U＋000A</code>: The <a
+              href=//en.wikipedia.org/wiki/Newline>Newline</a>
+            character.
+        <tr>
+          <td><code>\r</code>
+          <td><code class=u>U＋000D</code>: The <a
+              href=//en.wikipedia.org/wiki/Carriage_return>Carriage
+              Return</a> character.
+        <tr class=odd>
+          <td><code>\s</code>
+          <td><code class=u title=' '>U＋0020</code>: The <a
+              href=//en.wikipedia.org/wiki/Space_key>Space</a>
+            character.
+        <tr>
+          <td><code>\t</code>
+          <td><code class=u>U＋0009</code>: The <a
+              href=//en.wikipedia.org/wiki/Tab_character>Tab</a>
+            character
+        <tr class=odd>
+          <td><a
+          href=#unicode-escapes><code>\u<var>hex</var><var>hex</var><var>hex</var><var>hex</var></code></a>
+            <td>The Unicode codepoint specified by the four given
+            hexadecimal digits.
+        <tr>
+          <td><a
+          href=#unicode-escapes><code>\u{<var>codepoints</var>}</code></a>
+          <td>The Unicode codepoint(s) specified by
+            <a href=#unicode-escapes><var>codepoints</var></a>.
+        <tr class=odd>
+          <td><code>\v</code>
+          <td><code class=u>U＋000B</code>: The vertical tab
+            character.
+        <tr>
+          <td><a
+          href=#octal-byte><code>\<var>octal</var><var>octal</var><var>octal</var></code></a>
+          <td>The byte specified by the three given octal digits,
+            whose combined value does not exceed 377<sub>8</sub>.
+        <tr class=odd>
+          <td><a
+          href=#octal-byte><code>\<var>octal</var><var>octal</var></code></a>
+          <td>The byte specified by the two given octal digits.
+        <tr>
+          <td><a href=#octal-byte><code>\<var>octal</var></code></a>
+          <td>The byte specified by the given octal digit.
+        <tr class=odd>
+          <td><a
+          href=#hex-byte><code>\x<var>hex</var><var>hex</var></code></a>
+          <td>The byte specified by the two given hexadecimal
+            digits.
+        <tr>
+          <td><a href=#hex-byte><code>\x<var>hex</var></code></a>
+          <td>The byte specified by the given hexadecimal digit.
+        <tr class=odd>
+          <td><a
+          href=#control-escapes><code>\c<var>char</var></code></a>
+          <td rowspan=2>The control character
+          <kbd><kbd>Ctrl</kbd>-<kbd><var>char</var></kbd></kbd>.
+        <tr class=odd>
+          <td><a
+          href=#control-escapes><code>\C-<var>char</var></code></a>
+        <tr>
+          <td><a href=#meta-escapes><code>\M-<var>char</var></code></a>
+          <td>Meta character <var>char</var>.
+        <tr class=odd>
+          <td><code>\</code><code class=u>U＋000A</code>
+          <td rowspan=3>A backslash before a <a
+              href=//en.wikipedia.org/wiki/Newline>line terminator</a>
+            escapes it, removing both the line
+            terminator and backslash from the string
+        <tr class=odd>
+          <td><code>\</code><code class=u>U＋000D</code>
+        <tr class=odd>
+          <td><code>\</code>〈<code class=u>U＋000D</code>,&nbsp;<code
+              class=u>U＋000A</code>〉
+        <tr>
+          <td><code>\<var>char</var></code>
+          <td>A backslash before any other character evaluates to
+            the character itself
+      </tbody>
+    </table>
   </section>
 
+  <!-- TODO: Move the below to forthcoming Processes & Signals chapter -->
   <section>
     <h1 id=backticks>Backticks</h1>
       
@@ -470,7 +473,7 @@
     <i>set</i> of which they are members is an encoding. Therefore, in Ruby, a
     character is a specific byte sequence interpreted according to a given
     encoding. An implication is that by changing the encoding of a
-    <code>String</code>, one also changes what characters it contains.
+    <code>String</code>, one also changes what characters it contains.</p>
     
     <figure class=railroad>
       <img id=character-literal.png>
