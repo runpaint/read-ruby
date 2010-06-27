@@ -750,8 +750,17 @@
       <code>String</code>, as opposed to <code>#[]=</code> which returns
       <var>s</var>.
 
-    <p>Lastly, <code>String#slice!</code> accepts all the same combinations of
+    <p><code>String#slice!</code> accepts all the same combinations of
     arguments, but deletes the substring from the receiver.
+
+    <p><code>String#[]</code> can be used to test for the presence of a
+    substring on account of its returning <code>nil</code> when the substring
+    is not present. A slightly clearer approach is
+    <code>String#include?</code>, which returns <code>true</code> if its
+    <code>String</code> argument is contained within the receiver;
+    <code>false</code> otherwise. <code>String#start_with?</code> and
+    <code>String#end_with?</code> behave similarly, but require the substring
+    to be located at the beginning or end, respectively, of the receiver.
   </section>
 
   <section>
