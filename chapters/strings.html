@@ -659,11 +659,12 @@
     <code>String</code> argument, without modifying the former. No coercion
     is performed on the argument.
 
-    <p><code>String#&lt;&lt;</code> appends its argument to its receiver,
-    mutating the existing object rather than creating a new one, and returns
-    the receiver. The argument must be either an <code>Integer</code>
-    codepoint, which is converted into the corresponding character before
-    concatenation, or a <code>String</code>.</p>
+    <p><code>String#&lt;&lt;</code>, and its alias <code>String#concat</code>,
+    append their argument to their receiver, mutating the existing object
+    rather than creating a new one, and return the receiver. The argument must
+    be either an <code>Integer</code> codepoint, which is converted into the
+    corresponding character before concatenation, or a
+    <code>String</code>.</p>
 
     <figure id=string-concat.rb>
       <figcaption>Concatenating <code>String</code>s
