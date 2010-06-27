@@ -619,6 +619,11 @@
     <code>String#bytesize</code>, however, returns the number of bytes
     contained in its receiver. It is unaffected by
     <code>String#force_encoding</code>.
+
+    <p>A <code>String</code> is <dfn title='empty string'>empty</dfn> if it
+    has a length of <code>0</code>. This can be tested with the predicate
+    <code>String#empty?</code>, and effected with the destructive
+    <code>String#clear</code>.
   </section>
 
   <section>
