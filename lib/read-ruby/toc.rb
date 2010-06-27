@@ -1,6 +1,6 @@
 class Toc < Mustache
   def headings
-    CHAPTERS.map{|c| Chapter.new(c).headings}
+    Chapter.all.map(&:headings)
   end
 
   def toc(toc=nil, depth=99)

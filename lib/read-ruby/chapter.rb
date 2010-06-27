@@ -5,7 +5,15 @@ class Chapter < Mustache
   dir 'chapters'
   target_ext 'html'
   source_ext 'html'
- 
+  
+  def self.all
+    @@all ||= [Root.new.next].tap do |list|
+      while nxt = list.last.next
+        list << nxt
+      end
+    end
+  end
+
   @@nok ||= {}
 
   attr_accessor :title, :nok, :name
@@ -13,6 +21,12 @@ class Chapter < Mustache
     @name = self.class.source(name).basename
     @nok = @@nok[@name] ||= Nokogiri::HTML(self.class.target(@name).read)
     @title = @nok.at('h1').inner_html
+  end
+
+  def next
+    if (nxt = nok.at('link[@rel=next]'))
+      self.class.new(nxt['href'][1..-1])
+    end
   end
 
   def article
