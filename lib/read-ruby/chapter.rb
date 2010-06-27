@@ -29,6 +29,10 @@ class Chapter < Mustache
     end
   end
 
+  def next_url
+    self.next.name.sub_ext('') if self.next
+  end
+
   def article
     nok.at('article').inner_html
   end
