@@ -525,8 +525,8 @@
     raised.
     
     <code>String#bytes</code>, and its alias <code>String#each_byte</code>,
-    returns an <code>Enumerator</code> of its receiver’s bytes, represented as
-    <code>Fixnum</code>s. A specific byte position may be assigned to with
+    return an <code>Enumerator</code> of their receiver’s bytes, represented
+    as <code>Fixnum</code>s. A specific byte position may be assigned to with
     <code>String#setbyte(<var>index</var>, <var>byte</var>)</code>, where
     <var>index</var> is the zero-based offset of the byte to be changed, and
     <var>byte</var> is the new value as an <code>Integer</code>. A byte may be
@@ -562,8 +562,8 @@
     character in its receiver as an <code>Integer</code>. More generally,
     <code>String#codepoints</code>, and its alias
     <code>String#each_codepoint</code>, return an <code>Enumerator</code> of
-    its receiver’s codepoints represented as <code>Integer</code>s. If given a
-    block, each codepoint is yielded to it in turn. All three methods will
+    their receiver’s codepoints represented as <code>Integer</code>s. If given
+    a block, each codepoint is yielded to it in turn. All three methods will
     raise an <code>ArgumentError</code> if their receiver has an invalid
     encoding.
   </section>
@@ -612,12 +612,12 @@
 
     <p>“How long is a piece of string.” isn’t always a rhetorical question,
     but in Ruby the answer depends on your unit of measurement.
-    <code>String#length</code> and <code>String#size</code>, which are
-    aliases, return the number of characters in their receiver. Therefore,
-    they are dependent on the associated encoding: the length of a
-    <code>String</code> may change simply by associating it with a different
-    encoding. <code>String#bytesize</code>, however, returns the number of
-    bytes contained in its receiver. It is unaffected by
+    <code>String#length</code>, and its alias <code>String#size</code>, return
+    the number of characters in their receiver. Therefore, they are dependent
+    on the associated encoding: the length of a <code>String</code> may change
+    simply by associating it with a different encoding.
+    <code>String#bytesize</code>, however, returns the number of bytes
+    contained in its receiver. It is unaffected by
     <code>String#force_encoding</code>.
   </section>
 
@@ -697,7 +697,7 @@
     <h1 id=substrings>Substrings</h1>
 
     <p><code>String#[]</code>, and its alias <code>String#slice</code>,
-    provides access to specific portions of a <code>String</code>, allowing it
+    provide access to specific portions of a <code>String</code>, allowing it
     to be treated as an array of characters. 
     
     <p>An <code>Integer</code> argument, <var>i</var>, returns the
@@ -827,7 +827,7 @@
     its argument-a plurality are supplied as an <code>Array</code>-as the
     values to be interpolated, returning the expanded <code>String</code>.
     <code>Kernel#sprintf</code>, and its alias <code>Kernel#format</code>,
-    interprets its first argument as a format string and subsequent arguments
+    interpret their first argument as a format string and subsequent arguments
     as the values to be interpolated.
 
     <p>A format sequence begins with a percent sign, then contains zero or
