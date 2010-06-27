@@ -47,11 +47,16 @@ end
   end
 end
 
+desc 'Push to GitHub'
+task :push do
+  sh 'git push github'
+end
+
 desc 'Rebuild everything'
 task :all => [:examples, :railroads, :default, :minify]
 
 desc 'Rebuild everything then upload'
-task :upload => [:all, :rsync]
+task :upload => [:push, :all, :rsync]
 
 desc 'Upload current build'
 task :rsync  do
