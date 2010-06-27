@@ -710,8 +710,8 @@
     <code>String#[<var>i</var>, <var>l</var>]</code>, the <var>l</var>
     characters are starting from index <var>i</var> are returned. <var>i</var>
     may be negative, with the same semantics as before, but <var>l</var>
-    cannot be.
-  
+    cannot be.     
+    
     <p>When the argument is a <code>Range</code>,
     <code>String#[<var>i</var>..<var>j</var>]</code>, a substring beginning at
     index <var>i</var> and ending at index <var>j</var> is returned.
@@ -734,6 +734,12 @@
     <figure id=substrings.rb>
       <figcaption>Slicing a <code>String</code> into substrings
     </figure>
+
+    <p><code>String#insert(<var>i</var>, <var>s</var>)</code> is equivalent to
+    <var>String#[<var>i</var>] = <var>s</var>. However, in addition to
+      modifying its receiver, <code>#insert</code> returns the new
+      <code>String</code>, as opposed to <code>#[]=</code> which returns
+      <var>s</var>.
 
     <p>Lastly, <code>String#slice!</code> accepts all the same combinations of
     arguments, but deletes the substring from the receiver.
