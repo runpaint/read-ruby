@@ -494,15 +494,15 @@
     <code>"<var>char</var>"</code>. To create a character for a given
     codepoint, see <a href=#codepoints>Codepoints</a>.
 
-    <p>A <code>String</code> may be treated as an <code>Array</code> of
-    characters with <code>String#[]</code>, which returns the character at a
-    given <code>Integer</code> offset. Similarly, <code>String#[]=</code>
-    allows assigning a character to a given offset.  In both cases the
-    offset is zero-based.
-
     <p><code>String#chars</code>, and its alias <code>String#each_char</code>,
     return an <code>Enumerator</code> of the receiver’s characters. Both yield
     each character in turn if a block is given.
+
+    <p>A <code>String</code> may be treated as an <code>Array</code> of
+    characters with <a href=#substrings><code>String#[]</code></a>. However,
+    <a href=/references#refFLAN08>Flanagan et al.</a> suggest that the
+    aforementioned enumerators <q>may be more efficient</q> when processing a
+    <code>String</code> character-by-character (pp. 58)
   </section>
 
   <section>
