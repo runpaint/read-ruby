@@ -775,8 +775,49 @@
     <code>String#end_with?</code> behave similarly, but require the substring
     to be located at the beginning or end, respectively, of the receiver.
 
+    <!-- Mention #match here? -->
     <figure id=substring-test.rb>
       <figcaption>Determining whether a given substring is present
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=searching>Searching &amp; Replacing</h1>
+
+    <p><code>String#sub(<var>r</var>, <var>s</var>)</code> replaces the first
+    occurrence of a <code>Regexp</code>, <var>r</var>, with a
+    <code>String</code>, <var>s</var>, then returns the new
+    <code>String</code>. <var>s</var> may contain back-references to capture
+    groups in the pattern, which are substituted for the corresponding match.
+    In a single-quoted <code>String</code> a numbered group is referenced as
+    <code>\<var>d</var></code>, where <var>d</var> is the group number, while
+    <code>\k&lt;<var>n</var>&gt;</code> references the capture group named
+    <var>n</var>. In a double-quoted <code>String</code> the reverse solidus
+    must be doubled, i.e. <code>\\<var>d</var></code> and
+    <code>\\k&lt;<var>n</var>&gt;</code>.
+
+    <p>The first argument can be given as a <code>String</code> instead of a
+    <code>Regexp</code>, in which case it is treated like a pattern with the
+    metacharacters escaped. Therefore, this form is similar to
+    <code>String#[<var>r</var>] = <var>s</var></code>.
+
+    <p>If the second argument is omitted a block must be supplied. It is
+    passed the matched text and must return the replacement
+    <code>String</code>. If it is a <code>Hash</code> the match is
+    substituted for the value of the key to which it corresponds.
+
+    <p>To replace all occurrences of a pattern, use <code>String#gsub</code>
+    instead, with the arguments described above. If <code>String#gsub</code>
+    is called with neither a replacement <code>String</code> nor a block, it
+    returns an <code>Enumerator</code>.
+
+    <p>The <code>String#sub!</code> and <code>String#gsub!</code> variants
+    behave identically to their unadorned equivalents except they modify the
+    receiver in-place. If the substitution succeeded, the return value is the
+    receiver, otherwise it is <code>nil</code>.
+
+    <figure id=string-sub-gsub.rb>
+      <figcaption>Searching and replacing in a <code>String</code>
     </figure>
   </section>
 
