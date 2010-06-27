@@ -625,10 +625,14 @@
     <h1 id=equivalence>Equivalence</h1>
 
     <p>For two <code>String</code>s to compare as equal in terms of
-    <code>String#==</code>, they must be byte-wise identical and associated
+    <code>String#==</code> they must be byte-wise identical and associated
     with the same encoding. This last condition is dropped when both
     <code>String</code>s consist entirely of ASCII characters and have an
-    ASCII-compatible encoding.
+    ASCII-compatible encoding. If the second operand responds to the implicit
+    conversion protocol of <code>#to_str</code>, it is converted thus, then
+    the result is tested for equivalence with the receiver.
+    <code>String#eql?</code> behaves in the same manner, but does not attempt
+    to convert its operand.
   </section>
 
   <section>
