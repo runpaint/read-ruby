@@ -753,6 +753,19 @@
     <p><code>String#slice!</code> accepts all the same combinations of
     arguments, but deletes the substring from the receiver.
 
+    <p><code>String#index</code> returns the first zero-based index of the
+    matched substring, as opposed to the substring itself. The substring may
+    be given as a <code>String</code> argument, and optionally followed by an
+    <code>Integer</code> specifying the index to search from. If a
+    <code>Regexp</code> argument is provided instead, the index of the start
+    of the match is returned. By contrast, <code>String#rindex</code> accepts
+    the same arguments but returns the index of the rightmost match. When no
+    matching substring is found, <code>nil</code> is returned. 
+
+    <figure id=string-index.rb>
+      <figcaption>Finding the offset of an occurrence of a substring
+    </figure>
+
     <p><code>String#[]</code> can be used to test for the presence of a
     substring on account of its returning <code>nil</code> when the substring
     is not present. A slightly clearer approach is
