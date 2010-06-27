@@ -693,6 +693,52 @@
   </section>
 
   <section>
+    <h1 id=substrings>Substrings</h1>
+
+    <p><code>String#[]</code>, and its alias <code>String#slice</code>,
+    provides access to specific portions of a <code>String</code>, allowing it
+    to be treated as an array of characters. 
+    
+    <p>An <code>Integer</code> argument, <var>i</var>, returns the
+    <var>i</var><sup>th</sup> character, where the first character has the
+    index <code>0</code>. If <var>i</var> is negative, it counts backward from
+    the last character, so <code>String#[-2]</code> returns the penultimate
+    character.
+
+    <p>When two <code>Integer</code> arguments are given,
+    <code>String#[<var>i</var>, <var>l</var>]</code>, the <var>l</var>
+    characters are starting from index <var>i</var> are returned. <var>i</var>
+    may be negative, with the same semantics as before, but <var>l</var>
+    cannot be.
+  
+    <p>When the argument is a <code>Range</code>,
+    <code>String#[<var>i</var>..<var>j</var>]</code>, a substring beginning at
+    index <var>i</var> and ending at index <var>j</var> is returned.
+
+    <p>A <code>String</code> argument is returned if contained in the
+    receiver. Likewise, when a <code>Regexp</code> argument is given, whose
+    pattern matches the receiver, the return value is the first matching
+    substring. The latter may be accompanied by a second argument indicating
+    the group of captured text to return: an <code>Integer</code> refers to
+    the numbered group, a <code>Symbol</code> or <code>String</code> refers to
+    the named group. However, if a group is specified but the pattern fails to
+    match, an <code>IndexError</code> is raised.
+
+    <p>If the receiver does not contain the given substring, <code>nil</code>
+    is returned. If it does, <code>String#[]=</code> may also be used as an
+    lvalue with any of the above forms. The result is that the substring
+    returned is replaced in the receiver with the rvalue. For example,
+    <code>'ab'[0] = ?b</code> returns <code>"bb"</code>.</p>
+
+    <figure id=substrings.rb>
+      <figcaption>Slicing a <code>String</code> into substrings
+    </figure>
+
+    <p>Lastly, <code>String#slice!</code> accepts all the same combinations of
+    arguments, but deletes the substring from the receiver.
+  </section>
+
+  <section>
     <h1 id=encoding>Encoding</h1>
 
     <!--
