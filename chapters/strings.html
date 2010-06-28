@@ -745,10 +745,10 @@
     </figure>
 
     <p><code>String#insert(<var>i</var>, <var>s</var>)</code> is equivalent to
-    <var>String#[<var>i</var>] = <var>s</var>. However, in addition to
-      modifying its receiver, <code>#insert</code> returns the new
-      <code>String</code>, as opposed to <code>#[]=</code> which returns
-      <var>s</var>.
+    <code>String#[<var>i</var>] = <var>s</var></code>. However, in addition to
+    modifying its receiver, <code>#insert</code> returns the new
+    <code>String</code>, as opposed to <code>#[]=</code> which returns
+    <var>s</var>.
 
     <p><code>String#slice!</code> accepts all the same combinations of
     arguments, but deletes the substring from the receiver.
@@ -760,7 +760,7 @@
     <code>Regexp</code> argument is provided instead, the index of the start
     of the match is returned. By contrast, <code>String#rindex</code> accepts
     the same arguments but returns the index of the rightmost match. When no
-    matching substring is found, <code>nil</code> is returned. 
+    matching substring is found, <code>nil</code> is returned.</p>
 
     <figure id=string-index.rb>
       <figcaption>Finding the offset of an occurrence of a substring
@@ -773,7 +773,7 @@
     <code>String</code> argument is contained within the receiver;
     <code>false</code> otherwise. <code>String#start_with?</code> and
     <code>String#end_with?</code> behave similarly, but require the substring
-    to be located at the beginning or end, respectively, of the receiver.
+    to be located at the beginning or end, respectively, of the receiver.</p>
 
     <!-- Mention #match here? -->
     <figure id=substring-test.rb>
@@ -814,7 +814,7 @@
     <p>The <code>String#sub!</code> and <code>String#gsub!</code> variants
     behave identically to their unadorned equivalents except they modify the
     receiver in-place. If the substitution succeeded, the return value is the
-    receiver, otherwise it is <code>nil</code>.
+    receiver, otherwise it is <code>nil</code>.</p>
 
     <figure id=string-sub-gsub.rb>
       <figcaption>Searching and replacing in a <code>String</code>
