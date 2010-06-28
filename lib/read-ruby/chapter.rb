@@ -34,7 +34,16 @@ class Chapter < Mustache
   end
 
   def article
-    nok.at('article').inner_html
+    article = nok.at('article').dup
+    article.at('h1').remove
+    article.inner_html
+  end
+
+  def main_sections
+    h = headings(nok.at('article'))
+    return unless h.is_a?(Array) 
+    h = h.pop.flatten(1).select{|e| e.is_a? String}
+    Toc.new.toc(h) if h.flatten.size < 20
   end
 
   def headings(s=nok.at('article'), level=1)

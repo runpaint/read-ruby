@@ -52,7 +52,7 @@ a[href^="#fn-"]:link, a[href^="#fn-"]:visited, a[href^="#fn-"]:hover, a[href^="#
 /* The header is a strip that runs across the top of the screen and holds the
  * breadcrumb.
  */
-header { 
+body > header { 
   margin: 0; 
   padding: 0; 
   font-size: large;
@@ -63,34 +63,34 @@ header {
 }
 
 /* The book name is hidden because it's repeated in the breadcrumb */
-header > h1 {
+body > header > h1 {
   display: none;
 }
 
 /* The breadcrumb is marked up as a list, but we want it to display inline */
-header li, header ol, header nav { display: inline; }
+body > header li, body > header ol, body > header nav { display: inline; }
 
 /* The breacrumb should be indented slightly from the left; flush with all
  * other margins.
  */
-header > nav > ol {
+body > header > nav > ol {
   margin: 0;
   padding: 0 0 0 0.5em;
 }
 
 /* The crumbs should be separated by an arrow. */
-header > nav > ol > li + li:before {
+body > header > nav > ol > li + li:before {
   content: " \2192 ";
 }
 
 /* The crumbs should be bold. */
-header li {
+body > header li {
   font-weight: bold;
 }
 
 /* The beta label following the chapter name in the breadcrumb should be red.
  */
-header > nav > ol > li > span {
+body > header > nav > ol > li > span {
   color: red;
 }
 
@@ -99,7 +99,30 @@ article {
   margin-top: 2em;
 }
 
-article > h1, body > section > h1 {
+/* Article navigation, i.e. main sections */
+article > header > nav > ol {
+  padding: 0;
+  margin-left: 8%;
+  margin-right: 8%;
+  width: auto;
+  text-align: center;
+}
+article > header > nav > ol > li { 
+  display: inline;
+  padding: 0;
+  margin: 0;
+}
+
+article > header > nav > ol > li:before { 
+  content: "‣"; 
+}
+
+article > header > nav li:after { 
+  content: "  "; 
+}
+
+/* Main article */
+article > header > h1, body > section > h1 {
   font-size: 500%;
   text-transform: uppercase;
   text-align: center;
