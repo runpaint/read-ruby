@@ -843,6 +843,25 @@
   </section>
 
   <section>
+    <h1 id=case>Letter Case</h1>
+
+    <p><code>String#downcase</code> converts all characters in its receiver to
+    lowercase, while <code>String#upcase</code> does the opposite.
+    <code>String#swapcase</code> toggles the case of each character: lowercase
+    characters are converted to uppercase, and vice versa.
+    <code>String#capitalize</code> converts its receiver to lowercase then
+    converts its first character to uppercase. All four methods have a
+    corresponding bang method which modifies the receiver in-place. However,
+    these methods only understand the capitalization of ASCII characters; any
+    other character is left unchanged.  Case-insensitive comparison was
+    covered in the <a href=#comparison>Comparison</a> section.</p>
+
+    <figure id=string-case.rb>
+      <figcaption>Convert the case of a <code>String</code>
+    </figure>
+  </section>
+
+  <section>
     <h1 id=encoding>Encoding</h1>
 
     <!--
