@@ -899,6 +899,40 @@
   </section>
 
   <section>
+    <h1 id=numeric>Converting to <code>Numeric</code></h1>
+
+    <p><code>String#to_i(<var>r</var> = 10)</code> interprets the receiver as
+    an integer in base <var>r</var>, returning the corresponding
+    <code>Integer</code> object. Hexadecimal and octal numbers may be prefixed
+    with <code>0x</code> or <code>0</code>, respectively.
+    <code>String#oct</code> and <code>String#hex</code> are equivalent
+    <code>#to_i(8)</code> and <code>#to_i(16)</code>, respectively.
+
+    <p>A <code>Float</code> may be created from a <code>String</code>
+    beginning with either form of <code>Float</code> literal, i.e. two groups
+    of digits separated with a full stop or exponential notation, via
+    <code>String#to_f</code>. A <code>Rational</code> may be instantiated from
+    a <code>String</code> of the form <code><var>n</var>/<var>d</var></code>,
+    where <var>n</var> is the numerator, and <var>d</var> the denominator,
+    with <code>String#to_r</code>. If <var>d</var> is omitted, it has the
+    value <code>1</code>. Lastly, <code>String#to_c</code> creates a
+    <code>Complex</code> number. If the receiver is in the format recognised
+    by <code>#to_f</code>, <code>#to_r</code>, or <code>#to_i(10)</code>, the
+    number represented is the real part. If it is followed by a signed number
+    with an <code>i</code> suffix, that is the imaginary part. If either part
+    is omitted, it has the value <code>0</code>. 
+
+    <p>In all cases, the number may be prefixed with a sign and arbitrary
+    whitespace, and followed by arbitrary characters. Digits may be separated
+    with low lines. If a number cannot be extracted, it is assumed to be
+    <code>0</code>.</p>   
+
+    <figure id=string-numeric.rb>
+      <figcaption>Converting a <code>String</code> to a number
+    </figure>
+  </section>
+
+  <section>
     <h1 id=encoding>Encoding</h1>
 
     <!--
