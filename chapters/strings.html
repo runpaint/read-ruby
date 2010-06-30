@@ -933,6 +933,28 @@
   </section>
 
   <section>
+    <h1 id=checksums>Checksums</h1>
+
+    <p><code>String#sum(<var>b</var> = 16)</code> calculates a rudimentary
+    <var>b</var>-bit checksum of the receiver, which it returns as an
+    <code>Integer</code>. If <var>b</var> &le; <code>0</code>, this is simply
+    the sum of the receiver’s bytes; otherwise, it is equivalent to
+    <code>String#bytes.reduce(&amp;:+) &amp; ((1 &lt;&lt; <var>b</var>) -
+      1)</code>. 
+
+    <p><code>String#crypt(<var>s</var>)</code> is a thin wrapper around
+    <code>crypt(3)</code>. The salt, <var>s</var>, is at least two characters
+    from the alphabet <code>[a–zA–Z0–9./]</code>. The receiver is encrypted with
+    <var>s</var> to produce a thirteen-character <code>String</code> from the
+    aforementioned alphabet, which begins with the first two characters of
+    <var>s</var>.</p>
+
+    <figure id=string-checksum.rb>
+      <figcaption>Calculating a checksum for a <code>String</code>
+    </figure>
+  </section>
+
+  <section>
     <h1 id=encoding>Encoding</h1>
 
     <!--
