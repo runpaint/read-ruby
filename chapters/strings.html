@@ -801,12 +801,12 @@
     metacharacters escaped. Therefore, this form is similar to
     <code>String#[<var>r</var>] = <var>s</var></code>.
 
-    <p>If the second argument is omitted a block must be supplied. It is
+    <p>If the second argument is omitted, a block must be supplied. It is
     passed the matched text and must return the replacement
-    <code>String</code>. If it is a <code>Hash</code> the match is
-    substituted for the value of the key to which it corresponds.
+    <code>String</code>. If it is a <code>Hash</code> that has the match as a
+    key, the replacement <code>String</code> is the corresponding value.
 
-    <p>To replace all occurrences of a pattern, use <code>String#gsub</code>
+    <p>To replace all occurrences of a pattern use <code>String#gsub</code>
     instead, with the arguments described above. If <code>String#gsub</code>
     is called with neither a replacement <code>String</code> nor a block, it
     returns an <code>Enumerator</code>.
@@ -814,7 +814,7 @@
     <p>The <code>String#sub!</code> and <code>String#gsub!</code> variants
     behave identically to their unadorned equivalents except they modify the
     receiver in-place. If the substitution succeeded, the return value is the
-    receiver, otherwise it is <code>nil</code>.</p>
+    receiver; otherwise, it is <code>nil</code>.</p>
 
     <figure id=string-sub-gsub.rb>
       <figcaption>Searching and replacing in a <code>String</code>
