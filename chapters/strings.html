@@ -822,6 +822,27 @@
   </section>
 
   <section>
+    <h1 id=split>Splitting &amp; Partitioning</h1>
+    
+    <p><code>String#split</code> returns an <code>Array</code> of its receiver
+    divided into space-separated substrings, i.e. <code>'Horses for
+      courses'.split</code> returns <code>['Horses', 'for', 'courses']</code>.
+    If a <code>String</code> or <code>Regexp</code> argument is given, that is
+    used as the delimiter. The delimiter is omitted from the results.
+
+    <p><code>String#partition</code> also requires a <code>String</code> or
+    <code>Regexp</code> argument specifying a delimiter. It always returns a
+    three-element <code>Array</code> comprising the text preceding the first
+    occurrence of the delimiter, the delimiter itself, then the text following
+    the first occurrence of the delimiter.  <code>String#rpartition</code>
+    behaves similarly except it uses the last occurrence of the delimiter.</p>
+    
+    <figure id=string-split.rb>
+      <figcaption>Splitting and partitioning a <code>String</code> 
+    </figure>
+  </section>
+
+  <section>
     <h1 id=encoding>Encoding</h1>
 
     <!--
