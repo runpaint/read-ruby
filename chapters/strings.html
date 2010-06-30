@@ -862,6 +862,43 @@
   </section>
 
   <section>
+    <h1 id=whitespace>Whitespace</h1>
+
+    <p><code>String#chomp(<var>s</var> = $/)</code> returns a copy of its
+    receiver with <var>s</var> deleted from the end. When <var>s</var> is
+    omitted, it has the value of <code>$/</code>, which defaults to
+    <code>"\n"</code>. <code>String#chop</code> returns its receiver minus the
+    final character, regardless of its value.  However, if a
+    <code>String</code> ends with <code>"\r\n"</code>, both methods treat it
+    specially: <code>#chop</code> deletes both characters at once, while
+    <code>#chomp</code> does likewise when called with no argument and
+    <code>$/ == ?\n</code>. Both methods have bang variants which modify their
+    receiver in-place. When they truncate the receiver, they return it;
+    otherwise, they return <code>nil</code>.
+
+    <p>Removal of a trailing line terminator can be generalised to the removal
+    of any trailing and/or preceding whitespace, i.e. any consecutive
+    combination of <code>"\s"</code>, <code>"\t"</code>, <code>"\r"</code>,
+    and <code>"\n"</code>. <code>String#lstrip</code> deletes whitespace from
+    the left, <code>String#rstrip</code> deletes it from the right, and
+    <code>String#strip</code> deletes it from both sides. All have bang
+    variants which modify the receiver in-place.
+    
+    <p><code>String#center(<var>w</var>)</code> returns a <code>String</code>
+    of at least <var>w</var> characters in length. If its receiver is shorter
+    than <var>w</var>, it pads it on either side with as many space characters
+    as is necessary to achieve this goal. If a <code>String</code> is supplied
+    for the optional second argument, it is used for padding instead of
+    <code>"\s"</code>. <code>String#ljust</code> and <code>String#rjust</code>
+    accept the same arguments but justify their receiver to the left or right,
+    respectively.</p>
+    
+    <figure id=string-whitespace.rb>
+      <figcaption>Adjusting whitespace in a <code>String</code>
+    </figure>
+  </section>
+
+  <section>
     <h1 id=encoding>Encoding</h1>
 
     <!--

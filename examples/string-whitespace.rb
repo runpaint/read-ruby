@@ -1,0 +1,7 @@
+str = " orient\tate\n"
+str = str.lstrip             #=> "orient\tate\n"
+str.chop!                    #=> "orient\tate"
+str.chomp                    #=> "orient\tate"
+str.chomp!('ate')            #=> "orient\t"
+str = str.center(15, "\t")   #=> "\t\t\t\torient\t\t\t\t\t"
+(str.strip << $/).capitalize #=> "Orient\n"
