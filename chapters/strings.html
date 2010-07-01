@@ -605,6 +605,22 @@
         <tr class=odd>
           <td><code>String#each_line</code>
     </table>
+
+    <p>A sequence of consecutive characters may be enumerated with
+    <code>String#next</code>, and its alias <code>String#succ</code>, which
+    return a copy of the receiver with the codepoint of its last character
+    incremented by one. However, ASCII alphanumeric characters are
+    special-cased: <i>z</i>/<i>Z</i> is followed by <i>aa</i>/<i>AA</i>; and
+    digits increment as integers. There are bang variants of both methods,
+    which modify their receiver in-place. This behaviour forms the basis of
+    <code>String#upto(<var>e</var>)</code>, which returns an
+    <code>Enumerator</code> of the sequence beginning with its receiver and
+    ending with <var>e</var>. If given a block, it yields each element in
+    turn.</p>
+
+    <figure id=string-upto.rb>
+      <figcaption><code>String#upto</code> and <code>String#succ</code>
+    </figure>
   </section>
 
   <section>
@@ -952,6 +968,20 @@
     <figure id=string-checksum.rb>
       <figcaption>Calculating a checksum for a <code>String</code>
     </figure>
+  </section>
+
+  <section>
+    <h1 id=sets>Sets of Characters &amp; Transliteration</h1>
+    <!-- #count, #delete, #squeeze, #tr -->
+  </section>
+
+  <section>
+    <h1 id=unpack>Unpack</h1>
+  </section>
+
+  <section>
+    <h1 id=debug>Debugging</h1>
+    <!-- #inspect, #dump -->
   </section>
 
   <section>
