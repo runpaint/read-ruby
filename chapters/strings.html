@@ -1022,7 +1022,23 @@
 
   <section>
     <h1 id=debug>Debugging</h1>
-    <!-- #inspect, #dump -->
+
+    <p><code>String#inspect</code> and <code>String#dump</code> return a copy
+    of the receiver enclosed in quotation marks, with special characters
+    escaped, in order to aid debugging. ASCII control characters are replaced
+    with their corresponding escape sequences, if any, and other non-printing
+    characters are substituted for the corresponding byte escape. Quotation
+    marks are backslash escaped. In addition, <code>String#dump</code>
+    substitutes non-ASCII characters with the corresponding
+    <code>\u{<var>codepoint</var>}</code> escape. If the receiver is
+    associated with an ASCII-incompatible encoding, <var>enc</var>,
+    <code>#dump</code> appends <code>.force_encoding('<var>enc</var>')</code>
+    to its result.</p>
+
+    <figure id=string-debug.rb>
+      <figcaption>Obtaining a different representation of a
+      <code>String</code> to help debugging its contents
+    </figure>
   </section>
 
   <section>
