@@ -972,7 +972,48 @@
 
   <section>
     <h1 id=sets>Sets of Characters &amp; Transliteration</h1>
-    <!-- #count, #delete, #squeeze, #tr -->
+
+    <p><code>String#squeeze</code> returns a copy of its receiver without any
+    runs of consecutive characters, i.e. it deletes all but the first
+    character in each run. Optionally, one or more <code>String</code>
+    arguments may be given, in which case only runs of characters appearing in
+    the intersection of these arguments are collapsed. If an argument contains
+    two characters separated by a hyphen minus sign, it represents all
+    characters in that range. An argument with a caret as the first character
+    represents the negation of its contents. The bang variant modifies the
+    receiver in-place, returning <code>nil</code> if no changes were made.</p>
+
+    <figure id=string-squeeze.rb>
+      <figcaption>Collapsing consecutive runs of the same character
+    </figure>
+
+    <p>The same approach can be applied to counting and deleting characters.
+    <code>String#count</code> and <code>String#delete</code> both accept the
+    same forms of argument with the same semantics. The former returns a
+    <code>Fixnum</code> indicating the specified character’s frequency in its
+    receiver, while the latter returns a copy of its receiver with the
+    characters removed. <code>String#delete!</code> behaves as
+    <code>#delete</code>, except the receiver is modified in-place and
+    <code>nil</code> is returned if no changes were made.</p>
+
+    <figure id=string-count-delete.rb>
+      <figcaption>Counting and deleting characters in a <code>String</code>
+    </figure>
+
+    <p><code>String#tr(<var>t</var>, <var>f</var>)</code> transliterates each
+    character specified by its first argument with the corresponding character
+    specified by its second. Both arguments may use the range construct
+    introduced above, and <var>t</var> may use the caret construct. If
+    <var>f</var> has more characters than <var>t</var>, the latter is padded
+    with the last character of the former.  <code>String#tr!</code> behaves in
+    the same fashion, except it modifies the receiver in-place and returns
+    <code>nil</code> if no changes were made. <code>String#tr_s</code> behaves
+    as <code>#tr</code>, except it collapses consecutive runs of characters in
+    the regions it affects.</p>
+
+    <figure id=string-tr.rb>
+      <figcaption>Transliterating characters in a <code>String</code>
+    </figure>
   </section>
 
   <section>
