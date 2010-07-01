@@ -1,6 +1,5 @@
 .hll { background-color: #ffffff }
 .c { color: #8f5902; font-style: italic } /* Comment */
-.err { color: #a40000; border: 1px solid #ef2929 } /* Error */
 .g { color: #000000 } /* Generic */
 .k { color: #204a87; font-weight: bold } /* Keyword */
 .l { color: #000000 } /* Literal */
@@ -38,7 +37,11 @@
 .nd { color: #5c35cc; font-weight: bold } /* Name.Decorator */
 .ni { color: #ce5c00 } /* Name.Entity */
 .ne { color: #cc0000; font-weight: bold } /* Name.Exception */
-.nf { color: #000000 } /* Name.Function */
+/* Hack follows. Pygments incorrectly labels UTF-8 identifiers as 'err'. It's
+ * slightly less obnoxious if such tokens are labelled as 'nf', instead,
+ * although clearly a proper fix is needed.
+ */ 
+.err, .nf { color: #000000 } /* Name.Function */
 .nl { color: #f57900 } /* Name.Label */
 .nn { color: #000000 } /* Name.Namespace */
 .nx { color: #000000 } /* Name.Other */
