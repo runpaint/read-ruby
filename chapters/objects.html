@@ -136,6 +136,26 @@
       <var>class</var> is a <code>Class</code> object. <!-- === -->
     </section>
 
+    <!-- TODO: Rethink this section. Is this the right place for it? Should it
+    be expanded? -->
+    <section>
+      <h1 id=methods>Methods</h1>
+
+      <p>The names of methods defined for an object are returned by
+      <code>Object#methods</code> as an <code>Array</code> of
+      <code>Symbol</code>s. For an object that is neither a class nor a
+      module, the methods returned are the intersection of its instance and
+      singleton methods; otherwise, they are its singleton methods only.
+      <code>#public_methods</code>, <code>#private_methods</code>, and
+      <code>#protected_methods</code> only return the names of methods with
+      the corresponding visibility. If a second argument of <code>false</code>
+      is given, inherited methods are omitted from the result.</p>
+      
+      <figure id=object-methods.rb>
+        <figcaption>Querying the methods defined on an object
+      </figure>
+    </section>
+
     <section>
       <h1 id=relations>Relations</h1>
       <!-- Explain that as relational operators are method calls the LHS gets to
