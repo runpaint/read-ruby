@@ -621,6 +621,8 @@
     <figure id=string-upto.rb>
       <figcaption><code>String#upto</code> and <code>String#succ</code>
     </figure>
+
+    <!-- TODO: #scan -->
   </section>
 
   <section>
@@ -838,7 +840,7 @@
   </section>
 
   <section>
-    <h1 id=split>Splitting &amp; Partitioning</h1>
+    <h1 id=split>Splitting, Partitioning, &amp; Scanning</h1>
     
     <p><code>String#split</code> returns an <code>Array</code> of its receiver
     divided into space-separated substrings, i.e. <code>'Horses for
@@ -850,11 +852,28 @@
     <code>Regexp</code> argument specifying a delimiter. It always returns a
     three-element <code>Array</code> comprising the text preceding the first
     occurrence of the delimiter, the delimiter itself, then the text following
-    the first occurrence of the delimiter.  <code>String#rpartition</code>
+    the first occurrence of the delimiter. <code>String#rpartition</code>
     behaves similarly except it uses the last occurrence of the delimiter.</p>
     
     <figure id=string-split.rb>
       <figcaption>Splitting and partitioning a <code>String</code> 
+    </figure>
+
+    <p><code>String#scan</code> is almost the inverse of <code>#split</code>.
+    It repeatedly matches its <code>Regexp</code> argument against the
+    receiver, returning an <code>Array</code> of the results, i.e. whereas
+    <code>#split</code> returned the text surrounding the matches;
+    <code>#scan</code> returns the matches themselves. If the pattern contains
+    capturing groups, each element of the <code>Array</code> is an
+    <code>Array</code> of captures; otherwise it is a <code>String</code>
+    containing the matched text. If the argument is given as a
+    <code>String</code>, it is interpreted literally: regular expression
+    metacharacters are ignored. If a block is supplied, it receives each
+    element of the result <code>Array</code> in turn.</p>
+
+    <figure id=string-scan.rb>
+      <figcaption>Repeatedly matching a pattern against a <code>String</code>
+      with <code>String#scan</code>
     </figure>
   </section>
 
@@ -1017,7 +1036,7 @@
   </section>
 
   <section>
-    <h1 id=unpack>Unpack</h1>
+    <h1 id=unpack>Unpacking</h1>
   </section>
 
   <section>
@@ -1125,6 +1144,7 @@
     how their corresponding argument should be converted before being
     substituted in their place.
 
+    <!-- Is % from Python? -->
     <p><code>String#%</code> interprets its receiver as a format string, and
     its argument-a plurality are supplied as an <code>Array</code>-as the
     values to be interpolated, returning the expanded <code>String</code>.
