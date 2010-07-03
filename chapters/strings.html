@@ -1035,9 +1035,6 @@
     </figure>
   </section>
 
-  <section>
-    <h1 id=unpack>Unpacking</h1>
-  </section>
 
   <section>
     <h1 id=debug>Debugging</h1>
@@ -1410,4 +1407,267 @@
     </section>
   </section>
 
+  <section>
+    <h1 id=unpack>Unpacking</h1>
+
+    <p><code>String#unpack</code> interprets the receiver as a sequence of
+    bytes-ignoring its encoding-which it expands into an <code>Array</code> of
+    values according to a given template. The template consists of
+    single-character <dfn title='#unpack directive'>directives</dfn>
+    optionally followed by an integer count, <var>count</var>, or an asterisk.
+    Whitespace preceding directives is ignored. In general, <var>count</var>
+    specifies the number of times the corresponding directive should be
+    applied; when <var>count</var> is <code>*</code>, the directive is applied
+    as many times as possible. The inverse operation, i.e. packing an
+    <code>Array</code> of values into a <code>String</code> according to a
+    template, is performed with <code>Array#pack</code>.
+
+    <p>The following directives create <code>Integer</code>s in the result
+    <code>Array</code>. 
+
+    <table class=border>
+      <caption>
+        <details>
+          <summary>
+            <code>Integer</code> directives for <code>String#unpack</code>
+          </summary>
+
+          <p>The <i>C Type</i> column is the corresponding datatype in the C
+          programming language. The <i>Byte Order</i> column indicates whether
+          the field’s bytes are big-endian, or <i>network</i>, i.e.
+          most-significant bit first; little-endian, or <i>VAX</i>, i.e.
+          least-significant bit first; or in the native order, i.e. that of
+          the current architecture’s. A <i>BER-compressed integer</i> is an
+          unsigned integer in base 128 with as few digits as possible. The
+          high bit is set on each byte except the LSB.
+        </details>
+      </caption>  
+      <thead>
+        <tr>
+          <th>Directive
+          <th>Interpretation
+          <th>C Type
+          <th>Byte order
+      <tbody class=zebra>
+        <tr>    
+          <td><code>C</code>
+          <td>8-bit unsigned integer
+          <td><code>unsigned char</code>
+          <td>N/A    
+        <tr>    
+          <td><code>S</code>
+          <td>16-bit unsigned integer
+          <td><code>uint16_t</code>
+          <td>Native    
+        <tr>    
+          <td><code>L</code>
+          <td>32-bit unsigned integer
+          <td><code>uint32_t</code>
+          <td>Native
+        <tr>    
+          <td><code>Q</code>
+          <td>64-bit unsigned integer
+          <td><code>uint64_t</code>
+          <td>Native
+        <tr>    
+          <td><code>c</code>
+          <td>8-bit signed integer
+          <td><code>char</code>
+          <td>Native
+        <tr>    
+          <td><code>s</code>
+          <td>16-bit signed integer
+          <td><code>int16_t</code>
+          <td>Native
+        <tr>    
+          <td><code>l</code>
+          <td>32-bit signed integer
+          <td><code>int32_t</code>
+          <td>Native
+        <tr>    
+          <td><code>l!</code> / <code>l_</code>
+          <td>Signed integer of <code>sizeof(long)</code> bytes
+          <td><code>long</code>
+          <td>Native
+        <tr>    
+          <td><code>q</code>
+          <td>64-bit signed integer
+          <td><code>int64_t</code>
+          <td>Native
+        <tr>    
+          <td><code>S_</code> / <code>S!</code>
+          <td>Unsigned integer of <code>sizeof(unsigned short)</code> bytes
+          <td><code>unisgned short</code>
+          <td>Native
+        <tr>    
+          <td><code>I</code> / <code>I_</code> / <code>I!</code>
+          <td>Unsigned integer of <code>sizeof(unsigned int)</code> bytes
+          <td><code>unsigned int</code>   
+          <td>Native
+        <tr>    
+          <td><code>L!</code> / <code>L_</code>
+          <td>Unsigned integer of <code>sizeof(unsigned long)</code> bytes
+          <td><code>unsigned long</code>   
+          <td>Native
+        <tr>    
+          <td><code>s!</code> / <code>s_</code>
+          <td>Signed integer of <code>sizeof(short)</code> bytes
+          <td><code>short</code>   
+          <td>Native
+        <tr>    
+          <td><code>i</code> / <code>i!</code> / <code>i_</code>
+          <td>Signed integer of <code>sizeof(int)</code> bytes
+          <td><code>int</code>   
+          <td>Native
+        <tr>    
+          <td><code>n</code>
+          <td>16-bit unsigned integer
+          <td><code>unsigned short</code>   
+          <td>Big endian
+        <tr>    
+          <td><code>N</code>
+          <td>32-bit unsigned integer
+          <td><code>unsigned long</code>   
+          <td>Big endian 
+        <tr>    
+          <td><code>v</code>
+          <td>16-bit unsigned integer
+          <td><code>unsigned short</code>   
+          <td>Little endian 
+        <tr>    
+          <td><code>V</code>
+          <td>32-bit unsigned integer
+          <td><code>unsigned long</code>   
+          <td>Little endian 
+        <tr>    
+          <td><code>U</code>
+          <td>UTF-8 character (codepoint)
+          <td>N/A   
+          <td>N/A   
+        <tr>    
+          <td><code>w</code>
+          <td>BER-compressed integer
+          <td>N/A   
+          <td>Big-endian   
+    </table>
+
+    <figure id=string-unpack-int.rb>
+      <figcaption>Unpacking a sequence of bytes to <code>Integer</code>s with
+      <code>String#unpack</code>
+    </figure>
+
+    <p>Similarly, the following directives unpack to <code>Float</code>s:
+
+    <table class=border>
+      <caption>
+        <details>
+          <summary>
+            <code>Float</code> directives for <code>String#unpack</code>
+          </summary>
+
+          <p>The <i>Byte Order</i> column indicates whether the field’s bytes
+          are big-endian, or <i>network</i>, i.e.  most-significant bit first;
+          little-endian, or <i>VAX</i>, i.e.  least-significant bit first; or
+          in the native order, i.e. that of the current architecture’s.
+        </details>
+      </caption>  
+      <thead>
+        <tr>
+          <th>Directive
+          <th>Interpretation
+          <th>Byte order
+      <tbody class=zebra>
+        <tr>    
+          <td><code>D</code> / <code>d</code>
+          <td>Double-precision float
+          <td>Native    
+        <tr>    
+          <td><code>F</code> / <code>f</code>
+          <td>Single-precision float
+          <td>Native    
+        <tr>    
+          <td><code>E</code>
+          <td>Double-precision float
+          <td>Little-endian
+        <tr>    
+          <td><code>e</code>
+          <td>Single-precision float
+          <td>Little-endian
+        <tr>    
+          <td><code>G</code>
+          <td>Double-precision float
+          <td>Big-endian
+        <tr>    
+          <td><code>g</code>
+          <td>Single-precision float
+          <td>Big-endian
+    </table>
+
+    <figure id=string-unpack-float.rb>
+      <figcaption>Unpacking a sequence of bytes to <code>Float</code>s with
+      <code>String#unpack</code>
+    </figure>
+
+    <p>And, finally, the <code>String</code> directives:
+
+    <table class=border>
+      <thead>
+        <tr>
+          <th>Directive
+          <th>Interpretation
+      <tbody class=zebra>
+        <tr>    
+          <td><code>A</code>
+          <td>Binary string, padded with spaces if shorter than
+            <var>count</var>
+        <tr>    
+          <td><code>a</code>
+          <td>Binary string, padded with nulls if shorter than
+            <var>count</var>
+        <tr>    
+          <td><code>Z</code>
+          <td>As <code>a</code>, but null represented as <code>*</code>
+        <tr>    
+          <td><code>B</code>
+          <td>Big-endian bit string
+        <tr>    
+          <td><code>b</code>
+          <td>Little-endian bit string
+        <tr>    
+          <td><code>H</code>
+          <td>Big-endian hex string
+        <tr>    
+          <td><code>h</code>
+          <td>Little-endian hex string
+        <tr>    
+          <td><code>u</code>
+          <td><a href=//en.wikipedia.org/wiki/Uuencode>UU-encoded</a> string,
+            as produced by <code>uencode(1)</code>
+        <tr>    
+          <td><code>M</code>
+          <td><a
+              href=//en.wikipedia.org/wiki/Quoted_printable>Quoted-printable</a>-encoded
+            string (MIME encoding)
+        <tr>    
+          <td><code>m</code>
+          <td><a href=//en.wikipedia.org/wiki/Base64>Base64-encoded</a> string
+            of <var>count</var> characters; <code>0</code> omits line feeds
+        <tr>    
+          <td><code>P</code>
+          <td>Pointer to a structure (fixed-length string)
+        <tr>    
+          <td><code>p</code>
+          <td>Pointer to a null-terminated string
+    </table>
+  
+    <figure id=string-unpack-str.rb>
+      <figcaption>Unpacking a sequence of bytes to <code>String</code>s with
+      <code>String#unpack</code>
+    </figure>
+
+    <p>There are also directives to specify which byte should be read next:
+    <code>x</code> skips forward one byte, <code>X</code> skips backward one
+    byte, and <code>@<var>o</var></code> skips to the byte at offset
+    <var>o</var>.
+  </section>
 </article>

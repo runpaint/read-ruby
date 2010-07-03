@@ -8,6 +8,15 @@
     conditional1 => ->{    },
     conditional2 => true,
   }
+
+
+def where(args)
+  ->(file) do
+    stat = File.stat file
+    args.all?{|k, v| stat.send(k) == v}
+  end
+end
+Dir.glob('/etc/*').select &where(uid: 0, zero?: true)
 -->
 <article>
   <h1 id=closures>Closures</h1>
