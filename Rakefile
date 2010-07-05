@@ -3,8 +3,10 @@ include ReadRuby
 
 MINIFIER = {html: 'h5-min', css: 'yuicompressor', js: 'yuicompressor'}
 
+task :default => :html
+
 desc 'Rebuild HTML, CSS, and JS'
-task :default do
+task :html do
   OUT_DIR.rmtree if OUT_DIR.exist?
   cp_r PRISTINE_DIR, OUT_DIR
   OUT_DIR.each_child do |file|
@@ -52,8 +54,8 @@ task :push do
   sh 'git push github'
 end
 
-desc 'Rebuild everything'
-task :all => [:examples, :railroads, :default, :minify]
+desc 'Rebuild everything & minify'
+task :all => [:examples, :railroads, :html, :minify]
 
 desc 'Rebuild everything then upload'
 task :upload => [:push, :all, :rsync]
