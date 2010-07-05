@@ -13,3 +13,6 @@ ExpiresDefault "access plus 24 hours"
 ExpiresByType image/png "access plus 1 years"
 ExpiresByType image/css "access plus 1 weeks"
 ExpiresByType application/javascript "access plus 1 weeks"
+<Files "text">
+  ErrorDocument 404 /text-303
+</Files>

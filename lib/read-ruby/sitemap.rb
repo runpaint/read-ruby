@@ -10,6 +10,7 @@ class Sitemap < Mustache
        ].map{|f| Pathname f}.
          reject(&:directory?).
          reject{|f| BAD_EXT.any?{|e| f.extname == e} or f.fnmatch?('*google*')}.
+         reject{|f| Error.dir.join(f.basename).exist? }.
          map{|f| f.dirname == OUT_DIR ? f.basename : f}.
          map{|f| {url: ROOT_URL + f.sub_ext('').to_s}}
   end
