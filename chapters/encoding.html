@@ -7,8 +7,8 @@
   <code>String</code>, <code>Symbol</code>, <code>Regexp</code>,
   <code>File</code>, and <code>IO</code> object is, relatively independently,
   associated with its own encoding. This <a
-    href=/text#string-associate>association</a> is simply a statement, that
-  has either been made explicitly about a specific object, or derived from a
+    href=/strings#associate>association</a> is simply a statement, that has
+  either been made explicitly about a specific object, or derived from a
   corresponding default encoding. It may even be spurious. 
 
   <p>The encoding associated with a source file-the <a href=#source><i>source
@@ -17,12 +17,12 @@
   Ruby refuses to load it. 
   
   <p>The encoding associated with <a
-    href=/text#string-encoding><code>String</code></a>s, <a
-    href=/text#symbol-encoding><code>Symbol</code></a>s, and <a
-    href=/text#regexp-encoding><code>Regexp</code></a>s, is by default the
-  source encoding of the file in which they are contained. However, if their
-  literals contain certain character escapes, this is changed implicitly. As
-  with source files, this association can be overridden on a per-object basis. 
+    href=/strings#encoding><code>String</code></a>s, <a
+    href=/strings#symbol-encoding><code>Symbol</code></a>s, and <a
+    href=/regexps#encoding><code>Regexp</code></a>s, is by default the source
+  encoding of the file in which they are contained. However, if their literals
+  contain certain character escapes, this is changed implicitly. As with
+  source files, this association can be overridden on a per-object basis. 
   
   <p>An <code>IO</code> or <code>File</code> object represents an external
   data stream, whose encoding is termed its <a href=#external><i>external
@@ -243,7 +243,7 @@
     make up a <abbr title='Portable Network Graphics'>PNG</abbr> image, so has
     no restrictions on content. One byte always corresponds with one
     character. This allows a <code>String</code>, for instance, to be treated
-    as <a href=/text#byte-array>bag of bytes</a> rather than a sequence of
+    as <a href=/strings#bytes>bag of bytes</a> rather than a sequence of
     characters. <code>ASCII-8BIT</code>, then, effectively corresponds to the
     absence of an encoding, so methods that expect an encoding name recognise
     <code>nil</code> as a synonym.
@@ -257,7 +257,7 @@
     the objects to be <dfn>compatible</dfn>. An encoding is always
     compatible with itself, so operations involving two objects associated
     with the same encoding are allowed. Likewise, two objects are compatible
-    if they are both <a href=/text#ascii-only>ASCII-only</a>.
+    if they are both <a href=/strings#ascii-only>ASCII-only</a>.
 
     <p>The compatibility of other combinations of encodings can be
     determined with <code>Encoding.compatible?</code>, which compares the

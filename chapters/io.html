@@ -46,7 +46,7 @@
   <p>A stream containing binary data can have its <a
     href=#binmode><code>binmode</code></a> attribute set, which prevents it
   from being transcoded and associates it with the <a
-    href=/text#ascii-8bit>ASCII-8BIT</a> encoding.  Conversely, a stream
+    href=/encoding#ascii-8bit>ASCII-8BIT</a> encoding.  Conversely, a stream
   containing textual data can have its <a
     href=#textmode><code>textmode</code></a> attribute set, which allows
   transcoding and newline normalisation.
@@ -151,8 +151,8 @@
     same manner, but without the risks. In fact, all other writing methods are
     implemented in terms of <code>#write</code>. For example,
     <code>IO#printf</code> formats its arguments with <a
-      href=/text#format-strings><code>Kernel#sprintf</code></a> before passing
-    the result to <code>#write</code>, i.e. <code>write(sprintf *args)</code>.</p>
+      href=/strings#format><code>Kernel#sprintf</code></a> before passing the
+    result to <code>#write</code>, i.e. <code>write(sprintf *args)</code>.</p>
 
     <figure id=write-syswrite-printf.rb>
       <figcaption>Displaying output with <code>#write</code>,
@@ -318,7 +318,7 @@
       given number of bytes. When provided with a <code>String</code> as its
       second argument, it will assign the data it reads to that
       <code>String</code>. In all cases, the data is returned as a
-      <code>String</code> with <a href=/text#ascii-8bit>ASCII-8BIT</a>
+      <code>String</code> with <a href=/encoding#ascii-8bit>ASCII-8BIT</a>
       encoding. <code>IO#sysread</code> behaves in a similar fashion, except
       it requires the <code>Integer</code> first argument, and raises
       <code>EOFError</code> at EoF.
@@ -535,8 +535,8 @@
       
       <p><dfn>Binary mode</dfn> is disabled by default. It must be enabled
       when reading a file with an <a
-        href=/text#encoding-compatibility>ASCII-incompatible</a> <a
-        href=#external-encoding>external encoding</a>. When enabled it has the
+        href=/encoding#compatibility>ASCII-incompatible</a> <a
+        href=/encoding#external>external encoding</a>. When enabled it has the
       following effects:
 
       <ul>
@@ -810,7 +810,7 @@
       <p>Alternatively, many methods that open files accept an options
       <code>Hash</code> as their final argument. In addition to the keys
       listed below, those of the <a
-        href=#encode-options-hash><code>String#encode</code> options
+        href=/encoding#options-hash><code>String#encode</code> options
         <code>Hash</code></a> are also recognised.
 
       <table class=border>
@@ -822,8 +822,8 @@
             </summary>
 
             <p>Options accepted by <a
-              href=/text#encode-options-hash><code>String#encode</code></a>
-            are also accepted.
+              href=/encoding#options-hash><code>String#encode</code></a> are
+            also accepted.
           </details>
         </caption>
         <thead>

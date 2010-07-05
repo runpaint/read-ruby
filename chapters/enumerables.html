@@ -39,14 +39,13 @@
       <h1 id=array-literal-w>Alternative Delimiters</h1>
                 
       <p>The <code>%w<var>delimiter</var>…<var>delimiter</var></code>
-      construct is a syntactical shortcut for instantiating an array
-      of strings. The delimiters take the same form as those of <a
-        href=/text#single-quoted-strings-q><code>%q</code></a>. The text
-      between them is split on whitespace, each substring becoming an
-      element on the array. <code>%w</code> interprets its contents
-      with single-quoted string semantics; its counterpart,
-      <code>%W</code>, behaves in the same way using double-quoted
-      string semantics.</p>
+      construct is a syntactical shortcut for instantiating an array of
+      strings. The delimiters take the same form as those of <a
+        href=/strings#single-quoted-q><code>%q</code></a>. The text between
+      them is split on whitespace, each substring becoming an
+      element on the array. <code>%w</code> interprets its contents with
+      single-quoted string semantics; its counterpart, <code>%W</code>,
+      behaves in the same way using double-quoted string semantics.</p>
        
       <figure id=array-literal-w.rb class=left>
         <figcaption>Creating an array of strings with the
