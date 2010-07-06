@@ -1,6 +1,7 @@
 require_relative 'lib/read-ruby'
 include ReadRuby
 
+RSYNC_EXCLUDE = %w{*examples/*html apache.conf*}
 MINIFIER = {html: 'h5-min', css: 'yuicompressor', js: 'yuicompressor'}
 
 task :default => :html
@@ -62,5 +63,8 @@ task :upload => [:push, :all, :rsync]
 
 desc 'Upload current build'
 task :rsync  do
-  sh "rsync --exclude '*examples/*html' --delete -vazL out/ ruby:/home/public"
+  exclude = RSYNC_EXCLUDE.map do |glob|
+    "--exclude '#{glob}' "
+  end.join
+  sh "rsync #{exclude} --delete -vazL out/ ruby:/home/public"
 end
