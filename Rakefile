@@ -34,7 +34,7 @@ task :minify do
       sh "#{min} #{file} > #{file}.min"
       mv "#{file}.min", file
     end
-    sh "gzip --best -c #{file} > #{file}.gz"
+    sh "gzip --best -cn #{file} > #{file}.gz"
   end
 end
 
