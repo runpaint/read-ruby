@@ -223,6 +223,24 @@ dl.inline dt {
   padding-right: 1em;
 }
 
+/* Display a list as a comma-separated list of elements */
+ul.comma li {
+  display: inline;
+}
+ul.comma li:after {
+ content: ", ";
+}
+ul.comma li:before {
+ content: " ";
+}
+ul.comma li:last-child:after {
+  content: "";
+}
+
+ul.comma li:last-child:before {
+  content: " and ";
+}
+
 /*********** 
  *         *
  * TABLES  *
