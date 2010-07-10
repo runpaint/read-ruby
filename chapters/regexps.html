@@ -761,41 +761,101 @@
         href=#derived-properties>derived</a>-property is any of the following,
       and represents all characters with that property:
 
-      <!-- add descriptions -->
-      <ul class=comma>
-        <li><i>ASCII Hex Digit</i>
-        <li><i>Bidi_Control</i>
-        <li><i>Dash</i>
-        <li><i>Deprecated</i>
-        <li><i>Diacritic</i>
-        <li><i>Extender</i>
-        <li><i>Hex Digit</i>
-        <li><i>Hyphen</i>
-        <li><i>IDS Binary Operator</i>
-        <li><i>IDS Trinary Operator</i>
-        <li><i>Ideographic</i>
-        <li><i>Join Control</i>
-        <li><i>Logical Order Exception</i>
-        <li><i>NonCharacter Code Point</i>
-        <li><i>Other Alphabetic</i>
-        <li><i>Other Default Ignorable Code Point</i>
-        <li><i>Other Grapheme Extend</i>
-        <li><i>Other ID Continue</i>
-        <li><i>Other ID Start</i>
-        <li><i>Other Lowercase</i>
-        <li><i>Other Math</i>
-        <li><i>Other Uppercase</i>
-        <li><i>Pattern Syntax</i>
-        <li><i>Pattern White Space</i>
-        <li><i>Quotation Mark</i>
-        <li><i>Radical</i>
-        <li><i>STerm</i>
-        <li><i>Soft Dotted</i>
-        <li><i>Terminal Punctuation</i>
-        <li><i>Unified Ideograph</i>
-        <li><i>Variation Selector</i>
-        <li><i>White_Space</i>
-      <ul>
+      <dl>
+        <dt><i>ASCII Hex Digit</i>
+        <dd><q>ASCII characters commonly used for the representation of
+          hexadecimal numbers.</q> (<a href=/references#refUAX44><cite>UAX
+            #44: Unicode Character Database</cite></a>)
+        <dt><i>Bidi Control</i>
+        <dd><q>Format control characters which have specific functions in the
+        <a href=//www.unicode.org/reports/tr9/>Unicode Bidirectional
+          Algorithm</a>.</q> (<i>ibid.</i>)
+        <dt><i>Dash</i>
+        <dd><q>Punctuation characters designated as dashes in the Unicode
+          Standard, plus their compatibility equivalents.</q> (<i>ibid.</i>)
+        <dt><i>Deprecated</i>
+        <dd><q>Unicode characters whose use is strongly discouraged.</q>
+        (<i>ibid.</i>)
+        <dt><i>Diacritic</i>
+        <dd><q>Characters that linguistically modify the meaning of another
+          character to which they apply.</q> (<i>ibid.</i>)
+        <dt><i>Extender</i>
+        <dd><q>Characters whose principal function is to extend the value or
+          shape of a preceding alphabetic character.</q> (<i>ibid.</i>)
+        <dt><i>Hex Digit</i>
+        <dd><q>Characters commonly used for the representation of hexadecimal
+          numbers, plus their compatibility equivalents.</q> (<i>ibid.</i>)
+        <dt><i>Hyphen</i>
+        <dd><q>Dashes which are used to mark connections between pieces of words,
+          plus the Katakana middle dot.</q> (<i>ibid.</i>)
+        <dt><i>IDS Binary Operator</i>
+        <dt><i>IDS Trinary Operator</i>
+        <dd><q>Used in Ideographic Description Sequences.</q> (<i>ibid.</i>)
+        <dt><i>Ideographic</i>
+        <dd><q>Characters considered to be CJKV (Chinese, Japanese, Korean, and
+          Vietnamese) ideographs.</q> (<i>ibid.</i>)
+        <dt><i>Join Control</i>
+        <dd><q>Format control characters which have specific functions for
+          control of cursive joining and ligation.</q> (<i>ibid.</i>)
+        <dt><i>Logical Order Exception</i>
+        <dd><q>There are a small number of characters that do not use logical
+          order. These characters require special handling in most
+          processing.</q> (<i>ibid.</i>)
+        <dt><i>NonCharacter Code Point</i>
+        <dd><q>Code points permanently reserved for internal use.</q> (<i>ibid.</i>)
+        <dt><i>Other Alphabetic</i>
+        <dd><q>Used in deriving the <i>Alphabetic</i> property.</q> (<i>ibid.</i>)
+        <dt><i>Other Default Ignorable Code Point</i>
+        <dd><q>Used in deriving the <i>Default Ignorable Code Point</i>
+          property.</q> (<i>ibid.</i>)
+        <dt><i>Other Grapheme Extend</i>
+        <dd><q>Used in deriving the <i>Grapheme Extend</i> property.</q>
+        (<i>ibid.</i>)
+        <dt><i>Other ID Continue</i>
+        <dd><q>Used for backward compatibility of <i>ID Continue</i>.</q>
+        (<i>ibid.</i>)
+        <dt><i>Other ID Start</i>
+        <dd><q>Used for backward compatibility of <i>ID Start</i>.</q>
+        (<i>ibid.</i>)
+        <dt><i>Other Lowercase</i>
+        <dd><q>Used in deriving the <i>Lowercase</i> property.</q>
+        (<i>ibid.</i>)
+        <dt><i>Other Math</i>
+        <dd><q>Used in deriving the <i>Math</i> property.</q> (<i>ibid.</i>)
+        <dt><i>Other Uppercase</i>
+        <dd><q>Used in deriving the <i>Uppercase</i> property.</q>
+        (<i>ibid.</i>)
+        <dt><i>Pattern Syntax</i>
+        <dt><i>Pattern White Space</i>
+        <dd><q>Used for pattern syntax as described in <a
+            href=//www.unicode.org/reports/tr31/>UAX #31: Unicode Identifier
+            and Pattern Syntax</a></q> (<i>ibid.</i>)
+        <dt><i>Quotation Mark</i>
+        <dd><q>Punctuation characters that function as quotation marks.</q>
+        (<i>ibid.</i>)
+        <dt><i>Radical</i>
+        <dd><q>Used in Ideographic Description Sequences.</q> (<i>ibid.</i>)
+        <dt><i>STerm</i>
+        <dd><q>Sentence Terminal. Used in <a
+            href=//www.unicode.org/reports/tr29/>UAX #29: Unicode Text
+            Segmentation</a></q> (<i>ibid.</i>) 
+        <dt><i>Soft Dotted</i>
+        <dd><q>Characters with a “soft dot”, like i or j. An accent placed on
+          these characters causes the dot to disappear.</q> (<i>ibid.</i>)
+        <dt><i>Terminal Punctuation</i>
+        <dd><q>Punctuation characters that generally mark the end of textual
+          units.</q> (<i>ibid.</i>)
+        <dt><i>Unified Ideograph</i>
+        <dd><q>Used in Ideographic Description Sequences.</q> (<i>ibid.</i>)
+        <dt><i>Variation Selector</i>
+        <dd><q>Indicates characters that are Variation Selectors. See <a
+            href=//www.unicode.org/reports/tr37/>UAX #37: Unicode Ideographic
+            Variation Database</a> for more details.</q> (<i>ibid.</i>)
+        <dt><i>White Space</i>
+        <dd><q>Separator characters and control characters which should be
+          treated by programming languages as "white space" for the purpose of
+          parsing elements.</q> (<i>ibid.</i>)
+      </dl>
     </section>
 
     <section>
