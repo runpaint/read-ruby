@@ -1,3 +1,4 @@
+# coding: utf-8
 Footnote = Class.new Mustache
 
 class Chapter < Mustache
@@ -46,13 +47,22 @@ class Chapter < Mustache
     Toc.new.toc(h) if h.flatten.size < 20
   end
 
+  def permalinks
+    nok.at('article').css('h1[@id]')[1..-1].each do |h1|
+      next if h1['class'] == 'runin'
+      h1.inner_html = "<a title=permalink href=##{h1['id']}>§</a> #{h1.inner_html}"
+    end
+  end
+
   def headings(s=nok.at('article'), level=1)
     a = ''
     unless (h1 = s.xpath('./h1')).inner_html.empty?
       href = '/' + name.sub_ext('').to_s
-      anchor = h1.first.attributes['id'].to_s
+      h = h1.first.dup
+      h.at('a').remove if h.at('a')
+      anchor = h.attributes['id'].to_s
       href += "##{anchor}" unless name.to_s =~ /^#{anchor}\./
-      a = "<a href=#{href}>#{h1.inner_html}</a>"
+      a = "<a href=#{href}>#{h.inner_html.strip}</a>"
     end
     titles = [a, 
               s.xpath('./section').map do |s2| 
@@ -91,5 +101,6 @@ class Chapter < Mustache
         end
       end
     end
+    permalinks
   end
 end

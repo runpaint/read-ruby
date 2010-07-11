@@ -29,6 +29,19 @@ article a[href^="//"]:visited, article a[href^="http"]:visited {
   text-decoration: underline;
 }
 
+/* Permalinks. The selectors are overly specific so as to not to be overruled
+ * by those above. */
+h1 > a[href^="#"]:link, 
+h1 > a[href^="#"]:visited, 
+h1 > a[href^="#"]:hover {
+  font-color: #cccccc;
+  color: #cccccc;
+  font-style: italic;
+  font-weight: normal;
+  border-bottom: none;
+  text-decoration: none;
+}
+
 /* Hardcode quotation marks. The UA should do this, of course, but for some
    inexplicable reason, Chromium was messing up the opening mark. */   
 
