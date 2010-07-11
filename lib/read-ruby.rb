@@ -41,4 +41,6 @@ module ReadRuby
   end
 end
 
-Dir[File.dirname(__FILE__) + '/**/*rb'].each{|f| require_relative f}
+Dir[File.dirname(__FILE__) + '/**/*rb'].
+  reject{|f| f.end_with? 'browse.rb'}.
+  each{|f| require_relative f}

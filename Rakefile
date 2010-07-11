@@ -10,8 +10,7 @@ desc 'Rebuild HTML, CSS, and JS'
 task :html do
   OUT_DIR.rmtree if OUT_DIR.exist?
   cp_r PRISTINE_DIR, OUT_DIR
-  OUT_DIR.each_child do |file|
-    next unless file.symlink?
+  Pathname.glob("#{OUT_DIR}/**/*").select(&:symlink?).each do |file|
     target, name = OUT_DIR.join(file.readlink), file
     next unless target.extname == TEMPLATE_EXT
     template = target.sub_ext('').basename.to_s
@@ -20,7 +19,7 @@ task :html do
         o.fixup if o.respond_to?(:fixup)
       end.render
     rescue NameError => e
-      Mustache.render(target.read)
+      Mustache.render(OUT_DIR.join(target).read)
     end
     name.unlink
     open(name, ?w){|f| f.print rendered}
@@ -67,4 +66,9 @@ task :rsync  do
     "--exclude '#{glob}' "
   end.join
   sh "rsync #{exclude} --delete -vazL out/ ruby:/home/public"
+end
+
+desc 'Start webserver to browse locally'
+task :browse do
+  system './lib/read-ruby/browse.rb'
 end
