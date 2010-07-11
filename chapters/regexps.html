@@ -479,6 +479,59 @@
     <code>Integer</code>.</p>
   </section>  
 
+  <section>
+    <h1 id=anchors>Anchoring</h1>
+
+    <p>A regular expression matches a <code>String</code> if the former is
+    <em>contained</em> in the latter. For example, <code>/\d/</code> matches
+    <code>"2"</code>, as well as <code>"2 by 4"</code> and <code>"DoB:
+      19/2/1922"</code>. Alternatively, a pattern may be <dfn title='regular
+      expression anchor'>anchored</dfn> to a specific portion of the
+    <code>String</code>. Whereas many of the metacharacters introduced so far
+    match sequences of characters, anchors match positions.
+
+    <table class=border>
+      <thead>
+        <tr>
+          <th>Anchor
+          <th>Position in <code>String</code>
+      <tbody class=zebra>      
+        <tr>
+          <td><code>^</code>
+          <td>Start or after newline 
+        <tr>
+          <td><code>\A</code>
+          <td>Start
+        <tr>
+          <td><code>$</code>
+          <td>End or before newline 
+        <tr>
+          <td><code>\Z</code>
+          <td>End or before last newline
+        <tr>
+          <td><code>\z</code>
+          <td>End
+        <tr>
+          <td><code>\b</code>
+          <td>Word boundary
+        <tr>
+          <td><code>\B</code>
+          <td>Non-word boundary
+    </table>
+
+    <p>The <dfn>word boundary</dfn> referred to in the table above is a
+    position before a word, where <i>word</i> is simply: <code>/[[:word:]]+/</code>.
+    Therefore, <code>\b</code> matches a word character that is not preceded
+    by a word character. This is quite different from
+    <code>/[^[:word:]][[:word:]]/</code> because <code>\b</code> matches a
+    position without consuming any characters. Indeed, the pathological
+    pattern <code>/\b/</code> matches <code>"a"</code> at position 0, i.e. the
+    non-word character need not even exist.</p>
+
+    <figure id=regexp-anchors.rb>
+      <figcaption>Anchoring a match to a specific position
+    </figure>
+  </section>
 
   <section>
     <h1 id=readability>Readability</h1>
