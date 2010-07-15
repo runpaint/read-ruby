@@ -26,7 +26,14 @@ To generate the book, you'll need:
 * `optipng` for compressing railroad diagrams. Packaged as `optipng` on Debian/Ubuntu.
 * `yuicompressor` for minifying CSS and JS. ([YUI
   Compressor](http://yuilibrary.com/downloads/#yuicompressor))
-* Apache 2 for serving local copy. Packaged as `apache2` as Debian/Ubuntu. The
-  config file at out/apache.conf should be symlinked from your Apache 2
-  `sites-enabled` directory.
-* `rsync` for uploading. Packaged as `rsync` on Debian/Ubuntu.
+
+To preview it locally, there are two options:
+
+* Install Apache 2, symlink the config file at out/apache.conf from your Apache 2
+  `sites-enabled` directory, assign the hostname `read-ruby` to localhost,
+  then view `http://read-ruby/`.
+* Or, install the `sinatra` gem, run `rake browse` to start the bundled web
+  server, note the port it’s listening on, then navigate to
+  `http://localhost:`<var>port</var>`/`.
+
+To upload the site to a remote server you will also need `rsync`.
