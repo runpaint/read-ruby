@@ -534,6 +534,45 @@
   </section>
 
   <section>
+    <h1 id=zero-width>Zero-Width Assertions</h1>
+
+    <p>Inasmuch as anchors never consume any characters, they are a variety of
+    a more general concept: the <dfn>zero-width assertion</dfn>. The latter
+    require a given sub-expression to appear, or not appear, in the position
+    preceding, or following, the assertion. That is, they vary across two axis
+    as illustrated below.
+
+    <table class=border>
+      <thead>
+        <tr>
+          <th>Syntax
+          <th>Name
+          <th>Assertion    
+      <tbody class=zebra>      
+        <tr>
+          <td><code>(?=<var>exp</var>)</code>
+          <td>Positive look-ahead  
+          <td><var>exp</var> must follow   
+        <tr>
+          <td><code>(?!<var>exp</var>)</code>
+          <td>Negative look-ahead  
+          <td><var>exp</var> can’t follow   
+        <tr>
+          <td><code>(?&lt;=<var>exp</var>)</code>
+          <td>Positive look-behind  
+          <td><var>exp</var> must precede   
+        <tr>
+          <td><code>(?&lt;!<var>exp</var>)</code>
+          <td>Negative look-behind  
+          <td><var>exp</var> can’t precede   
+    </table>
+
+    <figure id=regexps-zero-width.rb>
+      <figcaption>Using zero-width assertions in regular expressions.
+    </figure>
+  </section>
+
+  <section>
     <h1 id=readability>Readability</h1>
 
     <p>Longer patterns tend to be harder to comprehend, increasing the
