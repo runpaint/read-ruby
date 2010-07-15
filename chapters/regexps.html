@@ -149,26 +149,26 @@
           <th>Meaning
       <tbody class=zebra>
         <tr>
-          <td><code>^</code>
+          <td><a href=#anchors><code>^</code></a>
           <td>Start of line anchor
         <tr>
-          <td><code>$</code>
+          <td><a href=#anchors><code>$</code></a>
           <td>End of line anchor  
         <tr>
-          <td><code>#</code>
+          <td><a href=#readability><code>#</code></a>
           <td>Introduces a comment if the <code>x</code> option is given
         <tr>
           <td><code>#{</code>…<code>}</code>
           <td>Interpolates an expression
         <tr>
-          <td><code>(</code>…<code>)</code>
+          <td><a href=#groups><code>(</code>…<code>)</code></a>
           <td>Encloses a <a href=#groups>group</a>  
         <tr>
-          <td><code>*</code>
+          <td><a href=#quantifiers><code>*</code></a>
           <td>Greedy <a href=#quantifiers>quantifier</a>: preceding atom may
             occur any number of times  
         <tr>
-          <td><code>+</code>
+          <td><a href=#quantifiers><code>+</code></a>
           <td>Greedy <a href=#quantifiers>quantifier</a>: preceding atom
             occurs at least once  
         <tr>
@@ -179,20 +179,20 @@
           <td><code>.</code>
           <td>Matches almost any character  
         <tr>
-          <td><code>?</code>
+          <td><a href=#quantifiers><code>?</code></a>
           <td>Greedy <a href=#quantifiers>quantifier</a>: preceding atom
             occurs 0 or 1 times  
         <tr>
-          <td><code>[</code>…<code>]</code>
-          <td>Encloses a character class  
+          <td><a href=#classes><code>[</code>…<code>]</code></a>
+            <td>Encloses a <a href=#classes>character class</a>  
         <tr>
           <td><code>/</code>
           <td>Escapes the character that follows  
         <tr>
-          <td><code>{</code>…<code>}</code>
+          <td><a href=#quantifiers><code>{</code>…<code>}</code></a>
           <td>Interval
         <tr>
-          <td><code>|</code>
+          <td><a href=#alternation><code>|</code></a>
           <td>Alternation  
     </table>
   </section>
@@ -211,16 +211,16 @@
           <th>Meaning
       <tbody class=zebra>
         <tr>
-          <td><code>\1</code>&ndash;<code>\9</code>
+          <td><a href=#captures><code>\1</code>&ndash;<code>\9</code></a>
           <td>Back-reference to a numbered group  
         <tr>
-          <td><code>\A</code>
+          <td><a href=#anchors><code>\A</code></a>
           <td>Start of <code>String</code> anchor 
         <tr>
-          <td><code>\b</code>
+          <td><a href=#anchors><code>\b</code></a>
           <td>Word boundary 
         <tr>
-          <td><code>\B</code>
+          <td><a href=#anchors><code>\B</code></a>
           <td><em>Not</em> <code>\b</code> 
         <tr>
           <td><code>\d</code>
@@ -241,14 +241,14 @@
           <td><code>\H</code>
           <td>Not <code>\h</code> 
         <tr>
-          <td><code>\k&lt;<var>name</var>&gt;</code>
+          <td><a href=#captures><code>\k&lt;<var>name</var>&gt;</code></a>
           <td>Back-reference to group named or numbered <var>name</var>
         <tr>
-          <td><code>\p{<var>name</var>}</code>
+          <td><a href=#properties><code>\p{<var>name</var>}</code></a>
           <td>A character with the <a href=#properties>Unicode property</a>
             <var>name</var>
         <tr>
-          <td><code>\P{<var>name</var>}</code>
+          <td><a href=#properties><code>\P{<var>name</var>}</code></a>
           <td>A character without the <a href=#properties>Unicode property</a>
             <var>name</var>
         <tr>
@@ -267,11 +267,11 @@
           <td><code>\W</code>
           <td><em>Not</em> <code>\w</code> 
         <tr>
-          <td><code>\Z</code>
+          <td><a href=#anchors><code>\Z</code></a>
           <td>End of <code>String</code> or before <code>String</code>-ending
             newline
         <tr>
-          <td><code>\z</code>
+          <td><a href=#anchors><code>\z</code></a>
           <td>Absolute end-of <code>String</code> anchor
     </table>
 
