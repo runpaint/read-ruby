@@ -107,6 +107,12 @@ body > header > nav > ol > li > span {
   color: red;
 }
 
+/* Search box */
+body > header > nav > form {
+  display:inline;
+  margin-left: 1%;
+}
+
 /* The page content needs a top margin to separate it from the header. */
 article {
   margin-top: 2em;

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+	<ShortName>Read Ruby 1.9 Search</ShortName>
+	<Description>Search the contents of the Read Ruby 1.9 ebook</Description>
+  	<Tags>read ruby 1.9 ebook book</Tags>
+  	<Contact>runrun@runpaint.org</Contact>
+    <Url type="text/html" template="http://www.google.com/cse?cx=012927387456573046134:ide2kmn7ihk&amp;ie=UTF-8&amp;q={searchTerms}"/>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <InputEncoding>UTF-8</InputEncoding>
+</OpenSearchDescription>
