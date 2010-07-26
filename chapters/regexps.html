@@ -363,7 +363,17 @@
       <figcaption>Quantifying atoms in a regular expression
     </figure>
 
-    <!-- Greedy vs. Lazy -->
+    <p>The above quantifiers are termed <dfn title='greedy
+      quantifiers'>greedy</dfn> because they consume as many characters as
+    possible; in contrast, a <dfn title='lazy quantifier'>lazy</dfn>
+    quantifier consumes as few characters as possible. The <code>+</code>,
+    <code>?</code>, and <code>*</code> quantifiers are made lazy when
+    immediately followed by a question mark.</p>
+
+
+    <figure id=lazy-quantifiers.rb>
+      <figcaption>Lazily quantifying atoms in a regular expression
+    </figure>
   </section>
 
   <section>
