@@ -1,92 +1,761 @@
-<!DOCTYPE html>
-<!-- vim: set fdm=indent tw=78: --> 
-<title>Numerics - Read Ruby</title>
-<meta charset=utf-8>
-<link href=/chapter rel=stylesheet>
-<link rel=license href=//creativecommons.org/licenses/by-nc-sa/2.0/uk/>
-<link rel='index up' href=/toc>
-<!-- <link rel=next href=/enumerables> -->
+<link rel=next href=/enumerables>
+
+<!--
+Bit Twiddling: <<, >>, &,...
+Rounding: #floor, #ceil, #round, and #truncate
+
+http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
+-->
 
 <article>
   <h1 id=numerics>Numerics</h1>
-  <!-- Are immediates _instantiated_? -->
-             
-  <p>A decimal integer literal consists of an optional sign
-  (<code>+</code> or <code>-</code>) followed by one or more decimal
-  digits. Implementation limits dictate whether its a <code>Fixnum</code>
-  or <code>Bignum</code>, but the distinction can be ignored by treating
-  both as <code>Integer</code>s.</p>
-   
-  <!-- TODO: Mention optional 0d prefix -->
 
-  <figure class=railroad>
-    <div class=centre style=width:467px>
-      <img style=display:inline id=digit.png>
-      <img style=display:inline id=non-zero-digit.png>
-      <img style=display:inline id=plus-minus.png>
-    </div>
-    <img id=decimal-literal.png>
-    <figcaption>Syntax diagram of the decimal literal
-  </figure>
-   
-  <p>Hexadecimal, octal, and binary literals allow integers to be
-  expressed in base sixteen, eight, or two, respectively. A hexadecimal
-  literal begins with <code>0x</code>, and is followed by one or more hex
-  digits (0–9, a–f). An octal literal begins with <code>0o</code>, and is
-  followed by one or more octal digits (0–7). A binary literal begins with
-  <code>0b</code>, and is followed by one or more binary digits (0–1). All
-  forms ignore case and create <code>Integer</code> objects.</p>
-   
-  <figure class=railroad>
-    <img style=float:left id=hex-digit.png>
-    <img style=float:left id=octal-digit.png>
-    <img id=hexadecimal-literal.png>
-    <img id=binary-literal.png>
-    <img id=octal-literal.png>
-    <br style=clear:both>
-    <figcaption>Syntax diagrams of the hexadecimal, binary, and
-    octal literals
-  </figure>
-   
-  <!-- TODO: http://docs.sun.com/source/806-3568/ncg_goldberg.html -->
-  <p>A floating-point literal consists of two integer literals
-  separated with a period, e.g. <code>3.14</code>. It is of
-  class <code>Float</code>.</p>
-  <!-- Notes on the inacuracy of floats -->
-  
-  <figure class=railroad>
-    <img id=float-literal.png>
-    <figcaption>Syntax diagram of the floating-point literal
-  </figure>
-  
-  <p>A scientific notation literal consists of a coefficient
-  (<var>a</var>: a decimal or <code>Float</code> literal),
-  <code>e</code> or <code>E</code>, then an exponent
-  (<var>e</var>: a decimal literal). Its value is
-  <code><var>a</var> × 10<sup><var>e</var></sup></code>
-  represented as a <code>Float</code>.</p>
-  
-  <figure class=railroad>
-    <img id=scientific-notation-literal.png>
-    <figcaption>Syntax diagram of the scientific notation literal
-  </figure>
-          
-  <p><code>Rational</code> numbers are expressed with the
-  <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
-  constructor. Similarly, <code>Complex(<var>real</var>,
-    <var>imaginary</var>)</code> creates a <code>Complex</code>
-  object.</p>
-       
-  <!--        <li>Standard mathematical operations as methods
-        <li><code>/</code> performs integer division
-        <li>to_* 
-  -->
-<section>
-  <h1 id=immediates>Immediates</h1> <!-- sidebar this? -->
+  <p>A <dfn>numeric</dfn> is an object representing a number, an instance of
+  one of Ruby’s numeric classes:
 
-  <p><code>Symbol</code> and <code>Fixnum</code> literals are
-  <dfn title=immediates>immediate</dfn> values. They are stored
-  as values rather than object references so are immutable and
-  cannot have singleton methods defined on them.
-</section>
+  <dl>
+    <dt><a href=#integers><code>Integer</code></a>
+    <dd>Integers, or “counting numbers”, e.g. 4.
+    <dt><a href=#floats><code>Float</code></a>
+    <dd>Floating-point numbers, i.e. numbers with digits after the decimal
+    place, e.g. 3.14
+    <dt><a href=#rationals><code>Rational</code></a>
+    <dd>Rational numbers, or “fractions”, e.g. ⅔.
+    <dt><a href=#complex><code>Complex</code></a>
+    <dd>Complex numbers, i.e. those having both a real and an imaginary part.
+  </dl>
+  
+  <p>Instances of these classes are collectively termed “numerics” after their parent class:
+  <code>Numeric</code>.</p>
+
+  <section>
+    <h1 id=integers>Integers</h1>
+
+    <figure class=railroad>
+      <!--<div class=centre style=width:467px>
+        <img style=display:inline id=digit.png>
+        <img style=display:inline id=non-zero-digit.png>
+        <img style=display:inline id=plus-minus.png>
+      </div>-->
+      <img id=decimal-literal.png>
+      <figcaption>Syntax diagram of the decimal literal
+    </figure>
+
+    <p>A decimal integer literal consists of an optional <code>0d</code>
+    prefix, then one or more decimal digits. If the <code>0d</code> prefix is
+    omitted, the first digit must be non-zero. Hexadecimal, octal, and binary
+    literals allow integers to be expressed in base sixteen, eight, or two,
+    respectively. A hexadecimal literal begins with <code>0x</code>, and is
+    followed by one or more hex digits (0–9, a–f). An octal literal begins
+    with <code>0</code>, an optional <code>o</code>, then one or more octal
+    digits (0–7). A binary literal begins with <code>0b</code>, and is
+    followed by one or more binary digits (0–1). However, all
+    <code>Integer</code>s are stored as decimals so <code>0b10000</code>,
+    <code>0x10</code>, and <code>020</code> have the same value: <code>16</code>.
+    All forms ignore case and allow an optional sign (<code>+</code> or
+    <code>-</code>) as their very first character. Consecutive digits may be
+    separated by low lines to aid readability of large numbers, but they have
+    no semantic meaning.</p>
+     
+    <figure class=railroad>
+      <!--<img style=float:left id=hex-digit.png>
+      <img style=float:left id=octal-digit.png>-->
+      <img id=hexadecimal-literal.png>
+      <img id=binary-literal.png>
+      <img id=octal-literal.png>
+      <figcaption>Syntax diagrams of the hexadecimal, binary, and
+      octal literals
+    </figure>
+
+    <p>The class of an integer depends upon its magnitude: those representable
+    natively, are <code>Fixnum</code> objects; otherwise they are
+    <code>Bignum</code>s. This distinction is largely irrelevant because Ruby
+    handles the conversion implicitly and both respond identically to the same
+    set of messages. Therefore, we shall refer to <code>Fixnum</code> and
+    <code>Bignum</code> objects collectively by the name of their parent
+    class, <code>Integer</code>. Quantities that exceed the limits of
+    <code>Bignum</code>, have the value <code>Float::INFINITY</code>.</p>
+
+    <section>
+      <h1 id=immediates>Immediates</h1> <!-- sidebar this? -->
+
+      <p><code>Symbol</code> and <code>Fixnum</code> literals are
+      <dfn title=immediates>immediate</dfn> values. They are stored
+      as values rather than object references so are immutable and
+      cannot have singleton methods defined on them.
+    </section>
+
+    <section>
+      <h1 id=bases>Bases</h1>
+
+      <p><code>Integer</code> objects represent integers in base ten. They can
+      be converted into another base, <var>b</var>, with
+      <code>Integer#to_s(<var>b</var>)</code>, where 36 &ge; <var>b</var> &ge;
+      2. Conversely, a <code>String</code> comprising an integer in base
+      <var>b</var>, may be converted to the corresponding <code>Integer</code>
+      with <code>String#to_i(<var>b</var>)</code>, where <var>b</var> has the
+      same limits as before. <code>String#hex</code> and
+      <code>String#oct</code> are equivalent to <code>String#to_i 16</code>
+      and <code>String#to_i 8</code>, respectively. When converting an
+      <code>Integer</code> into binary, octal, or hexadecimal, <a
+        href=/strings#format>format strings</a> provide greater control.
+
+      <figure id=numeric-bases.rb>
+        <figcaption>Converting between numeric bases
+      </figure>
+    </section>
+  </section>
+
+  <section>
+    <h1 id=floats>Floats</h1>
+
+    <!-- TODO: http://docs.sun.com/source/806-3568/ncg_goldberg.html --> <p>A
+    <code>Float</code> object represents a double-precision floating-point
+    number. It contains a decimal point, so can represent values such as 1.5.
+    A floating-point literal consists of two integer literals separated with a
+    period, e.g.  <code>3.14</code>. It is of class <code>Float</code>.</p>
+    
+    <figure class=railroad>
+      <img id=float-literal.png>
+      <figcaption>Syntax diagram of the floating-point literal
+    </figure>
+    
+    <p>A scientific notation literal consists of a coefficient
+    (<var>a</var>: a decimal or <code>Float</code> literal),
+    <code>e</code> or <code>E</code>, then an exponent
+    (<var>e</var>: a decimal literal). Its value is
+    <code><var>a</var> × 10<sup><var>e</var></sup></code>
+    represented as a <code>Float</code>.</p>
+    
+    <figure class=railroad>
+      <img id=scientific-notation-literal.png>
+      <figcaption>Syntax diagram of the scientific notation literal
+    </figure>
+
+    <section>
+      <h1 id=constants>Constants</h1>
+
+      <!-- Where to put Math constants? -->
+      <p>The precision and limits of <code>Float</code> are specified by the
+      following constants:
+      
+      <dl>
+        <dt><code>DIG</code> = 15
+        <dd>Precision in decimal digits
+        <dt><code>EPSILON</code> = 2.220446049250313e-16
+        <dd>Smallest value such that <code>Float::EPSILON + 1.0 != 1.0</code>
+        <dt><code>INFINITY</code>
+        <dd>Positive infinity: a value too large to be represented.
+        <dt><code>MANT_DIG</code> = 53
+        <dd>Number of digits in the mantissa. 
+        <dt><code>MAX</code> = 1.7976931348623157e308
+        <dd>Largest possible representable <code>Float</code> 
+        <dt><code>MAX_10_EXP</code> = 308
+        <dd>Largest integer exponent, <var>x</var>, such that
+        10<sup><var>x</var></sup> is a finite <code>Float</code>. 
+        <dt><code>MAX_EXP</code> = 1024
+        <dd>Largest integer exponent, <var>x</var>, such that
+        <code>Float::RADIX</code><sup><var>x</var> &minus; 1</sup> is a finite
+        <code>Float</code>. 
+        <dt><code>MIN</code> = 2.2250738585072014e&minus;308
+        <dd>Smallest possible representable <code>Float</code>.
+        <dt><code>MIN_10_EXP</code> = &minus;307
+        <dd>Smallest integer exponent, <var>x</var>, such that
+        10<sup><var>x</var></sup> is a finite <code>Float</code>. 
+        <dt><code>MIN_EXP</code> = &minus;1021
+        <dd>Smallest integer exponent, <var>x</var>, such that
+        <code>Float::RADIX</code><sup><var>x</var> - 1</sup> is a finite
+        <code>Float</code>. 
+        <dt><code>NAN</code>
+        <dd><abbr title='Not a Number'>NaN</abbr>: a value that is undefined.
+        <dt><code>RADIX</code> = 2
+        <dd>The base in which the number is stored internally. 
+        <dt><code>ROUNDS</code> = 1
+        <dd>The rounding mode for floating-point operations:
+          <dl class=inline>
+            <dt>&minus;1<dd>Indeterminate
+            <dt>0<dd>Toward 0.
+            <dt>1<dd>Nearest representable value.
+            <dt>2<dd>Toward <code>+Float::INFINITY</code>
+            <dt>3<dd>Toward <code>-Float::INFINITY</code>
+          </dl>  
+      </dl>          
+    </section>
+
+    <section>
+      <h1 id=precision>Precision &amp; Accuracy</h1>
+
+      <p>The inexactitude of <code>Float</code>s is a frequent source of
+      confusion and illegitimate bug reports. To understand its cause, we must
+      be broadly familiar with how computers store double-precision
+      floating-point numbers.
+      
+      <p>On most platforms, <code>Float</code>s are stored in sixty-four bits.
+      The first bit is the sign, <var>s</var>, which is zero for a positive
+      number; one for a negative number. The next eleven are the positive
+      exponent, <var>e</var>. To allow for negative exponents, from
+      <var>e</var> is subtracted a constant, <var>b</var>, which has the value
+      1023. For example, an exponent of 18 is stored as
+      <code>10000010001</code><sub>2</sub>. The last fifty-two bits are the
+      mantissa, <var>m</var>, which has one implied bit, so it has a precision
+      of fifty-three bits. Therefore, a floating-point number has the
+      following form:
+
+      <p>(&minus;1)<sup><var>s</var></sup> &times; 2<sup><var>e</var> &minus;
+        <var>b</var></sup> &times; 1.<var>m</var>
+
+      <p>This system of encoding places an upper and lower
+      limit on the range of values that can be represented, as evidenced by
+      <code>Float::MAX</code> and <code>Float::MIN</code>, respectively.
+
+      <figure id=float-limits.rb>
+        <figcaption>The upper and lower limits of <code>Float</code>
+      </figure>
+
+      <blockquote>
+        <p>Floating point arithmetic adds a new spectrum of errors, all based
+        on the fact that the machine can represent numbers only to a finite
+        precision.
+
+        <p>- Kernighan &amp; Plauger, <a
+          href=#/references#refKERNIGHAN78><cite>The Elements of Programming
+            Style, 2<sup>nd.</sup> ed.</cite></a>, pp.115&ndash;116
+      </blockquote>
+
+      <p>Arithmetic with integers is exact, unless the result is outside of
+      the range of representable values (underflow or overflow). However,
+      floating-point arithmetic is inherently inexact. Unlike the real
+      numbers, floating-point numbers are not continuous; there are “gaps”
+      between any two numbers. Therefore, a number that cannot be represented
+      exactly-such as an irrational, e.g. π and ℯ, or non-terminating<a
+        href=#fn-non-terminating>§</a> rational, such as ⅓-must be
+      approximated by one of the nearest representable values. Further,
+      because the same number of bits are used to represent all
+      <code>Float</code>s, the smaller the exponent, the greater the density
+      of representable numbers.
+
+      <blockquote>
+        <p>As a wise programmer once said, “Floating point numbers are like
+        sandpiles: every time you move one, you lose a little sand and you
+        pick up a little dirt.” And after a few computations, things can get
+        pretty dirty.
+
+        <p>- <a href=/references#refKERNIGHAN78><i>ibid.</i></a>,
+        pp.117&ndash;118
+      </blockquote>
+
+      <p>The poster child is 0.1. Regardless of how many bits are available
+      for storage, it can never be represented exactly in base 2 of any finite
+      precision because it would contain the sequence 1100 repeated ad
+      infinitum. Therefore, the value stored is an approximation of the actual
+      value. This becomes apparent when performing even trivial calculations:
+
+      <figure id=float-roundoff.rb>
+        <figcaption>The ffect of calculations involving values that cannot be
+        represented exactly in base 2 with a finite precision.
+      </figure>
+      
+      <p>This is often forgotten because when Ruby displays such fractions-in
+      IRB, for example-it rounds them automatically. To reiterate, this
+      behaviour is an inherent shortcoming of floating-point; it is neither
+      the fault of Ruby nor your hardware.       
+
+      <blockquote>
+        <p>One of the first lessons that must be learned about floating point
+        numbers is that tests for exact equality between two computed
+        floating-point numbers are almost certain to fail.
+
+        <p>- <a href=/references#refKERNIGHAN78><i>ibid.</i></a>,
+        pp.117&ndash;118
+      </blockquote>
+
+      <p>To conclude, some advice:
+
+      <ul>
+        <li>When comparing two <code>Float</code>s, either round them
+        beforehand, or compare the absolute value of their difference with an
+        appropriate epsilon. 
+        <li>When performing calculations, consider using
+        <code>Rational</code>s rather than <code>Float</code>s, where
+        possible, to avoid the unintuitive manner in which round-off errors
+        propagate floating-point operations.
+        <li>Take special care when subtracting two values that are almost
+        equal, adding two likewise values that have opposing signs, or
+        performing either addition or subtraction with operands differing
+        significantly in magnitude.
+      </ul>
+    </section> 
+  </section>
+  
+  <section>
+    <h1 id=rationals>Rationals</h1>
+
+    <p><code>Rational</code> numbers are created with the
+    <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
+    constructor. 
+
+    <figure id=rational-float.rb>
+      <figcaption><code>Rational</code>s help preserve the accuracy in
+      calculations involving fractions.
+    </figure>
+  </section>
+  
+  <section>
+    <h1 id=complex>Complex</h1>
+
+    <p><code>Complex</code> numbers are created with the
+    <code>Complex(<var>real</var>, <var>imaginary</var>)</code>
+    constructor. 
+  </section>
+
+  <section>
+    <h1 id=arithmetic>Basic Arithmetic</h1>
+    
+    <p>The arithmetic operations of addition, subtraction, multiplication, and
+    division are performed with the binary operators <code>+</code>,
+    <code>-</code>, <code>*</code>, and <code>/</code>, respectively. If the
+    two operands are of different classes, Ruby will attempt to <a
+      href=#conversion>coerce</a> them so they are not. The result of these
+    operations will have the same class as the operands, or be one of the
+    special values: <code>Float::INFINITY</code> or <code>Float::NAN</code>.
+
+    <figure id=basic-arithmetic.rb>
+      <figcaption>Performing basic arithmetic
+    </figure>
+
+    <p><code>Integer#/</code> performs integer division, i.e. it returns the
+    integer quotient, discarding any decimal part. If this is undesirable,
+    either convert the divisor to a <code>Numeric</code> other than
+    <code>Integer</code>, such as <code>Float</code>, or use a more forgiving
+    method, such as <code>Numeric#quo</code> or <code>Numeric#fdiv</code>.
+    Both divide their receiver by their argument, returning the quotient: the
+    former, in the most accurate form possible; the latter, as a
+    <code>Float</code>. 
+
+    <figure id=numeric-division.rb>
+      <figcaption>Different approaches to division
+    </figure>
+    
+    <p><code>Integer#/</code> and <code>Numeric#quo</code> raise a
+    <code>ZeroDivisionError</code> if their divisor is integer <code>0</code>;
+    <code>Float#fdiv</code> and <code>Float#/</code> return
+    <code>Float::INFINITY</code>, instead.  Further, when one or both operands
+    are not <code>Integer</code>s, and both dividend and divisor are zero,
+    <code>Float::NAN</code> is returned.
+
+    <p>To find the largest integer dividing two given integers with no
+    remainder, use <code>Numeric#gcd <var>m</var></code>, which computes the
+    <abbr title='Greatest Common Divisor'>GCD</abbr> of the receiver and
+    <var>m</var>. Conversely, to find the smallest positive rational number
+    that is an integer multiple of both the receiver and <var>m</var>, compute
+    the <abbr title='Lowest Common Multiple'>LCM</abbr> with <code>Numeric#lcm
+      <var>m</var></code>. <code>Numeric#gcdlcm <var>m</var></code> returns a
+    two-element <code>Array</code>, with the arguments’ GCD as the first
+    element, and their LCM as the last.
+
+    <figure id=gcdlcm.rb>
+      <figcaption>Calculating the GCD and LCM
+    </figure>
+
+    <p>The <code>#divmod</code> method divides its receiver by its operand
+    then returns a two element <code>Array</code>, containing the integer
+    quotient and the remainder. If solely interested in the remainder
+    produced, <code>Numeric#remainder</code> divides its receiver by its
+    argument, returning what remains as an <code>Integer</code>.
+
+    <figure id=divmod.rb>
+      <figcaption>Finding the remainder of divisions.
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=conversion>Conversion &amp; Coercion</h1>
+
+    <p>A numeric may be converted to an equivalent numeric of a different
+    class via either the <a href=/objects#conversion>implicit or explicit
+      conversion protocol</a>, with the following caveats:
+
+    <ul>
+      <li>A <code>RangeError</code> is raised when attempting to convert either
+      <code>Float::NAN</code> or <code>Float::INFINITY</code> to an
+      <code>Integer</code>.
+      <li>A <code>RangeError</code> is raised when attempting to convert a
+      <code>Complex</code> with a non-zero imaginary part to any other numeric
+      class.
+      <li>In general, converting to <code>Integer</code> is lossy; that is,
+      the process does not round-trip.
+    </ul>
+
+    <p>The numeric coercion protocol enables two operands of different numeric
+    classes to be converted into object’s of the same class without any loss
+    of accuracy. It is used by methods which expect their operands to have the
+    same class. It is effected with <code>Numeric#coerce(<var>o</var>)</code>,
+    which returns an <code>Array</code> of two elements, which represent
+    <var>o</var> and the receiver, respectively, and have the same class.
+
+    <figure id=numeric-coerce.rb>
+      <figcaption>Using <code>Numeric#coerce</code> to convert two numerics to
+      the same class
+    </figure>
+  </section>
+  
+  <section>
+    <h1 id=comparison>Comparison &amp; Equality</h1>
+
+    <p>Conceptually, two <code>Numeric</code> objects are equal in terms of
+    <code>#==</code> if, and only if, their <a href=#conversion>coercion</a>
+    results in two values that are <code>#eql?</code>. In practice, this logic
+    is hard-coded into each <code>#==</code> method, so <code>#cocerce</code>
+    is not called.
+    
+    <figure id=numeric-equal-coerce.rb>
+      <figcaption>Equality in terms of <code>Numeric#coerce</code>
+    </figure>
+
+    <p>Therefore:
+
+    <figure id=numeric-equality.rb>
+      <figcaption>Equality of <code>Numeric</code> objects
+    </figure>
+
+    <p>The operators <code>#&gt;</code>, <code>#&gt;=</code>,
+    <code>#&lt;</code>, <code>#&lt;=</code>, provide the inequalities greater
+    than, greater than or equal to, less than, and less than or equal to,
+    respectively. Numerics compare precisely as you would expect.
+    <code>Float::INFINITY</code> is greater than any numeric except itself and
+    <code>Float::NAN</code>. Likewise, <code>-Float::INFINITY</code> is less
+    than any numeric except itself and <code>Float::NAN</code>.
+    <code>Float::NAN</code> is incomparable with every numeric, including
+    itself.
+
+    <figure id=numeric-inequality.rb>
+      <figcaption>Inequalities of <code>Numeric</code> objects
+    </figure>
+
+  </section>
+
+  <section>
+    <h1 id=predicates>Predicates</h1>
+     
+    <p>The following predicates are available for testing numerics:
+
+    <dl>
+      <dt><code>Integer#even?</code>
+      <dd><code>true</code> if the receiver is zero or divisible by
+      two; <code>false</code> otherwise.
+      <dt><code>Float#finite?</code>
+      <dd><code>true</code> if the receiver is neither <code>Float::NAN</code>
+      nor ±<code>Float::INFINITY</code>; <code>false</code> otherwise.
+      <dt><code>Float#infinite?</code>
+      <dd><code>nil</code> if the receiver is finite or NaN, <code>-1</code>
+      for negative infinity, and <code>1</code> for positive infinity.
+      <dt><code>#integer?</code>
+      <dd><code>true</code> for instances of <code>Fixnum</code> and
+      <code>Bignum</code>; <code>false</code> for all other numerics.
+      <dt><code>Float#nan?</code>
+      <dd><code>true</code> if the receiver is <code>Float::NAN</code>;
+      <code>false</code>, otherwise.
+      <dt><code>#nonzero?</code>
+      <dd><code>self</code> if the receiver is non-zero; <code>nil</code>
+      otherwise.
+      <dt><code>Integer#odd?</code>
+      <dd><code>true</code> if the receiver is not even; <code>false</code>
+      otherwise.
+      <dt><code>#real?</code>
+      <dd><code>true</code> for all numerics except instances of
+      <code>Complex</code>.
+      <dt><code>#zero?</code>
+      <dd><code>true</code> if the receiver is zero; <code>false</code>
+      otherwise.
+    </dl>
+
+    <figure id=numeric-predicates.rb>
+      <figcaption>Testing numerics with predicates.
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=modular>Moduluar Arithmetic</h1>
+    
+    <p>The <code>%</code> operator, and its alias <code>#modulo</code>, return
+    their receiver modulo their operand, i.e. the remainder when dividing the
+    former by the latter. If the divisor is <code>0</code>,
+    <code>%</code> raises a <code>ZeroDivisionError</code>; if it is
+    <code>0.0</code>, <code>Integer#%</code> raises
+    <code>ZeroDivisionError</code> whereas <code>Float#%</code> returns
+    <code>Float::NAN</code>.
+
+    <figure id=numeric-modulo.rb>
+      <figcaption>Performing modular arithmetic with the <code>#%</code>
+      operator
+    </figure>
+  </section>
+
+  <section>
+    <h1 id=exponentiation>Exponentiation</h1> 
+
+    <p>The binary <code>*</code> operator raises its receiver to a given
+    power, e.g. <code>3 ** 2 == 9</code>. <code>Math.sqrt</code> and
+    <code>Math.cbrt</code> return the square or cube root, respectively, of
+    their argument. There is not a generic <var>n</var><sup>th</sup> root
+    method, but it can be implemented as <code><var>x</var> ** Rational(1,
+      <var>n</var>)</code>.
+  </section>
+
+  <section>
+    <h1 id=finiteness>Finiteness</h1> 
+
+    <p>The special, signed value <code>Float::INFINITY</code> is returned by
+    numeric methods that produce values too large for Ruby to represent. It
+    can be tested for with the predicate <code>Float#finite?</code>, which
+    returns <code>true</code> if the receiver is neither positive/negative
+    infinity nor NaN; <code>false</code> otherwise. Similarly,
+    <code>Float#infinite?</code> returns <code>nil</code> for finite values
+    and NaN, <code>-1</code> for negative infinity, and <code>1</code> for
+    positive infinity.
+
+    <p>The special value <code>Float::NAN</code> represents <abbr title="Not a
+      Number">NaN</abbr>, i.e. an undefined or unrepresentable number. For
+    example, it is returned by <code>0 / 0.0</code>, <code>0 *
+      Float::INFINITY</code>, and any method with <code>Float::NAN</code> as
+    an argument. <code>Float::NAN != Float::NAN</code>, so to test if a value
+    is NaN, use the predicate <code>Float#nan?</code>, which returns
+    <code>true</code> if it is; <code>false</code> otherwise.
+  </section>
+
+  <section>
+    <h1 id=trigonometry>Trigonometry</h1>
+    
+    <p>The standard trigonometric functions are available as methods of the
+    <code>Math</code> module. Angles are measured in radians.</p>
+
+    <section>
+      <h1 id=sin>Sine</h1>
+
+      <dl>
+        <dt><code>Math.sin(<var>x</var>)</code>
+        <dd>The sine of angle <var>x</var> as a <code>Float</code>.
+        <dt><code>Math.sin(Float::NAN)</code>
+        <dt><code>Math.sin(±Float::INFINITY)</code>
+        <dd><code>Float::NAN</code>
+      </dt>
+    </section>
+
+    <section>
+      <h1 id=asin>Arc Sine</h1>
+
+      <dl>
+        <dt><code>Math.asin(<var>x</var></code>)
+        <dd>The principal value of the arc sine of <var>x</var>-i.e. the value
+        whose sine is <var>x</var>-as a <code>Float</code>.
+        <dt><code>Math.asin(<var>x</var> &gt; 1)</code>
+        <dt><code>Math.asin(<var>x</var> &lt; -1)</code>
+        <dt><code>Math.asin(Float::NAN)</code>
+        <dd>A <code>Math::DomainError</code> is raised.
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=sinh>Hyperbolic Sine</h1>
+
+      <dl>
+        <dt><code>Math.sinh(<var>x</var>)</code>
+        <dd>The hyperbolic sine of hyperbolic angle <var>x</var> as a
+        <code>Float</code>.
+        <dt><code>Math.sinh(<var>x</var> = Float::NAN)</code>
+        <dt><code>Math.sinh(<var>x</var> = ±Float::INFINITY)</code>
+        <dd><var>x</var>
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=asinh>Inverse Hyperbolic Sine</h1>
+
+      <dl>
+        <dt><code>Math.asinh(<var>x</var></code>)
+        <dd>The inverse hyperbolic sine of <var>x</var>-i.e. the value whose
+        hyperbolic sine is <var>x</var>-as a <code>Float</code>.
+        <dt><code>Math.asinh(<var>x</var> = Float::NAN)</code>
+        <dt><code>Math.asinh(<var>x</var> = ±Float::INFINITY)</code>
+        <dd><var>x</var>
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=cos>Cosine</h1>
+
+      <dl>
+        <dt><code>Math.cos(<var>x</var></code>)
+        <dd>The cosine of angle <var>x</var> as a <code>Float</code>.
+        <dt><code>Math.cos(<var>x</var> = Float::NAN)</code>
+        <dt><code>Math.cos(<var>x</var> = ±Float::INFINITY)</code>
+        <dd><code>Float::NAN</code>
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=acos>Arc Cosine</h1>
+
+      <dl>
+        <dt><code>Math.acos(<var>x</var>)</code>
+        <dd>The arc cosine of <var>x</var>-i.e. the value
+        whose cosine is <var>x</var>-as a <code>Float</code>.
+        <dt><code>Math.acos(<var>x</var> &gt; 1)</code>
+        <dt><code>Math.acos(<var>x</var> &lt; -1)</code>
+        <dt><code>Math.acos(<var>x</var> = ±Float::INFINITY)</code>
+        <dd>A <code>Math::DomainError</code> is raised.
+        <dt><code>Math.acos(<var>x</var> = Float::NAN)</code>
+        <dt><var>x</var>
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=cosh>Hyperbolic Cosine</h1>
+
+      <dl>
+        <dt><code>Math.cosh(<var>x</var>)</code>
+        <dd>The hyperbolic cosine of hyperbolic angle <var>x</var> as a <code>Float</code>.
+        <dt><code>Math.cosh(<var>x</var> = Float::NAN)</code>
+        <dd><var>x</var>
+        <dt><code>Math.cosh(<var>x</var> = ±Float::INFINITY)</code>
+        <dd><code>Float::INFINITY</code>
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=acosh>Inverse Hyperbolic Cosine</h1>
+
+      <dl>
+        <dt><code>Math.acosh(<var>x</var>)</code>
+        <dd>The inverse hyperbolic cosine of <var>x</var>-i.e. the value whose
+        hyperbolic cosine is <var>x</var>-as a <code>Float</code>.  
+        <dt><code>Math.acosh(<var>x</var> = Float::NAN)</code>
+        <dt><code>Math.acosh(<var>x</var> = Float::INFINITY)</code>
+        <dd><var>x</var>
+        <dt><code>Math.acosh(<var>x</var> &lt; 1)</code>
+        <dd>A <code>Math::DomainError</code> is raised.
+      </dl>
+    </section>
+    
+    <section>
+      <h1 id=tan>Tangent</h1>
+
+      <dl>
+        <dt><code>Math.tan(<var>x</var>)</code>
+        <dt><code>Math.tan(<var>x</var> = Float::NAN)</code>
+        <dt><code>Math.tan(<var>x</var> = ±Float::INFINITY)</code>
+        <dd><code>Float::NAN</code>
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=atan>Arc Tangent</h1>
+
+      <dl>
+        <dt><code>Math.atan(<var>x</var>)</code>
+        <dd>The arc tangent of <var>x</var>-i.e. the value whose tangent is
+        <var>x</var>-as a <code>Float</code>. 
+        <dt><code>Math.atan(<var>x</var> = Float::NAN)</code>
+        <dd><code>Float::NAN</code>
+        
+        <dt><code>Math.atan2(<var>y</var>, <var>x</var>)</code>
+        <dd>The principal value of the arc tangent of
+        <code><var>y</var>/<var>x</var></code> as a <code>Float</code>. 
+        <dt><code>Math.atan2(Float::NAN, <var>x</var>)</code>
+        <dt><code>Math.atan2(<var>y</var>, Float::NAN)</code>
+        <dd><code>Float::NAN</code>
+        <dt><code>Math.atan2(<var>y</var>, -Float::INFINITY)</code>,
+        <var>y</var> is finite
+        <dd><code>Math::PI</code> with the same sign as <var>y</var>. 
+        <dt><code>Math.atan2(<var>y</var>, Float::INFINITY)</code>,
+        <var>y</var> is finite
+        <dd><code>0.0</code> with the same sign as <var>y</var>. 
+        <dt><code>Math.atan2(<var>y</var> = ±Float::INFINITY, <var>x</var>)</code>,
+        <var>x</var> is finite
+        <dd><code>Math::PI / 2</code> with the same sign as <var>y</var>. 
+        <dt><code>Math.atan2(<var>y</var> = ±Float::INFINITY, <var>x</var> =
+          -Float::INFINITY)</code>
+        <dd><code>3 * Math::PI / 4</code> with the same sign as <var>y</var>. 
+        <dt><code>Math.atan2(<var>y</var> = ±Float::INFINITY, <var>x</var> =
+          Float::INFINITY)</code>
+        <dd><code>Math::PI / 4</code> with the same sign as <var>y</var>. 
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=tanh>Hyperbolic Tangent</h1>
+
+      <dl>
+        <dt><code>Math.tanh(<var>x</var>)</code>
+        <dd>The hyperbolic tangent of hyperbolic angle <var>x</var> as a
+        <code>Float</code>.
+        <dt><code>Math.tanh(Float::NAN)</code>
+        <dd><code>Float::NAN</code>
+      </dl>
+    </section>
+
+    <section>
+      <h1 id=atanh>Inverse Hyperbolic Tangent</h1>
+
+      <dl>
+        <dt><code>Math.atanh(<var>x</var>)</code>
+        <dd>The inverse hyperbolic tangent of <var>x</var>-i.e. the value whose
+        hyperbolic tangent is <var>x</var>-as a <code>Float</code>. 
+        <dt><code>Math.atanh(<var>x</var> = 1)</code>
+        <dt><code>Math.atanh(<var>x</var> = -1)</code>
+        <dd><code>Float::INFINITY</code> with the same sign as <var>x</var>.
+        <dt><code>Math.atanh(<var>x</var> &gt; 1)</code>
+        <dt><code>Math.atanh(<var>x</var> &lt; -1)</code>
+        <dd>A <code>Math::DomainError</code> is raised.
+        <dt><code>Math.atanh(Float::NAN)</code>
+        <dd><code>Float::NAN</code>
+      </dl>
+    </section>  
+
+    <section>
+      <h1 id=hypot>Euclidean Distance Function</h1>
+
+      <dl>
+        <dt><code>Math.hypot(<var>x</var>, <var>y</var>)</code>
+        <dd>The hypotenuse of a right-angled triangle with sides <var>x</var>
+        and <var>y</var>, or the distance of point (<var>x</var>,<var>y</var>)
+        from the origin, as a <code>Float</code>. Equivalent to
+        <code>Math.sqrt(<var>x</var>**2 + <var>y</var>**2)</code>.
+        <dt><code>Math.hypot(<var>x</var>, Float::INFINITY)</code>
+        <dt><code>Math.hypot(Float::INFINITY, <var>y</var>)</code>
+        <dd><code>Float::INFINITY</code>
+        <dt><code>Math.hypot(<var>x</var>, Float::NAN)</code>, <var>x</var> is
+        finite.
+        <dt><code>Math.hypot(Float::NAN, <var>y</var>)</code>, <var>y</var> is
+        finite.
+        <dt><code>Math.hypot(Float::NAN, Float::NAN)</code>
+        <dd><code>Float::NAN</code>
+      </dl>
+    </section>  
+  </section>
+
+  <section>
+    <h1 id=logarithms>Logarithms</h1>
+
+    <p>The natural logarithm of a numeric, <var>n</var>, i.e. log<sub>ℯ</sub>,
+    is returned by <code>Math.log <var>n</var></code>. A logarithm to base
+    <var>b</var> can be found with <code>Math.log <var>n</var>,
+      <var>b</var></code>. Two shortcuts exist for common bases:
+    <code>Math.log10 <var>n</var></code> and
+    <code>Math.log2 <var>n</var></code>.
+
+    <figure id=math-log.rb>
+      <figcaption>Calculating a number’s logarithm.
+    </figure>
+  </section>
+
+  <footer>
+    <h1>Footnotes</h1>
+    
+    <ol>
+      <li id=fn-non-terminating>…non-terminating, that is, in base 2.
+      Therefore, the only rationals that are representable exactly in binary
+      are those whose denominators are powers of 2, e.g. ¾.
+    </ol>
+  </footer>
 </article>
