@@ -1,0 +1,6 @@
+Rational(12)                             #=> (12/1)
+Rational(67, 31)                         #=> (67/31)
+Rational('7/8')                          #=> (7/8)
+Rational(500, 100)                       #=> (5/1)
+Rational(3.5)                            #=> (7/2)
+Rational(Rational(1, 2), Rational(1, 4)) #=> (2/1)

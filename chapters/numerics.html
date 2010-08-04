@@ -2,7 +2,6 @@
 
 <!--
 Bit Twiddling: <<, >>, &,...
-Rounding: #floor, #ceil, #round, and #truncate
 
 http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
 -->
@@ -290,13 +289,64 @@ http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
   <section>
     <h1 id=rationals>Rationals</h1>
 
-    <p><code>Rational</code> numbers are created with the
-    <code>Rational(<var>numerator</var>, <var>denominator</var>)</code>
-    constructor. 
+    <p>A rational number is a number of the form
+    <var>n</var>&frasl;<var>d</var>, where both variables are integers. The
+    integer <var>n</var> is the <dfn>numerator</dfn>, and <var>d</var> the
+    <dfn>denominator</dfn>. The denominator must not be zero.
+
+    <p>Rationals are instances of the <code>Rational</code> class. They may be
+    created with the constructor <code>Rational(<var>n</var>,
+      <var>d</var>)</code>. When <var>d</var> is omitted, and <var>n</var> an
+    integer, <var>d</var> has the implicit value of one. If one or both
+    arguments are themselves <code>Rational</code> or <code>Float</code>
+    objects, an equivalent rational is found and returned. If
+    <code>Rational</code> is, instead, given a <code>String</code>
+    representation of a rational, the numerator and denominator are derived
+    from that. In all cases, if the numerator is an exact divisor of the
+    denominator, the <code>Rational</code> represents this simplified
+    quotient.
+
+    <figure id=rational-constructor.rb>
+      <figcaption>Contructing <code>Rational</code> instances with the
+      <code>Rational()</code> constructor.
+    </figure>
+
+    <p>Using <code>Rational</code>s instead of <code>Float</code>s in
+    calculations enables us to represent rational values exactly, rather than
+    approximating them within the limits of floating-point arithmetic. This
+    solves, for example, the <code>0.1 * 3</code> problem described above.
 
     <figure id=rational-float.rb>
       <figcaption><code>Rational</code>s help preserve the accuracy in
       calculations involving fractions.
+    </figure>
+    
+    <p>A <code>Rational</code> may also be created from a <code>String</code>
+    or other numeric with <code>#to_r</code>. This creates a
+    <code>Rational</code> mathematically equal to the receiver. Numerics also
+    provide a method named <code>#rationalize</code>. For
+    non-<code>Float</code>s, this behaves as <code>#to_r</code>; when the
+    receiver is a <code>Float</code> it <q>returns a rational that
+      approximates the float to the accuracy of the underlying floating-point
+      representation.</q> (<a href=/references#refLISPSTD><cite>American
+        National Standard for
+        Information Systems—Programming Language—Common Lisp</cite></a>,
+    12-62)<a href=#fn-rationalize-lisp>§</a>. If <code>#rationalize</code> is
+    given an argument, it is an epsilon which constrains the result such that:
+
+    <p>(<var>receiver</var> &minus; <var>epsilon</var>) &lt;=
+    <var>result</var> &lt;= (<var>receiver</var> + <var>epsilon</var>) 
+
+    <figure id=rational-rationalize.rb>
+      <figcaption>Converting a numeric to a <code>Rational</code>
+    </figure>
+
+    <p>The <code>Numeric#numerator</code> and <code>Numeric#denominator</code>
+    methods return the numerator and denominator, respectively, of the
+    receiver as if it were a <code>Rational</code>.
+
+    <figure id=rational-numerator-denominator.rb>
+      <figcaption>Accessing a numeric’s numerator or denominator
     </figure>
   </section>
   
@@ -357,6 +407,7 @@ http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
       <figcaption>Calculating the GCD and LCM
     </figure>
 
+    <!-- Clarify difference in signs btw. #divmod and #remainder -->
     <p>The <code>#divmod</code> method divides its receiver by its operand
     then returns a two element <code>Array</code>, containing the integer
     quotient and the remainder. If solely interested in the remainder
@@ -434,6 +485,28 @@ http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
 
   </section>
 
+  <section>
+    <h1 id=rounding>Rounding</h1>
+
+    <p>Non-<code>Complex</code> numerics can be rounded to adjust their
+    precision. This makes little sense for <code>Integer</code>s, of course,
+    so for <code>Integer</code> receivers these methods just return
+    <code>self</code>.  <code>Numeric#ceil</code> and
+    <code>Numeric#floor</code> round their receiver up or down, respectively,
+    to the nearest integer. <code>Numeric#truncate</code> converts its
+    receiver into an <code>Integer</code> by removing any fractional part.
+    This is equivalent to rounding the receiver to zero digits of precision,
+    therefore identical to <code>Numeric#round</code> with no arguments. When
+    <code>#round</code> is supplied with a positive <code>Integer</code>
+    argument, the receiver is rounded to that many decimal places. If the
+    argument is &minus;<var>i</var>, the receiver is rounded to the nearest
+    10<sup><var>i</var></sup>.
+
+    <figure id=numerics-rounding.rb>
+      <figcaption>Rounding numerics
+    </figure>
+  </section>
+  
   <section>
     <h1 id=predicates>Predicates</h1>
      
@@ -756,6 +829,9 @@ http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
       <li id=fn-non-terminating>…non-terminating, that is, in base 2.
       Therefore, the only rationals that are representable exactly in binary
       are those whose denominators are powers of 2, e.g. ¾.
+      <li id=fn-rationalize-lisp>The provenance of <code>#rationalize</code>
+      appears to be <i>CLISP</i>, which implemented the function of the same
+      name from the ANSI Common LISP standard.
     </ol>
   </footer>
 </article>
