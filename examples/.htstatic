@@ -1,0 +1,2 @@
+ExpiresActive on
+ExpiresDefault "access plus 2 months"
