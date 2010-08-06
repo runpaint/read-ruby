@@ -94,7 +94,7 @@ class Chapter < Mustache
       elsif fig['class'] == 'railroad' 
         fig.css('img').each do |img|
           railroad = Railroad.target(img['id'])
-          img['src'] = railroad.sub_ext('').to_s
+          img['src'] = railroad.to_s
           / PNG (?<width>\d+)x(?<height>\d+)/ =~ `identify #{railroad}`
           img['width'], img['height'] = width, height
           img.delete('id')

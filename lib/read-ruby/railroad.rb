@@ -1,6 +1,6 @@
 class Railroad
   extend ReadRuby
-  dir 'railroads'
+  dir 'r'
   source_ext 'ebnf'
   target_ext 'png'
 
