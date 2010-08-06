@@ -1,7 +1,6 @@
 <link rel=next href=/enumerables>
 
 <!--
-Bit Twiddling: <<, >>, &,...
 Random
 http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
 -->
@@ -101,6 +100,22 @@ http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
 
       <figure id=numeric-bases.rb>
         <figcaption>Converting between numeric bases
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=bits>Bit Twiddling</h1>
+
+      <p>There are a collection of methods that treat <code>Integer</code>s
+      like bit fields, operating on the number’s binary operation. The unary
+      operator <code>Integer#~</code> inverts the bit pattern, while
+      <code>#&gt;&gt;</code> and <code>#&lt;&lt;</code> shift it right or
+      left, respectively, by the number of bits specified as an argument. The
+      binary logical operators <code>#|</code>, <code>#&amp;</code>, and
+      <code>#^</code>, perform bitwise OR, AND or, XOR, respectively.
+
+      <figure id=numeric-bits.rb>
+        <figcaption>Performing bit operations on <code>Integer</code>s
       </figure>
     </section>
   </section>
