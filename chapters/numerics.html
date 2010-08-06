@@ -2,7 +2,7 @@
 
 <!--
 Bit Twiddling: <<, >>, &,...
-
+Random
 http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
 -->
 
@@ -352,10 +352,162 @@ http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
   
   <section>
     <h1 id=complex>Complex</h1>
+    
+    <p>A <dfn>complex number</dfn> is a number of the form <var>a</var> +
+    <var>b</var>ⅈ, where <var>a</var> and <var>b</var> are real numbers, and ⅈ
+    is the imaginary unit. <var>a</var> is termed the <dfn>real part</dfn> of
+    the complex number, and <var>b</var> its <dfn>imaginary part</dfn>.
 
-    <p><code>Complex</code> numbers are created with the
-    <code>Complex(<var>real</var>, <var>imaginary</var>)</code>
-    constructor. 
+    <p>They are represented as instances of <code>Complex</code>. They can be
+    created with the constructor <code>Complex(<var>a</var>,
+      <var>b</var>)</code>, where, again, <var>a</var> is the real part, and
+    <var>b</var> the imaginary. If <var>b</var> is omitted, it has the
+    implicit value zero. Alternatively, <code>Complex()</code> may be given a
+    sole <code>String</code> argument which represents a complex number.
+
+    <figure id=complex-constructor.rb>
+      <figcaption>Creating <code>Complex</code> objects with <code>Complex()</code>
+    </figure>
+
+    <p>The real part of a <code>Complex</code> object may be retrieved with
+    the <code>Complex#real</code> accessor, while the imaginary part is
+    available with <code>Complex#imaginary</code> or the synonymous
+    <code>Complex#imag</code>.
+
+    <section>
+      <h1 id=conjugation>Conjugation</h1>
+  
+      <blockquote>
+        <p><b>conjugate complex numbers</b> Two numbers of type <var>a</var> +
+        <var>b</var><i>i</i> and <var>a</var> &minus; <var>b</var><i>i</i>,
+        where <var>a</var> and <var>b</var> are real numbers.
+
+        <p>James &amp; James - <a
+          href=/references#refJAMES92><cite>Mathematics Dictionary,
+            5<sup>th</sup> ed.</cite></a>, 1992, p. 71
+      </blockquote>
+
+      <p>The conjugate of a complex number is its real part minus its
+      imaginary part. It is itself a complex number.
+      <code>Complex#conj</code>, or its alias <code>Complex#conjugate</code>,
+      return the conjugate of the receiver as a <code>Complex</code>. The
+      <code>#conj</code> and <code>#conjugate</code> methods of the other
+      numerics return <code>self</code>.
+
+      <figure id=complex-conj.rb>
+        <figcaption>Conjugating a <code>Complex</code>
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=arg>Arg Function</h1>
+  
+      <blockquote>
+        <p><b>amplitude of a complex number</b> The angle that the vector
+        representing the complex number makes with the positive horizontal
+        axis. 
+
+        <p>James &amp; James - <a
+          href=/references#refJAMES92><cite>Mathematics Dictionary,
+            5<sup>th</sup> ed.</cite></a>, 1992, p. 11
+      </blockquote>
+
+      <p>The <dfn>arg</dfn>-also known as <dfn>angle</dfn>,
+      <dfn>amplitude</dfn>, or <dfn>phase</dfn>-of a <code>Numeric</code> is
+      computed with <code>#arg</code>, and its aliases <code>#angle</code> and
+      <code>#phase</code>. For a non-<code>Complex</code> receiver, it is
+      <code>0</code> if the receiver is positive; <code>Math::PI</code>
+      otherwise. 
+      
+      <p>The <code>Complex</code> implementations of these methods: return
+      <code>Math::PI</code> if the receiver has a real part less than zero,
+      and no imaginary part; but raise a <code>Math::DomainError</code> if
+      both parts are zero. Otherwise, they compute the arg with the following
+      formula:
+
+      <pre><code>2 * Math.atan(Rational(<var>b</var>, Math.sqrt(<var>a</var>**2 + <var>b</var>**2) + <var>a</var>))</code></pre>
+
+      <figure id=complex-arg.rb>
+        <figcaption>Finding the <i>arg</i> of a <code>Numeric</code>.
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=abs>Absolute Value</h1>
+
+      <blockquote>
+        <p><b>modulus of a complex number</b> The numerical length of the
+        vector representing the complex number… The modulus of a complex
+        number <var>a</var> + <var>b</var><i>i</i> is
+        √(<var>a</var><sup>2</sup> + <var>b</var><sup>2</sup>), written
+        |<var>a</var> + <var>b</var><i>i</i>|. If the number is in the form
+        <var>r</var>(cos <var>β</var> + <i>i</i> sin <var>β</var>) with
+        <var>r</var> ≥ 0, the modulus is <var>r</var>.
+
+        <p>James &amp; James - <a
+          href=/references#refJAMES92><cite>Mathematics Dictionary,
+            5<sup>th</sup> ed.</cite></a>, 1992, p. 276
+      </blockquote>
+
+      <p>The <dfn>absolute</dfn> value-also known as the <dfn>modulus</dfn>
+      or <dfn>magnitude</dfn>-of a <code>Complex</code> number is given by
+      <code>#abs</code>, and its alias <code>#magnitude</code>, as a
+      <code>Float</code>. For all other numerics, these methods return the
+      receiver sans sign.
+
+      <figure id=complex-abs.rb>
+        <figcaption>Representing a <code>Numeric</code> in absolute form
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=polar>Polar Form</h1>
+
+      <blockquote>
+        <p><b>polar form of a complex number</b> The form a complex number
+        takes when it is expressed in polar coordinates. This form is
+        <var>r</var>(cos <var>θ</var> + <i>i</i> sin <var>θ</var>), where
+        <var>r</var> and <var>θ</var> are polar coordinates of the point
+        represented by the complex number. The number <var>r</var> is the
+        <i>modulus</i> and the angle <var>θ</var> the <i>amplitude</i>,
+        <i>angle</i>, or <i>phase</i>.
+
+        <p>James &amp; James - <a
+          href=/references#refJAMES92><cite>Mathematics Dictionary,
+            5<sup>th</sup> ed.</cite></a>, 1992, p. 321
+      </blockquote>
+      
+      <p><code>Numeric#polar</code> returns the receiver in <dfn>polar
+        form</dfn>, that is an <code>Array</code> comprising its <a
+        href=#abs>absolute value</a> and its <a href=#arg>arg</a>. Conversely,
+      a <code>Complex</code> may be created from a given polar form with
+      <code>Complex.polar(<var>abs</var>, <var>arg</var>=0)</code>.
+
+      <figure id=complex-polar.rb>
+        <figcaption>Representing a <code>Numeric</code> in polar form
+      </figure>
+    </section>
+
+    <section>
+      <h1 id=rect>Rectangular Form</h1>
+  
+      <p><code>Complex#rect</code>, and its alias
+      <code>Complex#rectangular</code>, return a two-element
+      <code>Array</code>, the first value of which is its receiver’s real
+      part; the second, its imaginary part. For all other numerics, these
+      methods return <code>[self, 0]</code>.
+      
+      <p>The <code>Complex.rect</code> constructor, and its alias
+      <code>Complex.rectangular</code>, create <code>Complex</code> objects
+      from their rectangular forms. <code>Complex.rect(<var>a</var>,
+        <var>b</var>)</code> is equivalent to <code>Complex(<var>a</var>,
+        <var>b</var>)</code>. As before, if <var>b</var> is omitted it has the
+      value <code>0</code>.
+
+      <figure id=complex-rect.rb>
+        <figcaption>Requesting a <code>Complex</code> number in rectangular form
+      </figure>
+    </section>
   </section>
 
   <section>
