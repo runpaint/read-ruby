@@ -41,7 +41,7 @@ desc 'Minify HTML, CSS, and JS'
 task :minify do
   minify %w{js css}
   Rake::Task[:inline].invoke
-  minify %w{html}
+  minify %w{html xml}
 end
 
 [Example, Railroad].each do |klass|
