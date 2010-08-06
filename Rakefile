@@ -26,15 +26,22 @@ task :html do
   end
 end
 
-desc 'Minify HTML, CSS, and JS'
-task :minify do
-  OUT_DIR.each_child.select(&:file?).each do |file|
+def minify ext
+  OUT_DIR.find do |file|
+    next unless file.file? and ext.include?(file.extname[1..-1])
     if min = MINIFIER[ :"#{file.extname[1..-1]}" ]
       sh "#{min} #{file} > #{file}.min"
       mv "#{file}.min", file
     end
     sh "gzip --best -cn #{file} > #{file}.gz"
   end
+end
+
+desc 'Minify HTML, CSS, and JS'
+task :minify do
+  minify %w{js css}
+  Rake::Task[:inline].invoke
+  minify %w{html}
 end
 
 [Example, Railroad].each do |klass|
@@ -71,4 +78,19 @@ end
 desc 'Start webserver to browse locally'
 task :browse do
   system './lib/read-ruby/browse.rb'
+end
+
+desc 'Inline CSS'
+task :inline do
+  OUT_DIR.each_child.select(&:file?).each do |file|
+    if file.extname[1..-1] == 'html'
+      nok = Nokogiri::HTML(file.read)
+      nok.search('link[@rel=stylesheet]').each do |link|
+        next unless link['href'].start_with?(?/)
+        css = (OUT_DIR + (link['href'][1..-1] << '.css')).read
+        link.swap("<style>#{css}</style>")
+      end
+      open(file, ?w){|f| f.print nok.to_s}
+    end
+  end
 end

@@ -6,6 +6,21 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: 'Inconsolata';
+	src: url('/fonts/eot/Inconsolata-webfont');
+	src: local('☺'), url('/fonts/woff/Inconsolata-webfont') format('woff'), url('/fonts/ttf/Inconsolata-webfont') format('truetype'), url('/fonts/svg/Inconsolata-webfont#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'OFL Sorts Mill Goudy TT';
+	src: url('/fonts/eot/OFLGoudyStM-webfont');
+	src: local('☺'), url('/fonts/woff/OFLGoudyStM-webfont') format('woff'), url('/fonts/ttf/OFLGoudyStM-webfont') format('truetype'), url('/fonts/svg/OFLGoudyStM-webfont#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 
 body {
   font-family: 'OFL Sorts Mill Goudy TT', 'Linux Libertine', Palatino, 'Palatino Linotype', 
