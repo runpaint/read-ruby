@@ -764,6 +764,62 @@ http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
   </section>
 
   <section>
+    <h1 id=rand>Pseudo-Random Numbers</h1>
+
+    <p>Instances of the <code>Random</code> class represent pseudo-random
+    number generators (hereafter: <abbr title='Pseudo-Random Number
+      Generator'>PRNGs</abbr>). Each encapsulates state, an
+    <code>Integer</code> seed, and an algorithm for generating pseudo-random
+    numbers based on that seed. 
+    
+    <p>The seed may be supplied as an argument to <code>Random.new</code>.
+    Otherwise it has the value of <code>Random.new_seed</code>, which is
+    derived from the system PRNG-e.g. <code>/dev/urandom</code>-if available,
+    or a combination of the current time, process ID, and a sequence number.
+    For a given seed, the output of a PRNG is predictable.  Therefore, by
+    setting the seed to a known value before the PRNG is used, its output is
+    made deterministic, thus testable. <code>Random#seed</code> returns the
+    seed of its receiver.
+    
+    <figure id=random-new.rb>
+      <figcaption>Instantiating a <code>Random</code> object
+    </figure>
+    
+    <p>A pseudo-random number may be generated with <code>Random#rand</code>.
+    If given no arguments, a pseudo-random <code>Float</code> between
+    <code>0.0</code> and <code>1.0</code> is returned. A different upper limit
+    may be chosen by supplying a non-zero, positive <code>Integer</code> or
+    <code>Float</code> argument. The generated pseudo-random number has the
+    same class as the argument. When given a <code>Range</code> whose
+    end-points respond to <code>#+</code> and <code>#-</code>, it returns a
+    pseudo-random number from the values encompassed. <code>Random#bytes
+      <var>len</var></code> returns a pseudo-random ASCII-8BIT
+    <code>String</code> of length <var>len</var>.
+
+    <figure id=random-rand.rb>
+      <figcaption>Generating pseudo-random data with <code>Random#rand</code>
+    </figure>
+
+    <p>Ruby maintains its own PRNG named <code>Random::DEFAULT</code>, whose
+    seed was generated with <code>Random.new_seed</code>. It is used by
+    methods that produce pseudo-random results such as
+    <code>Array#sample</code> and <code>Kernel.rand</code>. The latter behaves
+    as <code>Random#rand</code> when given no arguments or an argument of
+    zero. Otherwise, it generates a pseudo-random <code>Integer</code> between
+    zero and the absolute value of its <code>Integer</code> argument. 
+
+    <p>The seed of <code>Random::DEFAULT</code> may be set explicitly by
+    calling <code>Kernel.srand</code> with an <code>Integer</code> argument.
+    If the argument is omitted, the seed is set to a new value of
+    <code>Random.new_seed</code>. In both cases, <code>srand</code> returns
+    the previous seed.
+
+    <figure id=kernel-rand.rb>
+      <figcaption>Generating pseudo-random numbers with <code>Kernel.rand</code>
+    </figure>
+  </section>
+
+  <section>
     <h1 id=trigonometry>Trigonometry</h1>
     
     <p>The standard trigonometric functions are available as methods of the
