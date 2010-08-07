@@ -123,23 +123,23 @@ http://www.gnu.org/s/libc/manual/html_node/Infinity-and-NaN.html
   <section>
     <h1 id=floats>Floats</h1>
 
-    <!-- TODO: http://docs.sun.com/source/806-3568/ncg_goldberg.html --> <p>A
-    <code>Float</code> object represents a double-precision floating-point
-    number. It contains a decimal point, so can represent values such as 1.5.
-    A floating-point literal consists of two integer literals separated with a
-    period, e.g.  <code>3.14</code>. It is of class <code>Float</code>.</p>
+    <p>A <code>Float</code> object represents a double-precision
+    floating-point number. It contains a decimal point, so can represent
+    values such as 1.5. A floating-point literal consists of a decimal integer
+    literal, a period, then one or more decimal digits, e.g.
+    <code>3.14</code>.</p>
     
     <figure class=railroad>
       <img id=float-literal.png>
       <figcaption>Syntax diagram of the floating-point literal
     </figure>
     
-    <p>A scientific notation literal consists of a coefficient
-    (<var>a</var>: a decimal or <code>Float</code> literal),
-    <code>e</code> or <code>E</code>, then an exponent
-    (<var>e</var>: a decimal literal). Its value is
-    <code><var>a</var> × 10<sup><var>e</var></sup></code>
-    represented as a <code>Float</code>.</p>
+    <p>A scientific notation literal consists of a coefficient (<var>a</var>:
+    a decimal or <code>Float</code> literal), <code>e</code> or
+    <code>E</code>, then an exponent (<var>e</var>: one or more decimal
+    digits). Its value is <code><var>a</var> ×
+      10<sup><var>e</var></sup></code> represented as a
+    <code>Float</code>.</p>
     
     <figure class=railroad>
       <img id=scientific-notation-literal.png>
