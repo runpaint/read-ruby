@@ -1,0 +1,2100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter version="5.0" xml:id="reg.regexps" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Regexps</title>
+
+  <para>A <literal>Regexp</literal> represents a regular expression: a pattern
+  that describes a <literal>String</literal>. If a <literal>String</literal>
+  contains the pattern described by a given regular expression, it is said to
+  <firstterm>match</firstterm>. Therefore, one use of regular expressions is
+  validation: testing whether a <literal>String</literal> matches a
+  pattern.</para>
+  <example xml:id="ex.regexp-validation">
+    <title>Validating the presence of a pattern with regular expressions
+  </title>
+    <programlisting><xi:include href="examples/regexp-validation.rb" parse="text"/></programlisting>
+  </example>
+  <para>Another, <link linkend="str.split">introduced</link> in the
+  <literal>String</literal>s chapter, is extracting the portions of a
+  <literal>String</literal> that match a certain pattern.</para>
+  <example xml:id="ex.regexp-split">
+    <title>Subdividing a <literal>String</literal> into sequences separated by
+    a regular expression
+  </title>
+    <programlisting><xi:include href="examples/regexp-split.rb" parse="text"/></programlisting>
+  </example>
+  <para>Similarly, areas of the pattern can be designated as capturing, which
+  effectively labels parts of the <literal>String</literal> so they can be referred
+  to after the match.</para>
+  <example xml:id="ex.regexp-capturing">
+    <title>Extracting portions of a <literal>String</literal> that match a
+    specific area of a pattern
+  </title>
+    <programlisting><xi:include href="examples/regexp-capturing.rb" parse="text"/></programlisting>
+  </example>
+  <para>Further examples of the utility of regular expressions can be found in the
+  <link linkend="str.strings">Strings</link> chapter. In this chapter, we deal
+  primarily with the syntax of patterns: how to construct a regular expression
+  that matches precisely what is needed.</para>
+  <sect1 xml:id="reg.literals">
+    <title>Literals</title>
+    <!--figure>
+      <title>Syntax diagram of the <literal>Regexp</literal> literal
+    </title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="figures/regexp-literal.png" format="PNG" width="4in"/>
+        </imageobject>
+      </mediaobject>
+    </figure-->
+    <!--figure>
+      <title>Options accepted by the <literal>Regexp</literal> literal
+    </title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="figures/regexp-options.png" format="PNG" width="4in"/>
+        </imageobject>
+      </mediaobject>
+    </figure-->
+    <para>The literal is of the form
+    <literal>/<replaceable>pattern</replaceable>/<replaceable>options</replaceable></literal>: a pattern delimited
+    by solidi, followed by zero or more single-character <link linkend="reg.options">option specifiers</link>. If the pattern is to contain either
+    of these delimiters literally, they must be escaped with a reverse
+    solidus. The construct
+    <literal>%r{<replaceable>pattern</replaceable>}<replaceable>options</replaceable></literal> also constructs a
+    <literal>Regexp</literal>, but in this form <replaceable>pattern</replaceable> may contain
+    either solidi or reverse solidi literally, without having to escape
+    them.</para>
+    <example xml:id="ex.regexp-literal">
+      <title>Constructing a <literal>Regexp</literal> via a literal
+    </title>
+      <programlisting><xi:include href="examples/regexp-literal.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.options">
+    <title>Options</title>
+    <para>The behaviour of a <literal>Regexp</literal> can be modified by following the
+    literal with one or more of the following option specifiers:</para>
+    <informaltable>
+      <thead>
+        <tr>
+          <th>Option
+          </th>
+          <th>Effect
+      </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <literal>e</literal>
+          </td>
+          <td>Associate the pattern with the EUC-JP encoding
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>i</literal>
+          </td>
+          <td>Ignore case
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>m</literal>
+          </td>
+          <td>Let <literal>.</literal> match newline characters.
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>n</literal>
+          </td>
+          <td>Associate the pattern with the ASCII-8BIT encoding.
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>o</literal>
+          </td>
+          <td>Only interpolate <literal>#{…}</literal> constructs the first time this literal is parsed.
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>s</literal>
+          </td>
+          <td>Associate the pattern with the Windows-31J encoding.
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>u</literal>
+          </td>
+          <td>Associate the pattern with the UTF-8 encoding.
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>x</literal>
+          </td>
+          <td>Enable <link linkend="reg.readability">free-spacing</link> mode.
+    </td>
+        </tr>
+      </tbody>
+    </informaltable>
+    <example xml:id="ex.regexp-options">
+      <title>Modifying the behaviour of a <literal>Regexp</literal> with
+      options
+    </title>
+      <programlisting><xi:include href="examples/regexp-options.rb" parse="text"/></programlisting>
+    </example>
+    <para>Options <literal>i</literal>, <literal>m</literal>, and <literal>x</literal>, may also be
+    applied to a specific group rather than the pattern as a whole, with the
+    syntax described in <link linkend="reg.groups">Grouping</link>.</para>
+  </sect1>
+  <sect1 xml:id="reg.matching">
+    <title>Matching</title>
+    <para>A <literal>Regexp</literal> may be matched against a <literal>String</literal> by
+    supplying the latter as an argument to <literal>Regexp#match</literal> or
+    <literal>Regexp#=~</literal>. <literal>String#match</literal> and
+    <literal>String#=~</literal> behave in the same way, <emphasis>mutatis mutandis</emphasis>.</para>
+    <para>The <literal>#match</literal> methods return <link linkend="reg.matchdata">MatchData</link> objects if the match
+    succeeded, whereas the <literal>#=~</literal> methods return the character
+    offset in the <literal>String</literal> where the match began. They all return
+    <literal>nil</literal> if the <literal>String</literal> didn’t match.</para>
+    <example xml:id="ex.regexp-matching">
+      <title>Matching a regular expression against a <literal>String</literal></title>
+      <programlisting><xi:include href="examples/regexp-matching.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.metacharacters">
+    <title>Metacharacters</title>
+    <para>In the context of a pattern, a character is either interpreted
+    literally or as a <firstterm>metacharacter</firstterm>. A literal character matches
+    itself, whereas a metacharacter has another meaning. To force a
+    metacharacter to be interpreted literally it must be preceded by a reverse
+    solidus (<literal>\</literal>).</para>
+    <informaltable>
+      <thead>
+        <tr>
+          <th>Metacharacter
+          </th>
+          <th>Meaning
+      </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <link linkend="reg.anchors">^</link>
+          </td>
+          <td>Start of line anchor
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.anchors">$</link>
+          </td>
+          <td>End of line anchor  
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.readability">#</link>
+          </td>
+          <td>Introduces a comment if the <literal>x</literal> option is given
+        </td>
+        </tr>
+        <tr>
+          <td><literal>#{</literal>…<literal>}</literal></td>
+          <td>Interpolates an expression
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.groups">(…)</link>
+          </td>
+          <td>Encloses a <link linkend="reg.groups">group</link></td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.quantifiers">*</link>
+          </td>
+          <td>Greedy <link linkend="reg.quantifiers">quantifier</link>: preceding atom may
+            occur any number of times  
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.quantifiers">+</link>
+          </td>
+          <td>Greedy <link linkend="reg.quantifiers">quantifier</link>: preceding atom
+            occurs at least once  
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>-</literal>
+          </td>
+          <td>Separates a range inside a <link linkend="reg.classes">character
+              class</link></td>
+        </tr>
+        <tr>
+          <td>
+            <literal>.</literal>
+          </td>
+          <td>Matches almost any character  
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.quantifiers">?</link>
+          </td>
+          <td>Greedy <link linkend="reg.quantifiers">quantifier</link>: preceding atom
+            occurs 0 or 1 times  
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.classes">[…]</link>
+          </td>
+          <td>Encloses a <link linkend="reg.classes">character class</link></td>
+        </tr>
+        <tr>
+          <td>
+            <literal>/</literal>
+          </td>
+          <td>Escapes the character that follows  
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.quantifiers">{…}</link>
+          </td>
+          <td>Interval
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.alternation">|</link>
+          </td>
+          <td>Alternation  
+    </td>
+        </tr>
+      </tbody>
+    </informaltable>
+  </sect1>
+  <sect1 xml:id="reg.escapes">
+    <title>Escapes</title>
+    <para>In addition to to the metacharacter escapes already mentioned, a
+    pattern may also contain <link linkend="str.escapes">String
+      escapes</link>, as well as those summarised in the following table:</para>
+    <informaltable>
+      <thead>
+        <tr>
+          <th>Escape
+          </th>
+          <th>Meaning
+      </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <link linkend="reg.captures">\1–\9</link>
+          </td>
+          <td>Back-reference to a numbered group  
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.anchors">\A</link>
+          </td>
+          <td>Start of <literal>String</literal> anchor 
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.anchors">\b</link>
+          </td>
+          <td>Word boundary 
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.anchors">\B</link>
+          </td>
+          <td><emphasis>Not</emphasis> <literal>\b</literal></td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\d</literal>
+          </td>
+          <td>Decimal digit: 0–9 
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\D</literal>
+          </td>
+          <td><emphasis>Not</emphasis> <literal>\d</literal></td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\g&lt;<replaceable>name</replaceable>&gt;</literal>
+          </td>
+          <td>Sub-expression call for <replaceable>name</replaceable></td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\G</literal>
+          </td>
+          <td>Start of match or end of previous match
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\h</literal>
+          </td>
+          <td>Hexadecimal digit
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\H</literal>
+          </td>
+          <td>Not <literal>\h</literal></td>
+        </tr>
+        <tr>
+          
+          <td>Back-reference to group named or numbered <replaceable>name</replaceable></td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.properties">\p{name}</link>
+          </td>
+          <td>A character with the <link linkend="reg.properties">Unicode property</link><replaceable>name</replaceable></td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.properties">\P{name}</link>
+          </td>
+          <td>A character without the <link linkend="reg.properties">Unicode property</link><replaceable>name</replaceable></td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\Q</literal>
+          </td>
+          <td>Quote metacharacters that follow
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\s</literal>
+          </td>
+          <td>Whitespace 
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\S</literal>
+          </td>
+          <td><emphasis>Not</emphasis> <literal>\s</literal></td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\w</literal>
+          </td>
+          <td>Word character 
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\W</literal>
+          </td>
+          <td><emphasis>Not</emphasis> <literal>\w</literal></td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.anchors">\Z</link>
+          </td>
+          <td>End of <literal>String</literal> or before <literal>String</literal>-ending
+            newline
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <link linkend="reg.anchors">\z</link>
+          </td>
+          <td>Absolute end-of <literal>String</literal> anchor
+    </td>
+        </tr>
+      </tbody>
+    </informaltable>
+  </sect1>
+  <sect1 xml:id="reg.groups">
+    <title>Grouping</title>
+    <para>A balanced pair of parentheses are meta-characters which group and/or
+    capture the characters they enclose. Grouping allows the enclosed to be
+    treated as an atomic whole such that meta-characters directly following
+    the closing parenthesis act on the whole.</para>
+    <para>It also allows the <literal>i</literal>, <literal>m</literal>, and <literal>x</literal><link linkend="reg.options">option specifiers</link> to be applied to a specific
+    group, rather than the pattern as a whole. The opening parenthesis is
+    immediately followed by <literal>?<replaceable>options</replaceable>:</literal>, where
+    <replaceable>options</replaceable> is one or more of the aforementioned option specifiers.
+    If <replaceable>options</replaceable> is omitted, i.e. a group begins with
+    <literal>(?:</literal>, it is non-capturing, as explained in the following
+    section.</para>
+    <example xml:id="ex.regexp-group-options">
+      <title>Applying options to a specific group
+    </title>
+      <programlisting><xi:include href="examples/regexp-group-options.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.captures">
+    <title>Capturing</title>
+    <para>Capturing is the extraction of specific parts of the text being matched
+    so it can be referred to later, from within the pattern or the surrounding
+    program. As explained above, a <link linkend="reg.groups">group</link> captures unless
+    its opening parenthesis is directly followed by
+    <literal>?<replaceable>options</replaceable>:</literal>, where <replaceable>options</replaceable> is zero or
+    more of the specifiers <literal>i</literal>, <literal>m</literal>, or <literal>x</literal>.</para>
+    <para>A capturing group can be referred to later in the pattern by means of a
+    <firstterm>back-reference</firstterm>. The back-reference <literal>\<replaceable>d</replaceable></literal>,
+    where <replaceable>d</replaceable> is a decimal digit between one and nine, refers to the
+    <replaceable>d</replaceable><superscript>th</superscript> capturing group.  Captures can be referred to by
+    name if the opening parenthesis is followed by
+    <literal>?&lt;<replaceable>name</replaceable>&gt;</literal>.  The back-reference
+    <literal>\&lt;<replaceable>name</replaceable>&gt;</literal> refers to the capturing group named
+    <replaceable>name</replaceable>. If <replaceable>name</replaceable> is a decimal number, it refers to the
+    corresponding numbered capture group, enabling numbered back-references to
+    be used even when there are more than nine capture groups.  However, named
+    capture groups and numbered capture groups cannot both be used in the same
+    pattern.</para>
+    <para>The text captured by a specific capture group can be retrieved after
+    the match from the corresponding <link linkend="reg.matchdata">MatchData</link> object. The text captured by
+    a numbered group in the last match is also available in the global
+    variable <literal>$<replaceable>d</replaceable></literal>, where <replaceable>d</replaceable> is the group
+    number between one and nine.</para>
+    <example xml:id="ex.regexp-backreferences">
+      <title>Using back-references to refer to captured text
+    </title>
+      <programlisting><xi:include href="examples/regexp-backreferences.rb" parse="text"/></programlisting>
+    </example>
+    <para>If a <literal>Regexp</literal> literal is successfully matched against a
+    <literal>String</literal> with <literal>Regexp#=~</literal>, a local variable will be
+    initialized for each named group to hold its captured text.</para>
+    <example xml:id="ex.regexp-backreferences-lvars">
+      <title>Automatically initializing local variables to hold the
+      results of a match.
+    </title>
+      <programlisting><xi:include href="examples/regexp-backreferences-lvars.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.quantifiers">
+    <title>Quantifiers</title>
+    <para>A literal character, group, or character class may be followed by a
+    <firstterm>quantifier</firstterm> meta-character which specifies how many
+    consecutive occurrences are required at that point in the
+    pattern. <literal>+</literal> requires at least one; <literal>?</literal>,
+    zero or one; and <literal>*</literal>, zero or more. Alternatively, an
+    <firstterm>interval</firstterm> may be given, enclosed in a pair of curly
+    brackets. An interval of the form
+    <literal>{<replaceable>n</replaceable>}</literal> requires exactly
+    <replaceable>n</replaceable> occurrences;
+    <literal>{<replaceable>n</replaceable>,}</literal>, at least
+    <replaceable>n</replaceable>; and
+    <literal>{,<replaceable>n</replaceable>}</literal>, at most
+    <replaceable>n</replaceable>.
+    <literal>{<replaceable>min</replaceable>,<replaceable>max</replaceable>}</literal>
+    requires between <replaceable>min</replaceable> and
+    <replaceable>max</replaceable> occurrences.</para>
+    <example xml:id="ex.regexp-quantifiers">
+      <title>Quantifying atoms in a regular expression
+    </title>
+      <programlisting><xi:include href="examples/regexp-quantifiers.rb" parse="text"/></programlisting>
+    </example>
+    <para>The above quantifiers are termed <firstterm>greedy</firstterm> because they consume as many characters as
+    possible; in contrast, a <firstterm>lazy</firstterm>
+    quantifier consumes as few characters as possible. The <literal>+</literal>,
+    <literal>?</literal>, and <literal>*</literal> quantifiers are made lazy when
+    immediately followed by a question mark.</para>
+    <example xml:id="ex.lazy-quantifiers">
+      <title>Lazily quantifying atoms in a regular expression
+    </title>
+      <programlisting><xi:include href="examples/lazy-quantifiers.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.classes">
+    <title>Character Classes</title>
+
+    <para>A character class specifies a set of characters, one of which must
+    appear at that point in the pattern, enclosed within a pair of square
+    brackets. The characters are specified literally, one after the other. A
+    range of consecutive characters may be abbreviated with the notation
+    <literal><replaceable>start</replaceable>-<replaceable>end</replaceable></literal>:
+    the first character in the range separated from the last by a hyphen minus
+    sign (<literal>U＋002D</literal>). If the first character after the left
+    square bracket is a circumflex accent (<literal>U＋005E</literal>), the
+    class is inverted: it matches any character except those listed.  Inside a
+    character class, therefore, the hyphen-minus sign and circumflex accent are
+    metacharacters, so to be matched literally, the former must appear directly
+    before the right square bracket, and the latter at any position other than
+    the first.  Alternatively, either can be escaped with a reverse
+    solidus.</para>
+
+    <para>The following predefined character classes are also available. They
+    are specified as <literal>[:<replaceable>name</replaceable>:]</literal>,
+    and must appear within another character class. For example,
+    <literal>[[:alpha:]]</literal> represents alphabetical characters, and
+    <literal>[[:alpha:]2-4]</literal> represents alphabetical characters and
+    the digits <emphasis>2</emphasis>, <emphasis>3</emphasis>, and
+    <emphasis>4</emphasis>.</para>
+
+    <variablelist>
+      <varlistentry xml:id="reg.alnum">
+        <term>
+          <literal>[[:alnum:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode properties <emphasis>Alphabetic</emphasis> or <emphasis>Decimal Number</emphasis></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.alpha">
+        <term>
+          <literal>[[:alpha:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode property <emphasis>Alphabetic</emphasis></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.blank">
+        <term>
+          <literal>[[:blank:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode property <emphasis>White Space</emphasis>, excluding:
+        <itemizedlist><listitem><para>Characters with the Unicode properties <emphasis>Line Separator</emphasis> or
+          <emphasis>Paragraph Separator</emphasis></para></listitem><listitem><para><emphasis>Line Feed (LF)</emphasis> (<literal>U＋000A</literal>)
+          </para></listitem><listitem><para><emphasis>Line Tabulation</emphasis> (<literal>U＋000B</literal>)
+          </para></listitem><listitem><para><emphasis>Form Feed (FF)</emphasis> (<literal>U＋000C</literal>)
+          </para></listitem><listitem><para><emphasis>Carriage Return (CR)</emphasis> (<literal>U＋000D</literal>)
+          </para></listitem><listitem><para><emphasis>Next Line (NEL)</emphasis> (<literal>U＋0085</literal>)
+        </para></listitem></itemizedlist></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.cntrl">
+        <term>
+          <literal>[[:cntrl:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode General Category <emphasis>Cc</emphasis>
+      (<emphasis>Control</emphasis>)</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.digit">
+        <term>
+          <literal>[[:digit:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode property <emphasis>Decimal Number</emphasis></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.graph">
+        <term>
+          <literal>[[:graph:]]</literal>
+        </term>
+        <listitem>
+          <para>Any character except for characters…:
+        <itemizedlist><listitem><para>with the Unicode property <emphasis>White Space</emphasis>.
+          </para></listitem><listitem><para>with the Unicode general categories <emphasis>Cc</emphasis>
+          (<emphasis>Control</emphasis>), <emphasis>Cs</emphasis> (<emphasis>Surrogate</emphasis>), or <emphasis>Cn</emphasis>
+          (<emphasis>Unassigned</emphasis>).
+        </para></listitem></itemizedlist></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.lower">
+        <term>
+          <literal>[[:lower:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode property <emphasis>Lowercase</emphasis></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.print">
+        <term>
+          <literal>[[:print:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters represented by <literal>[[:graph:]]</literal> or
+      <literal>[[:blank:]]</literal>, excluding those represented by
+      <literal>[[:cntrl:]]</literal>.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.punct">
+        <term>
+          <literal>[[:punct:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode property <emphasis>Punctuation</emphasis></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.space">
+        <term>
+          <literal>[[:space:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode property <emphasis>White Space</emphasis>.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.upper">
+        <term>
+          <literal>[[:upper:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with the Unicode property <emphasis>Uppercase</emphasis></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.xdigit">
+        <term>
+          <literal>[[:xdigit:]]</literal>
+        </term>
+        <listitem>
+          <para>Digit allowed in a hexadecimal number (i.e., 0-9a-fA-F)</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.word">
+        <term>
+          <literal>[[:word:]]</literal>
+        </term>
+        <listitem>
+          <para>Characters with…
+        <itemizedlist><listitem><para>the Unicode properties <emphasis>Alphabetic</emphasis> or <emphasis>Decimal Number</emphasis>.
+          </para></listitem><listitem><para>the Unicode general categories <emphasis>M</emphasis> (<emphasis>Mark</emphasis>) or
+          <emphasis>Pc</emphasis> (<emphasis>Connector Punctuation</emphasis>).
+        </para></listitem></itemizedlist></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.ascii">
+        <term>
+          <literal>[[:ascii:]]</literal>
+        </term>
+        <listitem>
+          <para>A character in the ASCII character set, i.e.〈<literal>U＋0000</literal>, <literal>U＋007F</literal>〉</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <example xml:id="ex.regexp-classes">
+      <title>Matching characters with character classes
+    </title>
+      <programlisting><xi:include href="examples/regexp-classes.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="reg.alternation">
+    <title>Alternation</title>
+    <para>A vertical line is a meta-character specifying that either the
+    expression to its right, or that to its left, must match. It is usually
+    used inside a parenthetical.</para>
+    <example xml:id="ex.regexp-alternation">
+      <title>Matching one expression or the other
+    </title>
+      <programlisting><xi:include href="examples/regexp-alternation.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.matchdata">
+    <title><literal>MatchData</literal></title>
+    <para>A <literal>MatchData</literal> object encapsulates information about a match,
+    providing access to the captures and matched text. It is returned by
+    <literal>Regexp#match</literal> and <literal>String#match</literal>, and the
+    <literal>MatchData</literal> object corresponding to the last match is available
+    as <literal>$~</literal>.
+
+    <literal>MatchData#[]</literal> returns the text captured by the capture group
+    given as a <literal>Symbol</literal>, for a named group, or an
+    <literal>Integer</literal>.</para>
+  </sect1>
+  <sect1 xml:id="reg.anchors">
+    <title>Anchoring</title>
+    <para>A regular expression matches a <literal>String</literal> if the former is
+    <emphasis>contained</emphasis> in the latter. For example, <literal>/\d/</literal> matches
+    <literal>"2"</literal>, as well as <literal>"2 by 4"</literal> and <literal>"DoB:
+      19/2/1922"</literal>. Alternatively, a pattern may be <firstterm>anchored</firstterm> to a specific portion of the
+    <literal>String</literal>. Whereas many of the metacharacters introduced so far
+    match sequences of characters, anchors match positions.</para>
+    <informaltable>
+      <thead>
+        <tr>
+          <th>Anchor
+          </th>
+          <th>Position in <literal>String</literal></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <literal>^</literal>
+          </td>
+          <td>Start or after newline 
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\A</literal>
+          </td>
+          <td>Start
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>$</literal>
+          </td>
+          <td>End or before newline 
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\Z</literal>
+          </td>
+          <td>End or before last newline
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\z</literal>
+          </td>
+          <td>End
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\b</literal>
+          </td>
+          <td>Word boundary
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>\B</literal>
+          </td>
+          <td>Non-word boundary
+    </td>
+        </tr>
+      </tbody>
+    </informaltable>
+    <para>The <firstterm>word boundary</firstterm> referred to in the table above is a
+    position before a word, where <emphasis>word</emphasis> is simply: <literal>/[[:word:]]+/</literal>.
+    Therefore, <literal>\b</literal> matches a word character that is not preceded
+    by a word character. This is quite different from
+    <literal>/[^[:word:]][[:word:]]/</literal> because <literal>\b</literal> matches a
+    position without consuming any characters. Indeed, the pathological
+    pattern <literal>/\b/</literal> matches <literal>"a"</literal> at position 0, i.e. the
+    non-word character need not even exist.</para>
+    <example xml:id="ex.regexp-anchors">
+      <title>Anchoring a match to a specific position
+    </title>
+      <programlisting><xi:include href="examples/regexp-anchors.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.zero-width">
+    <title>Zero-Width Assertions</title>
+    <para>Inasmuch as anchors never consume any characters, they are a variety of
+    a more general concept: the <firstterm>zero-width assertion</firstterm>. The latter
+    require a given sub-expression to appear, or not appear, in the position
+    preceding, or following, the assertion. That is, they vary across two axis
+    as illustrated below.</para>
+    <informaltable>
+      <thead>
+        <tr>
+          <th>Syntax
+          </th>
+          <th>Name
+          </th>
+          <th>Assertion    
+      </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <literal>(?=<replaceable>exp</replaceable>)</literal>
+          </td>
+          <td>Positive look-ahead  
+          </td>
+          <td><replaceable>exp</replaceable> must follow   
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>(?!<replaceable>exp</replaceable>)</literal>
+          </td>
+          <td>Negative look-ahead  
+          </td>
+          <td><replaceable>exp</replaceable> can’t follow   
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>(?&lt;=<replaceable>exp</replaceable>)</literal>
+          </td>
+          <td>Positive look-behind  
+          </td>
+          <td><replaceable>exp</replaceable> must precede   
+        </td>
+        </tr>
+        <tr>
+          <td>
+            <literal>(?&lt;!<replaceable>exp</replaceable>)</literal>
+          </td>
+          <td>Negative look-behind  
+          </td>
+          <td><replaceable>exp</replaceable> can’t precede   
+    </td>
+        </tr>
+      </tbody>
+    </informaltable>
+    <example xml:id="ex.regexps-zero-width">
+      <title>Using zero-width assertions in regular expressions.
+    </title>
+      <programlisting><xi:include href="examples/regexps-zero-width.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.readability">
+    <title>Readability</title>
+    <para>Longer patterns tend to be harder to comprehend, increasing the
+    likelihood of errors. This can be avoided by adhering the following
+    principles:</para>
+    <variablelist>
+      <varlistentry>
+        <term>Named groups are self-documenting
+      </term>
+        <listitem>
+          <para>By using named groups instead of numbered groups, a capture
+      describes its purpose.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Free-spacing mode allows complex patterns to be formatted clearly
+      </term>
+        <listitem>
+          <para>The <literal>x</literal> option causes literal whitespace and comments to
+      be ignored, allowing a pattern to be commented and laid out over
+      multiple lines.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Outside of free-spacing mode, comments are still useful
+      </term>
+        <listitem>
+          <para>The contents of a group beginning <literal>(?#</literal> are ignored,
+      allowing comments to be interspersed with the pattern.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Long patterns can be built from smaller parts with interpolation
+      </term>
+        <listitem>
+          <para>When working with particularly complicated patterns, consider
+      constructing independent regular expressions for each sub-expression,
+      then interpolating them into one large pattern.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <example xml:id="ex.regexp-readability">
+      <title>A naïve pattern to match a human name
+    </title>
+      <programlisting><xi:include href="examples/regexp-readability.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="reg.encoding">
+    <title>Encoding</title>
+    <para>A <literal>Regexp</literal> is associated with an encoding which must be
+    compatible with that of the <literal>String</literal> it is matched against.
+    By default a <literal>Regexp</literal> has the same encoding as the source
+    file in which it is contained, with the following exceptions:</para>
+    <itemizedlist>
+      <listitem>
+        <para>An ASCII-only Regexp has the encoding US-ASCII when the source
+      encoding is ASCII-compatible.</para>
+      </listitem>
+      <listitem>
+        <para>An encoding option has been specified, in which case the
+      corresponding encoding is used, as follows:
+        <variablelist><varlistentry><term><literal>u</literal></term><listitem><para>UTF-8
+          </para></listitem></varlistentry><varlistentry><term><literal>e</literal></term><listitem><para>EUC-JP
+          </para></listitem></varlistentry><varlistentry><term><literal>s</literal></term><listitem><para>Windows-31J
+          </para></listitem></varlistentry><varlistentry><term><literal>n</literal></term><listitem><para>ASCII-8BIT
+        </para></listitem></varlistentry></variablelist></para>
+      </listitem>
+      <listitem>
+        <para>The use of Unicode character escapes within a pattern force the
+      <literal>Regexp</literal> to have UTF-8 encoding.</para>
+      </listitem>
+    </itemizedlist>
+    <para>In addition to the single-letter encoding options described above, a
+    <literal>Regexp</literal> can be encoded in any supporting encoding. This
+    requires the <literal>Regexp</literal> to be constructed with
+    <literal>Regexp.new</literal>, passing it the pattern as a <literal>String</literal>
+    associated with the desired encoding. The same technique, <emphasis>mutatis
+      mutandis</emphasis>, can be used with <literal>String#force_encoding</literal> to
+    associate the <literal>Regexp</literal> with a different encoding.</para>
+    <example xml:id="ex.regexp-specify-encoding">
+      <title>Initially, this <literal>Regexp</literal> adopts the source
+      encoding. Passing <literal>Regexp.new</literal> the pattern encoded as
+      ISO-8859-1 creates a regexp with the same pattern and the given
+      encoding.
+    </title>
+      <programlisting><xi:include href="examples/regexp-specify-encoding.rb" parse="text"/></programlisting>
+    </example>
+    <sect2 xml:id="reg.fixed-encoding">
+      <title>Fixed Encoding</title>
+      <para>The encoding of a <literal>Regexp</literal> is said to be <firstterm>fixed</firstterm> if its encoding and/or pattern is
+      incompatible with ASCII. This is significant because a
+      <literal>Regexp</literal> with a non-fixed encoding can match any
+      <literal>String</literal> whose encoding is ASCII-compatible. The
+      <literal>Regexp#fixed_encoding?</literal> predicate returns
+      <literal>true</literal> if its receiver’s encoding is fixed;
+      <literal>false</literal> otherwise.</para>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="reg.properties">
+    <title>Character Properties</title>
+
+    <para>A generalization of pre-defined <link linkend="reg.classes">character
+    classes</link> is the Unicode property escape. The construct
+    <literal>\p{<replaceable>property</replaceable>}</literal> represents
+    characters with the property <replaceable>property</replaceable>; while the
+    construct <literal>\P{<replaceable>property</replaceable>}</literal>
+    represents its inverse.  <replaceable>property</replaceable> is a
+    case-insensitive string, in which the space and low line characters are
+    ignored. For example, <literal>\p{Lowercase_Letter}</literal>,
+    <literal>\p{lowercase letter}</literal>, and
+    <literal>\p{lowercaseletter}</literal>, are all equivalent.</para>
+    
+    <para>The majority of property names correspond to Unicode properties, but
+    Ruby also defines the following:</para>
+    
+    <variablelist>
+      <varlistentry xml:id="reg.newline">
+        <term>
+          <emphasis>Newline</emphasis>
+        </term>
+        <listitem>
+          <para>Comprises solely of <literal>"\n"</literal> (<literal>U＋000A</literal>).</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.any">
+        <term>
+          <emphasis>Any</emphasis>
+        </term>
+        <listitem>
+          <para>Any Unicode character:〈<literal>U＋0000</literal>, <literal>U＋10FFFF</literal>〉.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry xml:id="reg.assigned">
+        <term>
+          <emphasis>Assigned</emphasis>
+        </term>
+        <listitem>
+          <para>Equivalent to <literal>/[\p{Any}\P{Cn}]/</literal>, i.e.
+      any character that has been assigned a codepoint.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>In addition, the names of the pre-defined character classes
+    introduced <link linkend="reg.classes">above</link>, are also valid
+    properties. They have the same semantics as previously noted. For example,
+    <literal>/\p{Digit}/</literal> is equivalent to
+    <literal>/[[:digit:]]/</literal>. They are as follows:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>
+          <link linkend="reg.alnum">Alnum</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.alpha">Alpha</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.any">Any</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.ascii">Ascii</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.blank">Blank</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.cntrl">Cntrl</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.digit">Digit</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.graph">Graph</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.lower">Lower</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.print">Print</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.punct">Punct</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.space">Space</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.upper">Upper</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.word">Word</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="reg.xdigit">Xdigit</link>
+        </para>
+      </listitem>
+    </itemizedlist>
+    <sect2 xml:id="reg.general-categories">
+      <title>General Categories</title>
+      <para>The Unicode general categories, specified either by abbreviation or
+      long name, are all valid properties. They represent all characters
+      assigned the given category. If <replaceable>property</replaceable> comprises only a
+      single character, it represents all general categories whose
+      abbreviations begin with that character. For example,
+      <literal>\p{Lu}</literal> and <literal>\p{Uppercase Letter}</literal> are
+      equivalent, while <literal>\p{L}</literal> represents characters from
+      categories <emphasis>Lu</emphasis>, <emphasis>Ll</emphasis>, <emphasis>Lt</emphasis>, <emphasis>Lm</emphasis>, and <emphasis>Lo</emphasis>.</para>
+      <informaltable>
+        <thead>
+          <tr>
+            <th>Abbreviation
+            </th>
+            <th>Long Name
+            </th>
+            <th>Description   
+          </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lu
+              </td>
+            <td>Uppercase_Letter
+              </td>
+            <td>Uppercase letter
+            </td>
+          </tr>
+          <tr>
+            <td>Ll
+              </td>
+            <td>Lowercase_Letter
+              </td>
+            <td>Lowercase letter
+            </td>
+          </tr>
+          <tr>
+            <td>Lt
+              </td>
+            <td>Titlecase_Letter
+              </td>
+            <td>Digraphic character, with first part uppercase
+            </td>
+          </tr>
+          <tr>
+            <td>Lm
+              </td>
+            <td>Modifier_Letter
+              </td>
+            <td>Modifier letter
+            </td>
+          </tr>
+          <tr>
+            <td>Lo
+              </td>
+            <td>Other_Letter
+              </td>
+            <td>Remaining letters, e.g. syllables and ideographs
+            </td>
+          </tr>
+          <tr>
+            <td>Mn
+              </td>
+            <td>Nonspacing_Mark
+              </td>
+            <td>Non-spacing combining mark (zero advance width)
+            </td>
+          </tr>
+          <tr>
+            <td>Mc
+              </td>
+            <td>Spacing_Mark
+              </td>
+            <td>Spacing, combining mark (positive advance width)
+            </td>
+          </tr>
+          <tr>
+            <td>Me
+              </td>
+            <td>Enclosing_Mark
+              </td>
+            <td>Enclosing combining mark
+            </td>
+          </tr>
+          <tr>
+            <td>Nd
+              </td>
+            <td>Decimal_Number
+              </td>
+            <td>Decimal digit
+            </td>
+          </tr>
+          <tr>
+            <td>Nl
+              </td>
+            <td>Letter_Number
+              </td>
+            <td>Letter-like numeric character
+            </td>
+          </tr>
+          <tr>
+            <td>No
+              </td>
+            <td>Other_Number
+              </td>
+            <td>Another type of numeric character
+            </td>
+          </tr>
+          <tr>
+            <td>Pc
+              </td>
+            <td>Connector_Punctuation
+              </td>
+            <td>Connecting punctuation mark
+            </td>
+          </tr>
+          <tr>
+            <td>Pd
+              </td>
+            <td>Dash_Punctuation
+              </td>
+            <td>Dash or hyphen punctuation mark
+            </td>
+          </tr>
+          <tr>
+            <td>Ps
+              </td>
+            <td>Open_Punctuation
+              </td>
+            <td>Opening punctuation mark (of a pair)
+            </td>
+          </tr>
+          <tr>
+            <td>Pe
+              </td>
+            <td>Close_Punctuation
+              </td>
+            <td>Closing punctuation mark (of a pair)
+            </td>
+          </tr>
+          <tr>
+            <td>Pi
+              </td>
+            <td>Initial_Punctuation
+              </td>
+            <td>Initial quotation mark
+            </td>
+          </tr>
+          <tr>
+            <td>Pf
+              </td>
+            <td>Final_Punctuation
+              </td>
+            <td>Final quotation mark
+            </td>
+          </tr>
+          <tr>
+            <td>Po
+              </td>
+            <td>Other_Punctuation
+              </td>
+            <td>Another type of punctuation mark
+            </td>
+          </tr>
+          <tr>
+            <td>Sm
+              </td>
+            <td>Math_Symbol
+              </td>
+            <td>Mathematical symbol
+            </td>
+          </tr>
+          <tr>
+            <td>Sc
+              </td>
+            <td>Currency_Symbol
+              </td>
+            <td>Currency sign
+            </td>
+          </tr>
+          <tr>
+            <td>Sk
+              </td>
+            <td>Modifier_Symbol
+              </td>
+            <td>Non-letter-like modifier symbol
+            </td>
+          </tr>
+          <tr>
+            <td>So
+              </td>
+            <td>Other_Symbol
+              </td>
+            <td>Another type of symbol
+            </td>
+          </tr>
+          <tr>
+            <td>Zs
+              </td>
+            <td>Space_Separator
+              </td>
+            <td>Space character (of non-zero width)
+            </td>
+          </tr>
+          <tr>
+            <td>Zl
+              </td>
+            <td>Line_Separator
+              </td>
+            <td>Line separator (<literal>U＋2028</literal>)
+            </td>
+          </tr>
+          <tr>
+            <td>Zp
+              </td>
+            <td>Paragraph_Separator
+              </td>
+            <td>Paragraph separator (<literal>U＋2029</literal>)
+            </td>
+          </tr>
+          <tr>
+            <td>Cc
+              </td>
+            <td>Control
+              </td>
+            <td>A C0 or C1 control code
+            </td>
+          </tr>
+          <tr>
+            <td>Cf
+              </td>
+            <td>Format
+              </td>
+            <td>Format control character
+            </td>
+          </tr>
+          <tr>
+            <td>Cs
+              </td>
+            <td>Surrogate
+              </td>
+            <td>Surrogate code point
+            </td>
+          </tr>
+          <tr>
+            <td>Co
+              </td>
+            <td>Private_Use
+              </td>
+            <td>Private-use character
+            </td>
+          </tr>
+          <tr>
+            <td>Cn
+              </td>
+            <td>Unassigned
+              </td>
+            <td>Reserved, unassigned code point or a non-character codepoint
+      </td>
+          </tr>
+        </tbody>
+      </informaltable>
+    </sect2>
+    <sect2 xml:id="reg.simple-properties">
+      <title>Simple Properties</title>
+      <para>A Unicode simple-i.e. non-<link linkend="reg.derived-properties">derived</link>-property is any of the following,
+      and represents all characters with that property:</para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            <emphasis>ASCII Hex Digit</emphasis>
+          </term>
+          <listitem>
+            <para><quote>ASCII characters commonly used for the representation of
+          hexadecimal numbers.</quote> <biblioref linkend="bib.uax44"/>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Bidi Control</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Format control characters which have specific functions in the
+        <link xlink:href="http://www.unicode.org/reports/tr9/">Unicode Bidirectional
+          Algorithm</link>.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Dash</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Punctuation characters designated as dashes in the Unicode
+          Standard, plus their compatibility equivalents.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Deprecated</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Unicode characters whose use is strongly discouraged.</quote>
+        (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Diacritic</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Characters that linguistically modify the meaning of another
+          character to which they apply.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Extender</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Characters whose principal function is to extend the value or
+          shape of a preceding alphabetic character.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Hex Digit</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Characters commonly used for the representation of hexadecimal
+          numbers, plus their compatibility equivalents.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Hyphen</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Dashes which are used to mark connections between pieces of words,
+          plus the Katakana middle dot.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><emphasis>IDS Binary Operator</emphasis></term>
+          <term><emphasis>IDS Trinary Operator</emphasis></term>
+          <listitem>
+            <para><quote>Used in Ideographic Description Sequences.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Ideographic</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Characters considered to be CJKV (Chinese, Japanese, Korean, and
+          Vietnamese) ideographs.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Join Control</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Format control characters which have specific functions for
+          control of cursive joining and ligation.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Logical Order Exception</emphasis>
+          </term>
+          <listitem>
+            <para><quote>There are a small number of characters that do not use logical
+          order. These characters require special handling in most
+          processing.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>NonCharacter Code Point</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Code points permanently reserved for internal use.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Other Alphabetic</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used in deriving the <emphasis>Alphabetic</emphasis> property.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Other Default Ignorable Code Point</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used in deriving the <emphasis>Default Ignorable Code Point</emphasis>
+          property.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Other Grapheme Extend</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used in deriving the <emphasis>Grapheme Extend</emphasis> property.</quote>
+        (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Other ID Continue</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used for backward compatibility of <emphasis>ID Continue</emphasis>.</quote>
+        (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Other ID Start</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used for backward compatibility of <emphasis>ID Start</emphasis>.</quote>
+        (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Other Lowercase</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used in deriving the <emphasis>Lowercase</emphasis> property.</quote>
+        (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Other Math</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used in deriving the <emphasis>Math</emphasis> property.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Other Uppercase</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used in deriving the <emphasis>Uppercase</emphasis> property.</quote>
+        (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><emphasis>Pattern Syntax</emphasis></term>
+	  <term><emphasis>Pattern White Space</emphasis></term>
+          <listitem>
+            <para><quote>Used for pattern syntax as described in <link xlink:href="http://www.unicode.org/reports/tr31/">UAX #31: Unicode Identifier
+            and Pattern Syntax</link></quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Quotation Mark</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Punctuation characters that function as quotation marks.</quote>
+        (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Radical</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used in Ideographic Description Sequences.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>STerm</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Sentence Terminal. Used in <link xlink:href="http://www.unicode.org/reports/tr29/">UAX #29: Unicode Text
+            Segmentation</link></quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Soft Dotted</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Characters with a “soft dot”, like i or j. An accent placed on
+          these characters causes the dot to disappear.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Terminal Punctuation</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Punctuation characters that generally mark the end of textual
+          units.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Unified Ideograph</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Used in Ideographic Description Sequences.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Variation Selector</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Indicates characters that are Variation Selectors. See <link xlink:href="http://www.unicode.org/reports/tr37/">UAX #37: Unicode Ideographic
+            Variation Database</link> for more details.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>White Space</emphasis>
+          </term>
+          <listitem>
+            <para><quote>Separator characters and control characters which should be
+          treated by programming languages as "white space" for the purpose of
+          parsing elements.</quote> (<emphasis>ibid.</emphasis>)</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="reg.derived-properties">
+      <title>Derived Properties</title>
+      <para>The Unicode derived properties are defined by reference to simple
+      properties and general categories, and are all valid property names.
+      They are as follows:</para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            <emphasis>Math</emphasis>
+          </term>
+          <listitem>
+            <para>Equivalent to <literal>/[\p{Sm}\p{Other Math}]/</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Alphabetic</emphasis>
+          </term>
+          <listitem>
+            <para>Equivalent to <literal>/[\p{L}\p{Nl}\p{Other Alphabetic}]/</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Lowercase</emphasis>
+          </term>
+          <listitem>
+            <para>Equivalent to <literal>/[\p{Ll}\p{Other Lowercase}]/</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Uppercase</emphasis>
+          </term>
+          <listitem>
+            <para>Equivalent to <literal>/[\p{Lu}\p{Other Uppercase}]/</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Cased</emphasis>
+          </term>
+          <listitem>
+            <para>Equivalent to <literal>/[\p{Lowercase}\p{Uppercase}\p{Lt}]/</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Case Ignorable</emphasis>
+          </term>
+          <listitem>
+            <para>Characters with a <emphasis>Word Break</emphasis> category of
+        <emphasis>MidLetter</emphasis> or <emphasis>MidNumLet</emphasis>, or general category of
+        <emphasis>Mn</emphasis>, <emphasis>Me</emphasis>, <emphasis>Cf</emphasis>, <emphasis>Lm</emphasis>, or <emphasis>Sk</emphasis>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Changes when Lowercased</emphasis>
+          </term>
+          <listitem>
+            <para>Those whose normalized forms are not stable under a
+        <literal>toLowercase</literal> mapping.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Changes when Uppercased</emphasis>
+          </term>
+          <listitem>
+            <para>Those whose normalized forms are not stable under a
+        <literal>toLowercase</literal> mapping.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Changes when Titlecased</emphasis>
+          </term>
+          <listitem>
+            <para>Those whose normalized forms are not stable under a
+        <literal>toTitlecase</literal> mapping.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Changes when Casefolded</emphasis>
+          </term>
+          <listitem>
+            <para>Those whose normalized forms are not stable under case folding.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Changes when Casemapped</emphasis>
+          </term>
+          <listitem>
+            <para>Those whose normalized forms are not stable under case mapping.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>ID Start</emphasis>
+          </term>
+          <listitem>
+            <para>Those which start an identifier. Equivalent to the union of
+        <literal>\p{L}</literal>, <literal>\p{Nl}</literal>, <literal>\p{Other ID
+          Start}</literal>, <literal>\P{Pattern Syntax}</literal>, <literal>\P{Pattern
+          White Space}</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>ID Continue</emphasis>
+          </term>
+          <listitem>
+            <para>Those that can continue an identifier. Equivalent to the union of
+        <literal>\p{ID Start}</literal>, <literal>\p{Mn}</literal>, <literal>\p{Mc}</literal>,
+        <literal>\p{Nd}</literal>, <literal>\p{Pc}</literal>, <literal>\p{Other ID
+          Continue}</literal>, <literal>\P{Pattern Syntax}</literal>, <literal>\P{Pattern
+          White Space}</literal></para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>XID Start</emphasis>
+          </term>
+          <listitem>
+            <para><emphasis>ID Start</emphasis> modified for closure under NFKx.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>XID Continue</emphasis>
+          </term>
+          <listitem>
+            <para><emphasis>ID Continue</emphasis> modified for closure under NFKx.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Default Ignorable Code Point</emphasis>
+          </term>
+          <listitem>
+            <para>Equivalent to the union of <literal>\p{Other Default
+          Ignorable Code Point}</literal>, <literal>\p{Cf}</literal>,
+        <literal>\p{Variation Selector}</literal>, <literal>\P{White Space}</literal>,
+        <literal>[^\uFFF9-\uFFFB]</literal>, <literal>[^\u0600-\u0603]</literal>, and 
+        <literal>[^\u06DD\u070F]</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Grapheme Extend</emphasis>
+          </term>
+          <listitem>
+            <para>Equivalent to the union of <literal>\p{Me}</literal>,
+        <literal>\p{Mn}</literal>, and <literal>\p{Other Grapheme Extend}</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Grapheme Base</emphasis>
+          </term>
+          <listitem>
+            <para>Equivalent to the union of <literal>\p{Any}</literal>, <literal>\P{C}</literal>,
+        <literal>\P{Zl}</literal>, <literal>\P{Zp}</literal>, and <literal>\P{Grapheme
+          Extend}</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <emphasis>Grapheme Link</emphasis>
+          </term>
+          <listitem>
+            <para>Those with a canonical combining class of <emphasis>Virama</emphasis>.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="reg.script">
+      <title>Script</title>
+      <para>If the property name is a Unicode script value, or an alias thereof,
+      it represents characters in that script. In the list below, names
+      separated by a solidus are equivalent.</para>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Arab</emphasis> / <emphasis>Arabic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Armi</emphasis> / <emphasis>Imperial Aramaic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Armn</emphasis> / <emphasis>Armenian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Avst</emphasis> / <emphasis>Avestan</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Bali</emphasis> / <emphasis>Balinese</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Bamu</emphasis> / <emphasis>Bamum</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Beng</emphasis> / <emphasis>Bengali</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Bopo</emphasis> / <emphasis>Bopomofo</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Brai</emphasis> / <emphasis>Braille</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Bugi</emphasis> / <emphasis>Buginese</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Buhd</emphasis> / <emphasis>Buhid</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Cans</emphasis> / <emphasis>Canadian Aboriginal</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Cari</emphasis> / <emphasis>Carian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para>
+            <emphasis>Cham</emphasis>
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Cher</emphasis> / <emphasis>Cherokee</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Copt</emphasis> / <emphasis>Coptic</emphasis> / <emphasis>Qaac</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Cprt</emphasis> / <emphasis>Cypriot</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Cyrl</emphasis> / <emphasis>Cyrillic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Deva</emphasis> / <emphasis>Devanagari</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Dsrt</emphasis> / <emphasis>Deseret</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Egyp</emphasis> / <emphasis>Egyptian Hieroglyphs</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Ethi</emphasis> / <emphasis>Ethiopic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Geor</emphasis> / <emphasis>Georgian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Glag</emphasis> / <emphasis>Glagolitic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Goth</emphasis> / <emphasis>Gothic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Grek</emphasis> / <emphasis>Greek</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Gujr</emphasis> / <emphasis>Gujarati</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Guru</emphasis> / <emphasis>Gurmukhi</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Hang</emphasis> / <emphasis>Hangul</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Hani</emphasis> / <emphasis>Han</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Hano</emphasis> / <emphasis>Hanunoo</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Hebr</emphasis> / <emphasis>Hebrew</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Hira</emphasis> / <emphasis>Hiragana</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Hrkt</emphasis>: <emphasis>Katakana</emphasis> or <emphasis>Hiragana</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Ital</emphasis> / <emphasis>Old Italic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Java</emphasis> / <emphasis>Javanese</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Kali</emphasis> / <emphasis>Kayah Li</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Kana</emphasis> / <emphasis>Katakana</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Khar</emphasis> / <emphasis>Kharoshthi</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Khmr</emphasis> / <emphasis>Khmer</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Knda</emphasis> / <emphasis>Kannada</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Kthi</emphasis> / <emphasis>Kaithi</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Lana</emphasis> / <emphasis>Tai Tham</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Laoo</emphasis> / <emphasis>Lao</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Latn</emphasis> / <emphasis>Latin</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Lepc</emphasis> / <emphasis>Lepcha</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Limb</emphasis> / <emphasis>Limbu</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Linb</emphasis> / <emphasis>Linear B</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Lisu</emphasis> / <emphasis>Lisu</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Lyci</emphasis> / <emphasis>Lycian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Lydi</emphasis> / <emphasis>Lydian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Mlym</emphasis> / <emphasis>Malayalam</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Mong</emphasis> / <emphasis>Mongolian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Mtei</emphasis> / <emphasis>Meetei Mayek</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Mymr</emphasis> / <emphasis>Myanmar</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Nkoo</emphasis> / <emphasis>Nko</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Ogam</emphasis> / <emphasis>Ogham</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Olck</emphasis> / <emphasis>Ol Chiki</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Orkh</emphasis> / <emphasis>Old Turkic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Orya</emphasis> / <emphasis>Oriya</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Osma</emphasis> / <emphasis>Osmanya</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Phag</emphasis> / <emphasis>Phags Pa</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Phli</emphasis> / <emphasis>Inscriptional Pahlavi</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Phnx</emphasis> / <emphasis>Phoenician</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Prti</emphasis> / <emphasis>Inscriptional Parthian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Rjng</emphasis> / <emphasis>Rejang</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Runr</emphasis> / <emphasis>Runic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Samr</emphasis> / <emphasis>Samaritan</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Sarb</emphasis> / <emphasis>Old South Arabian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Saur</emphasis> / <emphasis>Saurashtra</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Shaw</emphasis> / <emphasis>Shavian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Sinh</emphasis> / <emphasis>Sinhala</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Sund</emphasis> / <emphasis>Sundanese</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Sylo</emphasis> / <emphasis>Syloti Nagri</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Syrc</emphasis> / <emphasis>Syriac</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Tagb</emphasis> / <emphasis>Tagbanwa</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Tale</emphasis> / <emphasis>Tai Le</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Talu</emphasis> / <emphasis>New Tai Lue</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Taml</emphasis> / <emphasis>Tamil</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Tavt</emphasis> / <emphasis>Tai Viet</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Telu</emphasis> / <emphasis>Telugu</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Tfng</emphasis> / <emphasis>Tifinagh</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Tglg</emphasis> / <emphasis>Tagalog</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Thaa</emphasis> / <emphasis>Thaana</emphasis></para>
+        </listitem>
+        <listitem>
+          <para>
+            <emphasis>Thai</emphasis>
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Tibt</emphasis> / <emphasis>Tibetan</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Ugar</emphasis> / <emphasis>Ugaritic</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Vaii</emphasis> / <emphasis>Vai</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Xpeo</emphasis> / <emphasis>Old Persian</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Xsux</emphasis> / <emphasis>Cuneiform</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Yiii</emphasis> / <emphasis>Yi</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Zinh</emphasis> / <emphasis>Inherited</emphasis> / <emphasis>Qaai</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Zyyy</emphasis> / <emphasis>Common</emphasis></para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Zzzz</emphasis> / <emphasis>Unknown</emphasis></para>
+        </listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+</chapter>

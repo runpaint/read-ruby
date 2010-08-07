@@ -1,0 +1,1 @@
+<literal><replaceable>receiver</replaceable> ? <replaceable>receiver</replaceable>.<replaceable>selector</replaceable> : nil</literal>

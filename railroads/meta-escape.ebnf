@@ -1,1 +1,0 @@
-MetaEscape = "\\" "M" "-" (Character | CharacterEscape | ControlEscape)

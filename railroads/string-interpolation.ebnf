@@ -1,1 +1,0 @@
-StringInterpolation = "#" (ClassVariable | InstanceVariable | GlobalVariable | "{" Expression "}")

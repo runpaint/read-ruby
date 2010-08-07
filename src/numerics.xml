@@ -1,0 +1,1419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter version="5.0"
+         xml:id="num.numerics"
+         xml:lang="en"
+	 xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Numerics</title>
+  <para>A <firstterm>numeric</firstterm> is an object representing a number, an
+  instance of one of Ruby’s numeric classes:</para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<link linkend="num.integers">
+      Integer
+    </link>
+      </term>
+      <listitem>
+	<para>Integers, or “counting numbers”, e.g. 4.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<link linkend="num.floats">
+      Float
+    </link>
+      </term>
+      <listitem>
+	<para>Floating-point numbers, i.e. numbers with digits after the decimal
+  place, e.g. 3.14</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<link linkend="num.rationals">
+      Rational
+    </link>
+      </term>
+      <listitem>
+	<para>Rational numbers, or “fractions”, e.g. ⅔.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<link linkend="num.complex">
+      Complex
+    </link>
+      </term>
+      <listitem>
+	<para>Complex numbers, i.e. those having both a real and an imaginary part.</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  
+  <para>Instances of these classes are collectively termed “numerics” after
+  their parent class: <literal>Numeric</literal>.</para>
+  <sect1 xml:id="num.integers">
+    <title>Integers</title>
+    <!--figure>
+      <title>Syntax diagram of the decimal literal
+      </title>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="figures/decimal-literal.png" format="PNG" width="4in"/>
+	</imageobject>
+      </mediaobject>
+    </figure-->
+    <para>A decimal integer literal consists of an optional <literal>0d</literal>
+    prefix, then one or more decimal digits. If the <literal>0d</literal> prefix is
+    omitted, the first digit must be non-zero. Hexadecimal, octal, and binary
+    literals allow integers to be expressed in base sixteen, eight, or two,
+    respectively. A hexadecimal literal begins with <literal>0x</literal>, and is
+    followed by one or more hex digits (0–9, a–f). An octal literal begins
+    with <literal>0</literal>, an optional <literal>o</literal>, then one or more octal
+    digits (0–7). A binary literal begins with <literal>0b</literal>, and is
+    followed by one or more binary digits (0–1). However, all
+    <literal>Integer</literal>s are stored as decimals so <literal>0b10000</literal>,
+    <literal>0x10</literal>, and <literal>020</literal> have the same value: <literal>16</literal>.
+    All forms ignore case and allow an optional sign (<literal>+</literal> or
+    <literal>-</literal>) as their very first character. Consecutive digits may be
+    separated by low lines to aid readability of large numbers, but they have
+    no semantic meaning.</para>
+    <!--figure>
+      <title>Syntax diagrams of the hexadecimal, binary, and
+	    octal literals
+	    </title>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="figures/hexadecimal-literal.png" format="PNG" width="4in"/>
+	</imageobject>
+	<imageobject>
+	  <imagedata fileref="figures/binary-literal.png" format="PNG" width="4in"/>
+	</imageobject>
+	<imageobject>
+	  <imagedata fileref="figures/octal-literal.png" format="PNG" width="4in"/>
+	</imageobject>
+      </mediaobject>
+    </figure-->
+    <para>The class of an integer depends upon its magnitude: those representable
+	  natively, are <literal>Fixnum</literal> objects; otherwise they are
+	  <literal>Bignum</literal>s. This distinction is largely irrelevant because Ruby
+	  handles the conversion implicitly and both respond identically to the same
+	  set of messages. Therefore, we shall refer to <literal>Fixnum</literal> and
+	  <literal>Bignum</literal> objects collectively by the name of their parent
+	  class, <literal>Integer</literal>. Quantities that exceed the limits of
+	  <literal>Bignum</literal>, have the value <literal>Float::INFINITY</literal>.</para>
+    <sect2 xml:id="num.immediates">
+      <title>Immediates</title>
+      <para><literal>Symbol</literal> and <literal>Fixnum</literal> literals are
+	      <firstterm>immediate</firstterm> values. They are stored
+	      as values rather than object references so are immutable and
+	      cannot have singleton methods defined on them.</para>
+    </sect2>
+    <sect2 xml:id="num.bases">
+      <title>Bases</title>
+      <para><literal>Integer</literal> objects represent integers in base ten. They can
+	      be converted into another base, <replaceable>b</replaceable>, with
+	      <literal>Integer#to_s(<replaceable>b</replaceable>)</literal>, where 36 ≥ <replaceable>b</replaceable> ≥
+	      2. Conversely, a <literal>String</literal> comprising an integer in base
+	      <replaceable>b</replaceable>, may be converted to the corresponding <literal>Integer</literal>
+	      with <literal>String#to_i(<replaceable>b</replaceable>)</literal>, where <replaceable>b</replaceable> has the
+	      same limits as before. <literal>String#hex</literal> and
+	      <literal>String#oct</literal> are equivalent to <literal>String#to_i 16</literal>
+	      and <literal>String#to_i 8</literal>, respectively. When converting an
+	    <literal>Integer</literal> into binary, octal, or hexadecimal, <link linkend="str.format">format strings</link> provide greater control.</para>
+      <example xml:id="ex.numeric-bases">
+	<title>Converting between numeric bases
+	      </title>
+	<programlisting><xi:include href="examples/numeric-bases.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+    <sect2 xml:id="num.bits">
+      <title>Bit Twiddling</title>
+      <para>There are a collection of methods that treat <literal>Integer</literal>s
+	    like bit fields, operating on the number’s binary operation. The unary
+	    operator <literal>Integer#~</literal> inverts the bit pattern, while
+	    <literal>#&gt;&gt;</literal> and <literal>#&lt;&lt;</literal> shift it right or
+	    left, respectively, by the number of bits specified as an argument. The
+	    binary logical operators <literal>#|</literal>, <literal>#&amp;</literal>, and
+	    <literal>#^</literal>, perform bitwise OR, AND or, XOR, respectively.</para>
+      <example xml:id="ex.numeric-bits">
+	<title>Performing bit operations on <literal>Integer</literal>s
+	      </title>
+	<programlisting><xi:include href="examples/numeric-bits.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="num.floats">
+    <title>Floats</title>
+    <para>A <literal>Float</literal> object represents a double-precision
+	  floating-point number. It contains a decimal point, so can represent
+	  values such as 1.5. A floating-point literal consists of a decimal integer
+	  literal, a period, then one or more decimal digits, e.g.
+	  <literal>3.14</literal>.</para>
+    <!--figure>
+      <title>Syntax diagram of the floating-point literal
+	      </title>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="figures/float-literal.png" format="PNG" width="4in"/>
+	</imageobject>
+      </mediaobject>
+    </figure-->
+    <para>A scientific notation literal consists of a coefficient (<replaceable>a</replaceable>:
+	    a decimal or <literal>Float</literal> literal), <literal>e</literal> or
+	    <literal>E</literal>, then an exponent (<replaceable>e</replaceable>: one or more decimal
+	    digits). Its value is <literal><replaceable>a</replaceable> ×
+	    10<superscript><replaceable>e</replaceable></superscript></literal> represented as a
+	    <literal>Float</literal>.</para>
+    <!--figure>
+      <title>Syntax diagram of the scientific notation literal
+		</title>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="figures/scientific-notation-literal.png" format="PNG" width="4in"/>
+	</imageobject>
+      </mediaobject>
+    </figure-->
+    <sect2 xml:id="num.constants">
+      <title>Constants</title>
+      <para>The precision and limits of <literal>Float</literal> are specified by the
+		following constants:</para>
+      <variablelist>
+	<varlistentry>
+	  <term><literal>DIG</literal> = 15
+		  </term>
+	  <listitem>
+	    <para>Precision in decimal digits</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>EPSILON</literal> = 2.220446049250313e-16
+		  </term>
+	  <listitem>
+	    <para>Smallest value such that <literal>Float::EPSILON + 1.0 != 1.0</literal></para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>INFINITY</literal>
+	  </term>
+	  <listitem>
+	    <para>Positive infinity: a value too large to be represented.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>MANT_DIG</literal> = 53
+		  </term>
+	  <listitem>
+	    <para>Number of digits in the mantissa.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>MAX</literal> = 1.7976931348623157e308
+		  </term>
+	  <listitem>
+	    <para>Largest possible representable <literal>Float</literal></para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>MAX_10_EXP</literal> = 308
+		  </term>
+	  <listitem>
+	    <para>Largest integer exponent, <replaceable>x</replaceable>, such that
+		  10<superscript><replaceable>x</replaceable></superscript> is a finite <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>MAX_EXP</literal> = 1024
+		  </term>
+	  <listitem>
+	    <para>Largest integer exponent, <replaceable>x</replaceable>, such
+	    that
+	    <literal>Float::RADIX</literal><superscript><replaceable>x</replaceable>
+	    − 1</superscript> is a finite <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>MIN</literal> = 2.2250738585072014e−308
+		  </term>
+	  <listitem>
+	    <para>Smallest possible representable <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>MIN_10_EXP</literal> = −307
+		  </term>
+	  <listitem>
+	    <para>Smallest integer exponent, <replaceable>x</replaceable>, such that
+		  10<superscript><replaceable>x</replaceable></superscript> is a finite <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>MIN_EXP</literal> = −1021
+		  </term>
+	  <listitem>
+	    <para>Smallest integer exponent, <replaceable>x</replaceable>, such that
+		  <literal>Float::RADIX</literal><superscript><replaceable>x</replaceable> - 1</superscript> is a finite
+		    <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>NAN</literal>
+	  </term>
+	  <listitem>
+	    <para><acronym>NaN</acronym>: a value that is undefined.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>RADIX</literal> = 2
+		  </term>
+	  <listitem>
+	    <para>The base in which the number is stored internally.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>ROUNDS</literal> = 1</term>
+	  <listitem>
+	    <para>The rounding mode for floating-point operations:</para>
+	    <variablelist>
+	      <varlistentry>
+		<term>−1</term>
+		<listitem>
+		  <para>Indeterminate</para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term>0</term>
+		<listitem>
+		  <para>Toward 0</para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term>1</term>
+		<listitem>
+		  <para>Nearest representable value</para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term>2</term>
+		<listitem>
+		  <para>Toward <code>+Float::INFINITY</code></para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term>3</term>
+		<listitem>
+		  <para>Toward <code>-Float::INFINITY</code></para>
+		</listitem>
+	      </varlistentry>
+	    </variablelist>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.precision">
+      <title>Precision &amp; Accuracy</title>
+      <para>The inexactitude of <literal>Float</literal>s is a frequent source of
+		confusion and illegitimate bug reports. To understand its cause, we must
+		be broadly familiar with how computers store double-precision
+		floating-point numbers.</para>
+      <para>On most platforms, <literal>Float</literal>s are stored in sixty-four bits.
+		The first bit is the sign, <replaceable>s</replaceable>, which is zero for a positive
+		number; one for a negative number. The next eleven are the positive
+		exponent, <replaceable>e</replaceable>. To allow for negative exponents, from
+		<replaceable>e</replaceable> is subtracted a constant, <replaceable>b</replaceable>, which has the value
+		1023. For example, an exponent of 18 is stored as
+		<literal>10000010001</literal><subscript>2</subscript>. The last fifty-two bits are the
+		mantissa, <replaceable>m</replaceable>, which has one implied bit, so it has a precision
+		of fifty-three bits. Therefore, a floating-point number has the
+		following form:</para>
+      <para>(−1)<superscript><replaceable>s</replaceable></superscript> × 2<superscript><replaceable>e</replaceable> −
+		<replaceable>b</replaceable></superscript> × 1.<replaceable>m</replaceable></para>
+      <para>This system of encoding places an upper and lower
+		limit on the range of values that can be represented, as evidenced by
+		<literal>Float::MAX</literal> and <literal>Float::MIN</literal>, respectively.</para>
+      <example xml:id="ex.float-limits">
+	<title>The upper and lower limits of <literal>Float</literal></title>
+	<programlisting><xi:include href="examples/float-limits.rb" parse="text"/></programlisting>
+      </example>
+      <blockquote>
+	<attribution>Kernighan &amp; Plauger, <biblioref begin="115" end="116"
+	linkend="bib.kernighan78" units="pages"/></attribution>
+	<para>Floating point arithmetic adds a new spectrum of errors, all
+	based on the fact that the machine can represent numbers only to a
+	finite precision.</para>
+      </blockquote>
+      <para>Arithmetic with integers is exact, unless the result is outside of
+      the range of representable values (underflow or overflow). However,
+      floating-point arithmetic is inherently inexact. Unlike the real numbers,
+      floating-point numbers are not continuous; there are “gaps” between any
+      two numbers. Therefore, a number that cannot be represented exactly-such
+      as an irrational, e.g. π and ℯ, or
+      non-terminating<footnote><para>…non-terminating, that is, in base 2.
+      Therefore, the only rationals that are representable exactly in binary
+      are those whose denominators are powers of 2, e.g. ¾.  </para></footnote>
+      rational, such as ⅓-must be approximated by one of the nearest
+      representable values. Further, because the same number of bits are used
+      to represent all <literal>Float</literal>s, the smaller the exponent, the
+      greater the density of representable numbers.</para>
+      <blockquote>
+	<attribution><biblioref begin="117" end="118" linkend="bib.kernighan78" units="pages"/></attribution>
+	<para>As a wise programmer once said, “Floating point numbers are like
+	sandpiles: every time you move one, you lose a little sand and you pick
+	up a little dirt.” And after a few computations, things can get pretty
+	dirty.</para>
+      </blockquote>
+      <para>The poster child is 0.1. Regardless of how many bits are available
+      for storage, it can never be represented exactly in base 2 of any finite
+      precision because it would contain the sequence 1100 repeated ad
+      infinitum. Therefore, the value stored is an approximation of the actual
+      value. This becomes apparent when performing even trivial
+      calculations:</para>
+      <example xml:id="ex.float-roundoff">
+	<title>The ffect of calculations involving values that cannot be
+		  represented exactly in base 2 with a finite precision.
+		  </title>
+	<programlisting><xi:include href="examples/float-roundoff.rb" parse="text"/></programlisting>
+      </example>
+      <para>This is often forgotten because when Ruby displays such fractions-in
+		IRB, for example-it rounds them automatically. To reiterate, this
+		behaviour is an inherent shortcoming of floating-point; it is neither
+		the fault of Ruby nor your hardware.</para>
+      <blockquote>
+	<attribution><biblioref begin="117" end="118" linkend="bib.kernighan78" units="pages"/></attribution>
+	<para>One of the first lessons that must be learned about floating
+	point numbers is that tests for exact equality between two computed
+	floating-point numbers are almost certain to fail.</para>
+      </blockquote>
+      <para>To conclude, some advice:</para>
+      <itemizedlist>
+	<listitem>
+	  <para>When comparing two <literal>Float</literal>s, either round them
+		  beforehand, or compare the absolute value of their difference with an
+		  appropriate epsilon.</para>
+	</listitem>
+	<listitem>
+	  <para>When performing calculations, consider using
+		  <literal>Rational</literal>s rather than <literal>Float</literal>s, where
+		  possible, to avoid the unintuitive manner in which round-off errors
+		  propagate floating-point operations.</para>
+	</listitem>
+	<listitem>
+	  <para>Take special care when subtracting two values that are almost
+		  equal, adding two likewise values that have opposing signs, or
+		  performing either addition or subtraction with operands differing
+		  significantly in magnitude.</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="num.rationals"><title>Rationals</title><para>A rational number is a number of the form
+	      <replaceable>n</replaceable>⁄<replaceable>d</replaceable>, where both variables are integers. The
+	      integer <replaceable>n</replaceable> is the <firstterm>numerator</firstterm>, and <replaceable>d</replaceable> the
+	      <firstterm>denominator</firstterm>. The denominator must not be zero.</para><para>Rationals are instances of the <literal>Rational</literal> class. They may be
+	      created with the constructor <literal>Rational(<replaceable>n</replaceable>,
+	      <replaceable>d</replaceable>)</literal>. When <replaceable>d</replaceable> is omitted, and <replaceable>n</replaceable> an
+	      integer, <replaceable>d</replaceable> has the implicit value of one. If one or both
+	      arguments are themselves <literal>Rational</literal> or <literal>Float</literal>
+	      objects, an equivalent rational is found and returned. If
+	      <literal>Rational</literal> is, instead, given a <literal>String</literal>
+	      representation of a rational, the numerator and denominator are derived
+	      from that. In all cases, if the numerator is an exact divisor of the
+	      denominator, the <literal>Rational</literal> represents this simplified
+	      quotient.</para>
+
+	      <example xml:id="ex.rational-constructor"><title>Contructing <literal>Rational</literal> instances with the
+		<literal>Rational()</literal> constructor.
+		</title><programlisting><xi:include href="examples/rational-constructor.rb" parse="text"/></programlisting></example><para>Using <literal>Rational</literal>s instead of <literal>Float</literal>s in
+	      calculations enables us to represent rational values exactly, rather than
+	      approximating them within the limits of floating-point arithmetic. This
+	      solves, for example, the <literal>0.1 * 3</literal> problem described above.</para><example xml:id="ex.rational-float"><title><literal>Rational</literal>s help preserve the accuracy in
+		  calculations involving fractions.
+		</title><programlisting><xi:include href="examples/rational-float.rb" parse="text"/></programlisting></example>
+		<para>A <literal>Rational</literal> may also be created from a <literal>String</literal>
+	      or other numeric with <literal>#to_r</literal>. This creates a
+	      <literal>Rational</literal> mathematically equal to the receiver. Numerics also
+	      provide a method named <literal>#rationalize</literal>. For
+	      non-<literal>Float</literal>s, this behaves as <literal>#to_r</literal>; when the
+	      receiver is a <literal>Float</literal> it <quote>returns a rational that
+	      approximates the float to the accuracy of the underlying floating-point
+	      representation.</quote> <biblioref begin="12-62" end="12-62" linkend="bib.lispstd" units="pages"/>.<footnote><para>The provenance of <literal>#rationalize</literal>
+		appears to be <emphasis>CLISP</emphasis>, which implemented the function of the same
+		name from the ANSI Common LISP standard.
+		</para></footnote>. If <literal>#rationalize</literal> is
+	      given an argument, it is an epsilon which constrains the result such that:</para><para>(<replaceable>receiver</replaceable> − <replaceable>epsilon</replaceable>) &lt;=
+	      <replaceable>result</replaceable> &lt;= (<replaceable>receiver</replaceable> + <replaceable>epsilon</replaceable>)</para>
+	      <example xml:id="ex.rational-rationalize"><title>Converting a numeric to a <literal>Rational</literal></title><programlisting><xi:include href="examples/rational-rationalize.rb" parse="text"/></programlisting></example><para>The <literal>Numeric#numerator</literal> and <literal>Numeric#denominator</literal>
+	      methods return the numerator and denominator, respectively, of the
+	      receiver as if it were a <literal>Rational</literal>.</para><example xml:id="ex.rational-numerator-denominator"><title>Accessing a numeric’s numerator or denominator
+		</title><programlisting><xi:include href="examples/rational-numerator-denominator.rb" parse="text"/></programlisting></example></sect1>
+  <sect1 xml:id="num.complex">
+    <title>Complex</title>
+    <para>A <firstterm>complex number</firstterm> is a number of the form <replaceable>a</replaceable> +
+	      <replaceable>b</replaceable>ⅈ, where <replaceable>a</replaceable> and <replaceable>b</replaceable> are real numbers, and ⅈ
+	      is the imaginary unit. <replaceable>a</replaceable> is termed the <firstterm>real part</firstterm> of
+	      the complex number, and <replaceable>b</replaceable> its <firstterm>imaginary part</firstterm>.</para>
+    <para>They are represented as instances of <literal>Complex</literal>. They can be
+	      created with the constructor <literal>Complex(<replaceable>a</replaceable>,
+	      <replaceable>b</replaceable>)</literal>, where, again, <replaceable>a</replaceable> is the real part, and
+	      <replaceable>b</replaceable> the imaginary. If <replaceable>b</replaceable> is omitted, it has the
+	      implicit value zero. Alternatively, <literal>Complex()</literal> may be given a
+	      sole <literal>String</literal> argument which represents a complex number.</para>
+    <example xml:id="ex.complex-constructor">
+      <title>Creating <literal>Complex</literal> objects with <literal>Complex()</literal></title>
+      <programlisting><xi:include href="examples/complex-constructor.rb" parse="text"/></programlisting>
+    </example>
+    <para>The real part of a <literal>Complex</literal> object may be retrieved with
+	      the <literal>Complex#real</literal> accessor, while the imaginary part is
+	      available with <literal>Complex#imaginary</literal> or the synonymous
+	      <literal>Complex#imag</literal>.</para>
+    <sect2 xml:id="num.conjugation">
+      <title>Conjugation</title>
+      <blockquote>
+	<attribution><biblioref begin="71" end="71" linkend="bib.james92" units="pages"/></attribution>
+	<para><emphasis>conjugate complex numbers</emphasis> Two numbers of
+	type <replaceable>a</replaceable> +
+	<replaceable>b</replaceable><emphasis>i</emphasis> and
+	<replaceable>a</replaceable> −
+	<replaceable>b</replaceable><emphasis>i</emphasis>, where
+	<replaceable>a</replaceable> and <replaceable>b</replaceable> are real
+	numbers.</para>
+      </blockquote>
+      <para>The conjugate of a complex number is its real part minus its
+      imaginary part. It is itself a complex number.
+      <literal>Complex#conj</literal>, or its alias
+      <literal>Complex#conjugate</literal>, return the conjugate of the
+      receiver as a <literal>Complex</literal>. The <literal>#conj</literal>
+      and <literal>#conjugate</literal> methods of the other numerics return
+      <literal>self</literal>.</para>
+      <example xml:id="ex.complex-conj">
+	<title>Conjugating a <literal>Complex</literal></title>
+	<programlisting><xi:include href="examples/complex-conj.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+    <sect2 xml:id="num.arg">
+      <title>Arg Function</title>
+      <blockquote>
+	<attribution><biblioref begin="11" end="11" linkend="bib.james92" units="pages"/></attribution>
+	<para><emphasis>amplitude of a complex number</emphasis> The angle that
+	the vector representing the complex number makes with the positive
+	horizontal axis.</para>
+      </blockquote>
+      <para>The <firstterm>arg</firstterm>-also known as
+      <firstterm>angle</firstterm>, <firstterm>amplitude</firstterm>, or
+      <firstterm>phase</firstterm>-of a <literal>Numeric</literal> is computed
+      with <literal>#arg</literal>, and its aliases <literal>#angle</literal>
+      and <literal>#phase</literal>. For a non-<literal>Complex</literal>
+      receiver, it is <literal>0</literal> if the receiver is positive;
+      <literal>Math::PI</literal> otherwise.</para>
+      <para>The <literal>Complex</literal> implementations of these methods:
+      return <literal>Math::PI</literal> if the receiver has a real part less
+      than zero, and no imaginary part; but raise a
+      <literal>Math::DomainError</literal> if both parts are zero. Otherwise,
+      they compute the arg with the following formula:</para>
+
+      <remark>Originally, the forumla below was in a separate file, xincluded
+      here. However, as it includes markup, the parse="text" was omitted, and
+      an xpointer attribute was added. For reasons beyond my ken, this caused a
+      flurry of spurious validation errors...</remark>
+      <example xml:id="ex.complex-arg-formula">
+      	<title>Formula for computing the <emphasis>arg</emphasis></title>
+      	<programlisting><literal>2 * Math.atan(Rational(<replaceable>b</replaceable>, Math.sqrt(<replaceable>a</replaceable>**2 + <replaceable>b</replaceable>**2) + <replaceable>a</replaceable>))</literal></programlisting>
+      </example>
+      <example xml:id="ex.complex-arg">
+      	<title>Finding the <emphasis>arg</emphasis> of a <literal>Numeric</literal>.
+      		  </title>
+      	<programlisting><xi:include href="examples/complex-arg.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+    <sect2 xml:id="num.abs">
+      <title>Absolute Value</title>
+      <blockquote>
+	<attribution><biblioref begin="276" end="276" linkend="bib.james92" units="pages"/></attribution>
+	<para><emphasis>modulus of a complex number</emphasis> The numerical
+	length of the vector representing the complex number… The modulus of a
+	complex number <replaceable>a</replaceable> +
+	<replaceable>b</replaceable><emphasis>i</emphasis> is
+	√(<replaceable>a</replaceable><superscript>2</superscript> +
+	<replaceable>b</replaceable><superscript>2</superscript>), written
+	|<replaceable>a</replaceable> +
+	<replaceable>b</replaceable><emphasis>i</emphasis>|. If the number is
+	in the form <replaceable>r</replaceable>(cos
+	<replaceable>β</replaceable> + <emphasis>i</emphasis> sin
+	<replaceable>β</replaceable>) with <replaceable>r</replaceable> ≥ 0,
+	the modulus is <replaceable>r</replaceable>.</para>
+      </blockquote>
+      <para>The <firstterm>absolute</firstterm> value-also known as the
+      <firstterm>modulus</firstterm> or <firstterm>magnitude</firstterm>-of a
+      <literal>Complex</literal> number is given by <literal>#abs</literal>,
+      and its alias <literal>#magnitude</literal>, as a
+      <literal>Float</literal>. For all other numerics, these methods return
+      the receiver sans sign.</para>
+      <example xml:id="ex.complex-abs">
+	<title>Representing a <literal>Numeric</literal> in absolute form</title>
+	<programlisting><xi:include href="examples/complex-abs.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+    <sect2 xml:id="num.polar">
+      <title>Polar Form</title>
+      <blockquote>
+	<attribution><biblioref begin="321" end="321"
+	linkend="bib.james92" units="pages"/></attribution>
+	<para><emphasis>polar form of a complex number</emphasis> The form a
+	complex number takes when it is expressed in polar coordinates. This
+	form is <replaceable>r</replaceable>(cos <replaceable>θ</replaceable> +
+	<emphasis>i</emphasis> sin <replaceable>θ</replaceable>), where
+	<replaceable>r</replaceable> and <replaceable>θ</replaceable> are polar
+	coordinates of the point represented by the complex number. The number
+	<replaceable>r</replaceable> is the <emphasis>modulus</emphasis> and
+	the angle <replaceable>θ</replaceable> the
+	<emphasis>amplitude</emphasis>, <emphasis>angle</emphasis>, or
+	<emphasis>phase</emphasis>.</para>
+      </blockquote>
+      <para><literal>Numeric#polar</literal> returns the receiver in
+      <firstterm>polar form</firstterm>, that is an <literal>Array</literal>
+      comprising its <link linkend="num.abs">absolute value</link> and its
+      <link linkend="num.arg">arg</link>. Conversely, a
+      <literal>Complex</literal> may be created from a given polar form with
+      <literal>Complex.polar(<replaceable>abs</replaceable>,
+      <replaceable>arg</replaceable>=0)</literal>.</para>
+      <example xml:id="ex.complex-polar">
+	<title>Representing a <literal>Numeric</literal> in polar form
+		  </title>
+	<programlisting><xi:include href="examples/complex-polar.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+    <sect2 xml:id="num.rect">
+      <title>Rectangular Form</title>
+      <para><literal>Complex#rect</literal>, and its alias
+      <literal>Complex#rectangular</literal>, return a two-element
+      <literal>Array</literal>, the first value of which is its receiver’s real
+      part; the second, its imaginary part. For all other numerics, these
+      methods return <literal>[self, 0]</literal>.</para>
+      <para>The <literal>Complex.rect</literal> constructor, and its alias
+      <literal>Complex.rectangular</literal>, create <literal>Complex</literal>
+      objects from their rectangular
+      forms. <literal>Complex.rect(<replaceable>a</replaceable>,
+      <replaceable>b</replaceable>)</literal> is equivalent to
+      <literal>Complex(<replaceable>a</replaceable>,
+      <replaceable>b</replaceable>)</literal>. As before, if
+      <replaceable>b</replaceable> is omitted it has the value
+      <literal>0</literal>.</para>
+      <example xml:id="ex.complex-rect">
+	<title>Requesting a <literal>Complex</literal> number in rectangular form</title>
+	<programlisting><xi:include href="examples/complex-rect.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="num.arithmetic">
+    <title>Basic Arithmetic</title>
+    <para>The arithmetic operations of addition, subtraction, multiplication, and
+	      division are performed with the binary operators <literal>+</literal>,
+	      <literal>-</literal>, <literal>*</literal>, and <literal>/</literal>, respectively. If the
+	      two operands are of different classes, Ruby will attempt to <link linkend="num.conversion">coerce</link> them so they are not. The result of these
+	      operations will have the same class as the operands, or be one of the
+	      special values: <literal>Float::INFINITY</literal> or <literal>Float::NAN</literal>.</para>
+    <example xml:id="ex.basic-arithmetic">
+      <title>Performing basic arithmetic
+		</title>
+      <programlisting><xi:include href="examples/basic-arithmetic.rb" parse="text"/></programlisting>
+    </example>
+    <para><literal>Integer#/</literal> performs integer division, i.e. it returns the
+		integer quotient, discarding any decimal part. If this is undesirable,
+		either convert the divisor to a <literal>Numeric</literal> other than
+		<literal>Integer</literal>, such as <literal>Float</literal>, or use a more forgiving
+		method, such as <literal>Numeric#quo</literal> or <literal>Numeric#fdiv</literal>.
+		Both divide their receiver by their argument, returning the quotient: the
+		former, in the most accurate form possible; the latter, as a
+	      <literal>Float</literal>.</para>
+    <example xml:id="ex.numeric-division">
+      <title>Different approaches to division
+		</title>
+      <programlisting><xi:include href="examples/numeric-division.rb" parse="text"/></programlisting>
+    </example>
+    <para><literal>Integer#/</literal> and <literal>Numeric#quo</literal> raise a
+		<literal>ZeroDivisionError</literal> if their divisor is integer <literal>0</literal>;
+		<literal>Float#fdiv</literal> and <literal>Float#/</literal> return
+		<literal>Float::INFINITY</literal>, instead.  Further, when one or both operands
+		are not <literal>Integer</literal>s, and both dividend and divisor are zero,
+		<literal>Float::NAN</literal> is returned.</para>
+    <para>To find the largest integer dividing two given integers with no
+	      remainder, use <literal>Numeric#gcd <replaceable>m</replaceable></literal>, which computes the
+	      <acronym>GCD</acronym> of the receiver and
+	      <replaceable>m</replaceable>. Conversely, to find the smallest positive rational number
+	      that is an integer multiple of both the receiver and <replaceable>m</replaceable>, compute
+	      the <acronym>LCM</acronym> with <literal>Numeric#lcm
+	      <replaceable>m</replaceable></literal>. <literal>Numeric#gcdlcm <replaceable>m</replaceable></literal> returns a
+	      two-element <literal>Array</literal>, with the arguments’ GCD as the first
+	      element, and their LCM as the last.</para>
+    <example xml:id="ex.gcdlcm">
+      <title>Calculating the GCD and LCM
+		</title>
+      <programlisting><xi:include href="examples/gcdlcm.rb" parse="text"/></programlisting>
+    </example>
+    <para>The <literal>#divmod</literal> method divides its receiver by its operand
+	      then returns a two element <literal>Array</literal>, containing the integer
+	      quotient and the remainder. If solely interested in the remainder
+	      produced, <literal>Numeric#remainder</literal> divides its receiver by its
+	      argument, returning what remains as an <literal>Integer</literal>.</para>
+    <example xml:id="ex.divmod">
+      <title>Finding the remainder of divisions.
+		</title>
+      <programlisting><xi:include href="examples/divmod.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="num.conversion">
+    <title>Conversion &amp; Coercion</title>
+    <para>A numeric may be converted to an equivalent numeric of a different
+	      class via either the <link linkend="obj.conversion">implicit or explicit
+	      conversion protocol</link>, with the following caveats:</para>
+    <itemizedlist>
+      <listitem>
+	<para>A <literal>RangeError</literal> is raised when attempting to convert either
+		<literal>Float::NAN</literal> or <literal>Float::INFINITY</literal> to an
+		<literal>Integer</literal>.</para>
+      </listitem>
+      <listitem>
+	<para>A <literal>RangeError</literal> is raised when attempting to convert a
+		<literal>Complex</literal> with a non-zero imaginary part to any other numeric
+		class.</para>
+      </listitem>
+      <listitem>
+	<para>In general, converting to <literal>Integer</literal> is lossy; that is,
+		the process does not round-trip.</para>
+      </listitem>
+    </itemizedlist>
+    <para>The numeric coercion protocol enables two operands of different numeric
+	      classes to be converted into object’s of the same class without any loss
+	      of accuracy. It is used by methods which expect their operands to have the
+	      same class. It is effected with <literal>Numeric#coerce(<replaceable>o</replaceable>)</literal>,
+	      which returns an <literal>Array</literal> of two elements, which represent
+	      <replaceable>o</replaceable> and the receiver, respectively, and have the same class.</para>
+    <example xml:id="ex.numeric-coerce">
+      <title>Using <literal>Numeric#coerce</literal> to convert two numerics to
+		the same class
+		</title>
+      <programlisting><xi:include href="examples/numeric-coerce.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="num.comparison">
+    <title>Comparison &amp; Equality</title>
+    <para>Conceptually, two <literal>Numeric</literal> objects are equal in terms of
+	      <literal>#==</literal> if, and only if, their <link linkend="num.conversion">coercion</link>
+	      results in two values that are <literal>#eql?</literal>. In practice, this logic
+	      is hard-coded into each <literal>#==</literal> method, so <literal>#cocerce</literal>
+	      is not called.</para>
+    <example xml:id="ex.numeric-equal-coerce">
+      <title>Equality in terms of <literal>Numeric#coerce</literal></title>
+      <programlisting><xi:include href="examples/numeric-equal-coerce.rb" parse="text"/></programlisting>
+    </example>
+    <para>Therefore:</para>
+    <example xml:id="ex.numeric-equality">
+      <title>Equality of <literal>Numeric</literal> objects
+		</title>
+      <programlisting><xi:include href="examples/numeric-equality.rb" parse="text"/></programlisting>
+    </example>
+    <para>The operators <literal>#&gt;</literal>, <literal>#&gt;=</literal>,
+	      <literal>#&lt;</literal>, <literal>#&lt;=</literal>, provide the inequalities greater
+	      than, greater than or equal to, less than, and less than or equal to,
+	      respectively. Numerics compare precisely as you would expect.
+	      <literal>Float::INFINITY</literal> is greater than any numeric except itself and
+	      <literal>Float::NAN</literal>. Likewise, <literal>-Float::INFINITY</literal> is less
+	      than any numeric except itself and <literal>Float::NAN</literal>.
+	      <literal>Float::NAN</literal> is incomparable with every numeric, including
+	      itself.</para>
+    <example xml:id="ex.numeric-inequality">
+      <title>Inequalities of <literal>Numeric</literal> objects
+		</title>
+      <programlisting><xi:include href="examples/numeric-inequality.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="num.rounding">
+    <title>Rounding</title>
+    <para>Non-<literal>Complex</literal> numerics can be rounded to adjust their
+	      precision. This makes little sense for <literal>Integer</literal>s, of course,
+	      so for <literal>Integer</literal> receivers these methods just return
+	      <literal>self</literal>.  <literal>Numeric#ceil</literal> and
+	      <literal>Numeric#floor</literal> round their receiver up or down, respectively,
+	      to the nearest integer. <literal>Numeric#truncate</literal> converts its
+	      receiver into an <literal>Integer</literal> by removing any fractional part.
+	      This is equivalent to rounding the receiver to zero digits of precision,
+	      therefore identical to <literal>Numeric#round</literal> with no arguments. When
+	      <literal>#round</literal> is supplied with a positive <literal>Integer</literal>
+	      argument, the receiver is rounded to that many decimal places. If the
+	      argument is −<replaceable>i</replaceable>, the receiver is rounded to the nearest
+	      10<superscript><replaceable>i</replaceable></superscript>.</para>
+    <example xml:id="ex.numerics-rounding">
+      <title>Rounding numerics
+		</title>
+      <programlisting><xi:include href="examples/numerics-rounding.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="num.predicates">
+    <title>Predicates</title>
+    <para>The following predicates are available for testing numerics:</para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <literal>Integer#even?</literal>
+	</term>
+	<listitem>
+	  <para><literal>true</literal> if the receiver is zero or divisible by
+		  two; <literal>false</literal> otherwise.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <literal>Float#finite?</literal>
+	</term>
+	<listitem>
+	  <para><literal>true</literal> if the receiver is neither <literal>Float::NAN</literal>
+		  nor ±<literal>Float::INFINITY</literal>; <literal>false</literal> otherwise.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <literal>Float#infinite?</literal>
+	</term>
+	<listitem>
+	  <para><literal>nil</literal> if the receiver is finite or NaN, <literal>-1</literal>
+		  for negative infinity, and <literal>1</literal> for positive infinity.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <literal>#integer?</literal>
+	</term>
+	<listitem>
+	  <para><literal>true</literal> for instances of <literal>Fixnum</literal> and
+		  <literal>Bignum</literal>; <literal>false</literal> for all other numerics.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <literal>Float#nan?</literal>
+	</term>
+	<listitem>
+	  <para><literal>true</literal> if the receiver is <literal>Float::NAN</literal>;
+		  <literal>false</literal>, otherwise.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <literal>#nonzero?</literal>
+	</term>
+	<listitem>
+	  <para><literal>self</literal> if the receiver is non-zero; <literal>nil</literal>
+		  otherwise.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <literal>Integer#odd?</literal>
+	</term>
+	<listitem>
+	  <para><literal>true</literal> if the receiver is not even; <literal>false</literal>
+		  otherwise.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <literal>#real?</literal>
+	</term>
+	<listitem>
+	  <para><literal>true</literal> for all numerics except instances of
+		  <literal>Complex</literal>.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <literal>#zero?</literal>
+	</term>
+	<listitem>
+	  <para><literal>true</literal> if the receiver is zero; <literal>false</literal>
+		  otherwise.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <example xml:id="ex.numeric-predicates">
+      <title>Testing numerics with predicates.
+		</title>
+      <programlisting><xi:include href="examples/numeric-predicates.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="num.modular">
+    <title>Moduluar Arithmetic</title>
+    <para>The <literal>%</literal> operator, and its alias <literal>#modulo</literal>, return
+	      their receiver modulo their operand, i.e. the remainder when dividing the
+	      former by the latter. If the divisor is <literal>0</literal>,
+	      <literal>%</literal> raises a <literal>ZeroDivisionError</literal>; if it is
+	      <literal>0.0</literal>, <literal>Integer#%</literal> raises
+	      <literal>ZeroDivisionError</literal> whereas <literal>Float#%</literal> returns
+	      <literal>Float::NAN</literal>.</para>
+    <example xml:id="ex.numeric-modulo">
+      <title>Performing modular arithmetic with the <literal>#%</literal>
+		operator
+		</title>
+      <programlisting><xi:include href="examples/numeric-modulo.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="num.exponentiation">
+    <title>Exponentiation</title>
+    <para>The binary <literal>*</literal> operator raises its receiver to a given
+	      power, e.g. <literal>3 ** 2 == 9</literal>. <literal>Math.sqrt</literal> and
+	      <literal>Math.cbrt</literal> return the square or cube root, respectively, of
+	      their argument. There is not a generic <replaceable>n</replaceable><superscript>th</superscript> root
+	      method, but it can be implemented as <literal><replaceable>x</replaceable> ** Rational(1,
+	      <replaceable>n</replaceable>)</literal>.</para>
+  </sect1>
+  <sect1 xml:id="num.finiteness">
+    <title>Finiteness</title>
+    <para>The special, signed value <literal>Float::INFINITY</literal> is returned by
+	      numeric methods that produce values too large for Ruby to represent. It
+	      can be tested for with the predicate <literal>Float#finite?</literal>, which
+	      returns <literal>true</literal> if the receiver is neither positive/negative
+	      infinity nor NaN; <literal>false</literal> otherwise. Similarly,
+	      <literal>Float#infinite?</literal> returns <literal>nil</literal> for finite values
+	      and NaN, <literal>-1</literal> for negative infinity, and <literal>1</literal> for
+	      positive infinity.</para>
+    <para>The special value <literal>Float::NAN</literal> represents <acronym>NaN</acronym>, i.e. an undefined or unrepresentable number. For
+	      example, it is returned by <literal>0 / 0.0</literal>, <literal>0 *
+	      Float::INFINITY</literal>, and any method with <literal>Float::NAN</literal> as
+	      an argument. <literal>Float::NAN != Float::NAN</literal>, so to test if a value
+	      is NaN, use the predicate <literal>Float#nan?</literal>, which returns
+	      <literal>true</literal> if it is; <literal>false</literal> otherwise.</para>
+  </sect1>
+  <sect1 xml:id="num.rand">
+    <title>Pseudo-Random Numbers</title>
+    <para>Instances of the <literal>Random</literal> class represent pseudo-random
+	      number generators (hereafter: <acronym>PRNGs</acronym>). Each encapsulates state, an
+	      <literal>Integer</literal> seed, and an algorithm for generating pseudo-random
+	      numbers based on that seed.</para>
+    <para>The seed may be supplied as an argument to <literal>Random.new</literal>.
+	      Otherwise it has the value of <literal>Random.new_seed</literal>, which is
+	      derived from the system PRNG-e.g. <literal>/dev/urandom</literal>-if available,
+	      or a combination of the current time, process ID, and a sequence number.
+	      For a given seed, the output of a PRNG is predictable.  Therefore, by
+	      setting the seed to a known value before the PRNG is used, its output is
+	      made deterministic, thus testable. <literal>Random#seed</literal> returns the
+	      seed of its receiver.</para>
+    <example xml:id="ex.random-new">
+      <title>Instantiating a <literal>Random</literal> object
+		</title>
+      <programlisting><xi:include href="examples/random-new.rb" parse="text"/></programlisting>
+    </example>
+    <para>A pseudo-random number may be generated with <literal>Random#rand</literal>.
+	      If given no arguments, a pseudo-random <literal>Float</literal> between
+	      <literal>0.0</literal> and <literal>1.0</literal> is returned. A different upper limit
+	      may be chosen by supplying a non-zero, positive <literal>Integer</literal> or
+	      <literal>Float</literal> argument. The generated pseudo-random number has the
+	      same class as the argument. When given a <literal>Range</literal> whose
+	      end-points respond to <literal>#+</literal> and <literal>#-</literal>, it returns a
+	      pseudo-random number from the values encompassed. <literal>Random#bytes
+	      <replaceable>len</replaceable></literal> returns a pseudo-random ASCII-8BIT
+	      <literal>String</literal> of length <replaceable>len</replaceable>.</para>
+    <example xml:id="ex.random-rand">
+      <title>Generating pseudo-random data with <literal>Random#rand</literal></title>
+      <programlisting><xi:include href="examples/random-rand.rb" parse="text"/></programlisting>
+    </example>
+    <para>Ruby maintains its own PRNG named <literal>Random::DEFAULT</literal>, whose
+	      seed was generated with <literal>Random.new_seed</literal>. It is used by
+	      methods that produce pseudo-random results such as
+	      <literal>Array#sample</literal> and <literal>Kernel.rand</literal>. The latter behaves
+	      as <literal>Random#rand</literal> when given no arguments or an argument of
+	      zero. Otherwise, it generates a pseudo-random <literal>Integer</literal> between
+	      zero and the absolute value of its <literal>Integer</literal> argument.</para>
+    <para>The seed of <literal>Random::DEFAULT</literal> may be set explicitly by
+	      calling <literal>Kernel.srand</literal> with an <literal>Integer</literal> argument.
+	      If the argument is omitted, the seed is set to a new value of
+	      <literal>Random.new_seed</literal>. In both cases, <literal>srand</literal> returns
+	      the previous seed.</para>
+    <example xml:id="ex.kernel-rand">
+      <title>Generating pseudo-random numbers with <literal>Kernel.rand</literal></title>
+      <programlisting><xi:include href="examples/kernel-rand.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  <sect1 xml:id="num.trigonometry">
+    <title>Trigonometry</title>
+    <para>The standard trigonometric functions are available as methods of the
+	      <literal>Math</literal> module. Angles are measured in radians.</para>
+    <sect2 xml:id="num.sin">
+      <title>Sine</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.sin(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The sine of angle <replaceable>x</replaceable> as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.sin(Float::NAN)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.sin(±Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::NAN</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.asin">
+      <title>Arc Sine</title>
+      <variablelist>
+	<varlistentry>
+	  <term><literal>Math.asin(<replaceable>x</replaceable></literal>)
+		  </term>
+	  <listitem>
+	    <para>The principal value of the arc sine of <replaceable>x</replaceable>-i.e. the value
+		  whose sine is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.asin(<replaceable>x</replaceable> &gt; 1)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.asin(<replaceable>x</replaceable> &lt; -1)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.asin(Float::NAN)</literal>
+	  </term>
+	  <listitem>
+	    <para>A <literal>Math::DomainError</literal> is raised.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.sinh">
+      <title>Hyperbolic Sine</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.sinh(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The hyperbolic sine of hyperbolic angle <replaceable>x</replaceable> as a
+		  <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.sinh(<replaceable>x</replaceable> = Float::NAN)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.sinh(<replaceable>x</replaceable> = ±Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <replaceable>x</replaceable>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.asinh">
+      <title>Inverse Hyperbolic Sine</title>
+      <variablelist>
+	<varlistentry>
+	  <term><literal>Math.asinh(<replaceable>x</replaceable></literal>)
+		  </term>
+	  <listitem>
+	    <para>The inverse hyperbolic sine of <replaceable>x</replaceable>-i.e. the value whose
+		  hyperbolic sine is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.asinh(<replaceable>x</replaceable> = Float::NAN)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.asinh(<replaceable>x</replaceable> = ±Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <replaceable>x</replaceable>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.cos">
+      <title>Cosine</title>
+      <variablelist>
+	<varlistentry>
+	  <term><literal>Math.cos(<replaceable>x</replaceable></literal>)
+		  </term>
+	  <listitem>
+	    <para>The cosine of angle <replaceable>x</replaceable> as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.cos(<replaceable>x</replaceable> = Float::NAN)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.cos(<replaceable>x</replaceable> = ±Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::NAN</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.acos">
+      <title>Arc Cosine</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.acos(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The arc cosine of <replaceable>x</replaceable>-i.e. the value
+		  whose cosine is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.acos(<replaceable>x</replaceable> &gt; 1)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.acos(<replaceable>x</replaceable> &lt; -1)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.acos(<replaceable>x</replaceable> = ±Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para>A <literal>Math::DomainError</literal> is raised.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.acos(<replaceable>x</replaceable> = Float::NAN)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <replaceable>x</replaceable>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.cosh">
+      <title>Hyperbolic Cosine</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.cosh(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The hyperbolic cosine of hyperbolic angle <replaceable>x</replaceable> as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.cosh(<replaceable>x</replaceable> = Float::NAN)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <replaceable>x</replaceable>
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.cosh(<replaceable>x</replaceable> = ±Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::INFINITY</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.acosh">
+      <title>Inverse Hyperbolic Cosine</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.acosh(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The inverse hyperbolic cosine of <replaceable>x</replaceable>-i.e. the value whose
+		  hyperbolic cosine is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.acosh(<replaceable>x</replaceable> = Float::NAN)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.acosh(<replaceable>x</replaceable> = Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <replaceable>x</replaceable>
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.acosh(<replaceable>x</replaceable> &lt; 1)</literal>
+	  </term>
+	  <listitem>
+	    <para>A <literal>Math::DomainError</literal> is raised.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.tan">
+      <title>Tangent</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.tan(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.tan(<replaceable>x</replaceable> = Float::NAN)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.tan(<replaceable>x</replaceable> = ±Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::NAN</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.atan">
+      <title>Arc Tangent</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atan(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The arc tangent of <replaceable>x</replaceable>-i.e. the value whose tangent is
+		  <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atan(<replaceable>x</replaceable> = Float::NAN)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::NAN</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atan2(<replaceable>y</replaceable>, <replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The principal value of the arc tangent of
+		  <literal><replaceable>y</replaceable>/<replaceable>x</replaceable></literal> as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atan2(Float::NAN, <replaceable>x</replaceable>)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.atan2(<replaceable>y</replaceable>, Float::NAN)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::NAN</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Math.atan2(<replaceable>y</replaceable>, -Float::INFINITY)</literal>,
+		    <replaceable>y</replaceable> is finite
+		  </term>
+	  <listitem>
+	    <para><literal>Math::PI</literal> with the same sign as <replaceable>y</replaceable>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Math.atan2(<replaceable>y</replaceable>, Float::INFINITY)</literal>,
+		    <replaceable>y</replaceable> is finite
+		  </term>
+	  <listitem>
+	    <para><literal>0.0</literal> with the same sign as <replaceable>y</replaceable>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Math.atan2(<replaceable>y</replaceable> = ±Float::INFINITY, <replaceable>x</replaceable>)</literal>,
+		    <replaceable>x</replaceable> is finite
+		  </term>
+	  <listitem>
+	    <para><literal>Math::PI / 2</literal> with the same sign as <replaceable>y</replaceable>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atan2(<replaceable>y</replaceable> = ±Float::INFINITY, <replaceable>x</replaceable> =
+		    -Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para><literal>3 * Math::PI / 4</literal> with the same sign as <replaceable>y</replaceable>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atan2(<replaceable>y</replaceable> = ±Float::INFINITY, <replaceable>x</replaceable> =
+		    Float::INFINITY)</literal>
+	  </term>
+	  <listitem>
+	    <para><literal>Math::PI / 4</literal> with the same sign as <replaceable>y</replaceable>.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.tanh">
+      <title>Hyperbolic Tangent</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.tanh(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The hyperbolic tangent of hyperbolic angle <replaceable>x</replaceable> as a
+		  <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.tanh(Float::NAN)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::NAN</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.atanh">
+      <title>Inverse Hyperbolic Tangent</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atanh(<replaceable>x</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The inverse hyperbolic tangent of <replaceable>x</replaceable>-i.e. the value whose
+		  hyperbolic tangent is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atanh(<replaceable>x</replaceable> = 1)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.atanh(<replaceable>x</replaceable> = -1)</literal>
+	  </term>
+	  <listitem>
+	    <para><literal>Float::INFINITY</literal> with the same sign as <replaceable>x</replaceable>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atanh(<replaceable>x</replaceable> &gt; 1)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.atanh(<replaceable>x</replaceable> &lt; -1)</literal>
+	  </term>
+	  <listitem>
+	    <para>A <literal>Math::DomainError</literal> is raised.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.atanh(Float::NAN)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::NAN</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="num.hypot">
+      <title>Euclidean Distance Function</title>
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <literal>Math.hypot(<replaceable>x</replaceable>, <replaceable>y</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>The hypotenuse of a right-angled triangle with sides <replaceable>x</replaceable>
+		  and <replaceable>y</replaceable>, or the distance of point (<replaceable>x</replaceable>,<replaceable>y</replaceable>)
+		  from the origin, as a <literal>Float</literal>. Equivalent to
+		  <literal>Math.sqrt(<replaceable>x</replaceable>**2 + <replaceable>y</replaceable>**2)</literal>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <literal>Math.hypot(<replaceable>x</replaceable>, Float::INFINITY)</literal>
+	  </term>
+	  <term>
+	    <literal>Math.hypot(Float::INFINITY, <replaceable>y</replaceable>)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::INFINITY</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Math.hypot(<replaceable>x</replaceable>, Float::NAN)</literal>, <replaceable>x</replaceable> is
+		  finite.</term>
+	  <term><literal>Math.hypot(Float::NAN, <replaceable>y</replaceable>)</literal>, <replaceable>y</replaceable> is
+		  finite.</term>
+	  <term>
+	    <literal>Math.hypot(Float::NAN, Float::NAN)</literal>
+	  </term>
+	  <listitem>
+	    <para>
+	      <literal>Float::NAN</literal>
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="num.logarithms">
+    <title>Logarithms</title>
+    <para>The natural logarithm of a numeric, <replaceable>n</replaceable>,
+    i.e. log<subscript>ℯ</subscript>, is returned by <literal>Math.log
+    <replaceable>n</replaceable></literal>. A logarithm to base
+    <replaceable>b</replaceable> can be found with <literal>Math.log
+    <replaceable>n</replaceable>, <replaceable>b</replaceable></literal>. Two
+    shortcuts exist for common bases: <literal>Math.log10
+    <replaceable>n</replaceable></literal> and <literal>Math.log2
+    <replaceable>n</replaceable></literal>.</para>
+    <example xml:id="ex.math-log">
+      <title>Calculating a number’s logarithm.
+		</title>
+      <programlisting><xi:include href="examples/math-log.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+</chapter>

@@ -1,1 +1,0 @@
-HexCodepoint = HexDigit HexDigit? HexDigit? HexDigit? HexDigit? HexDigit?

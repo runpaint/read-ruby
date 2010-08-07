@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+         xmlns:xi="http://www.w3.org/2001/XInclude" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="5.0" 
+         xml:id="enu.enumerables" 
+         xml:lang="en">
+  
+  <title>Enumerables</title>
+  
+  <para>
+    Enumerables are objects that represent collections of other objects. They
+    are so named because they mix-in the <literal>Enumerable</literal> module,
+    which enhances such objects with powerful methods for manipulating
+    collections. In this chapter we will discuss the
+    <literal>Enumerable</literal> module itself, along with the core data
+    structures that employ it: <literal>Array</literal>,
+    <literal>Hash</literal>, and <literal>Range</literal>.
+  </para>
+
+  <sect1 xml:id="enu.arrays">
+    <title>Arrays</title>
+  
+    <para>
+      An <literal>Array</literal> is a mutable, heterogeneous, ordered
+      collection of objects, termed <firstterm>elements</firstterm>, indexed
+      by an <literal>Integer</literal> subscript. Its mutability means that
+      elements can be added to, and removed from, the collection at any point
+      in its lifetime, causing the <literal>Array</literal> to expand or
+      contract as needed. In keeping with her philosophy of duck-typing, Ruby
+      does not require the elements to have a specific type: any permutation
+      of objects may be stored in an <literal>Array</literal>. That each
+      element is indexed by a unique <literal>Integer</literal>, enforces
+      unambiguous order on the collection.
+    </para>
+
+    <!-- figure>
+      <title>Syntax diagram of the array literal</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="figures/array-literal.png" format="PNG" width="4in"/>
+        </imageobject>
+      </mediaobject>
+    </figure-->
+
+    <para>
+      An <literal>Array</literal> literal is a comma-separated list of
+      expressions enclosed in square brackets (<literal>[</literal>,
+      <literal>]</literal>). For example, <literal>[1, :two,
+        'three']</literal> creates a three-element <literal>Array</literal>
+      object with <literal>1</literal> as the first element.
+    </para>
+
+    <sect2 xml:id="enu.array-literal-w">
+      <title>Alternative Delimiters</title>
+      
+      <para>
+        The
+        <literal>%w<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal>
+        construct is a syntactical shortcut for instantiating an array of
+        strings. The delimiters take the same form as those of <link
+          linkend="str.single-quoted-q">%q</link>. The text between them is
+        split on whitespace, each substring becoming an element on the array.
+        <literal>%w</literal> interprets its contents with single-quoted
+        string semantics; its counterpart, <literal>%W</literal>, behaves in
+        the same way using double-quoted string semantics.
+      </para>
+      
+      <example xml:id="ex.array-literal-w">
+        <title>Creating an array of strings with the <literal>%w</literal> and <literal>%W</literal> constructs</title>
+
+        <programlisting><xi:include href="examples/array-literal-w.rb"
+            parse="text"/></programlisting>
+      </example>
+    </sect2>
+    <sect2 xml:id="enu.array-semantics">
+      <title>Semantics</title>
+    <para>
+      Arrays are indexed by integral subscripts, beginning with 0. If the
+      subscript is negative it counts backward from the last element (i.e.
+      <literal>-1</literal> refers to the last element). An element with
+      subscript <replaceable>index</replaceable> can be retrieved with the
+      element reference syntax:
+      <literal>Array#[<replaceable>index</replaceable>]</literal>. If the
+      index doesn’t exist, <literal>nil</literal> is returned. The index can
+      be assigned to with
+      <literal>Array#[<replaceable>index</replaceable>]=</literal>. However,
+      if <replaceable>index</replaceable> is greater than the size of the
+      <literal>Array</literal>, the intervening elements are created with a
+      value of <literal>nil</literal> before <replaceable>index</replaceable>
+      is assigned. This ensures that the largest subscript is always one less
+      than the total size of the <literal>Array</literal>.
+    </para>
+
+    <para>
+      Elements are appended to an <literal>Array</literal> with
+      <literal>Array#&lt;&lt;</literal>; and prepended with
+      <literal>Array#unshift</literal>.
+      <literal>Array#include?(<replaceable>element</replaceable>)</literal>
+      tests whether the array contains <replaceable>element</replaceable>. The
+      total number of elements is returned by <literal>Array#size</literal>.
+      <literal>Array#each</literal> iterates over the array,
+      <literal>yield</literal>ing the next element each time.
+    </para>
+    </sect2>
+    <sect2 xml:id="enu.array-coercion">
+      <title>Coercion</title>
+      
+      <para>
+        In <xref linkend="obj.conversion"/> the <literal>:to_a</literal> and
+        <literal>:to_ary</literal> messages were introduced for converting an
+        object into an <literal>Array</literal> either explicitly or
+        implicitly, respectively.  <literal>Array.try_convert</literal> was
+        introduced as a wrapper around <literal>:to_ary</literal>: it returns
+        its argument implicitly converted to an <literal>Array</literal> if
+        possible, otherwise <literal>nil</literal>. Lastly,
+        <literal>Kernel.Array</literal> attempts to convert its argument to an
+        <literal>Array</literal> first implicitly, then explicitly.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="enu.hashes">
+    <title>Hashes</title>
+    
+    <para>
+      A <literal>Hash</literal> represents a mutable, heterogeneous collection of
+    associations between pairs of objects. The collection is indexed by the
+    first element of the pair-its <firstterm>key</firstterm>-which uniquely identifies the
+    second element of the pair-its <firstterm>value</firstterm>. It is ordered by
+    insertion<footnote>
+      <para>
+        Hash tables do not normally <link
+          xlink:href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12542">preserve
+          order of insertion</link>, of course; a <link
+          xlink:href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12556">doubly-circularly
+          linked list</link> is used behind the scenes. Ilya Grigorik <link
+          xlink:href="http://www.igvita.com/2009/02/04/ruby-19-internals-ordered-hash/">examined
+          the consequences</link> of this decision.
+      </para>
+      </footnote>. For instance, a <literal>Hash</literal> mapping colours to
+      corresponding fruits may include a key-value pair of <literal>:lemon
+        =&gt; :yellow</literal>: <literal>:lemon</literal> is the key;
+      <literal>:yellow</literal> is the value.
+    </para>
+    
+    <!-- figure>
+      <title>Syntax diagram of the hash literal</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="figures/hash-literal.png" format="PNG"
+            width="4in"/>
+        </imageobject>
+      </mediaobject>
+    </figure-->
+
+    <para>
+      A <literal>Hash</literal> literal consists of a comma-separated list of
+      key-value pairs enclosed in curly braces (<literal>{</literal>,
+      <literal>}</literal>).  The key is separated from its value with
+      <literal>=&gt;</literal>. For example: <literal>{:age =&gt; 30, :name
+        =&gt; 'Marlo'}</literal>. If the key is a <literal>Symbol</literal>
+      literal, the colon with which its prefixed may be made its suffix, and
+      <literal>=&gt;</literal> can be omitted.  The previous example can be
+      rewritten as <literal>{age: 30, name: 'Marlo'}</literal>. (This
+      syntactical shortcut is a reason for preferring
+      <literal>Symbol</literal> keys).
+    </para>
+
+    <!-- figure>
+      <title>Syntax diagram of an element of the hash literal</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="figures/hash-member.png" format="PNG"
+            width="4in"/>
+        </imageobject>
+      </mediaobject>
+    </figure-->
+    
+    <para>
+      A value may be retrieved for a given key with the element reference
+      syntax: <literal>Hash#[<replaceable>key</replaceable>]</literal>. A
+      value may be associated with a given key with
+      <literal>Hash#[<replaceable>key</replaceable>] =
+        <replaceable>value</replaceable></literal>. Note that as keys are
+      unique, associating a value with an existing key will replace the old
+      value with the new. A key’s existence may be determined with
+      <literal>Hash#key?(<replaceable>key</replaceable>)</literal>.
+    </para>
+
+    <para>
+      Hashes can be iterated over with <literal>Hash#each</literal>, which
+      yields a key and its associated value on each iteration. Alternatively,
+      <literal>Hash#each_key</literal> and <literal>Hash#each_value</literal>
+      iterate over the keys or values, respectively.
+    </para>
+    
+    <para>
+      Uses include a dictionary, allowing values to be looked up by key; a
+      dispatch table, where the values are <literal>Proc</literal>s identified
+      by their key; and a cache of unique values, taking advantage of the
+      unique keys property.
+    </para>
+
+    <sect2 xml:id="enu.hash-coercion">
+      <title>Coercion</title>
+      
+      <para>
+        An object that responds to <literal>:to_hash</literal> may be <link
+          linkend="obj.implicit-conversion">implicitly converted</link> to a
+        <literal>Hash</literal>. <literal>Hash[]</literal> is another
+        approach. If given an object convertible to a <literal>Hash</literal>,
+        it performs the conversion and returns the new
+        <literal>Hash</literal>; otherwise, when given an even number of
+        arguments, it interprets them as key-value pairs-the first argument
+        being the first key, the second argument being its corresponding
+        value, and so forth-with which it creates a new
+        <literal>Hash</literal>.  <literal>Hash.try_convert</literal> coerces
+        its argument with <literal>:to_hash</literal>, if possible, or returns
+        <literal>nil</literal>.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="enu.ranges">
+    <title>Ranges</title>
+    
+    <para>
+      A <literal>Range</literal> represents an immutable sequence between two
+      given values.  It is either <emphasis>inclusive</emphasis> or
+      <emphasis>exclusive</emphasis>: the former includes the endpoint; the
+      latter does not. For example, 0–9 is a range consisting of all
+      single-digit integers, expressed by specifying the start-point and
+      endpoint.
+    </para>
+    
+    <para>
+      A <literal>Range</literal> literal consists of two values separated by
+      two or three full stops<footnote>
+        <para
+          >In the
+          conditional of a branching or looping statement, two or three
+          consecutive full stops don’t create a range; they constitute a <link
+            linkend="flo.flip-flop">Boolean flip-flop</link>.
+        </para>
+      </footnote>: the former range is inclusive; the latter exclusive.  For
+      example, <literal>'a'...'z'</literal> represents letters
+      <emphasis>a</emphasis>–<emphasis>y</emphasis>.
+    </para>
+
+    <!-- figure>
+      <title>Syntax diagram of the range literal</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="figures/range-literal.png" format="PNG"
+            width="4in"/>
+        </imageobject>
+      </mediaobject>
+    </figure -->
+
+    <para>
+      The start-point and endpoint must be comparable  with
+      <literal>#&lt;=&gt;</literal>. That is, for a range
+      <literal><replaceable>start</replaceable>..<replaceable>end</replaceable></literal>,
+      <literal><replaceable>start</replaceable> &lt;=&gt;
+        <replaceable>end</replaceable></literal> must return -1, 0, or 1.
+      <literal>Range#include?(<replaceable>object</replaceable>)</literal>
+      allows ranges to be used as intervals: returning <literal>true</literal>
+      if <replaceable>object</replaceable> is a member;
+      <literal>false</literal> otherwise.
+    </para>
+
+    <para>
+      A range is <firstterm>discrete</firstterm> if it begins with a value
+      that responds to <literal>#succ</literal> by returning the next element
+      of the sequence. It is so called because it represents a finite set of
+      values that can be iterated over with <literal>Range#each</literal>.
+      Alternatively, <literal>Range#step(<replaceable>n</replaceable>)
+        {|<replaceable>el</replaceable>| }</literal> passes each
+      <replaceable>n</replaceable><superscript>th</superscript> element to the
+      block.</para> <para>A non-discrete range is
+      <firstterm>continuous</firstterm>.  It represents an infinite set of
+      values, therefore a <literal>TypeError</literal> is raised when
+      attempting to iterate over it.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="enu.enumerable">
+    <title><literal>Enumerable</literal></title>
+
+    <para>
+      The aforementioned classes-<literal>Array</literal>,
+      <literal>Hash</literal>, and <literal>Range</literal>-mix-in the core
+      module <literal>Enumerable</literal>. The methods it supplies are
+      implemented in terms of a method named <literal>#each</literal> which
+      yields each element of a collection in turn.
+      <literal>Enumerable</literal> does not define <literal>#each</literal>,
+      so a contract exists: if a class provides <literal>#each</literal> it
+      can mix-in <literal>Enumerable</literal>. If a class breaches this
+      contract, it will still gain the <literal>Enumerable</literal> methods,
+      but invoking them will raise an exception. <literal>Enumerable</literal>
+      provides nearly 50 methods, so a mere sample follows.
+    </para>
+
+    <para>
+      <literal>#map {|<replaceable>element</replaceable>| }</literal> returns
+      an <literal>Array</literal> created by passing each element of the
+      collection to the block, then storing the result. For example,
+      <literal>[1,2,3].map{|n| n**2} #=&gt; [1,4,9]</literal>.
+    </para>
+
+    <para>
+      <literal>#reduce
+        {|<replaceable>element<subscript>0</subscript></replaceable>,
+        <replaceable>element<subscript>n</subscript></replaceable>|
+        }</literal> passes the first two elements to the block, then for each
+      subsequent element the last result of the block and the element itself.
+      For example: <literal>[2,3,5,7].reduce(&amp;:+) =&gt; 17</literal>.
+    </para>
+
+    <para>
+      <literal>#select {|<replaceable>element</replaceable>| }</literal>
+      returns an <literal>Array</literal> of elements for which the block
+      returned <literal>true</literal>.
+    </para>
+
+    <para>
+      Lastly, <literal>#any?</literal>, <literal>#all?</literal>, and
+      <literal>#none?</literal> accept a block which is called with an element
+      of the collection. The determinative indicates how many elements of the
+      collection the block must return <literal>true</literal> for the method
+      to return <literal>true</literal>. For instance,
+      <literal>#any?</literal> returns <literal>true</literal> as soon as a
+      single element in the collection satisfies the block.
+    </para>
+
+    <sect2 xml:id="enu.no-each">
+      <title>Classes with Multiple Iteration Strategies</title>
+      
+      <para>
+        For <literal>Enumerable</literal> to be a sensible addition to a
+        class, the collection must support a single, obvious means of
+        iteration. If multiple approaches are plausible, the semantics of the
+        <literal>Enumerable</literal> methods will be confusing.
+      </para>
+
+      <para>
+        For example, consider the <literal>String</literal> class. A
+        <literal>String</literal> of binary data will probably be iterated by
+        byte, a <literal>String</literal> containing a document may be
+        iterated by line or paragraph, a hyphenation algorithm would iterate
+        by character or Unicode codepoint. There is no single
+        <literal>#each</literal> method that encompasses these approaches.
+        There is no objective atomic unit that can form the basis of
+        iteration. Accordingly, <literal>String#each</literal> does not exist.
+        In its place are alternative iterators:
+        <literal>String#each_byte</literal>,
+        <literal>String#each_char</literal>,
+        <literal>String#each_codepoint</literal>, and
+        <literal>String#each_line</literal>.
+      </para>
+      
+      <para>
+        The utility of this approach is seen when combining it with
+        <literal>Object#enum_for(<replaceable>selector</replaceable>)</literal>.
+        This method converts its receiver into an
+        <literal>Enumerator</literal> object, which is an iterator implemented
+        in terms of the receiver’s <replaceable>selector</replaceable> method.
+        An <literal>Enumerator</literal> has an <literal>#each</literal>
+        method and mixes-in <literal>Enumerable</literal>. Hence, one can
+        convert an object into <literal>Enumerable</literal> by specifying
+        which form of iteration should be used by <literal>#each</literal>.
+      </para>
+      
+      <example xml:id="ex.enumerable-to-enum">
+        <title>Using an object that does not respond to
+          <literal>:each</literal> as an <literal>Enumerable</literal> by
+          specifying which of its iterator methods should be used in place of
+          <literal>#each</literal></title>
+
+        <programlisting><xi:include href="examples/enumerable-to-enum.rb"
+            parse="text"/></programlisting>
+      </example>
+    </sect2>
+  </sect1>
+</chapter>

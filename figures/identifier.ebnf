@@ -1,1 +1,0 @@
-Identifier = (ASCIILetter | "_" | NonASCII) (ASCIILetter|ASCIIDigit|"_"|NonASCII)*

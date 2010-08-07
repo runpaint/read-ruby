@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter version="5.0" xml:id="flo.flow" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Flow</title>
+
+  <sect1 xml:id="flo.conditionals">
+    <title>Conditionals</title>
+    
+    <para>
+      A <firstterm>conditional</firstterm> is an expression evaluated as a truthbearer.
+      The conditional is <firstterm>false</firstterm> if the
+      expression’s value is <link linkend="pro.nil">nil</link> or <link   linkend="pro.false">false</link>; otherwise it is <firstterm>true</firstterm>.
+    </para>
+
+    <example xml:id="ex.conditional-true">
+      <title>Conditionals that are true</title>
+      <programlisting><xi:include href="examples/conditional-true.rb"
+      parse="text"/></programlisting>
+    </example>
+
+    <example xml:id="ex.conditional-false">
+      <title>Conditionals that are false</title>
+      <programlisting><xi:include href="examples/conditional-false.rb"
+      parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="flo.boolean-logic">
+    <title>Boolean Logic</title>
+
+    <para>The Boolean logic operators return either <literal>true</literal> or
+    <literal>false</literal> by evaluating their operands as conditionals. For this
+    reason, Boolean expressions are often themselves used as conditionals.</para>
+    
+    <para>There are two forms of each Boolean operator—keyword (e.g.
+    <literal>and</literal>) and  punctuation (e.g. <literal>&amp;&amp;</literal>)—which
+    differ only in precedence. The former have low precedence; the latter
+    high.</para>
+    
+    <sect2 xml:id="flo.and-operator">
+      <title>AND Operator</title>
+      
+      <!--figure>
+        <title>Syntax diagram of the Boolean AND operator</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/boolean-and-operator.png" format="PNG" width="4in"/>
+          </imageobject>
+        </mediaobject>
+      </figure-->
+
+      <para>The binary <literal>and</literal>/<literal>&amp;&amp;</literal> operators return
+      <literal>true</literal> iff both operands are true. They perform short-circuit
+      evaluation, so will only evaluate the second operand if the first is
+      true.</para>
+
+      <example xml:id="ex.and-operator-fig">
+        <title>Using the Boolean AND operator (<literal>&amp;&amp;</literal>)
+        and the bitwise AND operator (<literal>&amp;</literal>) to determine whether
+        an integer is a power of 2</title>
+        <programlisting><xi:include href="examples/and-operator-fig.rb"
+	parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="flo.or-operator">
+      <title>OR Operator</title>
+      <!--figure>
+        <title>Syntax diagram of the Boolean OR operator
+	</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/boolean-or-operator.png" format="PNG" width="4in"/>
+          </imageobject>
+        </mediaobject>
+      </figure-->
+
+      <para>The binary <literal>or</literal>/<literal>||</literal> operators return
+      <literal>true</literal> iff at least one operand is true. They perform
+      short-circuit evaluation, so will only evaluate the second operand if
+      the first is false.</para>
+
+      <example xml:id="ex.or-operator-fig">
+        <title>Using the Boolean OR operator to determine whether the
+        check digit of an ISBN-13 is correct
+	</title>
+        <programlisting><xi:include href="examples/or-operator-fig.rb"
+	parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="flo.not-operator">
+      <title>NOT Operator</title>
+
+      <!--figure>
+        <title>Syntax diagram of the Boolean NOT operator
+	</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/boolean-not-operator.png" format="PNG" width="4in"/>
+          </imageobject>
+        </mediaobject>
+      </figure-->
+
+      <para>The unary <literal>not</literal>/<literal>!</literal> operators return
+      <literal>true</literal> iff the operand is false.</para>
+
+      <example xml:id="ex.not-operator-fig">
+        <title>Using the Boolean NOT operator to invert the value of its
+        operand
+	</title>
+        <programlisting><xi:include href="examples/not-operator-fig.rb"
+	parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="flo.flip-flop">
+      <title>Flip Flops</title>
+
+      <para>When the <literal>..</literal> or <literal>...</literal> operators are used in a
+      conditional they don’t have their usual semantics as <link linkend="enu.ranges">range literals</link>; they create a
+      <firstterm>flip-flop</firstterm> expression: a stateful, bitstable, Boolean test
+      between two expressions. They take the form
+      <literal>
+	<replaceable>left</replaceable>..<replaceable>right</replaceable>
+	</literal>, where <replaceable>left</replaceable>
+	and <replaceable>right</replaceable> are both Boolean expressions. They are false until
+	<replaceable>left</replaceable> is true, at which point they become true, remaining true
+	until <replaceable>right</replaceable> is true, at which point they become false until
+	<replaceable>left</replaceable> becomes true again. In this way they <emphasis>flip-flop</emphasis>
+      between true and false.</para>
+
+      <para>When a flip-flop becomes true it tests <replaceable>right</replaceable> to determine
+      whether its next state should be false. If <replaceable>left</replaceable> and
+      <replaceable>right</replaceable> are separated by three consecutive periods instead of
+      two, <replaceable>right</replaceable> is not tested until the expression is next
+      evaluated.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="flo.branching">
+    <title>Branching</title>
+
+    <para>
+      <firstterm>Branching statements</firstterm> predicate the execution of block on a
+      conditional. For example, an <literal>if</literal> statement executes its
+      associated code block iff its conditional is true. Each code block of an
+      branching statement is termed a <firstterm>branch</firstterm>, to describe the effect
+    of the statement on program execution.</para>
+    
+    <sect2 xml:id="flo.if-statement">
+      <title><literal>if</literal> Statement</title>
+      
+      <!--figure>
+        <title>Syntax diagram of <literal>if</literal> statement
+	</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/if-statement.png" format="PNG" width="4in"/>
+          </imageobject>
+        </mediaobject>
+      </figure-->
+      
+      <para>The <literal>if</literal> statement comprises a conditional, zero or more
+      statements (the branch), then, optionally, additional branches whose
+      forms are explained subsequently. The branch is executed iff the
+      conditional is true.</para>
+      
+      <example xml:id="ex.if-statement-simple">
+        <title>The simple form of the <literal>if</literal> statement</title>
+        <programlisting><xi:include href="examples/if-statement-simple.rb"
+	parse="text"/></programlisting>
+      </example>
+
+      <para>The return value of an <literal>if</literal> statement is that of the
+      executed branch, or <literal>nil</literal> if no branch was executed.</para>
+
+      <sect3 xml:id="flo.postfix-if">
+        <title>Postfix Form</title>
+
+        <!--figure>
+          <title>Syntax diagram of the postfix <literal>if</literal> statement
+	  </title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/postfix-if-statement.png" format="PNG" width="4in"/>
+            </imageobject>
+          </mediaobject>
+        </figure-->
+
+        <para>A postfix <literal>if</literal> statement is a concise alternative when
+        the branch consists of a sole statement. It comprises an
+        expression, the <literal>if</literal> keyword, then a conditional. The
+        expression is executed iff the conditional is true.</para>
+
+        <example xml:id="ex.postfix-if-statement">
+          <title>The postfix <literal>if</literal> statement executes its
+          left-hand side if its right-hand side is true</title>
+	  <programlisting><xi:include href="examples/postfix-if-statement.rb"
+	  parse="text"/></programlisting>
+        </example>
+
+        <para>This syntax, as opposed to <literal>if <replaceable>conditional</replaceable>…</literal>,
+        foregrounds the expression. This is of stylistic benefit if the
+        conditional is normally true because it highlights the default
+        case.</para>
+      </sect3>
+
+      <sect3 xml:id="flo.if-else-clause">
+        <title><literal>else</literal> Clause</title>
+        
+	<!--figure>
+          <title>Syntax diagram of <literal>if</literal> statement with an
+          <literal>else</literal> branch</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/else-clause.png" format="PNG" width="4in"/>
+            </imageobject>
+          </mediaobject>
+        </figure-->
+
+        <para>Prior to an <literal>if</literal> statement’s <literal>end</literal> keyword an
+        <literal>else</literal> branch may appear. It is executed iff no preceding
+        branch was executed, serving as the default branch.</para>
+
+        <example xml:id="ex.if-statement-with-else-clause">
+          <title>An <literal>if</literal> statement can contain an
+          <literal>else</literal> clause, which is executed iff no other branch was
+          executed.
+	  </title>
+          <programlisting><xi:include
+	  href="examples/if-statement-with-else-clause.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+
+      <sect3 xml:id="flo.if-elsif-clause">
+        <title><literal>elsif</literal> Clause</title>
+        
+	<!--figure>
+          <title>Syntax diagram of <literal>if</literal> statement with an
+          <literal>elsif</literal> branch
+	  </title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/elsif-clause.png" format="PNG" width="4in"/>
+            </imageobject>
+          </mediaobject>
+        </figure-->
+        
+	<para>An <literal>if</literal> statement may contain any number of
+        <literal>elsif</literal> branches between the <literal>if</literal> branch and
+        before the <literal>else</literal> branch, if present. To execute they
+        require all prior conditionals to be false and their conditional to be
+        true.</para>
+        
+	<example xml:id="ex.if-statement-with-elsif-and-else-clause">
+          <title>Using an <literal>if</literal> statement with
+          <literal>elsif</literal> and <literal>else</literal> branches to compute the
+          Möbius function</title>
+          <programlisting><xi:include
+	  href="examples/if-statement-with-elsif-and-else-clause.rb"
+	  parse="text"/></programlisting>
+        </example>
+      </sect3>
+    </sect2>
+    
+    <sect2 xml:id="flo.unless-statement">
+      <title><literal>unless</literal> Statement</title>
+      <!--figure>
+        <title>Syntax diagram of <literal>unless</literal> statement</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/unless-statement.png" format="PNG" width="4in"/>
+          </imageobject>
+        </mediaobject>
+      </figure-->
+
+      <para>The <literal>unless</literal> statement executes its branch iff its
+      conditional is false. It is equivalent to an <literal>if</literal> statement
+      with the conditional inverted. It may be followed by an
+      <literal>else</literal> branch, which executes iff the <literal>unless</literal>
+      conditional is true.  <literal>elsif</literal> clauses are prohibited.</para>
+
+      <example xml:id="ex.unless-statement-fig">
+        <title>The <literal>unless</literal> statement executes its body iff
+        its conditional is false.</title>
+        <programlisting><xi:include href="examples/unless-statement-fig.rb"
+	parse="text"/></programlisting>
+      </example>
+
+      <sect3 xml:id="flo.postfix-unless-statement">
+        <title>Postfix Form</title>
+
+        <!--figure>
+          <title>Syntax diagram of the postfix <literal>unless</literal>
+          statement</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/postfix-unless-statement.png" format="PNG" width="4in"/>
+            </imageobject>
+          </mediaobject>
+        </figure-->
+
+        <para>The postfix form of the <literal>unless</literal> statement behaves as
+        the postfix <literal>if</literal> statement, except the expression is
+        executed iff the conditional is false.</para>
+
+        <example xml:id="ex.postfix-unless-statement-fig">
+          <title>Using the postfix-<literal>unless</literal> statement to
+          <literal>raise</literal> an <literal>ArgumentError</literal> if the argument
+          can’t be converted to a <literal>String</literal></title>
+          <programlisting><xi:include
+	  href="examples/postfix-unless-statement-fig.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="flo.ternary-operator">
+      <title>Ternary Operator</title>
+
+      <!--figure>
+        <title>Syntax diagram of the ternary operator</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/ternary-operator.png" format="PNG" width="4in"/>
+          </imageobject>
+        </mediaobject>
+      </figure-->
+
+      <para>The ternary operator is a concise alternative to <literal>if
+      <replaceable>conditional</replaceable>…else…</literal> when the conditional and branches
+      are simple. It consists of three operands, the first of which is the
+      conditional. If the conditional is true, the second expression is
+      evaluated; otherwise the third expression is evaluated.</para>
+
+      <example xml:id="ex.ternary-operator-on-single-line">
+        <title>The ternary operator is a compact two-way branching
+        construct 
+	</title>
+        <programlisting><xi:include
+	href="examples/ternary-operator-on-single-line.rb"
+	parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="flo.case-statement">
+      <title><literal>case</literal> Statement</title>
+      
+      <!--figure>
+	<title>Syntax diagram of the <literal>case</literal> statement</title>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="figures/case-statement-syntax.png" format="PNG" width="4in"/>
+	  </imageobject>
+	</mediaobject>
+      </figure-->
+
+      <para>The <literal>case</literal> statement allows a single expression
+      (hereafter: the <firstterm>topic</firstterm>) to be
+      tested against other expressions without having to evaluate the
+      topic each time. It begins with a <literal>case
+      <replaceable>topic</replaceable>
+      </literal> clause, where <replaceable>topic</replaceable> is an arbitrary
+      expression.</para>
+
+      <sect3 xml:id="flo.when">
+	<title><literal>when</literal> Clause</title>
+	
+	<!--figure>
+	  <title>Syntax diagram of the <literal>case</literal> statement’s
+          <literal>when</literal> clause  
+	  </title>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata fileref="figures/when-clause.png" format="PNG" width="4in"/>
+	    </imageobject>
+	  </mediaobject>
+	</figure-->
+
+	<para>A branch is introduced by the <literal>when</literal> keyword followed by
+        a comma-separated list of one or more expressions. This list is
+        separated from the statements comprising the branch body by the
+        <literal>then</literal> keyword or a statement terminator.</para>
+	
+	<para>A <firstterm><literal>when</literal> clause</firstterm> matches the topic 
+	if any of the expressions listed after <literal>when</literal> have case equality 
+	(<literal><replaceable>expression</replaceable> === <replaceable>topic</replaceable>
+	</literal>) with the topic. Therefore, <literal>when <replaceable>expression</replaceable>
+	</literal> is equivalent to <literal>if <replaceable>expression</replaceable> === 
+	<replaceable>topic</replaceable> </literal>. By default, the <literal>#===</literal>
+	message is equivalent to <literal>#==</literal>—they both test for equality—but certain 
+	core classes redefine <literal>#===</literal> to behave more usefully in this context, as
+	shown in the following table.</para>
+	
+	<table xml:id="flo.case-equality-operator-table">
+	  <caption>The effect of the case equality operator on a receiver of
+	  class <replaceable>a</replaceable> and a single operand (<replaceable>b</replaceable>)
+	  </caption>
+	  <thead>
+	    <tr>
+	      <th>Class (<replaceable>a</replaceable>)
+	      </th>
+	      <th>Semantics of <literal>
+	      <replaceable>a</replaceable> === <replaceable>b</replaceable>
+	    </literal>
+	      </th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>
+		<literal>Class</literal>
+	      </td>
+	      <td>
+		<literal>
+		<replaceable>b</replaceable>.instance_of?(<replaceable>a</replaceable>)</literal>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+		<literal>Proc</literal>
+	      </td>
+	      <td>
+		<literal>
+		<replaceable>a</replaceable>.call(<replaceable>b</replaceable>)</literal>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+		<literal>Range</literal>
+	      </td>
+	      <td>
+		<literal>
+		<replaceable>a</replaceable>.include?(<replaceable>b</replaceable>)</literal>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+		<literal>Regexp</literal>
+	      </td>
+	      <td>
+		<literal>
+		  <replaceable>a</replaceable> =~ <replaceable>b</replaceable>
+		</literal>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+		<literal>Symbol</literal>
+	      </td>
+	      <td>
+		<literal>
+		<replaceable>a</replaceable> == <replaceable>b</replaceable>.to_sym</literal>
+	      </td>
+	    </tr>
+	  </tbody>
+	</table>  
+      </sect3>
+
+      <sect3 xml:id="flo.else">
+	<title><literal>else</literal> Clause</title>
+	<!--figure>
+	  <title>Syntax diagram of the <literal>case</literal> statement’s
+	  <literal>else</literal> clause  
+	  </title>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata fileref="figures/else-clause.png" format="PNG" width="4in"/>
+	    </imageobject>
+	  </mediaobject>
+	</figure-->
+	<para>A single <literal>else</literal> clause may appear between the final
+	<literal>when</literal> clause and the <literal>end</literal> keyword which delimits
+	the <literal>case</literal> statement.</para>
+	<example xml:id="ex.case-cf-if">
+	  <title>The same method implemented first with an <literal>if</literal>
+	  statement then with a <literal>case</literal> statement
+	  </title>
+	  <programlisting><xi:include href="examples/case-cf-if.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+
+      <sect3 xml:id="flo.case-evaluation">
+	<title>Evaluation</title>
+	<para>A <literal>case</literal> expression is evaluated by evaluating each
+	<literal>when</literal> branch in the order that they appear in the source
+	file. If a branch matches the topic, it is executed, and its return
+	value becomes that of the <literal>case</literal> statement; otherwise, the
+	next branch is evaluated in the same manner. If none of the
+	<literal>when</literal> branches match, and an <literal>else</literal> branch is
+	present, the <literal>case</literal> statement’s return value is that of the
+	<literal>else</literal> branch; otherwise it is <literal>nil</literal>.</para>
+	<example xml:id="ex.case-statement-fig">
+	  <title>Using the <literal>case</literal> statement to classify a HTTP
+	  status code
+	  </title>
+	  <programlisting><xi:include href="examples/case-statement-fig.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+    </sect2>   
+  </sect1>
+</chapter>

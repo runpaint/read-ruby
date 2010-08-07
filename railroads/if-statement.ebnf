@@ -1,1 +1,0 @@
-IfStatement = "if" Expression (StatementTerminator | "then") Statement* ElsifClause* ElseClause? "end"

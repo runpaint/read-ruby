@@ -1,0 +1,12 @@
+run@paint →   for l in "a" "b" "c"; do echo $l > $l; done 
+run@paint →   ruby argf.rb  # Hangs; blocking on STDIN
+run@paint →   ruby argf.rb < a 
+[]
+"a\n" 
+run@paint →   ruby argf.rb a b < c 
+["a", "b"]
+"a\nb\n"
+run@paint →   ruby argf.rb --help 
+["--help"]
+/tmp/argf.rb:4:in `read': No such file or directory - --help (Errno::ENOENT)
+  from /tmp/argf.rb:4:in `<main>'

@@ -1,1 +1,0 @@
-YieldStatement = "yield" Expression ("," Expression)*

@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<bibliography xmlns='http://docbook.org/ns/docbook' xml:id="bib.bibliography">
+  <title>Bibliography</title>
+
+  <bibliodiv>
+    <title>Books</title>
+
+    <biblioentry xml:id="bib.aho86">
+      <abbrev>Aho86</abbrev>
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Alfred V.</firstname><surname>Aho</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Ravi</firstname><surname>Sethi</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Jeffrey D.</firstname><surname>Ullman</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <biblioid class="isbn">978-0201100884</biblioid>
+      <publisher>
+        <publishername>Addison-Wesley Publishing Company</publishername>
+      </publisher>
+      <title>Compilers, Principles, Techniques, and Tools</title>
+      <pubdate>1986</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.beck98">
+      <abbrev>Beck98</abbrev>
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Michael</firstname><surname>Beck</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Harold</firstname><surname>Böhme</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Mirko</firstname><surname>Dziadzka</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Ulrich</firstname><surname>Kunitz</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Robert</firstname><surname>Magnus</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Dirk</firstname><surname>Verworner</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <biblioid class="isbn">978-0201331431</biblioid>
+      <publisher>
+        <publishername>Addison-Wesley Publishing Company</publishername>
+      </publisher>
+      <title>Linux Kernel Internals</title>
+      <pubdate>1998</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.black09">
+      <abbrev>Black09</abbrev>
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>David A.</firstname><surname>Black</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <biblioid class="isbn">978-1933988658</biblioid>
+      <publisher>
+        <publishername>Manning Publications</publishername>
+      </publisher>
+      <title>The Well-Grounded Rubyist</title>
+      <pubdate>2009</pubdate>
+    </biblioentry>
+
+    <!-- //rubybestpractices.com/ -->
+    <biblioentry xml:id="bib.brown09">
+      <abbrev>Brown09</abbrev>
+      <author>
+        <personname>
+          <firstname>Gregory T.</firstname><surname>Brown</surname>
+        </personname>
+      </author>
+      <biblioid class="isbn">978-0596523008</biblioid>
+      <publisher>
+        <publishername>O’Reilly Media</publishername>
+      </publisher>
+      <title>Ruby Best Practices</title>
+      <pubdate>2009</pubdate>
+    </biblioentry>
+  
+    <!-- //www.cs.pomona.edu/~kim/FOOLbook.html -->
+
+    <biblioentry xml:id="bib.bruce02">
+      <abbrev>Bruce02</abbrev>
+      <author>
+        <personname>
+          <firstname>Kim B.</firstname><surname>Bruce</surname>
+        </personname>
+      </author>
+      <biblioid class="isbn">978-0262025232</biblioid>
+      <publisher>
+        <publishername>MIT Press</publishername>
+      </publisher>
+      <title>Foundations of Object-Oriented Languages: Types and Semantics</title>
+      <pubdate>2002</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.budd87">
+      <abbrev>Budd87</abbrev>
+      <author>
+        <personname>
+          <firstname>Timothy A.</firstname><surname>Budd</surname>
+        </personname>
+      </author>
+      <biblioid class="isbn">978-0201106985</biblioid>
+      <publisher>
+        <publishername>Addison Wesley</publishername>
+      </publisher>
+      <title>A Little Smalltalk</title>
+      <pubdate>1987</pubdate>
+    </biblioentry>
+    <!-- //eliza.newhaven.edu/lang/book.html -->
+
+    <biblioentry xml:id="bib.fischer92">
+      <abbrev>Fischer92</abbrev>
+      
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Alice E.</firstname><surname>Fischer</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Frances S.</firstname><surname>Grodzinsky</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <biblioid class="isbn">978-0130422194</biblioid>
+      <publisher>
+        <publishername>Prentice-Hall</publishername>
+      </publisher>
+      <title>The Anatomy of Programming Languages</title>
+      <pubdate>1992</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.flan08">
+      <abbrev>Flan08</abbrev>
+
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>David</firstname><surname>Flanagan</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Yukihiro</firstname><surname>Matsumoto</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <biblioid class="isbn">978-0596516178</biblioid>
+      <publisher>
+        <publishername>O’Reilly Media</publishername>
+      </publisher>
+      <title>The Ruby Programming Language</title>
+      <pubdate>2008</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.friedman08">
+      <abbrev>Friedman08</abbrev>
+
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Daniel P.</firstname><surname>Friedman</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Mitchell</firstname><surname>Wand</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <biblioid class="isbn">978-0262062794</biblioid>
+      <publisher>
+        <publishername>MIT Press</publishername>
+      </publisher>
+      <title>Essentials of Programming Languages</title>
+      <pubdate>2008</pubdate>
+    </biblioentry>
+
+    <!-- http://bitsavers.informatik.uni-stuttgart.de/pdf/xerox/parc/techReports/Smalltalk-72_Instruction_Manual_Mar76.pdf
+      -->
+    <biblioentry xml:id="bib.goldberg76">
+      <abbrev>Goldberg76</abbrev>
+
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Adele</firstname><surname>Goldberg</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Alan</firstname><surname>Kay</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>Xerox Corporation</publishername>
+      </publisher>
+      <title>Smalltalk-72 Instruction Manual</title>
+      <pubdate>1976</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.graham96">
+      <abbrev>Graham96</abbrev>
+
+      <author>
+        <personname>
+          <firstname>Paul</firstname><surname>Graham</surname>
+        </personname>
+      </author>
+      <publisher>
+        <publishername>Prentice Hall</publishername>
+      </publisher>
+      <title>ANSI Common Lisp</title>
+      <biblioid class="isbn">978-0133708752</biblioid>
+      <pubdate>1996</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.james92">
+      <abbrev>James92</abbrev>
+
+      <author>
+        <personname>
+          <firstname>Robert C.</firstname><surname>James</surname>
+        </personname>
+      </author>
+      <publisher>
+        <publishername>Chapman &amp; Hall</publishername>
+      </publisher>
+      <title>Mathematics Dictionary</title>
+      <pubdate>1992</pubdate>
+      <biblioid class="isbn">0-412-99031-8</biblioid>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.kernighan78">
+      <abbrev>Kernighan78</abbrev>
+      
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Brian W.</firstname><surname>Kernighan</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>P. J.</firstname><surname>Plauger</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>Mcgraw-Hill</publishername>
+      </publisher>
+      <title>The Elements of Programming Style</title>
+      <pubdate>1978</pubdate>
+      <biblioid class="isbn">978-0070342071</biblioid>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.kernighan84">
+      <abbrev>Kernighan84</abbrev>
+      
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Brian W.</firstname><surname>Kernighan</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Rob</firstname><surname>Pike</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>Prentice Hall</publishername>
+      </publisher>
+      <title>The UNIX Programming Environment</title>
+      <pubdate>1984</pubdate>
+      <biblioid class="isbn">978-0139376818</biblioid>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.klas95">
+      <abbrev>Klas95</abbrev>     
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Wolfgang</firstname><surname>Klas</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Michael</firstname><surname>Schrefl</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>Springer</publishername>
+      </publisher>
+      <title>Metaclasses and Their Application</title>
+      <subtitle>Data Model Tailoring and Database Integration</subtitle>
+      <pubdate>1995</pubdate>
+      <biblioid class="isbn">978-3540600633</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.lispstd">
+      <abbrev>LispStd</abbrev>     
+      <author>
+	<orgname>American National Standard for Information Systems</orgname>
+      </author>
+      <title>Programming Language—Common Lisp</title>
+      <subtitle>X3J13/93-102</subtitle>
+      <pubdate>1993</pubdate>
+    </biblioentry> 
+    
+    <biblioentry xml:id="bib.liu99">
+      <abbrev>Liu99</abbrev>     
+        <author>
+          <personname>
+            <firstname>Chamond</firstname><surname>Liu</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>toExcel</publishername>
+      </publisher>
+      <title>Smalltalk, Objects, and Design</title>
+      <pubdate>1999</pubdate>
+      <biblioid class="isbn">1583484906</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.loosemore07">
+      <abbrev>Loosemore07</abbrev>
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Sandra</firstname><surname>Loosemore</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Richard M.</firstname><surname>Stallman</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Roland</firstname><surname>McGrath</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Ulrich</firstname><surname>Drepper</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>The Free Software Foundation</publishername>
+      </publisher>
+      <title>The GNU C Library Reference Manual</title>
+      <pubdate>2007</pubdate>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.love07">
+      <abbrev>Love07</abbrev>     
+        <author>
+          <personname>
+            <firstname>Robert</firstname><surname>Love</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>O’Reilly Media</publishername>
+      </publisher>
+      <title>Linux System Programming</title>
+      <subtitle>Talking Directly to the Kernel and C Library</subtitle>
+      <pubdate>2007</pubdate>
+      <biblioid class="isbn">978-0596009588</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.meyer00">
+      <abbrev>Meyer00</abbrev>     
+        <author>
+          <personname>
+            <firstname>Bertrand</firstname><surname>Meyer</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>Prentice Hall</publishername>
+      </publisher>
+      <title>Object-oriented Software Construction</title>
+      <pubdate>2000</pubdate>
+      <biblioid class="isbn">978-0136291558</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.mitchell04">
+      <abbrev>Mitchell04</abbrev>     
+        <author>
+          <personname>
+            <firstname>John C.</firstname><surname>Mitchell</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>Cambridge Univeristy Press</publishername>
+      </publisher>
+      <title>Concepts in Programming Languages</title>
+      <pubdate>2004</pubdate>
+      <biblioid class="isbn">0-521-78098-5</biblioid>
+    </biblioentry>    
+ 
+    <biblioentry xml:id="bib.per10">
+      <abbrev>Per10</abbrev>     
+        <author>
+          <personname>
+            <firstname>Paolo</firstname><surname>Perrotta</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>Pragmatic Bookshelf</publishername>
+      </publisher>
+      <title>Metaprogramming Ruby</title>
+      <pubdate>2010</pubdate>
+      <biblioid class="isbn">978-1934356470</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.raymond99">
+      <abbrev>Raymond99</abbrev>     
+        <editor>
+          <personname>
+            <firstname>Eric</firstname><surname>Raymond</surname>
+          </personname>
+        </editor>
+      <publisher>
+        <publishername>The MIT Press</publishername>
+      </publisher>
+      <title>The New Hacker’s Dictionary</title>
+      <pubdate>1999</pubdate>
+      <biblioid class="isbn">0-262-68092-0</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.raymond03">
+      <abbrev>Raymond03</abbrev>     
+        <author>
+          <personname>
+            <firstname>Eric</firstname><surname>Raymond</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>Addison-Wesley</publishername>
+      </publisher>
+      <title>The Art of UNIX Programming</title>
+      <pubdate>2003</pubdate>
+      <biblioid class="isbn">978-0131429017</biblioid>
+    </biblioentry>    
+
+    <!-- http://www.cs.rochester.edu/~scott/pragmatics/ -->
+    <biblioentry xml:id="bib.scott06">
+      <abbrev>Scott06</abbrev>     
+        <author>
+          <personname>
+            <firstname>Michael L.</firstname><surname>Scott</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>Morgan Kaufmann</publishername>
+      </publisher>
+      <title>Programming Language Pragmatics</title>
+      <pubdate>2006</pubdate>
+      <biblioid class="isbn">978-0-12-633951-2</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.thom09">
+      <abbrev>Thom06</abbrev>     
+      <authorgroup>
+	<author>
+          <personname>
+            <firstname>Dave</firstname><surname>Thomas</surname>
+          </personname>
+        </author>
+	<author>
+          <personname>
+            <firstname>Chad</firstname><surname>Fowler</surname>
+          </personname>
+        </author>
+	<author>
+          <personname>
+            <firstname>Andy</firstname><surname>Hunt</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>Pragmatic Bookshelf</publishername>
+      </publisher>
+      <title>Programming Ruby</title>
+      <subtitle>The Pragmatic Programmers’ Guide</subtitle>
+      <pubdate>2009</pubdate>
+      <biblioid class="isbn">978-1934356081</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.turbak08">
+      <abbrev>Turbak08</abbrev>     
+      <authorgroup>
+	<author>
+          <personname>
+            <firstname>Franklyn A.</firstname><surname>Turbak</surname>
+          </personname>
+        </author>
+	<author>
+          <personname>
+            <firstname>David K.</firstname><surname>Gifford</surname>
+          </personname>
+        </author>
+	<author>
+          <personname>
+            <firstname>Mark A.</firstname><surname>Sheldon</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>MIT Press</publishername>
+      </publisher>
+      <title>Design Concepts in Programming Languages</title>
+      <pubdate>2008</pubdate>
+      <biblioid class="isbn">978-0262201759</biblioid>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.wall00">
+      <abbrev>Wall00</abbrev>     
+      <authorgroup>
+	<author>
+          <personname>
+            <firstname>Larry</firstname><surname>Wall</surname>
+          </personname>
+        </author>
+	<author>
+          <personname>
+            <firstname>Tom</firstname><surname>Christiansen</surname>
+          </personname>
+        </author>
+	<author>
+          <personname>
+            <firstname>Jon</firstname><surname>Orwant</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>O’Reilly &amp; Associates, Inc.</publishername>
+      </publisher>
+      <title>Programming Perl</title>
+      <pubdate>2000</pubdate>
+      <biblioid class="isbn">978-0596000271</biblioid>
+    </biblioentry>    
+  </bibliodiv>
+
+  <bibliodiv>
+    <title>Articles</title>
+
+    <biblioentry xml:id="bib.buck06">
+      <abbrev>Buck06</abbrev>
+      <author>
+        <personname>
+          <firstname>Jamis</firstname><surname>Buck</surname>
+        </personname>
+      </author>
+      <biblioid class="uri">http://weblog.jamisbuck.org/2006/12/1/under-the-hood-activerecord-base-find-part-3</biblioid>
+      <title>Under the hood: ActiveRecord::Base.find, Part 3</title>
+      <pubdate>2006</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.fowler08">
+      <abbrev>Fowler08</abbrev>
+      <author>
+        <personname>
+          <firstname>Martin</firstname><surname>Fowler</surname>
+        </personname>
+      </author>
+      <biblioid class="uri">http://martinfowler.com/dslwip/DynamicReception.html</biblioid>
+      <title>Dynamic Reception</title>
+      <pubdate>2008</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.harada09">
+      <abbrev>Harada09</abbrev>
+      <author>
+        <personname>
+          <firstname>Yui</firstname><surname>Naruse</surname>
+        </personname>
+      </author>
+      <biblioid class="uri">http://yokolet.blogspot.com/2009/07/design-and-implementation-of-ruby-m17n.html</biblioid>
+      <title>The Design and Implementation of Ruby M17N</title>
+      <pubdate>2009</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.kay98">
+      <abbrev>Kay98</abbrev>
+      <author>
+        <personname>
+          <firstname>Alan</firstname><surname>Kay</surname>
+        </personname>
+      </author>
+      <biblioid class="uri">http://lists.squeakfoundation.org/pipermail/squeak-dev/1998-October/017019.html</biblioid>
+      <title>Prototypes vs Classes</title>
+      <pubdate>1998</pubdate>
+    </biblioentry>
+
+    <biblioentry xml:id="bib.taivalsaari96">
+      <abbrev>Taivalsaari96</abbrev>     
+        <author>
+          <personname>
+            <firstname>Antero</firstname><surname>Taivalsaari</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>Springer Verlag</publishername>
+      </publisher>
+      <title>Journal of Object-Oriented Programming: Classes vs. Prototypes — Some Philosophical and Historical Observations</title>
+      <pubdate>1996</pubdate>
+      <pagenums>44–50</pagenums>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.tr15285">
+      <abbrev>Tr15285</abbrev>     
+        <author>
+          <orgname>ISO/IEC</orgname>
+        </author>
+      <publisher>
+        <publishername>ISO/IEC</publishername>
+      </publisher>
+      <biblioid class="uri">http://standards.iso.org/ittf/PubliclyAvailableStandards/c027163_ISO_IEC_TR_15285_1998(E).zip</biblioid>
+      <title>An operational model for characters and glyphs</title>
+      <pubdate>1998</pubdate>
+    </biblioentry>    
+
+    <biblioentry xml:id="bib.uax44">
+      <abbrev>Uax44</abbrev>     
+      <authorgroup>
+        <author>
+          <personname>
+            <firstname>Mark</firstname><surname>Davis</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Ken</firstname><surname>Whistler</surname>
+          </personname>
+        </author>
+      </authorgroup>
+      <publisher>
+        <publishername>Unicode Consortium</publishername>
+      </publisher>
+      <biblioid class="uri">http://unicode.org/reports/tr44/</biblioid>
+      <title>Unicode Standard Annex #44: Unicode Character Database</title>
+      <pubdate>2009</pubdate>
+    </biblioentry>    
+  </bibliodiv>
+</bibliography>

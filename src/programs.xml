@@ -1,0 +1,708 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xmlns='http://docbook.org/ns/docbook'
+         xmlns:xi='http://www.w3.org/2001/XInclude'
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xml:lang="en" 
+         version="5.0"
+         xml:id="pro.programs">
+  <title>Programs</title>
+  
+  <para>
+    Every entity in Ruby is an object. Objects can remember things and
+    communicate with each other by sending and receiving messages <biblioref
+      begin="44" end="44" linkend="bib.goldberg76" units="pages"/>. A
+    Ruby program describes how certain objects must communicate to achieve
+    some definite ends. This chapter provides an overview of the structure and
+    interpretation of Ruby programs.
+  </para>
+
+  <sect1 xml:id="pro.lexical">
+    <title>Lexical Structure</title>
+    
+    <para>
+      <firstterm>Tokens</firstterm><footnote>
+        <para>
+          <literal>Ripper</literal> is a class in the standard library for
+          parsing and analysing Ruby.  The <literal>Ripper.tokenize</literal>
+          method takes a string of code as an argument and returns an array of
+          its constituent tokens.  Experiment with this method in
+          <acronym>IRB</acronym> (<literal>irb -rripper</literal>) to test
+          your assumptions of how tokenization works.
+        </para>
+      </footnote> are <quote>the mark or series of marks that denote one
+      symbol or word in the language</quote> <biblioref begin="59" end="62"
+      linkend="bib.fischer92" units="pages"/>. A Ruby program consists of a
+    combination of the following tokens: <link
+      linkend="pro.comments">comments</link>, <link
+      linkend="pro.literals">literals</link>, <link
+      linkend="pun.punctuation">punctuation</link>, <link
+      linkend="pro.identifiers">identifiers</link>, and keywords.
+    </para>
+
+    <sect2 xml:id="pro.comments">
+      <title>Comments</title>
+      
+      <para>
+        <firstterm>Comments</firstterm> are remarks which do not affect the
+        meaning of a program. They are introduced with a number sign
+        (<literal>U＋0023</literal>) and continue until the end of the line:
+        the text between <literal>#</literal> and the end of the line is
+        ignored by the interpreter. Comments are not recognised inside of
+        <link linkend="str.strings">string</link>/<link
+          linkend="reg.regexps">regexp</link> literals—they are interpreted
+        literally—however, regexps support an alternative form of embedded
+        comment. There is no specific construct for multiline comments, but
+        they may be approximated with <link
+          linkend="pro.embedded-doc">embedded documentation</link>.
+      </para>
+    </sect2>
+
+    <sect2 xml:id="pro.embedded-doc">
+      <title>Embedded Documentation</title>
+     
+      <para>
+        <firstterm>Embedded documentation</firstterm> is a portion of a source
+        file that contains documentation intended for a postprocessor such as
+        <literal>rdoc</literal>, and as such is ignored by the interpreter. It
+        is introduced by a line beginning <literal>=begin</literal>, that is
+        an equals sign (<literal>U＋003D</literal>) followed by the string
+        <literal>begin</literal>, and continues until a line beginning
+        <literal>=end</literal> is encountered.
+      </para>
+      
+      <para>
+        Both <literal>=begin</literal> and <literal>=end</literal> may be
+        followed by arbitrary text, which is included in the embedded
+        documentation, as long as it is preceded by a whitespace character.
+        Conventionally, the text following <literal>=begin </literal> names
+        the tool for which the documentation is intended.
+      </para>
+    </sect2>
+
+    <sect2 xml:id="pro.whitespace">
+      <title>Whitespace</title>
+      
+      <para>
+        <firstterm>Whitespace</firstterm> consists only of
+        <literal>U＋0009</literal>,
+        <literal>U＋000B</literal>–<literal>U＋000D</literal>, and the space
+        character (<literal>U＋0020</literal>), i.e. <acronym>ASCII</acronym>
+        whitespace other than the newline. Its primary role in Ruby syntax is
+        to separate tokens and terminate statements. When whitespace is
+        syntactically significant it is typically collapsed to a single space.
+        The few areas of syntax where whitespace has different semantics are
+        clearly labeled.
+      </para>
+
+      <para>
+        Newlines may function as whitespace, too, depending on the context in
+        which they are used. See the <link linkend="pro.statement-terminators"/> 
+        for further details.
+      </para>
+    </sect2>
+    
+    <sect2 xml:id="pro.literals">
+      <title>Literals</title>
+      
+      <para>
+        An <firstterm>object literal</firstterm> is a syntactical shortcut for
+        the instantiation of a particular core object. Literals exist for
+        strings, numbers, symbols, arrays, hashes, ranges, lambdas.
+      </para>
+    </sect2>
+
+    <sect2 xml:id="pro.identifiers">
+      <title>Identifiers</title>
+      
+      <!--figure>
+        <title>The syntax of an identifier</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/identifier.png" format="PNG" width="4in"/>
+          </imageobject>
+        </mediaobject>
+      </figure-->
+      
+      <para>
+        An <firstterm>identifier</firstterm> is the name of a <link
+          linkend="var.variables">variable</link> or <link
+          linkend="met.methods">method</link>. It must not contain any
+        <acronym>US</acronym>-<acronym>ASCII</acronym> character other than
+        the alphanumerics (A—Z, a—z, 0–9) and the low line
+        (<literal>U＋005F</literal>), or begin with a
+        <acronym>US</acronym>-<acronym>ASCII</acronym> digit. However, it may
+        contain any other character legal in the <link
+          linkend="enc.source">source encoding</link>.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="pro.syntax">
+    <title>Syntactical Structure</title>
+    
+    <sect2 xml:id="pro.expressions">
+      <title>Expressions</title>
+      
+      <para>
+        An <firstterm>expression</firstterm><footnote>
+          <para>
+            We follow the lead of Aho, Sethi, &amp; Ullman in defining
+            <emphasis>expression</emphasis> by recursion rather than direct
+            description <biblioref linkend="bib.aho86"/>.  
+          </para>
+        </footnote> is a syntactical construct that
+        produces a value. Since every entity is an object, every expression
+        evaluates to an object. It is either primary or compound.
+      </para>
+      
+      <para>
+        <firstterm>Primary expressions</firstterm> comprise atomic<footnote>
+          <para>
+            As Turbak, Gifford, &amp; Sheldon note, this characterisation is
+            patently false even for toy languages since, in their example,
+            <quote>numerals can be broken down into digits</quote>, however
+            we, too, will <quote>ignore this detail</quote> <biblioref
+              begin="20" end="22" linkend="bib.turbak08" units="pages"/>. 
+          </para>
+        </footnote> units such as <link linkend="var.variables">variable
+        references</link> and numeric, <link
+        linkend="str.literals">string</link><footnote>
+          <para>Double‐quoted strings that interpolate other expressions are
+          compound expressions.</para>
+        </footnote>, and symbol, <link
+        linkend="reg.literals">regexp</link><footnote>
+          <para>
+            Regexps that interpolate other expressions are also compound
+            expressions.
+          </para>
+        </footnote>, and <link linkend="pro.keyword-literals">keyword</link>,
+        literals. <!-- Expressions can be combined with <link -->
+        <!-- linkend="pro.operators">operators</link>, <link -->
+        <!-- linkend="enu.array-literals">array</link>, <link -->
+        <!-- linkend="enu.hash-literals">hash</link>, <link -->
+        <!-- linkend="enu.range-literals">range</link>, and interpolating literals, -->
+        <!-- to produce <firstterm>compound expressions</firstterm>. --></para>
+	
+      <sect3 xml:id="pro.operators">
+	<title>Operators</title>
+
+	<para>Primary expressions can be combined with
+	<firstterm>operators</firstterm> to produce <firstterm>compound
+	expressions</firstterm>. An operator is a token with
+	<firstterm>precedence</firstterm>,
+	<firstterm>associativity</firstterm>, and <firstterm>arity</firstterm>,
+	which operates upon one or more values (termed its
+	<firstterm>operands</firstterm>).</para>
+
+	<para>Precedence dictates which of two different operations should be
+	carried out first. It can be overridden by grouping sub-expressions
+	that should be performed earlier with parentheses. When parenthetical
+	groups contain other parenthetical groups, the innermost is given the
+	highest precedence.</para>
+
+	<para>If both operators have the same precedence, the tie is broken by
+	considering their associativity: left-associative expressions are
+	evaluated left to right; right-associative expressions are evaluated
+	right to left. If two operators have the same precedence and are both
+	non-associative, they cannot be used in the same expression without
+	parenthesising one or both.</para>
+
+	<para>An operator’s arity is the number of arguments it takes. An arity
+	of 1 makes an operator <firstterm>unary</firstterm>, 2,
+	<firstterm>binary</firstterm>, and 3,
+	<firstterm>ternary</firstterm>.</para>
+	
+	<table rules="groups">
+	  <caption>Operators in descdending order of precedence</caption>
+
+	  <thead>
+	    <tr>
+	      <th>Operators</th>
+	      <th>Arity</th>
+	      <th>Associativity</th>
+	      <th>Function</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td><literal>!</literal>, <literal>~</literal>, <literal>+</literal></td>
+	      <td>Unary</td>
+	      <td>Right</td>
+	      <td>NOT, bitwise complement, unary plus.</td> 
+	    </tr>
+	    <tr>
+	      <td><literal>**</literal></td>
+	      <td>Binary</td>
+	      <td>Right</td>
+	      <td>Exponentiation</td>
+	    </tr>
+	    <tr>
+	      <td><literal>-</literal></td>
+	      <td>Unary</td>
+	      <td>Right</td>
+	      <td>Unary minus.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>*</literal>, <literal>/</literal>, <literal>%</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>Multiplication, division, modulus.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>+</literal>, <literal>-</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>Addition, subtraction.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>&lt;&lt;</literal>, <literal>&gt;&gt;</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>Left-shift or append, right-shift.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>&amp;</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>Bitwise AND.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>|</literal>, <literal>^</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>Bitwise OR, Bitwise XOR.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>&lt;</literal>, <literal>&lt;=</literal>, <literal>&gt;=</literal>, <literal>&gt;</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>Inequalities.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>==</literal>, <literal>===</literal>,
+	      <literal>!=</literal>, <literal>=~</literal>,
+	      <literal>=~</literal>, <literal>!~</literal>,
+	      <literal>&lt;=&gt;</literal></td>
+	      <td>Binary</td>
+	      <td>None</td>
+	      <td>Equality and comparison.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>&amp;&amp;</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>AND</td>
+	    </tr>
+	    <tr>
+	      <td><literal>||</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>OR</td>
+	    </tr>
+	    <tr>
+	      <td><literal>..</literal>, <literal>...</literal></td>
+	      <td>Binary</td>
+	      <td>None</td>
+	      <td><literal>Range</literal> constructor.</td>
+	    </tr>
+	    <tr>
+	      <td>…<literal>?</literal>…<literal>:</literal>…</td>
+	      <td>Ternary</td>
+	      <td>Right</td>
+	      <td>Conditional</td>
+	    </tr>
+	    <tr>
+	      <td><literal>rescue</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>Exception handling.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>=</literal></td>
+	      <td>Binary</td>
+	      <td>Right</td>
+	      <td>Assignment.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>**=</literal>, <literal>*=</literal>, <literal>/=</literal>, <literal>%=</literal>, <literal>+=</literal>, <literal>-=</literal>, <literal>&lt;&lt;=</literal>, <literal>&gt;&gt;=</literal>, <literal>&amp;&amp;=</literal>, <literal>&amp;=</literal>, <literal>||=</literal>, <literal>|=</literal>, <literal>^=</literal></td> 
+	      <td>Binary</td>
+	      <td>Right</td>
+	      <td>Abbreviated assignment.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>defined?</literal></td>
+	      <td>Unary</td>
+	      <td>None</td>
+	      <td>Variable tests.</td>
+	    </tr>
+	    <tr>
+	      <td><literal>not</literal></td>
+	      <td>Unary</td>
+	      <td>Right</td>
+	      <td>NOT</td>
+	    </tr>
+	    <tr>
+	      <td><literal>and</literal>, <literal>or</literal></td>
+	      <td>Binary</td>
+	      <td>Left</td>
+	      <td>AND, OR</td>
+	    </tr>
+	    <tr>
+	      <td><literal>if</literal>, <literal>unless</literal>, <literal>while</literal>, <literal>until</literal></td>
+	      <td>Binary</td>
+	      <td>None</td>
+	      <td>Statement modifiers.</td>
+	    </tr>
+	  </tbody>
+	</table>
+      </sect3>
+      
+      <sect3 xml:id="pro.keyword-literals">
+        <title>Keyword Literals</title>
+        
+        <sect4 xml:id="pro.true">
+          <title><literal>true</literal></title>
+          
+          <para>
+            The <literal>true</literal> keyword returns the singleton instance
+            of <literal>TrueClass</literal>. Its value is, by definition,
+            true.
+          </para>
+        </sect4>
+
+        <sect4 xml:id="pro.false">
+          <title><literal>false</literal></title>
+
+          <para>
+            The <literal>false</literal> keyword returns the singleton
+            instance of <literal>FalseClass</literal>. Its value is, by
+            definition, false.
+          </para>
+        </sect4>
+
+        <sect4 xml:id="pro.nil">
+          <title><literal>nil</literal></title>
+
+          <para>
+            The <literal>nil</literal> keyword returns the singleton instance
+            of <literal>NilClass</literal>. Its value is represents the
+            absence of a value.  The <literal>Kernel.nil?</literal> predicate
+            returns <literal>true</literal> if its value is
+            <literal>nil</literal>; <literal>false</literal> otherwise.
+          </para>
+        </sect4>
+
+        <sect4 xml:id="pro.self">
+
+          <title><literal>self</literal></title>
+
+          <para>
+            <literal>self</literal> always evaluates to the current object.
+            Outside of any class definition, i.e. at the top‐level, the
+            current object is an instance of <literal>Object</literal> called
+            <literal>main</literal>. Inside a class definition, but outside of
+            a method definition, the current object is an instance of
+            <literal>Class</literal>. Within a method definition the current
+            object is the instance of the containing class.
+          </para>
+
+          <example xml:id="ex.self-as-the-implicit-receiver">
+            <title><literal>self</literal> is always defined; its value depends
+            on the enclosing context.</title>
+
+            <programlisting><xi:include 
+                href="examples/self-as-the-implicit-receiver.rb" 
+                parse="text"
+            /></programlisting>
+          </example>
+        </sect4>
+        
+        <sect4 xml:id="pro.file">
+          <title><literal>__FILE__</literal></title>
+          
+          <para>
+            Evaluates to a string consisting of the name of the source file
+            currently being executed. The strings
+            <computeroutput>(eval)</computeroutput> and
+            <computeroutput>(irb)</computeroutput> are returned when in an
+            <literal>eval</literal> context and <acronym>IRB</acronym>
+            session, respectively.
+          </para>
+        </sect4>
+
+        <sect4 xml:id="pro.line">
+          <title><literal>__LINE__</literal></title>
+
+          <para>
+            Evaluates to a <literal>Fixnum</literal> specifying the line
+            number in the current <link linkend="pro.file">__FILE__</link>
+            being executed.
+          </para>
+        </sect4>
+        
+        <sect4 xml:id="pro.encoding">
+          <title><literal>__ENCODING__</literal></title>
+
+          <para>
+            Evaluates to an <literal>Encoding</literal> object representing
+            the current source encoding, i.e. that of <link
+              linkend="pro.file">__FILE__</link>.
+          </para>
+        </sect4>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="pro.statements">
+      <title>Statements</title>
+      
+      <para>
+        A statement is an expression whose value is ignored<footnote>
+          <para>
+            Turbak, Gifford, &amp; Sheldon offer a further example of
+            distinguishing between statements and expressions by considering
+            their context <biblioref begin="472" end="476"
+              linkend="bib.turbak08" units="pages"/>.
+          </para>
+        </footnote>. In practice, this implies that a statement is executed
+        for its side-effects, because an expression executed for neither its
+        value nor effect is semantically meaningless.
+      </para>
+
+      <sect3 xml:id="pro.statement-terminators">
+        <title>Statement Terminators &amp; Newlines</title>
+        
+        <para>One statement must be separated from the next by a statement
+	terminator. This may be a semicolon (<literal>U＋003B</literal>) or
+	newline. The latter is preferred because it leads to a natural
+	separation: each statement on its own line. However, a newline does not
+	terminate a statement if: </para>
+	<itemizedlist>
+          <listitem>
+            <para>
+              It is immediately preceded by a reverse solidus
+              (<literal>U＋005C</literal>).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              It is preceded by an <link
+                linkend="mes.operators">operator</link>, with optional
+              intervening <link linkend="pro.whitespace">whitespace</link>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              It is immediately preceded by a comma
+              (<literal>U＋002C</literal>) or full stop
+              (<literal>U＋002E</literal>) in a <link
+                linkend="mes.expressions">message expression</link> or <link
+                linkend="enu.arrays">array</link>/<link
+                linkend="enu.hashes">hash</link> literal, with optional
+              intervening whitespace.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              It is preceded by a left parenthesis, curly bracket, or square
+              bracket, with optional intervening whitespace. (Allows the
+              argument list of <link linkend="mes.expressions">message
+                expressions</link>, and <link
+                linkend="enu.arrays">array</link> or <link
+                linkend="enu.hashes">hash</link> literals to span multiple
+              lines).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              The first non-whitespace character on the following line is a
+              full stop (<literal>U＋002E</literal>). (Allows <link
+                linkend="mes.chaining">chained</link> message expressions to
+              span lines).
+          </para>
+          </listitem>
+          <listitem>
+            <para>
+              It is preceded by one of the following keywords:
+              <literal>alias</literal>, <literal>and</literal>,
+              <literal>begin</literal>, <literal>def</literal>,
+              <literal>defined?</literal>, <literal>case</literal>,
+              <literal>class</literal>, <literal>else</literal>,
+              <literal>elsif</literal>, <literal>ensure</literal>,
+              <literal>for</literal>, <literal>if</literal>,
+              <literal>in</literal>, <literal>module</literal>,
+              <literal>not</literal>, <literal>or</literal>,
+              <literal>then</literal>, <literal>undef</literal>,
+              <literal>unless</literal>, <literal>until</literal>,
+              <literal>when</literal>, or <literal>while</literal>.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="pro.data">
+      <title><literal>__END__</literal></title>
+
+      <remark>TODO</remark>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="pro.interpretation">
+    <title>Interpretation</title>
+    
+    <para>
+      The statements and expressions that comprise a program are collectively
+      known as its <firstterm>source code</firstterm>. To execute a program
+      its source code must be provided to a Ruby
+      <firstterm>interpreter</firstterm>: the program that executes Ruby
+      source code. The reference implementation<footnote>
+      <para>
+        There are several excellent alternative implementations such as <link
+          xlink:href="http://jruby.org/">JRuby</link> and <link
+          xlink:href="http://rubini.us/">Rubinius</link>. However, for the
+        purposes of this book neither are recommended because, although JRuby
+        is close, they are not yet compatible with Ruby 1.9.
+      </para>
+      </footnote> of Ruby, or <acronym>MRI</acronym>, contains an interpreter
+      called <literal>ruby</literal>, so when we speak of executing the
+      interpreter we are referring to running this program. The sections that
+      follow explain the various ways to execute source code.
+    </para>
+
+    <sect2 xml:id="pro.source-files">
+      <title>Source Files</title>
+      
+      <para>
+        Ruby programs are typically stored in plain text files with an
+        <literal>.rb</literal> filename extension. They are then executed by
+        supplying their filenames as arguments to the <literal>ruby</literal>
+        binary, e.g. <literal>ruby myfile.rb</literal> would execute the
+        source code saved in <literal>myfile.rb</literal>.
+      </para>
+    
+      <sect3 xml:id="pro.shebang">
+        <title>Shebang</title>
+        
+        <para>
+          The <firstterm>shebang</firstterm><footnote>
+            <para>
+              A portmanteau of <emphasis>sharp</emphasis> and
+              <emphasis>bang</emphasis> <biblioref begin="1001" end="1001"
+                linkend="bib.wall00" units="pages"/>, colloquial terms for
+              the number sign (<literal>U＋0023</literal>) and the exclamation
+              mark (<literal>U＋0021</literal>), respectively.
+          </para>
+          </footnote> is a notation for informing a UNIX-like operating system
+          of the interpreter with which a script should be executed. If
+          present it must appear as the first line of a source file. It begins
+          with a number sign (<literal>U＋0023</literal>) making it a legal
+          comment line, therefore ignored by the interpreter, which is
+          followed by an exclamation mark (<literal>U＋0021</literal>) then
+          the path to the interpreter.
+        </para>
+
+        <para>
+          A typical shebang is <literal>#!/usr/bin/env ruby -w</literal> which
+          uses <command>env</command> to avoid hardcoding the path to the
+          interpreter, and passes the <literal>-w</literal> option to the
+          interpreter to enable warnings.
+        </para>
+        
+        <para>
+          If a script containing a shebang is executable it may be executed by
+          entering its filename in the shell. This allows the interpreter to
+          be invoked implicitly, and is a common approach.
+        </para>
+      </sect3>
+
+      <sect3 xml:id="pro.source-encoding">
+        <title>Source Encoding</title>
+        
+        <para>
+          Source files are assumed to only contain
+          <acronym>US</acronym>-<acronym>ASCII</acronym> characters, unless
+          they have been explicitly declared to have a different encoding.
+          This topic is explained fully in <link linkend="enc.source"/>.
+        </para>
+      </sect3>
+
+      <sect3 xml:id="pro.warnings">
+        <title>Warnings</title>
+        
+        <para>
+          <firstterm>Warnings</firstterm>— notices of deprecated, ambiguous,
+          or otherwise problematic, code— are enabled when the interpreter is
+          given the <option>-w</option> switch, e.g. <literal>ruby -w
+            myfile.rb</literal>. For example, Ruby warns when a <link
+            linkend="var.constants">constant</link> that has already been
+          defined is assigned to.
+        </para>
+      </sect3>
+
+      <sect3 xml:id="pro.require">
+        <title><literal>require</literal></title>
+      
+        <remark>TODO</remark>
+      </sect3>
+      
+      <sect3 xml:id="pro.load">
+        <title><literal>load</literal></title>
+
+        <remark>TODO</remark>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="pro.irb">
+      <title>IRB</title>
+    
+      <para>
+        Ruby is distributed with a program called <command>irb</command> which
+        provides an interactive shell, or read‐eval‐print loop, for the
+        interpreter. <acronym>IRB</acronym> works as follows:
+      </para>
+
+      <orderedlist>
+        <listitem>
+          <para>
+            You enter a statement of Ruby and press <keycap>Enter</keycap>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            That statement is evaluated and its value printed to the screen.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            You go back to step 1.
+          </para>
+        </listitem>
+      </orderedlist>
+      
+      <para>
+        This provides a superb environment for learning Ruby. As you read this
+        book you can enter the examples in IRB and see for yourself how they
+        work.
+      </para>
+    </sect2>
+
+    <sect2 xml:id="pro.eval">
+      <title>Evaluating Strings</title>
+    
+      <para>
+        Source code can be provided as an command-line argument to the
+        interpreter if it is invoked with the <option>-e</option> switch, e.g.
+        <literal>ruby -e 'puts 1 + 2'</literal> executes the code fragment and
+        displays <computeroutput>3</computeroutput>.
+      </para>
+
+      <para>
+        The <literal>Kernel.eval</literal> method provides similar
+        functionality from within a program. Pass it an arbitrary string of
+        source code as an argument and it will return the result. Continuing
+        with the above example, <literal>eval 'puts 1 + 2'</literal>, has the
+        same result.
+      </para>
+    </sect2>
+  </sect1>
+</chapter>

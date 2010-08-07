@@ -1,0 +1,1060 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+         xmlns:xi="http://www.w3.org/2001/XInclude" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="5.0" 
+         xml:id="enc.encoding" 
+         xml:lang="en">
+         
+  <title>Encoding</title>
+  
+  <para>
+    An encoding is a mapping between byte sequences and
+    characters<footnote>
+      <para>
+        In Unicode terminology, this encompasses both <acronym>CES</acronym>s
+        and <acronym>CEF</acronym>s.
+      </para>
+    </footnote>. Each program source file, <literal>String</literal>,
+    <literal>Symbol</literal>, <literal>Regexp</literal>,
+    <literal>File</literal>, and <literal>IO</literal> object is, relatively
+    independently, associated with its own encoding.  This <link
+      linkend="str.associate">association</link> is simply a statement, that
+    has either been made explicitly about a specific object, or derived from a
+    corresponding default encoding. It may even be spurious.
+  </para>
+  
+  <para>
+    The encoding associated with a source file-the <link
+      linkend="enc.source">source encoding</link>-is by default US-ASCII. If a
+    source file contains characters outside of this encoding, it must specify
+    which one, otherwise Ruby refuses to load it.
+  </para>
+
+  <para>
+    The encoding associated with <link linkend="str.encoding">String</link>s,
+    <link linkend="str.symbol-encoding">Symbol</link>s, and <link
+      linkend="reg.encoding">Regexp</link>s, is by default the source encoding
+    of the file in which they are contained. However, if their literals
+    contain certain character escapes, this is changed implicitly. As with
+    source files, this association can be overridden on a per-object basis.
+  </para>
+  
+  <para>
+    An <literal>IO</literal> or <literal>File</literal> object represents an
+    external data stream, whose encoding is termed its <link
+      linkend="enc.external">external encoding</link>. Data read from a stream
+    is associated with this encoding. Unless set explicitly, it defaults to an
+    encoding inferred from the user’s environment. Both types of object
+    <emphasis>may</emphasis> also be associated with an <link
+      linkend="enc.internal">internal encoding</link>: that which the
+    programmer desires it to have. If set explicitly, data read from the
+    stream is transcoded to the internal encoding; while data written to it is
+    transcoded to the external encoding. The internal encoding is never
+    inferred or derived, so by default no transcoding occurs.
+  </para>
+
+  <para>
+    <link linkend="enc.transcoding">Transcoding</link> is quite distinct from
+    mere <emphasis>association</emphasis>. Whereas the latter changed an
+    attribute of an object, the former converts its contents: translating its
+    underlying bytes to their equivalent representation in another encoding.
+    This chapter discusses both topics, but it is essential to be cognizant of
+    their difference.
+  </para>
+
+  <sect1 xml:id="enc.class">
+    <title><literal>Encoding</literal> Class</title>
+
+    <para>
+      Ruby represents the encodings that she understands as instances of the
+      <literal>Encoding</literal> class, defining each as a constant under the
+      <literal>Encoding</literal> namespace. The constant is named after the
+      upper-case encoding name, with low lines replacing hyphen-minus
+      characters. For example, <literal>Encoding::UTF_8</literal> or
+      <literal>Encoding::Windows_1250</literal>. Given an encoding name as a
+      <literal>String</literal>, the corresponding <literal>Encoding</literal>
+      object may be retrieved with
+      <literal>Encoding.find(<replaceable>name</replaceable>)</literal>.
+    </para>
+    
+    <para>
+      A list of built-in encodings may be retrieved as an
+      <literal>Array</literal> of <literal>Encoding</literal> objects with the
+      <literal>Encoding.list</literal> method.
+      <literal>Encoding.aliases</literal> returns a <literal>Hash</literal>
+      whose keys are encoding aliases, and values are the corresponding
+      built-in encoding. Methods that expect encodings as arguments accept
+      instances of <literal>Encoding</literal>, or <literal>String</literal>s
+      naming a built-in encoding or its alias. The <literal>Encoding</literal>
+      object  associated with a <literal>String</literal>,
+      <literal>Symbol</literal>, or <literal>Regexp</literal> is returned by
+      their <literal>#encoding</literal> method.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="enc.source">
+    <title>Source Encoding</title>
+  
+    <para>
+      The <firstterm>source encoding</firstterm> is the character encoding of
+      a given source file. It is US-ASCII by default. A
+      <literal>SyntaxError</literal> is raised when a source file contains one
+      or more characters invalid in the source encoding.
+    </para>
+
+    <para>
+      A file’s source encoding may be specified inline by means of a
+      <firstterm>coding comment</firstterm>: a specially formatted comment
+      that declares the encoding of the lines that follow. If omitted, the
+      default source encoding is assumed. If a source file contains a <link
+        linkend="pro.shebang">shebang</link> line, the coding comment must
+      appear on the second line; otherwise it must appear on the first.
+    </para>
+    
+    <para>
+      The coding comment is a US-ASCII string which begins with a number sign
+      (<literal>U＋0023</literal>) and contains<footnote>
+        <para>
+          That the coding comment need only <emphasis>contain</emphasis>
+          <literal>coding</literal> allow Ruby to recognise Vim and Emacs
+          modelines which declare a file’s encoding. For example, <literal>#
+            vim: set fileencoding=utf-8 :</literal> informs both Vim and Ruby
+          that the file is encoded in UTF-8.
+        </para>
+      </footnote> the string <literal>coding</literal> followed by an equals
+      sign (<literal>U＋003D</literal>) or colon (<literal>U＋003A</literal>)
+      then the name of the source encoding. The encoding name is one of those
+      returned by <literal>Encoding.name_list</literal> written in a case
+      insensitive fashion.
+    </para>
+
+    <para>
+      The source encoding of the currently executing code can be obtained with
+      the <link linkend="pro.encoding">__ENCODING__</link> keyword.
+    </para>
+
+    <example xml:id="ex.coding-comment">
+      <title>Setting and querying the source encoding</title>
+
+      <programlisting><xi:include href="examples/coding-comment.rb"
+          parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="enc.external">
+    <title>External Encoding</title>
+
+    <para>
+      The encoding of the data in an <literal>IO</literal> stream is known by
+      Ruby as the object’s <firstterm>external encoding</firstterm>. Every
+      <literal>IO</literal> object has an external encoding, so data read from
+      it will be associated with the same. Ruby infers the default external
+      encoding with the following steps <biblioref linkend="bib.harada09"/>,
+      stopping as soon as she finds one which is usable:
+    </para>
+    
+    <variablelist>
+      <title>Procedure for Deriving the Default External Encoding</title>
+
+      <varlistentry>
+        <term><literal>Encoding.default_external=</literal></term>
+        <listitem>
+          <para>
+            If an <literal>Encoding</literal> object, or name, been assigned
+            to <literal>Encoding.default_external=</literal>, that is the
+            default external encoding.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Interpreter’s <literal>-E</literal> switch</term>
+        <listitem>
+          <remark>Clarify thet _encoding_ must be valid?</remark>
+          <para>
+            If the Ruby interpreter was invoked with an
+            <option>-E<replaceable>encoding</replaceable></option> option,
+            <replaceable>encoding</replaceable> is the default external
+            encoding.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Locale encoding</term>
+        <listitem>
+          <para>
+            Use the encoding derived from the user’s environment, as explained
+            in <xref linkend="enc.locale"/>.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <sect2 xml:id="enc.locale">
+      <title>Locale Encoding</title>
+      
+      <para>
+        The <firstterm>locale encoding</firstterm> is an encoding inferred
+        from the user’s environment that Ruby supports. It is determined in
+        two distinct stages, the first of which is to interrogate the user’s
+        environment for his preferred encoding:
+      </para>
+
+      <orderedlist>
+        <listitem>
+          <para>
+            Inspect relevant environment variables, e.g. <envar>LANG</envar>,
+            <envar>LC_CTYPE</envar>, or <envar>LC_ALL</envar>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Or, if the platform is Windows or Cygwin, by invoking C’s
+            <function>nl_langinfo_codeset()</function> or Windows’ <link
+              xlink:href="http://msdn.microsoft.com/en-us/library/ms683162(VS.85).aspx"
+              ><function>GetConsoleCP()</function></link>
+            function.
+        </para>
+        </listitem>
+      </orderedlist>
+      
+      <para>
+        The result of this search, or <literal>nil</literal> if it failed, is
+        the <firstterm>locale charmap</firstterm> encoding, and is assigned to
+        <literal>Encoding.locale_charmap</literal>. Ruby must now correlate
+        this encoding with the encodings she supports to determine the
+        <firstterm>locale encoding</firstterm>:
+      </para>
+      
+      <orderedlist>
+        <listitem>
+          <para>
+            If the locale charmap encoding is known to Ruby-that is,
+            <literal>Encoding.find(Encoding.locale_charmap)</literal> returns
+            an <literal>Encoding</literal> object-that becomes the locale
+            encoding.
+        </para>
+        </listitem>
+        <listitem>
+          <para>
+            If the locale charmap encoding couldn’t be determined, the locale
+            encoding is US-ASCII.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Otherwise, the locale encoding is ASCII-8BIT.
+          </para>
+        </listitem>
+      </orderedlist>
+    </sect2>
+
+    <sect2 xml:id="enc.external-stream">
+      <title><literal>IO</literal> Streams</title>
+
+      <para>
+        By default, as the name suggests, all <literal>IO</literal> objects have
+        the default external encoding as their external encoding. However, this
+        may also be set on a per-stream basis by specifying an external encoding
+        when <link linkend="io.open">opening</link> an I/O stream, or with
+        <literal>IO#set_encoding(<replaceable>encoding</replaceable>)</literal>,
+        where <replaceable>encoding</replaceable> is an encoding name or
+        <literal>Encoding</literal> object. The external encoding of a stream
+        may be queried with <literal>IO#external_encoding</literal>, which
+        returns the corresponding <literal>Encoding</literal> object. Note,
+        however, that if the stream is in write-only mode, and wasn’t explicitly
+        assigned an external encoding, this method returns
+        <literal>nil</literal>.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="enc.internal">
+    <title>Internal Encoding</title>
+  
+    <para>
+      Optionally, an <literal>IO</literal> object may also be associated with
+      an <firstterm>internal encoding</firstterm>. This is the encoding that
+      the programmer wishes to use with the data in a stream. The default
+      value of an <literal>IO</literal> object’s internal encoding is equal to
+      the <firstterm>default internal encoding</firstterm>
+      (<literal>Encoding.default_internal</literal>), which is determined as
+      follows:
+    </para>
+
+    <variablelist>
+      <title>Procedure for Determining the Default Internal Encoding</title>
+
+      <varlistentry>
+        <term><literal>Encoding.default_internal=</literal></term>
+        <listitem>
+          <para>
+            If an <literal>Encoding</literal> object, or name, been assigned
+            to <literal>Encoding.default_internal=</literal>, that is the
+            default internal encoding.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Interpreter’s <literal>-E</literal> switch</term>
+        <listitem>
+          <para>
+            If the Ruby interpreter was invoked with an
+            <option>-E<replaceable>external</replaceable>:<replaceable>internal</replaceable></option>
+            or <option>-E:<replaceable>internal</replaceable></option>
+            option, where both <replaceable>external</replaceable> and
+            <replaceable>internal</replaceable> are valid encoding names, the
+            default internal encoding is <replaceable>internal</replaceable>.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Interpreter’s <option>-U</option> switch</term>
+        <listitem>
+          <para>
+            If the interpreter was invoked with the <option>-U</option>
+            switch, the default internal encoding is UTF-8
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>
+      If all the above steps failed, the default internal encoding is
+    <literal>nil</literal>. Therefore, unlike the default external encoding which is
+    inferred automatically from one’s locale, the default internal encoding is
+    <literal>nil</literal> unless set explicitly.
+    </para>
+    
+    <para>
+      The internal encoding of an <literal>IO</literal> may be changed from
+      this default on a per-stream basis by specifying an internal encoding
+      when <link linkend="io.open">opening</link> the stream, or with
+      <literal>IO#set_encoding(<replaceable>external</replaceable>,
+        <replaceable>internal</replaceable>)</literal>, where both
+      <replaceable>external</replaceable> and
+      <replaceable>internal</replaceable> are encoding names or
+      <literal>Encoding</literal> objects. Alternatively,
+      <literal>IO#set_encoding</literal> may be given a
+      <literal>String</literal> of the form
+      <literal><replaceable>external</replaceable>:<replaceable>internal</replaceable></literal>.
+    </para>
+
+    <para>
+      An internal encoding of <literal>nil</literal> means that the programmer
+      does not express a preference for how the data he reads and writes via
+      I/O is encoded. Accordingly, Ruby associates the data with the stream’s
+      external encoding, and gets out of the way. This, too, is the situation
+      if the stream’s external encoding is equal to its internal encoding: the
+      data is already encoded how the programmer requires.
+    </para>
+    
+    <para>
+      The internal encoding is relevant when it is both set-that is, has a
+      non-<literal>nil</literal> value-and differs from the <link
+        linkend="enc.external">external encoding</link>. To honour the
+      internal encoding, Ruby <link
+        linkend="enc.transcoding">transcodes</link> data read from a stream
+      from the external to the internal encoding, and transcodes data written
+      to the stream from the internal to the external encoding.
+    </para>
+    
+    <para>The transcoding works exactly the same as <link
+        linkend="enc.transcoding">String#encode</link>, so the <link
+        linkend="enc.options-hash">#encode options Hash</link> may be
+      merged with the <link linkend="io.options-hash">IO</link> options Hash,
+      wherever the latter is accepted. For example, it may be supplied as the
+      final argument of <link linkend="io.init">IO.new</link> or
+      <literal>IO#set_encoding</literal>.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="enc.ascii-8bit">
+    <title>ASCII-8BIT</title>
+  
+    <para>
+      Ruby defines an encoding named <literal>ASCII-8BIT</literal>, with an
+      alias of <literal>BINARY</literal>, which does not correspond to any
+      known encoding. It is intended to be associated with binary data, such
+      as the bytes that make up a <acronym>PNG</acronym> image, so has no
+      restrictions on content. One byte always corresponds with one character.
+      This allows a <literal>String</literal>, for instance, to be treated as
+      <link linkend="str.bytes">bag of bytes</link> rather than a sequence of
+      characters. <literal>ASCII-8BIT</literal>, then, effectively corresponds
+      to the absence of an encoding, so methods that expect an encoding name
+      recognise <literal>nil</literal> as a synonym.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="enc.compatibility">
+    <title>Compatibility</title>
+  
+    <para>
+      Methods of <literal>String</literal> and <literal>Regexp</literal> that
+      take another such object as an argument require the encodings associated
+      with the objects to be <firstterm>compatible</firstterm>. An encoding is
+      always compatible with itself, so operations involving two objects
+      associated with the same encoding are allowed. Likewise, two objects are
+      compatible if they are both <link
+        linkend="str.ascii-only">ASCII-only</link>.
+    </para>
+  
+    <para>
+      The compatibility of other combinations of encodings can be determined
+      with <literal>Encoding.compatible?</literal>, which compares the
+      encoding of its two arguments, which are either
+      <literal>Encoding</literal> objects or objects associated with
+      encodings. If they are compatible, the encoding which would result from
+      their combination is returned; otherwise, <literal>nil</literal>
+      results. Operating on objects with incompatible encodings causes an
+      <literal>Encoding::CompatibilityError</literal> exception to be raised.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="enc.transcoding">
+    <title>Transcoding</title>
+  
+    <para>
+      <firstterm>Transcoding</firstterm> a <literal>String</literal> converts
+      its bytes to the equivalent byte sequences in a given encoding, with
+      which it associates the result. It is typically performed with
+      <literal>String#encode</literal>, which returns its receiver transcoded
+      from a <replaceable>source</replaceable> encoding to a
+      <replaceable>target</replaceable> encoding.
+      <literal>String#encode!</literal> operates in the same manner, but
+      transcodes the receiver in-place.
+    </para>
+
+    <para>
+      By default, <replaceable>source</replaceable> is the receiver’s current
+      encoding, and <replaceable>target</replaceable> is the <link
+        linkend="enc.internal">default internal</link> encoding.  When called
+      with one encoding argument, this becomes the
+      <replaceable>target</replaceable> encoding. When called with two
+      encoding arguments, the first is the <replaceable>target</replaceable>,
+      the second is the <replaceable>source</replaceable>. This last form is
+      mainly useful when the <literal>String</literal> is associated with
+      <link linkend="enc.ascii-8bit">ASCII-8BIT</link>: it associates the
+      <literal>String</literal> with <replaceable>source</replaceable>, then
+      transcodes from <replaceable>source</replaceable> to
+      <replaceable>target</replaceable>.
+    </para>
+  
+    <para>
+      If a character in the <literal>String</literal> does not exist in the
+      <replaceable>target</replaceable> encoding, or the
+      <literal>String</literal> contains bytes invalid in its current
+      encoding, an exception is raised.  This behaviour can be changed by
+      supplying an <replaceable>options</replaceable> <literal>Hash</literal>
+      as the final argument, whose form is described in the table that
+      follows.
+    </para>
+
+    <table xml:id="enc.options-hash">
+      <caption>The keys and values that are recognised in the
+        <replaceable>options</replaceable> <literal>Hash</literal> accepted by
+        <literal>String#encode</literal> and <literal>String#encode!</literal>. The
+        <emphasis>Key</emphasis> column names a key of the <literal>Hash</literal>, and the
+        <emphasis>Values</emphasis> column specifies its possible values.
+      </caption>
+      
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Values</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><literal>:cr_newline</literal></td>
+          <td><literal>true</literal> or <literal>false</literal></td>
+          <td>Whether to convert <literal>\n</literal> to <literal>\r</literal>.</td>
+        </tr>
+        <tr>
+          <td><literal>:crlf_newline</literal></td>
+          <td><literal>true</literal> or <literal>false</literal></td>
+          <td>Whether to convert <literal>\n</literal> to <literal>\r\n</literal>.</td>
+        </tr>
+        <tr>
+          <td><literal>:invalid</literal></td>
+          <td><literal>:replace</literal> or <literal>nil</literal></td>
+          <td>
+            A value of <literal>:replace</literal> causes characters invalid
+            in the source encoding to be substituted for the replacement
+            string. A value of <literal>nil</literal>, which is the default,
+            causes an <literal>Encoding::InvalidByteSequenceError</literal>
+            exception to be raised in this scenario.
+          </td>
+        </tr>
+        <tr>
+          <td><literal>:replace</literal></td>
+          <td><literal>String</literal></td>
+          <td>
+            The <firstterm>replacement string</firstterm> used by the
+            <literal>:invalid</literal> or <literal>:undef</literal> options.
+            By default, it is <literal>U+FFFD</literal> for Unicode encodings
+            and <literal>?</literal> for others.
+          </td>
+        </tr>
+        <tr>
+          <td><literal>:undef</literal></td>
+          <td><literal>:replace</literal> or <literal>nil</literal></td>
+          <td>
+            A value of <literal>:replace</literal> causes characters invalid
+            in the destination encoding to be substituted for the replacement
+            string. A value of <literal>nil</literal>, which is the default,
+            causes an <literal>Encoding::UndefinedConversionError</literal>
+            exception to be raised in this scenario.
+          </td>
+        </tr>
+        <tr>
+          <td><literal>:universal_newline</literal></td>
+          <td><literal>true</literal> or <literal>false</literal></td>
+          <td>
+            When true, <literal>\r\n</literal> and <literal>\r</literal> are
+            converted to <literal>\n</literal>.
+          </td>
+        </tr>
+        <tr>
+          <td><literal>:xml</literal></td>
+          <td><literal>:text</literal> or <literal>:attr</literal></td>
+          <td>
+            Replaces <literal>&amp;</literal> with
+            <literal>&amp;amp;</literal>, <literal>&lt;</literal> with
+            <literal>&amp;lt;</literal>, <literal>&gt;</literal> with
+            <literal>&amp;gt;</literal>, and undefined characters with a
+            hexadecimal entity of the form
+            <literal>&amp;#x<replaceable>hex</replaceable>;</literal>, where
+            <replaceable>hex</replaceable> is a sequence of hexadecimal
+            digits. In addition, when a value of <literal>:attr</literal> is
+            supplied, <literal>"</literal> is replaced with
+            <literal>&amp;quot;</literal>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <sect2 xml:id="enc.converter">
+      <title><literal>Encoding::Converter</literal></title>
+
+      <para>
+        The <literal>Encoding::Converter</literal> class provides additional
+        control over the transcoding process.
+        <literal>Encoding::Converter.new</literal> takes a source encoding as
+        its first argument, and a destination encoding as its second. Both may
+        be given as encoding names or <literal>Encoding</literal> objects. An
+        <link linkend="enc.options-hash">options Hash</link> may be supplied
+        as a third argument.
+      </para>
+      
+      <sect3 xml:id="enc.conversion-path">
+        <title>Conversion Path</title>
+
+        <para>
+          Text is transcoded along a <firstterm>conversion path</firstterm>.
+          Each step involves a source encoding and a destination encoding. In
+          the simple case, the conversion path will have only one step: from
+          the given source encoding to the given destination encoding.
+          However, more complex transcoding requires intermediate stages, e.g.
+          to transcode Big5 into ISO-8859-9, we must first transcode to UTF-8:
+          Big5 to UTF-8, then UTF-8 to ISO-8859-9. The source and destination
+          encodings that are currently in use are returned by
+          <literal>Encoding::Converter#source_encoding</literal> and
+          <literal>Encoding::Converter#destination_encoding</literal>,
+          respectively, as <literal>Encoding</literal> objects.
+        </para>
+        
+        <para>
+          The various newline conversion options and those which perform
+          escaping are termed <firstterm>decorators</firstterm>, and also
+          feature in the conversion path. If the destination encoding is
+          ASCII-compatible, they appear as the final steps, i.e. after any
+          encoding pairs. Otherwise, they appear before the final step.
+        </para>
+
+        <para>
+          <literal>Encoding::Converter#convpath</literal> returns an
+          <literal>Array</literal> of steps in the conversion path. Steps
+          which convert between two encodings are represented as an
+          <literal>Array</literal> of the respective
+          <literal>Encoding</literal> objects. A steps which applies a
+          decorator appears as a <literal>String</literal> naming the
+          decorator.
+        </para>
+
+        <para>
+          <literal>Encoding::Converter.new</literal> may be invoked with an
+          <literal>Array</literal> in this form as an argument. The
+          instantiated converter then uses this conversion path rather than
+          inferring one from its arguments.
+        </para>
+      </sect3>
+
+      <sect3 xml:id="enc.convert">
+        <title>Piecemeal Conversion</title>
+      
+        <para>
+          An <literal>Encoding::Converter</literal> object can perform
+          piecemeal transcoding, by repeatedly calling
+          <literal>Encoding::Converter#convert</literal> with the next
+          fragment of input. The fragment is transcoded and returned,
+          associated with the destination encoding. However, because each
+          fragment is always assumed to be part of a larger source, it may
+          legitimately end mid-character, i.e.  prior to a character boundary.
+          These trailing bytes are buffered internally, and the successfully
+          transcoded characters are returned. Then, when
+          <literal>#convert</literal> is called next, its argument is assumed
+          to supply the remaining bytes. If an unambiguously invalid byte
+          sequence is encountered, an exception is raised.
+        </para>
+
+        <para>
+          Conceptually, we can explain this process as follows. When an
+          <literal>Encoding::Converter</literal> instance is created, an empty
+          <replaceable>pending</replaceable> buffer is created. Each time it
+          is called, <literal>#convert</literal> initialises two empty buffers
+          of its own: <replaceable>source</replaceable> and
+          <replaceable>destination</replaceable>. It copies its argument into
+          <replaceable>source</replaceable>, which it then processes
+          byte-by-byte:
+        </para>
+
+        <orderedlist>
+          <listitem>
+            <para>
+              The byte is appended to <replaceable>pending</replaceable> and
+              removed from <replaceable>source</replaceable>. The next action
+              depends on the contents of
+              <replaceable>pending</replaceable>:</para>
+              
+              <orderedlist>
+                <listitem>
+                  <para>
+                    If it constitutes a valid character in the destination
+                    encoding, it is transcoded and written to
+                    <replaceable>destination</replaceable>.
+                    <replaceable>pending</replaceable> is emptied.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    If it constitutes a byte sequence that could be valid in
+                    the source encoding, but currently isn’t, it is left in
+                    <replaceable>pending</replaceable> in the hope that the
+                    next call to <literal>#convert</literal> will supply the
+                    remaining bytes.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    If it is invalid in the source encoding, regardless of
+                    subsequent input, an
+                    <literal>Encoding::InvalidByteSequenceError</literal>
+                    exception is raised.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    If its valid in the source encoding, but a corresponding
+                    character does not exist in the destination encoding, an
+                    <literal>Encoding::UndefinedConversionError</literal>
+                    exception is raised.
+                  </para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+          <listitem>
+            <para>
+              When the source buffer is empty, the destination buffer is
+              returned, then emptied.
+            </para>
+          </listitem>
+        </orderedlist>
+
+        <para>
+          Thus, after <literal>#convert</literal> returns
+          <replaceable>destination</replaceable>,
+          <replaceable>pending</replaceable> may not be empty. An implication
+          is that a call to <literal>#convert</literal> may raise an exception
+          because, when combined with the contents of
+          <replaceable>pending</replaceable>, its argument was invalid.  i.e.
+          an exception may be raised even if the argument is in itself valid.
+          Therefore, when there is no more text to transcode,
+          <literal>Encoding::Converter#finish</literal> should be called to
+          signal that the contents of <replaceable>pending</replaceable>
+          should be transcoded and returned. If
+          <replaceable>pending</replaceable> isn’t empty when
+          <literal>#finish</literal> is called, this normally results in one
+          of the aforementioned exceptions being raised, because if its
+          contents constitute a valid character, it would have already been
+          returned by <literal>#convert</literal>. However, if the destination
+          encoding is a stateful encoding such as ISO/IEC 2022, there may
+          legitimately be bytes left in <replaceable>pending</replaceable>,
+          which <literal>#finish</literal> flushes out. The lesson is that
+          <literal>#finish</literal> should always be called when there is no
+          more text to transcode.
+        </para>
+      </sect3>
+
+      <sect3 xml:id="enc.primitive-convert">
+        <title>Primitive Conversion</title>
+        
+        <para>
+          <literal>Encoding::Converter#convert</literal> is built atop
+          <literal>Encoding::Converter#primitive_convert</literal>, which
+          provides even more control over the process. Unlike
+          <literal>#convert</literal>, the source and destination buffers must
+          be specified explicitly: the former as the first argument, the
+          latter as the second. Both should be <literal>String</literal>s
+          holding, respectively, the text to be transcoded, and the
+          <literal>String</literal> in which to store the result. If the
+          source buffer is an empty <literal>String</literal> it may be given
+          as <literal>nil</literal>, instead. Neither buffer can be frozen, as
+          they are, respectively, depleted and replenished in the course of
+          the operation.
+        </para>
+
+        <para>
+          Bytes are written from the source buffer to the destination buffer
+          via the pending buffer, as with <literal>#convert</literal>.
+          However, this time instead of exceptions being raised for erroneous
+          input, a <literal>Symbol</literal> is returned, as explained
+          subsequently, which describes the problem. Thus, the programmer may
+          elect to resolve the error before calling
+          <literal>#primitive_convert</literal> again to resume the
+          conversion. Due to the use of the pending buffer,
+          <literal>Encoding::Converter#finish</literal> should still be used,
+          as described previously.
+        </para>
+
+        <para>
+          By default, the destination buffer is appended to. If an
+          <literal>Integer</literal> offset is given as the third argument to
+          <literal>#primitive_convert</literal>, it specifies the byte index
+          after which the transcoded text should be written. An
+          <literal>ArgumentError</literal> is raised if the offset is given
+          and greater than the byte size of the destination buffer. If this
+          argument is specified as <literal>nil</literal>, the default
+          behaviour is followed.
+        </para>
+        
+        <para>
+          An optional fourth argument, given as an <literal>Integer</literal>,
+          specifies the maximum size in bytes of the destination buffer; by
+          default this value is <literal>nil</literal> which denotes an
+          absence of a limit. If this limit is non-<literal>nil</literal> and
+          the size of the destination buffer reaches it, transcoding will stop
+          and <literal>:destination_buffer_full</literal> will be returned.
+        </para>
+
+        <para>
+          An optional fifth argument specifies one or both of the following
+          options as a <literal>Hash</literal> or a bitwise OR of the
+          corresponding constants:
+        </para>
+
+        <variablelist>
+          <title>Conversion Options</title>
+
+          <varlistentry>
+            <term><literal>after_output: true</literal></term>
+            <term><literal>Encoding::Converter::AFTER_OUTPUT</literal></term>
+            <listitem>
+              <para>
+                After writing a character to the destination buffer, stop, and
+                return <literal>:after_output</literal>.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><literal>partial_input: true</literal></term>
+            <term><literal>Encoding::Converter::PARTIAL_INPUT</literal></term>
+            <listitem>
+              <para>
+                The source buffer is known to be incomplete, i.e. it ends
+                outside of a character boundary. If this option is given and
+                the last byte(s) of the source buffer don’t correspond to a
+                character in the destination encoding,
+                <literal>:source_buffer_empty</literal> is returned. This
+                indicates that the remainder of the source text should be
+                assigned to the source buffer, and
+                <literal>#primitive_convert</literal> called again.
+              </para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        
+        <para>
+          The return value is one of the following <literal>Symbol</literal>s:
+        </para>
+        
+        <variablelist>
+          <title>Return Values of <literal>#primitive_convert</literal></title>
+
+          <varlistentry>
+            <term><literal>:invalid_byte_sequence</literal></term>
+            <listitem>
+              <para>
+                The source buffer contains a byte sequence invalid in the
+          destination encoding, regardless of any following bytes. Equivalent
+          to the <literal>Encoding::InvalidByteSequenceError</literal> exception
+          being raised.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><literal>:incomplete_input</literal></term>
+            <listitem>
+              <para>
+                The source buffer ends prematurely, presumably prior to a
+                character boundary, but is potentially valid if additional
+                input is supplied. Nevertheless, this state is regarded as
+                exceptional, equivalent to an
+                <literal>Encoding::InvalidByteSequenceError</literal> being
+                raised, because the <literal>:partial_input</literal> option
+                is <literal>false</literal>. If, as expected, no more input is
+                supplied, the result will end with an invalid byte sequence.
+                Conversely, if <literal>:partial_input</literal> was
+                <literal>true</literal>, the unexceptional
+                <literal>:source_buffer_empty</literal>
+                <literal>Symbol</literal> would be returned instead.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><literal>:undefined_conversion</literal></term>
+            <listitem>
+              <para>
+                A character has been encountered in the source buffer which,
+                although legal in the source encoding, has no equivalent in
+                the destination encoding. Equivalent to an
+                <literal>Encoding::UndefinedConversionError</literal>
+                exception being raised.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><literal>:after_output</literal></term>
+            <listitem>
+              <para>
+                If the <literal>:after_output</literal> option is given, after
+                each character is converted this <literal>Symbol</literal> is
+                returned.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><literal>:destination_buffer_full</literal></term>
+            <listitem>
+              <para>
+                If a non-<literal>nil</literal> value has been given for the
+                fourth argument, this <literal>Symbol</literal> indicates that
+                the destination buffer has reached the given limit.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><literal>:source_buffer_empty</literal></term>
+            <listitem>
+              <para>
+                The source buffer ends prematurely, presumably prior to a
+                character boundary, and the <literal>:partial_input</literal>
+                option has been given. The source buffer should be replenished
+                and transcoding resumed.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><literal>:finished</literal></term>
+            <listitem>
+              <para>
+                Conversion is finished, either naturally or because
+                <literal>Encoding::Converter#finish</literal> has been called.
+              </para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </sect3>
+      
+      <sect3 xml:id="enc.error-context">
+        <title>Error Context</title>
+        
+        <para>
+          When an error occurs during transcoding, it is often necessary to
+          understand its context so as to recover. The exceptions raised by
+          <literal>#convert</literal>, are augmented with accessors for
+          gleaning this information. Additionally,
+          <literal>Encoding::Converter#primitive_errinfo</literal> provides
+          detailed information about the last error in the form of an
+          <literal>Array</literal> with the following elements, in this order:
+        </para>
+
+        <orderedlist>
+          <listitem>
+            <para>
+              The <literal>Symbol</literal> that
+              <literal>#primitive_convert</literal> would have returned in
+              this situation, even if <literal>#convert</literal> was the
+              actual method used. The six possible values were described
+              above. If this element is <literal>:after_output</literal>,
+              <literal>:destination_buffer_full</literal>,
+              <literal>:source_buffer_empty</literal>, or
+              <literal>:finished</literal>, all remaining elements are
+              <literal>nil</literal>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              The source encoding as a <literal>String</literal>. This may not
+              be the given source encoding if the conversion path has multiple
+              steps.  Equivalent to the
+              <literal>#source_encoding_name</literal> methods of
+              <literal>Encoding::UndefinedConversionError</literal> and
+              <literal>Encoding::InvalidByteSequenceError</literal>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              The destination encoding as a <literal>String</literal>. This
+              may not be the given destination encoding if the conversion path
+              has multiple steps.  Equivalent to the
+              <literal>#destination_encoding_name</literal> methods of
+              <literal>Encoding::UndefinedConversionError</literal> and
+              <literal>Encoding::InvalidByteSequenceError</literal>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              The problematic bytes as a <literal>String</literal>: the bytes
+              prior to the invalid byte for
+              <literal>:invalid_byte_sequence</literal>, the errant character
+              for <literal>:undefined_conversion</literal>, and the bytes read
+              since the last character for
+              <literal>:incomplete_input</literal>. Equivalent to
+              <literal>Encoding::UndefinedConversionError#error_char</literal>
+              and
+              <literal>Encoding::InvalidByteSequenceError#error_bytes</literal>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              For <literal>:invalid_byte_sequence</literal>, this element
+              holds the byte that rendered the sequence invalid. i.e. the
+              preceding element held the bytes which could legitimately form a
+              valid sequence, and this element holds the byte which
+              invalidated it. This is equivalent to
+              <literal>Encoding::InvalidByteSequenceError#readagain_bytes</literal>.
+              For <literal>:undefined_conversion</literal> and
+              <literal>:incomplete_input</literal>, this element is
+              <literal>""</literal>.
+            </para>
+          </listitem>
+        </orderedlist>
+
+        <para>
+          So, error context can be ascertained, <emphasis>ex post
+            facto</emphasis>, by using <literal>#convert</literal>, then
+          rescuing and examining the exceptions it raises, or by using either
+          transcoding method and inspecting elements of the
+          <literal>#primitive_errinfo</literal><literal>Array</literal>. A
+          third approach is to use <literal>#last_error</literal>, which
+          returns the exception <literal>#convert</literal> would have raised,
+          or otherwise <literal>nil</literal>. This saves one from having to
+          rescue exceptions or splice an <literal>Array</literal>, if his
+          interest is purely the exceptional situations. It also suggests a
+          useful idiom for dealing with errors: it is true the error indicates
+          malformed input; otherwise, it relates to the configuration of the
+          transcoder.
+        </para>
+
+        <para>
+          Recall, however, that the states
+          <literal>:incomplete_input</literal> and
+          <literal>:invalid_byte_sequence</literal> both indicate that an
+          invalid byte sequence has been discovered-the former is simply
+          optimistic that the next input will correct it-so both have
+          <literal>Encoding::InvalidByteSequenceError</literal> as their
+          exception.  They can be distinguished with the
+          <literal>Encoding::InvalidByteSequenceError#incomplete_input?</literal>
+          predicate, which only returns <literal>true</literal> in the former
+          case.
+        </para>
+      </sect3>
+
+      <sect3 xml:id="enc.invalid-byte-sequence-recovery">
+        <title>Recovery from an Invalid Byte Sequence</title>
+        
+        <para>
+          When an invalid byte sequence is encountered, the transcoder saves
+          two sets of bytes: the <firstterm>error bytes</firstterm> and the
+          <firstterm>read-again bytes</firstterm>. The former are always
+          discarded: they are, independently of context, invalid in the
+          destination encoding. The latter are the buffered bytes that
+          followed. If this error is simply ignored, and the call to
+          <literal>#primitive_convert</literal> repeated, the read-again bytes
+          are returned to the source buffer, and considered again. If this new
+          byte sequence is valid in the destination encoding, it will be
+          transcoded as normal. Otherwise, this process will be repeated. The
+          outcome is almost certainly undesirable. Invalid byte sequences are
+          split, and some of their constituent bytes are interpreted as
+          characters in their own right, and appended to the destination
+          buffer.
+        </para>
+
+        <example xml:id="ex.ignoring-invalid-byte-sequence">
+          <title>Ignoring an invalid byte sequence error is likely to
+            introduce garbage characters into the result</title>
+
+          <programlisting><xi:include
+              href="examples/ignoring-invalid-byte-sequence.rb"
+              parse="text"/></programlisting>
+        </example>
+
+        <para>
+          The safer option is to drop the read-again bytes, too, with
+          <literal>Encoding::Converter#putback</literal>. Optionally, the
+          maximum number of bytes to put back can be given as an
+          <literal>Integer</literal> argument. To contrast the two approaches,
+          juxtapose the previous example with the following, taking care to
+          note the final contents of <replaceable>dest</replaceable>.
+        </para>
+
+        <example xml:id="ex.putback-invalid-byte-sequence">
+          <title>Invalid byte sequence errors can be recovered from by putting
+            back the read-again bytes</title>
+
+          <programlisting><xi:include
+              href="examples/putback-invalid-byte-sequence.rb"
+              parse="text"/></programlisting>
+        </example>
+      </sect3>
+
+      <sect3 xml:id="enc.undefined-conversion-recover">
+        <title>Recovery from an Undefined Conversion Error</title>
+
+        <para>
+          Again, this error can be ignored by simply repeating the call to
+          <literal>#primitive_convert</literal>. The unknown character will be
+          dropped, and transcoding will continue. A more refined approach is
+          to substitute the unknown character for another: either a constant,
+          such as <literal>"?"</literal>, or an approximation determined
+          out-of-band. To support both scenarios,
+          <literal>Encoding::Converter#insert_output</literal> accepts an
+          arbitrary <literal>String</literal> argument, which it appends to
+          the source buffer on the next call to
+          <literal>#primitive_convert</literal>.  Accordingly, the
+          <literal>String</literal> will be transcoded into the target
+          encoding and appended to the destination buffer.
+        </para>
+
+        <example xml:id="ex.insert-output">
+          <title>Arbitrary text can be substituted for undefined characters</title>
+
+          <programlisting><xi:include href="examples/insert-output.rb"
+              parse="text"/></programlisting>
+        </example>
+      </sect3>
+    </sect2>
+  </sect1>
+</chapter>

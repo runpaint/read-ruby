@@ -1,1 +1,0 @@
-LambdaLiteral = "-" ">" ("(" ParameterList? ")")? BlockLiteral

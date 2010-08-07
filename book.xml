@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book xmlns='http://docbook.org/ns/docbook'
+      xmlns:xi='http://www.w3.org/2001/XInclude'
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xml:id="read-ruby"
+      xml:lang="en" 
+      version="5.0">
+  <title>Read Ruby 1.9</title>
+  <!-- Chapters -->
+  <xi:include href="src/programs.xml"/>
+  <xi:include href="src/variables.xml"/>
+  <xi:include href="src/messages.xml"/>
+  <xi:include href="src/objects.xml"/>
+  <xi:include href="src/classes.xml"/>
+  <xi:include href="src/modules.xml"/>
+  <xi:include href="src/methods.xml"/>
+  <xi:include href="src/closures.xml"/>
+  <xi:include href="src/encoding.xml"/>
+  <xi:include href="src/enumerables.xml"/>
+  <xi:include href="src/files.xml"/>
+  <xi:include href="src/flow.xml"/>
+  <xi:include href="src/numerics.xml"/>
+  <xi:include href="src/strings.xml"/>
+  <xi:include href="src/regexps.xml"/>
+  <xi:include href="src/io.xml"/>
+
+  <xi:include href="src/bibliography.xml"/>
+
+  <!-- Appendices -->
+  <xi:include href="src/punctuation.xml"/>
+  <!-- Merge keywords.xml into glossary.xml -->
+  <!-- <xi:include href="src/keywords.xml"/> -->
+  <xi:include href="src/glossary.xml"/>
+</book>

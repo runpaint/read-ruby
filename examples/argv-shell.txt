@@ -1,0 +1,14 @@
+run@paint →  ruby -w argv.rb -n 3 "bags full"
+3
+-n
+argv.rb: ["-n", "3", "bags full"]
+run@paint →  ln -s argv.rb argv
+run@paint →  chmod +x argv
+run@paint →  ./argv
+0
+nil
+"./argv: []"
+run@paint →  ./argv -n 3 "bags full"
+3
+-n
+./argv: ["-n", "3", "bags full"]

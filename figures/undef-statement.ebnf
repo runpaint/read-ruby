@@ -1,1 +1,0 @@
-UndefStatement = "undef" ((Symbol | SymbolLiteral) ",")* (Symbol | SymbolLiteral)

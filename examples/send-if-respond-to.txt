@@ -1,0 +1,2 @@
+ <literal><replaceable>receiver</replaceable>.<replaceable>selector</replaceable> if
+        <replaceable>receiver</replaceable>.respond_to?(:<replaceable>selector</replaceable>)</literal>

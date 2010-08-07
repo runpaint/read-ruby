@@ -1,1 +1,0 @@
-HashLiteral = "{" ((HashMember ","? | (HashMember "," )+) | Space?) "}"

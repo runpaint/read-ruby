@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter version="5.0" 
+         xml:id="cla.classes" 
+         xml:lang="en" 
+         xmlns="http://docbook.org/ns/docbook" 
+         xmlns:xi="http://www.w3.org/2001/XInclude" 
+         xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  
+  <title>Classes</title>
+
+  <para>A <firstterm>class</firstterm><footnote>
+      <para>The term
+        <emphasis>class</emphasis> is roughly analogous to its biological
+        definition where it denotes a taxonomic rank, however this analogy
+        does not extend to subclasses. That is, a subclass of a class is
+        termed a <emphasis>subclass</emphasis>; not an
+        <emphasis>order</emphasis>.
+      </para>
+    </footnote> is a
+    <emphasis>classification</emphasis> of objects. It defines a set of
+    methods, and can mint objects in its image.</para>
+
+  <sect1 xml:id="cla.names">
+    <title>Names</title>
+
+    <para>A class<footnote>
+        <para>
+          Class names containing non-ASCII characters cannot be referred to
+          from source files with a different <link
+            linkend="pro.source-encoding">source encoding</link>. For example,
+          a class name containing character the Greek small letter lamda
+          (<literal>U＋03BB</literal>) can only be referenced from source
+          files using the UTF-8 source encoding.
+        </para>
+      </footnote> is named with a <link
+      linkend="var.constants">constant</link>, and this name can be retrieved
+    as a <literal>String</literal> by <literal>Class#name</literal>. This does
+    not apply to <link linkend="cla.anonymous">anonymous</link> classes, of
+    course, which have a name of <literal>nil</literal>. Conventionally class
+    names use camel-case capitalization: the initial letter of each word is
+    capitalized, and spaces between the words are removed. For example:
+    <literal>RubyProgrammingLanguage</literal> or
+    <literal>NutsAndBolts</literal>. This distinguishes a class from a
+    constant <emphasis>qua</emphasis> constant, as the latter is named in
+    uppercase.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="cla.inheritance">
+    <title>Inheritance</title>
+
+    <para>
+      A class <firstterm>inherits</firstterm> behaviour and certain
+      state-class variables and constants-from another class called its
+      <firstterm>superclass</firstterm>. The exception is
+      <literal>BasicObject</literal>, which sits at the top of the class
+      hierarchy.  The default superclass is <literal>Object</literal>. Classes
+      that inherit from a given class are its
+      <firstterm>subclasses</firstterm>. A subclass is, therefore, a
+      specialisation of its superclass.
+    </para>
+
+    <sect2 xml:id="cla.superclass">
+      <title>Superclass</title>
+
+      <para>
+        The superclass is a <literal>Class</literal> object. It is typically
+        specified as a constant literal, but can be any expression evaluating
+        to the same. Once a class has been created, its superclass cannot be
+        changed.  <literal>Class#superclass</literal> returns the receiver’s
+        superclass as a <literal>Class</literal> object, or
+        <literal>nil</literal> if the receiver is
+        <literal>BasicObject</literal>.
+      </para>
+    </sect2>
+
+    <sect2 xml:id="cla.ancestors">
+      <title>Ancestors</title>
+
+      <para>
+        The <firstterm>ancestors</firstterm> of a class are the classes and
+        modules it inherits from: its superclass and mixed-in modules, then
+        their ancestors, and so on up until the root of the inheritance
+        hierarchy.  They are returned, in order, by
+        <literal>Module#ancestors</literal> as an <literal>Array</literal> of
+        <literal>Class</literal> objects.
+      </para>
+
+      <para>
+        Inheritance merely determines the initial behaviour of a class; the
+        subclass can diverge by defining, redefining, or removing methods, or
+        modifying state. It occurs because the method— and constant—lookup
+        algorithms consider the superclass when unable to resolve a given name
+        against the current class. It is worth stating explicitly that
+        instance variables and class variables are <emphasis>not</emphasis>
+        inherited. <biblioref begin="239" end="240" linkend="bib.flan08"
+          units="pages"/> note a corollary: <quote>If a subclass uses an
+          instance variable with the same name as a variable used by one of
+          its ancestors, it will overwrite the value of its ancestor’s
+          variable.</quote>
+      </para>
+
+
+      <sect3 xml:id="cla.class-inherited">
+        <title><literal>Class#inherited</literal> Hook</title>
+
+        <para>
+          If a class defines a singleton method named
+          <literal>:inherited</literal>, it is invoked when the class is
+          inherited with the subclass as its argument.
+        </para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="cla.creation">
+    <title>Creation</title>
+
+    <remark>Intro graf?</remark>
+  
+    <sect2 xml:id="cla.class-keyword">
+      <title><literal>class</literal> Keyword</title>
+      <remark>Can't be defined inside method body; nor can module</remark>
+      <para>
+        The <literal>class <replaceable>name</replaceable> &lt;
+          <replaceable>superclass</replaceable>…end</literal> expression opens
+        a class named <replaceable>name</replaceable>. If the constant
+        <replaceable>name</replaceable> is already defined it must refer to an
+        existing class, otherwise a <literal>TypeError</literal> is raised.
+        If <replaceable>name</replaceable> was previously undefined, it is
+        created to refer to a new <literal>Class</literal> object. The
+        <literal>&lt; <replaceable>superclass</replaceable></literal> portion
+        may be omitted, in which case the
+        <replaceable>superclass</replaceable> defaults to
+        <literal>Object</literal>. <replaceable>superclass</replaceable> may
+        be any expression that evaluates to a <literal>Class</literal> object.
+        The class body, which may be empty, is the elliptical region in the
+        expression. It introduces a new context in which
+        <literal>self</literal> refers to the class.
+      </para>
+
+      <example xml:id="ex.class-keyword-open-class">
+        <title>Usage of the <literal>class</literal> keyword to <emphasis>open</emphasis>
+        a class named <literal>Dog</literal></title>
+
+
+        <programlisting><xi:include parse="text" 
+          href="examples/class-keyword-open-class.rb" 
+        /></programlisting>
+      </example>
+    
+      <sect3 xml:id="cla.reopening">
+        <title>Reopening Classes</title>
+
+
+        <para>
+          If <literal>class</literal> is used with the name of a pre-existing
+          class that class is <emphasis>re-opened</emphasis>. If a method is
+          defined in a re-opened class with the same name as a pre-existing
+          method in the same class the old method is overwritten with the new.
+          Classes can be made immutable, effectively preventing them from being
+          reopened by freezing the class object. Frozen classes raise
+          <literal>RuntimeError</literal>s when methods are defined, or
+          variables manipulated, in their context.
+        </para>
+
+        <example xml:id="ex.reopened-class">
+          <title>Re-defining a method in an existing class</title>
+
+          <programlisting><xi:include parse="text"
+              href="examples/reopened-class.rb"
+          /></programlisting>
+        </example>
+      </sect3>
+    </sect2>
+    
+    <sect2 xml:id="cla.class-new">
+      <title><literal>Class.new</literal></title>
+
+      <para>
+        The <literal><replaceable>name</replaceable> = Class.new
+          do…end</literal> constructor may be used to similar effect. The
+        principle difference being that existing classes are overwritten
+        rather than reopened.
+      </para>
+
+      <example xml:id="ex.class-new-constructor">
+        <title>Usage of the <literal>Class.new</literal> constructor to
+        create a class named <literal>Dog</literal></title>
+
+        <programlisting><xi:include parse="text"
+            href="examples/class-new-constructor.rb"/></programlisting>
+      </example>
+      
+      <sect3 xml:id="cla.anonymous">
+        <title>Anonymous Classes</title>
+
+        <para>
+          When a class is named with a constant it is accessible wherever that
+          constant is in scope. If this behaviour is not desirable, a class
+          can be made anonymous by assigning the value of
+          <literal>Class.new</literal> to a local variable, thus restricting
+          the class to the local scope.  Subsequently assigning this variable
+          to a constant, names the class.
+        </para>
+
+        <example xml:id="ex.anonymous-class">
+          <title>Creating an anonymous class with
+            <literal>Class.new</literal></title>
+
+          <programlisting><xi:include href="examples/anonymous-class.rb"
+              parse="text"/></programlisting>
+        </example>
+      </sect3>
+    </sect2>
+    
+    <sect2 xml:id="cla.structs">
+      <title>Structs</title>
+
+      <para>
+        <literal>Struct</literal> is a class generator, particularly useful
+        for classes that only need to wrap data. It it instantiated with a
+        list of attribute names as <literal>Symbol</literal>s, and returns a
+        <literal>Class</literal> object with accessors and writers for each
+        attribute. The generated class can be instantiated with a list of
+        arguments, which are assigned to the corresponding attributes.
+      </para>
+
+      <example xml:id="ex.struct-new">
+        <title>Creating a class with <literal>Struct.new</literal></title>
+
+
+        <programlisting><xi:include href="examples/struct-new.rb"
+            parse="text"/></programlisting>
+      </example>
+
+      <para>
+        A popular idiom is to create a class that inherits from a
+        <literal>Struct</literal>: the <literal>Struct</literal> defines the
+        simple attributes, and the class body adds behaviour/customisations.
+      </para>
+
+      <example xml:id="ex.struct-inheritance">
+        <title>A class may inherit from a <literal>Struct</literal> to
+        augment the structure’s behaviour</title>
+
+        <programlisting><xi:include href="examples/struct-inheritance.rb"
+            parse="text"/></programlisting>
+      </example>
+    </sect2>
+    
+    <sect2 xml:id="cla.nesting">
+      <title>Nesting</title>
+
+      <para>
+        A class may be defined within the body of another class. The fully
+        qualified name of the inner class is then
+        <literal><replaceable>outer</replaceable>::<replaceable>inner</replaceable></literal>:
+        the name of the enclosing class (<replaceable>outer</replaceable>)
+        separated from that of the enclosed (<replaceable>inner</replaceable>)
+        with the <link linkend="var.constants-references">scope
+          operator</link>. This <firstterm>nesting</firstterm> behaviour is
+        primarily used for namespacing, with <link
+          linkend="mod.modules">modules</link> being an alternative. However,
+        it does not affect inheritance: if the inner class is to inherit from
+        the outer class, it must do so explicitly. The nesting of a class is
+        returned as an <literal>Array</literal> of <literal>Class</literal>
+        objects by <literal>Module#nesting</literal>, where the first element
+        is the innermost class, and the last the outermost.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="cla.context">
+    <title>Context</title>
+
+    <para>
+      <literal>Class#class_eval</literal> takes a string or block which it
+      evaluates in the receiver’s context, setting <literal>self</literal> to
+      the receiver. The evaluated code can access the class’s state, invoke
+      its singleton methods, and define methods.
+      <literal>Class#instance_exec</literal> is similar, but accepts any
+      number of arguments which it passes to the required block.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="cla.singleton">
+    <title>Singleton Classes</title>
+
+    <para>
+      Every object is associated with two classes: that with which it was
+      instantiated, and an anonymous class specific to the object: its
+      <firstterm>singleton class</firstterm><footnote>
+        <para><biblioref
+            begin="257" end="258" linkend="bib.flan08" units="pages"/> use the
+          term <emphasis>eigenclass</emphasis>, instead, but the preferred
+          nomenclature is now <emphasis>singleton class</emphasis>.  See <link
+            xlink:href="http://redmine.ruby-lang.org/issues/show/1082">Feature
+            #1082: add Object#singleton_class method</link> for the
+          background.
+        </para>
+      </footnote>. That a singleton class is unique to a particular object
+      means that methods defined within it-<link
+        linkend="met.singleton">singleton</link> methods-are also unique to
+      that object.
+    </para>
+
+    <para>
+      Further, an object’s class-i.e. the one which instantiated it-is the
+      superclass of its singleton class. Upon receiving a message an object
+      asks his singleton class for a method, the singleton class searches its
+      instance methods and included modules, then repeats the query to his
+      superclass. This process continues, recursively, up the inheritance
+      hierarchy until a suitable method is located. Therefore, singleton
+      methods override all others because the singleton class is the first
+      place searched.
+    </para>
+
+    <para>
+      However, the singleton classes of <literal>Class</literal> objects
+      behave slightly differently. Consider two classes,
+      <replaceable>c</replaceable> and <replaceable>p</replaceable>.  Now, if
+      the superclass of <replaceable>c</replaceable> is
+      <replaceable>p</replaceable>, then the superclass of the singleton class
+      of <replaceable>c</replaceable> is the singleton class of
+      <replaceable>p</replaceable>. This seemingly convoluted arrangement
+      creates an inheritance hierarchy of singleton classes parallel to that
+      of normal classes, allowing class methods to be inherited.
+    </para>
+
+    <example xml:id="ex.class-singleton-class">
+      <title>A class’s singleton class inherits from that of its
+      superclass, therefore a class inherits its parent’s class methods.</title>
+
+      <programlisting><xi:include href="examples/class-singleton-class.rb"
+          parse="text"/></programlisting>
+    </example>
+
+    <para>
+      The singleton class is a curious hybrid between class and module because
+      although it has a superclass, it cannot be instantiated. However, the
+      latter shortcoming is surely a blessing, as without it class hierarchies
+      would be plexiform. Regardless, the abstractionists will delight in the
+      fact that a singleton class has its own singleton class, <emphasis>ad
+        infinitum</emphasis>…
+    </para>
+
+    <para>
+      Instances of the <literal>Integer</literal>, <literal>Float</literal>,
+      and <literal>Symbol</literal> classes are the only objects not to have a
+      singleton class; attempting to open one causes a
+      <literal>TypeError</literal> to be raised.
+    </para>
+
+    <para>
+      The <literal>Kernel#singleton_class</literal><footnote>
+        <para>Prior to
+          Ruby 1.9.2 the peculiar <literal>class &lt;&lt;
+            <replaceable>object</replaceable>…end</literal> construct— the
+          <literal>class</literal> keyword followed by two less-than signs, an
+          expression evaluating to an object, then the class body—was used to
+          open the singleton class of <replaceable>object</replaceable>.
+        </para>
+      </footnote> method returns the receiver’s singleton class as a
+      <literal>Class</literal> object. It is typically paired with
+      <literal>#class_eval</literal> so as to operate within the context of
+      the class.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="cla.state">
+    <title>State</title>
+
+    <para>
+      A class may store its state in <link linkend="var.class">class
+        variables</link>, as discussed previously, however, due to the
+      unpopular semantics of class variables, class instance variables may be
+      used instead.
+    </para>
+
+
+    <sect2 xml:id="cla.class-instance-variables">
+      <title>Class Instance Variables</title>
+
+
+      <para>
+        An instance variable used within a class definition, outside of an
+        instance method, is a <firstterm>class instance variable</firstterm>.
+        It is not to be confused with a class variable. Both kinds of
+        variables are associated with the class, as opposed to its instances.
+        The primary advantage of class instance variables over class variables
+        is that they don't exhibit the latter’s awkward sharing semantics:
+        class instance variables are not shared with subclasses. However,
+        class instance variables cannot be referenced in instance methods—as
+        in that context they are normal instance variables—so are not
+        necessarily appropriate substitutes.
+      </para>
+
+
+      <para>
+        Accessor methods can be created for class instance variables by using
+        <literal>Module#attr_accessor</literal> and
+        <literal>Module#attr_writer</literal> inside the class’s singleton
+        class.
+      </para>
+
+
+      <example xml:id="ex.module-attr-accessor">
+        <title>Accessors for a class’s class instance variables are created
+          inside its singleton class with
+          <literal>attr_accessor</literal>.</title>
+
+        <programlisting><xi:include href="examples/module-attr-accessor.rb"
+            parse="text"/></programlisting>
+      </example>
+    </sect2>
+  </sect1>
+  
+  <sect1 xml:id="cla.instances">
+    <title>Instances</title>
+
+    <para>
+      <literal>ObjectSpace.each_object(<replaceable>class</replaceable>)</literal>
+      returns an <literal>Enumerator</literal> of a
+      <replaceable>class</replaceable>’s instances.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="cla.methods">
+    <title>Methods</title>
+
+    <para>
+      The methods defined on a class can be listed with
+      <literal>Object#methods</literal> or
+      <literal>Object#instance_methods</literal>. They are returned as an
+      <literal>Array</literal> of <literal>Symbol</literal>s. If either method
+      is given an argument of <literal>false</literal>, superclass methods are
+      omitted.
+    </para>
+
+    <sect2 xml:id="cla.method-defined">
+      <title><literal>method_defined?</literal> Predicate</title>
+
+      <para>
+        The <literal>Module#method_defined?</literal> predicate accepts a
+        method name as argument and returns <literal>true</literal> if the
+        named instance method is defined on the receiver;
+        <literal>false</literal> otherwise.
+        <literal>Module#public_method_defined?</literal>,
+        <literal>Module#private_method_defined?</literal>, and
+        <literal>Module#protected_method_defined?</literal> behave in a
+        similar fashion, but also require the named method to have the
+        corresponding <link linkend="met.visibility">visibility</link> These
+        predicates are clearly similar to <link
+          linkend="mes.responding">#respond_to?</link> but they differ as
+        follows:
+      </para>
+
+      <itemizedlist>
+        <listitem>
+          <para>
+            They test the instance methods of a class or module;
+            <literal>#respond_to?</literal> tests the methods defined on its
+            receiver.
+          </para>
+
+        </listitem>
+        <listitem>
+          <para>
+            They can only be used on classes or modules;
+            <literal>#respond_to?</literal> with any object inheriting from
+            <literal>Object</literal>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            They don’t consult <link
+              linkend="met.respond-to-missing">#respond_to_missing?</link>—whereas
+            <literal>#respond_to?</literal> does—which means that they don’t
+            reflect methods defined with <link
+              linkend="met.method-missing">method_missing</link>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            They return <literal>true</literal> for methods unimplemented on
+            the user’s platform; <literal>#respond_to?</literal> behaves
+            conversely.
+          </para>
+        </listitem>
+      </itemizedlist>
+
+      <example xml:id="ex.method-defined">
+        <title>Contrasting <literal>#method_defined?</literal> with
+        <literal>#respond_to?</literal></title>
+
+        <programlisting><xi:include href="examples/method-defined.rb"
+            parse="text"/></programlisting>
+      </example>
+
+      <para>
+        Either approach is normally preferable to
+        <literal><replaceable>object</replaceable>.methods.include?(<replaceable>selector</replaceable>)</literal>,
+        which has all of the disadvantages of
+        <literal>#method_defined</literal>, in addition to being more verbose
+        and less efficient.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="cla.missing">
+    <title>Missing Classes</title>
+
+    <para>
+      When a constant is used without being defined the enclosing class is
+      sent a <literal>:const_missing</literal> message with the constant name
+      as a <literal>Symbol</literal> argument. This is similar to
+      <literal>:method_missing</literal>, but for classes.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="cla.enumeration">
+    <title>Enumeration</title>
+
+    <para>
+      <literal>ObjectSpace.each_object(Class)</literal> enumerates all
+      <literal>Class</literal> objects currently defined. Therefore, to
+      enumerate the subclasses of a given class, this list must be filtered as
+      shown in the figure below.
+    </para>
+
+    <example xml:id="ex.enumerating-subclasses">
+      <title>Enumerating a class’s subclasses</title>
+
+      <programlisting><xi:include href="examples/enumerating-subclasses.rb"
+          parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="cla.type">
+    <title>Type</title>
+
+    <para>
+      <quote>In many object-oriented languages, class names are used…for the
+        type of objects generated from the class.</quote> <biblioref
+        begin="20" end="20" linkend="bib.bruce02" units="pages"/>. <biblioref
+        begin="10" end="10" linkend="bib.klas95" units="pages"/> concur:
+      <quote>A class…defines…the type of [its] instances</quote>. Applying
+      this notion to Ruby is problematic because while it is certainly
+      possible for a method to dynamically <emphasis>type check</emphasis> its
+      arguments with the
+      <literal>Kernel#is_a?(<replaceable>class</replaceable>)</literal>
+      predicate, this approach is both insufficient and unnecessary.
+    </para>
+
+    <para>
+      It is insufficient because an object’s class is not indicative of its
+      suitability for a specific role. Class-based type checking rests on the
+      premise that all objects of a given type will respond to the same
+      messages in the same fashion. However, Ruby’s classes may be modified at
+      will—allowing their methods to be redefined or removed—so two objects of
+      the same class will not necessarily provide the same behaviour.
+      Similarly, methods may be defined on, or removed from, individual
+      objects, again breaking the assumption.
+    </para>
+
+    <para>
+      It is unnecessary because Ruby offers a superior, meritocratic
+      alternative called <quote>duck typing</quote> (<biblioref begin="372"
+        end="372" linkend="bib.thom09" units="pages"/>): if an object responds
+      to the messages it would be sent in the course of a computation it
+      constitutes suitable input. The yardstick is ability; not class.
+    </para>
+
+    <para>
+      An optimistic method simply assumes that its arguments are suitable;
+      allowing them to raise a <literal>NoMethodError</literal> if sent a
+      message they don't understand. This allows for particularly flexible
+      <acronym>API</acronym>s at the cost of potentially obscure error
+      messages for nonsensical arguments. More typically, the
+      <literal>Kernel#respond_to?(<replaceable>selector</replaceable>)</literal>
+      predicate is used to determine the suitability of an object. For
+      instance, a method may raise an <literal>ArgumentError</literal> unless
+      its argument responds to <literal>:&lt;&lt;</literal>. A refinement may
+      to send an argument the appropriate <literal>:try_convert</literal>
+      message, raising an exception if <literal>nil</literal> is returned.
+    </para>
+  </sect1>
+</chapter>

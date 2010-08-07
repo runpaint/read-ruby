@@ -1,1 +1,0 @@
-RescueClause = "rescue" (Expression ("," Expression)*)? ("=>" Identifier)? Statement* "end"

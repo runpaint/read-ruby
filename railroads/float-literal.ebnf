@@ -1,1 +1,0 @@
-FloatLiteral = DecimalLiteral '.' (Digit ("_" Digit)?)+

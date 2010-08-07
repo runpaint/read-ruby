@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glossary xmlns="http://docbook.org/ns/docbook"
+	  xmlns:xi="http://www.w3.org/2001/XInclude"
+	  xmlns:xlink="http://www.w3.org/1999/xlink"
+	  version="5.0"
+	  xml:id="glo.glossary"
+	  xml:lang="en">
+  <title>Glossary</title>
+
+  <remark>Decide how to order punctuation entries. ASCIIbetically?</remark>
+  
+
+  <!-- :foo -> #foo ? Implication for class methods? -->
+  <glossentry xml:id="glo.aref">
+    <glossterm><literal>#[]</literal></glossterm>
+
+    <glossdef>
+      <para>Conventionally, indexes the receiver by the “key” supplied as the
+      argument(s), returning the requested slice or
+      <literal>nil</literal>/<literal>[]</literal> if no corresponding data
+      was found. It is a special case of the message expression syntax
+      because it sends a selector named <literal>:[]</literal> to the
+      receiver, passing in the contents of
+      <literal>[</literal>…<literal>]</literal> as arguments, i.e.
+      <literal><replaceable>receiver</replaceable>[<replaceable>argument<subscript>0</subscript>
+      </replaceable>,…,<replaceable>argument<subscript>n</subscript>
+      </replaceable>]</literal> is equivalent to
+      <literal><replaceable>receiver</replaceable>.[](<replaceable>argument<subscript>0</subscript>
+      </replaceable>,…,<replaceable>argument<subscript>n</subscript>
+      </replaceable>)</literal> </para>
+
+      <para>The simplest example is <literal>Array#[]</literal>, which
+      returns the element stored at the given <literal>Integer</literal>
+      index. Similarly, <literal>Hash#[]</literal> returns the value
+      corresponding to the given key object. In this role,
+      <literal>:[]</literal> acts as an interface to a pre-computed lookup
+      table.</para>
+
+      <para>However, this abstraction conveniently extends to virtual slices,
+      where the values are computed dynamically, shielding the user from
+      these unnecessary details: he need not concern himself with
+      <emphasis>how</emphasis> the data are derived, merely that they satisfy
+      the key. For example, <literal>Array#[]</literal> also accepts a
+      <literal>Range</literal> argument, for which it returns a
+      sub-<literal>Array</literal> of elements whose indexes are members of
+      the <literal>Range</literal>. This is computationally quite a different
+      operation to the case with <literal>Integer</literal> arguments, yet
+      the API makes no distinction. A clearer case is
+      <literal>Dir.[]</literal> which interprets its arguments as shell globs
+      against the current working directory, returning an
+      <literal>Array</literal> of the matching entries. In this way
+      <literal>Dir</literal> behaves as if it maintains a
+      <literal>Hash</literal>-style mapping from glob to files.</para>
+
+      <para>As alluded to with
+      <literal>Array#[<replaceable>range</replaceable>]</literal>, it is
+      common for <literal>:[]</literal> to accept arguments of wildly
+      different types and try to produce a sensible result. For example,
+      <literal>String#[]</literal> accepts either an
+      <literal>Integer</literal>, a pair of <literal>Integer</literal>s, a
+      <literal>Range</literal>, a <literal>Regexp</literal>, a
+      <literal>Regexp</literal> and an <literal>Integer</literal>, or a
+      <literal>String</literal>.</para>
+
+      <informalexample xml:id="ex.aref-music">
+	<programlisting><xi:include href="examples/aref-music.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.aref-set">
+    <glossterm><literal>#[]=</literal></glossterm>
+
+    <glossdef>
+      <para>Conventionally, the assignment counterpart to <glossterm
+      linkend="glo.aref"/>: the first argument(s) describe the slice, and the
+      final argument its new value. It is expected that
+      <literal><replaceable>obj</replaceable>[<replaceable>key</replaceable>] =
+      <replaceable>value</replaceable></literal> then
+      <literal><replaceable>obj</replaceable>[<replaceable>key</replaceable>]
+      == <replaceable>value</replaceable></literal>. For this equivalency to
+      hold, <literal>#[]=</literal> may need to be more restrictive in the
+      arguments it accepts than its counterpart because some key forms make
+      unsuitable assignment targets. For example, <literal>Method#[]</literal>
+      calls the objectified method with the supplied arguments, but it is
+      unclear what it would mean to assign to such a slice, so
+      <literal>Method#[]=</literal> is not defined.</para>
+
+      <para>For example, <literal>String#[<replaceable>regexp</replaceable>]=
+      <replaceable>value</replaceable> </literal> assigns
+      <replaceable>value</replaceable> to the portion of the
+      <literal>String</literal> matched by <replaceable>regexp</replaceable>;
+      <literal>Array#[<replaceable>range</replaceable>]=
+      <replaceable>value</replaceable> </literal> replaces the elements in
+      <replaceable>range</replaceable> with
+      <replaceable>value</replaceable>.</para>
+
+      <informalexample xml:id="ex.element-set-selector">
+        <programlisting><xi:include href="examples/element-set-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+  
+  <glossentry xml:id="glo.exclam">
+    <glossterm><literal>!</literal></glossterm>
+
+    <glossdef>
+      <para>Right-associative unary operator which, conventionally, performs a
+      Boolean NOT operation. Definable as a method with a selector of
+      <literal>!</literal>.</para>      
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.tilde">
+    <glossterm><literal>~</literal></glossterm>
+
+    <glossdef>
+      <para>Right-associative unary operator which, conventionally, performs a
+      bitwise complement. Definable as a method with a selector of
+      <literal>~</literal>.</para>      
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.unary-plus">
+    <glossterm><literal>+</literal> (unary)</glossterm>
+
+    <glossdef>
+      <para>Right-associative unary operator which, conventionally, gives its
+      operand a positive sign. Definable as a method with a selector of
+      <literal>+@</literal>.</para>
+      <glossseealso linkend="glo.plus-sign"/>      
+      <glossseealso linkend="glo.unary-minus"/>      
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.asterisk-asterisk">
+    <glossterm><literal>**</literal></glossterm>
+
+    <glossdef>
+      <para>Right-associative binary operator which, conventionally, performs
+      exponentiation. Definable as a method with a selector of
+      <literal>**</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.unary-minus">
+    <glossterm><literal>-</literal> (unary)</glossterm>
+
+    <glossdef>
+      <para>Right-associative unary operator which, conventionally, gives its
+      operand a negative sign. Definable as a method with a selector of
+      <literal>-@</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.asterisk">
+    <glossterm><literal>*</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, multiples
+      the receiver by a sole numeric argument, returning the result. For
+      example: <literal>Fixnum#*</literal>, <literal>String#*</literal>, and
+      <literal>Array#*</literal>.</para>
+
+      <informalexample xml:id="ex.asterisk-selector">
+        <programlisting><xi:include href="examples/asterisk-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.solidus">
+    <glossterm><literal>/</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, divides its
+      operands. Definable as a method with a selector of
+      <literal>/</literal>.</para>
+    </glossdef>
+  </glossentry>
+  
+  <glossentry xml:id="glo.percent-sign">
+    <glossterm><literal>%</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, returns the
+      modulus of numeric operands. Definable as a method with a selector of
+      <literal>%</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.plus-sign">
+    <glossterm><literal>+</literal> (binary)</glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, sums or
+      concatenates the operands, which should be of the same class, returning a
+      new object. Definable as a method with a selector of
+      <literal>+</literal>. Whereas <glossterm linkend="glo.less-than-less-than"/>
+      appends the argument to the receiver, <literal>#+</literal> combines the
+      operands into a new object. For example, <literal>Fixnum#+</literal>,
+      <literal>String#+</literal>, <literal>Array#+</literal>.</para>
+
+      <para>Addition in this manner is not necessarily commutative when the
+      operands are non-numeric. For example, <literal>'a' + 'b' != 'b' +
+      'a'</literal>.</para>
+
+      <informalexample xml:id="ex.plus-selector">
+        <programlisting><xi:include href="examples/plus-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+
+      <glossseealso linkend="glo.unary-plus"/>
+    </glossdef>
+  </glossentry>
+
+
+  <glossentry xml:id="glo.minus-sign">
+    <glossterm><literal>-</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, performs
+      subtraction. Definable as a method with a selector of
+      <literal>-</literal>.</para>
+      <glossseealso linkend="glo.unary-minus"/>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.less-than-less-than">
+    <glossterm><literal>&lt;&lt;</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, appends the
+      second operand to the first, then returns the mutated receiver. When the
+      receiver is an <literal>Integer</literal> it is shifted left the amount
+      of places specified by the argument. For example,
+      <literal>Array#</literal>, <literal>String#</literal>,
+      <literal>IO#</literal>, and
+      <literal>Enumerator::Yielder#</literal>. Definable as a method with the
+      selector <literal>&lt;&lt;</literal>.</para>
+
+      <informalexample xml:id="ex.left-shift-selector">
+        <programlisting><xi:include href="examples/left-shift-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+      <glossseealso linkend="glo.greater-than-greater-than"/>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.greater-than-greater-than">
+    <glossterm><literal>&gt;&gt;</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, performs a
+      rightwards bitwise shift. Definable as a method with the selector <literal>&gt;&gt;</literal>.</para>
+      <glossseealso linkend="glo.less-than-less-than"/>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.ampersand">
+    <glossterm><literal>&amp;</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, performs
+      bitwise AND. Definable as a method with the selector
+      <literal>&amp;</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.vertical-line">
+    <glossterm><literal>|</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, performs
+      bitwise OR. Definable as a method with the selector
+      <literal>|</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.circumflex-accent">
+    <glossterm><literal>^</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, performs
+      bitwise XOR. Definable as a method with the selector
+      <literal>^</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.less-than">
+    <glossterm><literal>&lt;</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, determines
+      whether the receiver is <emphasis>less than</emphasis> the
+      argument. Normally supplied by the <literal>Comparable</literal> module
+      which implements it in terms of <glossterm linkend="glo.spaceship"/>
+      . <literal>Class#</literal> creatively uses this selector to test whether
+      the receiver is a <emphasis>kind of</emphasis> the argument because it
+      mirrors the syntax for defining a class with a superclass,
+      i.e. <literal>class <replaceable>name</replaceable>
+      <replaceable>superclass</replaceable>…end</literal>. Definable as a
+      method with the selector <literal>&lt;</literal>.</para>
+
+      <informalexample xml:id="ex.less-than-selector">
+        <programlisting><xi:include href="examples/less-than-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.less-than-equal">
+    <glossterm><literal>&lt;=</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, returns
+      <literal>true</literal> if its receiver is less than or equal to its
+      argument; <literal>false</literal> otherwise. Provided by the
+      <literal>Comparable</literal> module, or definable as a method with the
+      selector <literal>&lt;=</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.greater-than-equal">
+    <glossterm><literal>&gt;=</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, returns
+      <literal>true</literal> if its receiver is greater than or equal to its
+      argument; <literal>false</literal> otherwise. Provided by the
+      <literal>Comparable</literal> module, or definable as a method with the
+      selector <literal>&gt;=</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.greater-than">
+    <glossterm><literal>&gt;</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator which, conventionally, determines
+      whether the receiver is <emphasis>greater than</emphasis> the
+      argument. Provided by the <literal>Comparable</literal> module, or
+      definable as a method with the selector
+      <literal>&gt;</literal>. <literal>Class#</literal> provides symmetry to
+      <literal>Class#</literal> by testing whether the argument is
+      <emphasis>kind of</emphasis> the receiver.</para>
+
+      <informalexample xml:id="ex.greater-than-selector">
+        <programlisting><xi:include href="examples/greater-than-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.equal-equal">
+    <glossterm><literal>==</literal></glossterm>
+
+    <glossdef>
+      <para>Non-associative binary operator which, conventionally, determines
+      whether the operands are <link
+      linkend="obj.equivalence">equivalent</link>. Provided by the
+      <literal>Comparable</literal> module, or definable as a method with the
+      selector <literal>==</literal>.</para>
+
+      <informalexample xml:id="ex.equal-equal-selector">
+        <programlisting><xi:include href="examples/equal-equal-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.equal-equal-equal">
+    <glossterm><literal>===</literal></glossterm>
+
+    <glossdef>
+      <para>Non-associative binary operator which, conventionally, performs
+      case equality. Definable as a method with the selector
+      <literal>===</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.exclamation-equal">
+    <glossterm><literal>!=</literal></glossterm>
+
+    <glossdef>
+      <para>Non-associative binary operator which, conventionally, returns
+      <literal>true</literal> if <glossterm linkend="glo.equal-equal"/> returns
+      <literal>false</literal>; <literal>false</literal> otherwise. Definable
+      as a method with the selector <literal>!=</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.equal-tilde">
+    <glossterm><literal>=~</literal></glossterm>
+
+    <glossdef>
+      <para>Non-associative binary operator which, conventially, matches the
+      receiver with the argument. One of the operands is typically a
+      <literal>Regexp</literal>. This operator is commutative,
+      i.e. <literal>(<replaceable>a</replaceable> =~
+      <replaceable>b</replaceable>) == (<replaceable>b</replaceable> =~
+      <replaceable>a</replaceable>)</literal>. For example,
+      <literal>String#=~</literal>, <literal>Regexp#=~</literal>, and
+      <literal>Symbol#=~</literal>. Definable as a method with the selector
+      <literal>=~</literal>.</para>
+
+      <informalexample xml:id="ex.equal-tilde-selector">
+        <programlisting><xi:include href="examples/equal-tilde-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.exclamation-tilde">
+    <glossterm><literal>!~</literal></glossterm>
+
+    <glossdef>
+      <para>Non-associative binary operator which, conventionally, returns
+      <literal>true</literal> if <glossterm linkend="glo.equal-tilde"/> returns
+      <literal>nil</literal>; <literal>false</literal> otherwise. Definable as
+      a method with the selector <literal>!~</literal>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.spaceship">
+    <glossterm><literal>&lt;=&gt;</literal></glossterm>
+
+    <glossdef>
+      <para>Non-associative binary operator which, conventionally, <link
+      linkend="obj.order">compares</link> the operands. Colloquially: the
+      <firstterm>spaceship operator</firstterm>. Definable as a method with the
+      selector <literal>&lt;=&gt;</literal>.</para>
+
+      <informalexample xml:id="ex.spaceship-selector">
+        <programlisting><xi:include href="examples/spaceship-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.ampersand-ampersand">
+    <glossterm><literal>&amp;&amp;</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator that performs Boolean AND.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.vertical-line-vertical-line">
+    <glossterm><literal>||</literal></glossterm>
+
+    <glossdef>
+      <para>Left-associative binary operator that performs
+      Boolean OR.</para> </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.full-stop-full-stop">
+    <glossterm><literal>..</literal></glossterm>
+
+    <glossdef>
+      <para>Non-associative binary operator that creates an inclusive
+      <literal>Range</literal> from its operands.</para>
+      <glossseealso linkend="glo.full-stop-full-stop-full-stop"/>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.full-stop-full-stop-full-stop">
+    <glossterm><literal>...</literal></glossterm>
+
+    <glossdef>
+      <para>Non-associative binary operator that creates an exclusive
+      <literal>Range</literal> from its operands.</para>
+      <glossseealso linkend="glo.full-stop-full-stop"/>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.ternary-conditional">
+    <glossterm>…<literal>?</literal>…<literal>:</literal>…</glossterm>
+
+    <glossdef>
+      <para>Right-associative ternary operator that returns its second operand
+      if its first is true, otherwise, it returns its third.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.equal-sign">
+    <glossterm><literal>=</literal></glossterm>
+
+    <glossdef>
+      <para>Right-associative binary operator that performs assignment.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.abbreviated-assignment">
+    <glossterm><replaceable>operator</replaceable><literal>=</literal></glossterm>
+
+    <glossdef>
+      <remark>Give each AA operator its own entry; link them from here?</remark>
+      <para>Right-associative binary operator that performs abbreviated
+      assignment, where <replaceable>operator</replaceable> is one of the
+      following operators:</para>
+      <itemizedlist>
+	<listitem><para><glossterm linkend="glo.asterisk-asterisk"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.asterisk"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.solidus"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.percent-sign"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.plus-sign"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.minus-sign"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.less-than-less-than"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.greater-than-greater-than"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.ampersand-ampersand"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.ampersand"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.vertical-line-vertical-line"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.vertical-line"/></para></listitem>
+	<listitem><para><glossterm linkend="glo.circumflex-accent"/></para></listitem>
+      </itemizedlist>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.not">
+    <glossterm><literal>not</literal></glossterm>
+    <glossdef>
+      <para>Right-associative, low-precedence, unary operator that performs
+      Boolean NOT.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.and">
+    <glossterm><literal>and</literal></glossterm>
+    <glossdef>
+      <para>Left-associative, low-precedence, Boolean operator that performs
+      Boolean AND.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.or">
+    <glossterm><literal>or</literal></glossterm>
+    <glossdef>
+      <para>Left-associative, low-precedence, Boolean operator that performs
+      Boolean OR.</para>
+    </glossdef>
+  </glossentry>
+
+  
+  <glossentry xml:id="glo.arity">
+    <glossterm>arity</glossterm>
+
+    <glossdef>
+      <remark>Include method arity in here when re-drafting Methods</remark>
+      <para>An operator’s <firstterm>arity</firstterm> is the number of
+      operands on which it operates, including the receiver. The
+      <literal>+</literal> operator, for example, has an arity of
+      2. Consequently, an operator can be classified as follows:</para>
+      
+      <variablelist spacing="compact">
+        <varlistentry>
+          <term><firstterm>Unary operator</firstterm></term>
+          <listitem><para>An arity of 1.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><firstterm>Binary operator</firstterm></term>
+          <listitem><para>An arity of 2.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><firstterm>Ternary operator</firstterm></term>
+          <listitem><para>An arity of 3.</para></listitem>
+        </varlistentry>
+      </variablelist>
+
+      <para>A few operators are both unary and binary: they can either be used
+      with one operand or two. <literal>+</literal>, again, serves to
+      illustrate: in its unary form it changes the sign of its operand; in its
+      binary form it performs summation.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.associativity">
+    <glossterm>associativity</glossterm>
+
+    <glossdef>
+      <example xml:id="ex.precedence-associativity">
+        <title>Associativity governs the order of evaluation for operators
+        with the same precedence</title>
+
+        <programlisting><xi:include href="examples/precedence-associativity.rb"
+	parse="text"/></programlisting>
+      </example>
+
+      <para>If one operator expression is followed by another with the same
+      precedence, the operator’s <firstterm>associativity</firstterm>
+      determines their order of
+      evaluation. <firstterm>Left‐associative</firstterm> operators are
+      evaluated from left to right; <firstterm>right‐associative</firstterm>
+      operators are evaluated in the opposite
+      direction. <firstterm>Non‐associative</firstterm> operators are
+      ambiguous: parentheses must be employed to specify their order of
+      evaluation.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo._by">
+    <glossterm><literal>_by</literal></glossterm>
+
+    <glossdef>
+      <para>A selector with a <literal>_by</literal> suffix typically implies
+      that the method expects a block, the results of which constrain the
+      computation. For example, <literal>Enumerable#group_by</literal>,
+      <literal>Enumerable#sort_by</literal>, and
+      <literal>Enumerable#minmax_by</literal>.</para>
+
+      <informalexample xml:id="ex._by-selector">
+	<programlisting><xi:include href="examples/_by-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.call">
+    <glossterm><literal>#call</literal></glossterm>
+    <glossdef>
+      <para>Conventionally, an instance method that accepts a variable-length
+      argument list with which it invokes its receiver. The return value is
+      the result of the invocation. <literal>Method</literal> and
+      <literal>Proc</literal> objects both behave in this fashion.</para>
+
+      <para>This selector is notable because it instruments the following
+      syntax:
+      <literal><replaceable>receiver</replaceable>.call(<replaceable>arg</replaceable><subscript>0</subscript>…<replaceable>arg</replaceable>
+      <subscript>n</subscript>)</literal> is equivalent to
+      <literal><replaceable>receiver</replaceable>.(<replaceable>arg</replaceable><subscript>0</subscript>…<replaceable>arg</replaceable>
+      <subscript>n</subscript>)</literal>. That is, the selector’s name can
+      be omitted from the message expression.</para>
+
+      <informalexample xml:id="ex.call-selector">
+	<programlisting><xi:include href="examples/call-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.each">
+    <glossterm><literal>#each</literal></glossterm>
+
+    <glossdef>
+      <para>Classes mixing-in the <link
+      linkend="enu.enumerables">Enumerable</link> module are expected, by
+      default, to respond to <literal>#each</literal> by yielding the next
+      element of the sequence. Conventionally, it returns an
+      <literal>Enumerator</literal> when the block is omitted.</para>
+
+      <informalexample xml:id="ex.each-selector">
+        <programlisting><xi:include href="examples/each-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.each_">
+    <glossterm><literal>#each_</literal><replaceable>attribute</replaceable></glossterm>
+
+    <glossdef>
+      <para>Conventionally, a message selector of the form
+      <literal>:each_<replaceable>attribute</replaceable> </literal>
+      request their receiver enumerate the collection in terms of
+      <replaceable>attribute</replaceable>, that is yielding each
+      successive <replaceable>attribute</replaceable>; as opposed to
+      <literal>#each</literal> which presumably yields a different sort
+      of attribute. For example, <literal>String#each_codepoint</literal>
+      interprets the string as a collection of codepoints, yielding each
+      in turn. <literal>String#each_char</literal>, however, interprets the
+      string as a collection of characters, so will yield a different sequence
+      of objects. An object need only respond to such messages if it already
+      responds to <literal>:each</literal>, and can sensibly be enumerated in
+      another fashion. It is common to provide an alias for a selector of this
+      form named with the plural of <replaceable>attribute</replaceable>,
+      e.g. <literal>String#each_byte</literal> is aliased to
+      <literal>String#bytes</literal>; <literal>IO#each_line</literal>
+      is aliased to <literal>IO#lines</literal>.</para>
+
+      <informalexample xml:id="ex.each_-selector">
+        <programlisting><xi:include href="examples/each_-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.element-reference">
+    <glossterm>Element Reference</glossterm>
+
+    <glosssee otherterm="glo.aref"/>
+  </glossentry>
+
+  <glossentry xml:id="glo.empty">
+    <glossterm><literal>#empty?</literal></glossterm>
+
+    <glossdef>
+      <para>The <literal>:empty?</literal> predicate is defined by
+      <literal>Array</literal>, <literal>Hash</literal>,
+      <literal>Set</literal>, <literal>SortedSet</literal>,
+      <literal>String</literal>, and <literal>Symbol</literal>. It returns
+      <literal>true</literal> if the receiver doesn’t have any content;
+      <literal>false</literal> otherwise.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.length">
+    <glossterm><literal>#length</literal></glossterm>
+
+    <glosssee otherterm="glo.size"/>
+  </glossentry>
+
+  
+  <glossentry xml:id="glo.precedence">
+    <glossterm>precedence</glossterm>
+
+    <glossdef>
+      <remark>Expand to discuss the concept in general? i.e. involve other
+      forms of syntax, too?</remark>
+      <para>A compound expression might itself contain compound expressions,
+      each of which comprises an operator and its operands. For example,
+      <literal>1 - 2 * 3</literal>. This expression is potentially ambiguous:
+      is the intent to subtract 2 from 1, then multiply the result by 3, or
+      multiply 2 and 3, then subtract the result from 1? In evaluating such an
+      expression Ruby must apply <firstterm>precedence rules</firstterm> so as
+      to determine the order in which the operators should be
+      performed. <firstterm>Precedence</firstterm> is a relative order defined
+      over the operators such that each operator has lower, equal, or higher
+      precedence than another. For a given statement, the higher an operator’s
+      precedence, the earlier it is evaluated. <literal>*</literal> has a
+      higher precedence than <literal>-</literal>, as in mathematics, so the
+      example above evaluates to −5.</para>
+
+      <example xml:id="ex.precedence-parentheses">
+        <title>Parentheses can be used to force precedence</title>
+
+        <programlisting><xi:include href="examples/precedence-parentheses.rb" parse="text"/></programlisting>
+      </example>
+
+      <para>The default order of precedence may be overridden by grouping
+      sub‐expressions that should be performed earlier with parentheses, again
+      mirroring the rule in mathematics. When parenthetical groups contain
+      other parenthetical groups, the innermost is given the highest
+      precedence.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.rewind">
+    <glossterm><literal>#rewind</literal></glossterm>
+
+    <glossdef>
+      <para><literal>Enumerator</literal>’s respond to this selector
+      by resetting their state to the initial element. If the object
+      being enumerated responds to <literal>:rewind</literal>, it is
+      sent the message instead. <literal>IO</literal> objects, such as
+      <literal>Dir</literal> and <literal>File</literal>, respond in a
+      similar way by re‐position the stream to the beginning.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.size">
+    <glossterm><literal>#size</literal></glossterm>
+
+    <glossdef>
+      <para>Conventially, <literal>#size</literal> and
+      <literal>#length</literal>, which are typically aliases of each other,
+      return an <literal>Integer</literal> representing the magnitude of the
+      receiver. For example, <literal>Array#size</literal> returns the number of
+      elements the receiver contains; <literal>File#size</literal> returns the
+      receiver’s size in bytes.</para>
+
+      <informalexample xml:id="ex.size-selector">
+	<programlisting><xi:include href="examples/size-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.spaceship-op">
+    <glossterm>Spaceship Operator</glossterm>
+
+    <glosssee otherterm="glo.spaceship"/>
+  </glossentry>
+  
+  <glossentry xml:id="glo.to_">
+    <glossterm><literal>#to_</literal></glossterm>
+
+    <glossdef>
+      <para>Conventionally, a message selector with a <literal>#to_</literal>
+      prefix <link linkend="obj.conversion">converts</link> the receiver into
+      an object of the corresponding core type.</para>
+
+      <informalexample xml:id="ex.to_-selector">
+        <programlisting><xi:include href="examples/to_-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.try-convert">
+    <glossterm><literal>try_convert</literal></glossterm>
+
+    <glossdef>
+      <para>Conventionally, a class method which <link
+      linkend="obj.try-convert">implicitly converts</link> the argument to
+      the receiver.</para>
+
+      <informalexample xml:id="ex.try_convert-selector">
+	<programlisting><xi:include href="examples/try_convert-selector.rb" parse="text"/></programlisting>
+      </informalexample>
+    </glossdef>
+  </glossentry>
+</glossary>

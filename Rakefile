@@ -1,71 +1,91 @@
-require_relative 'lib/read-ruby'
-include ReadRuby
+# -*-Ruby-*-
 
+require 'pathname'
+
+# To validate locally, set the 'docbook' symlink to point to the system DocBook
+# schema/stylesheet directory. On Debian and its derivatives this is
+# /usr/share/xml/docbook/
+DOCBOOK_RNG = 'docbook/schema/rng/5.0/docbookxi.rng'
+BOOK_XML = 'book.xml'
+HTML_XSL = "xsl/html5.xsl"
+OUT_DIR = Pathname('out')
+EX_DIR = Pathname('examples/')
+PRISTINE_DIR = Pathname('www')
 RSYNC_EXCLUDE = %w{*examples/*html apache.conf*}
-MINIFIER = {html: 'h5-min', css: 'yuicompressor', js: 'yuicompressor'}
 
-task :default => :html
+task :validate => [:relaxng, :nvdl, :h5_valid]
 
-desc 'Rebuild HTML, CSS, and JS'
+task :relaxng do
+  sh "xmllint --xinclude --noout --relaxng #{DOCBOOK_RNG} #{BOOK_XML} 2>&1"
+end
+
+task :nvdl do
+  sh "onvdl #{BOOK_XML}"
+end
+
 task :html do
   OUT_DIR.rmtree if OUT_DIR.exist?
   cp_r PRISTINE_DIR, OUT_DIR
-  Pathname.glob("#{OUT_DIR}/**/*").select(&:symlink?).each do |file|
-    target, name = OUT_DIR.join(file.readlink), file
-    next unless target.extname == TEMPLATE_EXT
-    template = target.sub_ext('').basename.to_s
-    rendered = begin
-      Object.const_get(template.capitalize).new(name).tap do |o|
-        o.fixup if o.respond_to?(:fixup)
-      end.render
-    rescue NameError => e
-      Mustache.render(OUT_DIR.join(target).read)
-    end
-    name.unlink
-    open(name, ?w){|f| f.print rendered}
+  sh "xsltproc --stringparam out_dir #{OUT_DIR.expand_path} " +
+     "--xinclude #{HTML_XSL} #{BOOK_XML} "                    +
+     " >#{IO::NULL}" 
+end
+
+task :minify => :html do
+  OUT_DIR.each_child do |f|
+    next unless f.extname == '.html'
+    path = f.to_path
+    sh "h5-min #{path} >#{path}.min"
+    mv "#{path}.min", path
+    sh "gzip -cn #{path} >#{path}.gz"
   end
 end
 
-def minify ext
-  OUT_DIR.find do |file|
-    next unless file.file? and ext.include?(file.extname[1..-1])
-    if min = MINIFIER[ :"#{file.extname[1..-1]}" ]
-      sh "#{min} #{file} > #{file}.min"
-      mv "#{file}.min", file
-    end
-    sh "gzip --best -cn #{file} > #{file}.gz"
-  end
-end
-
-desc 'Minify HTML, CSS, and JS'
-task :minify do
-  minify %w{js css}
-  Rake::Task[:inline].invoke
-  minify %w{html xml}
-end
-
-[Example, Railroad].each do |klass|
-  name = klass.to_s.downcase + 's'
-  desc "Rebuild #{name}"
-  task name.to_sym do
-    klass.each do |source|
-      file klass.target(source) => source do
-        klass.generate source
-      end.invoke
+task :h5_valid => :html do
+  OUT_DIR.each_child do |f|
+    next unless f.extname == '.html'
+    next if (path = f.to_path).include?('google')
+    results = `h5-valid #{f}`
+    unless $?.success?
+      warn "Invalid: #{f}"
+      warn results
     end
   end
 end
 
-desc 'Push to GitHub'
-task :push do
-  sh 'git push github'
+task :highlight => :html do
+  require 'nokogiri'
+
+  Pathname.glob("#{OUT_DIR}/*html").each do |html|
+    nok = Nokogiri::HTML(html.read)
+    next unless nok.at('code.ruby')
+    nok.css('code.ruby').each do |code|
+      ex = Pathname("#{EX_DIR}/#{code['id'].sub(/^ex\./,'')}.html")
+      next unless ex.exist?
+      code.parent.swap(ex.read)
+    end
+    open(html, ?w) {|f| f << nok.to_s}
+  end
 end
 
-desc 'Rebuild everything & minify'
-task :all => [:examples, :railroads, :html, :minify]
+CODERAY = %Q{
+  <a href=/examples/%s>
+    <pre class=ruby><code>%s</code></pre>
+  </a>
+}
 
-desc 'Rebuild everything then upload'
-task :upload => [:push, :all, :rsync]
+task :coderay do
+  require 'coderay'
+
+  EX_DIR.each_child do |pa|
+    next unless pa.extname == '.rb'
+    html = CodeRay.highlight_file(pa.to_path)
+    nok = Nokogiri::HTML(html)
+    open(pa.sub_ext('.html'), ?w) do |f|
+      f << CODERAY % [pa.basename, nok.at('pre').inner_html]
+    end
+  end
+end
 
 desc 'Upload current build'
 task :rsync  do
@@ -75,22 +95,11 @@ task :rsync  do
   sh "rsync #{exclude} --delete -vazL out/ ruby:/home/public"
 end
 
-desc 'Start webserver to browse locally'
-task :browse do
-  system './lib/read-ruby/browse.rb'
-end
+desc 'Push to GitHub'
+task :push do
+  sh 'git push github'
+end  
 
-desc 'Inline CSS'
-task :inline do
-  OUT_DIR.each_child.select(&:file?).each do |file|
-    if file.extname[1..-1] == 'html'
-      nok = Nokogiri::HTML(file.read)
-      nok.search('link[@rel=stylesheet]').each do |link|
-        next unless link['href'].start_with?(?/)
-        css = (OUT_DIR + (link['href'][1..-1] << '.css')).read
-        link.swap("<style>#{css}</style>")
-      end
-      open(file, ?w){|f| f.print nok.to_s}
-    end
-  end
-end
+task :default => [:html, :highlight, :minify, :validate]
+
+# TODO: Add Sinatra integration back in
