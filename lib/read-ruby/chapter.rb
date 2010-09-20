@@ -90,7 +90,7 @@ class Chapter < Mustache
     footnotes
     nok.css('figure').map do |fig|
       if fig['id'] and fig['id'].end_with?('.rb')
-          fig.at("figcaption").before(Example.target(fig['id']).read)
+        fig.at("figcaption").before(Example.target(fig['id']).sub('.html','.rb').read)
       elsif fig['class'] == 'railroad' 
         fig.css('img').each do |img|
           railroad = Railroad.target(img['id'])
