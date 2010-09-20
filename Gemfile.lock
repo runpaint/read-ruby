@@ -1,0 +1,14 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    mustache (0.11.2)
+    nokogiri (1.4.3.1)
+    rake (0.8.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mustache
+  nokogiri
+  rake
