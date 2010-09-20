@@ -43,4 +43,4 @@ end
 
 Dir[File.dirname(__FILE__) + '/**/*rb'].
   reject{|f| f.end_with? 'browse.rb'}.
-  each{|f| require_relative f}
+  each{|f| f[0] == '/' ? require(f) : require_relative(f) }
