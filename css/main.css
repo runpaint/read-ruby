@@ -15,15 +15,15 @@
 }
 
 @font-face {
-	font-family: 'OFL Sorts Mill Goudy TT';
-	src: url('/fonts/eot/OFLGoudyStM-webfont');
-	src: local('☺'), url('/fonts/woff/OFLGoudyStM-webfont') format('woff'), url('/fonts/ttf/OFLGoudyStM-webfont') format('truetype'), url('/fonts/svg/OFLGoudyStM-webfont#webfont') format('svg');
+	font-family: 'Linux Libertine Regular';
+	src: url('/fonts/eot/linlibertine_re-4.7.5-webfont');
+	src: local('☺'), url('/fonts/woff/linlibertine_re-4.7.5-webfont') format('woff'), url('/fonts/ttf/linlibertine_re-4.7.5-webfont') format('truetype'), url('/fonts/eot/linlibertine_re-4.7.5-webfont') format('eot');
 	font-weight: normal;
 	font-style: normal;
 }
 
 body {
-  font-family: 'OFL Sorts Mill Goudy TT', 'Linux Libertine', Palatino, 'Palatino Linotype', 
+  font-family: 'Linux Libertine Regular', 'Linux Libertine', Palatino, 'Palatino Linotype', 
                'Book Antiqua', Georgia, 'Times New Roman', serif;
 }
 
@@ -40,7 +40,7 @@ body {
 }
 
 h1, h1 > code {
-  font-family: 'Goudy Bookletter 1911', 'OFL Sorts Mill Goudy TT', Palatino, 'Palatino Linotype', 
+  font-family: 'Goudy Bookletter 1911', 'Linux Libertine Regular', Palatino, 'Palatino Linotype', 
                'Book Antiqua', Georgia, 'Times New Roman', serif;
   font-style: bold;
   font-size: 100%;
