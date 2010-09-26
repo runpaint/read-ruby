@@ -542,8 +542,22 @@
 
     <sect2 xml:id="pro.data">
       <title><literal>__END__</literal></title>
+      
+      <para>If the interpreter encounters a line consisting solely of the token
+      <literal>__END__</literal>, it ignores any lines that follow. However, they are
+      made available to the program via a global, read-only <link
+      linkend="io.io"><literal>IO</literal></link> object named
+      <literal>DATA</literal>.</para>
 
-      <remark>TODO</remark>
+      <example xml:id="ex.__end__">
+	<title>Lines following <literal>__END__</literal> can be read via the
+        <literal>IO</literal> object <literal>DATA</literal>.</title>
+
+	<programlisting><xi:include 
+	  href="examples/__end__.rb" 
+	  parse="text"
+	/></programlisting>
+      </example>
     </sect2>
   </sect1>
 
