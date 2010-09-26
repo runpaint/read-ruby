@@ -1,6 +1,7 @@
 # -*-Ruby-*-
 
 require 'pathname'
+require 'nokogiri'
 
 # To validate locally, set the 'docbook' symlink to point to the system DocBook
 # schema/stylesheet directory. On Debian and its derivatives this is
@@ -54,8 +55,6 @@ task :h5_valid => :html do
 end
 
 task :highlight => :html do
-  require 'nokogiri'
-
   Pathname.glob("#{OUT_DIR}/*html").each do |html|
     nok = Nokogiri::HTML(html.read)
     next unless nok.at('code.ruby')
