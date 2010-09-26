@@ -100,6 +100,9 @@ task :push do
   sh 'git push github'
 end  
 
-task :default => [:html, :highlight, :minify, :validate]
+desc 'View locally with a web browser'
+task :browse do
+  sh "./bin/browse #{OUT_DIR}"
+end
 
-# TODO: Add Sinatra integration back in
+task :default => [:html, :highlight, :minify, :validate]

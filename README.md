@@ -13,27 +13,20 @@ Tracker](http://github.com/runpaint/read-ruby/issues).
 Contributor's guide
 -------------------
 
-Fork the [GitHub repository](http://github.com/runpaint/read-ruby), make commits and do pull requests.
+Fork the [GitHub repository](http://github.com/runpaint/read-ruby), make
+commits and do pull requests.
 
 To generate the book, you'll need:
 
 * Ruby 1.9, which can be installed via [rvm](http://rvm.beginrescueend.com/).
-* The gems Mustache, Nokogiri, h5-min, & `pngrammar`: `gem install mustache
-  nokogiri h5-min pngrammar`.
+* The Nokogiri gem. (Optionally, the `h5-min` and `coderay` gem).
+* For validation: `xmllint`, `onvdl`, `xlstproc`, and `h5-valid`
 * `gzip` for compressing HTML/CSS/JS. Installed by default on most systems.
-* `pygments` for highlighting examples. Packaged as `python-pygments` on Debian/Ubuntu. Can also be
-  installed with `easy_install Pygments`.
-* `optipng` for compressing railroad diagrams. Packaged as `optipng` on Debian/Ubuntu.
-* `yuicompressor` for minifying CSS and JS. ([YUI
-  Compressor](http://yuilibrary.com/downloads/#yuicompressor))
 
-To preview it locally, there are two options:
+To preview it locally:
 
-* Install Apache 2, symlink the config file at out/apache.conf from your Apache 2
-  `sites-enabled` directory, assign the hostname `read-ruby` to localhost,
-  then view `http://read-ruby/`.
-* Or, install the `sinatra` gem, run `rake browse` to start the bundled web
-  server, note the port it’s listening on, then navigate to
-  `http://localhost:`<var>port</var>`/`.
+* Install the `sinatra` gem
+* Run `rake browse` to start the bundled web server
+* Navigate to `http://localhost:4567/`
 
 To upload the site to a remote server you will also need `rsync`.

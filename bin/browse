@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'sinatra'
+require 'pathname'
+
+raise "Usage: #$0 <dir>" unless ARGV.size == 1
+OUT_DIR = Pathname(ARGV.first)
+
+enable :run
+set :public, OUT_DIR
+
+helpers do
+  def show name
+    glob = OUT_DIR.join(name).to_s + ?*
+    send_file Dir[glob].sort_by(&:size).first || halt(404)
+  end
+end
+
+get '/' do
+  show 'index'
+end
+
+get '/*' do
+  show params[:splat].join(?/)
+end
