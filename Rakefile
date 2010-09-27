@@ -127,4 +127,9 @@ task :push do
   sh 'git push github'
 end  
 
-task :default => %w{xml:validate html:build html:validate push web:rsync}
+desc 'Validate XML, build HTML, validate HTML'
+task :build => %w{xml:validate html:build html:validate}
+task :default => :build
+
+desc "Rebuild then rsync"
+task :upload => %w{build push web:rsync}
