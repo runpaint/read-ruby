@@ -872,8 +872,32 @@
       
       <sect3 xml:id="pro.load">
         <title><literal>load</literal></title>
+	
+	<para><function>Kernel.load</function> executes a given source file or
+	extension, then imports its constants—therefore class and module
+	definitions—method definitions, and global-, class-, and instance
+	variables into the loading environment. If the optional second
+	parameter is true, the file is loaded into an anonymous module, so as
+	to avoid polluting the caller’s environment.</para>
+	
+	<para>The filename to load is specified as a
+	<literal>String</literal>. Relative filenames are searched for in the
+	directories specified by <literal>$LOAD_PATH</literal>. Unlike
+	<function>require</function>, <literal>$LOADED_FEATURES</literal> is
+	ignored, so a file may be loaded multiple times.</para>
+	
+	<para>For example, consider a file, <filename>a.rb</filename>, that
+	comprised the statement <literal>@ivar = :i</literal>. Located in the
+	same directory is the following file:</para>
 
-        <remark>TODO</remark>
+	<example xml:id="ex.load">
+	  <title>Loading and executing an external file</title>
+
+	  <programlisting><xi:include 
+	  href="examples/load.rb" 
+	  parse="text"
+	  /></programlisting>
+	</example>
       </sect3>
     </sect2>
 
