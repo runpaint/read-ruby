@@ -26,7 +26,7 @@ To generate the book, you'll need:
 To preview it locally:
 
 * Install the `sinatra` gem
-* Run `rake browse` to start the bundled web server
+* Run `rake web:browse` to start the bundled web server
 * Navigate to `http://localhost:4567/`
 
 To upload the site to a remote server you will also need `rsync`.
