@@ -655,8 +655,201 @@
 
       <sect3 xml:id="pro.require">
         <title><literal>require</literal></title>
-      
-        <remark>TODO</remark>
+	
+        <para><function>Kernel.require</function> allows a program to load Ruby
+        code stored in an external file, or a Ruby extension. It takes a single
+        <literal>String</literal> argument, which may be the name of a file or
+        Gem (collectively termed <firstterm>features</firstterm>). The feature
+        is searched for in the directories specified by
+        <literal>$LOAD_PATH</literal>. If it is loaded successfully,
+        <literal>true</literal> is returned; if it was already loaded,
+        <literal>false</literal> is returned; otherwise, a
+        <literal>LoadError</literal> is raised. For example, to require
+        a…</para>
+	
+	<variablelist>
+	  <varlistentry>
+	    <term>Gem</term>
+	    <listitem>
+	      <para><literal>require "nokogiri"</literal></para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>File inside a gem</term>
+	    <listitem>
+	      <para><literal>require "sinatra/base"</literal></para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>File elsewhere on the filesystem</term>
+	    <listitem>
+	      <para><literal>require "./lib/blah"</literal></para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+
+	<remark>Mention that this enables features to be loaded conditionally?
+	Or is that implicit?</remark>
+
+	<para>This process is explained in detail below. A <emphasis>supported
+	extension</emphasis> is <literal>rb</literal>, along with the system’s
+	default extensions for shared libraries.</para>
+
+	<remark>Discuss Gem specifications as well? Or would that be too much
+	detail?</remark>
+	
+	<sect4 xml:id="pro.unqualified-features">
+	  <title>Unqualified Features</title>
+
+	  <para>If <replaceable>feature</replaceable> is
+	  <firstterm>unqualified</firstterm>, in the sense that it does not begin
+	  with <literal>/</literal>, <literal>../</literal>,
+	  <literal>~/</literal>, or <literal>/</literal>, it is required as
+	  follows:</para>
+
+	  <orderedlist>
+	    <listitem>
+	      <para>For each directory, <replaceable>dir</replaceable>, in
+	      <literal>$LOAD_PATH</literal>: If the file
+	      <literal><replaceable>dir</replaceable>/<replaceable>feature</replaceable></literal>
+	      exists, <link linkend="pro.require-try-load">try to load
+	      it</link>.</para>
+	    </listitem>
+	    <listitem>
+	      <para>For each supported extension,
+	      <replaceable>ext</replaceable><footnote><para>This step runs even
+	      if <replaceable>feature</replaceable> already ends with an
+	      extension; the second extension is simply appended to the
+	      first…</para></footnote></para>
+	      <orderedlist>
+		<listitem>
+		  <para>Set <replaceable>file</replaceable> to
+		  <literal><replaceable>feature</replaceable>.<replaceable>ext</replaceable></literal>.</para>
+		</listitem>
+		<listitem>
+		  <para>Iterate through each directory,
+		  <replaceable>dir</replaceable>, in
+		  <literal>$LOAD_PATH</literal>. If
+		  <literal><replaceable>dir</replaceable>/<replaceable>file</replaceable></literal>
+		  exists, <link linkend="pro.require-try-load">try to load
+		  it</link>.</para>
+		</listitem>
+	      </orderedlist>
+	    </listitem>
+	    <listitem>
+	      <para><link linkend="pro.gem-search">Search the Gem path</link>
+	      for <replaceable>feature</replaceable>.</para>
+	    </listitem>
+	  </orderedlist>
+	</sect4>
+
+	<sect4 xml:id="pro.qualified-features">
+	  <title>Qualified Features</title>
+
+	  <para>If the feature name is <firstterm>qualified</firstterm>, it is
+	  required as follows:</para>
+	  
+	  <orderedlist>
+	    <listitem>
+	      <para>For each supported extension, <replaceable>ext</replaceable>:</para>
+	      <orderedlist>
+		<listitem>
+		  <para>Set <replaceable>file</replaceable> to <literal><replaceable>feature</replaceable>.<replaceable>ext</replaceable></literal>.</para>
+		</listitem>
+		<listitem>
+		  <para>If <replaceable>file</replaceable> resolves relative to
+		  the current working directory, <link
+		  linkend="pro.require-try-load">try to load it</link>.</para>
+		</listitem>
+	      </orderedlist>
+	    </listitem>
+	    <listitem>
+	      <para><link linkend="pro.gem-search">Search the Gem path</link>
+	      for <replaceable>feature</replaceable>.</para>
+	    </listitem>
+	  </orderedlist>
+	</sect4>
+
+	<sect4 xml:id="pro.gem-search">
+	  <title>Searching the Gem Path</title>
+
+	  <para>To search the Gem paths for <replaceable>feature</replaceable>:</para>
+
+	  <orderedlist>
+	    <listitem>
+	      <para>For each Gem path<footnote><para>The Gem paths for your
+	      system are returned by <command>gem environment
+	      gempath</command>.</para></footnote>,
+	      <replaceable>path</replaceable>:</para>
+	      <orderedlist>
+		<listitem>
+		  <para>Append <literal>gems/</literal> to <replaceable>path</replaceable>.</para>
+		</listitem>
+		<listitem>
+		  <para>For each sub-directory, <replaceable>dir</replaceable>, of
+		  <replaceable>path</replaceable>:</para>
+		  <orderedlist>
+		    <listitem>
+		      <para>Set <replaceable>file</replaceable> to
+		      <literal><replaceable>dir</replaceable>/lib/<replaceable>feature</replaceable></literal>
+		      <footnote><para>This is literally a string concatenation:
+		      <replaceable>feature</replaceable> is not resolved relative to
+		      <literal><replaceable>dir</replaceable>/lib/</literal>; it is
+		    appended.</para></footnote>.</para></listitem>
+		    <listitem>
+		      <para>If <replaceable>file</replaceable> exists, <link
+		      linkend="pro.require-try-load">try to load
+			  it</link>.</para>
+		    </listitem>
+		    <listitem>
+		      <para>For each supported extension, <replaceable>ext</replaceable>:</para>
+		      <orderedlist>
+			<listitem>
+			  <para>Set <replaceable>file2</replaceable> to
+			  <literal><replaceable>file</replaceable>.<replaceable>ext</replaceable></literal>.</para>
+			</listitem>
+			<listitem>
+			  <para>If <replaceable>file2</replaceable> exists,
+			  <link linkend="pro.require-try-load">try to load
+			  it</link>.</para>
+			</listitem>
+		      </orderedlist>
+		    </listitem>
+		  </orderedlist>
+		</listitem>
+	      </orderedlist>
+	    </listitem>
+	    <listitem>
+	      <para>Raise a <literal>LoadError</literal>.</para>
+	    </listitem>
+	  </orderedlist>
+	</sect4>
+
+	<sect4 xml:id="pro.require-try-load">
+	  <title>Loading a Feature</title>
+
+	  <para>If one of the algorithms above finds a filename,
+	  <replaceable>file</replaceable>, that corresponds with the feature
+	  name, <function>require</function> tries to load it as
+	  follows:</para>
+	
+	  <orderedlist>
+	    <listitem>
+	      <para>If the <literal>$LOADED_FEATURES</literal>
+	      <literal>Array</literal> contains <replaceable>file</replaceable>,
+	      return <literal>false</literal>.</para>
+	    </listitem>
+	    <listitem>
+	      <para>Return the value of <link
+	      linkend="pro.load"><function>Kernel.load</function></link> when
+	      given <replaceable>file</replaceable> as an argument.</para>
+	    </listitem>
+	  </orderedlist>
+
+	  <para>To load a file unconditionally, i.e. without checking
+	  <literal>$LOADED_FEATURES</literal>, <function>load</function> can be
+	  invoked directly.</para>
+	</sect4>
       </sect3>
       
       <sect3 xml:id="pro.load">
