@@ -622,10 +622,29 @@
         </para>
         
         <para>
-          If a script containing a shebang is executable it may be executed by
+          If a script containing a shebang is executable, it may be executed by
           entering its filename in the shell. This allows the interpreter to
           be invoked implicitly, and is a common approach.
         </para>
+
+	<example xml:id="ex.shebang">
+	  <title>A shebang allows Ruby source files to be executed from the shell
+	  like a system command</title>
+
+	  <programlisting><xi:include 
+	  href="examples/shebang.rb" 
+	  parse="text"
+	  /></programlisting>
+	</example>
+
+	<example xml:id="ex.shebang-shell">
+	  <title>Executing a file with a shebang</title>
+
+	  <programlisting><xi:include 
+	  href="examples/shebang-shell.txt" 
+	  parse="text"
+	  /></programlisting>
+	</example>
       </sect3>
 
       <sect3 xml:id="pro.source-encoding">

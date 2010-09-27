@@ -1,0 +1,3 @@
+run@paint:~ →  chmod +x shebang.rb
+run@paint:~ →  ./shebang.rb
+The whole shebang
