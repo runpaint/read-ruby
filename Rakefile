@@ -99,9 +99,13 @@ task :push do
   sh 'git push github'
 end  
 
+desc "Rebuild and upload"
+task :upload => [:default, :push, :rsync]
+
 desc 'View locally with a web browser'
 task :browse do
   sh "./bin/browse #{OUT_DIR}"
 end
+
 
 task :default => [:validate, :html, :highlight, :minify]
