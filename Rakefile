@@ -104,4 +104,4 @@ task :browse do
   sh "./bin/browse #{OUT_DIR}"
 end
 
-task :default => [:html, :highlight, :minify, :validate]
+task :default => [:validate, :html, :highlight, :minify]
