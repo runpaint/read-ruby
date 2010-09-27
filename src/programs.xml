@@ -616,10 +616,9 @@
         </para>
 
         <para>
-          A typical shebang is <literal>#!/usr/bin/env ruby -w</literal> which
+          A typical shebang is <literal>#!/usr/bin/env ruby</literal> which
           uses <command>env</command> to avoid hardcoding the path to the
-          interpreter, and passes the <literal>-w</literal> option to the
-          interpreter to enable warnings.
+          interpreter.
         </para>
         
         <para>
