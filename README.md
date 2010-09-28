@@ -18,15 +18,19 @@ commits and do pull requests.
 
 To generate the book, you'll need:
 
-* Ruby 1.9, which can be installed via [rvm](http://rvm.beginrescueend.com/).
-* The Nokogiri gem. (Optionally, the `h5-min` and `coderay` gem).
-* For validation: `xmllint`, `onvdl`, `xlstproc`, and `h5-valid`
+* Ruby 1.9.2 (or 1.9 trunk), which can be installed via
+  [rvm](http://rvm.beginrescueend.com/).
+* `xsltproc` (Available in an eponymous package on Debian and her derivatives).
+* The gems `coderay`, `h5-min`, `nokogiri`, `sinatra`, and `w3c_validators`. If
+  you have the `bundler` gem installed, you can install the lot by executing
+  `bundle install` in the repository root.
+* To validate the DocBook sources you'll need `xmllint` (packaged as
+  `libxml2-utils` on Debian et al.) and/or
+  [`oNVDL`](http://www.oxygenxml.com/onvdl.html). (Validation will be skipped
+  if these programs aren’t installed).
 * `gzip` for compressing HTML/CSS/JS. Installed by default on most systems.
 
 To preview it locally:
 
-* Install the `sinatra` gem
-* Run `rake web:browse` to start the bundled web server
+* Run `rake browse` to start the bundled web server
 * Navigate to `http://localhost:4567/`
-
-To upload the site to a remote server you will also need `rsync`.

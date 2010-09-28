@@ -5,3 +5,4 @@
 out/
 build/
 examples/*.html
+Gemfile.lock
