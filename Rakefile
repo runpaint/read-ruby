@@ -58,6 +58,9 @@ DOCBOOK_RNG = 'docbook/schema/rng/5.0/docbookxi.rng'
 # Globs that should not be rsync'd
 RSYNC_EXCLUDE = %w{*examples/*html *examples/.*}
 
+# Null device (defined by default on 1.9.3)
+IO::NULL = '/dev/null' unless IO.const_defined?(:NULL)
+
 # Create OUT_DIR, EX_DIR, and BUILD_DIR as needed.
 [OUT_DIR, BUILD_DIR].each do |dir|
   task :html => dir
