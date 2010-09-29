@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<chapter version="5.0" xml:id="flo.flow" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+<chapter version="5.0" 
+	 xml:id="flo.flow" 
+	 xml:lang="en" 
+	 xmlns="http://docbook.org/ns/docbook" 
+	 xmlns:xi="http://www.w3.org/2001/XInclude" 
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Flow</title>
 
   <sect1 xml:id="flo.conditionals">
     <title>Conditionals</title>
     
     <para>
-      A <firstterm>conditional</firstterm> is an expression evaluated as a truthbearer.
-      The conditional is <firstterm>false</firstterm> if the
-      expression’s value is <link linkend="pro.nil">nil</link> or <link   linkend="pro.false">false</link>; otherwise it is <firstterm>true</firstterm>.
+      A <firstterm>conditional</firstterm> is an expression evaluated as a
+      truthbearer.  The conditional is <firstterm>false</firstterm> if the
+      expression’s value is <link linkend="pro.nil">nil</link> or <link
+      linkend="pro.false">false</link>; otherwise it is
+      <firstterm>true</firstterm>.
     </para>
 
     <example xml:id="ex.conditional-true">
@@ -40,13 +47,13 @@
       <title>AND Operator</title>
       
       <!--figure>
-        <title>Syntax diagram of the Boolean AND operator</title>
-        <mediaobject>
+	  <title>Syntax diagram of the Boolean AND operator</title>
+	  <mediaobject>
           <imageobject>
-            <imagedata fileref="figures/boolean-and-operator.png" format="PNG" width="4in"/>
+	  <imagedata fileref="figures/boolean-and-operator.png" format="PNG" width="4in"/>
           </imageobject>
-        </mediaobject>
-      </figure-->
+	  </mediaobject>
+	  </figure-->
 
       <para>The binary <literal>and</literal>/<literal>&amp;&amp;</literal> operators return
       <literal>true</literal> iff both operands are true. They perform short-circuit
@@ -65,14 +72,14 @@
     <sect2 xml:id="flo.or-operator">
       <title>OR Operator</title>
       <!--figure>
-        <title>Syntax diagram of the Boolean OR operator
-	</title>
-        <mediaobject>
+	  <title>Syntax diagram of the Boolean OR operator
+	  </title>
+	  <mediaobject>
           <imageobject>
-            <imagedata fileref="figures/boolean-or-operator.png" format="PNG" width="4in"/>
+	  <imagedata fileref="figures/boolean-or-operator.png" format="PNG" width="4in"/>
           </imageobject>
-        </mediaobject>
-      </figure-->
+	  </mediaobject>
+	  </figure-->
 
       <para>The binary <literal>or</literal>/<literal>||</literal> operators return
       <literal>true</literal> iff at least one operand is true. They perform
@@ -92,14 +99,14 @@
       <title>NOT Operator</title>
 
       <!--figure>
-        <title>Syntax diagram of the Boolean NOT operator
-	</title>
-        <mediaobject>
+	  <title>Syntax diagram of the Boolean NOT operator
+	  </title>
+	  <mediaobject>
           <imageobject>
-            <imagedata fileref="figures/boolean-not-operator.png" format="PNG" width="4in"/>
+	  <imagedata fileref="figures/boolean-not-operator.png" format="PNG" width="4in"/>
           </imageobject>
-        </mediaobject>
-      </figure-->
+	  </mediaobject>
+	  </figure-->
 
       <para>The unary <literal>not</literal>/<literal>!</literal> operators return
       <literal>true</literal> iff the operand is false.</para>
@@ -151,14 +158,14 @@
       <title><literal>if</literal> Statement</title>
       
       <!--figure>
-        <title>Syntax diagram of <literal>if</literal> statement
-	</title>
-        <mediaobject>
+	  <title>Syntax diagram of <literal>if</literal> statement
+	  </title>
+	  <mediaobject>
           <imageobject>
-            <imagedata fileref="figures/if-statement.png" format="PNG" width="4in"/>
+	  <imagedata fileref="figures/if-statement.png" format="PNG" width="4in"/>
           </imageobject>
-        </mediaobject>
-      </figure-->
+	  </mediaobject>
+	  </figure-->
       
       <para>The <literal>if</literal> statement comprises a conditional, zero or more
       statements (the branch), then, optionally, additional branches whose
@@ -178,14 +185,14 @@
         <title>Postfix Form</title>
 
         <!--figure>
-          <title>Syntax diagram of the postfix <literal>if</literal> statement
-	  </title>
-          <mediaobject>
+	    <title>Syntax diagram of the postfix <literal>if</literal> statement
+	    </title>
+	    <mediaobject>
             <imageobject>
-              <imagedata fileref="figures/postfix-if-statement.png" format="PNG" width="4in"/>
+	    <imagedata fileref="figures/postfix-if-statement.png" format="PNG" width="4in"/>
             </imageobject>
-          </mediaobject>
-        </figure-->
+	    </mediaobject>
+	    </figure-->
 
         <para>A postfix <literal>if</literal> statement is a concise alternative when
         the branch consists of a sole statement. It comprises an
@@ -209,14 +216,14 @@
         <title><literal>else</literal> Clause</title>
         
 	<!--figure>
-          <title>Syntax diagram of <literal>if</literal> statement with an
-          <literal>else</literal> branch</title>
-          <mediaobject>
+	    <title>Syntax diagram of <literal>if</literal> statement with an
+	    <literal>else</literal> branch</title>
+	    <mediaobject>
             <imageobject>
-              <imagedata fileref="figures/else-clause.png" format="PNG" width="4in"/>
+	    <imagedata fileref="figures/else-clause.png" format="PNG" width="4in"/>
             </imageobject>
-          </mediaobject>
-        </figure-->
+	    </mediaobject>
+	    </figure-->
 
         <para>Prior to an <literal>if</literal> statement’s <literal>end</literal> keyword an
         <literal>else</literal> branch may appear. It is executed iff no preceding
@@ -225,8 +232,7 @@
         <example xml:id="ex.if-statement-with-else-clause">
           <title>An <literal>if</literal> statement can contain an
           <literal>else</literal> clause, which is executed iff no other branch was
-          executed.
-	  </title>
+          executed</title>
           <programlisting><xi:include
 	  href="examples/if-statement-with-else-clause.rb"
 	  parse="text"/></programlisting>
@@ -237,15 +243,15 @@
         <title><literal>elsif</literal> Clause</title>
         
 	<!--figure>
-          <title>Syntax diagram of <literal>if</literal> statement with an
-          <literal>elsif</literal> branch
-	  </title>
-          <mediaobject>
+	    <title>Syntax diagram of <literal>if</literal> statement with an
+	    <literal>elsif</literal> branch
+	    </title>
+	    <mediaobject>
             <imageobject>
-              <imagedata fileref="figures/elsif-clause.png" format="PNG" width="4in"/>
+	    <imagedata fileref="figures/elsif-clause.png" format="PNG" width="4in"/>
             </imageobject>
-          </mediaobject>
-        </figure-->
+	    </mediaobject>
+	    </figure-->
         
 	<para>An <literal>if</literal> statement may contain any number of
         <literal>elsif</literal> branches between the <literal>if</literal> branch and
@@ -266,20 +272,13 @@
     
     <sect2 xml:id="flo.unless-statement">
       <title><literal>unless</literal> Statement</title>
-      <!--figure>
-        <title>Syntax diagram of <literal>unless</literal> statement</title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/unless-statement.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
 
       <para>The <literal>unless</literal> statement executes its branch iff its
-      conditional is false. It is equivalent to an <literal>if</literal> statement
-      with the conditional inverted. It may be followed by an
-      <literal>else</literal> branch, which executes iff the <literal>unless</literal>
-      conditional is true.  <literal>elsif</literal> clauses are prohibited.</para>
+      conditional is false. It is equivalent to an <literal>if</literal>
+      statement with the conditional inverted. It may be followed by an
+      <literal>else</literal> branch, which executes iff the
+      <literal>unless</literal> conditional is true.  <literal>elsif</literal>
+      clauses are prohibited.</para>
 
       <example xml:id="ex.unless-statement-fig">
         <title>The <literal>unless</literal> statement executes its body iff
@@ -292,14 +291,14 @@
         <title>Postfix Form</title>
 
         <!--figure>
-          <title>Syntax diagram of the postfix <literal>unless</literal>
-          statement</title>
-          <mediaobject>
+	    <title>Syntax diagram of the postfix <literal>unless</literal>
+	    statement</title>
+	    <mediaobject>
             <imageobject>
-              <imagedata fileref="figures/postfix-unless-statement.png" format="PNG" width="4in"/>
+	    <imagedata fileref="figures/postfix-unless-statement.png" format="PNG" width="4in"/>
             </imageobject>
-          </mediaobject>
-        </figure-->
+	    </mediaobject>
+	    </figure-->
 
         <para>The postfix form of the <literal>unless</literal> statement behaves as
         the postfix <literal>if</literal> statement, except the expression is
@@ -320,13 +319,13 @@
       <title>Ternary Operator</title>
 
       <!--figure>
-        <title>Syntax diagram of the ternary operator</title>
-        <mediaobject>
+	  <title>Syntax diagram of the ternary operator</title>
+	  <mediaobject>
           <imageobject>
-            <imagedata fileref="figures/ternary-operator.png" format="PNG" width="4in"/>
+	  <imagedata fileref="figures/ternary-operator.png" format="PNG" width="4in"/>
           </imageobject>
-        </mediaobject>
-      </figure-->
+	  </mediaobject>
+	  </figure-->
 
       <para>The ternary operator is a concise alternative to <literal>if
       <replaceable>conditional</replaceable>…else…</literal> when the conditional and branches
@@ -348,13 +347,13 @@
       <title><literal>case</literal> Statement</title>
       
       <!--figure>
-	<title>Syntax diagram of the <literal>case</literal> statement</title>
-	<mediaobject>
+	  <title>Syntax diagram of the <literal>case</literal> statement</title>
+	  <mediaobject>
 	  <imageobject>
-	    <imagedata fileref="figures/case-statement-syntax.png" format="PNG" width="4in"/>
+	  <imagedata fileref="figures/case-statement-syntax.png" format="PNG" width="4in"/>
 	  </imageobject>
-	</mediaobject>
-      </figure-->
+	  </mediaobject>
+	  </figure-->
 
       <para>The <literal>case</literal> statement allows a single expression
       (hereafter: the <firstterm>topic</firstterm>) to be
@@ -368,34 +367,38 @@
 	<title><literal>when</literal> Clause</title>
 	
 	<!--figure>
-	  <title>Syntax diagram of the <literal>case</literal> statement’s
-          <literal>when</literal> clause  
-	  </title>
-	  <mediaobject>
+	    <title>Syntax diagram of the <literal>case</literal> statement’s
+	    <literal>when</literal> clause  
+	    </title>
+	    <mediaobject>
 	    <imageobject>
-	      <imagedata fileref="figures/when-clause.png" format="PNG" width="4in"/>
+	    <imagedata fileref="figures/when-clause.png" format="PNG" width="4in"/>
 	    </imageobject>
-	  </mediaobject>
-	</figure-->
+	    </mediaobject>
+	    </figure-->
 
 	<para>A branch is introduced by the <literal>when</literal> keyword followed by
         a comma-separated list of one or more expressions. This list is
         separated from the statements comprising the branch body by the
         <literal>then</literal> keyword or a statement terminator.</para>
 	
-	<para>A <firstterm><literal>when</literal> clause</firstterm> matches the topic 
-	if any of the expressions listed after <literal>when</literal> have case equality 
-	(<literal><replaceable>expression</replaceable> === <replaceable>topic</replaceable>
-	</literal>) with the topic. Therefore, <literal>when <replaceable>expression</replaceable>
-	</literal> is equivalent to <literal>if <replaceable>expression</replaceable> === 
-	<replaceable>topic</replaceable> </literal>. By default, the <literal>#===</literal>
-	message is equivalent to <literal>#==</literal>—they both test for equality—but certain 
-	core classes redefine <literal>#===</literal> to behave more usefully in this context, as
-	shown in the following table.</para>
+	<para>A <firstterm><literal>when</literal> clause</firstterm> matches
+	the topic if any of the expressions listed after
+	<literal>when</literal> have case equality
+	(<literal><replaceable>expression</replaceable> ===
+	<replaceable>topic</replaceable> </literal>) with the topic. Therefore,
+	<literal>when <replaceable>expression</replaceable> </literal> is
+	equivalent to <literal>if <replaceable>expression</replaceable> ===
+	<replaceable>topic</replaceable> </literal>. By default, the
+	<literal>#===</literal> message is equivalent to
+	<literal>#==</literal>—they both test for equality—but certain core
+	classes redefine <literal>#===</literal> to behave more usefully in
+	this context, as shown in the following table.</para>
 	
 	<table xml:id="flo.case-equality-operator-table">
 	  <caption>The effect of the case equality operator on a receiver of
-	  class <replaceable>a</replaceable> and a single operand (<replaceable>b</replaceable>)
+	  class <replaceable>a</replaceable> and a single operand
+	  (<replaceable>b</replaceable>)
 	  </caption>
 	  <thead>
 	    <tr>
@@ -461,18 +464,19 @@
       <sect3 xml:id="flo.else">
 	<title><literal>else</literal> Clause</title>
 	<!--figure>
-	  <title>Syntax diagram of the <literal>case</literal> statement’s
-	  <literal>else</literal> clause  
-	  </title>
-	  <mediaobject>
+	    <title>Syntax diagram of the <literal>case</literal> statement’s
+	    <literal>else</literal> clause  
+	    </title>
+	    <mediaobject>
 	    <imageobject>
-	      <imagedata fileref="figures/else-clause.png" format="PNG" width="4in"/>
+	    <imagedata fileref="figures/else-clause.png" format="PNG" width="4in"/>
 	    </imageobject>
-	  </mediaobject>
-	</figure-->
-	<para>A single <literal>else</literal> clause may appear between the final
-	<literal>when</literal> clause and the <literal>end</literal> keyword which delimits
-	the <literal>case</literal> statement.</para>
+	    </mediaobject>
+	    </figure-->
+	<para>A single <literal>else</literal> clause may appear between the
+	final <literal>when</literal> clause and the <literal>end</literal>
+	keyword which delimits the <literal>case</literal> statement.</para>
+
 	<example xml:id="ex.case-cf-if">
 	  <title>The same method implemented first with an <literal>if</literal>
 	  statement then with a <literal>case</literal> statement
@@ -501,5 +505,1372 @@
 	</example>
       </sect3>
     </sect2>   
+  </sect1>
+
+  <sect1 xml:id="flo.looping">
+    <title>Looping</title>
+    
+    <para>Looping constructs represent repetition. They comprise a block of
+    code (hereafter: the <firstterm>body</firstterm>) and a
+    <firstterm>terminating condition</firstterm> which governs the number of
+    times the body will execute.</para>
+
+    <para>The following constructs are materially identical in that they can
+    all be used to create any kind of loop, albeit when combined with control
+    flow statements. The purpose of having many different approaches to
+    looping, as opposed to a single, generic construct, is to allow common
+    scenarios to be expressed concisely and simply, and in doing so lessen the
+    chance of erroneous terminating conditions.</para>
+
+    <!-- TODO: loops don't create their own variable scope -->
+    <sect2 xml:id="flo.count-controlled-loops">
+      <title>Count-Controlled Loops</title>
+
+      <para>The constructs that follow instrument an a priori number of
+      repetitions.</para>
+
+      <!-- for loops are unnecessary -->
+      
+      <sect3 xml:id="flo.integer-times">
+        <title><literal>Integer#times</literal></title>
+
+        <para><literal>Integer#times</literal> creates a loop which executes
+        <replaceable>n</replaceable> times, where <replaceable>n</replaceable>
+        is the integer’s magnitude. For example, <literal>10.times { …
+        }</literal> executes the block ten times, passing into the block the
+        number of the current iteration. When the block is omitted an
+        <literal>Enumerator</literal> is returned.</para>
+
+        <example xml:id="ex.integer-times-loop">
+          <title><literal>Integer#times</literal> executes the associated block
+          the number of times specified by the receiver</title>
+	  
+	  <programlisting><xi:include 
+	  parse="text" href="examples/integer-times-loop.rb"/></programlisting>
+	</example>
+      </sect3>
+
+      <sect3 xml:id="flo.integer-upto">
+        <title><literal>Integer#upto</literal></title>
+
+        <para>Similarly,
+        <literal>Integer#upto(<replaceable>limit</replaceable>)</literal>
+        counts from the value of the receiver <emphasis>up</emphasis> to the
+        value of <replaceable>limit</replaceable>, executing the loop body each
+        time. On each iteration the block is passed the current number in the
+        progression. For, example, <literal>10.upto(13)</literal> executes the
+        loop body four times, passing it 10, 11, 12, 13, then terminating. When
+        the block is omitted an <literal>Enumerator</literal> is
+        returned.</para>
+
+        <example xml:id="ex.integer-upto-loop">
+          <title><literal>Integer#upto</literal> counts from the receiver up to
+          its argument, executing the associated block each time</title>
+
+	  <programlisting><xi:include
+	  href="examples/integer-upto-loop.rb"
+	  parse="text"/></programlisting>
+        </example>
+      </sect3>
+
+      <sect3 xml:id="flo.integer-downto">
+        <title><literal>Integer#downto</literal></title>
+
+        <para>Conversely,
+        <literal>Integer#downto(<replaceable>limit</replaceable>)</literal>
+        counts from the value of the receiver <emphasis>down</emphasis> to the
+        value of <replaceable>limit</replaceable>, executing the loop body each
+        time. As with <literal>Integer#upto</literal>, the block is passed the
+        number of the current progression. When the block is omitted an
+        <literal>Enumerator</literal> is returned.</para>
+
+        <example xml:id="ex.integer-downto-loop">
+          <title><literal>Integer#downto</literal> counts from the receiver
+          down to its argument, executing the associated block each
+          time</title>
+	  
+	  <programlisting><xi:include
+	  href="examples/integer-downto-loop.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="flo.condition-controlled-loops">
+      <title>Condition-Controlled Loops</title>
+
+      <para>A condition-controlled loop uses a conditional to determine when
+      the loop should terminate. The conditional is tested prior to each
+      repetition, its value determining whether to repeat or terminate the
+      loop.</para>
+
+      <sect3 xml:id="flo.while-lop">
+        <title><literal>while</literal> Loops</title>
+
+        <para>The <literal>while</literal> loop executes its body as long as
+        its conditional is true. If the conditional is initially false the body
+        is never executed.</para>
+	
+        <example xml:id="ex.while-loop-fig">
+          <title>Using a <literal>while</literal> loop to calculate the Farey
+          sequence of order <replaceable>n</replaceable></title>
+	  
+	  <programlisting><xi:include 
+	  href="examples/while-loop-fig.rb"
+	  parse="text"/></programlisting>
+	</example>
+
+        <sect4 xml:id="flo.postfix-while-statement">
+          <title>Postfix Form</title>
+
+          <para><literal>while</literal> can also be used as a statement
+          modifier in which case it executes its left-hand side while its
+          right-hand side is true.</para>
+
+          <example xml:id="ex.postfix-while-statement-fig">
+            <title>Using the postfix-<literal>while</literal> statement to
+            naïvely calculate the number of bits set in an integer</title>
+	    
+	    <programlisting><xi:include
+	    href="examples/postfix-while-statement-fig.rb"
+	    parse="text"/></programlisting>
+          </example>
+        </sect4>
+      </sect3>
+
+      <sect3 xml:id="flo.until-loop">
+        <title><literal>until</literal> Loops</title>
+
+        <para>The <literal>until</literal> loop executes its body as long as
+        its conditional is false. If the conditional is initially true the body
+        is never executed.</para>
+
+        <example xml:id="ex.until-loop-fig">
+          <title>Using the <literal>until</literal> loop to generate the
+          <emphasis>look-and-say</emphasis> sequence</title>
+
+	  <programlisting><xi:include
+	  href="examples/until-loop-fig.rb"
+	  parse="text"/></programlisting>
+        </example>
+
+        <sect4 xml:id="flo.postfix-until-statement">
+          <title>Postfix Form</title>
+
+          <para><literal>until</literal> can also be used as a statement
+          modifier in which case it executes its left-hand side until its
+          right-hand side is true.</para>
+
+          <example xml:id="ex.postfix-until-statement-fig">
+            <title>Using the postfix-<literal>until</literal> statement to
+	    determine the next prime number following the receiver</title>
+	    
+	    <programlisting><xi:include
+	    href="examples/postfix-until-statement-fig.rb"
+	    parse="text"/></programlisting>
+	  </example>
+        </sect4>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="flo.loop">
+      <title>Infinite Loops</title>
+
+      <para>The <literal>loop</literal> keyword executes its body
+      indefinitely. Unlike the constructs discussed previously, there is no
+      explicit terminating condition. An infinite loop qua infinite loop is
+      undesirable, so the body will typically include statements that
+      conditionally terminate it.  Such statements include the control flow
+      statements, <literal>return</literal>, <literal>throw</literal>,
+      <literal>raise</literal>, and <literal>exit</literal>. In addition, <link
+      linkend="flo.raise">raising</link> a <link
+      linkend="flo.stop-iteration"><literal>StopIteration</literal></link>
+      <link linkend="flo.exceptions">exception</link> inside the loop body has
+      the same effect. The principle of <literal>loop</literal>, therefore, is
+      to repeat an operation until explicitly told to halt.</para>
+
+      <example xml:id="ex.loop-loop-fig">
+        <title>Using the <literal>loop</literal> construct to determine whether
+	an integer is <emphasis>happy</emphasis></title>
+	
+	<programlisting><xi:include
+	href="examples/loop-loop-fig.rb"
+	parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="flo.control-flow-statements">
+      <title>Control Flow Statements</title>
+
+      <!-- Clarify the below applies only to loops; the remarks in Closures
+	   apply to iterators. Perhaps move the Closures section to here?
+	   Similarly, return is introduced in Methods... -->
+
+      <sect3 xml:id="flo.break-statement">
+	<title><literal>break</literal> Statement</title>
+
+	<para>Within a loop the <literal>break</literal> statement transfers
+	control to the first statement following the loop. (Within a <link
+	linkend="clo.proc-semantics-return">proc</link> or <link
+	linkend="clo.lambda-semantics-return">lambda</link> it has different
+	semantics). The value of a <literal>break</literal> statement, and
+	therefore the enclosing loop, is that of its arguments—coerced into an
+	<literal>Array</literal> if there is a plurality—, or
+	<literal>nil</literal> in their absence.</para>
+
+	<example xml:id="ex.break">
+	  <title>Using <literal>break</literal> to exit a loop early</title>
+	  
+	  <programlisting><xi:include
+	  href="examples/break.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+
+      <sect3 xml:id="flo.next-statement">
+	<title><literal>next</literal> Statement</title>
+
+	<para>The <literal>next</literal> statement ends the current iteration of
+	the loop and begins the next. It raises a <literal>LocalJump</literal>
+	exception when used outside of a loop or closure. Any arguments it is
+	given are ignored.</para>
+
+	<example xml:id="ex.next">
+	  <title>Using <literal>next</literal> to skip comments in
+	  <filename>/etc/hosts</filename></title>
+
+	  <programlisting><xi:include
+	  parse="text"
+	  href="examples/next.rb"/></programlisting>
+	</example>
+      </sect3>
+
+      <sect3 xml:id="ex.redo-statement">
+	<title><literal>redo</literal> Statement</title>
+
+	<para>The <literal>redo</literal> statement restarts the current
+	iteration of the loop, returning control to the first expression in the
+	body. The loop conditional is not re-evaluated.</para>
+
+	<example xml:id="ex.redo">
+	  <title>Using <literal>redo</literal> to conditionally repeat a password
+	  prompt</title>
+	  
+	  <programlisting><xi:include
+	  href="examples/redo.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+
+      <sect3 xml:id="flo.throw-catch">
+	<title><literal>throw</literal>/<literal>catch</literal> Statements</title>
+	
+	<para>The <literal>catch</literal> method defines a labeled block of
+	code. The <literal>throw</literal> method exits a
+	<literal>catch</literal> block with a given label. Taken together, they
+	form a general-purpose control structure.</para>
+
+	<para>The label is normally given as a <literal>Symbol</literal> or
+	<literal>String</literal>, however any object is permissible as long as
+	the thrown object is <emphasis>identical</emphasis> to the caught
+	object.</para>
+
+	<para>A <literal>catch</literal> block is defined with <literal>catch
+	<replaceable>label</replaceable>
+	<replaceable>block</replaceable></literal>, where
+	<replaceable>label</replaceable> is the label which this block should
+	catch, and <replaceable>block</replaceable> is a block literal. The block
+	is called immediately.</para>
+
+	<para>The syntax of <literal>throw</literal> is <literal>throw
+	<replaceable>label</replaceable>,
+	<replaceable>value</replaceable></literal>, where
+	<replaceable>label</replaceable> is the label of an enclosing
+	<literal>catch</literal> block, and <replaceable>value</replaceable> is
+	an optional expression which, if supplied, becomes the value of the
+	corresponding <literal>catch</literal> block.</para>
+	
+	<para><literal>throw</literal> immediately causes the current execution
+	path to terminate and a search to begin for the nearest
+	<literal>catch</literal> block defined with the same label. The search
+	proceeds out through the current lexical scope, then up through the call
+	stack towards the top-level of the program, crossing method boundaries if
+	necessary. If such a <literal>catch</literal> is found, it is exited, and
+	execution resumes from the statement that follows it. Otherwise, if the
+	search is unsuccessful, an <literal>ArgumentError</literal> exception is
+	raised.</para>
+
+	<example xml:id="ex.catch-throw">
+	  <title>Using <literal>throw</literal> and
+	  <literal>catch</literal> to follow URL redirection. (Based on the
+	  implementation of <literal>OpenURI</literal>)</title>
+
+	  <programlisting><xi:include
+	  href="examples/catch-throw.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+
+      <sect3 xml:id="flo.yield">
+	<title><literal>yield</literal> Statement</title>
+
+	<para>The <literal>yield</literal> statement causes control to be
+	transferred to the associated block, then resume from the statement
+	following <literal>yield</literal>. It effects a
+	<emphasis>temporary</emphasis> transfer such that the yielding method
+	retains control; whereas <literal>return</literal> cedes complete control
+	of execution to its caller. This enables a method to
+	<literal>yield</literal> to a block multiple times, as opposed to
+	<literal>return</literal> which, by definition, may be executed by a
+	method no more than once.</para>
+
+	<para>As explained in <link linkend="mes.block-argument"/>, a block
+	literal may be sent along with a message. Then, as explained in <link
+	linkend="met.block-arguments"/>, the receiving method may access this
+	block, which we will refer to as <emphasis>the associated
+	block</emphasis>.</para>
+
+	<para>The return value of <literal>yield</literal> is that of the block
+	yielded to.</para>
+
+	<sect4 xml:id="flo.yield-arguments">
+	  <title>Arguments</title>
+
+	  <para><literal>yield</literal> may be supplied with one or more
+	  arguments, which are passed to the associated block. It is this ability
+	  that enables <link linkend="flo.internal-iterators">internal
+	  iterators</link> to be <link
+	  linkend="flo.custom-internal-iterators">constructed</link>.</para>
+
+	  <para><literal>yield</literal>’s arguments are married with the
+	  block’s parameter list with <firstterm>yield semantics</firstterm>:
+	  semantics similar to those of <link
+	  linkend="met.arguments">methods</link>, with the following
+	  differences:</para>
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>Superfluous arguments are silently discarded. A block wishing
+	      to collect a variable number of arguments into an
+	      <literal>Array</literal> must use a <link
+	      linkend="met.rest-parameters">rest parameter</link>.</para>
+	    </listitem> 
+	    <listitem>
+	      <para>Parameters representing omitted arguments are assigned
+	      <literal>nil</literal>.</para>
+	    </listitem>
+	    <listitem>
+	      <para><literal>Array</literal> arguments are automatically
+	      exploded.</para>
+	    </listitem>
+	    <listitem>
+	      <para>Block literals are prohibited as arguments. That is, a block
+	      cannot be yielded to another block. The workaround is to yield a
+	      <literal>Proc</literal> object representing the block to be
+	      yielded.</para>
+	    </listitem>
+	  </itemizedlist>
+
+	  <para>As with message expressions, the final argument to
+	  <literal>yield</literal> may be a <literal>Hash</literal> literal with
+	  or without its delimiting curly braces.</para>
+	</sect4>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="flo.iterators">
+    <title>Iterators</title>
+
+    <!-- TODO: Define 'iterator' -->
+
+    <sect2 xml:id="flo.internal-iterators">
+      <title>Internal</title>
+      
+      <para>An internal iterator is a method which accepts a block to which
+      each element of a collection is <link linkend="flo.yield">yielded</link>
+      in turn. These are <emphasis>internal</emphasis>> iterators because they
+      “push“ elements of the collection to the block; whereas
+      <emphasis>external</emphasis>> iterators, discussed below, are objects
+      from which the elements are “pulled”.</para>
+
+      <para>In fact, <link
+      linkend="flo.integer-times"><literal>Integer#times</literal></link>,
+      <link linkend="flo.integer-upto"><literal>Integer#upto</literal></link>,
+      and <link
+      linkend="flo.integer-downto"><literal>Integer#downto</literal></link>,
+      which were introduced above, are themselves internal iterators. The
+      collection over which they iterate is a sequence of integers.</para>
+
+      <para>The most common internal iterator is <glossterm
+      linkend="glo.each"/> because its presence allows a collection class to
+      mix-in the <link
+      linkend="enu.enumerables"><literal>Enumerable</literal></link> module. It
+      is defined on all core classes that can sensibly be iterated over, with
+      the provisos noted in <glossterm linkend="glo.each"/>.</para>
+
+      <para>An object supporting internal iteration is sent the appropriate
+      selector (e.g. <literal>:each</literal>) along with a block literal
+      expecting at least one argument. Each time the block is called its
+      argument will be the next element of the collection, where the semantics
+      of <emphasis>next</emphasis> depend on the iterator’s intent. The block
+      is a closure, so flow control statements can be used in its body in the
+      manner described in <link linkend="clo.closures"/>.</para>
+
+      <para><literal>:each</literal>, along with most internal iterators, can
+      also be sent without a block in which case it returns an
+      <literal>Enumerator</literal>.</para>
+
+      <para>Internal iterators are not limited to behaving like
+      <literal>:each</literal>; <link linkend="enu.enumerables"/> describes
+      some of the specialised iterators the <literal>Enumerable</literal>
+      module defines in terms of <literal>:each</literal>.</para>
+
+      <sect3 xml:id="flo.for">
+	<title><literal>for</literal></title>
+
+	<para>Objects responding to <literal>:each</literal> in the manner
+	outlined above may also be iterated over with the
+	<literal>for</literal> keyword as shown below. The only practical
+	difference between a <literal>for</literal> loop and using
+	<literal>:each</literal> directly is that the latter defines a new
+	variable scope for the duration of the block.</para>
+
+	<example xml:id="ex.for-loop">
+	  <title>Using the <literal>for</literal> keyword to drive an
+	  internal iterator</title>
+
+	  <programlisting><xi:include
+	  href="examples/for-loop.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+      
+      <sect3 xml:id="flo.custom-internal-iterators">
+	<title>Custom Internal Iterators</title>
+	
+	<para>Fundamentally, an internal iterator is just a method which <link
+	linkend="flo.yield">yields</link> a value to a block. The mechanics of
+	methods accepting blocks are described in <link
+	linkend="met.block-arguments"/>.</para>
+
+	<example xml:id="ex.custom-internal-iterator">
+	  <title>Using <literal>yield</literal> to create a
+	  custom internal iterator</title>
+
+	  <programlisting><xi:include
+	  href="examples/custom-internal-iterator.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+
+      <!-- TODO: External iterators -->
+    </sect2>
+  </sect1>
+  
+  <sect1 xml:id="flo.exceptions">
+    <title>Exceptions</title>
+
+    <para>An <firstterm>exception</firstterm> is an object representing an
+    abnormal condition that changes the typical flow of execution. A block may
+    initiate, or <firstterm>raise</firstterm>, an exception to signal an
+    abnormality which it is either unwilling or unable to handle locally. This
+    suspends program execution and causes a corresponding <firstterm>exception
+    handler</firstterm>—a block which has elected to resolve the abnormality—to
+    be sought. If the search is successful, the handler is called, then
+    execution resumes from the statement following that which raised the
+    exception. Otherwise, the program terminates.</para>
+
+    <sect2 xml:id="flo.exception-objects">
+      <title><literal>Exception</literal> Objects</title>
+
+      <para>Exceptions are instances of <literal>Exception</literal> or a 
+      subclass thereof. These subclasses primarily exist to increase 
+      granularity in <literal>rescue</literal> clauses, which match 
+      exceptions solely on their class. They rarely augment the behaviour of 
+      their parent.</para>
+
+      <para>Most core exceptions subclass <literal>StandardError</literal>, 
+      allowing them to rescued by a bare <literal>rescue</literal> 
+      clause. The remainder are not expected to be rescued in the normal 
+      course of a program, so must be mentioned explicitly if they are to be 
+      rescued. The principle, therefore, is that custom exception classes 
+      should inherit from <literal>StandardError</literal> if they are 
+      generally recoverable; and <literal>Exception</literal> 
+      otherwise.</para>
+
+      <para>A custom exception is created by subclassing an existing 
+      <literal>Exception</literal> class. Idiomatically this is: 
+      <literal><replaceable>CustomError</replaceable> = 
+      Class.new(<replaceable>ExceptionClass</replaceable>)</literal>, where 
+      <replaceable>CustomError</replaceable> is the name of the new exception 
+      class and <replaceable>ExceptionClass</replaceable> is that of an 
+      existing exception class.</para>
+
+      <para>Exception objects are generally created implicitly with 
+      <literal>raise</literal>. An <literal>Exception</literal> class can be 
+      instantiated manually with its <literal>.new</literal> constructor, 
+      which accepts an optional <literal>String</literal> argument with which 
+      to set the exception’s message.</para>
+
+      <sect3 xml:id="flo.exception-message">
+	<title>Message</title>
+
+	<para>An exception’s <firstterm>message</firstterm> is a human-readable 
+	<literal>String</literal> describing the nature of the encapsulated 
+	error. It is intended primarily for debugging purposes.</para>
+	
+	<para>It is retrieved with the exception’s <literal>#message</literal> 
+	accessor. It can be set with an argument to <literal>raise</literal> or 
+	the constructor of the exception class. The default message is the name 
+	of the exception’s class.</para>
+      </sect3>
+
+      <sect3 xml:id="flo.exception-backtrace">
+	<title>Backtrace</title>
+
+	<para>The <firstterm>backtrace</firstterm> of an exception describes 
+	the call stack at the moment the exception was raised. It is 
+	represented as an <literal>Array</literal> which details the call stack 
+	in reverse chronological order: the first element describing the line 
+	where the exception was raised, the second, the caller of the method 
+	where the exception was raised, the third, the caller of that method, 
+	etc. Each element of the <literal>Array</literal> is a 
+	<literal>String</literal> detailing the filename and line number of the 
+	event.</para>
+	
+	<para>An exception’s backtrace is set automatically by 
+	<literal>raise</literal> using <literal>Kernel.caller</literal>. It can 
+	be created manually by supplying an appropriate 
+	<literal>Array</literal> as the third argument to 
+	<literal>raise</literal>, or 
+	<literal>Exception#set_backtrace</literal>.</para>
+
+	<para>The <literal>Exception#backtrace</literal> accessor returns the 
+	backtrace of the receiver.</para>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="flo.raise">
+      <title><literal>raise</literal></title>
+
+      <para>An exception is raised with the <literal>Kernel.raise</literal> 
+      method, or its alias <literal>Kernel.fail</literal>.</para>
+
+      <para>When <literal>raise</literal> is called without arguments it raises 
+      a <literal>RuntimeError</literal>. If called thusly inside a 
+      <literal>rescue</literal> clause, it re-raises the current 
+      exception.</para>
+
+      <para>If the sole argument to <literal>raise</literal> is an 
+      <literal>Exception</literal> object, that exception is raised. When the 
+      sole argument is a <literal>String</literal>, a 
+      <literal>RuntimeError</literal> is raised with that string as its 
+      message.</para>
+
+      <para>The first argument of <literal>raise</literal> can be an object 
+      responding to <literal>:exception</literal>, in which case the exception 
+      raised is the <literal>Exception</literal> object returned by that 
+      method.  The <literal>Exception</literal> class itself defines such a 
+      method, allowing any of its subclasses to be used in this manner.</para>
+
+      <example xml:id="ex.raise-one-argument">
+	<title>Using <literal>raise</literal> with a single argument</title>
+
+	<programlisting><xi:include
+	href="examples/raise-one-argument.rb"
+	parse="text"/></programlisting>
+      </example>
+
+      <para><literal>raise</literal> accepts a <literal>String</literal> as an 
+      optional second argument, which becomes the exception’s message.</para>
+
+      <para>The exception’s <link
+      linkend="flo.exception-backtrace">backtrace</link> may be set explicitly 
+      by providing an <literal>Array</literal> of <literal>String</literal>s as 
+      <literal>raise</literal>’s third argument.</para>
+
+      <example xml:id="ex.raise-multiple-arguments">
+	<title>Using <literal>raise</literal> with multiple arguments</title>
+
+	<programlisting><xi:include
+	href="examples/raise-multiple-arguments.rb"
+	parse="text"/></programlisting>
+      </example>
+
+      <table>
+	<caption>A summary of the arguments accepted by
+	<literal>raise</literal></caption>
+	<thead>
+	  <tr>
+	    <th>Arguments</th>
+	    <th>Raises</th>
+	  </tr>
+	  <tr>    
+	    <th><replaceable>a</replaceable></th>
+	    <th><replaceable>b</replaceable></th>
+	    <th><replaceable>c</replaceable></th>
+	    <th/>
+	  </tr>
+	</thead>
+	<tbody>  
+	  <tr>
+	    <td/>
+	    <td/>
+	    <td/>
+	    <td><literal>RuntimeError</literal> or current exception</td>
+	  </tr>
+	  <tr>
+	    <td><literal>Exception</literal></td>
+	    <td/>
+	    <td/>
+	    <td><replaceable>a</replaceable></td>
+	  </tr>
+	  <tr>
+	    <td><literal>Exception</literal></td>
+	    <td><literal>String</literal></td>
+	    <td/>
+	    <td><replaceable>a</replaceable> with <replaceable>b</replaceable>
+	    as the message</td>
+	  </tr>
+	  <tr>
+	    <td><literal>Exception</literal></td>
+	    <td><literal>String</literal></td>
+	    <td><literal>Array</literal></td>
+	    <td><replaceable>a</replaceable> with <replaceable>b</replaceable> as the message,
+	    <replaceable>c</replaceable> as the backtrace</td>
+	  </tr>
+	  <tr>
+	    <td><literal>String</literal></td>
+	    <td/>
+	    <td/>
+	    <td><literal>RuntimeError</literal> with
+	    <replaceable>a</replaceable> as the message</td>
+	  </tr>
+	  <tr>
+	    <td><literal>respond_to?(:exception)</literal></td>
+	    <td/>
+	    <td/>
+	    <td><literal><replaceable>a</replaceable>.exception</literal></td>
+	  </tr>
+	  <tr>
+	    <td><literal>respond_to?(:exception)</literal></td>
+	    <td><literal>String</literal></td>
+	    <td/>
+	    <td><literal><replaceable>a</replaceable>.exception</literal> with
+	    <replaceable>b</replaceable> as the message</td>
+	  </tr>
+	  <tr>
+	    <td><literal>respond_to?(:exception)</literal></td>
+	    <td><literal>String</literal></td>
+	    <td><literal>Array</literal></td>
+	    <td><literal><replaceable>a</replaceable>.exception</literal> with
+	    <replaceable>b</replaceable> as the message, <replaceable>c</replaceable> as
+	    the backtrace</td>
+	  </tr>
+	</tbody>
+      </table>
+    </sect2>
+
+    <sect2 xml:id="flo.exception-propagation">
+      <title>Propagation</title>
+
+      <para>Once raised, exceptions propagate <quote>outward and upward</quote>
+      <biblioref linkend="bib.flan08" units="pages" begin="160" end="161"/>
+      toward the first matching exception handler. Each block encountered by
+      the search is examined for the presence of a <literal>rescue</literal>
+      clause that matches the class of the current exception. If one is found,
+      the exception is handled, and the search halted.</para>
+      
+      <para>The outward propagation is the passage from the
+      <literal>raise</literal> statement to the lexically enclosing block, to
+      that block’s lexically enclosing block, until arriving at the top-level
+      of the program. If the entire program is contained in a single file this
+      step can be visualised as the movement from <literal>raise</literal>
+      toward the left margin.</para>
+
+      <para>If the outward search completes without the current exception being
+      handled, the search continues up the call stack: to the caller of the
+      current block, to the caller of the current block’s caller, and so on
+      until the call stack is exhausted. If at this point the exception has not
+      been handled, it is printed to STDERR and the program is aborted.</para>
+    </sect2>
+
+    <sect2 xml:id="flo.exception-handling">
+      <title>Exception Handling</title>
+
+      <para>An exception is handled with a <link
+      linkend="flo.postfix-rescue"><literal>rescue</literal> statement
+      modifier</link> or by attaching a <link
+      linkend="flo.rescue"><literal>rescue</literal> clause</link> to a <link
+      linkend="flo.begin-statement"><literal>begin</literal> statement</link>,
+      a method definition, a class definition, or a module definition.</para>
+
+      <sect3 xml:id="flo.begin-statement">
+	<title><literal>begin</literal> Statements</title>
+
+	<para><literal>rescue</literal> is typically used in conjunction with a
+	<literal>begin</literal> statement, which simply associates a block of
+	statements with one or more <literal>rescue</literal> clauses. The
+	<literal>rescue</literal> clauses may be followed by optional <link
+	linkend="flo.rescue-else-clause"><literal>else</literal></link> and
+	<link linkend="flo.ensure-clause"><literal>ensure</literal></link>
+	clauses.</para>
+      </sect3>
+
+      <sect3 xml:id="flo.rescue">
+	<title><literal>rescue</literal></title>
+
+	<para>A <literal>rescue</literal> clause handles the exceptions 
+	described by its arguments, then returns control to the statement 
+	following the initiating <literal>raise</literal>.</para>
+
+	<para>Without arguments, <literal>rescue</literal> handles only 
+	<literal>StandardError</literal> exceptions and subclasses thereof. 
+	<literal>rescue</literal> may be followed by <literal> =&gt; 
+	<replaceable>identifier</replaceable></literal> to assign the rescued 
+	exception to a local variable named 
+	<replaceable>identifier</replaceable>. Having done so, 
+	<literal>Exception</literal> instance methods such as 
+	<literal>#message</literal> and <literal>#class</literal> may be sent 
+	to it.</para>
+
+	<example xml:id="ex.rescue-clause">
+	  <title>Using a <literal>begin</literal> block with a 
+	  <literal>rescue</literal> clause to raise and rescue a 
+	  <literal>RuntimeError</literal></title>
+
+	  <programlisting><xi:include
+	  href="examples/rescue-clause.rb"
+	  parse="text"/></programlisting>
+	</example>
+
+	<para>If arguments are provided to <literal>rescue</literal> they must 
+	be supplied as a comma-separated list of <literal>Exception</literal> 
+	classes to be handled. A <literal>rescue</literal> clause so written 
+	will handle exceptions of any of the named classes or their 
+	subclasses.</para>
+
+	<para>A construct that accepts a <literal>rescue</literal> clause 
+	accepts any number of them. They are tested against the current 
+	exception in the order that they appear in the source file, so should 
+	be arranged by decreasing specificity.</para>
+      </sect3>
+
+      <sect3 xml:id="flo.postfix-rescue">
+	<title>Postfix Form</title>
+
+	<para><literal>rescue</literal> may be also used as a statement 
+	modifier. In this form it is not restricted to the aforementioned 
+	constructs; it may appear anywhere a statement can otherwise. Its 
+	syntax is <literal><replaceable>a</replaceable> rescue 
+	<replaceable>b</replaceable></literal>, where 
+	<replaceable>a</replaceable> and <replaceable>b</replaceable> are both 
+	expressions. It evaluates to <replaceable>a</replaceable> by default; 
+	<replaceable>b</replaceable> if <replaceable>a</replaceable> raises an 
+	exception of <literal>StandardError</literal> or subclass 
+	thereof.</para>
+	
+	<para>Unlike the <literal>rescue</literal> clause, the 
+	<literal>rescue</literal> modifier does not permit specifying exception 
+	classes to match or a local variable to which the caught exception is 
+	aliased. However, regarding the last point, if the right-hand operand 
+	of <literal>rescue</literal> is the special variable <link
+	linkend="flo.dollar-bang"><literal>$!</literal></link>, the statement 
+	will evaluate to the rescued exception.</para>
+
+	<example xml:id="ex.postfix-rescue-statement">
+	  <title>Using the postfix <literal>rescue</literal> statement to 
+	  return <literal>nil</literal> when a 
+	  <literal>ZeroDivisionError</literal> is raised.</title>
+
+	  <programlisting><xi:include
+	  href="examples/postfix-rescue-statement.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+
+      <sect3 xml:id="flo.dollar-bang">
+	<title><literal>$!</literal></title>
+
+	<para>Within a <literal>rescue</literal> clause or on the right-hand 
+	side of a <literal>rescue</literal> statement modifier, the 
+	<literal>$!</literal> variable holds the caught exception. In other 
+	contexts it evaluates to <literal>nil</literal>.</para>
+      </sect3>
+
+      <sect3 xml:id="flo.rescue-else-clause">
+	<title><literal>else</literal> Clause</title>
+
+	<para>A group of <literal>rescue</literal> statements may be followed 
+	by an <literal>else</literal> clause, whose body is executed iff 
+	neither the <literal>rescue</literal> clauses handled an exception nor 
+	the preceding statements raised one. However, even in this case the use 
+	of flow control statements in the statements preceding the 
+	<literal>rescue</literal> clauses may cause the <literal>else</literal> 
+	clause to be skipped.</para>
+      </sect3>
+
+      <sect3 xml:id="flo.ensure-clause">
+	<title><literal>ensure</literal> Clause</title>
+	
+	<!-- Note that it handles exit(), too -->
+
+	<para>A construct that accepts <literal>rescue</literal> clauses may 
+	include an <literal>ensure</literal> clause as its final clause. The 
+	statements in an <literal>ensure</literal> clause will always be 
+	executed, regardless of whether their previous sibling clauses raised 
+	an exception or employed a flow control statement such as 
+	<literal>return</literal>. Specifically, if the construct to which 
+	<literal>ensure</literal> is attached…</para>
+	
+	<variablelist>
+	  <varlistentry>
+	    <term>Exits normally</term>
+	    <listitem>
+	      <para>The <literal>else</literal> clause, if any, is executed,
+	      followed by the <literal>ensure</literal> clause.</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>Executes <literal>return</literal></term>
+	    <listitem>
+	      <para>The <literal>else</literal> clause, if any, is skipped, and
+	      the <literal>ensure</literal> clause is executed.</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>Raises an exception</term>
+	    <listitem>
+	      <para>A matching <literal>rescue</literal> clause, if any, is
+	      executed, followed by the <literal>ensure</literal>
+	      clause.</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+
+	<para>The return value of a construct containing 
+	<literal>ensure</literal> is that of the previously executed clause, 
+	unless the <literal>ensure</literal> clause explicitly returns a value 
+	with <literal>return</literal>. That is, unlike other constructs the 
+	return value of <literal>ensure</literal> is not necessarily its last 
+	statement executed.  This is to allow <literal>ensure</literal> clauses 
+	to be attached to <literal>def</literal> statements, for example; 
+	otherwise the method being defined would never be able to return a 
+	value.</para>
+
+	<para>An <literal>ensure</literal> clause may cancel the propagation of 
+	an exception by raising an exception of its own or executing a control 
+	flow statement. This new transfer of control—be it to the end of the 
+	current block via <literal>break</literal> or <literal>next</literal>, 
+	the return of the current method via <literal>return</literal>, or the 
+	nearest matching <literal>rescue</literal> clause via 
+	<literal>raise</literal>—replaces that of the current exception, 
+	aborting its passage.</para>
+
+	<!-- TODO: State explicitly that an ensure clause containing, say,
+	     return, implicitly rescues the current exception -->
+	<example xml:id="ex.ensure-clause">
+	  <title>Using an <literal>ensure</literal> clause to save data to disk
+	  even if an exception occurs</title>
+
+	  <programlisting><xi:include
+	  href="examples/ensure-clause.rb"
+	  parse="text"/></programlisting>
+	</example>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="flo.exception-class-hierarchy">
+      <title><literal>Exception</literal> Class Hierarchy</title>
+
+      <!-- TODO: Add Math::DomainError (or whatever it ends up being called)
+      -->
+      <variablelist>
+	<varlistentry>
+	  <term><literal>Exception</literal></term>
+	  <listitem>
+	    <variablelist>
+	      <varlistentry>
+		<term><literal>NoMemoryError</literal></term>
+		<listitem>
+		  <para>The Ruby interpreter failed to allocate
+		  memory.</para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term><literal>ScriptError</literal></term>
+		<listitem>
+		  <variablelist>
+		    <varlistentry>
+		      <term><literal>LoadError</literal></term>
+		      <listitem>
+			<para>Raised by <literal>Kernel.require</literal>, 
+			<literal>Kernel.load</literal>, and 
+			<literal>Kernel.require_relative</literal> when the 
+			named file cannot be opened; by 
+			<literal>require_relative</literal> when called from 
+			inside <literal>eval</literal> or 
+			<literal>irb</literal>; and by the 
+			<literal>ruby</literal> binary when a script is 
+			expected but no supplied.</para>
+		      </listitem>
+		    </varlistentry>
+		    <varlistentry>
+		      <term><literal>NotImplementedError</literal></term>
+		      <listitem>
+			<para>Raised by methods which rely on operating system 
+			functions that are not available to the current 
+			script. For example, methods depending on the 
+			<literal>fsync()</literal> or <literal>fork()</literal> 
+			system calls may raise this exception if the underlying 
+			operating system or Ruby runtime does not support 
+			them.</para>
+		      </listitem>
+		    </varlistentry>
+		    <varlistentry>
+		      <term><literal>SyntaxError</literal></term>
+		      <listitem>
+			<para>Raised by <literal>require</literal>, 
+			<literal>require_relative</literal>, 
+			<literal>load</literal>, and <literal>eval</literal> if 
+			the script they are interpreting is syntactically 
+			invalid.</para>
+		      </listitem>
+		    </varlistentry>
+		  </variablelist>
+		</listitem>
+	      </varlistentry>		    
+	      <varlistentry>
+		<term><literal>SecurityError</literal></term>
+		<listitem>
+		  <para>Raised by methods that are prohibited by the current 
+		  safe level.</para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term><literal>SignalException</literal></term>
+		<listitem>
+		  <variablelist>
+		    <varlistentry>
+		      <term><literal>Interrupt</literal></term>
+		      <term><literal>SystemExit</literal></term>
+		      <listitem>
+			<para>Raised by <literal>exit</literal> and processes 
+			which attempt to terminate the current script.</para>
+		      </listitem>
+		    </varlistentry>
+		    <varlistentry>
+		      <term><literal>SystemStackError</literal></term>
+		      <listitem>
+			<para>Raised by Ruby when a stack overflow is 
+			detected.</para>
+		      </listitem>
+		    </varlistentry>
+		    <varlistentry>
+		      <term><literal>StandardError</literal></term>
+		      <listitem>
+			<para>The parent class of most recoverable 
+			errors. Caught by a bare <literal>rescue</literal> 
+			statement modifier or clause.</para>
+			<variablelist>
+			  <varlistentry>
+			    <term><literal>ArgumentError</literal></term>
+			    <listitem>
+			      <para>Raised by Ruby when a message is sent with 
+			      an unexpected number of arguments. Often raised 
+			      by methods themselves for similar reasons.</para>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>EncodingError</literal></term>
+			    <listitem>
+			      <variablelist>
+				<varlistentry>
+				  <term><literal>Encoding::CompatibilityError</literal></term>
+				  <listitem>
+				    <para>Raised by <literal>Encoding</literal> 
+				    and <literal>String</literal> methods when 
+				    the source encoding is incompatiable with 
+				    the target encoding.</para>
+				  </listitem>
+				</varlistentry>
+				<varlistentry>
+				  <term><literal>Encoding::ConverterNotFoundError</literal></term>
+				  <listitem>
+				    <para>Raised by transcoding methods when a 
+				    named encoding does not correspond with a 
+				    known converter.</para>
+				  </listitem>
+				</varlistentry>
+				<varlistentry>
+				  <term><literal>Encoding::UndefinedConversionError</literal></term>
+				  <listitem>
+				    <para>Raised by <literal>Encoding</literal> 
+				    and <literal>String</literal> methods when 
+				    a transcoding operation fails.</para>
+				  </listitem>
+				</varlistentry>
+				<varlistentry>
+				  <term><literal>Encoding::InvalidByteSequenceError</literal></term>
+				  <listitem>
+				    <para>Raised by <literal>Encoding</literal> 
+				    and <literal>String</literal> methods when 
+				    the string being transcoded contains a byte 
+				    invalid for the either the source or target 
+				    encoding.</para>
+				  </listitem>
+				</varlistentry>
+			      </variablelist>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>FiberError</literal></term>
+			    <listitem>
+			      <para>Raised by fibers when attempting to 
+			      call/resume a dead fiber, attempting to 
+			      <link linkend="flo.yield">yield</link> from the 
+			      root fiber, or calling a fiber across 
+			      threads.</para>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>IOError</literal></term>
+			    <listitem>
+			      <para>Raised by methods performing 
+			      input/output operations.  For example, it 
+			      is raised when attempting to read from an 
+			      <literal>IO</literal> stream not opened for 
+			      reading, or when attempting to operate on a 
+			      closed stream.</para>
+			      <variablelist>
+				<varlistentry>
+				  <term><literal>EOFError</literal></term>
+				  <listitem>
+				    <para>Raised by <literal>IO</literal> 
+				    methods when attempting to read past 
+				    the end of a file.</para>
+				  </listitem>
+				</varlistentry>
+			      </variablelist>
+			    </listitem>
+			  </varlistentry>					
+			  <varlistentry>
+			    <term><literal>IndexError</literal></term>
+			    <listitem>
+			      <para>Raised by some 
+			      <literal>Array</literal> and 
+			      <literal>String</literal> methods when 
+			      attempting to access a subscript that is 
+			      out of bounds; by some 
+			      <literal>Regexp</literal> methods when 
+			      attempting to access a capture group by an 
+			      invalid name/subscript.</para>
+			      <variablelist>
+				<varlistentry>
+				  <term><literal>KeyError</literal></term>
+				  <listitem>
+				    <para>Raised by certain 
+				    <literal>Hash</literal> methods when 
+				    attempting to access a value with an 
+				    undefined key.</para>
+				  </listitem>
+				</varlistentry>
+				<varlistentry xml:id="flo.stop-iteration">
+				  <term><literal>StopIteration</literal></term>
+				  <listitem>
+				    <para>Raised by
+				    <literal>Enumerator</literal>s when 
+				    attempting to access an element past 
+				    the end of the sequence. Caught by 
+				    <literal>loop</literal>, causing the 
+				    loop to terminate.</para>
+				  </listitem>
+				</varlistentry>
+			      </variablelist>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>LocalJumpError</literal></term>
+			    <listitem>
+			      <para>Raised when attempting to return from 
+			      a method that has already has already 
+			      returned, call a <literal>Proc</literal> 
+			      that has already returned, executing 
+			      <literal>retry</literal> in a 
+			      <literal>Proc</literal>, executing 
+			      <literal>next</literal> outside of a loop 
+			      or block, and by many methods which were 
+			      not supplied with a required block 
+			      argument.</para>
+			    </listitem>
+			  </varlistentry>					
+			  <varlistentry>
+			    <term><literal>NameError</literal></term>
+			    <listitem>
+			      <para>Raised when Ruby sees an identifier 
+			      whose name neither corresponds to a local 
+			      variable or method anywhere other than the 
+			      left-hand side of the assignment operator; 
+			      when an uninitialised constant is seen; 
+			      when a class or instance variable is 
+			      declared with an illegal name; and by 
+			      <literal>Object#method</literal>, 
+			      <literal>Object#instance_method</literal>, 
+			      etc., when attempting to retrieve a 
+			      <literal>Method</literal> object for a 
+			      non-existent method.</para>
+			      <variablelist>
+				<varlistentry>
+				  <term><literal>NoMethodError</literal></term>
+				  <listitem>
+				    <para>Raised by Ruby when an 
+				    attempt is made to invoke a 
+				    non-existent 
+				    method. <literal>NameError</literal> 
+				    takes preference when an 
+				    expression is ambiguous as to 
+				    whether it represents a local 
+				    variable reference or method 
+				    call.  For example, if there is 
+				    neither method nor variable 
+				    named <literal>m</literal>, the 
+				    expression <literal>m</literal> 
+				    would result in a 
+				    <literal>NameError</literal>; 
+				    whereas the expression 
+				    <replaceable>m()</replaceable> 
+				    would cause a 
+				    <literal>NoMethodError</literal>. Responds 
+				    to <literal>#args</literal> 
+				    with an 
+				    <literal>Array</literal> of the 
+				    arguments sent to the method, 
+				    and to <literal>#name</literal> 
+				    with the method’s name.</para>
+				  </listitem>
+				</varlistentry>
+			      </variablelist>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>RangeError</literal></term>
+			    <listitem>
+			      <para>Raised by methods receiving
+			      numeric arguments that fall outside
+			      of their operating limits. For
+			      example,
+			      <literal>Array#combination</literal>
+			      and <literal>Array#product</literal>
+			      raise this exception when their
+			      arguments are too large to
+			      permute.</para>
+			      <variablelist>
+				<varlistentry>
+				  <term><literal>FloatDomainError</literal></term>
+				  <listitem>
+				    <para>Raised by many
+				    mathematical methods which
+				    receive <acronym>NaN</acronym>
+				    or Infinity (∞) as
+				    arguments.</para>
+				  </listitem>
+				</varlistentry>
+			      </variablelist>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>RegexpError</literal></term>
+			    <listitem>
+			      <para>Raised by
+			      <literal>Regexp.new</literal> when
+			      passed a syntactically invalid
+			      regular expression, and when a
+			      <literal>Regexp</literal> literal
+			      includes characters invalid in its
+			      encoding.</para>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>RuntimeError</literal></term>
+			    <listitem>
+			      <para>The default exception
+			      instantiated by
+			      <literal>raise</literal>, so quite
+			      generic in usage. Core classes often
+			      raise this exception when a method
+			      has receieved valid arguments yet is
+			      unable to complete. Also, this is
+			      raised when attempting to modify
+			      frozen objects or modify an object
+			      whilst iterating it.</para>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>SystemCallError</literal></term>
+			    <listitem>
+			      <para>Raised when an attempt to call
+			      an operating system function fails,
+			      despite that function being
+			      implemented and expected to work. For
+			      example, it is raised by
+			      <literal>Dir</literal> when unable to
+			      create a directory,
+			      <literal>exec</literal> when unable
+			      to execute a command, and
+			      <literal>File.link</literal> when
+			      unable to create a symlink.</para>
+			      <variablelist>
+				<varlistentry>
+				  <term><literal>Errno::</literal>*</term>
+				  <listitem>
+				    <para>There are many exception
+				    classes in the
+				    <literal>Errno</literal>
+				    namespace which subclass
+				    <literal>SystemCallError</literal>. They
+				    represent low-level,
+				    operating-system-specific
+				    exceptions, and as such it is
+				    often sufficient to rescue
+				    <literal>SystemCallError</literal>
+				    and ignore their
+				    specifics.</para>
+				  </listitem>
+				</varlistentry>
+			      </variablelist>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>ThreadError</literal></term>
+			    <listitem>
+			      <para>Raised by
+			      <literal>Thread</literal> when a
+			      thread cannot be initialised, moved
+			      to another group, manipulated on
+			      account of being dead, or when a
+			      shared mutex is unexpectedly
+			      locked.</para>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>TypeError</literal></term>
+			    <listitem>
+			      <para>Common exception raised by
+			      methods who receive an argument of an
+			      unexpected type. For instance, it is
+			      raised by <literal>Range</literal> on
+			      attempts to iterate from
+			      <literal>Float</literal>s,
+			      <literal>class</literal> and
+			      <literal>module</literal> when the
+			      given constant is defined and not a
+			      <literal>Class</literal>, and by
+			      various classes unable to convert
+			      their argument to a specific
+			      type.</para>
+			    </listitem>
+			  </varlistentry>
+			  <varlistentry>
+			    <term><literal>ZeroDivisionError</literal></term>
+			    <listitem>
+			      <para>Raised by mathematical
+			      operators when they are asked,
+			      explicitly or implicitly, to divided
+			      a number by
+			      <literal>0</literal>. Some methods
+			      raise this exception when a division
+			      by the <literal>Float</literal>
+			      <literal>0.0</literal>, while
+			      <literal>Integer#/</literal>,
+			      notably, returns
+			      <literal>Float::INFINITY</literal>.</para>
+			    </listitem>
+			  </varlistentry>
+			</variablelist>
+		      </listitem>
+		    </varlistentry>
+		  </variablelist>
+		</listitem>
+	      </varlistentry>
+	    </variablelist>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+  </sect1>
+  
+  <sect1 xml:id="flo.begin-exit-handler">
+    <title>Begin / Exit Handlers</title>
+
+    <para>A <firstterm>begin</firstterm> or <firstterm>exit</firstterm>
+    handler registers code to be executed at the beginning or end,
+    respectively, of a program.</para>
+
+    <sect2 xml:id="flo.begin-block">
+      <title><literal>BEGIN</literal> Block</title>
+
+      <para>A <literal>BEGIN</literal> block, as opposed to a <link
+      linkend="flo.begin-statement"><literal>begin</literal> statement</link>,
+      is executed at the very beginning of a program. It consists of the
+      <literal>BEGIN</literal> keyword at the top-level of a program, followed
+      by statements delimited by curly braces, and defines its own variable
+      scope. If multiple <literal>BEGIN</literal> blocks are present, they
+      are executed in the order encountered by the interpreter.</para>
+      <!-- Behaviour changed as of  [ruby-core:21657] -->
+
+      <example xml:id="ex.begin-block">
+	<title>Using <literal>BEGIN</literal> to execute a given block before
+	any other statement</title>
+
+	<programlisting><xi:include
+	href="examples/begin-block.rb"
+	parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="flo.end-block">
+      <title><literal>END</literal> Block</title>
+
+      <para>An <literal>END</literal> block, as opposed to the
+      <literal>end</literal> keyword, is executed at the very end of a
+      program. They consist of the <literal>END</literal> keyword followed by
+      statements delimited by curly braces.  Unlike <literal>BEGIN</literal>
+      blocks, they share local variable scope with surrounding code. A further
+      difference is that the execution of an <literal>END</literal> block is
+      governed by surrounding constructs: if it appears in the body of a
+      conditional, for instance, its execution is dependent on that conditional
+      being true. However, even if enclosed in a looping construct, an
+      <literal>END</literal> block is still only executed once.</para>
+
+      <example xml:id="ex.end-block">
+	<title>Using <literal>END</literal> to execute a given block
+	after any other statement</title>
+
+	<programlisting><xi:include
+	href="examples/end-block.rb"
+	parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="flo.at_exit">
+      <title><literal>Kernel.at_exit</literal></title>
+      
+      <para>An alternative to <link
+      linkend="flo.end-block"><literal>END</literal> blocks</link> is
+      <literal>Kernel.at_exit</literal>. It accepts a block argument which
+      it registers to execute at the end of program execution. If called
+      multiple times the blocks are executed in reverse chronological
+      order.</para>
+
+      <example xml:id="ex.at_exit">
+	<title>Using <literal>at_exit</literal> to execute a given block after
+	any other statement</title>
+
+	<programlisting><xi:include
+	href="examples/at_exit.rb"
+	parse="text"/></programlisting>
+      </example>
+    </sect2>
   </sect1>
 </chapter>
