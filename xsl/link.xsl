@@ -189,6 +189,7 @@
       <xsl:when test="starts-with($id, 'enu.')">enumerables</xsl:when>
       <xsl:when test="starts-with($id, 'fil.')">files</xsl:when>
       <xsl:when test="starts-with($id, 'flo.')">flow</xsl:when>
+      <xsl:when test="starts-with($id, 'exc.')">exceptions</xsl:when>
       <xsl:when test="starts-with($id, 'num.')">numerics</xsl:when>
       <xsl:when test="starts-with($id, 'str.')">strings</xsl:when>
       <xsl:when test="starts-with($id, 'reg.')">regexps</xsl:when>

@@ -19,6 +19,7 @@
   <xi:include href="src/enumerables.xml"/>
   <xi:include href="src/files.xml"/>
   <xi:include href="src/flow.xml"/>
+  <xi:include href="src/exceptions.xml"/>
   <xi:include href="src/numerics.xml"/>
   <xi:include href="src/strings.xml"/>
   <xi:include href="src/regexps.xml"/>
