@@ -9,7 +9,6 @@
   <title>Arrays</title>
   
   <remark>TODO: #pack</remark>
-  <remark>TODO: #new (Instantiation?)</remark>
   
   <para>An <literal>Array</literal> is a mutable, heterogeneous, ordered
   collection of objects, termed <firstterm>elements</firstterm>, indexed by an
@@ -64,6 +63,32 @@
 	parse="text"/></programlisting>
       </example>
     </sect2>
+  </sect1>
+
+  <sect1 xml:id="arr.new">
+    <title><literal>Array.new</literal></title>
+
+    <para><literal>Array</literal>s are typically instantiated with the literal
+    syntax explained above. <literal>Array.new</literal> offers more control
+    over this process. When called with no arguments it is equivalent to
+    <literal>[]</literal>. <literal>Array.new(<replaceable>size</replaceable>,
+    <replaceable>o</replaceable>)</literal> creates a
+    <replaceable>size</replaceable>-element <literal>Array</literal> with each
+    value set to <replaceable>o</replaceable>. If <replaceable>o</replaceable>
+    is omitted, it defaults to <literal>nil</literal>. When given an
+    <literal>Array</literal> argument, <replaceable>a</replaceable>, it returns
+    <literal>a.to_ary</literal>. Lastly, if a numeric argument,
+    <replaceable>size</replaceable>, and block are provided, the block is
+    called <replaceable>size</replaceable> times, with its return value
+    becoming the corresponding <literal>Array</literal> value.</para>
+
+    <example xml:id="ex.array-new">
+      <title>Creating an <literal>Array</literal> with <literal>Array.new</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-new.rb"
+			  parse="text"/></programlisting>
+    </example>
   </sect1>
 
   <sect1 xml:id="arr.lookup">
