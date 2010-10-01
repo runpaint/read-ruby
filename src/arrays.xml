@@ -475,6 +475,14 @@
     <literal>1</literal>. <literal>#rotate!(<replaceable>size</replaceable>)</literal>
     behaves in the same manner, except it modifies the receiver
     in-place.</para>
+
+    <example xml:id="ex.array-rotate">
+      <title>Rotating an <literal>Array</literal>’s elements</title>
+
+      <programlisting><xi:include
+			  href="examples/array-rotate.rb"
+			  parse="text"/></programlisting>
+    </example>    
   </sect1>
 
   <sect1 xml:id="arr.iterate">
@@ -501,7 +509,7 @@
 
     <para><literal>#| <replaceable>a</replaceable></literal> returns the union
     of the receiver and <literal>Array</literal> <replaceable>a</replaceable>,
-    i.e., their concatenation, minus any duplicates.</para>
+    i.e. their concatenation, minus any duplicates.</para>
   </sect1>
 
   <sect1 xml:id="arr.order">
