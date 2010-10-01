@@ -67,7 +67,7 @@
   </sect1>
 
   <sect1 xml:id="arr.lookup">
-    <title>Element Lookup</title>
+    <title>Lookup</title>
     
     <para>The element at index <replaceable>n</replaceable> can be retrieved
     with
@@ -173,7 +173,7 @@
   </sect1>
 
   <sect1 xml:id="arr.insertion">
-    <title>Element Insertion</title>
+    <title>Insertion</title>
 
     <para><literal>#insert(<replaceable>i</replaceable>,
     <replaceable>o</replaceable><subscript>0</subscript>,…,<replaceable>o</replaceable><subscript><replaceable>n</replaceable></subscript>)</literal>
@@ -210,7 +210,7 @@
   </sect1>
 
   <sect1 xml:id="arr.replace">
-    <title>Element Replacement</title>
+    <title>Replacement</title>
 
     <para>To replace the object at index <replaceable>n</replaceable> with
     <replaceable>o</replaceable>, use
@@ -281,7 +281,7 @@
   </sect1>
   
   <sect1 xml:id="arr.deletion">
-    <title>Element Deletion</title>
+    <title>Deletion</title>
 
     <para><literal>#delete_at(<replaceable>n</replaceable>)</literal> deletes
     and returns the element at index <replaceable>n</replaceable>. As special
