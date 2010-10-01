@@ -355,7 +355,7 @@
   </sect1>
 
   <sect1 xml:id="arr.arrays-of-arrays">
-    <title>Arrays of Arrays</title>
+    <title><literal>Array</literal>s of <literal>Array</literal>s</title>
     
     <remark>TODO: Discuss creation?</remark>
 
@@ -369,6 +369,14 @@
     <replaceable>limit</replaceable>. <literal>#flatten!</literal> is identical
     except it modifies the receiver in-place.</para>
 
+    <example xml:id="ex.array-flatten">
+      <title>Flattening a recursive <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-flatten.rb"
+			  parse="text"/></programlisting>
+    </example>    
+
     <para><literal>#assoc(<replaceable>o</replaceable>)</literal> assumes the
     receiver is an <literal>Array</literal> of <literal>Array</literal>s, and
     returns the first <literal>Array</literal> whose first element is equal to
@@ -378,9 +386,27 @@
     <literal>nil</literal> is returned when no matching
     <literal>Array</literal> was found.</para>
 
-    <para>Assuming again the receiver is an <literal>Array</literal> of
-    <literal>Array</literal>s, <literal>#transpose</literal> transposes the
-    rows and columns, returning the result.</para>
+    <example xml:id="ex.array-assoc">
+      <title>Querying an associative <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-assoc.rb"
+			  parse="text"/></programlisting>
+    </example>    
+
+    <para>Assuming the receiver is an <literal>Array</literal> of
+    <literal>Array</literal>s, where each row has the same number of columns,
+    <literal>#transpose</literal> returns the result of transposing the rows
+    and columns.</para>
+ 
+    <example xml:id="ex.array-transpose">
+      <title>Transposing the rows and columns of a recursive
+      <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-transpose.rb"
+			  parse="text"/></programlisting>
+    </example>    
   </sect1>
 
   <sect1 xml:id="arr.permutations">
