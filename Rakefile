@@ -1,6 +1,7 @@
 # -*-Ruby-*-
 require 'rake/clean'
 require 'bundler'
+require 'yaml'
 Bundler.require
 
 # Directory containing the files that the web site consists of
@@ -61,6 +62,10 @@ RSYNC_EXCLUDE = %w{*examples/*html *examples/.*}
 # Null device (defined by default on 1.9.3)
 IO::NULL = '/dev/null' unless IO.const_defined?(:NULL)
 
+# Root URL
+URL = 'http://ruby.runpaint.org/'
+
+
 # Create OUT_DIR, EX_DIR, and BUILD_DIR as needed.
 [OUT_DIR, BUILD_DIR].each do |dir|
   task :html => dir
@@ -91,7 +96,7 @@ HTML.zip(SRC_XML).each_with_index do |(html, src), i|
       "#{HTML_XSL} #{BOOK_XML} >#{IO::NULL}" if uptodate?(src, [BUILD_HTML[i]])
     cp BUILD_HTML[i], html
     cp TOC_BUILD, TOC_OUT unless uptodate?(TOC_OUT, SRC_XML << TOC_BUILD) 
-    Rake::Task[:highlight].tap do |t| 
+    Rake::Task[:fixup].tap do |t|
       t.invoke(html)
       t.reenable
     end
@@ -133,12 +138,30 @@ EX_HTML.zip(EX_RB).each do |html, rb|
 end
 
 # Substitute the examples embedded in a given HTML file with the corresponding
-# highlighted copies, as created by the rule above.
-desc "Replace examples with highlighted versions"
-task :highlight, [:file]  do |_, a|
+# highlighted copies, as created by the rule above. If a short URL exists for a
+# permalink, replace the latter with the former.
+
+# Permalink -> Short URL Map
+PERMALINKS = YAML.load(File.read 'permalinks.yaml')
+PERMALINKS.default_proc= ->(h, permalink) do
+  require 'net/http'
+  res = Net::HTTP.post_form(URI.parse('http://goo.gl/api/url'), 
+                            url: permalink, user: 'toolbar@google.com')
+  break permalink unless res.code == '201'
+  h[permalink] = res.header['Location']
+  open('permalinks.yaml', ?w){|f| YAML.dump(h, f)}
+  h[permalink]
+end
+
+desc "Replace examples with highlighted versions; shorten permalinks"
+task :fixup, [:file]  do |_, a|
   (nok = Nokogiri::HTML(File.read a.file)).css('code.ruby').each do |code|
     f = "#{EX_DIR}/#{code['id'].sub(/^ex\./,'')}.html"
     File.exist?(f) ? code.parent.swap(File.read f) : break
+  end
+  nok.css('h1 > a').each do |e|
+    u = URL + File.basename(a.file.ext('')) + e['href']
+    e['href'] = PERMALINKS[u].sub(/^http:/,'')
   end
   open(a.file, ?w) {|f| f << nok.to_s}
 end

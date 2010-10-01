@@ -10,44 +10,33 @@
  *         *
  ***********/
 
-/* Make in-book links less dominant */
+/* Make in-book links less dominant*/
 
-article.chapter a[href^="#"]:link, 
-article.chapter a[href^="/"]:link,
-article.glossary a[href^="#"]:link, 
-article.glossary a[href^="/"]:link {
-  color: black;
+article a:link, 
+article a:visited, 
+article a:hover, 
+article a:active {
   text-decoration: none;
   border-bottom: 1px dotted;
 }
 
-article.chapter a[href^="#"]:visited, 
-article.chapter a[href^="/"]:visited,
-article.glossary a[href^="#"]:visited, 
-article.glossary a[href^="/"]:visited {
+article a:link {
+    color: black;
+}
+
+article a:visited {
   color: gray;
-  text-decoration: none;
-  border-bottom: 1px dotted;
 }
 
-/* Mute the colours of external links */
-article a[href^="//"]:link, 
-article a[href^="http:"]:link {
-  color: #6495ED;
-  text-decoration: underline;
+article a:visited {
+  color: gray;
+  border-bottom: none;
 }
 
-article a[href^="//"]:visited, 
-article a[href^="http"]:visited {
-  color: #9966CC;
-  text-decoration: underline;
-}
-
-/* Permalinks. The selectors are overly specific so as to not to be overruled
- * by those above. */
-.chapter h1 > a[href^="#"]:link, 
-.chapter h1 > a[href^="#"]:visited, 
-.chapter h1 > a[href^="#"]:hover {
+/* Permalinks */
+.chapter h1 > a:link, 
+.chapter h1 > a:visited, 
+.chapter h1 > a:hover {
   font-size: 110%;
   color: #CCC;
   font-style: italic;
