@@ -281,18 +281,35 @@
   </sect1>
   
   <sect1 xml:id="arr.deletion">
-    <title>Deletion</title>
+    <title>Element Deletion</title>
 
     <para><literal>#delete_at(<replaceable>n</replaceable>)</literal> deletes
     and returns the element at index <replaceable>n</replaceable>. As special
     cases, <literal>#shift</literal> is equivalent to
-    <literal>#delete_at(0),</literal>, and <literal>#pop</literal> is
+    <literal>#delete_at(0)</literal>, and <literal>#pop</literal> is
     equivalent to <literal>#delete_at(-1)</literal>.</para>
+
+    <example xml:id="ex.array-delete-at">
+      <title>Deleting an <literal>Array</literal> element at a specific
+      index</title>
+
+      <programlisting><xi:include
+			  href="examples/array-delete-at.rb"
+			  parse="text"/></programlisting>
+    </example>
 
     <para><literal>#delete(<replaceable>e</replaceable>)</literal> deletes all
     elements equal to <replaceable>e</replaceable>. If no deletions occurred,
     <literal>nil</literal> is returned. If a block is supplied, its value is
     returned in place of <literal>nil</literal>.</para>
+
+    <example xml:id="ex.array-delete">
+      <title>Deleting <literal>Array</literal> elements</title>
+
+      <programlisting><xi:include
+			  href="examples/array-delete.rb"
+			  parse="text"/></programlisting>
+    </example>
     
     <para><literal>#delete_if</literal> passes each element in turn to the
     associated block, deleting those for which the block evaluates to
@@ -303,13 +320,38 @@
     <literal>#keep_if!</literal>, respectively, except they return the receiver
     if they made changes; <literal>nil</literal> otherwise.</para>
 
+    <example xml:id="ex.array-delete-if">
+      <title>Deleting <literal>Array</literal> elements using a block</title>
+
+      <programlisting><xi:include
+			  href="examples/array-delete-if.rb"
+			  parse="text"/></programlisting>
+    </example>
+
     <para><literal>#compact!</literal> deletes all <literal>nil</literal>
     elements, while <literal>#uniq!</literal> deletes all duplicates. Both
     methods have non-bang variants which return a copy of their receiver with
     the elements removed.</para>
 
+    <example xml:id="ex.array-compact-uniq">
+      <title>Deleting <literal>nil</literal> and duplicate elements from an
+      <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-compact-uniq.rb"
+			  parse="text"/></programlisting>
+    </example>
+
     <para>To remove every element from an <literal>Array</literal>,
     <literal>#clear</literal> can be used.</para>
+    
+    <example xml:id="ex.array-clear">
+      <title>Deleting all elements from an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-clear.rb"
+			  parse="text"/></programlisting>
+    </example>    
   </sect1>
 
   <sect1 xml:id="arr.arrays-of-arrays">
