@@ -492,6 +492,14 @@
     to the associated block. <literal>#each_with_index</literal> yields each
     element along with its index. Both methods return an
     <literal>Enumerator</literal> when called without a block.</para>
+
+    <example xml:id="ex.array-iteration">
+      <title>Iterating an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-iteration.rb"
+			  parse="text"/></programlisting>
+    </example>    
   </sect1>
   
   <sect1 xml:id="arr.set">
