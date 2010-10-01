@@ -9,6 +9,7 @@
   <title>Arrays</title>
   
   <remark>TODO: #pack</remark>
+  <remark>TODO: #new (Instantiation?)</remark>
   
   <para>An <literal>Array</literal> is a mutable, heterogeneous, ordered
   collection of objects, termed <firstterm>elements</firstterm>, indexed by an
@@ -209,13 +210,23 @@
   </sect1>
 
   <sect1 xml:id="arr.replace">
-    <title>Replacement</title>
+    <title>Element Replacement</title>
 
     <para>To replace the object at index <replaceable>n</replaceable> with
     <replaceable>o</replaceable>, use
     <literal>#[<replaceable>n</replaceable>]</literal> as an lvalue,
     e.g. <literal>#[<replaceable>n</replaceable>] =
-    <replaceable>o</replaceable></literal>.</para>
+    <replaceable>o</replaceable></literal>. If <literal>#[]=</literal> is given
+    a pair of <literal>Integer</literal>s or a <literal>Range</literal> for its
+    arguments, the affected slice is replaced by the rvalue.</para>
+
+    <example xml:id="ex.array-aref-set">
+      <title>Replacing elements of an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-aref-set.rb"
+			  parse="text"/></programlisting>
+    </example>
 
     <para><literal>#fill</literal> replaces one sequence of elements with
     another. <literal>#fill(<replaceable>o</replaceable>)</literal> substitutes
@@ -233,6 +244,14 @@
     <replaceable>o</replaceable> argument is omitted, and a block supplied
     instead, the selected elements are replaced with the value of the block
     when passed their index.</para>
+
+    <example xml:id="ex.array-fill">
+      <title>Replacing slices of an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-fill.rb"
+			  parse="text"/></programlisting>
+    </example>
   </sect1>
 
   <sect1 xml:id="arr.concat">
