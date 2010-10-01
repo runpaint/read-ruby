@@ -270,6 +270,14 @@
     to <literal>#join(<replaceable>string</replaceable>)</literal>. <literal>#*
     <replaceable>integer</replaceable></literal> is equivalent to concatenating
     <replaceable>integer</replaceable> copies of the receiver.</para>
+    
+    <example xml:id="ex.array-concat">
+      <title>Concatenating <literal>Array</literal>s and their elements</title>
+
+      <programlisting><xi:include
+			  href="examples/array-concat.rb"
+			  parse="text"/></programlisting>
+    </example>
   </sect1>
   
   <sect1 xml:id="arr.deletion">
