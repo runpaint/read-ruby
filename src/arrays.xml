@@ -563,6 +563,14 @@
     <literal>#size</literal>. The <literal>#empty?</literal> predicate returns
     <literal>true</literal> when the receiver has a size of
     <literal>0</literal>; <literal>false</literal> otherwise.</para>
+
+    <example xml:id="ex.array-order">
+      <title>Finding the size of an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-size.rb"
+			  parse="text"/></programlisting>
+    </example>    
   </sect1>
 
   <sect1 xml:id="arr.coercion">
