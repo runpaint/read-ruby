@@ -564,7 +564,7 @@
     <literal>true</literal> when the receiver has a size of
     <literal>0</literal>; <literal>false</literal> otherwise.</para>
 
-    <example xml:id="ex.array-order">
+    <example xml:id="ex.array-size">
       <title>Finding the size of an <literal>Array</literal></title>
 
       <programlisting><xi:include
@@ -585,5 +585,13 @@
     <literal>nil</literal>. Lastly, <literal>Kernel.Array</literal> attempts to
     convert its argument to an <literal>Array</literal> first implicitly, then
     explicitly.</para>
+
+    <example xml:id="ex.array-coercion">
+      <title>Coercing to and from <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-coercion.rb"
+			  parse="text"/></programlisting>
+    </example>    
   </sect1>
 </chapter>
