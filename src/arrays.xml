@@ -172,7 +172,7 @@
   </sect1>
 
   <sect1 xml:id="arr.insertion">
-    <title>Insertion</title>
+    <title>Element Insertion</title>
 
     <para><literal>#insert(<replaceable>i</replaceable>,
     <replaceable>o</replaceable><subscript>0</subscript>,…,<replaceable>o</replaceable><subscript><replaceable>n</replaceable></subscript>)</literal>
@@ -180,11 +180,32 @@
     index <replaceable>i</replaceable> if <replaceable>i</replaceable> is
     positive. If <replaceable>i</replaceable> is negative, it counts from the
     end of the <literal>Array</literal>, and the objects are inserted after
-    it. <literal>#push(<replaceable>o</replaceable>)</literal> and
+    it.</para>
+
+    <example xml:id="ex.array-insert">
+      <title>Inserting elements into an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-insert.rb"
+			  parse="text"/></programlisting>
+    </example>
+
+    <para><literal>#push(<replaceable>o</replaceable>)</literal> and
     <literal>#&lt;&lt; <replaceable>o</replaceable></literal> are equivalent to
     <literal>#insert(-1, <replaceable>o</replaceable>)</literal>, while
     <literal>#unshift(<replaceable>o</replaceable>)</literal> is equivalent to
     <literal>#insert(0, <replaceable>o</replaceable>)</literal>.</para>
+
+    <remark>TODO: Xref #pop and #shift?</remark>
+
+    <example xml:id="ex.array-push-unshift">
+      <title>Appending and prepending elements to an
+      <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-push-unshift.rb"
+			  parse="text"/></programlisting>
+    </example>
   </sect1>
 
   <sect1 xml:id="arr.replace">
