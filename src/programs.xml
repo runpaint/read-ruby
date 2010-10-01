@@ -496,7 +496,7 @@
               (<literal>U＋002C</literal>) or full stop
               (<literal>U＋002E</literal>) in a <link
                 linkend="mes.expressions">message expression</link> or <link
-                linkend="enu.arrays">array</link>/<link
+                linkend="arr.arrays">array</link>/<link
                 linkend="enu.hashes">hash</link> literal, with optional
               intervening whitespace.
             </para>
@@ -507,7 +507,7 @@
               bracket, with optional intervening whitespace. (Allows the
               argument list of <link linkend="mes.expressions">message
                 expressions</link>, and <link
-                linkend="enu.arrays">array</link> or <link
+                linkend="arr.arrays">array</link> or <link
                 linkend="enu.hashes">hash</link> literals to span multiple
               lines).
             </para>

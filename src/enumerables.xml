@@ -8,118 +8,13 @@
   
   <title>Enumerables</title>
   
-  <para>
-    Enumerables are objects that represent collections of other objects. They
-    are so named because they mix-in the <literal>Enumerable</literal> module,
-    which enhances such objects with powerful methods for manipulating
-    collections. In this chapter we will discuss the
-    <literal>Enumerable</literal> module itself, along with the core data
-    structures that employ it: <literal>Array</literal>,
-    <literal>Hash</literal>, and <literal>Range</literal>.
-  </para>
-
-  <sect1 xml:id="enu.arrays">
-    <title>Arrays</title>
-  
-    <para>
-      An <literal>Array</literal> is a mutable, heterogeneous, ordered
-      collection of objects, termed <firstterm>elements</firstterm>, indexed
-      by an <literal>Integer</literal> subscript. Its mutability means that
-      elements can be added to, and removed from, the collection at any point
-      in its lifetime, causing the <literal>Array</literal> to expand or
-      contract as needed. In keeping with her philosophy of duck-typing, Ruby
-      does not require the elements to have a specific type: any permutation
-      of objects may be stored in an <literal>Array</literal>. That each
-      element is indexed by a unique <literal>Integer</literal>, enforces
-      unambiguous order on the collection.
-    </para>
-
-    <!-- figure>
-      <title>Syntax diagram of the array literal</title>
-
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="figures/array-literal.png" format="PNG" width="4in"/>
-        </imageobject>
-      </mediaobject>
-    </figure-->
-
-    <para>
-      An <literal>Array</literal> literal is a comma-separated list of
-      expressions enclosed in square brackets (<literal>[</literal>,
-      <literal>]</literal>). For example, <literal>[1, :two,
-        'three']</literal> creates a three-element <literal>Array</literal>
-      object with <literal>1</literal> as the first element.
-    </para>
-
-    <sect2 xml:id="enu.array-literal-w">
-      <title>Alternative Delimiters</title>
-      
-      <para>
-        The
-        <literal>%w<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal>
-        construct is a syntactical shortcut for instantiating an array of
-        strings. The delimiters take the same form as those of <link
-          linkend="str.single-quoted-q">%q</link>. The text between them is
-        split on whitespace, each substring becoming an element on the array.
-        <literal>%w</literal> interprets its contents with single-quoted
-        string semantics; its counterpart, <literal>%W</literal>, behaves in
-        the same way using double-quoted string semantics.
-      </para>
-      
-      <example xml:id="ex.array-literal-w">
-        <title>Creating an array of strings with the <literal>%w</literal> and <literal>%W</literal> constructs</title>
-
-        <programlisting><xi:include href="examples/array-literal-w.rb"
-            parse="text"/></programlisting>
-      </example>
-    </sect2>
-    <sect2 xml:id="enu.array-semantics">
-      <title>Semantics</title>
-    <para>
-      Arrays are indexed by integral subscripts, beginning with 0. If the
-      subscript is negative it counts backward from the last element (i.e.
-      <literal>-1</literal> refers to the last element). An element with
-      subscript <replaceable>index</replaceable> can be retrieved with the
-      element reference syntax:
-      <literal>Array#[<replaceable>index</replaceable>]</literal>. If the
-      index doesn’t exist, <literal>nil</literal> is returned. The index can
-      be assigned to with
-      <literal>Array#[<replaceable>index</replaceable>]=</literal>. However,
-      if <replaceable>index</replaceable> is greater than the size of the
-      <literal>Array</literal>, the intervening elements are created with a
-      value of <literal>nil</literal> before <replaceable>index</replaceable>
-      is assigned. This ensures that the largest subscript is always one less
-      than the total size of the <literal>Array</literal>.
-    </para>
-
-    <para>
-      Elements are appended to an <literal>Array</literal> with
-      <literal>Array#&lt;&lt;</literal>; and prepended with
-      <literal>Array#unshift</literal>.
-      <literal>Array#include?(<replaceable>element</replaceable>)</literal>
-      tests whether the array contains <replaceable>element</replaceable>. The
-      total number of elements is returned by <literal>Array#size</literal>.
-      <literal>Array#each</literal> iterates over the array,
-      <literal>yield</literal>ing the next element each time.
-    </para>
-    </sect2>
-    <sect2 xml:id="enu.array-coercion">
-      <title>Coercion</title>
-      
-      <para>
-        In <xref linkend="obj.conversion"/> the <literal>:to_a</literal> and
-        <literal>:to_ary</literal> messages were introduced for converting an
-        object into an <literal>Array</literal> either explicitly or
-        implicitly, respectively.  <literal>Array.try_convert</literal> was
-        introduced as a wrapper around <literal>:to_ary</literal>: it returns
-        its argument implicitly converted to an <literal>Array</literal> if
-        possible, otherwise <literal>nil</literal>. Lastly,
-        <literal>Kernel.Array</literal> attempts to convert its argument to an
-        <literal>Array</literal> first implicitly, then explicitly.
-      </para>
-    </sect2>
-  </sect1>
+  <para>Enumerables are objects that represent collections of other
+  objects. They are so named because they mix-in the
+  <literal>Enumerable</literal> module, which enhances such objects with
+  powerful methods for manipulating collections. Indeed, the core classes <link
+  linkend="arr.arrays"><literal>Array</literal></link>, <link
+  linkend="enu.hashes"><literal>Hash</literal></link>, and <link
+  linkend="enu.ranges"><literal>Range</literal></link>.</para>
 
   <sect1 xml:id="enu.hashes">
     <title>Hashes</title>

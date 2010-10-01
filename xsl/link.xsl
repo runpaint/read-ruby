@@ -187,6 +187,7 @@
       <xsl:when test="starts-with($id, 'clo.')">closures</xsl:when>
       <xsl:when test="starts-with($id, 'enc.')">encoding</xsl:when>
       <xsl:when test="starts-with($id, 'enu.')">enumerables</xsl:when>
+      <xsl:when test="starts-with($id, 'arr.')">arrays</xsl:when>
       <xsl:when test="starts-with($id, 'fil.')">files</xsl:when>
       <xsl:when test="starts-with($id, 'flo.')">flow</xsl:when>
       <xsl:when test="starts-with($id, 'exc.')">exceptions</xsl:when>
@@ -239,7 +240,7 @@
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test="$relative = 1">
+      <xsl:when test="($relative = 1) or ($only_rel_links = 1)">
 	<xsl:call-template name="make-shortest-href">
 	  <xsl:with-param name="chapter" select="$chapter"/>
 	  <xsl:with-param name="section" select="$section"/>

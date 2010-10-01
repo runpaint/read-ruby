@@ -9,6 +9,7 @@
                 version='1.0'>
 
   <xsl:param name="out_dir">out</xsl:param>
+  <xsl:param name="only_rel_links">0</xsl:param>
 
   <xsl:output omit-xml-declaration="yes"/>
 
