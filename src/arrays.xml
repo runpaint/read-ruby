@@ -66,7 +66,7 @@
   </sect1>
 
   <sect1 xml:id="arr.lookup">
-    <title>Lookup</title>
+    <title>Element Lookup</title>
     
     <para>The element at index <replaceable>n</replaceable> can be retrieved
     with
@@ -83,6 +83,14 @@
     <replaceable>default</replaceable>)</literal> returns
     <replaceable>default</replaceable>.</para>
 
+    <example xml:id="ex.array-lookup-single">
+      <title>Looking-up a single element in an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-lookup-single.rb"
+			  parse="text"/></programlisting>
+    </example>
+
     <para>Whereas the methods above returned the element corresponding to a
     given index, <literal>#index(<replaceable>e</replaceable>)</literal>, or
     its alias <literal>#find_index(<replaceable>e</replaceable>)</literal>
@@ -95,21 +103,36 @@
     <literal>true</literal>. <literal>#rindex</literal> behaves identically to
     <literal>#index</literal> except it tests the elements in reverse
     order.</para>
+
+    <example xml:id="ex.array-index">
+      <title>Looking-up an element’s index in an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-index.rb"
+			  parse="text"/></programlisting>
+    </example>
     
     <para>To lookup multiple elements at once,
-    <literal>#slice(<replaceable>start</replaceable>,
+    <literal>#[](<replaceable>start</replaceable>,
     <replaceable>length</replaceable>)</literal> or
-    <literal>#slice(<replaceable>range</replaceable>)</literal> can be
-    used. The first form returns an <literal>Array</literal> of at most
-    <replaceable>length</replaceable> consecutive elements, beginning at index
+    <literal>#[](<replaceable>range</replaceable>)</literal>, or its alias,
+    <literal>#slice</literal>, can be used. The first form returns an
+    <literal>Array</literal> of at most <replaceable>length</replaceable>
+    consecutive elements, beginning at index
     <replaceable>start</replaceable>. The second returns an
     <literal>Array</literal> of the elements at the indices covered by the
     given <literal>Range</literal>. Alternatively,
     <literal>#values_at</literal> accepts any combination of
     <literal>Integer</literal> and <literal>Range</literal> arguments,
     returning the elements at any of the given indices.</para>
-    
-    <remark>TODO: Discuss #[] in above graf</remark>
+
+    <example xml:id="ex.array-aref">
+      <title>Looking-up slices of an <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-aref.rb"
+			  parse="text"/></programlisting>
+    </example>
 
     <para>The element at index <literal>0</literal> can be retrieved with
     <literal>#[0]</literal> or <literal>#first</literal>. If
@@ -122,12 +145,30 @@
     <literal>#last(<replaceable>n</replaceable>)</literal> means
     <literal>#[-<replaceable>n</replaceable>..-1]</literal>.</para>
 
+    <example xml:id="ex.array-first-last">
+      <title>Looking-up the first and last elements of an
+      <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-first-last.rb"
+			  parse="text"/></programlisting>
+    </example>
+
     <para>Lastly, <literal>#sample(<replaceable>n</replaceable>)</literal>
     returns <replaceable>n</replaceable> random elements, where
     <replaceable>n</replaceable> is capped at the size of the receiver. If
     <replaceable>n</replaceable> is omitted, it defaults to
     <literal>1</literal>. <remark>TODO: Describe the `random:` argument as a
     1.9.3 feature</remark></para>
+
+    <example xml:id="ex.array-sample">
+      <title>Looking-up “random” elements of an
+      <literal>Array</literal></title>
+
+      <programlisting><xi:include
+			  href="examples/array-sample.rb"
+			  parse="text"/></programlisting>
+    </example>
   </sect1>
 
   <sect1 xml:id="arr.insertion">
