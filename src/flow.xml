@@ -745,7 +745,7 @@
 	</example>
       </sect3>
 
-      <sect3 xml:id="ex.redo-statement">
+      <sect3 xml:id="flo.redo-statement">
 	<title><literal>redo</literal> Statement</title>
 
 	<para>The <literal>redo</literal> statement restarts the current
