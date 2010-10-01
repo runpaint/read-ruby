@@ -518,6 +518,14 @@
     <para><literal>#| <replaceable>a</replaceable></literal> returns the union
     of the receiver and <literal>Array</literal> <replaceable>a</replaceable>,
     i.e. their concatenation, minus any duplicates.</para>
+
+    <example xml:id="ex.array-set">
+      <title>Performing set operations on <literal>Array</literal>s</title>
+
+      <programlisting><xi:include
+			  href="examples/array-set.rb"
+			  parse="text"/></programlisting>
+    </example>    
   </sect1>
 
   <sect1 xml:id="arr.order">
