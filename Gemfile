@@ -5,4 +5,5 @@ platforms :mri_19 do
   gem 'h5-min', '>=0.2.0'
   gem 'coderay', '>= 0.9.4'
   gem 'sinatra', '>=1.0.b'
+  gem 'rake'
 end
