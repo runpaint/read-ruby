@@ -244,7 +244,7 @@
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test="($relative = 1) or ($only_rel_links = 1)">
+      <xsl:when test="$relative = 1">
 	<xsl:call-template name="make-shortest-href">
 	  <xsl:with-param name="chapter" select="$chapter"/>
 	  <xsl:with-param name="section" select="$section"/>

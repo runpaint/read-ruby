@@ -9,7 +9,6 @@
                 version='1.0'>
 
   <xsl:param name="out_dir">out</xsl:param>
-xs
   <xsl:output omit-xml-declaration="yes"/>
 
   <xsl:include href="bibliography.xsl"/>
