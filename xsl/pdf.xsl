@@ -69,9 +69,13 @@
 
 body {
   font-family: 'Linux Libertine', Palatino, 'Palatino Linotype', 
-               'Book Antiqua', Georgia, 'Times New Roman', serif;
+               'Book Antiqua', Georgia, 'Times New Roman', serif, 'unifont';
 }
 
+code,
+pre {
+  font-family: 'Inconsolata', 'unifont', monospace;
+}
 body {
   font-style: normal;
   font-size: large;
@@ -79,6 +83,7 @@ body {
   background-color: white; 
 }
 
+figcaption { display: none }
     </xsl:text>    
   </xsl:template>
 
