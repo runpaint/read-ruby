@@ -9,8 +9,7 @@
                 version='1.0'>
 
   <xsl:param name="out_dir">out</xsl:param>
-  <xsl:param name="only_rel_links">0</xsl:param>
-
+xs
   <xsl:output omit-xml-declaration="yes"/>
 
   <xsl:include href="bibliography.xsl"/>
@@ -31,6 +30,11 @@
   <xsl:include href="sitemap.xsl"/>
   <xsl:include href="table.xsl"/>
   <xsl:include href="toc.xsl"/>
+
+  <xsl:template name="normalise-id">
+    <xsl:param name="id"/>
+    <xsl:value-of select="substring-after($id, '.')"/>
+  </xsl:template>
 
   <!-- Copy over all attributes -->
   <xsl:template match="@*">

@@ -9,8 +9,12 @@
                 version='1.0'>
   <!-- Sect\d -->
   <xsl:template match="d:sect1|d:sect2|d:sect3|d:sect4|d:sect5">
-    <!-- TODO: Template this line -->
-    <xsl:variable name="id" select="substring-after(@xml:id, '.')"/>
+    <xsl:variable name="id">
+      <xsl:call-template name="normalise-id">
+	<xsl:with-param name="id" select="@xml:id"/>
+      </xsl:call-template>
+    </xsl:variable>
+
     <section id="{$id}"><xsl:apply-templates/></section>
   </xsl:template>
 
@@ -27,7 +31,7 @@
 
   <xsl:template match="d:sect1/d:title|d:sect2/d:title|d:sect3/d:title">
     <xsl:variable name="id">
-      <xsl:call-template name="id-to-section">
+      <xsl:call-template name="normalise-id">
 	<xsl:with-param name="id" select="../@xml:id"/>
       </xsl:call-template>
     </xsl:variable>

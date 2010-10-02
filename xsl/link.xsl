@@ -49,6 +49,11 @@
 				                 'abcdefghijklmnopqrstuvwxyz', 
                                                  'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
     <xsl:variable name="abbrev" select="concat($first, substring($id, 2))"/>
+    <xsl:variable name="href">
+      <xsl:call-template name="id-to-href">
+	<xsl:with-param name="id" select="@linkend"/>
+      </xsl:call-template>
+    </xsl:variable>
     <xsl:variable name="pages">
       <!-- TODO: Special-case @begin == @end -->
       <xsl:if test="@begin">, pp.
@@ -56,7 +61,7 @@
       </xsl:if>
     </xsl:variable>
     
-    <a href="/bibliography#{$id}"><xsl:value-of select="$abbrev"/></a>
+    <a href="{$href}"><xsl:value-of select="$abbrev"/></a>
     <xsl:value-of select="$pages"/>
   </xsl:template>
 
@@ -102,7 +107,7 @@
        derived from its target. If the target has a <title> child, we use the
        contents of that; if it has a <caption> child, like a <table> does, we
        use the contents of that, instead. Again, we generate the target URL
-       with the linkend-to-href template.
+       with the id-to-href template.
   -->
   <xsl:template match="d:xref">
     <xsl:variable name="linkend" select="@linkend"/>
@@ -156,7 +161,6 @@
       <xsl:otherwise>
 	<xsl:variable name="linkend" select="@linkend"/>
 	<xsl:variable name="anchor" select="//*[@xml:id = $linkend][1]"/>
-	<xsl:variable name="id" select="substring-after($linkend, 'glo.')"/>
 	<xsl:if test="not(local-name($anchor/*[1]) = 'glossterm')">
 	  <xsl:message terminate="yes">
 	    GlossTerm to <xsl:value-of select="$linkend"/> has no title

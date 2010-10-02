@@ -28,8 +28,12 @@
        empty.
   -->
   <xsl:template match="d:biblioentry">
-    <!-- TODO: Normalise ID -->
-    <xsl:variable name="id" select="substring-after(@xml:id, '.')"/>
+    <xsl:variable name="id">
+      <xsl:call-template name="normalise-id">
+	<xsl:with-param name="id" select="@xml:id"/>
+      </xsl:call-template>
+    </xsl:variable>
+
     <section id="{$id}">
       <h1><xsl:value-of select="d:abbrev"/></h1>
       
