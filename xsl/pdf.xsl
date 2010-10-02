@@ -75,6 +75,7 @@ body {
 code,
 pre {
   font-family: 'Inconsolata', 'unifont', monospace;
+  font-size: 90%;
 }
 body {
   font-style: normal;
