@@ -127,14 +127,9 @@ article > section > section > h1 {
   font-weight: normal;
 }
 
-article > section > section > section > h1 {
-  font-size: 110%;
+section > section > section > h1 {
+  font-size: 130%;
   font-weight: normal;
-}
-
-article > section > section > section > section > h1 {
-  font-size: 100%;
-  font-weight: bold;
 }
 
 table {
@@ -226,7 +221,7 @@ body {
   font-style: normal;
   font-size: large;
   font-color: black;
-  background-color: white; 
+  background-color: transparent; 
 }
 
 figcaption { display: none }
@@ -248,11 +243,42 @@ article {
 	border-top: solid black thin;
 	padding-top: 8pt;
     }
+
+    @top-center {
+        content: 'Read Ruby 1.9 (DRAFT): http://ruby.runpaint.org/';
+        font-weight: bold;
+    }
+    @bottom-center {
+        content: counter(page);
+	font-style: italic;
+    }
+    background: url('../www/draft.png') no-repeat fixed center;
+}
+
+@page:first { 
+    @top { content: normal }
+    @bottom-center { content: normal }
+}
+
+body > h1 {
+  font-size: 1000%;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 80%;
+  font-weight: bold;
+  margin: 0;
+  padding-bottom: 5%;
+}
+
+body > p {
+  text-align: center;
+  font-size: 150%;
 }
 
 .fn::footnote-marker:after {
     content: ' - ';
 }
+
     </xsl:text>    
   </xsl:template>
 
@@ -269,12 +295,16 @@ article {
 	</xsl:call-template>
 	<title>Read Ruby 1.9</title>
 	<body>
+	  <h1><xsl:value-of select="/d:book/d:title"/></h1>
+	  <p>Free ebook about the Ruby 1.9 programming language</p>
+	  <p><a href="http://ruby.runpaint.org/">ruby.runpaint.org</a></p>
 	  <xsl:apply-templates/>
 	</body>
       </html>
     </xsl:document>
   </xsl:template>
 
+  <xsl:template match="d:book/d:title"/>
   <xsl:template match="d:sect1/d:title|d:sect2/d:title|d:sect3/d:title">
     <h1><xsl:apply-templates/></h1>
   </xsl:template>
