@@ -236,6 +236,7 @@ figcaption { display: none }
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="d:appendix[@xml:id='pun.punctuation']"/>
   <!-- Copy over all attributes -->
   <xsl:template match="@*">
     <xsl:attribute name="{local-name()}">
