@@ -7,11 +7,15 @@
   <xsl:import href="toc.css.xsl"/>
   <xsl:import href="page.css.xsl"/>
   <xsl:import href="index.css.xsl"/>
+  <xsl:import href="pdf.css.xsl"/>
 
   <xsl:template name="embed-css">
     <xsl:param name="css"/>
+    <xsl:param name="omit_main"/>
     <style type="text/css">
-      <xsl:call-template name="main.css"/>
+      <xsl:if test="$omit_main != 1">
+	<xsl:call-template name="main.css"/>
+      </xsl:if>
       <xsl:if test="contains($css, 'page')">
 	<xsl:call-template name="page.css"/>
       </xsl:if>
@@ -23,6 +27,9 @@
       </xsl:if>
       <xsl:if test="contains($css, 'toc')">
 	<xsl:call-template name="toc.css"/>
+      </xsl:if>
+      <xsl:if test="contains($css, 'pdf')">
+	<xsl:call-template name="pdf.css"/>
       </xsl:if>
     </style>
   </xsl:template>
