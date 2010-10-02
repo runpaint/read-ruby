@@ -13,6 +13,9 @@ BUILD_DIR = 'build'
 # XSL stylesheet for transforming SRC_XML to HTML
 HTML_XSL = "xsl/html5.xsl"
 
+# XSL stylesheet for transforming SRC_XML to PDF
+PDF_XSL = "xsl/pdf.xsl"
+
 # The DocBook sources (keywords.xml is currently unused)
 SRC_XML = FileList['src/*.xml'].exclude('src/keywords.xml')
 
@@ -88,6 +91,13 @@ task :html => [EX_DIR, *EX_HTML]
 # once per run, as we cache the results in BUILD_DIR. This may have updated the
 # ToC as well, so we copy that, too. Lastly, we need to highlight the examples
 # contained in the newly-generated HTML file.
+
+task :pdf => [OUT_DIR, BUILD_DIR] do
+  sh "xsltproc --stringparam out_dir #{BUILD_DIR} --xinclude " +
+      "#{PDF_XSL} #{BOOK_XML} >#{IO::NULL}"
+  sh "prince #{BUILD_DIR}/single.html #{OUT_DIR}/read-ruby.pdf"
+  sh "xdg-open #{OUT_DIR}/read-ruby.pdf"
+end
 
 HTML.zip(SRC_XML).each_with_index do |(html, src), i|
   desc "XSLT #{src} to #{html}"
