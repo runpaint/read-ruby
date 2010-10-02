@@ -96,8 +96,8 @@
 
     <orderedlist>
       <listitem>
-	<para>The selector is also a keyword such as
-	<literal>class</literal>. (An implicit receiver would create
+	<para>The selector is also a keyword such as 
+	<literal>class</literal>. (An implicit receiver would create 
 	syntactical ambiguity).</para>
       </listitem>
       <listitem>
@@ -108,9 +108,9 @@
 	<para>The selector is used as an lvalue.</para>
       </listitem>
       <listitem>
-	<para>The message name is identical to a local
-	variable. (This case can also be disambiguated by immediately
-	following the selector with a pair of parentheses, i.e.
+	<para>The message name is identical to a local 
+	variable. (This case can also be disambiguated by immediately 
+	following the selector with a pair of parentheses, i.e. 
 	<literal><replaceable>selector</replaceable>()</literal>).</para>
       </listitem>
     </orderedlist>
@@ -120,9 +120,9 @@
       parse="text"/></programlisting>
     </informalexample>
 
-    <para>The receiver is made explicit by concatenating its name and the
-    selector with a full stop,
-    i.e. <literal><replaceable>receiver</replaceable>.<replaceable>selector</replaceable></literal>. <replaceable>receiver</replaceable>
+    <para>The receiver is made explicit by concatenating its name and the 
+    selector with a full stop, 
+    i.e. <literal><replaceable>receiver</replaceable>.<replaceable>selector</replaceable></literal>. <replaceable>receiver</replaceable> 
     is an arbitrary expression, the value of which receives the message.</para>
 
     <!-- <para>However, the receiver may be any expression, parenthesised -->
@@ -135,8 +135,8 @@
         parse="text"/></programlisting>
     </informalexample>
 
-    <para>The value of a message expression is that of the method it
-    invoked. If no corresponding method could be found, a
+    <para>The value of a message expression is that of the method it 
+    invoked. If no corresponding method could be found, a 
     <literal>NoMethodError</literal> exception is raised.</para>
     
     <sect2 xml:id="mes.arguments">
@@ -152,12 +152,12 @@
 	</mediaobject>
       </figure -->
 
-      <para>A message may be accompanied by one or more
-      <firstterm>arguments</firstterm>: values to be used in the resulting
-      computations. They are supplied as a parenthesized list of expressions
-      separated by commas:
-      <literal><replaceable>receiver</replaceable>.<replaceable>selector</replaceable>(<replaceable>arg<subscript>0</subscript></replaceable>,…,<replaceable>arg</replaceable><subscript>n</subscript>)</literal>. The
-      number of arguments sent must agree with how the corresponding method was
+      <para>A message may be accompanied by one or more 
+      <firstterm>arguments</firstterm>: values to be used in the resulting 
+      computations. They are supplied as a parenthesized list of expressions 
+      separated by commas: 
+      <literal><replaceable>receiver</replaceable>.<replaceable>selector</replaceable>(<replaceable>arg<subscript>0</subscript></replaceable>,…,<replaceable>arg</replaceable><subscript>n</subscript>)</literal>. The 
+      number of arguments sent must agree with how the corresponding method was 
       defined, otherwise an <literal>ArgumentError</literal> is raised.</para>
 
       <informalexample xml:id="ex.receiver-selector-arguments-syntax">
@@ -168,36 +168,36 @@
       <sidebar xml:id="mes.enumerable-arguments">
         <title><literal>Enumerable</literal> Arguments</title>
 
-	<para>It is often the case that a message needs to be sent
-        with multiple arguments, yet those arguments are stored in an
-        <literal>Enumerable</literal> such as <literal>Array</literal>. If
-        the message is sent with just the <literal>Enumerable</literal>
-        argument it will receive a single argument (a reference to the
-        <literal>Enumerable</literal>) rather than the constituent elements
-        thereof. The solution is to prefix the <literal>Enumerable</literal>
-        argument with an asterisk (<literal>U＋002A</literal>), which in
-        this context is termed a <firstterm>splat operator</firstterm>,
-        thus expanding the <literal>Enumerable</literal> into its individual
+	<para>It is often the case that a message needs to be sent 
+        with multiple arguments, yet those arguments are stored in an 
+        <literal>Enumerable</literal> such as <literal>Array</literal>. If 
+        the message is sent with just the <literal>Enumerable</literal> 
+        argument it will receive a single argument (a reference to the 
+        <literal>Enumerable</literal>) rather than the constituent elements 
+        thereof. The solution is to prefix the <literal>Enumerable</literal> 
+        argument with an asterisk (<literal>U＋002A</literal>), which in 
+        this context is termed a <firstterm>splat operator</firstterm>, 
+        thus expanding the <literal>Enumerable</literal> into its individual 
         elements.</para>
 
 	<informalexample xml:id="ex.splat-arguments">
 	  <programlisting><xi:include href="examples/splat-arguments.rb" parse="text"/></programlisting>
 	</informalexample>
 
-        <para>This technique works by sending <literal>:to_a</literal> to the
-        prefixed object, so any object that responds to this message with an
+        <para>This technique works by sending <literal>:to_a</literal> to the 
+        prefixed object, so any object that responds to this message with an 
         <literal>Array</literal> can be used in the same fashion.</para>
       </sidebar>
 
       <sect3 xml:id="mes.block-argument">
         <title>Block Literals</title>
 
-        <para>A message expression followed by a block literal causes the block
-        to be sent along with the message. A block literal may be enclosed in
-        curly braces (<literal>{</literal>…<literal>}</literal>) or a
-        <literal>do</literal>…<literal>end</literal> construct. These forms are
-        semantically equivalent <remark>Note difference in precedence</remark>,
-        however it is conventional to use the former for short blocks that fit
+        <para>A message expression followed by a block literal causes the block 
+        to be sent along with the message. A block literal may be enclosed in 
+        curly braces (<literal>{</literal>…<literal>}</literal>) or a 
+        <literal>do</literal>…<literal>end</literal> construct. These forms are 
+        semantically equivalent <remark>Note difference in precedence</remark>, 
+        however it is conventional to use the former for short blocks that fit 
         on a single line, and the latter for multi-line blocks.</para>
 
         <informalexample xml:id="ex.message-expression-with-block">
@@ -414,33 +414,33 @@
 
     <orderedlist>
       <listitem>
-	<para>Their receiver must always be explicit, i.e. an expression of the
-	form <literal><replaceable>operator</replaceable></literal> or
-	<literal><replaceable>operator</replaceable>
+	<para>Their receiver must always be explicit, i.e. an expression of the 
+	form <literal><replaceable>operator</replaceable></literal> or 
+	<literal><replaceable>operator</replaceable> 
 	<replaceable>argument</replaceable></literal> is illegal.</para>
       </listitem>
       <listitem>
-	<para>Unary operator methods may be invoked as
+	<para>Unary operator methods may be invoked as 
 	<literal><replaceable>operator</replaceable>.<replaceable>receiver</replaceable></literal></para>
       </listitem>
       <listitem>
-	<para>Binary operator methods may be invoked as
-	<literal><replaceable>receiver</replaceable>
-	<replaceable>operator</replaceable>
-	<replaceable>argument</replaceable></literal> as long as they weren’t
+	<para>Binary operator methods may be invoked as 
+	<literal><replaceable>receiver</replaceable> 
+	<replaceable>operator</replaceable> 
+	<replaceable>argument</replaceable></literal> as long as they weren’t 
 	defined to require multiple arguments.</para>
       </listitem>
       <listitem>
-	<para>An expression of the form
-	<literal><replaceable>receiver</replaceable>.<replaceable>operator</replaceable>(<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript><replaceable>n</replaceable></subscript>)</literal>,
-	where <replaceable>arg</replaceable> is an argument, is always
-	legal. However, when <replaceable>operator</replaceable> is unary plus
-	or unary minus, it must be given with an <literal>@</literal> suffix,
+	<para>An expression of the form 
+	<literal><replaceable>receiver</replaceable>.<replaceable>operator</replaceable>(<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript><replaceable>n</replaceable></subscript>)</literal>, 
+	where <replaceable>arg</replaceable> is an argument, is always 
+	legal. However, when <replaceable>operator</replaceable> is unary plus 
+	or unary minus, it must be given with an <literal>@</literal> suffix, 
 	e.g. <literal>+@</literal> or <literal>-@</literal>.</para>
       </listitem>
     </orderedlist>
 
-    <para>Further, in forms 2 and 3, the expression has the associativity,
+    <para>Further, in forms 2 and 3, the expression has the associativity, 
     arity, and precedence outlined in <xref linkend="pro.operators"/>.</para>
     	<!-- <figure> -->
     <!--   <title>Syntax diagram of an operator method selector</title> -->
@@ -485,39 +485,39 @@
   <sect1 xml:id="mes.conventions">
     <title>Conventions</title>
 
-    <para>Around certain selectors there exist conventions which are
-    established by the core classes and standard library. Their adoption
-    engenders APIs that are more coherent and feel familiar to Rubyists. They
-    are, however, merely suggestions—explanations of traditions; not a list of
+    <para>Around certain selectors there exist conventions which are 
+    established by the core classes and standard library. Their adoption 
+    engenders APIs that are more coherent and feel familiar to Rubyists. They 
+    are, however, merely suggestions—explanations of traditions; not a list of 
     requirements. Ignore as you see fit.</para>
 
     <variablelist spacing="compact">
       <varlistentry>
 	<term><glossterm linkend="glo.call"><literal>#call</literal></glossterm></term>
 	<listitem>
-	  <para>Accepts a variable-length argument list with which it invokes
+	  <para>Accepts a variable-length argument list with which it invokes 
 	  the receiver.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo.each"><literal>#each</literal></glossterm></term>
 	<listitem>
-	  <para>Yields the next element of a sequence when given a block;
+	  <para>Yields the next element of a sequence when given a block; 
 	  otherwise returns an enumerator.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm	linkend="glo.each_"><literal>#each_</literal><replaceable>attribute</replaceable></glossterm></term>
 	<listitem>
-	  <para>Enumerates a collection by
-	  <replaceable>attribute</replaceable>. Yields the next element when
+	  <para>Enumerates a collection by 
+	  <replaceable>attribute</replaceable>. Yields the next element when 
 	  given a block; otherwise returns an enumerator.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo.empty"><literal>#empty?</literal></glossterm></term>
 	<listitem>
-	  <para>Returns <literal>true</literal> if the receiver doesn’t have
+	  <para>Returns <literal>true</literal> if the receiver doesn’t have 
 	  any content; <literal>false</literal> otherwise.</para>
 	</listitem>
       </varlistentry>
@@ -525,22 +525,22 @@
 	<term><glossterm linkend="glo.size"><literal>#size</literal></glossterm></term>
 	<term><glossterm linkend="glo.length"><literal>#length</literal></glossterm></term>
 	<listitem>
-	  <para>Returns the receiver’s magnitude as an
+	  <para>Returns the receiver’s magnitude as an 
 	  <literal>Integer</literal>.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo._by"><literal>_by</literal></glossterm></term>
 	<listitem>
-	  <para>Selectors with a <literal>_by</literal> suffix typically imply
-	  that the method expects a block, the results of which constrain the
+	  <para>Selectors with a <literal>_by</literal> suffix typically imply 
+	  that the method expects a block, the results of which constrain the 
 	  computation.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo.to_"><literal>#to_</literal></glossterm></term>
 	<listitem>
-	  <para><link linkend="obj.conversion">Converts</link> the receiver
+	  <para><link linkend="obj.conversion">Converts</link> the receiver 
 	  into an object of the corresponding core type.</para>
 	</listitem>
       </varlistentry>
@@ -548,80 +548,85 @@
 	<term><glossterm
 	linkend="glo.try-convert"><literal>try_convert</literal></glossterm></term>
 	<listitem>
-	  <para>Class method that <link linkend="obj.try-convert">implicitly
+	  <para>Class method that <link linkend="obj.try-convert">implicitly 
 	  converts</link> the argument to an instance of the receiver.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo.spaceship"><literal>#&lt;=&gt;</literal></glossterm></term>
 	<listitem>
-	  <para>Returns <literal>0</literal> if the operands are equal,
-	  <literal>1</literal> if the first is greater than the second,
-	  <literal>-1</literal> if the first is less than the second, and
+	  <para>Returns <literal>0</literal> if the operands are equal, 
+	  <literal>1</literal> if the first is greater than the second, 
+	  <literal>-1</literal> if the first is less than the second, and 
 	  <literal>nil</literal> if they are incomparable.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo.less-than"><literal>#&lt;</literal></glossterm></term>
 	<listitem>
-	  <para>Returns <literal>true</literal> if the receiver is less than
+	  <para>Returns <literal>true</literal> if the receiver is less than 
 	  argument; <literal>false</literal> otherwise.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo.greater-than"><literal>#&gt;</literal></glossterm></term>
 	<listitem>
-	  <para>Returns <literal>true</literal> if the receiver is greater than
+	  <para>Returns <literal>true</literal> if the receiver is greater than 
 	  argument; <literal>false</literal> otherwise.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo.equal-equal"><literal>#==</literal></glossterm></term>
 	<listitem>
-	  <para>Returns <literal>true</literal> if the receiver is equal to the
+	  <para>Returns <literal>true</literal> if the receiver is equal to the 
 	  argument; <literal>false</literal> otherwise.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><glossterm linkend="glo.aref"><literal>#[]</literal></glossterm></term>
 	<listitem>
-	  <para>Indexes the receiver by the “key” supplied as the argument(s),
-	  returning the requested slice or
-	  <literal>nil</literal>/<literal>[]</literal> if no corresponding data
+	  <para>Indexes the receiver by the “key” supplied as the argument(s), 
+	  returning the requested slice or 
+	  <literal>nil</literal>/<literal>[]</literal> if no corresponding data 
 	  was found.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
-	<term><glossterm linkend="glo.aref-set"><literal>#[]=</literal></glossterm></term>
+	<term><glossterm
+	linkend="glo.aref-set"><literal>#[]=</literal></glossterm></term>
 	<listitem>
-	  <para>The assignment counterpart to <glossterm
-	  linkend="glo.aref"><literal>#[]</literal></glossterm> the first
-	  argument(s) describe the slice, and the final argument its new
+	  <para>The assignment counterpart to <glossterm 
+	  linkend="glo.aref"><literal>#[]</literal></glossterm> the first 
+	  argument(s) describe the slice, and the final argument its new 
 	  value.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
-	<term><glossterm linkend="glo.equal-tilde"><literal>#=~</literal></glossterm></term>
+	<term><glossterm
+	linkend="glo.equal-tilde"><literal>#=~</literal></glossterm></term>
 	<listitem>
 	  <para>Matches the receiver with the argument.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
-	<term><glossterm linkend="glo.less-than-less-than"><literal>#&lt;&lt;</literal></glossterm></term>
+	<term><glossterm
+	linkend="glo.less-than-less-than"><literal>#&lt;&lt;</literal></glossterm></term>
 	<listitem>
-	  <para>For non-<literal>Integer</literal> receivers, appends the
+	  <para>For non-<literal>Integer</literal> receivers, appends the 
 	  argument to the receiver then returns the mutated receiver.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
-	<term><glossterm linkend="glo.plus-sign"><literal>#+</literal></glossterm></term>
+	<term><glossterm
+	linkend="glo.plus-sign"><literal>#+</literal></glossterm></term>
 	<listitem>
-	  <para>Returns a new object comprising the concatenation of the
+	  <para>Returns a new object comprising the concatenation of the 
 	  operands.</para>
 	</listitem>
       </varlistentry>
       <varlistentry>
-	<term><glossterm linkend="glo.rewind"><literal>#rewind</literal></glossterm></term>
+	<term><glossterm
+	linkend="glo.rewind"><literal>#rewind</literal></glossterm></term>
 	<listitem>
 	  <para>Resets the receiver to its initial state.</para>
 	</listitem>
@@ -637,9 +642,9 @@
     <sect2 xml:id="mes.tone">
       <title>Tone</title>
 
-      <para>By convention, a selector with a question mark
-      (<literal>?</literal>) suffix denotes that the message poses a
-      polar question to the receiver. Such messages are referred to as
+      <para>By convention, a selector with a question mark 
+      (<literal>?</literal>) suffix denotes that the message poses a 
+      polar question to the receiver. Such messages are referred to as 
       <firstterm>predicates</firstterm>.</para>
 
       <informalexample xml:id="ex.predicate-messages">
@@ -649,10 +654,10 @@
       <sidebar>
         <title>Etymology</title>
 
-        <para>This convention is shared with Scheme and probably
-        derived from that of Lisp to name predicate functions with a
-        <literal>p</literal> suffix, e.g. Lisp’s <literal>(evenp)</literal>
-        ⇒ Scheme’s <literal>(even?)</literal> ⇒ Ruby’s
+        <para>This convention is shared with Scheme and probably 
+        derived from that of Lisp to name predicate functions with a 
+        <literal>p</literal> suffix, e.g. Lisp’s <literal>(evenp)</literal> 
+        ⇒ Scheme’s <literal>(even?)</literal> ⇒ Ruby’s 
         <literal>Fixnum#even?</literal>.</para>
       </sidebar>
 
@@ -661,61 +666,67 @@
           parse="text"/></programlisting>
       </informalexample>
 
-      <para>Following similar convention, a selector with an exclamation
-      mark (<literal>!</literal>) suffix (colloquially called a
-      <emphasis>bang</emphasis>) is used <quote>…to mark a method as
-      special. It doesn’t necessarily mean that it will be destructive or
-      dangerous, but it means that it will require more attention than its
-      alternative.</quote> <biblioref linkend="bib.brown09"/>. <quote>Usually,
-      the method without the exclamation mark returns a modified copy of
-      the object it is invoked on, and the one with the exclamation mark is
+      <para>Following similar convention, a selector with an exclamation 
+      mark (<literal>!</literal>) suffix (colloquially called a 
+      <emphasis>bang</emphasis>) is used <quote>…to mark a method as 
+      special. It doesn’t necessarily mean that it will be destructive or 
+      dangerous, but it means that it will require more attention than its 
+      alternative.</quote> <biblioref linkend="bib.brown09"/>. <quote>Usually, 
+      the method without the exclamation mark returns a modified copy of 
+      the object it is invoked on, and the one with the exclamation mark is 
       a mutator method that alters the object in place.</quote> <biblioref
       linkend="bib.flan08"/> </para>
 
       <informalexample xml:id="ex.bang-messages">
-        <programlisting><xi:include href="examples/bang-messages.rb" parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/bang-messages.rb"
+	parse="text"/></programlisting>
       </informalexample>
 
-      <para>Both suffixes are merely <emphasis>conventional</emphasis>,
-      however; they do not guarantee that the receiver will respond in the
+      <para>Both suffixes are merely <emphasis>conventional</emphasis>, 
+      however; they do not guarantee that the receiver will respond in the 
       aforementioned manner.</para>
     </sect2>
 
     <sect2 xml:id="mes.plurality">
       <title>Plurality</title>
 
-      <para>Messages whose selectors are plural generally return an
-      <literal>Enumerable</literal> collection of objects. For example,
-      <literal>String#bytes</literal>, <literal>String#chars</literal>,
-      and <literal>String#codepoints</literal> return
-      <literal>Enumerators</literal> which yield each
-      byte, character, or codepoint, respectively, in
-      turn. Similarly, <literal>Object#methods</literal>,
-      <literal>Object#instance_methods</literal>,
-      <literal>Object#instance_variables</literal>, and similar methods,
+      <para>Messages whose selectors are plural generally return an 
+      <literal>Enumerable</literal> collection of objects. For example, 
+      <literal>String#bytes</literal>, <literal>String#chars</literal>, 
+      and <literal>String#codepoints</literal> return 
+      <literal>Enumerators</literal> which yield each 
+      byte, character, or codepoint, respectively, in 
+      turn. Similarly, <literal>Object#methods</literal>, 
+      <literal>Object#instance_methods</literal>, 
+      <literal>Object#instance_variables</literal>, and similar methods, 
       return <literal>Array</literal>s of <literal>Symbol</literal>s.</para>
 
       <informalexample xml:id="ex.plural-selector-splat">
-        <programlisting><xi:include href="examples/plural-selector-splat.rb" parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/plural-selector-splat.rb" 
+	parse="text"/></programlisting>
       </informalexample>
     </sect2>
 
     <sect2 xml:id="mes.responding">
       <title>Responding to Messages</title>
 
-      <para>An object is said to <emphasis>respond to</emphasis> a given
-      selector if it expects to receive it as a message. The
-      <literal>Kernel#respond_to?(<replaceable>selector</replaceable>)</literal>
-      predicate returns <literal>true</literal> if a method is defined with the
-      same name as the selector; <literal>false</literal> otherwise. In some
+      <para>An object is said to <emphasis>respond to</emphasis> a given 
+      selector if it expects to receive it as a message. The 
+      <literal>Kernel#respond_to?(<replaceable>selector</replaceable>)</literal> 
+      predicate returns <literal>true</literal> if a method is defined with the 
+      same name as the selector; <literal>false</literal> otherwise. In some 
       situations, <link
-      linkend="cla.method-defined"><literal>Module#method_defined?</literal></link>
-      is an alternative, for the reasons outlined in its
-      description. <remark>Rethink how this sentence affects the discussions of
+      linkend="cla.method-defined"><literal>Module#method_defined?</literal></link> 
+      is an alternative, for the reasons outlined in its 
+      description. <remark>Rethink how this sentence affects the discussions of 
       related methods.</remark></para>
 
       <informalexample xml:id="ex.respond-to">
-        <programlisting><xi:include href="examples/respond-to.rb" parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/respond-to.rb" 
+	parse="text"/></programlisting>
       </informalexample>
 
       <para>However, by defining <link
@@ -726,50 +737,55 @@
       linkend="met.respond-to-missing"><literal>Kernel#respond_to_missing?</literal></link>.</para>
 
       <informalexample xml:id="ex.respond-to-method-missing">
-        <programlisting><xi:include href="examples/respond-to-method-missing.rb"
-          parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/respond-to-method-missing.rb"
+	parse="text"/></programlisting>
       </informalexample>
 
-      <para><literal>Kernel#respond_to?</literal> ignores private
-      methods by default. If it is sent with a second argument of
-      <literal>true</literal>, private methods are included in its
+      <para><literal>Kernel#respond_to?</literal> ignores private 
+      methods by default. If it is sent with a second argument of 
+      <literal>true</literal>, private methods are included in its 
       search.</para>
 
       <informalexample xml:id="ex.respond-to-private">
-        <programlisting><xi:include href="examples/respond-to-private.rb" parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/respond-to-private.rb" 
+	parse="text"/></programlisting>
       </informalexample>
 
-      <para><literal>Kernel#respond_to?</literal> is often used to condition a
-      message expression on the receiver understanding it. That is, before an
-      object is told to perform an operation it is asked whether it is
-      able. Normally this procedure is unnecessary because it is known,
-      <emphasis>a priori</emphasis>, what messages the object will respond to;
-      however, especially when employing metaprogramming techniques, it is
+      <para><literal>Kernel#respond_to?</literal> is often used to condition a 
+      message expression on the receiver understanding it. That is, before an 
+      object is told to perform an operation it is asked whether it is 
+      able. Normally this procedure is unnecessary because it is known, 
+      <emphasis>a priori</emphasis>, what messages the object will respond to; 
+      however, especially when employing metaprogramming techniques, it is 
       sometimes necessary.</para>
-      <remark>The example below has significant whitespace; ensure we don't
+      <remark>The example below has significant whitespace; ensure we don't 
       trample on it with post-processing tools</remark>
 
       <informalexample xml:id="ex.send-if-respond-to">
         <programlisting><literal><replaceable>receiver</replaceable>.<replaceable>selector</replaceable> if <replaceable>receiver</replaceable>.respond_to?(:<replaceable>selector</replaceable>)</literal></programlisting>
       </informalexample>
 
-      <para>The following example suggests a simplification of this idiom by
-      defining <literal>Object#send?</literal> which returns
-      <literal>nil</literal> if the named method does not exist. In addition to
-      the brevity it affords, this approach avoids the aforementioned weakness
-      of <literal>Kernel#respond_to?</literal> with respect to messages handled
-      by <xref linkend="met.method-missing"/>, by rescuing
+      <para>The following example suggests a simplification of this idiom by 
+      defining <literal>Object#send?</literal> which returns 
+      <literal>nil</literal> if the named method does not exist. In addition to 
+      the brevity it affords, this approach avoids the aforementioned weakness 
+      of <literal>Kernel#respond_to?</literal> with respect to messages handled 
+      by <xref linkend="met.method-missing"/>, by rescuing 
       <literal>NoMethodError</literal> if it occurs.</para>
 
       <informalexample xml:id="ex.object-send-p">
-        <programlisting><xi:include href="examples/object-send-p.rb" parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/object-send-p.rb" 
+	parse="text"/></programlisting>
       </informalexample>
 
-      <para>A closely related related scenario involves wanting to send a
-      message unless the receiver is <literal>nil</literal>. It transpires when
-      working with values which shouldn’t be <literal>nil</literal>, but might
+      <para>A closely related related scenario involves wanting to send a 
+      message unless the receiver is <literal>nil</literal>. It transpires when 
+      working with values which shouldn’t be <literal>nil</literal>, but might 
       be. The general solution is one of the following constructs:</para>
-      <remark>The example below has significant whitespace; ensure we don't
+      <remark>The example below has significant whitespace; ensure we don't 
       trample on it with post-processing tools</remark>
 
       <informalexample xml:id="ex.ternary-nil-receiver">
@@ -781,17 +797,19 @@
       <informalexample xml:id="ex.and-and-nil-receiver">
         <programlisting><literal><replaceable>receiver</replaceable> &amp; &amp; <replaceable>receiver</replaceable>.<replaceable>selector</replaceable></literal></programlisting>      </informalexample>
 
-      <para>Ruby on Rails defines for this purpose
-      <literal>Object#try(<replaceable>selector</replaceable>,
-      <replaceable>arg<subscript>0</subscript>
-      </replaceable>,…,<replaceable>arg<subscript>n</subscript>
-      </replaceable>)</literal>, which functions as
-      <literal>Object#send</literal>, but returns <literal>nil</literal>
-      when the receiver is <literal>nil</literal>, rather than raising a
+      <para>Ruby on Rails defines for this purpose 
+      <literal>Object#try(<replaceable>selector</replaceable>, 
+      <replaceable>arg<subscript>0</subscript> 
+      </replaceable>,…,<replaceable>arg<subscript>n</subscript> 
+      </replaceable>)</literal>, which functions as 
+      <literal>Object#send</literal>, but returns <literal>nil</literal> 
+      when the receiver is <literal>nil</literal>, rather than raising a 
       <literal>NoMethodError</literal>.</para>
 
       <informalexample xml:id="ex.object-try">
-        <programlisting><xi:include href="examples/object-try.rb" parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/object-try.rb" 
+	parse="text"/></programlisting>
       </informalexample>
     </sect2>
   </sect1>
