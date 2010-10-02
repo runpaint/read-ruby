@@ -102,6 +102,10 @@ sup > a:active {
   font-weight: bold;
 }
 
+article {
+  page-break-before: always;
+}
+
 
 body {
   font-style: normal;
