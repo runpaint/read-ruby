@@ -39,7 +39,6 @@
     <article class="{local-name()}">
       <h1><xsl:value-of select="d:title"/></h1>
       <xsl:apply-templates/>
-      <xsl:call-template name="footnote-list"/>
     </article>
   </xsl:template>
 
@@ -124,14 +123,18 @@ article > section > h1 {
 }
 
 article > section > section > h1 {
-  font-size: 125%;
+  font-size: 150%;
   font-weight: normal;
 }
 
 article > section > section > section > h1 {
   font-size: 110%;
   font-weight: normal;
-  font-style: italic; 
+}
+
+article > section > section > section > section > h1 {
+  font-size: 100%;
+  font-weight: bold;
 }
 
 table {
@@ -227,6 +230,29 @@ body {
 }
 
 figcaption { display: none }
+.fn {
+  float: footnote;
+  counter-increment: footnote;
+}
+
+p {
+  text-indent: 1em;
+}
+
+article {
+  counter-reset: footnote;
+}
+
+@page {
+    @footnotes {
+	border-top: solid black thin;
+	padding-top: 8pt;
+    }
+}
+
+.fn::footnote-marker:after {
+    content: ' - ';
+}
     </xsl:text>    
   </xsl:template>
 
@@ -268,63 +294,11 @@ figcaption { display: none }
        the form '#ref-$mark', so the '#fn-$mark' element can link back to it.
   -->
   <xsl:template match="d:footnote">
-    <xsl:variable name="mark"><xsl:number level="any"
-					  from="d:chapter"/></xsl:variable>
-    <xsl:variable name="chapter" select="ancestor::d:chapter[last()]/@xml:id"/>
-    <xsl:variable name="anchor">
-      <xsl:value-of select="concat('fn-', $chapter, $mark)"/>
-    </xsl:variable>
-    <sup id="ref-{$chapter}{$mark}"><a 
-			     href="#{$anchor}"
-			     class="fn"><xsl:value-of select="$mark"/></a></sup>
+    <span class="fn"><xsl:apply-templates/></span>
   </xsl:template>
 
-  <!--
-     This template generates the list of footnotes at the end of a chapter. It
-     is called before the <body> tag is closed for chapters, glossaries,
-     appendices, and bibliographies.
-
-     We only need to generate a list if the current page is a chapter and it
-     contains footnotes. (Of course, only a chapter should ever contain
-     footnotes, but...).
-
-     Because this template is called from the d:chapter template, it can locate
-     this chapter's footnotes with the XPath './/d:footnote'. <xsl:for-each>
-     yields each footnote in the order it appeared in the chapter. This is
-     important, because we need to ensure each footnote is labelled with the
-     number we assigned to its marker. This is achieved with <xsl:number>,
-     which counts from 1, and resets at the beginning of a chapter.
-
-     The payload of each footnote is copied to the corresponding <li>
-     element. This <li> has an ID of 'fn-$n', so as to correlate with the
-     target of the corresponding marker. Appended to the footnote is a link
-     back to '#ref-$n', which is the ID of the marker.
-  -->
-  <xsl:template name="footnote-list">
-    <xsl:if test="local-name() = 'chapter' and count(.//d:footnote) &gt; 0">
-      <xsl:variable name="chapter" select="@xml:id"/>
-      <footer>
-	<h1>Footnotes</h1>
-	
-	<ol>
-	  <xsl:for-each select=".//d:footnote">
-	    <xsl:variable name="n"><xsl:number name="fn-list" 
-					       from="d:chapter" 
-					       level="any"/></xsl:variable>
-	    <xsl:variable name="from" 
-			  select="concat('fn-', $chapter, $n)"/>
-	    <xsl:variable name="to" 
-			  select="concat('ref-', $chapter, $n)"/>
-	    <li id="{$from}">
-	    <xsl:apply-templates select="./*"/>
-	    <xsl:text> </xsl:text><a href="#{$to}" 
-				     class="returner"
-				     title="Return to where you left off">↩</a>
-	  </li>
-	  </xsl:for-each>
-	</ol>
-      </footer>
-    </xsl:if>
+  <xsl:template match="d:footnote/d:para">
+    <xsl:apply-templates/>
   </xsl:template>
 
   <xsl:template match="d:appendix[@xml:id='pun.punctuation']"/>
