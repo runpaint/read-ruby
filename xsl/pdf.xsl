@@ -47,27 +47,27 @@
     <xsl:text disable-output-escaping="yes">
 @font-face {
 	font-family: 'Goudy Bookletter 1911';
-	src: url('../fonts/ttf/goudy_bookletter_1911-webfont.ttf');
+	src: url('/usr/share/fonts/truetype/goudybookletter/GoudyBookletter1911.ttf');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: 'Inconsolata';
-	src: url('../fonts/ttf/Inconsolata-webfont.ttf');
+	font-family: 'Goudy Bookletter 1911';
+	src: url('/usr/share/fonts/truetype/goudybookletter/GoudyBookletter1911Italic.ttf');
 	font-weight: normal;
-	font-style: normal;
+	font-style: italic;
 }
 
 @font-face {
-	font-family: 'Linux Libertine';
-	src: url('../fonts/ttf/linlibertine_re-4.7.5-webfont.ttf');
-	font-weight: normal;
+	font-family: 'Goudy Bookletter 1911';
+	src: url('/usr/share/fonts/truetype/goudybookletter/GoudyBookletter1911Bold.ttf');
+	font-weight: bold;
 	font-style: normal;
 }
 
 body {
-  font-family: 'Linux Libertine O', 'Linux Libertine', Palatino, 'Palatino Linotype', 
+  font-family: 'Linux Libertine O', Palatino, 'Palatino Linotype', 
                'Book Antiqua', Georgia, 'Times New Roman', serif, 'unifont';
 }
 
@@ -79,9 +79,11 @@ pre {
 
 h1,
 h1 > code {
-  font-family: 'Goudy Bookletter 1911', 'Linux Libertine O', 'Linux Libertine', Palatino, 
+  font-family: 'Goudy Bookletter 1911',  
+               'Linux Libertine O', Palatino, 
                'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', 
                serif, 'unifont';
+  font-weight: normal;
 }
 
 article a:link, 
@@ -112,21 +114,26 @@ article > h1 {
   text-transform: uppercase;
   text-align: center;
   line-height: 80%;
+  font-weight: bold;
   margin: 0;
 }
 article > section > h1 {
   font-size: 200%;
   text-align: center;
+  font-weight: normal;
 }
 
 article > section > section > h1 {
   font-size: 125%;
+  font-weight: normal;
 }
 
 article > section > section > section > h1 {
   font-size: 110%;
-/* font-style: italic; */ /* GB1911 distorts when italicised */
+  font-weight: normal;
+  font-style: italic; 
 }
+
 table {
   margin-left: auto;
   margin-right: auto;
