@@ -77,6 +77,33 @@ pre {
   font-family: 'Inconsolata', 'unifont', monospace;
   font-size: 90%;
 }
+
+h1,
+h1 > code {
+  font-family: 'Goudy Bookletter 1911', 'Linux Libertine', Palatino, 
+               'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', 
+               serif, 'unifont';
+}
+
+article a:link, 
+article a:visited, 
+article a:hover, 
+article a:active {
+  text-decoration: none;
+  border-bottom: 1px dotted;
+  color: black;
+}
+
+sup > a:link, 
+sup > a:visited, 
+sup > a:hover, 
+sup > a:active {
+  text-decoration: none;
+  border-bottom: none;
+  font-weight: bold;
+}
+
+
 body {
   font-style: normal;
   font-size: large;
