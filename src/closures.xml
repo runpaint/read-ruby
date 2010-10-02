@@ -8,44 +8,43 @@
          
   <title>Closures</title>
   
-  <para>
-    <quote>A closure is a combination of a function and an
-      environment.</quote> <biblioref begin="107" end="109"
-      linkend="bib.graham96" units="pages"/>. The function is a parametrised
-    block of executable code, and the <quote>referencing environment</quote>
-    <biblioref begin="138" end="140" linkend="bib.scott06" units="pages"/>, or
-    <link linkend="clo.binding">binding</link>, is a reference to the lexical
-    environment of the closure’s creation site. The binding represents its
-    variables as references, which are de-referenced in the environment the
-    closure is called, every time it is called.
-  </para>
+  <para><quote>A closure is a combination of a function and an
+  environment.</quote> <biblioref begin="107" end="109" linkend="bib.graham96"
+  units="pages"/>. The function is a parametrised block of executable code, and
+  the <quote>referencing environment</quote> <biblioref begin="138" end="140"
+  linkend="bib.scott06" units="pages"/>, or <link
+  linkend="clo.binding">binding</link>, is a reference to the lexical
+  environment of the closure’s creation site. The binding represents its
+  variables as references, which are de-referenced in the environment the
+  closure is called, every time it is called.</para>
 
   <example xml:id="ex.closure-example">
     <title>A closure encapsulates a block of code and its associated
     binding</title>
 
-    <programlisting><xi:include href="examples/closure-example.rb"
-        parse="text"/></programlisting>
+    <programlisting><xi:include 
+    href="examples/closure-example.rb"
+    parse="text"/></programlisting>
   </example>
 
-  <para>
-    A closure is an instance of the <literal>Proc</literal> class, which
-    provides methods for calling the closure and accessing its binding. The
-    following example shows a closure being called with
-    <literal>Proc#[]</literal> and an <link
-      linkend="clo.parameters">argument</link>.
-  </para>
+  <para>A closure is an instance of the <literal>Proc</literal> class, which
+  provides methods for calling the closure and accessing its binding. The
+  following example shows a closure being called with
+  <literal>Proc#[]</literal> and an <link
+  linkend="clo.parameters">argument</link>.</para>
 
   <example xml:id="ex.closure-with-argument">
     <title>A closure may accept arguments from its calling environment</title>
 
-    <programlisting><xi:include href="examples/closure-with-argument.rb"
-        parse="text"/></programlisting>
+    <programlisting><xi:include 
+    href="examples/closure-with-argument.rb"
+    parse="text"/></programlisting>
   </example>
 
   <sect1 xml:id="clo.procs">
     <title><literal>Proc</literal> Literals</title>
 
+    <remark>TODO: Define 'block literal'</remark>
     <para>A block literal creates a <literal>Proc</literal> object which
     accepts the arguments provided in the optional parameter list and
     represents a sequence of zero or more statements. Unlike most other
@@ -57,19 +56,18 @@
   <sect1 xml:id="clo.semantics">
     <title>Semantics</title>
 
-    <para>
-      A <literal>Proc</literal> has either <link
-      linkend="clo.yield-semantics"><literal>yield</literal> semantics</link>
-      or <link linkend="clo.invocation-semantics">invocation
-      semantics</link>. Its semantics determine how it handles unexpected
-      arguments and control flow statements, such as <literal>return</literal>,
-      appearing within the body of the closure. The differences are summarised
-      in the following table, and elaborated below.
-    </para>
+    <para>A <literal>Proc</literal> has either <link
+    linkend="clo.yield-semantics"><literal>yield</literal> semantics</link> or
+    <link linkend="clo.invocation-semantics">invocation semantics</link>. Its
+    semantics determine how it handles unexpected arguments and control flow
+    statements, such as <literal>return</literal>, appearing within the body of
+    the closure. The differences are summarised in the following table, and
+    elaborated below.</para>
 
     <table xml:id="closures-semantics-table">
       <caption>A comparison of <literal>Proc</literal> semantics</caption>
       <tr>
+	<th>Difference</th>
         <th>Invocation</th>
         <th><literal>yield</literal></th>
       </tr>
@@ -123,91 +121,81 @@
       
       <remark>Intro graf?</remark>
 
-      <sect3 xml:id="clo.yield-semantics-arguments">
-        <title>Argument Passing</title>
-        
-        <para>A <literal>Proc</literal> with <literal>yield</literal> semantics
-        interprets the arguments it receives with <literal>yield</literal>
-        semantics.</para>
-      </sect3>
-      
-      <sect3 xml:id="clo.yield-semantics-control-flow">
-        <title>Control Flow Statements</title>
+      <variablelist>
+	<varlistentry xml:id="clo.yield-semantics-arguments">
+	  <term>Argument Passing</term>
+	  <listitem>
+	    <remark>TODO: Expound on below</remark>
+	    <para>Interprets the arguments it receives with
+	    <literal>yield</literal> semantics.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry xml:id="clo.yield-semantics-return">
+	  <term><literal>return</literal></term>
+	  <listitem>
+	    <para>Returns from the lexically enclosing method of the
+	    <literal>Proc</literal>’s <emphasis>creation</emphasis>
+	    site.</para>
+	    
+	    <example xml:id="ex.yield-semantics-return">
+	      <title>Within a <literal>Proc</literal> with
+	      <literal>yield</literal> semantics, <literal>return</literal>
+	      jumps to the <literal>Proc</literal> creation site</title>
 
-        <remark>Intro graf?</remark>
-        
-        <sect4 xml:id="clo.yield-semantics-return">
-          <title><literal>return</literal></title>
+	      <programlisting><xi:include
+	      href="examples/yield-semantics-return.rb"
+	      parse="text"/></programlisting>
+	    </example>
 
-          <para>
-            Returns from the lexically enclosing method of the
-            <literal>Proc</literal>’s <emphasis>creation</emphasis> site.
-          </para>
-        
-          <example xml:id="ex.yield-semantics-return">
-            <title>Within a <literal>Proc</literal> with
-            <literal>yield</literal> semantics, <literal>return</literal> jumps
-            to the <literal>Proc</literal> creation site</title>
+	    <para>If the <literal>Proc</literal> was not created within a
+	    method, e.g. at the top level, or the method has already
+	    returned, a <literal>LocalJumpError</literal> is raised.</para>
+	    
+	    <example xml:id="ex.yield-semantics-return-localjump">
+	      <title>A <literal>LocalJumpError</literal> is raised when a
+	      <literal>Proc</literal> with <literal>yield</literal> semantics
+	      tries to <literal>return</literal> without an enclosing
+	      method.</title>
 
-            <programlisting><xi:include
-                href="examples/yield-semantics-return.rb"
-                parse="text"/></programlisting>
-          </example>
+	      <programlisting><xi:include
+	      href="examples/yield-semantics-return-localjump.rb"
+	      parse="text"/></programlisting>
+	    </example>
+	  </listitem>
+	</varlistentry>
+	<varlistentry xml:id="clo.yield-semantics-break">
+	  <term><literal>break</literal></term>
+	  <listitem>
+	    <para>Returns from the lexically enclosing method of the
+	    <literal>Proc</literal>’s <emphasis>call</emphasis> site.</para>
 
-          <para>
-            If the <literal>Proc</literal> was not created within a method,
-            e.g. at the top level, or the method has already returned, a
-            <literal>LocalJumpError</literal> is raised.
-          </para>
-        
-        <example xml:id="ex.yield-semantics-return-localjump">
-            <title>A <literal>LocalJumpError</literal> is raised when a
-            <literal>Proc</literal> with <literal>yield</literal> semantics
-            tries to <literal>return</literal> without an enclosing
-            method.</title>
+	    <example xml:id="ex.yield-semantics-break">
+	      <title>Within a <literal>Proc</literal> with
+	      <literal>yield</literal> semantics, <literal>break</literal>
+	      jumps to the <literal>Proc</literal> call site</title>
 
-            <programlisting><xi:include
-                href="examples/yield-semantics-return-localjump.rb"
-                parse="text"/></programlisting>
-          </example>
-        </sect4>
+	      <programlisting><xi:include
+	      href="examples/yield-semantics-break.rb"
+	      parse="text"/></programlisting>
+	    </example>
 
-        <sect4 xml:id="clo.yield-semantics-break">
-          <title><literal>break</literal></title>
+	    <para>A <literal>LocalJumpError</literal> is raised if
+	    <literal>break</literal> is used from a block no longer in scope,
+	    e.g. at the top-level of a block created with
+	    <literal>Proc.new</literal> or <literal>proc</literal>.</para>
 
-          <para>
-            Returns from the lexically enclosing method of the
-            <literal>Proc</literal>’s <emphasis>call</emphasis> site.
-          </para>
+	    <example xml:id="ex.yield-semantics-break-localjump">
+	      <title>A <literal>Proc</literal> created with
+	      <literal>proc</literal> or <literal>Proc.new</literal> cannot
+	      use <literal>break</literal> at the top level</title>
 
-          <example xml:id="ex.yield-semantics-break">
-            <title>Within a <literal>Proc</literal> with
-            <literal>yield</literal> semantics, <literal>break</literal> jumps
-            to the <literal>Proc</literal> call site</title>
-
-            <programlisting><xi:include
-                href="examples/yield-semantics-break.rb"
-                parse="text"/></programlisting>
-          </example>
-
-          <para>
-            A <literal>LocalJumpError</literal> is raised if
-            <literal>break</literal> is used from a block no longer in scope,
-            e.g. at the top-level of a block created with
-            <literal>Proc.new</literal> or <literal>proc</literal>.
-          </para>
-
-          <example xml:id="ex.yield-semantics-break-localjump">
-            <title>A <literal>Proc</literal> created with
-            <literal>proc</literal> or <literal>Proc.new</literal> cannot use
-            <literal>break</literal> at the top level</title>
-
-            <programlisting><xi:include
-                href="examples/yield-semantics-break-localjump.rb"
-                parse="text"/></programlisting>
-          </example>
-        </sect4>
-      </sect3>
+	      <programlisting><xi:include
+	      href="examples/yield-semantics-break-localjump.rb"
+	      parse="text"/></programlisting>
+	    </example>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
     </sect2>
 
     <sect2 xml:id="clo.invocation-semantics">
@@ -215,130 +203,103 @@
 
       <remark>Intro graf?</remark>
 
-      <sect3 xml:id="clo.invocation-semantics-arguments">
-        <title>Argument Passing</title>
-      
-        <para>
-          A <literal>Proc</literal> with invocation semantics interprets the
-          arguments it receives according to the same rules as method
-          invocation. This has the following implications:
-        </para>
-
-        <itemizedlist>
-          <listitem>
-            <para>
-              Superfluous arguments cause an <literal>ArgumentError</literal>
-              to be raised.
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              Omitted arguments cause an <literal>ArgumentError</literal> to
-              be raised.
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <literal>Array</literal> arguments are <emphasis>not</emphasis>
-              automatically exploded.
-            </para>
-          </listitem>
-        </itemizedlist>
-      </sect3>
-
-      <sect3 xml:id="clo.invocation-semantics-control-flow">
-        <title>Control Flow Statements</title>
-        
-        <sect4 xml:id="clo.invocation-semantics-return">
-          <title><literal>return</literal></title>
-
-          <para>
-            Returns from the <literal>Proc</literal> as if it were a method.
-          </para>
+      <variablelist>
+	<varlistentry xml:id="clo.invocation-semantics-arguments">
+	  <term>Argument Passing</term>
+	  <listitem>
+	    <para>Interprets the arguments it receives according to the same
+	    rules as method invocation. This has the following
+	    implications:</para>
+	    <itemizedlist>
+	      <listitem>
+		<para>Superfluous arguments cause an
+		<literal>ArgumentError</literal> to be raised.</para>
+	      </listitem>
+	      <listitem>
+		<para>Omitted arguments cause an <literal>ArgumentError</literal>
+		to be raised.</para>
+	      </listitem>
+	      <listitem>
+		<para><literal>Array</literal> arguments are
+		<emphasis>not</emphasis> automatically exploded.</para>
+	      </listitem>
+	    </itemizedlist>
+	  </listitem>
+	</varlistentry>
+        <varlistentry xml:id="clo.invocation-semantics-return">
+          <term><literal>return</literal></term>
+	  <listitem>
+	    <para>Returns from the <literal>Proc</literal> as if it were a
+	    method.</para>
           
-          <example xml:id="ex.invocation-semantics-return">
-            <title>Within a <literal>Proc</literal> with invocation semantics,
-            <literal>return</literal> returns from the <literal>Proc</literal>
-            itself</title>
+	    <example xml:id="ex.invocation-semantics-return">
+	      <title>Within a <literal>Proc</literal> with invocation
+	      semantics, <literal>return</literal> returns from the
+	      <literal>Proc</literal> itself</title>
 
-            <programlisting><xi:include
-                href="examples/invocation-semantics-return.rb"
-                parse="text"/></programlisting>
-          </example>
-        </sect4>
-
-        <sect4 xml:id="clo.invocation-semantics-break">
-          <title><literal>break</literal></title>
-
-          <para>
-            Acts exactly like <literal>return</literal>.
-          </para>
+	      <programlisting><xi:include
+	      href="examples/invocation-semantics-return.rb"
+	      parse="text"/></programlisting>
+	    </example>
+	  </listitem>
+	</varlistentry>
+	<varlistentry xml:id="clo.invocation-semantics-break">
+          <term><literal>break</literal></term>
+	  <listitem>
+	    <para>Acts exactly like <literal>return</literal>.</para>
           
-          <example xml:id="ex.invocation-semantics-break">
-            <title>Within a <literal>Proc</literal> with invocation semantics,
-            <literal>break</literal> returns from the <literal>Proc</literal>
-            itself</title>
+	    <example xml:id="ex.invocation-semantics-break">
+	      <title>Within a <literal>Proc</literal> with invocation semantics,
+	      <literal>break</literal> returns from the <literal>Proc</literal>
+	      itself</title>
 
-            <programlisting><xi:include
-                href="examples/invocation-semantics-break.rb"
-                parse="text"/></programlisting>
-          </example>
-        </sect4>
-      </sect3>
+	      <programlisting><xi:include
+	      href="examples/invocation-semantics-break.rb"
+	      parse="text"/></programlisting>
+	    </example>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
     </sect2>
     
     <sect2 xml:id="clo.control-flow">
       <title>Control Flow Statements</title>
 
-      <para>
-        Control flow statements other than <literal>break</literal> or
-        <literal>return</literal> operate in the same way for both kinds of
-        <literal>Proc</literal>s.
-      </para>
+      <para>Control flow statements other than <literal>break</literal> or
+      <literal>return</literal> operate in the same way for both kinds of
+      <literal>Proc</literal>s.</para>
       
       <variablelist>
-        <title>Control Flow Statements</title>
-
         <varlistentry>
           <term><literal>next</literal></term>
           <listitem>
-            <para>
-              Returns its arguments to the yield statement or method that
-              invoked the <literal>Proc</literal>.
-            </para>
+            <para>Returns its arguments to the yield statement or method that
+            invoked the <literal>Proc</literal>.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term><literal>redo</literal></term>
           <listitem>
-            <para>
-              Jump to the beginning of the <literal>Proc</literal>.
-            </para>
+            <para>Jump to the beginning of the <literal>Proc</literal>.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term><literal>redo</literal></term>
           <listitem>
-            <para>
-              Jump to the beginning of the <literal>Proc</literal>.
-            </para>
+            <para>Jump to the beginning of the <literal>Proc</literal>.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term><literal>retry</literal></term>
           <listitem>
-            <para>
-              Always raises a <literal>LocalJumpError</literal>.
-            </para>
+            <para>Always raises a <literal>LocalJumpError</literal>.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term><literal>raise</literal></term>
           <listitem>
-            <para>
-              Propagates the exception up the call stack: through any
-              enclosing block, then to the invoking method.
-            </para>
+            <para>Propagates the exception up the call stack: through any
+            enclosing block, then to the invoking method.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -351,95 +312,73 @@
     <sect2 xml:id="clo.proc-new">
       <title><literal>Proc.new</literal></title>
 
-      <para>
-        <literal>Proc.new</literal> creates a <literal>Proc</literal> with
-        <literal>yield</literal> semantics from the given block.
-      </para>
+      <para><literal>Proc.new</literal> creates a <literal>Proc</literal> with
+      <literal>yield</literal> semantics from the given block.</para>
 
       <remark>TODO: Describe this as an 'implicit block'</remark>
-      <para>
-        If the block is omitted, the block with which the lexically enclosing
-        method was invoked is used in its place. If the method was not invoked
-        with a block, or there is not an enclosing method, an
-        <literal>ArgumentError</literal> is raised.
-      </para>
+      <para>If the block is omitted, the block with which the lexically
+      enclosing method was invoked is used in its place. If the method was not
+      invoked with a block, or there is not an enclosing method, an
+      <literal>ArgumentError</literal> is raised.</para>
     </sect2>
 
     <sect2 xml:id="clo.proc-keyword">
-      <title><literal>proc</literal> keyword</title>
+      <title><literal>proc</literal> Keyword</title>
     
-      <para>
-        The <literal>proc</literal> keyword is a synonym for <link
-        linkend="clo.proc-new">Proc.new</link>: it creates a
-        <literal>Proc</literal> with <literal>yield</literal> semantics from
-        the given block.  Without a block argument an implicit block is
-        assumed.
-      </para>
+      <para>The <literal>proc</literal> keyword is a synonym for <link
+      linkend="clo.proc-new">Proc.new</link>: it creates a
+      <literal>Proc</literal> with <literal>yield</literal> semantics from the
+      given block.  Without a block argument an implicit block is
+      assumed.</para>
     </sect2>
 
     <sect2 xml:id="clo.ampersand-prefixed-parameter">
       <title>&amp; Parameter</title>
     
-      <para>
-        A method or lambda whose parameter list includes an identifier prefixed
-        with an ampersand, assigns to the parameter a <literal>Proc</literal>
-        with <literal>yield</literal> semantics representing the block literal
-        that the method/lambda was sent. For more details, see <xref
-        linkend="met.block-arguments"/>, which includes an <link
-        linkend="ex.method-using-block-argument">example</link>.
-      </para>
+      <para>A method or lambda whose parameter list includes an identifier
+      prefixed with an ampersand, assigns to the parameter a
+      <literal>Proc</literal> with <literal>yield</literal> semantics
+      representing the block literal that the method/lambda was sent. For more
+      details, see <xref linkend="met.block-arguments"/>, which includes an
+      <link linkend="ex.method-using-block-argument">example</link>.</para>
     </sect2>
 
     <sect2 xml:id="clo.lambda-keyword">
       <title><literal>lambda</literal> keyword</title>
       
-      <para>
-        The <literal>lambda</literal> keyword creates a <literal>Proc</literal>
-        with invocation semantics from the given block.  Without a block
-        argument an implicit block is assumed.
-      </para>
+      <para>The <literal>lambda</literal> keyword creates a
+      <literal>Proc</literal> with invocation semantics from the given block.
+      Without a block argument an implicit block is assumed.</para>
 
       <example xml:id="ex.lambda-keyword-examples">
         <title><literal>lambda</literal> takes a block with which it creates a
         <literal>Proc</literal> with invocation semantics</title>
 
-        <programlisting><xi:include href="examples/lambda-keyword-examples.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/lambda-keyword-examples.rb"
+	parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="clo.lambda-literal">
       <title>Lambda Literal</title>
-      
-      <!--figure>
-        <title>Syntax diagram of the lambda literal</title>
 
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/lambda-literal.png" format="PNG"
-              width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-
-      <para>
-        A literal of the form
-        <literal>-&gt;(<replaceable>parameter<subscript>0</subscript></replaceable></literal>…<literal><replaceable>parameter<subscript>n</subscript></replaceable>)
-          { <replaceable>statements</replaceable> }</literal> instantiates a
-        <literal>Proc</literal> object with invocation semantics. The
-        optional parameter list takes the same form as that used in method
-        definitions. It may be omitted entirely.
-        <replaceable>statements</replaceable> is zero or more statements. For
-        example, <literal>-&gt; { 42 }</literal>, or <literal>-&gt;(a, b) { a
-          + b }</literal>.
-      </para>
+      <para>A literal of the form
+      <literal>-&gt;(<replaceable>parameter<subscript>0</subscript></replaceable></literal>…<literal><replaceable>parameter<subscript>n</subscript></replaceable>)
+      { <replaceable>statements</replaceable> }</literal> instantiates a
+      <literal>Proc</literal> object with invocation semantics. The optional
+      parameter list takes the same form as that used in method definitions. It
+      may be omitted entirely.  <replaceable>statements</replaceable> is zero
+      or more statements. For example, <literal>-&gt; { 42 }</literal>, or
+      <literal>-&gt;(a, b) { a + b }</literal>.</para>
       
       <example xml:id="ex.lambda-literal-syntax">
         <title><literal>-&gt;(){}</literal> creates a <literal>Proc</literal>
         with invocation characteristics</title>
 
-        <programlisting><xi:include href="examples/lambda-literal-syntax.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/lambda-literal-syntax.rb"
+	parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
@@ -447,71 +386,45 @@
   <sect1 xml:id="clo.calling">
     <title>Calling</title>
 
-    <para>
-      A <literal>Proc</literal> can be invoked in the following ways:
-    </para>
+    <para>A <literal>Proc</literal> can be invoked in the following
+    ways:</para>
     
     <variablelist>
-      <title>Invocation Syntax</title>
-    
       <varlistentry>
-        <term>
-          <literal>Proc#call(<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript>n</subscript>)</literal>
-        </term>
+        <term><literal>Proc#call(<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript>n</subscript>)</literal></term>
         <listitem>
-          <para>
-            Also invoked with the syntax below.
-          </para>
+          <para>Also invoked with the syntax below.</para>
         </listitem>
       </varlistentry>
-
       <varlistentry>
-        <term>
-          <literal><replaceable>proc</replaceable>.(<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript>n</subscript>)</literal>
-        </term>
+        <term><literal><replaceable>proc</replaceable>.(<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript>n</subscript>)</literal></term>
         <listitem>
-          <para>
-            A syntactical shortcut for <literal>Proc#call</literal>. The
-            parentheses are mandatory, even if there are no arguments.
-          </para>
+          <para>A syntactical shortcut for <literal>Proc#call</literal>. The
+          parentheses are mandatory, even if there are no arguments.</para>
         </listitem>
       </varlistentry>
-
       <varlistentry>
-        <term>
-          <literal>Proc#yield(<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript>n</subscript>)</literal>
-        </term>
+        <term><literal>Proc#yield(<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript>n</subscript>)</literal></term>
         <listitem>
-          <para>
-            An instance method with the selector <literal>:yield</literal>;
-            distinct from the <literal>yield</literal> keyword.
-          </para>
+          <para>An instance method with the selector <literal>:yield</literal>;
+          distinct from the <literal>yield</literal> keyword.</para>
         </listitem>
       </varlistentry>
-
       <varlistentry>
-        <term>
-          <literal>Proc#[<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript>n</subscript>]</literal>
-        </term>
+        <term><literal>Proc#[<replaceable>arg</replaceable><subscript>0</subscript>,…,<replaceable>arg</replaceable><subscript>n</subscript>]</literal></term>
         <listitem>
-          <para>
-            The square brackets are mandatory, even if there are no arguments.
-          </para>
+          <para>The square brackets are mandatory, even if there are no
+          arguments.</para>
         </listitem>
       </varlistentry>
-
       <varlistentry>
-        <term>
-          <literal>Proc#=== <replaceable>arg</replaceable></literal>
-        </term>
+        <term><literal>Proc#=== <replaceable>arg</replaceable></literal></term>
         <listitem>
-          <para>
-            Allows <literal>Proc</literal>s to be used in
-            <literal>case</literal> expressions. It requires exactly one
-            argument, so is unsuitable for a <literal>Proc</literal> with <link
-            linkend="clo.invocation-semantics">invocation semantics</link> that
-            has an arity other than 1.
-          </para>
+          <para>Allows <literal>Proc</literal>s to be used in
+          <literal>case</literal> expressions. It requires exactly one
+          argument, so is unsuitable for a <literal>Proc</literal> with <link
+          linkend="clo.invocation-semantics">invocation semantics</link> that
+          has an arity other than 1.</para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -519,147 +432,126 @@
     <example xml:id="ex.proc-calling">
       <title>Syntax for invoking a <literal>Proc</literal></title>
 
-      <programlisting><xi:include href="examples/proc-calling.rb"
-          parse="text"/></programlisting>
+      <programlisting><xi:include 
+      href="examples/proc-calling.rb"
+      parse="text"/></programlisting>
     </example>
   </sect1>
 
   <sect1 xml:id="clo.parameters">
     <title>Parameters</title>
     
-    <para>
-      A <literal>Proc</literal> may be defined with a parameter list, which
-      describes the arguments it accepts. The syntax of the parameter list
-      content mostly mirrors that of <link
-        linkend="met.arguments">method parameter lists</link>, with the
-      following differences:
-    </para>
+    <para>A <literal>Proc</literal> may be defined with a parameter list, which
+    describes the arguments it accepts. The syntax of the parameter list
+    content mostly mirrors that of <link linkend="met.arguments">method
+    parameter lists</link>, with the following differences:</para>
 
     <itemizedlist>
       <listitem>
-        <para>
-          It is enclosed within a pair vertical lines (<literal>|</literal>),
-          rather than parentheses, which are mandatory if a parameter list is
-          specified.
-        </para>
+        <para>It is enclosed within a pair vertical lines
+        (<literal>|</literal>), rather than parentheses, which are mandatory if
+        a parameter list is specified.</para>
       </listitem>
       <listitem>
-        <para>
-          It is specified as the first element of the block associated with
-          the <literal>Proc</literal>: after the opening curly bracket or the
-          <literal>do</literal> keyword.
-        </para>
+        <para>It is specified as the first element of the block associated with
+        the <literal>Proc</literal>: after the opening curly bracket or the
+        <literal>do</literal> keyword.</para>
       </listitem>
       <listitem>
-        <para>
-          If the <link linkend="clo.lambda-literal">lambda literal</link>
-          syntax is used, the vertical lines must be omitted and the parameter
-          list must be specified within the parentheses following
-          <literal>-&gt;</literal> à la method parameter lists;
-          <emphasis>not</emphasis> in the block.
-        </para>
+        <para>If the <link linkend="clo.lambda-literal">lambda literal</link>
+        syntax is used, the vertical lines must be omitted and the parameter
+        list must be specified within the parentheses following
+        <literal>-&gt;</literal> à la method parameter lists;
+        <emphasis>not</emphasis> in the block.</para>
       </listitem>
       <listitem>
-        <para>
-          The parameter list of a closure with <link
-          linkend="clo.yield-semantics"><literal>yield</literal>
-          semantics</link> may include a trailing comma after the last
-          parameter. This has no syntactical meaning, but serves to indicate
-          that additional arguments are explicitly ignored.
-        </para>
+        <para>The parameter list of a closure with <link
+        linkend="clo.yield-semantics"><literal>yield</literal> semantics</link>
+        may include a trailing comma after the last parameter. This has no
+        syntactical meaning, but serves to indicate that additional arguments
+        are explicitly ignored.</para>
       </listitem>
     </itemizedlist>
 
     <example xml:id="ex.proc-parameters">
       <title>The parameter list for a <literal>Proc</literal> is enclosed
-        within vertical lines</title>
+      within vertical lines</title>
 
-      <programlisting><xi:include href="examples/proc-parameters.rb"
-          parse="text"/></programlisting>
+      <programlisting><xi:include 
+      href="examples/proc-parameters.rb"
+      parse="text"/></programlisting>
     </example>
 
     <sect2 xml:id="clo.block-local-variables">
       <title>Block-Local Variables</title>
     
-      <para>
-        A closure may define <firstterm>block-local variables</firstterm>:
-        local variables which are distinct from those with the same name in an
-        outer lexical scope.
-      </para>
+      <para>A closure may define <firstterm>block-local variables</firstterm>:
+      local variables which are distinct from those with the same name in an
+      outer lexical scope.</para>
 
-      <para>
-        Block-local variables are defined in the parameter list after the
-        non-block-local parameters, and before the closing vertical line. They
-        are specified as a comma-separated list of identifiers, with a
-        semicolon preceding the first:
-        <literal>|<replaceable>param</replaceable><subscript>0</subscript>,…,<replaceable>param</replaceable><subscript>n</subscript>;<replaceable>block-local</replaceable><subscript>0</subscript>,…,<replaceable>block-local</replaceable><subscript>n</subscript>|</literal>.
-        The semicolon is mandatory, even if the list of block-local variables
-        is not preceded by any regular parameters.</para> <para>In the case of
-        <link linkend="clo.lambda-literal">lambda literals</link>, block-local
-        variables are specified in the same manner before the closing
-        parentheses of the parameter list, i.e.
-        <literal>-&gt;(<replaceable>param</replaceable><subscript>0</subscript>,…,<replaceable>param</replaceable><subscript>n</subscript>;<replaceable>block-local</replaceable><subscript>0</subscript>,…,<replaceable>block-local</replaceable><subscript>n</subscript>){}</literal>.
-      </para>
+      <para>Block-local variables are defined in the parameter list after the
+      non-block-local parameters, and before the closing vertical line. They
+      are specified as a comma-separated list of identifiers, with a semicolon
+      preceding the first:
+      <literal>|<replaceable>param</replaceable><subscript>0</subscript>,…,<replaceable>param</replaceable><subscript>n</subscript>;<replaceable>block-local</replaceable><subscript>0</subscript>,…,<replaceable>block-local</replaceable><subscript>n</subscript>|</literal>.
+      The semicolon is mandatory, even if the list of block-local variables is
+      not preceded by any regular parameters.</para> <para>In the case of <link
+      linkend="clo.lambda-literal">lambda literals</link>, block-local
+      variables are specified in the same manner before the closing parentheses
+      of the parameter list, i.e.
+      <literal>-&gt;(<replaceable>param</replaceable><subscript>0</subscript>,…,<replaceable>param</replaceable><subscript>n</subscript>;<replaceable>block-local</replaceable><subscript>0</subscript>,…,<replaceable>block-local</replaceable><subscript>n</subscript>){}</literal>.</para>
 
       <example xml:id="ex.block-local-variables-syntax">
-        <title>Block-local variables are specified after regular parameters
-          and preceded by a semicolon</title>
+        <title>Block-local variables are specified after regular parameters and
+        preceded by a semicolon</title>
 
         <programlisting><xi:include
-            href="examples/block-local-variables-syntax.rb"
-            parse="text"/></programlisting>
+	href="examples/block-local-variables-syntax.rb"
+	parse="text"/></programlisting>
       </example>
 
-      <para>
-        If a variable <replaceable>v</replaceable> is defined block-local:
-      </para>
+      <para>If a variable <replaceable>v</replaceable> is defined
+      block-local:</para>
       
       <orderedlist>
         <listitem>
-          <para>
-            If <replaceable>v</replaceable> was defined in an outer scope, its value is saved.
-          </para>
+          <para>If <replaceable>v</replaceable> was defined in an outer scope,
+          its value is saved.</para>
         </listitem>
         <listitem>
-          <para>
-            Within the block <replaceable>v</replaceable> is assigned
-            <literal>nil</literal>, then behaves as any other local variable.
-          </para>
+          <para>Within the block <replaceable>v</replaceable> is assigned
+          <literal>nil</literal>, then behaves as any other local
+          variable.</para>
         </listitem>
         <listitem>
-          <para>
-            Upon leaving the block, <replaceable>v</replaceable> is assigned
-            the value it had originally in the outer scope.
-          </para>
+          <para>Upon leaving the block, <replaceable>v</replaceable> is
+          assigned the value it had originally in the outer scope.</para>
         </listitem>
       </orderedlist>
 
       <example xml:id="ex.block-local-variables-example">
-        <title>Block-local variables are are distinct from those with the same name in an outer lexical scope</title>
+        <title>Block-local variables are are distinct from those with the same
+        name in an outer lexical scope</title>
 
         <programlisting><xi:include
-            href="examples/block-local-variables-example.rb"
-            parse="text"/></programlisting>
+	href="examples/block-local-variables-example.rb"
+	parse="text"/></programlisting>
       </example>
 
-      <para>
-        By contrast, if <replaceable>v</replaceable> is not defined as
-        block-local, it retains the value it was assigned inside the block,
-        even after leaving the block scope. However, defining a variable,
-        <replaceable>w</replaceable>, inside the block which did not exist in
-        the outer scope, does not define it in the outer scope. In both
-        examples, <replaceable>w</replaceable> is undefined upon leaving the
-        block.
-      </para>
+      <para>By contrast, if <replaceable>v</replaceable> is not defined as
+      block-local, it retains the value it was assigned inside the block, even
+      after leaving the block scope. However, defining a variable,
+      <replaceable>w</replaceable>, inside the block which did not exist in the
+      outer scope, does not define it in the outer scope. In both examples,
+      <replaceable>w</replaceable> is undefined upon leaving the block.</para>
 
       <example xml:id="ex.non-block-local-variables-clo">
         <title>Non-block-local variables defined prior to the block retain the
-          value they were assigned inside the block even after leaving
-          it</title>
+        value they were assigned inside the block even after leaving it</title>
 
         <programlisting><xi:include
-            href="examples/non-block-local-variables.rb"
-            parse="text"/></programlisting>
+	href="examples/non-block-local-variables.rb"
+	parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
@@ -667,66 +559,61 @@
   <sect1 xml:id="clo.binding">
     <title>Binding</title>
 
-    <para>
-      We have <link linkend="clo.closures">already introduced</link> the
-      concept of a binding as a reference to the closure’s referencing
-      environment. We have demonstrated that the binding is dynamic, resolving
-      variables referenced within a closure relative to the environment in
-      which it was called. An implication is that these variables must be
-      defined in the closure itself or exist in the closure’s environment
-      prior to its creation: they can be modified or re-assigned subsequently,
-      but they must have been assigned.
-    </para>
+    <para>We have <link linkend="clo.closures">already introduced</link> the
+    concept of a binding as a reference to the closure’s referencing
+    environment. We have demonstrated that the binding is dynamic, resolving
+    variables referenced within a closure relative to the environment in which
+    it was called. An implication is that these variables must be defined in
+    the closure itself or exist in the closure’s environment prior to its
+    creation: they can be modified or re-assigned subsequently, but they must
+    have been assigned.</para>
 
     <example xml:id="ex.closure-binding-nameerror">
       <title>Variables referenced, but not defined, by a closure must have
-        exist in its environment at creation time</title>
+      exist in its environment at creation time</title>
 
-      <programlisting><xi:include href="examples/closure-binding-nameerror.rb"
-          parse="text"/></programlisting>
+      <programlisting><xi:include 
+      href="examples/closure-binding-nameerror.rb"
+      parse="text"/></programlisting>
     </example>
 
-    <para>
-      A closure is <quote>self-contained: they contain everything the
-        procedure needs in order to be applied.</quote> <biblioref begin="79"
-        end="82" linkend="bib.friedman08" units="pages"/>. Therefore, the
-      binding must also <quote>…hold all the information necessary to execute
-        a method, such as the value of <literal>self</literal>, and the block,
-        if any, that would be invoked by a yield.</quote> <biblioref begin="202"
-        end="203" linkend="bib.flan08" units="pages"/>.
-    </para>
+    <para>A closure is <quote>self-contained: they contain everything the
+    procedure needs in order to be applied.</quote> <biblioref begin="79"
+    end="82" linkend="bib.friedman08" units="pages"/>. Therefore, the binding
+    must also <quote>…hold all the information necessary to execute a method,
+    such as the value of <literal>self</literal>, and the block, if any, that
+    would be invoked by a yield.</quote> <biblioref begin="202" end="203"
+    linkend="bib.flan08" units="pages"/>.</para>
 
-    <para>
-      A closure’s binding is encapsulated by a <literal>Binding</literal>
-      object, which is obtained with <literal>Proc#binding</literal>. It can
-      then be used to execute other code in the same environment with a method
-      such as <literal>eval</literal>.
-    </para>
+    <para>A closure’s binding is encapsulated by a <literal>Binding</literal>
+    object, which is obtained with <literal>Proc#binding</literal>. It can then
+    be used to execute other code in the same environment with a method such as
+    <literal>eval</literal>.</para>
     
     <example xml:id="ex.closure-proc-binding">
       <title><literal>Proc#binding</literal> returns a closure’s binding,
-        allowing other code to be executed in its context</title>
+      allowing other code to be executed in its context</title>
 
-      <programlisting><xi:include href="examples/closure-proc-binding.rb"
-          parse="text"/></programlisting>
+      <programlisting><xi:include 
+      href="examples/closure-proc-binding.rb"
+      parse="text"/></programlisting>
     </example>
 
     <sect2 xml:id="clo.kernel-binding">
       <title><literal>Kernel.binding</literal></title>
 
-      <para>
-        <literal>Kernel.binding</literal> returns a <literal>Binding</literal>
-        object representing the referencing environment at the time the method
-        is invoked. That is, it generalises the concept of bindings to any
-        object.
-      </para>
+      <para><literal>Kernel.binding</literal> returns a
+      <literal>Binding</literal> object representing the referencing
+      environment at the time the method is invoked. That is, it generalises
+      the concept of bindings to any object.</para>
 
       <example xml:id="ex.kernel-binding-example">
         <title><literal>Kernel.binding</literal> returns the binding of the
-          call site</title>
+        call site</title>
 
-        <programlisting><xi:include href="examples/kernel-binding-example.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include 
+	href="examples/kernel-binding-example.rb"
+	parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
@@ -734,17 +621,14 @@
   <sect1 xml:id="clo.methods">
     <title>Methods</title>
     
-    <para>
-      A closure can be converted to a method with <link
-        linkend="met.dynamic-definition">Module#define_method</link>.
-      Likewise, a <link linkend="met.method-objects">Method object</link> can
-      be converted to a <literal>Proc</literal> with
-      <literal>Method#to_proc</literal>.</para> <para>However,
-      <literal>Method</literal> objects are not closures: they do not have
-      access to local variables in their parent scope. <quote>The only binding
-        retained by a <literal>Method</literal> object, therefore, is the
-        value of <literal>self</literal>…</quote> <biblioref begin="203"
-        end="204" linkend="bib.flan08" units="pages"/>.
-    </para>
+    <para>A closure can be converted to a method with <link
+    linkend="met.dynamic-definition">Module#define_method</link>.  Likewise, a
+    <link linkend="met.method-objects">Method object</link> can be converted to
+    a <literal>Proc</literal> with <literal>Method#to_proc</literal>.</para>
+    <para>However, <literal>Method</literal> objects are not closures: they do
+    not have access to local variables in their parent scope. <quote>The only
+    binding retained by a <literal>Method</literal> object, therefore, is the
+    value of <literal>self</literal>…</quote> <biblioref begin="203" end="204"
+    linkend="bib.flan08" units="pages"/>.</para>
   </sect1>
 </chapter>
