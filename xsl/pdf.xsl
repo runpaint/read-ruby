@@ -67,7 +67,7 @@
 }
 
 body {
-  font-family: 'Linux Libertine', Palatino, 'Palatino Linotype', 
+  font-family: 'Linux Libertine O', 'Linux Libertine', Palatino, 'Palatino Linotype', 
                'Book Antiqua', Georgia, 'Times New Roman', serif, 'unifont';
 }
 
@@ -79,7 +79,7 @@ pre {
 
 h1,
 h1 > code {
-  font-family: 'Goudy Bookletter 1911', 'Linux Libertine', Palatino, 
+  font-family: 'Goudy Bookletter 1911', 'Linux Libertine O', 'Linux Libertine', Palatino, 
                'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', 
                serif, 'unifont';
 }
@@ -125,7 +125,7 @@ article > section > section > h1 {
 
 article > section > section > section > h1 {
   font-size: 110%;
-  font-style: italic;
+/* font-style: italic; */ /* GB1911 distorts when italicised */
 }
 table {
   margin-left: auto;
@@ -175,6 +175,41 @@ table > caption {
   text-align: center;
   font-style: italic;
   font-size: 90%;
+}
+
+/*********** 
+ *         *
+ * LISTS   *
+ *         *
+ ***********/
+
+dl.inline dt {
+  display: run-in;
+  padding-right: 1em;
+}
+
+/* Display a list as a comma-separated list of elements */
+ul.comma li {
+  display: inline;
+  list-style-type: none;
+}
+ul.comma li:after {
+ content: ", ";
+}
+ul.comma li:before {
+ content: " ";
+}
+ul.comma li:last-child:after {
+  content: "";
+}
+
+ul.comma li:last-child:before {
+  content: " and ";
+}
+
+ul.comma { 
+  display: inline;
+  list-style-type: none;
 }
 
 body {
