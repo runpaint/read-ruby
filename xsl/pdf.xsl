@@ -106,6 +106,27 @@ article {
   page-break-before: always;
 }
 
+/* Main article */
+article > h1 {
+  font-size: 500%;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 80%;
+  margin: 0;
+}
+article > section > h1 {
+  font-size: 200%;
+  text-align: center;
+}
+
+article > section > section > h1 {
+  font-size: 125%;
+}
+
+article > section > section > section > h1 {
+  font-size: 110%;
+  font-style: italic;
+}
 
 body {
   font-style: normal;
