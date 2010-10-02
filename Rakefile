@@ -92,13 +92,6 @@ task :html => [EX_DIR, *EX_HTML]
 # ToC as well, so we copy that, too. Lastly, we need to highlight the examples
 # contained in the newly-generated HTML file.
 
-task :pdf => [OUT_DIR, BUILD_DIR] do
-  sh "xsltproc --stringparam out_dir #{BUILD_DIR} --xinclude " +
-      "#{PDF_XSL} #{BOOK_XML} >#{IO::NULL}"
-  sh "prince #{BUILD_DIR}/single.html #{OUT_DIR}/read-ruby.pdf"
-  sh "xdg-open #{OUT_DIR}/read-ruby.pdf"
-end
-
 HTML.zip(SRC_XML).each_with_index do |(html, src), i|
   desc "XSLT #{src} to #{html}"
   rule html => src do
@@ -210,6 +203,12 @@ task :nvdl do
   end
 end
 
+task :pdf => [OUT_DIR, BUILD_DIR] do
+  sh "xsltproc --stringparam out_dir #{BUILD_DIR} --xinclude " +
+      "#{PDF_XSL} #{BOOK_XML} >#{IO::NULL}"
+  sh "prince #{BUILD_DIR}/single.html #{OUT_DIR}/read-ruby.pdf"
+end
+
 desc "Validate the XML with RelaxNG and NVDL"
 task :validate_xml => [:relaxng, :nvdl]
 
@@ -231,8 +230,8 @@ task :push do
   sh 'git push github'
 end  
 
-desc 'Validate XML, build HTML, validate HTML'
-task :default => %w{validate_xml html validate_html}
+desc 'Validate XML, build HTML, validate HTML, build PDF'
+task :default => %w{validate_xml html validate_html pdf}
 
 desc "Rebuild then rsync"
-task :upload => %w{html rsync}
+task :upload => %w{default rsync}
