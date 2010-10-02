@@ -711,12 +711,12 @@
 
 	<para>Within a loop the <literal>break</literal> statement transfers
 	control to the first statement following the loop. (Within a <link
-	linkend="clo.proc-semantics-return">proc</link> or <link
-	linkend="clo.lambda-semantics-return">lambda</link> it has different
-	semantics). The value of a <literal>break</literal> statement, and
-	therefore the enclosing loop, is that of its arguments—coerced into an
-	<literal>Array</literal> if there is a plurality—, or
-	<literal>nil</literal> in their absence.</para>
+	linkend="clo.yield-semantics-return">proc</link> or <link
+	linkend="clo.invocation-semantics-return">lambda</link> it has
+	different semantics). The value of a <literal>break</literal>
+	statement, and therefore the enclosing loop, is that of its
+	arguments—coerced into an <literal>Array</literal> if there is a
+	plurality—, or <literal>nil</literal> in their absence.</para>
 
 	<example xml:id="ex.break">
 	  <title>Using <literal>break</literal> to exit a loop early</title>

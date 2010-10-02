@@ -46,45 +46,12 @@
   <sect1 xml:id="clo.procs">
     <title><literal>Proc</literal> Literals</title>
 
-    <para>
-      A block literal creates a <literal>Proc</literal> object which accepts
-      the arguments provided in the optional parameter list and represents a
-      sequence of zero or more statements. Unlike the other literals in this
-      section, block literals must not appear in the top-level context; they
-      must either terminate a message expression, an appropriate keyword
-      expression, or lambda literal.
-    </para>
-
-    <!--figure>
-      <title>Syntax diagram of the block literal</title>
-
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="figures/required-parameters.png" format="PNG" width="4in"/>
-        </imageobject>
-        <imageobject>
-          <imagedata fileref="figures/optional-parameter.png" format="PNG" width="4in"/>
-        </imageobject>
-        <imageobject>
-          <imagedata fileref="figures/optional-parameters.png" format="PNG" width="4in"/>
-        </imageobject>
-        <imageobject>
-          <imagedata fileref="figures/rest-parameter.png" format="PNG" width="4in"/>
-        </imageobject>
-        <imageobject>
-          <imagedata fileref="figures/block-parameter.png" format="PNG" width="4in"/>
-        </imageobject>
-        <imageobject>
-          <imagedata fileref="figures/parameter-list.png" format="PNG" width="4in"/>
-        </imageobject>
-        <imageobject>
-          <imagedata fileref="figures/block.png" format="PNG" width="4in"/>
-        </imageobject>
-        <imageobject>
-          <imagedata fileref="figures/block-literal.png" format="PNG" width="4in"/>
-        </imageobject>
-      </mediaobject>
-    </figure-->
+    <para>A block literal creates a <literal>Proc</literal> object which
+    accepts the arguments provided in the optional parameter list and
+    represents a sequence of zero or more statements. Unlike most other
+    literals, block literals must not appear in the top-level context; they
+    must terminate a message expression, an appropriate keyword expression, or
+    lambda literal.</para>
   </sect1>
 
   <sect1 xml:id="clo.semantics">
@@ -92,85 +59,84 @@
 
     <para>
       A <literal>Proc</literal> has either <link
-        linkend="clo.proc-semantics">proc semantics</link> or <link
-        linkend="clo.lambda-semantics">lambda semantics</link>. Its semantics
-      determine how it handles unexpected arguments and control flow
-      statements, such as <literal>return</literal>, appearing within the body
-      of the closure. The differences are summarised in the following table,
-      and elaborated below.
+      linkend="clo.yield-semantics"><literal>yield</literal> semantics</link>
+      or <link linkend="clo.invocation-semantics">invocation
+      semantics</link>. Its semantics determine how it handles unexpected
+      arguments and control flow statements, such as <literal>return</literal>,
+      appearing within the body of the closure. The differences are summarised
+      in the following table, and elaborated below.
     </para>
 
     <table xml:id="closures-semantics-table">
       <caption>A comparison of <literal>Proc</literal> semantics</caption>
       <tr>
-        <th>Lambda</th>
-        <th>Proc</th>
+        <th>Invocation</th>
+        <th><literal>yield</literal></th>
       </tr>
       <tr>
         <td>Extra arguments</td>
-        <td><link linkend="clo.lambda-semantics-arguments">Raise
+        <td><link linkend="clo.invocation-semantics-arguments">Raise
             ArgumentError</link></td>
-        <td><link linkend="clo.proc-semantics-arguments">Ignored</link></td>
+        <td><link linkend="clo.yield-semantics-arguments">Ignored</link></td>
       </tr>
       <tr>
         <td>Omitted arguments</td>
-        <td><link linkend="clo.lambda-semantics-arguments">Raise
+        <td><link linkend="clo.invocation-semantics-arguments">Raise
             ArgumentError</link></td>
-        <td><link linkend="clo.proc-semantics-arguments">Assigned
-            nil</link></td>
+        <td><link linkend="clo.yield-semantics-arguments">Assigned
+            <literal>nil</literal></link></td>
       </tr>
       <tr>
         <td><literal>Array</literal> arguments</td>
-        <td><link linkend="clo.lambda-semantics-arguments">Never exploded</link></td>
-        <td><link linkend="clo.proc-semantics-arguments">Exploded if
+        <td><link linkend="clo.invocation-semantics-arguments">Never
+        exploded</link></td>
+        <td><link linkend="clo.yield-semantics-arguments">Exploded if
             necessary</link></td>
       </tr>
       <tr>
         <td><literal>return</literal></td>
-        <td><link linkend="clo.lambda-semantics-return">Returns from the
-            lambda itself</link></td>
-        <td><link linkend="clo.proc-semantics-return">Returns from the
-            creation site method</link></td>
+        <td><link linkend="clo.invocation-semantics-return">Returns from the
+        lambda itself</link></td>
+        <td><link linkend="clo.yield-semantics-return">Returns from the
+        creation site method</link></td>
       </tr>
       <tr>
         <td><literal>break</literal></td>
-        <td><link linkend="clo.lambda-semantics-break">Returns from the lambda
-            itself</link></td>
-        <td><link linkend="clo.proc-semantics-break">Returns from the call
-            site method</link></td>
+        <td><link linkend="clo.invocation-semantics-break">Returns from the
+        lambda itself</link></td>
+        <td><link linkend="clo.yield-semantics-break">Returns from the call
+        site method</link></td>
       </tr>
     </table>
 
     <sect2 xml:id="clo.lambda-predicate">
       <title><literal>#lambda?</literal> Predicate</title>
 
-      <para>
-        <literal>Proc#lambda?</literal> is a predicate which returns
-        <literal>true</literal> if the receiver has lambda semantics;
-        <literal>false</literal> if it has proc semantics.
-      </para>
+      <para><literal>Proc#lambda?</literal> is a predicate which returns
+      <literal>true</literal> if the receiver has invocation semantics;
+      <literal>false</literal> if it has <literal>yield</literal>
+      semantics.</para>
     </sect2>
 
-    <sect2 xml:id="clo.proc-semantics">
-      <title>Proc Semantics</title>
+    <sect2 xml:id="clo.yield-semantics">
+      <title><literal>yield</literal> Semantics</title>
       
       <remark>Intro graf?</remark>
 
-      <sect3 xml:id="clo.proc-semantics-arguments">
+      <sect3 xml:id="clo.yield-semantics-arguments">
         <title>Argument Passing</title>
         
-        <para>
-          A <literal>Proc</literal> with proc semantics interprets the
-          arguments it receives with yield semantics.
-        </para>
+        <para>A <literal>Proc</literal> with <literal>yield</literal> semantics
+        interprets the arguments it receives with <literal>yield</literal>
+        semantics.</para>
       </sect3>
       
-      <sect3 xml:id="clo.proc-semantics-control-flow">
+      <sect3 xml:id="clo.yield-semantics-control-flow">
         <title>Control Flow Statements</title>
 
         <remark>Intro graf?</remark>
         
-        <sect4 xml:id="clo.proc-semantics-return">
+        <sect4 xml:id="clo.yield-semantics-return">
           <title><literal>return</literal></title>
 
           <para>
@@ -178,13 +144,13 @@
             <literal>Proc</literal>’s <emphasis>creation</emphasis> site.
           </para>
         
-          <example xml:id="ex.proc-semantics-return">
-            <title>Within a <literal>Proc</literal> with proc semantics,
-              <literal>return</literal> jumps to the <literal>Proc</literal>
-              creation site</title>
+          <example xml:id="ex.yield-semantics-return">
+            <title>Within a <literal>Proc</literal> with
+            <literal>yield</literal> semantics, <literal>return</literal> jumps
+            to the <literal>Proc</literal> creation site</title>
 
             <programlisting><xi:include
-                href="examples/proc-semantics-return.rb"
+                href="examples/yield-semantics-return.rb"
                 parse="text"/></programlisting>
           </example>
 
@@ -194,18 +160,19 @@
             <literal>LocalJumpError</literal> is raised.
           </para>
         
-        <example xml:id="ex.proc-semantics-return-localjump">
+        <example xml:id="ex.yield-semantics-return-localjump">
             <title>A <literal>LocalJumpError</literal> is raised when a
-              <literal>Proc</literal> with proc semantics tries to
-              <literal>return</literal> without an enclosing method.</title>
+            <literal>Proc</literal> with <literal>yield</literal> semantics
+            tries to <literal>return</literal> without an enclosing
+            method.</title>
 
             <programlisting><xi:include
-                href="examples/proc-semantics-return-localjump.rb"
+                href="examples/yield-semantics-return-localjump.rb"
                 parse="text"/></programlisting>
           </example>
         </sect4>
 
-        <sect4 xml:id="clo.proc-semantics-break">
+        <sect4 xml:id="clo.yield-semantics-break">
           <title><literal>break</literal></title>
 
           <para>
@@ -213,13 +180,13 @@
             <literal>Proc</literal>’s <emphasis>call</emphasis> site.
           </para>
 
-          <example xml:id="ex.proc-semantics-break">
-            <title>Within a <literal>Proc</literal> with proc semantics,
-              <literal>break</literal> jumps to the <literal>Proc</literal>
-              call site</title>
+          <example xml:id="ex.yield-semantics-break">
+            <title>Within a <literal>Proc</literal> with
+            <literal>yield</literal> semantics, <literal>break</literal> jumps
+            to the <literal>Proc</literal> call site</title>
 
             <programlisting><xi:include
-                href="examples/proc-semantics-break.rb"
+                href="examples/yield-semantics-break.rb"
                 parse="text"/></programlisting>
           </example>
 
@@ -230,31 +197,30 @@
             <literal>Proc.new</literal> or <literal>proc</literal>.
           </para>
 
-          <example xml:id="ex.proc-semantics-break-localjump">
+          <example xml:id="ex.yield-semantics-break-localjump">
             <title>A <literal>Proc</literal> created with
             <literal>proc</literal> or <literal>Proc.new</literal> cannot use
             <literal>break</literal> at the top level</title>
 
             <programlisting><xi:include
-                href="examples/proc-semantics-break-localjump.rb"
+                href="examples/yield-semantics-break-localjump.rb"
                 parse="text"/></programlisting>
           </example>
         </sect4>
       </sect3>
     </sect2>
 
-    <sect2 xml:id="clo.lambda-semantics">
-      <title>Lambda Semantics</title>
+    <sect2 xml:id="clo.invocation-semantics">
+      <title>Invocation Semantics</title>
 
       <remark>Intro graf?</remark>
 
-      <sect3 xml:id="clo.lambda-semantics-arguments">
+      <sect3 xml:id="clo.invocation-semantics-arguments">
         <title>Argument Passing</title>
       
         <para>
-          A <literal>Proc</literal> with lambda semantics interprets the
-          arguments it receives with <firstterm>invocation
-            semantics</firstterm>: according to the same rules as method
+          A <literal>Proc</literal> with invocation semantics interprets the
+          arguments it receives according to the same rules as method
           invocation. This has the following implications:
         </para>
 
@@ -280,41 +246,41 @@
         </itemizedlist>
       </sect3>
 
-      <sect3 xml:id="clo.lambda-semantics-control-flow">
+      <sect3 xml:id="clo.invocation-semantics-control-flow">
         <title>Control Flow Statements</title>
         
-        <sect4 xml:id="clo.lambda-semantics-return">
+        <sect4 xml:id="clo.invocation-semantics-return">
           <title><literal>return</literal></title>
 
           <para>
             Returns from the <literal>Proc</literal> as if it were a method.
           </para>
           
-          <example xml:id="ex.lambda-semantics-return">
-            <title>Within a <literal>Proc</literal> with lambda semantics,
-              <literal>return</literal> returns from the
-              <literal>Proc</literal> itself</title>
+          <example xml:id="ex.invocation-semantics-return">
+            <title>Within a <literal>Proc</literal> with invocation semantics,
+            <literal>return</literal> returns from the <literal>Proc</literal>
+            itself</title>
 
             <programlisting><xi:include
-                href="examples/lambda-semantics-return.rb"
+                href="examples/invocation-semantics-return.rb"
                 parse="text"/></programlisting>
           </example>
         </sect4>
 
-        <sect4 xml:id="clo.lambda-semantics-break">
+        <sect4 xml:id="clo.invocation-semantics-break">
           <title><literal>break</literal></title>
 
           <para>
             Acts exactly like <literal>return</literal>.
           </para>
           
-          <example xml:id="ex.lambda-semantics-break">
-            <title>Within a <literal>Proc</literal> with lambda semantics,
-              <literal>break</literal> returns from the
-              <literal>Proc</literal> itself</title>
+          <example xml:id="ex.invocation-semantics-break">
+            <title>Within a <literal>Proc</literal> with invocation semantics,
+            <literal>break</literal> returns from the <literal>Proc</literal>
+            itself</title>
 
             <programlisting><xi:include
-                href="examples/lambda-semantics-break.rb"
+                href="examples/invocation-semantics-break.rb"
                 parse="text"/></programlisting>
           </example>
         </sect4>
@@ -387,9 +353,10 @@
 
       <para>
         <literal>Proc.new</literal> creates a <literal>Proc</literal> with
-        proc semantics from the given block.
+        <literal>yield</literal> semantics from the given block.
       </para>
 
+      <remark>TODO: Describe this as an 'implicit block'</remark>
       <para>
         If the block is omitted, the block with which the lexically enclosing
         method was invoked is used in its place. If the method was not invoked
@@ -403,9 +370,10 @@
     
       <para>
         The <literal>proc</literal> keyword is a synonym for <link
-          linkend="clo.proc-new">Proc.new</link>: it creates a
-        <literal>Proc</literal> with proc semantics from the given block.
-        Without a block argument an implicit block is assumed.
+        linkend="clo.proc-new">Proc.new</link>: it creates a
+        <literal>Proc</literal> with <literal>yield</literal> semantics from
+        the given block.  Without a block argument an implicit block is
+        assumed.
       </para>
     </sect2>
 
@@ -413,12 +381,12 @@
       <title>&amp; Parameter</title>
     
       <para>
-        A method or lambda whose parameter list includes an identifier
-        prefixed with an ampersand, assigns to the parameter a
-        <literal>Proc</literal> with proc semantics representing the block
-        literal that the method/lambda was sent. For more details, see <xref
-          linkend="met.block-arguments"/>, which includes an <link
-          linkend="ex.method-using-block-argument">example</link>.
+        A method or lambda whose parameter list includes an identifier prefixed
+        with an ampersand, assigns to the parameter a <literal>Proc</literal>
+        with <literal>yield</literal> semantics representing the block literal
+        that the method/lambda was sent. For more details, see <xref
+        linkend="met.block-arguments"/>, which includes an <link
+        linkend="ex.method-using-block-argument">example</link>.
       </para>
     </sect2>
 
@@ -426,14 +394,14 @@
       <title><literal>lambda</literal> keyword</title>
       
       <para>
-        The <literal>lambda</literal> keyword creates a
-        <literal>Proc</literal> with lambda semantics from the given block.
-        Without a block argument an implicit block is assumed.
+        The <literal>lambda</literal> keyword creates a <literal>Proc</literal>
+        with invocation semantics from the given block.  Without a block
+        argument an implicit block is assumed.
       </para>
 
       <example xml:id="ex.lambda-keyword-examples">
         <title><literal>lambda</literal> takes a block with which it creates a
-          <literal>Proc</literal> with lambda characteristics </title>
+        <literal>Proc</literal> with invocation semantics</title>
 
         <programlisting><xi:include href="examples/lambda-keyword-examples.rb"
             parse="text"/></programlisting>
@@ -458,7 +426,7 @@
         A literal of the form
         <literal>-&gt;(<replaceable>parameter<subscript>0</subscript></replaceable></literal>…<literal><replaceable>parameter<subscript>n</subscript></replaceable>)
           { <replaceable>statements</replaceable> }</literal> instantiates a
-        <literal>Proc</literal> object with lambda characteristics. The
+        <literal>Proc</literal> object with invocation semantics. The
         optional parameter list takes the same form as that used in method
         definitions. It may be omitted entirely.
         <replaceable>statements</replaceable> is zero or more statements. For
@@ -468,7 +436,7 @@
       
       <example xml:id="ex.lambda-literal-syntax">
         <title><literal>-&gt;(){}</literal> creates a <literal>Proc</literal>
-          with lambda characteristics</title>
+        with invocation characteristics</title>
 
         <programlisting><xi:include href="examples/lambda-literal-syntax.rb"
             parse="text"/></programlisting>
@@ -540,8 +508,8 @@
           <para>
             Allows <literal>Proc</literal>s to be used in
             <literal>case</literal> expressions. It requires exactly one
-            argument, so is unsuitable for a <literal>Proc</literal> with
-            <link linkend="clo.lambda-semantics">lambda semantics</link> that
+            argument, so is unsuitable for a <literal>Proc</literal> with <link
+            linkend="clo.invocation-semantics">invocation semantics</link> that
             has an arity other than 1.
           </para>
         </listitem>
@@ -594,10 +562,10 @@
       <listitem>
         <para>
           The parameter list of a closure with <link
-            linkend="clo.proc-semantics">proc semantics</link> may include a
-          trailing comma after the last parameter.  This has no syntactical
-          meaning, but serves to indicate that additional arguments are
-          explicitly ignored.
+          linkend="clo.yield-semantics"><literal>yield</literal>
+          semantics</link> may include a trailing comma after the last
+          parameter. This has no syntactical meaning, but serves to indicate
+          that additional arguments are explicitly ignored.
         </para>
       </listitem>
     </itemizedlist>
