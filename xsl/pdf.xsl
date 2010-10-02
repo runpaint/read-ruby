@@ -127,6 +127,55 @@ article > section > section > section > h1 {
   font-size: 110%;
   font-style: italic;
 }
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+table thead {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+/* All table cells are bordered with a thin black line */
+table, 
+table th,  
+table tr, 
+table td {
+  border-collapse: collapse;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* Table headings are bold and centered */
+tbody > th, 
+th {
+  text-align: center
+  display: inline;
+  font-weight: bold;
+}
+
+/* The following two styles are for zebra striping table rows. The first is
+ * cleaner, but assumes no rowspans; the second relies on a class being
+ * applied manually to such tables. */
+
+tbody tr:nth-child(2n+1) {
+    background-color: #F5F5F5;
+}
+
+tbody > tr.odd {
+    background-color: #F5F5F5;
+}
+
+/* Table captions are similar to figure captions. They are centered below the
+ * table, in a slightly smaller, italic font */
+table > caption {
+  caption-side: bottom;
+  margin-top: 2%;
+  padding-top: 2%;
+  text-align: center;
+  font-style: italic;
+  font-size: 90%;
+}
 
 body {
   font-style: normal;
