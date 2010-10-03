@@ -68,6 +68,8 @@ IO::NULL = '/dev/null' unless IO.const_defined?(:NULL)
 # Root URL
 URL = 'http://ruby.runpaint.org/'
 
+# PDF version 
+PDF = File.join(OUT_DIR, 'read-ruby.pdf')
 
 # Create OUT_DIR, EX_DIR, and BUILD_DIR as needed.
 [OUT_DIR, BUILD_DIR].each do |dir|
@@ -206,7 +208,8 @@ end
 task :pdf => [OUT_DIR, BUILD_DIR] do
   sh "xsltproc --stringparam out_dir #{BUILD_DIR} --xinclude " +
       "#{PDF_XSL} #{BOOK_XML} >#{IO::NULL}"
-  sh "prince #{BUILD_DIR}/single.html #{OUT_DIR}/read-ruby.pdf"
+  sh "prince #{BUILD_DIR}/single.html #{PDF}"
+  sh "gzip --best -cn #{PDF} >#{PDF}.gz"
 end
 
 desc "Validate the XML with RelaxNG and NVDL"

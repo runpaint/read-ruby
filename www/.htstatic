@@ -15,3 +15,6 @@ ExpiresByType image/css "access plus 1 weeks"
 ExpiresByType application/javascript "access plus 1 weeks"
 Redirect 301 /text /strings
 Redirect 301 /references /bibliography
+<FilesMatch "^read-ruby">
+    Header set Content-Disposition "attachment; filename=read-ruby.pdf"
+</FilesMatch>
