@@ -140,22 +140,42 @@ article > h1 {
   line-height: 80%;
   font-weight: bold;
   margin: 0;
+  prince-bookmark-level: 1;
 }
 
 article > section > h1 {
   font-size: 200%;
   text-align: center;
   font-weight: normal;
+  prince-bookmark-level: 2;
 }
 
 article > section > section > h1 {
   font-size: 150%;
   font-weight: normal;
+  prince-bookmark-level: 3;
 }
 
-section > section > section > h1 {
+article > section > section > section > h1 {
   font-size: 130%;
   font-weight: normal;
+  prince-bookmark-level: 4;
+}
+
+article > section > section > section > section > h1 {
+  font-size: 130%;
+  font-weight: normal;
+  prince-bookmark-level: 5;
+}
+
+article > section > section > section > section > section > h1 {
+  font-size: 130%;
+  font-weight: normal;
+  prince-bookmark-level: 6;
+}
+
+aside > h1 {
+  prince-bookmark-level: none;
 }
 
 /*********** 
