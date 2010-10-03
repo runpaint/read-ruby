@@ -109,16 +109,16 @@
        use the contents of that, instead. Again, we generate the target URL
        with the id-to-href template.
   -->
-  <xsl:template match="d:xref">
+  <xsl:template match="d:xref[@linkend]">
     <xsl:variable name="linkend" select="@linkend"/>
     <xsl:variable name="anchor" select="//*[@xml:id = $linkend][1]"/>
     <xsl:variable name="title">
       <xsl:choose>
 	<xsl:when test="local-name($anchor/*[1]) = 'title'">
-	  <xsl:apply-templates select="$anchor/*[1]"/>
+	  <xsl:value-of select="$anchor/d:title"/>
 	</xsl:when>
 	<xsl:when test="local-name($anchor/*[1]) = 'caption'">
-	  <xsl:apply-templates select="$anchor/*[1]"/>
+	  <xsl:value-of select="$anchor/d:caption"/>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:message terminate="yes">
@@ -200,6 +200,7 @@
       <xsl:when test="starts-with($id, 'reg.')">regexps</xsl:when>
       <xsl:when test="starts-with($id, 'io.')">io</xsl:when>
       <xsl:when test="starts-with($id, 'pun.')">punctuation</xsl:when>
+      <xsl:when test="starts-with($id, 'glo.')">globals</xsl:when>
       <xsl:when test="starts-with($id, 'glo.')">glossary</xsl:when>
       <xsl:when test="starts-with($id, 'bib.')">bibliography</xsl:when>
       <xsl:when test="starts-with($id, 'ex.')"></xsl:when>
