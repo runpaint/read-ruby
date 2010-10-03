@@ -30,6 +30,7 @@
 
   <!-- Appendices -->
   <xi:include href="src/punctuation.xml"/>
+  <xi:include href="src/globals.xml"/>
   <!-- Merge keywords.xml into glossary.xml -->
   <!-- <xi:include href="src/keywords.xml"/> -->
   <xi:include href="src/glossary.xml"/>
