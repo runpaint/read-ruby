@@ -321,6 +321,91 @@ body > p {
   font-size: 150%;
 }
 
+/************* 
+ *           *
+ *    ToC    *
+ *           *
+ *************/
+
+.toc ol { 
+  list-style-type: none; 
+}
+
+.toc a:link, 
+.toc a:visited, 
+.toc a:hover,
+.toc a:active {
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.toc a[href]::after {
+  content: leader('.') target-counter(attr(href), page);
+  font-variant: prince-opentype(tnum);
+}
+
+article.toc > ol > li > a { 
+  font-weight: bold;
+  font-size: 160%; 
+}
+
+article.toc > ol > li  { 
+  margin-top: 3%;
+}
+
+article.toc > ol { 
+  list-style-type: upper-roman; 
+}
+
+article.toc > ol > li > ol {
+  margin-left: 3%;
+}
+
+article.toc > ol > li > ol > li { 
+  list-style-type: none;
+}
+
+article.toc > ol > li > ol > li > a {
+  font-size: 130%;
+}
+
+article.toc > ol > li > ol > li > ol {
+  margin-left: 2%;
+}
+
+article.toc > ol > li > ol > li > ol > li { 
+  list-style-type: none;
+  font-size: 100%;
+}
+
+article.toc > ol > li > ol > li > ol > li > ol {
+  margin-left: 2%;
+}
+
+article.toc > ol > li > ol > li > ol > li > ol > li { 
+  list-style-type: none;
+  font-size: 100%;
+}
+
+article.toc > ol > li > ol > li > ol > li > ol > li > ol > li { 
+  list-style-type: none;
+  font-size: 100%;
+}
+
+article.toc > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li { 
+  list-style-type: none; 
+  font-size: 100%;
+}
+
+article.toc > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li { 
+  list-style-type: none; 
+  font-size: 100%;
+}
+
+.toc ol { 
+  padding-left: 1%; 
+  margin-left: 0;
+}
     </xsl:text>    
   </xsl:template>
 </xsl:stylesheet>

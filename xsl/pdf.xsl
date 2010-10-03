@@ -36,7 +36,7 @@
   </xsl:template>
 
   <xsl:template name="page">
-    <article class="{local-name()}">
+    <article class="{local-name()}" id="{@xml:id}">
       <h1><xsl:value-of select="d:title"/></h1>
       <xsl:apply-templates/>
     </article>
@@ -59,6 +59,10 @@
 	  <h1><xsl:value-of select="/d:book/d:title"/></h1>
 	  <p>Free ebook about the Ruby 1.9 programming language</p>
 	  <p><a href="http://ruby.runpaint.org/">ruby.runpaint.org</a></p>
+	  <article class="toc">
+	    <h1>Contents</h1>
+	    <xsl:call-template name="toc-ol"/>
+	  </article>
 	  <xsl:apply-templates/>
 	</body>
       </html>

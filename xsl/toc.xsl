@@ -28,17 +28,21 @@
 	    <header>
 	      <h1>Contents</h1>
 	    </header>
-	    <ol>
-	      <xsl:for-each select="d:chapter">
-		<!-- TODO: Pass chapter name in as param -->
-		<xsl:call-template name="toc-entry"/>
-	      </xsl:for-each>
-	      <!-- TODO: Add biblio and gloss -->
-	    </ol>
+	    <xsl:call-template name="toc-ol"/>
 	  </article>
 	</body>
       </html>
     </xsl:document>
+  </xsl:template>
+
+  <xsl:template name="toc-ol">
+    <ol>
+      <xsl:for-each select="d:chapter">
+	<!-- TODO: Pass chapter name in as param -->
+	<xsl:call-template name="toc-entry"/>
+      </xsl:for-each>
+      <!-- TODO: Add biblio and gloss -->
+    </ol>
   </xsl:template>
 
   <xsl:template name="toc-entry">
