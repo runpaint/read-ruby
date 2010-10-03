@@ -1555,7 +1555,7 @@
 
       <para>The parallel aspect of this operation is that all of the rvalues
       are evaluated, left to right, prior to assigning them. This allows the
-      value of two or more variables to be swapped, as shown <link
+      value of two or more variables to be swapped, as shown in the <link
       linkend="ex.parallel-assignment-equal">figure below</link>.</para>
 
       <sect3 xml:id="var.parallel-assignment-equal">
