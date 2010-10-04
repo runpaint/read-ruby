@@ -45,7 +45,9 @@
     <xsl:if test="d:title">
       <h2><xsl:value-of select="d:title"/></h2>
     </xsl:if>
-    <dl>
+    
+    <xsl:variable name="spacing" select="@spacing"/>
+    <dl class="{$spacing}">
       <xsl:apply-templates/>
     </dl>
   </xsl:template>

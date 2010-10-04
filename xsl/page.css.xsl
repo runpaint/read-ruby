@@ -253,7 +253,7 @@ li.footnote-container {
  *         *
  ***********/
 
-dl.inline dt {
+dl.compact dt {
   display: run-in;
   padding-right: 1em;
 }
