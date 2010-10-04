@@ -1,541 +1,376 @@
 <?xml version="1.0" encoding="utf-8"?>
-<chapter version="5.0" xml:id="var.variables" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+<chapter version="5.0" 
+	 xml:id="var.variables" 
+	 xml:lang="en" 
+	 xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude" 	 	 	
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
   <title>Variables</title>
-  <para>A <firstterm>variable</firstterm> is a named storage location that holds a value.
-   It is named
-  with an <link linkend="pro.identifiers">identifier</link>, possibly preceded
-  by a <firstterm>sigil</firstterm> (a symbol denoting the variable’s scope).</para>
-  <para>When the name of a variable appears somewhere other than the
-  left‐hand side of an assignment expression it is a <firstterm>variable
-  reference</firstterm> which evaluates to the variable’s value.</para>
-  <para>A variable’s <firstterm>scope</firstterm> <quote>…is the portion of the
-  program text in which the variable may be referenced.</quote> <biblioref
-  begin="334" end="335" linkend="bib.turbak08" units="pages"/>. Its
-  <firstterm>lifetime</firstterm> is <quote>the duration, during a run of a
-  program, during which a location is allocated as the result of a specific
-  declaration.</quote> <biblioref begin="167" end="167"
-  linkend="bib.mitchell04" units="pages"/>. When the scope of a variable
-  <quote>contains another declaration of the same name the inner declaration
-  <firstterm>carves out a hole</firstterm> in the scope of the outer
-  one</quote> <biblioref begin="336" end="338" linkend="bib.turbak08"
-  units="pages"/>. The outer’s lifetime persists through the inner declaration,
-  but its scope is hidden for the duration.</para>
-  <para>The specifics of variable references are explained in the following
-  sections, along with complementary treatment of variable scope,
-  initialization, and assignment.</para>
+
+  <para>A <firstterm>variable</firstterm> is a named storage location that holds a value. It is named with an <link linkend="pro.identifiers">identifier</link>, possibly preceded by a <firstterm>sigil</firstterm> (a symbol denoting the variable’s scope).</para>
+
+  <para>When the name of a variable appears somewhere other than the left‐hand side of an assignment expression it is a <firstterm>variable reference</firstterm> which evaluates to the variable’s value.</para>
+
+  <para>A variable’s <firstterm>scope</firstterm> <quote>…is the portion of the program text in which the variable may be referenced.</quote> <biblioref begin="334" end="335" linkend="bib.turbak08" units="pages"/>. Its <firstterm>lifetime</firstterm> is <quote>the duration, during a run of a program, during which a location is allocated as the result of a specific declaration.</quote> <biblioref begin="167" end="167" linkend="bib.mitchell04" units="pages"/>. When the scope of a variable <quote>contains another declaration of the same name the inner declaration <firstterm>carves out a hole</firstterm> in the scope of the outer one</quote> <biblioref begin="336" end="338" linkend="bib.turbak08" units="pages"/>. The outer’s lifetime persists through the inner declaration, but its scope is hidden for the duration.</para>
+
+  <para>The specifics of variable references are explained in the following sections, along with complementary treatment of variable scope, initialization, and assignment.</para>
+  
   <sect1 xml:id="var.constants">
     <title>Constants</title>
-    <para>A constant is a variable whose value, once assigned, is not expected
-    to change. Its constancy is not enforced by Ruby, so repeated
-    assignments are legal, but cause a warning to be issued.</para>
+  
+    <para>A constant is a variable whose value, once assigned, is not expected to change. Its constancy is not enforced by Ruby, so repeated assignments are legal, but cause a warning to be issued.</para>
+    
     <sect2 xml:id="var.constants-name">
       <title>Name</title>
-      <para>A constant is, by definition, named with an <link linkend="pro.identifiers">identifier </link>whose first character is
-      an uppercase US‐ASCII character (<literal>A</literal>–<literal>Z</literal>). It is
-      a strong convention that constants qua constants are named entirely
-      in US‐ASCII uppercase letters with low lines to separate words,
-      whereas constants used to name classes or modules are named in
-      camel‐case: title case with whitespace removed.</para>
+    
+      <para>A constant is, by definition, named with an <link linkend="pro.identifiers">identifier </link>whose first character is an uppercase US‐ASCII character (<literal>A</literal>–<literal>Z</literal>). It is a strong convention that constants qua constants are named entirely in US‐ASCII uppercase letters with low lines to separate words, whereas constants used to name classes or modules are named in camel‐case: title case with whitespace removed.</para>
     </sect2>
+    
     <sect2 xml:id="var.constants-references">
       <title>References</title>
-      <!--figure>
-        <title>Syntax diagram of a constant reference
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/constant-reference.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-      <para>A <firstterm>constant reference</firstterm> is an expression evaluating to the
-      named constant. The simplest constant reference is a primary expression
-      consisting solely of the constant’s name, e.g. <literal>Constant</literal>.</para>
-      <para>A constant reference may also be qualified by prefixing the
-      constant name with the <quote><firstterm>scope
-      operator</firstterm></quote> <biblioref begin="336" end="339"
-      linkend="bib.thom09" units="pages"/>: two consecutive colon
-      (<literal>U＋003A</literal>) characters. This causes the constant to be
-      looked up in the global scope<footnote><para>That is, under
-      <literal>Object</literal> or <literal>Kernel</literal>, with the former
-      taking precedence. See <link
-      linkend="var.constant-resolution"/> for more
-      details.</para></footnote>.</para>
-      <para>A reference may be qualified further by preceding the scope
-      operator with an expression evaluating to the <literal>Class</literal> or
-      <literal>Module</literal> object in which the constant was defined.</para>
+
+      <para>A <firstterm>constant reference</firstterm> is an expression evaluating to the named constant. The simplest constant reference is a primary expression consisting solely of the constant’s name, e.g. <literal>Constant</literal>.</para>
+
+      <para>A constant reference may also be qualified by prefixing the constant name with the <quote><firstterm>scope operator</firstterm></quote> <biblioref begin="336" end="339" linkend="bib.thom09" units="pages"/>: two consecutive colon (<literal>U＋003A</literal>) characters. This causes the constant to be looked up in the global scope<footnote><para>That is, under <literal>Object</literal> or <literal>Kernel</literal>, with the former taking precedence. See <link linkend="var.constant-resolution"/> for more details.</para></footnote>.</para>
+
+      <para>A reference may be qualified further by preceding the scope operator with an expression evaluating to the <literal>Class</literal> or <literal>Module</literal> object in which the constant was defined.</para>
+      
       <example xml:id="ex.constant-reference">
-        <title>Defining the plastic number as a constant inside a module
-        then accessing it from outside with a qualified name.
-      </title>
+        <title>Defining the plastic number as a constant inside a module then accessing it from outside with a qualified name.</title>
+
         <programlisting><xi:include href="examples/constant-reference.rb" parse="text"/></programlisting>
       </example>
+      
       <sect3 xml:id="var.constant-resolution">
         <title>Resolution Algorithm</title>
-        <para>To resolve an unqualified constant reference made in a class or
-        module named <replaceable>container</replaceable>:</para>
-        <orderedlist>
+      
+	<para>To resolve an unqualified constant reference made in a class or module named <replaceable>container</replaceable>:</para>
+        
+	<orderedlist>
           <listitem>
             <para>Let <replaceable>original-container</replaceable> equal <replaceable>container</replaceable>.</para>
           </listitem>
           <listitem>
-            <para>If the constant is defined in <replaceable>container</replaceable>, we’ve
-          successfully resolved it.</para>
+            <para>If the constant is defined in <replaceable>container</replaceable>, we’ve successfully resolved it.</para>
           </listitem>
           <listitem>
-            <para>If <replaceable>container</replaceable> has an enclosing class or module, set
-          <replaceable>container</replaceable> to its name and repeat step 2.</para>
+            <para>If <replaceable>container</replaceable> has an enclosing class or module, set <replaceable>container</replaceable> to its name and repeat step 2.</para>
           </listitem>
           <listitem>
             <para>Set <replaceable>container</replaceable> to <replaceable>original-container</replaceable>.</para>
           </listitem>
           <listitem>
-            <para>In the order that they were included, inspect each module mixed‐in
-          to <replaceable>container</replaceable>. If one contains the constant, we've
-          successfully resolved it.</para>
+            <para>In the order that they were included, inspect each module mixed‐in to <replaceable>container</replaceable>. If one contains the constant, we've successfully resolved it.</para>
           </listitem>
           <listitem>
-            <para>If <replaceable>container</replaceable> has a superclass assign it to
-          <replaceable>container</replaceable>; otherwise go to step 8.</para>
+            <para>If <replaceable>container</replaceable> has a superclass assign it to <replaceable>container</replaceable>; otherwise go to step 8.</para>
           </listitem>
           <listitem>
-            <para>If the constant is defined in <replaceable>container</replaceable>, we’ve
-          successfully resolved it; otherwise, go to step 5.</para>
+            <para>If the constant is defined in <replaceable>container</replaceable>, we’ve successfully resolved it; otherwise, go to step 5.</para>
           </listitem>
           <listitem>
-            <para>Set <replaceable>container</replaceable> equal to <literal>Object</literal>, if it
-          hasn’t already been, and repeat step 5.</para>
+            <para>Set <replaceable>container</replaceable> equal to <literal>Object</literal>, if it hasn’t already been, and repeat step 5.</para>
           </listitem>
           <listitem>
             <para>Set <replaceable>container</replaceable> to <replaceable>original-container</replaceable></para>
           </listitem>
           <listitem>
-            <para>If <replaceable>container</replaceable> responds to <literal>:const_missing</literal>, it
-          is sent it with the constant name as argument. The value of 
-          <literal>const_missing</literal> becomes that of the constant; we’ve
-          successfully resolved it.</para>
+            <para>If <replaceable>container</replaceable> responds to <literal>:const_missing</literal>, it is sent it with the constant name as argument. The value of <literal>const_missing</literal> becomes that of the constant; we’ve successfully resolved it.</para>
           </listitem>
           <listitem>
-            <para>If <replaceable>container</replaceable> has a superclass, assign it to
-          <replaceable>container</replaceable> and repeat step 10.</para>
+            <para>If <replaceable>container</replaceable> has a superclass, assign it to <replaceable>container</replaceable> and repeat step 10.</para>
           </listitem>
           <listitem>
-            <para>Raise a <literal>NameError</literal> exception: constant resolution
-          failed.</para>
+            <para>Raise a <literal>NameError</literal> exception: constant resolution failed.</para>
           </listitem>
         </orderedlist>
-        <para>This search path can be summarised as: <literal>(Module.nesting +
-          self.ancestors + Object.ancestors).uniq</literal> (executed in the
-        context of <replaceable>original-container</replaceable>).</para>
-        <para>Some notes on this procedure:</para>
+        <para>This search path can be summarised as: <literal>(Module.nesting + self.ancestors + Object.ancestors).uniq</literal> (executed in the context of <replaceable>original-container</replaceable>).</para>
+	<para>Some notes on this procedure:</para>
         <itemizedlist>
           <listitem>
-            <para>In the search for a given constant no class or module is examined
-            more than once: if a previously‐seen location is suggested by the
-            above algorithm above, it is skipped.</para>
+            <para>In the search for a given constant no class or module is examined more than once: if a previously‐seen location is suggested by the above algorithm above, it is skipped.</para>
           </listitem>
           <listitem>
-            <para>Step 8 is needed in the case where <replaceable>original-container</replaceable>
-            is a module: modules don’t inherit from <literal>Object</literal>, so the
-            preceding steps wouldn’t have searched it.</para>
+            <para>Step 8 is needed in the case where <replaceable>original-container</replaceable> is a module: modules don’t inherit from <literal>Object</literal>, so the preceding steps wouldn’t have searched it.</para>
           </listitem>
           <listitem>
-            <para>When a constant is referenced in an <literal>*_eval</literal> or
-            <literal>*_exec</literal> block, <replaceable>container</replaceable> is set to that
-            enclosing the block; not the container in whose context the block
-            is evaluated.</para>
+            <para>When a constant is referenced in an <literal>*_eval</literal> or <literal>*_exec</literal> block, <replaceable>container</replaceable> is set to that enclosing the block; not the container in whose context the block is evaluated.</para>
           </listitem>
           <listitem>
-            <para>When <replaceable>original-container</replaceable>’s ancestors are searched
-            for <literal>const_missing</literal>, they are <emphasis>not</emphasis> also sent
-            <literal>method_missing</literal>.</para>
+            <para>When <replaceable>original-container</replaceable>’s ancestors are searched for <literal>const_missing</literal>, they are <emphasis>not</emphasis> also sent <literal>method_missing</literal>.</para>
           </listitem>
         </itemizedlist>
       </sect3>
     </sect2>
     <sect2 xml:id="var.constants-scope">
       <title>Scope</title>
-      <para>We can restate the algorithm above to deduce a constant’s scope,
-      namely: it is established by its lexically enclosing class or
-      module. Inner classes and modules inherit the scope of their parents,
-      and constants initialized in the former cause a hole in their parent’s
-      scope.</para>
-      <para>A constant is accessible throughout its scope by unqualified
-      reference, and may be accessed from an exterior context by qualifying
-      its name with that of the defining class/module.</para>
-      <para>A constant defined in another context may be referred to
-      unqualified or prefixed with the scope operator. However, it is
-      illegal to define a constant in a method body as every invocation of
-      the method would cause re‐assignment, defeating the purpose of a
-      constant.</para>
-      <para>A qualified constant name may be used as an lvalue, allowing
-      constants to be defined in the context of a class or module from
-      outside.</para>
+
+      <para>We can restate the algorithm above to deduce a constant’s scope, namely: it is established by its lexically enclosing class or module. Inner classes and modules inherit the scope of their parents, and constants initialized in the former cause a hole in their parent’s scope.</para>
+
+      <para>A constant is accessible throughout its scope by unqualified reference, and may be accessed from an exterior context by qualifying its name with that of the defining class/module.</para>
+
+      <para>A constant defined in another context may be referred to unqualified or prefixed with the scope operator. However, it is illegal to define a constant in a method body as every invocation of the method would cause re‐assignment, defeating the purpose of a constant.</para>
+
+      <para>A qualified constant name may be used as an lvalue, allowing constants to be defined in the context of a class or module from outside.</para>
     </sect2>
+
     <sect2 xml:id="var.constants-initialization">
       <title>Initialization</title>
-      <para>Constants only come into existence when they are assigned a value.
-      Therefore a constant, unlike the other variables, is never in an
-      uninitialized state. Referencing a constant that does not exist
-      results in a <literal>NameError</literal>.</para>
+
+      <para>Constants only come into existence when they are assigned a value.  Therefore a constant, unlike the other variables, is never in an uninitialized state. Referencing a constant that does not exist results in a <literal>NameError</literal>.</para>
     </sect2>
+
     <sect2 xml:id="var.constants-missing">
       <title>Missing Constants</title>
-      <para>As noted in <link linkend="var.constant-resolution">Constant Resolution</link>,
-      before a search terminates a <literal>:const_missing</literal> message is
-      sent. This allows classes and modules to create constants on‐the‐fly or
-      otherwise influence the lookup process.</para>
+
+      <para>As noted in <link linkend="var.constant-resolution">Constant Resolution</link>, before a search terminates a <literal>:const_missing</literal> message is sent. This allows classes and modules to create constants on‐the‐fly or otherwise influence the lookup process.</para>
+
       <example xml:id="ex.const-missing">
-        <title>Using <literal>:const_missing</literal> to convert constants of
-        the form <literal>Roman::<replaceable>RomanNumeral</replaceable></literal> to the
-        corresponding integer, if valid and less than 4, 000; or raise a
-        <literal>NameError</literal> otherwise.
-      </title>
+        <title>Using <literal>:const_missing</literal> to convert constants of the form <literal>Roman::<replaceable>RomanNumeral</replaceable></literal> to the corresponding integer, if valid and less than 4, 000; or raise a <literal>NameError</literal> otherwise.</title>
+
         <programlisting><xi:include href="examples/const-missing.rb" parse="text"/></programlisting>
       </example>
     </sect2>
+
     <sect2 xml:id="var.constants-reflection">
       <title>Reflection</title>
-      <para>The <literal>Module#constants</literal> method returns an
-      <literal>Array</literal> of <literal>Symbol</literal>s naming the constants defined
-      in the receiver.</para>
-      <para>The value of a constant may be retrieved from a given class or module
-      by supplying its name to the <literal>Module#const_get</literal> method, e.g.
-      <literal>Float.const_get :INFINITY #=&gt; Infinity</literal>. Similarly, the
-      value of a constant may be set with <literal>Module#const_set</literal>, which
-      takes two arguments: the name of the constant and its new value.</para>
-      <para>A predicate method, <literal>Module#const_defined?</literal>, exists for
-      determining whether a class or module defines a given constant.</para>
-      <para>Both <literal>#const_get</literal> and <literal>const_defined?</literal> accept
-      an optional second argument to control whether they look for inherited
-      constants. By default this argument is <literal>true</literal>, but if it is
-      set to <literal>false</literal> the method only considers constants defined
-      directly in the receiver. Lastly, the <link linkend="met.private">private
-        method</link> <literal>Module#remove_const</literal> takes the name of a
-      constant to remove from the receiver.</para>
+
+      <para>The <literal>Module#constants</literal> method returns an <literal>Array</literal> of <literal>Symbol</literal>s naming the constants defined in the receiver.</para>
+
+      <para>The value of a constant may be retrieved from a given class or module by supplying its name to the <literal>Module#const_get</literal> method, e.g.  <literal>Float.const_get :INFINITY #=&gt; Infinity</literal>. Similarly, the value of a constant may be set with <literal>Module#const_set</literal>, which takes two arguments: the name of the constant and its new value.</para>
+      
+      <para>A predicate method, <literal>Module#const_defined?</literal>, exists for determining whether a class or module defines a given constant.</para>
+
+      <para>Both <literal>#const_get</literal> and <literal>const_defined?</literal> accept an optional second argument to control whether they look for inherited constants. By default this argument is <literal>true</literal>, but if it is set to <literal>false</literal> the method only considers constants defined directly in the receiver. Lastly, the <link linkend="met.private">private method</link> <literal>Module#remove_const</literal> takes the name of a constant to remove from the receiver.</para>
     </sect2>
+
     <sect2 xml:id="var.constants-predefined">
       <title>Predefined</title>
-      <para>The following table lists global constants that Ruby defines
-      automatically.</para>
+
+      <para>The following table lists global constants that Ruby defines automatically.</para>
+
       <table>
         <caption>Predefined global constants</caption>
         <thead>
           <tr>
-            <th>Constant
-            </th>
-            <th>Class
-            </th>
-            <th>Meaning
-        </th>
+            <th>Constant</th>
+            <th>Class</th>
+            <th>Meaning</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <literal>DATA</literal>
-            </td>
-            <td>
-              <literal>IO</literal>
-            </td>
-            <td>If the source file contains the line <literal>__END__</literal>,
-            the lines that follow are accessible by reading from
-            <literal>DATA</literal>.
-          </td>
+            <td><literal>DATA</literal></td>
+            <td><literal>IO</literal></td>
+            <td>If the source file contains the line <literal>__END__</literal>, the lines that follow are accessible by reading from <literal>DATA</literal>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>FALSE</literal>
-            </td>
-            <td>
-              <literal>FalseClass</literal>
-            </td>
-            <td>
-              <literal>false</literal>
-            </td>
+            <td><literal>FALSE</literal></td>
+            <td><literal>FalseClass</literal></td>
+            <td><literal>false</literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>NIL</literal>
-            </td>
-            <td>
-              <literal>NilClass</literal>
-            </td>
-            <td>
-              <literal>nil</literal>
-            </td>
+            <td><literal>NIL</literal></td>
+            <td><literal>NilClass</literal></td>
+            <td><literal>nil</literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>RUBY_COPYRIGHT</literal>
-            </td>
-            <td>
-              <literal>String</literal>
-            </td>
-            <td>Copyright statement for the interpreter, e.g. <computeroutput>ruby -
-            Copyright (C) 1993-2010 Yukihiro Matsumoto</computeroutput>.
-          </td>
+            <td><literal>RUBY_COPYRIGHT</literal></td>
+            <td><literal>String</literal></td>
+            <td>Copyright statement for the interpreter, e.g. <computeroutput>ruby - Copyright (C) 1993-2010 Yukihiro Matsumoto</computeroutput>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>RUBY_DESCRIPTION</literal>
-            </td>
-            <td>
-              <literal>String</literal>
-            </td>
-            <td>Version number and architecture of the interpreter, e.g.
-            <computeroutput>ruby 1.9.2dev (2010-02-19 trunk 26715) [i686-linux]</computeroutput>.
-          </td>
+            <td><literal>RUBY_DESCRIPTION</literal></td>
+            <td><literal>String</literal></td>
+            <td>Version number and architecture of the interpreter, e.g.  <computeroutput>ruby 1.9.2dev (2010-02-19 trunk 26715) [i686-linux]</computeroutput>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>RUBY_ENGINE</literal>
-            </td>
-            <td>
-              <literal>String</literal>
-            </td>
-            <td><para>The implementation of the interpreter, e.g.
-            <computeroutput>ruby</computeroutput>.</para>
-            <variablelist><varlistentry><term><computeroutput>ruby</computeroutput></term><listitem><para><acronym>MRI</acronym>: official
-              implementation.</para></listitem></varlistentry><varlistentry><term><computeroutput>rbx</computeroutput></term><listitem><para><link xlink:href="http://rubini.us/">Rubinius</link>.</para></listitem></varlistentry><varlistentry><term><computeroutput>macruby</computeroutput></term><listitem><para><link xlink:href="http://www.macruby.org/">MacRuby</link>.</para></listitem></varlistentry><varlistentry><term><computeroutput>ironruby</computeroutput></term><listitem><para><link xlink:href="http://ironruby.net/">IronRuby</link>.</para></listitem></varlistentry><varlistentry><term><computeroutput>jruby</computeroutput></term><listitem><para><link xlink:href="http://jruby.org/">JRuby</link>.</para></listitem></varlistentry><varlistentry><term><computeroutput>maglev</computeroutput></term><listitem><para><link xlink:href="http://maglev.gemstone.com/">MagLev</link></para></listitem></varlistentry></variablelist></td>
+            <td><literal>RUBY_ENGINE</literal></td>
+            <td><literal>String</literal></td>
+            <td><para>The implementation of the interpreter, e.g.  <computeroutput>ruby</computeroutput>.</para>
+            <variablelist>
+	      <varlistentry>
+		<term><computeroutput>ruby</computeroutput></term>
+		<listitem>
+		  <para><acronym>MRI</acronym>: official implementation.</para>
+	    </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term><computeroutput>rbx</computeroutput></term>
+	    <listitem>
+	      <para><link xlink:href="http://rubini.us/">Rubinius</link>.</para>
+	    </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term><computeroutput>macruby</computeroutput></term>
+	    <listitem>
+	      <para><link xlink:href="http://www.macruby.org/">MacRuby</link>.</para>
+	    </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term><computeroutput>ironruby</computeroutput></term>
+	    <listitem>
+	      <para><link xlink:href="http://ironruby.net/">IronRuby</link>.</para>
+	    </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term><computeroutput>jruby</computeroutput></term>
+	      <listitem>
+		<para><link xlink:href="http://jruby.org/">JRuby</link>.</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term><computeroutput>maglev</computeroutput></term>
+	      <listitem>
+		<para><link xlink:href="http://maglev.gemstone.com/">MagLev</link></para>
+	      </listitem>
+	    </varlistentry>
+	    </variablelist>
+	    </td>
           </tr>
           <tr>
-            <td>
-              <literal>RUBY_PATCHLEVEL</literal>
-            </td>
-            <td>
-              <literal>Fixnum</literal>
-            </td>
-            <td>Patch level of the interpreter, e.g. <computeroutput>-1</computeroutput>.
-          </td>
+            <td><literal>RUBY_PATCHLEVEL</literal></td>
+            <td><literal>Fixnum</literal></td>
+            <td>Patch level of the interpreter, e.g. <computeroutput>-1</computeroutput>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>RUBY_PLATFORM</literal>
-            </td>
-            <td>
-              <literal>String</literal>
-            </td>
-            <td>Platform for which the interpreter was built, e.g.
-            <computeroutput>i686-linux</computeroutput>.
-          </td>
+            <td><literal>RUBY_PLATFORM</literal></td>
+            <td><literal>String</literal></td>
+            <td>Platform for which the interpreter was built, e.g.  <computeroutput>i686-linux</computeroutput>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>RUBY_RELEASE_DATE</literal>
-            </td>
-            <td>
-              <literal>String</literal>
-            </td>
-            <td>Release date, for point releases, or build date, for
-            trunk builds, of the interpreter, e.g. <computeroutput>2010-02-19</computeroutput>.
-          </td>
+            <td><literal>RUBY_RELEASE_DATE</literal></td>
+            <td><literal>String</literal></td>
+            <td>Release date, for point releases, or build date, for trunk builds, of the interpreter, e.g. <computeroutput>2010-02-19</computeroutput>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>RUBY_REVISION</literal>
-            </td>
-            <td>
-              <literal>Fixnum</literal>
-            </td>
-            <td>Revision of the interpreter, e.g. <computeroutput>26715</computeroutput>.
-            (<acronym>SVN</acronym> revision number on MRI).
-          </td>
+            <td><literal>RUBY_REVISION</literal></td>
+            <td><literal>Fixnum</literal></td>
+            <td>Revision of the interpreter, e.g. <computeroutput>26715</computeroutput>.  (<acronym>SVN</acronym> revision number on MRI).</td>
           </tr>
           <tr>
-            <td>
-              <literal>RUBY_VERSION</literal>
-            </td>
-            <td>
-              <literal>String</literal>
-            </td>
-            <td>Version number of the interpreter, e.g. <computeroutput>1.9.2</computeroutput>.
-          </td>
+            <td><literal>RUBY_VERSION</literal></td>
+            <td><literal>String</literal></td>
+            <td>Version number of the interpreter, e.g. <computeroutput>1.9.2</computeroutput>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>STDERR</literal>
-            </td>
-            <td>
-              <literal>IO</literal>
-            </td>
-            <td>Standard error stream. Initial value of
-            <literal>$stderr</literal>.
-          </td>
+            <td><literal>STDERR</literal></td>
+            <td><literal>IO</literal></td>
+            <td>Standard error stream. Initial value of <literal>$stderr</literal>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>STDIN</literal>
-            </td>
-            <td>
-              <literal>IO</literal>
-            </td>
-            <td>Standard input stream. Initial value of
-            <literal>$stdin</literal>.
-          </td>
+            <td><literal>STDIN</literal></td>
+            <td><literal>IO</literal></td>
+            <td>Standard input stream. Initial value of <literal>$stdin</literal>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>STDOUT</literal>
-            </td>
-            <td>
-              <literal>IO</literal>
-            </td>
-            <td>Standard output stream. Initial value of
-            <literal>$stdout</literal>.
-          </td>
+            <td><literal>STDOUT</literal></td>
+            <td><literal>IO</literal></td>
+            <td>Standard output stream. Initial value of <literal>$stdout</literal>.</td>
           </tr>
           <tr>
-            <td>
-              <literal>SCRIPT_LINES__</literal>
-            </td>
-            <td>
-              <literal>Hash</literal>
-            </td>
-            <td>If assigned a <literal>Hash</literal>, each subsequent file loaded
-            or required will create an entry in the hash, whose key is the
-            filename as a <literal>String</literal>, and value is the file’s lines
-            as an <literal>Array</literal> of <literal>String</literal>s.
-          </td>
+            <td><literal>SCRIPT_LINES__</literal></td>
+            <td><literal>Hash</literal></td>
+            <td>If assigned a <literal>Hash</literal>, each subsequent file loaded or required will create an entry in the hash, whose key is the filename as a <literal>String</literal>, and value is the file’s lines as an <literal>Array</literal> of <literal>String</literal>s.</td>
           </tr>
           <tr>
-            <td>
-              <literal>TOPLEVEL_BINDING</literal>
-            </td>
-            <td>
-              <literal>Binding</literal>
-            </td>
-            <td>Represents the top‐level execution environment, i.e. outside
-            of any class, module, method, block, or other construct.
-          </td>
+            <td><literal>TOPLEVEL_BINDING</literal></td>
+            <td><literal>Binding</literal></td>
+            <td>Represents the top‐level execution environment, i.e. outside of any class, module, method, block, or other construct.</td>
           </tr>
           <tr>
-            <td>
-              <literal>TRUE</literal>
-            </td>
-            <td>
-              <literal>TrueClass</literal>
-            </td>
-            <td>
-              <literal>true</literal>
-            </td>
+            <td><literal>TRUE</literal></td>
+            <td><literal>TrueClass</literal></td>
+            <td><literal>true</literal></td>
           </tr>
         </tbody>
       </table>
     </sect2>
   </sect1>
+
   <sect1 xml:id="var.local">
     <title>Local Variables</title>
+
     <sect2 xml:id="var.local-variables-name">
       <title>Name</title>
-      <para>A local variable is named by an <link linkend="pro.identifiers">identifier</link> whose first character is a
-      lowercase US‐ASCII character (<literal>a</literal>–<literal>z</literal>) or low
-      line (<literal>U＋005F</literal>). Conventionally, the
-      name consists of lowercase words separated by low lines.</para>
+
+      <para>A local variable is named by an <link linkend="pro.identifiers">identifier</link> whose first character is a lowercase US‐ASCII character (<literal>a</literal>–<literal>z</literal>) or low line (<literal>U＋005F</literal>). Conventionally, the name consists of lowercase words separated by low lines.</para>
     </sect2>
+
     <sect2 xml:id="var.local-variables-scope">
       <title>Scope</title>
-      <para>The scope of a local variable is <firstterm>static</firstterm> in
-      that it <quote>can always be determined from the abstract syntax tree of
-      a program</quote> <biblioref begin="334" end="335" linkend="bib.turbak08"
-      units="pages"/>. It is established by the block, method/class/module
-      definition, or top‐level program—hereafter a
-      <emphasis>scope-defining</emphasis> construct— which lexically encloses
-      its assignment. If a scope-defining construct itself contains a
-      scope-defining construct, the local variables of the former are not
-      visible in the latter: the inner construct <quote>carves out a hole in
-      the scope of the outer one</quote> (ibid, 336–338).</para>
+
+      <para>The scope of a local variable is <firstterm>static</firstterm> in that it <quote>can always be determined from the abstract syntax tree of a program</quote> <biblioref begin="334" end="335" linkend="bib.turbak08" units="pages"/>. It is established by the block, method/class/module definition, or top‐level program—hereafter a <emphasis>scope-defining</emphasis> construct— which lexically encloses its assignment. If a scope-defining construct itself contains a scope-defining construct, the local variables of the former are not visible in the latter: the inner construct <quote>carves out a hole in the scope of the outer one</quote> (ibid, 336–338).</para>
+
       <example xml:id="ex.local-variables">
-        <title>The scope of a local variable
-      </title>
+        <title>The scope of a local variable</title>
+
         <programlisting><xi:include href="examples/local-variables.rb" parse="text"/></programlisting>
       </example>
-      <para>However, this picture is complicated by blocks. A block both inherits
-      the scope of its parent and defines its own scope: it maintains the
-      lifetime of local variables initialized outside of it without causing a
-      hole in their scope. Therefore, if a block references, or assigns to, a
-      local variable visible in its parent scope, it refers to the parent’s
-      variable. Otherwise, a variable initialized inside a block is not
-      visible outside of it. If it is desired that variables defined within a
-      block do not clash with those defined outside, <link linkend="clo.block-local-variables">block local variables</link> are
-      appropriate.</para>
+      
+      <para>However, this picture is complicated by blocks. A block both inherits the scope of its parent and defines its own scope: it maintains the lifetime of local variables initialized outside of it without causing a hole in their scope. Therefore, if a block references, or assigns to, a local variable visible in its parent scope, it refers to the parent’s variable. Otherwise, a variable initialized inside a block is not visible outside of it. If it is desired that variables defined within a block do not clash with those defined outside, <link linkend="clo.block-local-variables">block local variables</link> are appropriate.</para>
+      
       <example xml:id="ex.non-block-local-variables">
-        <title>Non‐block‐local variables defined prior to the block
-        retain the value they were assigned inside the block even after
-        leaving it</title>
-        <programlisting><xi:include href="examples/non-block-local-variables.rb" 
-	                            parse="text"/></programlisting>
+        <title>Non‐block‐local variables defined prior to the block retain the value they were assigned inside the block even after leaving it</title>
+
+        <programlisting><xi:include href="examples/non-block-local-variables.rb" parse="text"/></programlisting>
       </example>
     </sect2>
+
     <sect2 xml:id="var.local-variables-initialization">
       <title>Initialization</title>
-      <para>A variable is initialized if it appears on the left‐hand side
-      (before the equals sign (<literal>U＋003D</literal>)) of
-      an assignment expression. However, this assignment expression need
-      not actually execute: its mere presence is enough to create the
-      variable. For example, if an assignment expression involving a local
-      variable on the left‐hand side appears within a branch that does not
-      execute, the variable comes into existence.  Variables of this sort
-      have the value <literal>nil</literal>.</para>
+
+      <para>A variable is initialized if it appears on the left‐hand side (before the equals sign (<literal>U＋003D</literal>)) of an assignment expression. However, this assignment expression need not actually execute: its mere presence is enough to create the variable. For example, if an assignment expression involving a local variable on the left‐hand side appears within a branch that does not execute, the variable comes into existence.  Variables of this sort have the value <literal>nil</literal>.</para>
+      
       <example xml:id="ex.local-variables-assignment">
-        <title>An assignment expression initializes a local variable
-      </title>
+        <title>An assignment expression initializes a local variable</title>
+
         <programlisting><xi:include href="examples/local-variables-assignment.rb" parse="text"/></programlisting>
       </example>
-      <para>Attempting to use an uninitialized local variable causes the
-      identifier to be interpreted as a message selector which is sent to
-      the current implicit receiver. If such a method doesn’t exist a
-      <literal>NameError</literal> is raised.</para>
+      
+      <para>Attempting to use an uninitialized local variable causes the identifier to be interpreted as a message selector which is sent to the current implicit receiver. If such a method doesn’t exist a <literal>NameError</literal> is raised.</para>
     </sect2>
+    
     <sect2 xml:id="var.local-reflection">
       <title>Reflection</title>
-      <para>The <literal>Kernel.local_variables</literal> method returns an
-      <literal>Array</literal> of <literal>Symbol</literal>s, each of which names a local
-      variable defined in the current scope, in reverse chronological order.</para>
+    
+      <para>The <literal>Kernel.local_variables</literal> method returns an <literal>Array</literal> of <literal>Symbol</literal>s, each of which names a local variable defined in the current scope, in reverse chronological order.</para>
     </sect2>
   </sect1>
+
   <sect1 xml:id="var.instance">
     <title>Instance Variables</title>
+
     <sect2 xml:id="var.instance-variables-name">
       <title>Name</title>
-      <para>An instance variable is named by an <link linkend="pro.identifiers">identifier</link> with a commercial at (<literal>U＋0040</literal>) character as the sigil:
-      <literal>@<replaceable>identifier</replaceable></literal>. Conventionally, the name consists
-      of lowercase words separated by low lines.</para>
+
+      <para>An instance variable is named by an <link linkend="pro.identifiers">identifier</link> with a commercial at (<literal>U＋0040</literal>) character as the sigil: <literal>@<replaceable>identifier</replaceable></literal>. Conventionally, the name consists of lowercase words separated by low lines.</para>
     </sect2>
+
     <sect2 xml:id="var.instance-variables-scope">
       <title>Scope</title>
-      <para>An instance variable defined in the body of an instance method is
-      accessible by every instance of that method’s receiver. Its scope is a
-      specific object. By corollary, an instance variable defined outside of
-      an instance method, such as in a class body, is not accessible from
-      instance methods: it is, even if named identically, entirely separate.</para>
-      <para>The above describes the typical use for instance variables, namely
-      storing an object’s state, but they may also be defined inside a class
-      or module body, outside of any method, in which case their scope is
-      delimited by the class/module in which they were defined. The former
-      are <link linkend="cla.class-instance-variables">class instance
-      variables</link>; the latter module instance variables.</para>
+
+      <para>An instance variable defined in the body of an instance method is accessible by every instance of that method’s receiver. Its scope is a specific object. By corollary, an instance variable defined outside of an instance method, such as in a class body, is not accessible from instance methods: it is, even if named identically, entirely separate.</para>
+      
+      <para>The above describes the typical use for instance variables, namely storing an object’s state, but they may also be defined inside a class or module body, outside of any method, in which case their scope is delimited by the class/module in which they were defined. The former are <link linkend="cla.class-instance-variables">class instance variables</link>; the latter module instance variables.</para>
     </sect2>
+
     <sect2 xml:id="var.instance-variables-initialization">
       <title>Initialization</title>
-      <para>An instance variable is created by assigning to it a value. It is
-      not inherited from a superclass: it exists for a given object only if
-      an instance method of that object has assigned to it a value.</para>
+
+      <para>An instance variable is created by assigning to it a value. It is not inherited from a superclass: it exists for a given object only if an instance method of that object has assigned to it a value.</para>
+      
       <para>An uninitialized instance variable has the value <literal>nil</literal>,
       but its use results in a warning.</para>
     </sect2>
+
     <sect2 xml:id="var.instance-reflection">
       <title>Reflection</title>
-      <para>The names of an object’s instance variables are returned as an
-      <literal>Array</literal> of <literal>Symbol</literal>s by
-      <literal>Kernel#instance_variables</literal> in the order they were assigned.</para>
-      <para>Their values may be retrieved and modified from another object with
-      <literal>Kernel#instance_variable_get(<replaceable>ivar</replaceable>)</literal> and
-      <literal>Kernel#instance_variable_set(<replaceable>ivar</replaceable>,
-        <replaceable>value</replaceable>)</literal>, respectively, where <replaceable>ivar</replaceable> is the
-      variable’s name as a <literal>Symbol</literal>, including the <literal>@</literal>
-      prefix. An instance variable may be removed with the <link linkend="met.private">private method</link><literal>Kernel#remove_instance_variable(<replaceable>ivar</replaceable>)</literal>. These
-      methods should be used sparingly as they break encapsulation.</para>
+
+      <para>The names of an object’s instance variables are returned as an <literal>Array</literal> of <literal>Symbol</literal>s by <literal>Kernel#instance_variables</literal> in the order they were assigned.</para>
+      
+      <para>Their values may be retrieved and modified from another object with <literal>Kernel#instance_variable_get(<replaceable>ivar</replaceable>)</literal> and <literal>Kernel#instance_variable_set(<replaceable>ivar</replaceable>, <replaceable>value</replaceable>)</literal>, respectively, where <replaceable>ivar</replaceable> is the variable’s name as a <literal>Symbol</literal>, including the <literal>@</literal> prefix. An instance variable may be removed with the <link linkend="met.private">private method</link><literal>Kernel#remove_instance_variable(<replaceable>ivar</replaceable>)</literal>. These methods should be used sparingly as they break encapsulation.</para>
     </sect2>
   </sect1>
   <sect1 xml:id="var.class">
@@ -639,45 +474,37 @@
     </sect2>
     <sect2 xml:id="var.globals-initialization">
       <title>Initialisation</title>
-      <para>An uninitialised global variable has the value
-      <literal>nil</literal>, although attempting to use such a variable
-      results in a warning. The predefined global variables summarised in <xref
-      linkend="glo.globals"/> are initialised automatically.</para>
+
+      <para>An uninitialised global variable has the value <literal>nil</literal>, although attempting to use such a variable results in a warning. The predefined global variables summarised in <xref linkend="glo.globals"/> are initialised automatically.</para>
     </sect2>
+
     <sect2 xml:id="var.global-reflection">
       <title>Reflection</title>
-      <para>An <literal>Array</literal> of global variable names as
-      <literal>Symbol</literal>s can be obtained with
-      <literal>Kernel.global_variables</literal></para>
+
+      <para>An <literal>Array</literal> of global variable names as <literal>Symbol</literal>s can be obtained with <literal>Kernel.global_variables</literal></para>
     </sect2>
+
     <sect2 xml:id="var.global-trace">
       <title>Tracing</title>
-      <para><literal>Kernel.trace_var(<replaceable>global</replaceable>)</literal> accepts a
-      <literal>Symbol</literal> naming a global variable and a block. Every time the
-      named variable is assigned to, the block is called with the new value.</para>
+
+      <para><literal>Kernel.trace_var(<replaceable>global</replaceable>)</literal> accepts a <literal>Symbol</literal> naming a global variable and a block. Every time the named variable is assigned to, the block is called with the new value.</para>
     </sect2>
   </sect1>
+  
   <sect1 xml:id="var.defined">
     <title><literal>defined?</literal></title>
-    <para><literal>defined?</literal> is a unary operator which tests whether its
-    operand is defined, and if so returns a description of it.
-    <literal>nil</literal> is returned if the operand is an undefined variable or
-    method, an expression which uses <literal>yield</literal> without an associated
-    block, or an expression which uses <literal>super</literal> without a
-    corresponding ancestor method. In all cases the test is conducted without
-    evaluating the operand. Note that although a constant argument does not
-    cause <literal>:const_missing</literal> to be called, when the argument is a
-    message expression, <literal>#respond_to_missing?</literal> will be used to
-    determine method existence.</para>
+  
+    <para><literal>defined?</literal> is a unary operator which tests whether its operand is defined, and if so returns a description of it.  <literal>nil</literal> is returned if the operand is an undefined variable or method, an expression which uses <literal>yield</literal> without an associated block, or an expression which uses <literal>super</literal> without a corresponding ancestor method. In all cases the test is conducted without evaluating the operand. Note that although a constant argument does not cause <literal>:const_missing</literal> to be called, when the argument is a message expression, <literal>#respond_to_missing?</literal> will be used to determine method existence.</para>
+    
     <example xml:id="ex.defined">
-      <title>Using the <literal>defined?</literal> operator to test whether a
-      variable or expression is defined
-    </title>
+      <title>Using the <literal>defined?</literal> operator to test whether a variable or expression is defined</title>
+
       <programlisting><xi:include href="examples/defined.rb" parse="text"/></programlisting>
     </example>
+
     <table>
-      <caption>The return values of the <literal>defined?</literal> operator.
-      </caption>
+      <caption>The return values of the <literal>defined?</literal> operator.</caption>
+
       <thead>
         <tr>
           <th>Operand</th>
@@ -687,578 +514,385 @@
       <tbody>
         <tr>
           <td>Defined local variable</td>
-          <td>
-            <literal>"local-variable"</literal>
-          </td>
+          <td><literal>"local-variable"</literal></td>
         </tr>
         <tr>
           <td>Defined global variable</td>
-          <td>
-            <literal>"global-variable"</literal>
-          </td>
+          <td><literal>"global-variable"</literal></td>
         </tr>
         <tr>
           <td>Defined constant</td>
-          <td>
-            <literal>"constant"</literal>
-          </td>
+          <td><literal>"constant"</literal></td>
         </tr>
         <tr>
           <td>Defined instance variable</td>
-          <td>
-            <literal>"instance-variable"</literal>
-          </td>
+          <td><literal>"instance-variable"</literal></td>
         </tr>
         <tr>
           <td>Defined class variable</td>
-          <td>
-            <literal>"class variable"</literal>
-          </td>
+          <td><literal>"class variable"</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>nil</literal>
-          </td>
-          <td>
-            <literal>"nil"</literal>
-          </td>
+          <td><literal>nil</literal></td>
+          <td><literal>"nil"</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>true</literal>
-          </td>
-          <td>
-            <literal>"true"</literal>
-          </td>
+          <td><literal>true</literal></td>
+          <td><literal>"true"</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>false</literal>
-          </td>
-          <td>
-            <literal>"false"</literal>
-          </td>
+          <td><literal>false</literal></td>
+          <td><literal>"false"</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>self</literal>
-          </td>
-          <td>
-            <literal>"self"</literal>
-          </td>
+          <td><literal>self</literal></td>
+          <td><literal>"self"</literal></td>
         </tr>
         <tr>
           <td>Expression using <literal>yield</literal> correctly</td>
-          <td>
-            <literal>"yield"</literal>
-          </td>
+          <td><literal>"yield"</literal></td>
         </tr>
         <tr>
           <td>Expression using <literal>super</literal> correctly</td>
-          <td>
-            <literal>"super"</literal>
-          </td>
+          <td><literal>"super"</literal></td>
         </tr>
         <tr>
           <td>Assignment expression</td>
-          <td>
-            <literal>"assignment"</literal>
-          </td>
+          <td><literal>"assignment"</literal></td>
         </tr>
         <tr>
           <td>Message sending expression (doesn’t check arity)</td>
-          <td>
-            <literal>"method"</literal>
-          </td>
+          <td><literal>"method"</literal></td>
         </tr>
         <tr>
           <td>Any other legal expression</td>
-          <td>
-            <literal>"expression"</literal>
-          </td>
+          <td><literal>"expression"</literal></td>
         </tr>
         <tr>
           <td>Undefined variable or invalid use of <literal>yield</literal>/<literal>super</literal></td>
-          <td>
-            <literal>nil</literal>
-          </td>
+          <td><literal>nil</literal></td>
         </tr>
       </tbody>
     </table>
   </sect1>
+
   <sect1 xml:id="var.assignment">
     <title>Assignment</title>
-    <para>An assignment expression sets the value of one or more <link linkend="var.lvalues">lvalues</link> to their corresponding <link linkend="var.rvalues">rvalues</link>. Its general form is <literal><replaceable>lvalues</replaceable>
-    = <replaceable>rvalues</replaceable></literal>: one or more lvalues, an equals sign (<literal>U＋003D</literal>, then one or more rvalues.</para>
+
+    <para>An assignment expression sets the value of one or more <link linkend="var.lvalues">lvalues</link> to their corresponding <link linkend="var.rvalues">rvalues</link>. Its general form is <literal><replaceable>lvalues</replaceable> = <replaceable>rvalues</replaceable></literal>: one or more lvalues, an equals sign (<literal>U＋003D</literal>, then one or more rvalues.</para>
+
     <sect2 xml:id="var.lvalues">
       <title>Lvalues</title>
-      <para>An <firstterm>lvalue</firstterm> is a target of an assignment: an expression
-      that can appear on the <emphasis>l</emphasis>eft‐hand side of an assignment
-      expression.</para>
+
+      <para>An <firstterm>lvalue</firstterm> is a target of an assignment: an expression that can appear on the <emphasis>l</emphasis>eft‐hand side of an assignment expression.</para>
+
       <sect3 xml:id="var.lvalue-variable">
         <title>Variables</title>
-        <para>The name of any variable is a valid lvalue. An assignment
-        expression involving a variable lvalue causes the variable to take the
-        value of the corresponding rvalue. This operation occurs without any
-        methods being invoked or messages sent: it is inbuilt and its
-        semantics cannot be overridden.</para>
+
+        <para>The name of any variable is a valid lvalue. An assignment expression involving a variable lvalue causes the variable to take the value of the corresponding rvalue. This operation occurs without any methods being invoked or messages sent: it is inbuilt and its semantics cannot be overridden.</para>
       </sect3>
+
       <sect3 xml:id="var.lvalue-constant">
         <title>Constants</title>
-        <para>The name of any constant is a valid lvalue. Assignment to a
-        constant has the same semantics as assignment to a variable, with two
-        caveats:</para>
-        <itemizedlist>
+
+        <para>The name of any constant is a valid lvalue. Assignment to a constant has the same semantics as assignment to a variable, with two caveats:</para>
+        
+	<itemizedlist>
           <listitem>
-            <para>If the constant is initialized prior to the assignment, a
-            warning will be issued.</para>
+            <para>If the constant is initialized prior to the assignment, a warning will be issued.</para>
           </listitem>
           <listitem>
             <para>Constant assignment is illegal in the body of a method.</para>
           </listitem>
         </itemizedlist>
       </sect3>
+
       <sect3 xml:id="var.lvalue-attribute">
         <title>Attributes</title>
-        <para>A message expression of the form
-        <literal><replaceable>receiver</replaceable>.<replaceable>selector</replaceable></literal> is a valid
-        lvalue unless the last character of <replaceable>selector</replaceable> is a
-        question mark (<literal>U＋003F</literal>) or
-        exclamation mark (<literal>U＋0021</literal>). If the
-        last character of <replaceable>selector</replaceable> is not an equals sign (<literal>U＋003D</literal>), it is set to be. Then,
-        <replaceable>receiver</replaceable> is sent <replaceable>selector</replaceable> with the rvalue as
-        its argument.</para>
-        <para>An important implication of the above is that the receiver defines
-        the semantics of assignment. Typically, a selector ending with
-        <literal>=</literal> will assign its argument to the corresponding instance
-        variable, but it is free to do otherwise. However, the return value of
-        an attribute assignment expression is always the rvalue; the value
-        returned by the receiver is ignored.</para>
+
+        <para>A message expression of the form <literal><replaceable>receiver</replaceable>.<replaceable>selector</replaceable></literal> is a valid lvalue unless the last character of <replaceable>selector</replaceable> is a question mark (<literal>U＋003F</literal>) or exclamation mark (<literal>U＋0021</literal>). If the last character of <replaceable>selector</replaceable> is not an equals sign (<literal>U＋003D</literal>), it is set to be. Then, <replaceable>receiver</replaceable> is sent <replaceable>selector</replaceable> with the rvalue as its argument.</para>
+        
+	<para>An important implication of the above is that the receiver defines the semantics of assignment. Typically, a selector ending with <literal>=</literal> will assign its argument to the corresponding instance variable, but it is free to do otherwise. However, the return value of an attribute assignment expression is always the rvalue; the value returned by the receiver is ignored.</para>
       </sect3>
+
       <sect3 xml:id="var.lvalue-element-ref">
         <title>Element Reference Lvalues</title>
-        <para>An element reference expression, i.e.
-        <literal><replaceable>receiver</replaceable>[<replaceable>expression</replaceable>]</literal> is a special
-        case of <link linkend="var.lvalue-attribute">attribute lvalues</link>. It is
-        equivalent to <literal><replaceable>receiver</replaceable>.[]=(<replaceable>expression</replaceable>,
-        <replaceable>rvalue</replaceable>)</literal>.</para>
+
+        <para>An element reference expression, i.e.  <literal><replaceable>receiver</replaceable>[<replaceable>expression</replaceable>]</literal> is a special case of <link linkend="var.lvalue-attribute">attribute lvalues</link>. It is equivalent to <literal><replaceable>receiver</replaceable>.[]=(<replaceable>expression</replaceable>, <replaceable>rvalue</replaceable>)</literal>.</para>
       </sect3>
     </sect2>
+
     <sect2 xml:id="var.rvalues">
       <title>Rvalues</title>
-      <para>An <firstterm>rvalue</firstterm> is a value being assigned: appearing on the
-      <emphasis>r</emphasis>ight‐hand side of an assignment expression. Any expression is
-      a valid rvalue. The value of the expression that assigned to the
-      corresponding lvalue.</para>
+
+      <para>An <firstterm>rvalue</firstterm> is a value being assigned: appearing on the <emphasis>r</emphasis>ight‐hand side of an assignment expression. Any expression is a valid rvalue. The value of the expression that assigned to the corresponding lvalue.</para>
     </sect2>
+
     <sect2 xml:id="var.simple-assignment">
       <title>Simple Assignment</title>
-      <para>A simple assignment expression consists of a single lvalue and a
-      single rvalue: <literal><replaceable>lvalue</replaceable> = <replaceable>rvalue</replaceable></literal>. It
-      sets the value of <replaceable>lvalue</replaceable> to <replaceable>rvalue</replaceable>, then returns
-      <replaceable>rvalue</replaceable>.</para>
-      <para>If the rvalue is an <literal>Array</literal>, the lvalue may be followed by
-      a trailing comma to set the lvalue to the first element of the rvalue,
-      discarding the remaining rvalues.</para>
+
+      <para>A simple assignment expression consists of a single lvalue and a single rvalue: <literal><replaceable>lvalue</replaceable> = <replaceable>rvalue</replaceable></literal>. It sets the value of <replaceable>lvalue</replaceable> to <replaceable>rvalue</replaceable>, then returns <replaceable>rvalue</replaceable>.</para>
+      
+      <para>If the rvalue is an <literal>Array</literal>, the lvalue may be followed by a trailing comma to set the lvalue to the first element of the rvalue, discarding the remaining rvalues.</para>
     </sect2>
+
     <sect2 xml:id="var.abbreviated-assignment">
       <title>Abbreviated Assignment</title>
-      <para>An <firstterm>abbreviated assignment</firstterm> expression is a
-      syntactical shortcut for an rvalue consisting of a binary operator whose
-      operands are the lvalue and rvalue, respectively. It takes the following
-      general form, where <replaceable>operator</replaceable> is one of
-      thirteen predefined selectors enumerated in the table below:
-      <literal><replaceable>lvalue</replaceable>
-      <replaceable>operator</replaceable>=
-      <replaceable>rvalue</replaceable></literal>. This is wholly equivalent
-      to: <literal><replaceable>lvalue</replaceable> =
-      <replaceable>lvalue</replaceable> <replaceable>operator</replaceable>
-      <replaceable>rvalue</replaceable></literal>.</para>
-      <para>This equivalence means that the abbreviated form results in the
-      lvalue being sent a message with the selector <replaceable>operator</replaceable> and
-      the argument <replaceable>rvalue</replaceable>, then the result of this operation being
-      assigned to <replaceable>lvalue</replaceable>.</para>
-      <para>The value returned by an abbreviated assignment expression is that of
-      its expanded right‐hand side.</para>
+
+      <para>An <firstterm>abbreviated assignment</firstterm> expression is a syntactical shortcut for an rvalue consisting of a binary operator whose operands are the lvalue and rvalue, respectively. It takes the following general form, where <replaceable>operator</replaceable> is one of thirteen predefined selectors enumerated in the table below: <literal><replaceable>lvalue</replaceable> <replaceable>operator</replaceable>= <replaceable>rvalue</replaceable></literal>. This is wholly equivalent to: <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> <replaceable>operator</replaceable> <replaceable>rvalue</replaceable></literal>.</para>
+      
+      <para>This equivalence means that the abbreviated form results in the lvalue being sent a message with the selector <replaceable>operator</replaceable> and the argument <replaceable>rvalue</replaceable>, then the result of this operation being assigned to <replaceable>lvalue</replaceable>.</para>
+      
+      <para>The value returned by an abbreviated assignment expression is that of its expanded right‐hand side.</para>
+      
       <sidebar>
-        <para>The <literal>||=</literal> operator gives rise to a popular idiom
-        Perrotta terms a <quote>Nil Guard</quote> <biblioref begin="243"
-        end="244" linkend="bib.per10" units="pages"/>. Its purpose is to assign
-        the rvalue to the lvalue iff the lvalue is <link
-        linkend="flo.conditionals">false</link> (<literal>false</literal> or
-        <literal>nil</literal>). That is, to initialize the lvalue only if it
-        isn’t already. Perrotta describes an <link
-        linkend="var.instance">instance variable</link> employing
-        this technique as a <quote>Lazy Instance Variable</quote> <biblioref
-        begin="243" end="244" linkend="bib.per10" units="pages"/>.</para>
-        <example xml:id="ex.nil-guard">
-          <title>Initializing a variable only if it hasn’t been already.
-        </title>
-          <programlisting><xi:include href="examples/nil-guard.rb" parse="text"/></programlisting>
+        <para>The <literal>||=</literal> operator gives rise to a popular idiom Perrotta terms a <quote>Nil Guard</quote> <biblioref begin="243" end="244" linkend="bib.per10" units="pages"/>. Its purpose is to assign the rvalue to the lvalue iff the lvalue is <link linkend="flo.conditionals">false</link> (<literal>false</literal> or <literal>nil</literal>). That is, to initialize the lvalue only if it isn’t already. Perrotta describes an <link linkend="var.instance">instance variable</link> employing this technique as a <quote>Lazy Instance Variable</quote> <biblioref begin="243" end="244" linkend="bib.per10" units="pages"/>.</para>
+        
+	<example xml:id="ex.nil-guard">
+          <title>Initializing a variable only if it hasn’t been already.</title>
+
+          <programlisting><xi:include href="examples/nil-guard.rb" 
+parse="text"/></programlisting>
         </example>
       </sidebar>
+
       <table style="width:50%">
-        <caption>The abbreviated assignment operators
-        </caption>
+        <caption>The abbreviated assignment operators</caption>
+
         <thead>
           <tr>
             <th>Operator</th>
             <th>Abbreviation</th>
-            <th>Expansion
-        </th>
+            <th>Expansion</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <literal>+</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> += <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> + <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>+</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> += <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> + <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>-</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> -= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> - <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>-</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> -= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> - <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>*</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> *= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> * <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>*</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> *= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> * <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>/</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> /= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> / <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>/</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> /= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> / <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>%</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> %= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> % <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>%</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> %= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> % <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>**</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> **= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> ** <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>**</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> **= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> ** <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>&amp;&amp;</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> &amp;&amp;= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> &amp;&amp; <replaceable>lvalue</replaceable> = <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>&amp;&amp;</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> &amp;&amp;= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> &amp;&amp; <replaceable>lvalue</replaceable> = <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>||</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> ||= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> || <replaceable>lvalue</replaceable> = <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>||</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> ||= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> || <replaceable>lvalue</replaceable> = <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>&amp;</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> &amp;= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> &amp; <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>&amp;</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> &amp;= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> &amp; <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>|</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> |= <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>|</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> |= <replaceable>rvalue</replaceable></literal></td>
             <td>
               <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> | <replaceable>rvalue</replaceable></literal>
             </td>
           </tr>
           <tr>
-            <td>
-              <literal>^</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> ^= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> ^ <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>^</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> ^= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> ^ <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>&lt;&lt;</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> &lt;&lt;= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> &lt;&lt; <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>&lt;&lt;</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> &lt;&lt;= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> &lt;&lt; <replaceable>rvalue</replaceable></literal></td>
           </tr>
           <tr>
-            <td>
-              <literal>&gt;&gt;</literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> &gt;&gt;= <replaceable>rvalue</replaceable></literal>
-            </td>
-            <td>
-              <literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> &gt;&gt; <replaceable>rvalue</replaceable></literal>
-            </td>
+            <td><literal>&gt;&gt;</literal></td>
+            <td><literal><replaceable>lvalue</replaceable> &gt;&gt;= <replaceable>rvalue</replaceable></literal></td>
+            <td><literal><replaceable>lvalue</replaceable> = <replaceable>lvalue</replaceable> &gt;&gt; <replaceable>rvalue</replaceable></literal></td>
           </tr>
         </tbody>
       </table>
     </sect2>
+
     <sect2 xml:id="var.parallel-assignment">
       <title>Parallel Assignment</title>
-      <para>A parallel assignment expression involves multiple <link linkend="var.lvalues">lvalues</link> and/or multiple <link linkend="var.rvalues">rvalues</link>.
-      The values are separated by commas.</para>
 
-      <para>The parallel aspect of this operation is that all of the rvalues
-      are evaluated, left to right, prior to assigning them. This allows the
-      value of two or more variables to be swapped, as shown in the <link
-      linkend="ex.parallel-assignment-equal">figure below</link>.</para>
+      <para>A parallel assignment expression involves multiple <link linkend="var.lvalues">lvalues</link> and/or multiple <link linkend="var.rvalues">rvalues</link>.  The values are separated by commas.</para>
+
+      <para>The parallel aspect of this operation is that all of the rvalues are evaluated, left to right, prior to assigning them. This allows the value of two or more variables to be swapped, as shown in the <link linkend="ex.parallel-assignment-equal">figure below</link>.</para>
 
       <sect3 xml:id="var.parallel-assignment-equal">
         <title>Equal Number of Lvalues to Rvalues</title>
-        <para>When there are as many lvalues as there are rvalues, each lvalue is
-        assigned the rvalue in the corresponding position on the right‐hand
-        side of the expression. That is, the <replaceable>n</replaceable><superscript>th</superscript> lvalue
-        is assigned the <replaceable>n</replaceable><superscript>th</superscript> rvalue.</para>
-        <example xml:id="ex.parallel-assignment-equal">
-          <title>Parallel assignment when there are the same number of
-          terms on both sides
-        </title>
-          <programlisting><xi:include href="examples/parallel-assignment-equal.rb" parse="text"/></programlisting>
+
+        <para>When there are as many lvalues as there are rvalues, each lvalue is assigned the rvalue in the corresponding position on the right‐hand side of the expression. That is, the <replaceable>n</replaceable><superscript>th</superscript> lvalue is assigned the <replaceable>n</replaceable><superscript>th</superscript> rvalue.</para>
+        
+	<example xml:id="ex.parallel-assignment-equal">
+          <title>Parallel assignment when there are the same number of terms on both sides</title>
+     
+	  <programlisting><xi:include href="examples/parallel-assignment-equal.rb" parse="text"/></programlisting>
         </example>
       </sect3>
+
       <sect3 xml:id="var.splat">
         <title>Splat Operator</title>
-        <para>Lvalues and rvalues may optionally be directly preceded by an
-        asterisk (<literal>U＋002A</literal>), termed a
-        <firstterm>splat</firstterm><footnote><para><quote>This may derive from
-        the ‘squashed bug’ appearence of the asterisk on many early laser
-        printers.</quote> <biblioref begin="422" end="422" linkend="bib.raymond99" units="pages"/>
-      </para></footnote> hereafter.</para>
-        <sect4 xml:id="var.splat-lvalue">
+
+        <para>Lvalues and rvalues may optionally be directly preceded by an asterisk (<literal>U＋002A</literal>), termed a <firstterm>splat</firstterm><footnote><para><quote>This may derive from the ‘squashed bug’ appearence of the asterisk on many early laser printers.</quote> <biblioref begin="422" end="422" linkend="bib.raymond99" units="pages"/> </para></footnote> hereafter.</para>
+        
+	<sect4 xml:id="var.splat-lvalue">
           <title>Splatting an Lvalue</title>
-          <para>A maximum of one lvalue may be splatted in which case it is
-          assigned an <literal>Array</literal> consisting of the remaining rvalues
-          that lack corresponding lvalues. If the rightmost lvalue is splatted
-          then it consumes all rvalues which have not already been paired with
-          lvalues. If a splatted lvalue is followed by other lvalues, it
-          consumes as many rvalues as possible while still allowing the
-          following lvalues to receive their rvalues.</para>
-          <example xml:id="ex.splat-lvalue">
-            <title>A splatted lvalue greedily consumes rvalues into an
-            <literal>Array</literal></title>
+        
+	  <para>A maximum of one lvalue may be splatted in which case it is assigned an <literal>Array</literal> consisting of the remaining rvalues that lack corresponding lvalues. If the rightmost lvalue is splatted then it consumes all rvalues which have not already been paired with lvalues. If a splatted lvalue is followed by other lvalues, it consumes as many rvalues as possible while still allowing the following lvalues to receive their rvalues.</para>
+          
+	  <example xml:id="ex.splat-lvalue">
+            <title>A splatted lvalue greedily consumes rvalues into an <literal>Array</literal></title>
+
             <programlisting><xi:include href="examples/splat-lvalue.rb" parse="text"/></programlisting>
           </example>
+
           <sect5 xml:id="var.empty-splat">
             <title>Empty Splat</title>
-            <para>An lvalue may consist of a sole asterisk (<literal>U＋002A</literal>) without any associated identifier. It
-            behaves as described above, but instead of assigning the
-            corresponding rvalues to the splatted lvalue, it discards
-            them.</para>
-            <example xml:id="ex.empty-splat">
-              <title>An lvalue consisting of a sole asterisk greedily
-              consumes the associated rvalues, then discards them
-            </title>
-              <programlisting><xi:include href="examples/empty-splat.rb" parse="text"/></programlisting>
+
+            <para>An lvalue may consist of a sole asterisk (<literal>U＋002A</literal>) without any associated identifier. It behaves as described above, but instead of assigning the corresponding rvalues to the splatted lvalue, it discards them.</para>
+            
+	    <example xml:id="ex.empty-splat">
+              <title>An lvalue consisting of a sole asterisk greedily consumes the associated rvalues, then discards them</title>
+
+	      <programlisting><xi:include href="examples/empty-splat.rb" parse="text"/></programlisting>
             </example>
           </sect5>
         </sect4>
+
         <sect4 xml:id="var.splat-rvalue">
           <title>Splatting an Rvalue</title>
-          <para>When an rvalue is splatted it is converted to an
-          <literal>Array</literal> with <literal>Kernel.Array()</literal>, the elements of
-          which become rvalues in their own right.</para>
-          <example xml:id="ex.splat-rvalue">
-            <title>Splatting an rvalue expands it into its constituent
-            elements
-          </title>
+
+          <para>When an rvalue is splatted it is converted to an <literal>Array</literal> with <literal>Kernel.Array()</literal>, the elements of which become rvalues in their own right.</para>
+          
+	  <example xml:id="ex.splat-rvalue">
+            <title>Splatting an rvalue expands it into its constituent elements</title>
+
             <programlisting><xi:include href="examples/splat-rvalue.rb" parse="text"/></programlisting>
           </example>
-          <para>When given an object that does not respond to <literal>:to_a</literal>,
-          <literal>Kernel.Array()</literal> returns an <literal>Array</literal> with that
-          object as its sole element. Therefore, splatting such an object causes
-          it to expand to itself, effectively a no‐op.</para>
-          <para>However, for objects that do respond to <literal>:to_a</literal> with an
-          <literal>Array</literal>, such as <literal>Array</literal>, <literal>Hash</literal>,
-          <literal>Range</literal>, and <literal>Enumerator</literal>, splatting expands
-          them into a list of their constituent elements.</para>
+
+          <para>When given an object that does not respond to <literal>:to_a</literal>, <literal>Kernel.Array()</literal> returns an <literal>Array</literal> with that object as its sole element. Therefore, splatting such an object causes it to expand to itself, effectively a no‐op.</para>
+          
+	  <para>However, for objects that do respond to <literal>:to_a</literal> with an <literal>Array</literal>, such as <literal>Array</literal>, <literal>Hash</literal>, <literal>Range</literal>, and <literal>Enumerator</literal>, splatting expands them into a list of their constituent elements.</para>
         </sect4>
       </sect3>
+      
       <sect3 xml:id="var.parallel-assignment-one-lvalue">
         <title>One Lvalue, Many Rvalues</title>
-        <para>When multiple rvalues are assigned to a single lvalue, there is an
-        <link linkend="var.splat-lvalue">implicit splat operator</link> before the lvalue.
-        Therefore, assigning <replaceable>n</replaceable> rvalues to a single lvalue is
-        equivalent to: <literal><replaceable>lvalue</replaceable> =
-        [<replaceable>rvalue</replaceable><subscript>0</subscript>,…,<replaceable>rvalue</replaceable><subscript><replaceable>n</replaceable></subscript>]</literal></para>
-        <para>If this behaviour is undesirable, the lvalue can be followed by a
-        trailing comma, assigning <replaceable>rvalue</replaceable><subscript>0</subscript> to
-        <replaceable>lvalue</replaceable>, and discarding the remaining rvalues.</para>
-        <example xml:id="ex.parallel-assignment-one-lvalue">
-          <title>Parallel assignment when there is a sole lvalue
-        </title>
+      
+	<para>When multiple rvalues are assigned to a single lvalue, there is an <link linkend="var.splat-lvalue">implicit splat operator</link> before the lvalue.  Therefore, assigning <replaceable>n</replaceable> rvalues to a single lvalue is equivalent to: <literal><replaceable>lvalue</replaceable> = [<replaceable>rvalue</replaceable><subscript>0</subscript>,…,<replaceable>rvalue</replaceable><subscript><replaceable>n</replaceable></subscript>]</literal></para>
+        
+	<para>If this behaviour is undesirable, the lvalue can be followed by a trailing comma, assigning <replaceable>rvalue</replaceable><subscript>0</subscript> to <replaceable>lvalue</replaceable>, and discarding the remaining rvalues.</para>
+        
+	<example xml:id="ex.parallel-assignment-one-lvalue">
+          <title>Parallel assignment when there is a sole lvalue</title>
+
           <programlisting><xi:include href="examples/parallel-assignment-one-lvalue.rb" parse="text"/></programlisting>
         </example>
       </sect3>
+
       <sect3 xml:id="var.parallel-assignment-one-rvalue">
         <title>Many Lvalues, One Rvalue</title>
+
         <example xml:id="ex.parallel-assignment-one-rvalue">
-          <title>When an <literal>Array</literal> with
-          <replaceable>n</replaceable> elements is assigned to <replaceable>n</replaceable> lvalues, each
-          lvalue is assigned one element
-        </title>
+          <title>When an <literal>Array</literal> with <replaceable>n</replaceable> elements is assigned to <replaceable>n</replaceable> lvalues, each lvalue is assigned one element</title>
+
           <programlisting><xi:include href="examples/parallel-assignment-one-rvalue.rb" parse="text"/></programlisting>
         </example>
-        <para>If there are multiple lvalues and a single rvalue that responds to
-        <literal>:to_ary</literal><footnote><para>Note that <literal>:to_ary</literal> is sent rather than the
-      <literal>:to_a</literal> used by the <link linkend="var.splat-rvalue">splat</link> operator.
-      In the former case, the programmer did not directly request that
-      conversion take place so the message for <link linkend="obj.implicit-conversion">implicit</link> conversion is sent; in
-      the latter, his use of the splat operator constitutes an <link linkend="obj.explicit-conversion">explicit conversion</link>, so the more
-      liberal protocol is followed.
-    </para></footnote> with an
-        <literal>Array</literal>, the elements of this array become rvalues in their
-        own right, replacing the original rvalue.</para>
+
+        <para>If there are multiple lvalues and a single rvalue that responds to <literal>:to_ary</literal><footnote><para>Note that <literal>:to_ary</literal> is sent rather than the <literal>:to_a</literal> used by the <link linkend="var.splat-rvalue">splat</link> operator.  In the former case, the programmer did not directly request that conversion take place so the message for <link linkend="obj.implicit-conversion">implicit</link> conversion is sent; in the latter, his use of the splat operator constitutes an <link linkend="obj.explicit-conversion">explicit conversion</link>, so the more liberal protocol is followed.</para></footnote> with an <literal>Array</literal>, the elements of this array become rvalues in their own right, replacing the original rvalue.</para>
+
         <example xml:id="ex.parallel-assignment-one-rvalue-nil">
-          <title>When an <literal>Array</literal> with
-          <replaceable>n</replaceable> elements is assigned to fewer than <replaceable>n</replaceable>
-          lvalues, the first <replaceable>n</replaceable> elements are assigned the
-          corresponding lvalue, and the remainder discarded
-        </title>
-          <programlisting><xi:include href="examples/parallel-assignment-one-rvalue-nil.rb" parse="text"/></programlisting>
+          <title>When an <literal>Array</literal> with <replaceable>n</replaceable> elements is assigned to fewer than <replaceable>n</replaceable> lvalues, the first <replaceable>n</replaceable> elements are assigned the corresponding lvalue, and the remainder discarded</title>
+         
+	  <programlisting><xi:include href="examples/parallel-assignment-one-rvalue-nil.rb" parse="text"/></programlisting>
         </example>
-        <example xml:id="ex.parallel-assignment-rvalue-to-ary">
-          <title>When an object responding to
-          <literal>:to_ary</literal> with an <replaceable>n</replaceable> element <literal>Array</literal>
-          is assigned to <replaceable>n</replaceable> lvalues, each lvalue is assigned one
-          element
-        </title>
+        
+	<example xml:id="ex.parallel-assignment-rvalue-to-ary">
+          <title>When an object responding to <literal>:to_ary</literal> with an <replaceable>n</replaceable> element <literal>Array</literal> is assigned to <replaceable>n</replaceable> lvalues, each lvalue is assigned one element</title>
+
           <programlisting><xi:include href="examples/parallel-assignment-rvalue-to-ary.rb" parse="text"/></programlisting>
         </example>
-        <para>If there are as many lvalues as there are
-        elements in the splatted rvalue, assignment proceeds according to <link linkend="var.parallel-assignment-equal">Equal Number of Lvalues to
-          Rvalues</link>; otherwise the following section, <link linkend="var.parallel-assignment-unequal">Unequal Number of Lvalues to
-          Rvalues</link>, applies.</para>
+
+        <para>If there are as many lvalues as there are elements in the splatted rvalue, assignment proceeds according to <link linkend="var.parallel-assignment-equal">Equal Number of Lvalues to Rvalues</link>; otherwise the following section, <link linkend="var.parallel-assignment-unequal">Unequal Number of Lvalues to Rvalues</link>, applies.</para>
+
         <example xml:id="ex.parallel-assignment-one-rvalue-non-array">
-          <title>When a non-<literal>Array</literal> is
-          assigned to multiple lvalues, the first lvalue takes the sole
-          rvalue, and the remaining lvalues are assigned <literal>nil</literal></title>
+          <title>When a non-<literal>Array</literal> is assigned to multiple lvalues, the first lvalue takes the sole rvalue, and the remaining lvalues are assigned <literal>nil</literal></title>
+
           <programlisting><xi:include href="examples/parallel-assignment-one-rvalue-non-array.rb" parse="text"/></programlisting>
         </example>
       </sect3>
+
       <sect3 xml:id="var.parallel-assignment-unequal">
         <title>Unequal Number of Lvalues to Rvalues</title>
-        <para>When the lvalues outnumber the rvalues, assignment proceeds as with
-        <link linkend="var.parallel-assignment-equal">equal numbers of lvalues to
-          rvalues</link>, with the remaining lvalues being assigned
-        <literal>nil</literal>. That is, for <replaceable>n</replaceable> rvalues and <replaceable>m</replaceable>
-        lvalues, where <replaceable>n</replaceable> &lt; <replaceable>m</replaceable>,
-        <replaceable>lvalue</replaceable><subscript>0</subscript>–<replaceable>lvalue</replaceable><subscript><replaceable>n</replaceable></subscript>
-        are assigned
-        <replaceable>rvalue</replaceable><subscript>0</subscript>–<replaceable>rvalue</replaceable><subscript><replaceable>n</replaceable></subscript>,
-        and
-        <replaceable>lvalue</replaceable><subscript><replaceable>n</replaceable>+1</subscript>–<replaceable>lvalue</replaceable><subscript><replaceable>m</replaceable></subscript>
-        are assigned <literal>nil</literal>.</para>
-        <example xml:id="ex.parallel-assignment-more-lvalues">
-          <title>When there are more lvalues than rvalues, the
-          superfluous lvalues are assigned <literal>nil</literal></title>
+
+        <para>When the lvalues outnumber the rvalues, assignment proceeds as with <link linkend="var.parallel-assignment-equal">equal numbers of lvalues to rvalues</link>, with the remaining lvalues being assigned <literal>nil</literal>. That is, for <replaceable>n</replaceable> rvalues and <replaceable>m</replaceable> lvalues, where <replaceable>n</replaceable> &lt; <replaceable>m</replaceable>, <replaceable>lvalue</replaceable><subscript>0</subscript>–<replaceable>lvalue</replaceable><subscript><replaceable>n</replaceable></subscript> are assigned <replaceable>rvalue</replaceable><subscript>0</subscript>–<replaceable>rvalue</replaceable><subscript><replaceable>n</replaceable></subscript>, and <replaceable>lvalue</replaceable><subscript><replaceable>n</replaceable>+1</subscript>–<replaceable>lvalue</replaceable><subscript><replaceable>m</replaceable></subscript> are assigned <literal>nil</literal>.</para>
+        
+	<example xml:id="ex.parallel-assignment-more-lvalues">
+          <title>When there are more lvalues than rvalues, the superfluous lvalues are assigned <literal>nil</literal></title>
+
           <programlisting><xi:include href="examples/parallel-assignment-more-lvalues.rb" parse="text"/></programlisting>
         </example>
-        <para>Conversely, when the rvalues outnumber the lvalues, assignment
-        proceeds as with <link linkend="var.parallel-assignment-equal">equal numbers of
-          lvalues to rvalues</link>, with the remaining rvalues being
-        discarded.</para>
-        <example xml:id="ex.parallel-assignment-more-rvalues">
-          <title>When there are more rvalues than lvalues, the
-          superfluous rvalues are discarded 
-        </title>
-          <programlisting><xi:include href="examples/parallel-assignment-more-rvalues.rb" parse="text"/></programlisting>
+
+        <para>Conversely, when the rvalues outnumber the lvalues, assignment proceeds as with <link linkend="var.parallel-assignment-equal">equal numbers of lvalues to rvalues</link>, with the remaining rvalues being discarded.</para>
+        
+	<example xml:id="ex.parallel-assignment-more-rvalues">
+          <title>When there are more rvalues than lvalues, the superfluous rvalues are discarded</title>
+          
+	  <programlisting><xi:include href="examples/parallel-assignment-more-rvalues.rb" parse="text"/></programlisting>
         </example>
       </sect3>
+
       <sect3 xml:id="var.sub-assignment">
         <title>Sub‐assignment</title>
-        <para>When a group of at least two lvalues are enclosed in parentheses,
-        they are initially treated as a single lvalue in that, collectively,
-        they are assigned a single rvalue. After all remaining lvalues have
-        been paired with their corresponding rvalues, the rules of parallel
-        assignment are applied again to each of these groups, recursively for
-        each level of parentheticals.</para>
-        <example xml:id="ex.sub-assignment">
-          <title>Using sub‐assignment to distribute nested rvalues
-        </title>
+
+        <para>When a group of at least two lvalues are enclosed in parentheses, they are initially treated as a single lvalue in that, collectively, they are assigned a single rvalue. After all remaining lvalues have been paired with their corresponding rvalues, the rules of parallel assignment are applied again to each of these groups, recursively for each level of parentheticals.</para>
+        
+	<example xml:id="ex.sub-assignment">
+          <title>Using sub‐assignment to distribute nested rvalues</title>
+
           <programlisting><xi:include href="examples/sub-assignment.rb" parse="text"/></programlisting>
         </example>
-        <para>Recall that if multiple lvalues are assigned a single rvalue that
-        responds to <literal>:to_ary</literal>, the rvalue is assigned to the first
-        lvalue, and the remaining lvalues are assigned <literal>nil</literal>.
-        Therefore, sub‐assignment is most useful when the corresponding rvalue
-        is array‐like, because it distributes the elements of potentially
-        nested arrays on the right‐hand side among lvalues.</para>
+
+        <para>Recall that if multiple lvalues are assigned a single rvalue that responds to <literal>:to_ary</literal>, the rvalue is assigned to the first lvalue, and the remaining lvalues are assigned <literal>nil</literal>.  Therefore, sub‐assignment is most useful when the corresponding rvalue is array‐like, because it distributes the elements of potentially nested arrays on the right‐hand side among lvalues.</para>
       </sect3>
+
       <sect3 xml:id="var.parallel-assignment-value">
         <title>Value of a Parallel Assignment Expression</title>
-        <para>A parallel assignment expression involving a single rvalue has
-        that rvalue as its value. Otherwise, the value is
-        an <literal>Array</literal> of the rvalues, including any that were
-        discarded. In both cases, the rvalues are splatted as appropriate
-        before being returned.</para>
-        <example xml:id="ex.parallel-assignment-value">
-          <title>The value of a parallel assignment expression is its
-          rvalues
-        </title>
-          <programlisting><xi:include href="examples/parallel-assignment-value.rb" parse="text"/></programlisting>
-        </example>
+
+        <para>A parallel assignment expression involving a single rvalue has that rvalue as its value. Otherwise, the value is an <literal>Array</literal> of the rvalues, including any that were discarded. In both cases, the rvalues are splatted as appropriate before being returned.</para>
+        
+	<example xml:id="ex.parallel-assignment-value">
+          <title>The value of a parallel assignment expression is its rvalues</title> 
+	  
+	  <programlisting><xi:include href="examples/parallel-assignment-value.rb" parse="text"/></programlisting>
+	</example>
       </sect3>
     </sect2>
   </sect1>
