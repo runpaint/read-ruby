@@ -113,6 +113,11 @@ article {
         content: 'Read Ruby 1.9 (DRAFT): http://ruby.runpaint.org/';
         font-weight: bold;
     }
+    @bottom-left {
+        content: '$git_date';
+        font-size: small;
+        font-style: italic;
+    }
     @bottom-center {
         content: counter(page);
 	font-style: italic;

@@ -71,6 +71,9 @@ URL = 'http://ruby.runpaint.org/'
 # PDF version 
 PDF = File.join(OUT_DIR, 'read-ruby.pdf')
 
+# HTML used to make PDF
+PDF_HTML = "#{BUILD_DIR}/single.html"
+
 # Create OUT_DIR, EX_DIR, and BUILD_DIR as needed.
 [OUT_DIR, BUILD_DIR].each do |dir|
   task :html => dir
@@ -82,6 +85,19 @@ CLEAN.exclude(OUT_DIR).include(*EX_HTML, BUILD_DIR)
 
 # All products of build process
 CLOBBER.include(*EX_HTML, OUT_DIR)
+
+GIT_DATE, GIT_HASH = `git log -n 1 --format="%ci%n%H"`.lines.map(&:chomp)
+
+XSLTPROC = ->(xsl) do
+  datetime = DateTime.parse(GIT_DATE).iso8601
+  params = {
+    'stringparam out_dir' => BUILD_DIR,
+    'stringparam git_hash' => GIT_HASH,
+    'stringparam git_date' => GIT_DATE,
+    'stringparam git_datetime' => datetime,
+  }.map{|n,v| "--#{n} '#{v}'"}.join(?\ )
+  sh "xsltproc #{params} --xinclude #{xsl} #{BOOK_XML} >#{IO::NULL}"
+end
 
 task :html => [EX_DIR, *EX_HTML]
 
@@ -97,8 +113,7 @@ task :html => [EX_DIR, *EX_HTML]
 HTML.zip(SRC_XML).each_with_index do |(html, src), i|
   desc "XSLT #{src} to #{html}"
   rule html => src do
-    sh "xsltproc --stringparam out_dir #{BUILD_DIR} --xinclude " +
-      "#{HTML_XSL} #{BOOK_XML} >#{IO::NULL}" if uptodate?(src, [BUILD_HTML[i]])
+    XSLTPROC[HTML_XSL] if uptodate?(src, [BUILD_HTML[i]])
     cp BUILD_HTML[i], html
     cp TOC_BUILD, TOC_OUT unless uptodate?(TOC_OUT, SRC_XML << TOC_BUILD) 
     Rake::Task[:fixup].tap do |t|
@@ -206,9 +221,10 @@ task :nvdl do
 end
 
 task :pdf => [OUT_DIR, BUILD_DIR] do
-  sh "xsltproc --stringparam out_dir #{BUILD_DIR} --xinclude " +
-      "#{PDF_XSL} #{BOOK_XML} >#{IO::NULL}"
-  sh "prince #{BUILD_DIR}/single.html #{PDF}"
+  XSLTPROC[PDF_XSL]
+  html = File.read(PDF_HTML).gsub(/\$git_date/, GIT_DATE)
+  open(PDF_HTML, ?w){|f| f << html}
+  sh "prince #{PDF_HTML} #{PDF}"
   sh "gzip --best -cn #{PDF} >#{PDF}.gz"
 end
 

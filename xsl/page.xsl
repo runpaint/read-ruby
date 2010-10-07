@@ -69,6 +69,9 @@
 	    <xsl:apply-templates/>
 	    <xsl:call-template name="footnote-list"/>
 	  </article>
+	  <xsl:call-template name="footer">
+	    <xsl:with-param name="id" select="$id"/>
+	  </xsl:call-template>
 	</body>
       </html>
     </xsl:document>
@@ -91,5 +94,13 @@
 	<xsl:call-template name="search"/>
       </nav>
     </header>
+  </xsl:template>
+
+  <xsl:template name="footer">
+    <xsl:param name="id"/>
+
+    <footer>
+      <a href="//github.com/runpaint/read-ruby">Text and figures</a> licensed under a <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/2.0/uk/">Creative Commons License</a>. Updated: <a href="//github.com/runpaint/read-ruby/blob/{$git_hash}/src/{$id}.xml"><time pubdate="pubdate" datetime="{$git_datetime}"><xsl:value-of select="$git_date"/></time></a>.
+    </footer>
   </xsl:template>
 </xsl:stylesheet>

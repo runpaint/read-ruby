@@ -375,6 +375,10 @@ body > footer {
 body > footer:before {
   content: "\2767";
 }
+
+body > footer:after {
+  content: "\2767";
+}
     </xsl:text>    
   </xsl:template>
 </xsl:stylesheet>
