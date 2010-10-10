@@ -39,7 +39,7 @@ TOC_OUT = TOC_BUILD.sub(/^#{BUILD_DIR}/, OUT_DIR)
 PRISTINE_DIR = 'www'
 
 # The contents of PRISTINE_DIR
-PRISTINE_FILES = FileList["#{PRISTINE_DIR}/{*.*,.[a-z]*}"]
+PRISTINE_FILES = FileList["#{PRISTINE_DIR}/{*,.[a-z]*}"]
 
 # Directory containing EX_RB and EX_HTML
 EX_DIR = 'examples'
@@ -99,7 +99,7 @@ XSLTPROC = ->(xsl) do
   sh "xsltproc #{params} --xinclude #{xsl} #{BOOK_XML} >#{IO::NULL}"
 end
 
-task :html => [EX_DIR, *EX_HTML]
+task :html => EX_HTML
 
 # To generate a file in HTML we need to XSLT BOOK_XML. However, the XSLT
 # re-generates all of HTML; not just a single file. This is problematic because
@@ -139,13 +139,8 @@ end
 PRISTINE_FILES.each do |f|
   task :html => (out = f.sub(/^#{PRISTINE_DIR}/, 'out'))
   rule out => f do 
-    cp f, out 
+    File.symlink?(f) ? ln_s("../#{f}", out) : cp(f, out)
   end
-end
- 
-desc "Symlink #{EX_DIR} from #{OUT_DIR}"
-file EX_DIR do |t| 
-  ln_s t.name, OUT_DIR 
 end
 
 # Create highlighted copies of each EX_RB file
