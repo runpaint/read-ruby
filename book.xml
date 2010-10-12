@@ -18,6 +18,7 @@
   <xi:include href="src/encoding.xml"/>
   <xi:include href="src/enumerables.xml"/>
   <xi:include href="src/arrays.xml"/>
+  <xi:include href="src/hashes.xml"/>
   <xi:include href="src/files.xml"/>
   <xi:include href="src/flow.xml"/>
   <xi:include href="src/exceptions.xml"/>

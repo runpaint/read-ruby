@@ -172,7 +172,7 @@ desc "Replace examples with highlighted versions; shorten permalinks"
 task :fixup, [:file]  do |_, a|
   (nok = Nokogiri::HTML(File.read a.file)).css('code.ruby').each do |code|
     f = "#{EX_DIR}/#{code['id'].sub(/^ex\./,'')}.html"
-    File.exist?(f) ? code.parent.swap(File.read f) : break
+    code.parent.swap(File.read f) if File.exist?(f)
   end
   nok.css('h1 > a').each do |e|
     u = URL + File.basename(a.file.ext('')) + e['href']

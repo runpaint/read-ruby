@@ -188,10 +188,12 @@
     returns its argument. It interprets a <literal>Numeric</literal> argument
     as a character code, writing the least-significant byte of the character
     corresponding to its integer part. A non-numeric argument is converted to a
-    <literal>String</literal>, then its least-significant byte is written to
-    the stream. Please note the term <emphasis>byte</emphasis>: this method
-    will only ever write a single byte, even when given a multi-byte
-    character.</para>
+    <literal>String</literal>, then its least-significant byte is
+    written to the stream. Please note the
+    term <emphasis>byte</emphasis>: before Ruby 1.9.3, this method
+    would only ever write a single byte, even when given a multi-byte
+    character; as of 1.9.3, it behaves correctly with multi-byte
+    characters.</para>
 
     <example xml:id="ex.syswrite-write-putc">
       <title>The <literal>#syswrite</literal>, <literal>#write</literal>, and

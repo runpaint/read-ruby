@@ -497,7 +497,7 @@
               (<literal>U＋002E</literal>) in a <link
                 linkend="mes.expressions">message expression</link> or <link
                 linkend="arr.arrays">array</link>/<link
-                linkend="enu.hashes">hash</link> literal, with optional
+                linkend="has.hashes">hash</link> literal, with optional
               intervening whitespace.
             </para>
           </listitem>
@@ -508,7 +508,7 @@
               argument list of <link linkend="mes.expressions">message
                 expressions</link>, and <link
                 linkend="arr.arrays">array</link> or <link
-                linkend="enu.hashes">hash</link> literals to span multiple
+                linkend="has.hashes">hash</link> literals to span multiple
               lines).
             </para>
           </listitem>

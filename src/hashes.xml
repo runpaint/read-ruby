@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+         xmlns:xi="http://www.w3.org/2001/XInclude" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="5.0" 
+         xml:id="has.hashes" 
+         xml:lang="en">
+  
+  <title>Hashes</title>
+
+  <para>A <literal>Hash</literal> represents a mutable, heterogeneous collection of associations between pairs of objects. The collection is indexed by the first element of the pair-its <firstterm>key</firstterm>-which uniquely identifies the second element of the pair-its <firstterm>value</firstterm>. It is ordered by insertion<footnote><para>Hash tables do not normally <link xlink:href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12542">preserve order of insertion</link>, of course; a <link xlink:href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/12556">doubly-circularly linked list</link> is used behind the scenes. Ilya Grigorik <link xlink:href="http://www.igvita.com/2009/02/04/ruby-19-internals-ordered-hash/">examined the consequences</link> of this decision.</para></footnote>. Uses include a dictionary, allowing values to be looked up by key; a dispatch table, where the values are <literal>Proc</literal>s identified by their key; and a cache of unique values, taking advantage of the unique keys property.</para>
+
+  <sect1 xml:id="has.literals">
+    <title>Literals</title>
+    
+    <para>A <literal>Hash</literal> literal consists of a comma-separated list of key-value pairs enclosed in curly braces (<literal>{</literal>, <literal>}</literal>). It creates a new <literal>Hash</literal> object with the specified contents. The key is separated from its value with <literal>=&gt;</literal>. If the key is a <literal>Symbol</literal> literal, the colon with which its prefixed may be made its suffix, and <literal>=&gt;</literal> can be omitted. (This syntactical shortcut is a reason for preferring <literal>Symbol</literal> keys).</para>
+    
+    <example xml:id="ex.hash-literals">
+      <title>Creating a <literal>Hash</literal> with a literal</title>
+      
+      <programlisting><xi:include href="examples/hash-literals.rb" parse="text"/></programlisting>
+    </example>
+  </sect1> 
+
+  <sect1 xml:id="has.lookup">
+    <title>Look-up</title>
+
+    <para>The element reference syntax, <function>Hash#[]</function>, returns the value for a given key, or the <link linkend="has.default">default value</link> if they key doesn’t exist. The <literal>#fetch(<replaceable>key</replaceable>)</literal> behaves likewise, except when the key doesn’t exist: with no other arguments, it raises an <literal>IndexError</literal>; with a second argument, it returns that; and with a block, it returns the block’s value when given the key as argument.</para> 
+
+    <para><function>#values_at</function> accepts an arbitrary number of keys as arguments, returning an <literal>Array</literal> comprising their corresponding values. The default value is returned for non-existent keys.</para>
+
+    <para><function>#assoc(<replaceable>key</replaceable>)</function> and <function>#rassoc(<replaceable>value</replaceable>)</function> return a key-value pair as a two element <literal>Array</literal>. The former, returns the pair whose key equals <replaceable>key</replaceable>; the latter, returns the first pair whose value equals <replaceable>value</replaceable>. Both return <literal>nil</literal> when no corresponding pair exists.</para>
+
+    <example xml:id="ex.hash-lookup">
+      <title>Looking-up a value for a key in a <literal>Hash</literal></title>
+      
+      <programlisting><xi:include href="examples/hash-lookup.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.default">
+    <title>Default Value</title>
+
+    <para>Retrieving a key from a <literal>Hash</literal> returns the corresponding value. If they key does not exist in the <literal>Hash</literal>, a <firstterm>default value</firstterm> is returned. The default value is normally <literal>nil</literal>, but can be overridden.</para>
+
+    <para><function>Hash.new</function> instantiates a <literal>Hash</literal> with a default value. With no arguments, it is equivalent to <literal>{}</literal>, so has a default value of <literal>nil</literal>. <literal>Hash.new(<replaceable>value</replaceable>)</literal> sets <replaceable>value</replaceable> as the default. If <function>Hash.new</function> is provided a block, the block is invoked whenever a default value is required. It receives the <literal>Hash</literal> and missing key as arguments, and is expected to return the corresponding value. For efficiency, the block can store this value in the <literal>Hash</literal>, so future look-ups for the key bypass the block.</para>
+
+    <para>The default value of an existing <literal>Hash</literal> can be modified. <function>Hash#default=</function> sets the default value to its argument. <function>Hash#default_proc=</function> expects its argument to be a <literal>Proc</literal>, which is equivalent to the block given to <function>Hash.new</function>. <function>#default</function> and <function>#default_proc</function> return the current default value and <literal>Proc</literal>, respectively. <remark>Note that only one default is active at a time</remark></para>
+
+    <example xml:id="ex.hash-default-value">
+      <title>Changing the default value of a <literal>Hash</literal></title>
+      
+      <programlisting><xi:include href="examples/hash-default-value.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+  
+  <sect1 xml:id="has.insertion">
+    <title>Insertion</title>
+
+    <!-- TODO: Mention #hash here? -->
+    
+    <para>The element set syntax, <literal>#[<replaceable>key</replaceable>]= <replaceable>value</replaceable></literal>, stores the given key-value pair in the receiver. <function>#store(<replaceable>key</replaceable>, <replaceable>value</replaceable>)</function> behaves identically. If a value already exists for <replaceable>key</replaceable>, it is overwritten; the predicates described in <xref linkend="has.keys"/> can be used to detect when this would happen.</para>
+
+    <example xml:id="ex.hash-store">
+      <title>Storing values in a <literal>Hash</literal>.</title>
+      
+      <programlisting><xi:include href="examples/hash-store.rb" parse="text"/></programlisting>
+    </example>
+
+    <para><function>#[]=</function> and <function>#store</function> associate a key object with a value object. If the key is a <literal>String</literal>, it is duplicated and frozen before insertion. If the key is another mutable object, it is possible to modify it after storing it in the <literal>Hash</literal>. However, this is inadvisable because the corresponding value will still be associated with the original key object, defeating attempts to perform look-ups with the modified key. This can be worked around with the <function>#rehash</function> described below, but a better solution is to freeze mutable keys before insertion, or at least treat them as if you had.</para>
+
+    <para><function>#rehash</function> re-indexes the receiver based on the current values of its keys. This is only necessary if the value of a key object has changed since it was inserted into the <literal>Hash</literal>. If <function>#rehash</function> is called while the <literal>Hash</literal> is being iterated, an <literal>IndexError</literal> is raised.</para>
+
+    <example xml:id="ex.hash-rehash">
+      <title>Using <function>Hash#rehash</function> to re-index a <literal>Hash</literal> after one of its keys changed.</title>
+
+      <programlisting><xi:include href="examples/hash-rehash.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.deletion">
+    <title>Deletion</title>
+    
+    <para><literal>#delete(<replaceable>key</replaceable>)</literal> deletes <replaceable>key</replaceable> and its corresponding value, then returns the latter. It returns <literal>nil</literal> if the key didn’t exist; or, if a block is given, the value of the block when invoked with <replaceable>key</replaceable> as an argument. <function>#shift</function> deletes and returns the first key-value pair from the receiver. If the <literal>Hash</literal> is empty, returns the default value for a key of <literal>nil</literal>.</para>
+
+    <para><function>#delete_if</function> passes each key-value pair to its associated block in turn, deleting those for which the block is true. An <literal>Enumerator</literal> is returned if the block is omitted. <function>#reject!</function> is identical, expect it returns <literal>nil</literal> if no changes occurred. <function>#reject</function> is equivalent to invoking <function>#delete_if</function> on a copy of the receiver, then returning that copy.</para> 
+
+    <para>The inverse of <function>#delete_if</function> is <function>#keep_if</function>, which deletes each key-value pair for which the block is false. An <literal>Enumerator</literal> is returned if the block is omitted. <function>#select!</function> is equivalent, except it returns <literal>nil</literal> if no changes occurred. <function>#select</function> returns a new <literal>Hash</literal> containing the key-value pairs for which its associated block returned true. </para>
+
+    <para><function>#clear</function> deletes all of the receiver’s key-value pairs, returning the empty <literal>Hash</literal>. The receiver’s taintedness, trust, and default value are preserved. Similarly, <function>#replace(<replaceable>hash</replaceable>)</function> replaces all key-value pairs in the receiver with those in <replaceable>hash</replaceable>.</para>
+
+    <example xml:id="ex.hash-delete">
+      <title>Deleting key-value pairs from a <literal>Hash</literal>.</title>
+
+      <programlisting><xi:include href="examples/hash-delete.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.iteration">
+    <title>Iteration</title>
+    
+    <para><function>Hash#each</function>, and its alias <function>#each_pair</function>, calls its associated block with each key-value pair in turn. <function>#each_key</function> and <function>#each_value</function> call the associated block with each key and value, respectively. Each method returns the receiver, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+    <example xml:id="ex.hash-iteration">
+      <title>Iterating a <literal>Hash</literal>.</title>
+
+      <programlisting><xi:include href="examples/hash-iteration.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.keys">
+    <title>Keys</title>
+
+    <para><literal>#key(<replaceable>value</replaceable>)</literal> returns the first key whose value is <replaceable>value</replaceable>. If a <literal>Hash</literal> contains a given key, the <literal>#key?(<replaceable>key</replaceable>)</literal> predicate returns <literal>true</literal>; otherwise, it returns <literal>false</literal>. The <function>#has_key?</function>, <function>#member?</function>, and <function>#include?</function> methods behave identically.</para>
+
+    <para><function>#keys</function> returns the receiver’s keys as an <literal>Array</literal>. <function>#each_key</function> returns an <literal>Enumerator</literal> of the same. If <function>#each_key</function> is given a block, it yields each key in turn, then returns the receiver.</para>
+
+    <example xml:id="ex.hash-keys">
+      <title>Inspecting the keys of a <literal>Hash</literal>.</title>
+
+      <programlisting><xi:include href="examples/hash-keys.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.values">
+    <title>Values</title>
+
+    <para>The value <function>#value?(<replaceable>value</replaceable>)</function> predicate, and it alias, <function>#has_value?</function>, return <literal>true</literal> if one or more keys have a value of <replaceable>value</replaceable>.</para>
+
+    <para><function>#values</function> returns the receiver’s values as an <literal>Array</literal>, while <function>#each_value</function> returns an <literal>Enumerator</literal> of the same. If <function>#each_value</function> is given a block, it yields each value in turn, then returns the receiver. To retrieve the value(s) associated with one or more keys, see <xref linkend="has.lookup"/>.</para>
+
+    <example xml:id="ex.hash-values">
+      <title>Inspecting the values of a <literal>Hash</literal>.</title>
+
+      <programlisting><xi:include href="examples/hash-values.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.transform">
+    <title>Transformations</title>
+
+    <para><function>#flatten(<replaceable>depth</replaceable> = 1)</function> converts the receiver to an <literal>Array</literal>, on which it invokes <function>Array#flatten!</function>, and returns. The result is an <literal>Array</literal> whose first element is the first key, second element is the first value, third element is the second key, and so on. The <replaceable>depth</replaceable> arguments controls how deep <function>Array#flatten!</function> recurses.</para>
+
+    <para><function>#invert</function> returns a <literal>Hash</literal> whose keys are the receiver’s values, and whose value’s are the receiver’s keys. As keys are unique, if the original <literal>Hash</literal> contained multiple keys with the same value, only the last<footnote><para>Thomas claims that <quote>If <literal>hsh</literal> has duplicate values, the result will contain only one of them as a key—which one is not predictable.</quote> This was true in Ruby 1.8, but now that a <literal>Hash</literal> iterates in order of insertion, this behaviour can be predicted.</para></footnote>  of these pairs is preserved.</para>
+
+    <example xml:id="ex.hash-transform">
+      <title>Flattening and inverting a <literal>Hash</literal>.</title>
+
+      <programlisting><xi:include href="examples/hash-transform.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.merge">
+    <title>Merging</title>
+
+    <para><function>#merge(<replaceable>hash</replaceable>)</function> returns a new <literal>Hash</literal> containing the key-value pairs of the receiver plus those of <replaceable>hash</replaceable>. If duplicate keys are encountered, the corresponding value from <literal>hash</literal> is used. Alternatively, if a block is supplied it is called for each duplicate key with three arguments—the key, the receiver’s value, and <replaceable>hash</replaceable>’s value—and its return value becomes the value of the key. <function>#merge!</function> and its alias <function>#update</function> behave identically, except they modify the receiver in-place.</para> 
+
+    <example xml:id="ex.hash-merge">
+      <title>Merging <literal>Hash</literal>es.</title>
+
+      <programlisting><xi:include href="examples/hash-merge.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.size">
+    <title>Size</title>
+    
+    <para>The size of a <literal>Hash</literal> is the number of key-value pairs it contains. It is returned by <function>#size</function> and its alias <function>#length</function>. A <literal>Hash</literal> of size 0, is <firstterm>empty</firstterm>, and can be tested with the <function>#empty?</function> predicate.</para>
+    
+    <example xml:id="ex.hash-size">
+      <title>The size of a <literal>Hash</literal>.</title>
+
+      <programlisting><xi:include href="examples/hash-size.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.sort">
+    <title>Sorting</title>
+    
+    <para><function>#sort</function> converts the receiver to an <literal>Array</literal>, whose elements are themselves <literal>Array</literal>s of the form <literal>[<replaceable>key</replaceable>, <replaceable>value</replaceable>]</literal>, sorts it with <function>Array#sort</function>, then returns the result.</para>
+
+    <example xml:id="ex.hash-sort">
+      <title>Sorting a <literal>Hash</literal>.</title>
+
+      <programlisting><xi:include href="examples/hash-sort.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.equality">
+    <title>Equality</title>
+    
+    <para>Two <literal>Hash</literal> objects are equal only if all the following conditions hold true:</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>They contain the same number of keys.</para>
+      </listitem>
+      <listitem>
+	<para>They contain the same keys.</para>
+      </listitem>
+      <listitem>
+	<para>Each value in the receiver is equal, using <function>#==</function>, to the corresponding value in the argument <literal>Hash</literal>.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para><function>#==</function> returns <literal>true</literal> if its argument is a <literal>Hash</literal> and equal to the receiver. If the argument is not a <literal>Hash</literal> but responds to <function>#to_hash</function>, it is sent <function>#==</function> with the receiver as the argument. Otherwise, <function>Hash#==</function> returns <literal>false</literal>.</para>
+    
+    <example xml:id="ex.hash-equal">
+      <title>Comparing <literal>Hash</literal>es for equality.</title>
+
+      <programlisting><xi:include href="examples/hash-equal.rb" parse="text"/></programlisting>
+    </example>    
+  </sect1>
+
+  <sect1 xml:id="has.coercion">
+    <title>Coercion</title>
+    
+    <para>An object that responds to <literal>:to_hash</literal> may be <link linkend="obj.implicit-conversion">implicitly converted</link> to a <literal>Hash</literal>. <literal>Hash[]</literal> is another approach. If given an object convertible to a <literal>Hash</literal>, it performs the conversion and returns the new <literal>Hash</literal>; otherwise, when given an even number of arguments, it interprets them as key-value pairs-the first argument being the first key, the second argument being its corresponding value, and so forth-with which it creates a new <literal>Hash</literal>.  <literal>Hash.try_convert</literal> coerces its argument with <literal>:to_hash</literal>, if possible, or returns <literal>nil</literal>.</para>
+
+    <para>A <literal>Hash</literal> may be converted to an <literal>Array</literal> with <function>Hash#to_a</function>. Each element of the <literal>Array</literal> is itself an <literal>Array</literal>, whose first element is a key, and second element the corresponding value.</para>
+
+    <para><function>#to_s</function>, and its alias <function>#inspect</function>, return a <literal>String</literal> of the following form for a <literal>Hash</literal> of size <replaceable>n</replaceable>, with <replaceable>key</replaceable> and <replaceable>value</replaceable> generated by <function>#inspect</function>:</para>
+
+    <programlisting><literal>{<replaceable>key<subscript>0</subscript></replaceable> => <replaceable>value<subscript>0</subscript></replaceable>, …, <replaceable>key<subscript><replaceable>n</replaceable></subscript></replaceable> => <replaceable>value<subscript><replaceable>n</replaceable></subscript></replaceable>}</literal></programlisting>
+    
+    <para>Recursive <literal>Hash</literal> objects are represented as <literal>{...}</literal>, while <literal>{}</literal> stands for the empty <literal>Hash</literal>.</para>
+
+    <example xml:id="ex.hash-coerce">
+      <title>Coercing a <literal>Hash</literal> into a different object.</title>
+
+      <programlisting><xi:include href="examples/hash-coerce.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="has.identity">
+    <title>Identity</title>
+
+    <para><literal>Hash</literal> keys are compared with <function>#eql?</function> by default, so two keys are equal if they have the same value. An <firstterm>identity <literal>Hash</literal></firstterm> regards keys as equal only if they are the same object. This is another argument in favour of <literal>Symbol</literal> keys, because two <literal>Symbol</literal>s with the same value are the same object. When <literal>String</literal>s are used as keys, Ruby duplicates them before use. Therefore, in an identity <literal>Hash</literal>, <literal>String</literal> key look-ups won’t work. A regular <literal>Hash</literal> is converted to an identity <literal>Hash</literal> with <function>#compare_by_identity</function>, which returns the receiver. The <function>#compare_by_identity?</function> predicate returns <literal>true</literal> if the receiver is an identity <literal>Hash</literal>; <literal>false</literal>, otherwise.</para>
+
+    <example xml:id="ex.hash-identity">
+      <title>Creating an identity <literal>Hash</literal></title>
+      
+      <programlisting><xi:include href="examples/hash-identity.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>  
+</chapter>

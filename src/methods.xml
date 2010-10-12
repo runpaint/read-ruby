@@ -566,7 +566,7 @@
 	  </title>
 	  <programlisting><xi:include href="examples/named-arguments-with-hash.rb" parse="text"/></programlisting>
 	</example>
-	<para>If a <link linkend="enu.hashes">Hash literal</link> is the
+	<para>If a <link linkend="has.literals">Hash literal</link> is the
 	final argument, other than a block, that a method expects, the curly
 	braces which delimit it can be omitted, as long as there is white space
 	between the selector and the first key. For example,
