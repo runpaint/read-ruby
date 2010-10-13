@@ -83,52 +83,235 @@
   <sect1 xml:id="enu.enumerable">
     <title><literal>Enumerable</literal></title>
 
-    <para>
-      The aforementioned classes-<literal>Array</literal>,
-      <literal>Hash</literal>, and <literal>Range</literal>-mix-in the core
-      module <literal>Enumerable</literal>. The methods it supplies are
-      implemented in terms of a method named <literal>#each</literal> which
-      yields each element of a collection in turn.
-      <literal>Enumerable</literal> does not define <literal>#each</literal>,
-      so a contract exists: if a class provides <literal>#each</literal> it
-      can mix-in <literal>Enumerable</literal>. If a class breaches this
-      contract, it will still gain the <literal>Enumerable</literal> methods,
-      but invoking them will raise an exception. <literal>Enumerable</literal>
-      provides nearly 50 methods, so a mere sample follows.
-    </para>
+    <para>The aforementioned classes-<literal>Array</literal>, <literal>Hash</literal>, and <literal>Range</literal>-mix-in the core module <literal>Enumerable</literal>. The methods it supplies are implemented in terms of a method named <literal>#each</literal> which yields each element of a collection in turn.  <literal>Enumerable</literal> does not define <literal>#each</literal>, so a contract exists: if a class provides <literal>#each</literal> it can mix-in <literal>Enumerable</literal>. If a class breaches this contract, it will still gain the <literal>Enumerable</literal> methods, but invoking them will raise an exception.</para>
 
-    <para>
-      <literal>#map {|<replaceable>element</replaceable>| }</literal> returns
-      an <literal>Array</literal> created by passing each element of the
-      collection to the block, then storing the result. For example,
-      <literal>[1,2,3].map{|n| n**2} #=&gt; [1,4,9]</literal>.
-    </para>
+    <sect2 xml:id="enu.query">
+      <title>Querying</title>
 
-    <para>
-      <literal>#reduce
-        {|<replaceable>element<subscript>0</subscript></replaceable>,
-        <replaceable>element<subscript>n</subscript></replaceable>|
-        }</literal> passes the first two elements to the block, then for each
-      subsequent element the last result of the block and the element itself.
-      For example: <literal>[2,3,5,7].reduce(&amp;:+) =&gt; 17</literal>.
-    </para>
+      <para><function>#include?(<replaceable>object</replaceable>)</function> and its alias <function>#member?</function> return <literal>true</literal> if the receiver contains <replaceable>object</replaceable>; <literal>false</literal> otherwise.</para>
 
-    <para>
-      <literal>#select {|<replaceable>element</replaceable>| }</literal>
-      returns an <literal>Array</literal> of elements for which the block
-      returned <literal>true</literal>.
-    </para>
+      <example xml:id="ex.enu-include">
+	<title>Testing whether an element exists in an <literal>Enumerable</literal>.</title>
 
-    <para>
-      Lastly, <literal>#any?</literal>, <literal>#all?</literal>, and
-      <literal>#none?</literal> accept a block which is called with an element
-      of the collection. The determinative indicates how many elements of the
-      collection the block must return <literal>true</literal> for the method
-      to return <literal>true</literal>. For instance,
-      <literal>#any?</literal> returns <literal>true</literal> as soon as a
-      single element in the collection satisfies the block.
-    </para>
+	<programlisting><xi:include href="examples/enu-include.rb" parse="text"/></programlisting>
+      </example>
 
+      <para><function>#count</function> returns the number of elements contained in the receiver by iterating over them. If given an argument, it returns the number of times that appears in the receiver. Similarly, if given a block, it passes each element to it in turn, returning the number of times the block evaluated to true.</para>
+
+      <example xml:id="ex.enu-count">
+	<title>Counting elements in an <literal>Enumerable</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-count.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#all?</function> and <function>#none?</function> test whether their receiver contains no false and no true elements, respectively. <function>#any?</function> and <function>#one?</function> test whether their receiver has at least one and exactly one true element, respectively. They evaluate each element by passing it to the block, which is assumed to be <literal>{|e| e}</literal> if omitted. They return <literal>true</literal> as soon as they succeed—skipping any remaining elements—or <literal>false</literal> if they fail.</para>
+
+      <example xml:id="ex.enu-any-all-none-one">
+	<title>Querying an <literal>Enumerable</literal> with determiners.</title>
+
+	<programlisting><xi:include href="examples/enu-any-all-none-one.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="enu.filter">
+      <title>Filtering</title>
+      <para>The bulk of <literal>Enumerable</literal> methods are filters that compose a subset of the receiver’s elements by passing them to a block.</para>
+
+      <para><function>#grep(<replaceable>pattern</replaceable>)</function> selects the elements of the receiver which are <function>#===(<replaceable>pattern</replaceable>)</function>. As the name implies, <function>#grep</function> is often invoked with a <literal>Regexp</literal> argument, but any object that supports the case equality test is allowed. Matching elements are returned as an <literal>Array</literal>. If a block is supplied, each matching element is passed to it, and the return value is appended to the result <literal>Array</literal>.</para>
+
+      <example xml:id="ex.enu-grep">
+	<title>Searching for elements matching a pattern in an <literal>Enumerable</literal></title>
+
+	<programlisting><xi:include href="examples/enu-grep.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#detect</function> and its alias <function>#find</function> return the first element of the receiver for which the block is true. If the block is never true, and a <literal>Proc</literal> argument was given, it is called and its result returned; otherwise, <literal>nil</literal> is returned. An <literal>Enumerator</literal> is returned if the block is omitted.</para>
+
+      <example xml:id="ex.enu-detect">
+	<title>Searching for first element for which block is true in an <literal>Enumerable</literal></title>
+
+	<programlisting><xi:include href="examples/enu-detect.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#find_index(<replaceable>value</replaceable>)</function> returns the 0-based index of the first element of the receiver equal to <replaceable>value</replaceable>. If a block is given instead of <replaceable>value</replaceable>, returns the index of the first element for which the block is not true. When no object matches, <literal>nil</literal> is returned. An <literal>Enumerator</literal> is returned if both <literal>value</literal> and block are omitted.</para>
+
+      <example xml:id="ex.enu-find-index">
+	<title>Searching for the index of the first matching element in an <literal>Enumerable</literal></title>
+
+	<programlisting><xi:include href="examples/enu-find-index.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#select</function> and its alias <function>#find_all</function> return an <literal>Array</literal> of all elements for which the block is not false. Conversely, <function>#reject</function> returns an <literal>Array</literal> of elements for which the block <emphasis>is</emphasis> false. All three methods return an <literal>Enumerator</literal> when the block is omitted.</para>
+
+      <example xml:id="ex.enu-select-reject">
+	<title>Retrieving elements from an <literal>Enumerable</literal> that satisfy, or don’t satisfy, a block.</title>
+
+	<programlisting><xi:include href="examples/enu-select-reject.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#first</function> returns the first element of the receiver, or <literal>nil</literal> if it is empty. If <function>#first</function> or <function>#take</function> are given a numeric argument, <replaceable>n</replaceable>, they return an <literal>Array</literal> of, at most, the first <replaceable>n</replaceable> elements. Conversely, <function>#drop(<replaceable>n</replaceable>)</function> returns an <literal>Array</literal> containing all <emphasis>but</emphasis> the first <replaceable>n</replaceable> elements.</para>
+
+      <example xml:id="ex.enu-first-take-drop">
+	<title>Retrieving the first, or all but the first, elements from an <literal>Enumerable</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-first-take-drop.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#take_while</function> takes elements from the receiver while the block is true; when the block is false, it returns the collected elements as an <literal>Array</literal>. Conversely, <function>#drop_while</function> ignores each element of the receiver while the block is true; returning the remainder as an <literal>Array</literal>.</para>
+
+      <example xml:id="ex.enu-take-drop-while">
+	<title>Using <function>#take_while</function> and <function>#drop_while</function>.</title>
+
+	<programlisting><xi:include href="examples/enu-take-drop-while.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="enu.transform">
+      <title>Transforming</title>
+      
+      <para><function>#map</function> and its alias <function>#collect</function> collect the results of running their block for each element in an <literal>Array</literal>, which they return. <function>#flat_map</function> and its alias <function>#collect_concat</function> behaves like <function>#map</function>, but flatten the result <literal>Array</literal>. In all cases, an <literal>Enumerator</literal> is returned if the block is omitted.</para>
+
+      <example xml:id="ex.enu-map">
+	<title>Collecting the results of a block passed each element of an <literal>Enumerable</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-map.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#partition</function> returns an <literal>Array</literal> of <literal>Array</literal>s: the first containing the elements for which the block was true, the second containing the remainder. <function>#group_by</function> generalises this approach by returning a <literal>Hash</literal> whose keys are the return values of the block, and values are the elements for which the block returned that value. Both methods return an <literal>Enumerator</literal> when the block is omitted.</para>
+
+      <example xml:id="ex.enu-partition-group-by">
+	<title>Segmenting an <literal>Enumerable</literal> according to a block.</title>
+
+	<programlisting><xi:include href="examples/enu-partition-group-by.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#chunk</function> also groups elements by the value of its block, but chunks each <emphasis>consecutive</emphasis> group with the same block value, or <firstterm>key</firstterm>. A chunk is an <literal>Array</literal> whose first element is a key, and last element an <literal>Array</literal> of consecutive elements from the receiver which evaluated to it. A key of <literal>nil</literal> or <literal>:_separator</literal> causes the chunk to be dropped, while a key of <literal>:_alone</literal> creates a chunk containing only the corresponding element. If an argument is given, it is duplicated<footnote><para>Accordingly, immediates that raise <literal>TypeError</literal>s for <function>#dup</function>, cannot be used.</para></footnote> for each chunk and passed to the block as a second argument. The return value is an <literal>Enumerator</literal> of chunks.</para>
+
+      <example xml:id="ex.enu-chunk">
+	<title>Segmenting consecutive elements of an <literal>Enumerable</literal> according to a block.</title>
+
+	<programlisting><xi:include href="examples/enu-chunk.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#slice_before(<replaceable>pattern</replaceable>)</function> offers another approach for grouping elements into <literal>Array</literal>s, or <firstterm>slices</firstterm>. It requires either an argument, <replaceable>pattern</replaceable>, or block. The first slice begins with the first element of the receiver. Starting with the second element, each element is either compared to <replaceable>pattern</replaceable> with the case equality operator (<function>#===</function>), or passed to the block. If the result is true, the element begins a new slice; otherwise, it continues the existing slice. When both an argument and a block are supplied, the argument is not a pattern but a variable for retaining state: it is duplicated each time the <literal>Enumerator</literal> is iterated over, and passed to <function>#slice_before</function>’s block as the second argument. Finally, an <literal>Enumerator</literal> of slices is returned.</para>
+
+      <example xml:id="ex.enu-slice-before">
+	<title>Segmenting consecutive elements of an <literal>Enumerable</literal> according to a block evaluated as a Boolean.</title>
+
+	<programlisting><xi:include href="examples/enu-slice-before.rb" parse="text"/></programlisting>
+      </example>
+  
+      <para><function>#zip</function> creates an <literal>Array</literal> for each element of the receiver, containing the element along with the corresponding element from each of its <literal>Enumerable</literal> arguments. If fewer arguments are given than there are elements in the receiver, the result <literal>Array</literal>s are padded with <literal>nil</literal>s. If a block is given, each result <literal>Array</literal> is yielded to it; otherwise they are returned as an <literal>Array</literal> of <literal>Array</literal>s.</para>
+
+      <example xml:id="ex.enu-zip">
+	<title>Merging <literal>Enumerable</literal>s.</title>
+
+	<programlisting><xi:include href="examples/enu-zip.rb" parse="text"/></programlisting>
+      </example>
+
+      <!-- Mention that `symbol` should be binary -->
+      <para><function>#inject(<replaceable>initial</replaceable>)</function> and its alias <function>#reduce</function> combine the elements of their receiver into a single value. When a block is given, it is called for each element, receiving an accumulator object and the element as arguments. When the block is omitted, and a <literal>Symbol</literal> argument also supplied—<function>#inject(<replaceable>initial</replaceable>, <replaceable>symbol</replaceable>)</function>—a block of the form <literal>{|<replaceable>acc</replaceable>, <replaceable>el</replaceable>| <replaceable>acc</replaceable>.send(<replaceable>symbol</replaceable>, <replaceable>el</replaceable>)}</literal> is assumed. The accumulator has an initial value of <replaceable>initial</replaceable>, and is assigned the value of the block after each iteration. If the <replaceable>initial</replaceable> argument is omitted, it has the value of the first element of the receiver, so iteration begins with the second element. The return value of <function>#inject</function> is the final value of the accumulator.</para>
+
+      <table>
+	<caption>The evaluation of <literal>[1, 2, 3].inject(:*)</literal></caption>
+	<thead>
+	  <tr>
+	    <th>Iteration</th>
+	    <th>Accumulator Value</th>
+	    <th>Element</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td>1</td>
+	    <td>1 (first element)</td>
+	    <td>2</td>
+	  </tr>
+	  <tr>
+	    <td>2</td>
+	    <td>2 (<literal>1.send(:*, 2)</literal>)</td>
+	    <td>3</td>
+	  </tr>
+	  <tr>
+	    <td>3</td>
+	    <td>6 (<literal>2.send(:*, 3)</literal>)</td>
+	    <td/>
+	  </tr>
+	</tbody>
+      </table>
+
+      <example xml:id="ex.enu-inject">
+	<title>Reducing an <literal>Enumerable</literal> into a single value.</title>
+
+	<programlisting><xi:include href="examples/enu-inject.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="enu.iterate">
+      <title>Iteration</title>
+
+      <para>In addition to <function>#each</function>, the following iterators are also available. They all accept a block argument, and return an <literal>Enumerator</literal> when it is omitted. <function>#each_with_index</function> yields each element in turn along with its corresponding, 0-based index. <function>#each_with_object</function> takes an arbitrary object as argument, which it yields along with each element, then returns. <function>#each_entry</function> behaves like <function>#each</function>, but if the latter would have yielded multiple values at once, they are combined into an <literal>Array</literal>. <function>#reverse_each</function> yields each element of the receiver in reverse order, i.e. <literal><replaceable>enum</replaceable>.to_a.reverse.each</literal>.</para>
+
+      <example xml:id="ex.enu-iterate">
+	<title>Iterating the elements of an <literal>Enumerable</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-iterate.rb" parse="text"/></programlisting>
+      </example>
+    
+      <para><function>#each_slice(<replaceable>size</replaceable>)</function> yields the elements of the receiver in slices with maximum size <replaceable>size</replaceable>. The first slice contains the first <replaceable>size</replaceable> elements, the second contains the next <replaceable>size</replaceable>, and so forth. <function>#each_cons(<replaceable>size</replaceable>)</function> is similar, but yields <emphasis>consecutive</emphasis> sub-<literal>Array</literal>s of size <replaceable>size</replaceable>. The first contains the first <replaceable>size</replaceable> elements, the second element 1–<replaceable>size</replaceable>, and so forth.</para>
+      
+      <example xml:id="ex.enu-slice-cons">
+	<title>Slices and consecutive sub-<literal>Array</literal>s of an <literal>Enumerable</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-slice-cons.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#cycle(<replaceable>count</replaceable>)</function> yields each element of the receiver to the block, then recurses. After repeating this process <replaceable>count</replaceable> times, or forever if <replaceable>times</replaceable> is omitted, it returns <literal>nil</literal>. It returns an <literal>Enumerator</literal> if called without a block.</para>
+
+      <example xml:id="ex.enu-cycle">
+	<title>Repeatedly iterates through an <literal>Enumerable</literal>.</title>
+	
+	<programlisting><xi:include href="examples/enu-map.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="enu.sort">
+      <title>Sorting</title>
+
+      <para><function>#sort</function> sorts the elements of the receiver according to their <function>#&lt;=&gt;</function> methods. Alternatively, if a block is supplied, it is passed two elements at once and expected to follow the <link linkend="obj.order">&lt;=&gt;</link> convention of returning <literal>-1</literal>, <literal>0</literal>, or <literal>1</literal>. The sorted elements are returned as an <literal>Array</literal>.</para>
+
+      <para><function>#sort_by</function> also sorts the receiver, but does so using an arbitrary attribute of each element. Each element in turn is passed to the block, whose return value is the key to sort by. If the block returns an <literal>Array</literal>, a multi-level sort is performed: elements are sorted by its first element, then, if there’s a tie, its second element, and so forth. If the block is omitted, an <literal>Enumerator</literal> is returned; otherwise, the sorted elements are returned as an <literal>Array</literal>.</para>
+      
+      <example xml:id="ex.enu-sort">
+	<title>Sorting the elements of an <literal>Enumerable</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-sort.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="enu.min-max">
+      <title>Minimums &amp; Maximums</title>
+      
+      <para><function>#min</function> and <function>#max</function> compare the elements in the receiver with the elements’ <function>#&lt;=&gt;</function> methods, and return the minimum and maximum element, respectively. If they are given a block, it is passed two elements at a time, and expected to follow the <link linkend="obj.order">&lt;=&gt;</link> convention of returning <literal>-1</literal>, <literal>0</literal>, or <literal>1</literal>. <function>#minmax</function> behaves identically, except it returns both minimum and maximum values as an <literal>Array</literal>.</para>
+
+      <example xml:id="ex.enu-min-max">
+	<title>Finding the minimum and maximum elements in an <literal>Enumerable</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-min-max.rb" parse="text"/></programlisting>
+      </example>
+
+      <para><function>#min_by</function> and <function>#max_by</function> pass each element to a block, and return those corresponding to the smallest and largest return value, respectively. <function>#minmax_by</function> does likewise, except it returns an <literal>Array</literal> containing both the minimum and maximum values.</para>
+
+      <example xml:id="ex.enu-min-max-by">
+	<title>Finding the minimum and maximum elements in an <literal>Enumerable</literal> ordered by an attribute.</title>
+
+	<programlisting><xi:include href="examples/enu-min-max-by.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+<!-- 
+[:to_a, :entries, ]
+ -->
     <sect2 xml:id="enu.no-each">
       <title>Classes with Multiple Iteration Strategies</title>
       
