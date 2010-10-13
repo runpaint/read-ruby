@@ -242,6 +242,7 @@ end
 desc 'Push to GitHub'
 task :push do
   sh 'git push github'
+  sh 'git push'
 end  
 
 desc 'Validate XML, build HTML, validate HTML, build PDF'
