@@ -8,7 +8,7 @@
   
   <title>Enumerables</title>
   
-  <para>The <literal>Enumerable</literal> module is a mix-in providing nearly fifty methods for searching, sorting, filtering, and transforming collections of objects. It is included by <literal>Array</literal>, <literal>Hash</literal>, <literal>Range</literal>, and <literal>IO</literal>, so knowledge of its <acronym>API</acronym> is widely applicable. Any class may mix-in <literal>Enumerable</literal> as long it defines a method named <function>#each</function> which yields each element of the collection in turn. This chapter documents the <literal>Enumerable</literal> API, and explains how your own classes can take advantage of its capabilities.</para> 
+  <para>The <literal>Enumerable</literal> module is a mix-in providing nearly fifty methods for searching, sorting, filtering, and transforming collections of objects. It is included by <literal>Array</literal>, <literal>Hash</literal>, <literal>Range</literal>, and <literal>IO</literal>, so knowledge of its <acronym>API</acronym> is widely applicable. Any class may mix-in <literal>Enumerable</literal> as long as it defines a method named <function>#each</function> which yields each element of the collection in turn. This chapter documents the <literal>Enumerable</literal> API, and explains how your own classes can take advantage of its capabilities.</para> 
 
   <sect1 xml:id="enu.query">
     <title>Querying</title>
