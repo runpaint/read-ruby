@@ -193,6 +193,7 @@
       <xsl:when test="starts-with($id, 'enu.')">enumerables</xsl:when>
       <xsl:when test="starts-with($id, 'arr.')">arrays</xsl:when>
       <xsl:when test="starts-with($id, 'has.')">hashes</xsl:when>
+      <xsl:when test="starts-with($id, 'ran.')">ranges</xsl:when>
       <xsl:when test="starts-with($id, 'fil.')">files</xsl:when>
       <xsl:when test="starts-with($id, 'flo.')">flow</xsl:when>
       <xsl:when test="starts-with($id, 'exc.')">exceptions</xsl:when>

@@ -123,8 +123,9 @@
     <sect2 xml:id="flo.flip-flop">
       <title>Flip Flops</title>
 
-      <para>When the <literal>..</literal> or <literal>...</literal> operators are used in a
-      conditional they don’t have their usual semantics as <link linkend="enu.ranges">range literals</link>; they create a
+      <para>When the <literal>..</literal> or <literal>...</literal> operators
+      are used in a conditional they don’t have their usual semantics
+      as <link linkend="ran.ranges">range literals</link>; they create a
       <firstterm>flip-flop</firstterm> expression: a stateful, bitstable, Boolean test
       between two expressions. They take the form
       <literal>
