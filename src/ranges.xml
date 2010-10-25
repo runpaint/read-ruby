@@ -8,11 +8,82 @@
   
   <title>Ranges</title>
   
-  <para>A <literal>Range</literal> represents an immutable sequence between two given values.  It is either <emphasis>inclusive</emphasis> or <emphasis>exclusive</emphasis>: the former includes the endpoint; the latter does not. For example, 0–9 is a range consisting of all single-digit integers, expressed by specifying the start-point and endpoint.</para>
+  <para>A <literal>Range</literal> represents an immutable sequence between two given values. The first of which is its start-point, and the second its end-point. For example, 0–9 is a range consisting of all single-digit integers, expressed by specifying the start-point and endpoint. <literal>Range</literal> is <literal>Enumerable</literal>, so in addition to the methods described below, it also supports the <literal>Enumerable</literal> <acronym>API</acronym>.</para>
+
+  <para>A <literal>Range</literal> is either <emphasis>inclusive</emphasis> or <emphasis>exclusive</emphasis>: the former includes the endpoint; the latter does not. The <function>Range#exclude_end?</function> predicate returns <literal>true</literal> if its receiver is exclusive; <literal>false</literal> otherwise.</para>
+
+  <sect1 xml:id="ran.instantiation">
+    <title>Instantiation</title>
+
+    <para>A <literal>Range</literal> literal consists of two values separated by two or three full stops: the former range is inclusive; the latter exclusive. It returns a new <literal>Range</literal> object representing the given interval. To use the literal as a receiver, enclose it within parentheses; otherwise, the message is sent to the <literal>Range</literal> endpoint rather than the <literal>Range</literal> itself. However, in the conditional of a branching or looping statement, two or three consecutive full stops don’t create a range; they constitute a <link linkend="flo.flip-flop">Boolean flip-flop</link> instead.</para>
+
+    <example xml:id="ex.ran-literal">
+      <title>Creating a <literal>Range</literal> with the literal syntax</title>
+
+      <programlisting><xi:include parse="text" href="examples/ran-literal.rb"/></programlisting>
+    </example>
+
+    <para>Alternatively, a <literal>Range</literal> can be created with <function>Range.new</function>. The start-point is supplied as the first argument, and the endpoint as the second. If a third argument is given, and it is true, the <literal>Range</literal> is inclusive; otherwise, it is exclusive.</para>
     
-    <para>A <literal>Range</literal> literal consists of two values separated by two or three full stops<footnote><para >In the conditional of a branching or looping statement, two or three consecutive full stops don’t create a range; they constitute a <link linkend="flo.flip-flop">Boolean flip-flop</link>.</para></footnote>: the former range is inclusive; the latter exclusive.  For example, <literal>'a'...'z'</literal> represents letters <emphasis>a</emphasis>–<emphasis>y</emphasis>.</para>
+    <example xml:id="ex.ran-new">
+      <title>Creating a <literal>Range</literal> with <literal>Range.new</literal></title>
 
-    <para>The start-point and endpoint must be comparable with <literal>#&lt;=&gt;</literal>. That is, for a range <literal><replaceable>start</replaceable>..<replaceable>end</replaceable></literal>, <literal><replaceable>start</replaceable> &lt;=&gt; <replaceable>end</replaceable></literal> must return -1, 0, or 1.  <literal>Range#include?(<replaceable>object</replaceable>)</literal> allows ranges to be used as intervals: returning <literal>true</literal> if <replaceable>object</replaceable> is a member; <literal>false</literal> otherwise.</para>
+      <programlisting><xi:include parse="text" href="examples/ran-new.rb"/></programlisting>
+    </example>
+  </sect1>
 
-    <para>A range is <firstterm>discrete</firstterm> if it begins with a value that responds to <literal>#succ</literal> by returning the next element of the sequence. It is so called because it represents a finite set of values that can be iterated over with <literal>Range#each</literal>.  Alternatively, <literal>Range#step(<replaceable>n</replaceable>) {|<replaceable>el</replaceable>| }</literal> passes each <replaceable>n</replaceable><superscript>th</superscript> element to the block.</para> <para>A non-discrete range is <firstterm>continuous</firstterm>.  It represents an infinite set of values, therefore a <literal>TypeError</literal> is raised when attempting to iterate over it.</para>
+
+  <sect1 xml:id="ran.start-end">
+    <title>Start-points &amp; End-points</title>
+
+    <para>The start-point and end-point must be comparable with <literal>#&lt;=&gt;</literal>. That is, for a <literal>Range</literal> <literal><replaceable>start</replaceable>..<replaceable>end</replaceable></literal>, <literal><replaceable>start</replaceable> &lt;=&gt; <replaceable>end</replaceable></literal> must return -1, 0, or 1.</para>
+
+    <para>A range is <firstterm>discrete</firstterm> if it begins with a value that responds to <literal>#succ</literal> by returning the next element of the sequence. It is so called because it represents a finite set of values that can be iterated over.  A non-discrete range is <firstterm>continuous</firstterm>.  It represents an infinite set of values, therefore a <literal>TypeError</literal> is raised when attempting to iterate over it. For instance, <literal>Integer</literal> objects respond to <function>#&lt;=&gt;</function> and <function>#succ</function>, so a <literal>Range</literal> between <literal>Integer</literal> values is discrete. Conversely, <literal>Float</literal> responds to <function>&lt;=&gt;</function> but not to <function>#succ</function>, so represents a continuous range.</para>
+
+    <para>The start-point is returned by <function>Range#begin</function>, while the end-point is returned by <function>Range#end</function>. <function>#first</function> and <function>#last</function> behave identically to <function>#begin</function> and <function>#end</function>, respectively, when called without arguments. If a numeric argument is given, <function>#first</function> returns that many elements from the beginning of the <literal>Range</literal> as an <literal>Array</literal>, while <function>#last</function> returns an <literal>Array</literal> comprising that many from the end. However, in this form both <function>#first</function> and <function>#last</function> require the <literal>Range</literal> to be discrete; raising an <literal>ArgumentError</literal> if not.</para>
+
+    <example xml:id="ex.ran-begin-end">
+      <title>Retrieving the first and last elements of a <literal>Range</literal></title>
+
+      <programlisting><xi:include parse="text" href="examples/ran-begin-end.rb"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="ran.membership">
+    <title>Membership Testing</title>
+    
+    <para>There are two principle ways to test whether a given value is a member of a <literal>Range</literal>. <function>Range#cover?(<replaceable>value</replaceable>)</function> uses a simple inequality. For a <literal>Range</literal> between <replaceable>a</replaceable> and <replaceable>b</replaceable>, <function>#cover?</function> tests <replaceable>a</replaceable>&#160;≤&#160;<replaceable>value</replaceable>&#160;≤&#160;<replaceable>b</replaceable> if the receiver is inclusive; <replaceable>a</replaceable>&#160;≤&#160;<replaceable>value</replaceable>&#160;&lt;&#160;<replaceable>b</replaceable>, otherwise. If the test succeeds, <literal>true</literal> is returned; if it fails, <literal>false</literal> is returned instead.</para>
+
+    <para><function>Range#include?(<replaceable>value</replaceable>)</function>, and its alias <function>#member?</function>, work in the same way when the end-points are numeric. Otherwise, they test for membership through iteration: each successive element of the <literal>Range</literal> is enumerated until either the element is equal—using <function>#==</function>—to <replaceable>value</replaceable>, or the end of the <literal>Range</literal> is reached. Accordingly, unless the start-point and end-point are numeric, <function>#include?</function> requires the receiver to be discrete. Again, <literal>true</literal> is returned if the test succeeds; <literal>false</literal> otherwise. <function>Range#===</function> is implemented in terms of <function>#include?</function>, so these restrictions also apply when using a <literal>Range</literal> in a <literal>when</literal> statement.</para>
+
+    <example xml:id="ex.ran-membership">
+      <title>Testing a <literal>Range</literal> for membership</title>
+
+      <programlisting><xi:include parse="text" href="examples/ran-membership.rb"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="ran.iteration">
+    <title>Iteration</title>
+
+    <para><function>Range#each</function> yields successive elements of the receiver to a block if one is given; otherwise, returns them as an <literal>Enumerator</literal>. <function>#succ</function> is used to generate elements. <function>Range#step(<replaceable>n</replaceable>=1)</function> yields to a block each <replaceable>n</replaceable><superscript>th</superscript> element. If the start-point and end-point are numeric, elements are generated through addition; otherwise, <function>#succ</function> is used. As with <function>#each</function>, an <literal>Enumerator</literal> is returned when the block is omitted.</para>
+    
+    <example xml:id="ex.ran-iterate">
+      <title>Iterating over a <literal>Range</literal></title>
+
+      <programlisting><xi:include parse="text" href="examples/ran-iterate.rb"/></programlisting>
+    </example>
+  </sect1>
+
+  <sect1 xml:id="ran.equal">
+    <title>Equality</title>
+
+<para>Two <literal>Range</literal>s are equal if they have the same start-point and end-point, and either both exclusive or both inclusive. <function>Range#==</function> compares the start-points and end-points with <function>#==</function>, while <function>Range#eql?</function> compares them using <function>#eql?</function>.</para>
+
+    <example xml:id="ex.ran-equal">
+      <title>Comparing <literal>Range</literal>s for Equality</title>
+
+      <programlisting><xi:include parse="text" href="examples/ran-equal.rb"/></programlisting>
+    </example>
+  </sect1>
 </chapter>
