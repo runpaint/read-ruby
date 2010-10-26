@@ -238,6 +238,39 @@
   <!-- 
        [:to_a, :entries, ]
   -->
+
+  <sect1 xml:id="enu.enumerator">
+    <title><literal>Enumerator</literal></title>
+
+    <para>An <literal>Enumerator</literal> is an objectification of an enumeration. It mixes-in <literal>Enumerable</literal>, so also responds to the methods detailed above.</para>
+
+    <sect2 xml:id="enu.enumerator-instantiation">
+      <title>Instantiation</title>
+
+      <para>As described above, most <literal>Enumerable</literal> methods return <literal>Enumerator</literal>s when their block is omitted. <function>Kernel#to_enum(<replaceable>method</replaceable>=:each</function>, and its alias <function>Kernel#enum_for</function>, create an <literal>Enumerator</literal> from their receiver’s <replaceable>method</replaceable> method. If additional arguments are provided, they are passed to <replaceable>method</replaceable>. Equivalently, <function>Enumerator.new(<replaceable>object</replaceable>, <replaceable>method</replaceable>=:each)</function> can be used to the same effect. Additional arguments are, again, passed to <replaceable>object</replaceable>’s <replaceable>method</replaceable>.</para>
+
+      <para>More usefully, <function>Enumerator.new</function> can take a block to which it passes an instance of <literal>Enumerator::Yielder</literal>. The block specifies an element to be enumerated by supplying it as an argument of <literal>Enumerator::Yielder#yield</literal>, or its alias <literal>Enumerator::Yielder#&lt;&lt;</literal>. <function>#yield</function> behaves lazily: blocking until the <literal>Enumerator</literal> requests a new element.</para>
+    
+      <example xml:id="ex.enu-enumerator-instantiation">
+	<title>Creating an <literal>Enumerator</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-enumerator-instantiation.rb" parse="text"/></programlisting>
+      </example>
+    </sect2>
+
+    <sect2 xml:id="enu.external">
+      <title>External Iterators</title>
+      
+      <para>The <literal>Enumerable</literal> methods are <firstterm>internal</firstterm> iterators because they internalise the details of the enumeration. Each method invokes <function>#each</function> anew, restarting iteration from the first element of the collection. Conversely, <firstterm>external</firstterm> iterators are driven by the programmer, who must explicitly request each element he requires. Ruby implements external iterators with <literal>Enumerator#next</literal>, which returns the next element of a collection each time it is called. The <literal>Enumerator</literal>, therefore, preserves state across calls, allowing multiple collections to be iterated simultaneously. When there are no more elements to return, <literal>StopIteration</literal> is raised. This exception is rescued automatically by <literal>loop</literal>. The state of an <literal>Enumerator</literal> may be reset with <function>Enumerator#rewind</function> such that a subsequent call to <function>#next</function> will return the first element. External iterators are implemented with <literal>Fiber</literal>s, so cannot be called across threads.</para>
+
+    <example xml:id="ex.enu-next">
+      <title>Requesting the next element from an <literal>Enumerator</literal>.</title>
+
+      <programlisting><xi:include href="examples/enu-next.rb" parse="text"/></programlisting>
+    </example>
+    </sect2>
+  </sect1>
+
   <sect1 xml:id="enu.no-each">
     <title>Classes with Multiple Iteration Strategies</title>
     
