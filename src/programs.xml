@@ -7,133 +7,45 @@
          xml:id="pro.programs">
   <title>Programs</title>
   
-  <para>
-    Every entity in Ruby is an object. Objects can remember things and
-    communicate with each other by sending and receiving messages <biblioref
-      begin="44" end="44" linkend="bib.goldberg76" units="pages"/>. A
-    Ruby program describes how certain objects must communicate to achieve
-    some definite ends. This chapter provides an overview of the structure and
-    interpretation of Ruby programs.
-  </para>
+  <para>Every entity in Ruby is an object. Objects can remember things and communicate with each other by sending and receiving messages <biblioref begin="44" end="44" linkend="bib.goldberg76" units="pages"/>. A Ruby program describes how certain objects must communicate to achieve some definite ends. This chapter provides an overview of the structure and interpretation of Ruby programs.</para>
 
   <sect1 xml:id="pro.lexical">
     <title>Lexical Structure</title>
     
-    <para>
-      <firstterm>Tokens</firstterm><footnote>
-        <para>
-          <literal>Ripper</literal> is a class in the standard library for
-          parsing and analysing Ruby.  The <literal>Ripper.tokenize</literal>
-          method takes a string of code as an argument and returns an array of
-          its constituent tokens.  Experiment with this method in
-          <acronym>IRB</acronym> (<literal>irb -rripper</literal>) to test
-          your assumptions of how tokenization works.
-        </para>
-      </footnote> are <quote>the mark or series of marks that denote one
-      symbol or word in the language</quote> <biblioref begin="59" end="62"
-      linkend="bib.fischer92" units="pages"/>. A Ruby program consists of a
-    combination of the following tokens: <link
-      linkend="pro.comments">comments</link>, <link
-      linkend="pro.literals">literals</link>, <link
-      linkend="pun.punctuation">punctuation</link>, <link
-      linkend="pro.identifiers">identifiers</link>, and keywords.
-    </para>
+    <para><firstterm>Tokens</firstterm><footnote><para><literal>Ripper</literal> is a class in the standard library for parsing and analysing Ruby.  The <literal>Ripper.tokenize</literal> method takes a string of code as an argument and returns an array of its constituent tokens.  Experiment with this method in <acronym>IRB</acronym> (<literal>irb -rripper</literal>) to test your assumptions of how tokenization works.</para></footnote> are <quote>the mark or series of marks that denote one symbol or word in the language</quote> <biblioref begin="59" end="62" linkend="bib.fischer92" units="pages"/>. A Ruby program consists of a combination of the following tokens: <link linkend="pro.comments">comments</link>, <link linkend="pro.literals">literals</link>, <link linkend="pun.punctuation">punctuation</link>, <link linkend="pro.identifiers">identifiers</link>, and keywords.</para>
 
     <sect2 xml:id="pro.comments">
       <title>Comments</title>
       
-      <para>
-        <firstterm>Comments</firstterm> are remarks which do not affect the
-        meaning of a program. They are introduced with a number sign
-        (<literal>U＋0023</literal>) and continue until the end of the line:
-        the text between <literal>#</literal> and the end of the line is
-        ignored by the interpreter. Comments are not recognised inside of
-        <link linkend="str.strings">string</link>/<link
-          linkend="reg.regexps">regexp</link> literals—they are interpreted
-        literally—however, regexps support an alternative form of embedded
-        comment. There is no specific construct for multiline comments, but
-        they may be approximated with <link
-          linkend="pro.embedded-doc">embedded documentation</link>.
-      </para>
+      <para><firstterm>Comments</firstterm> are remarks which do not affect the meaning of a program. They are introduced with a number sign (<literal>U＋0023</literal>) and continue until the end of the line: the text between <literal>#</literal> and the end of the line is ignored by the interpreter. Comments are not recognised inside of <link linkend="str.strings">string</link>/<link linkend="reg.regexps">regexp</link> literals—they are interpreted literally—however, regexps support an alternative form of embedded comment. There is no specific construct for multiline comments, but they may be approximated with <link linkend="pro.embedded-doc">embedded documentation</link>.</para>
     </sect2>
 
     <sect2 xml:id="pro.embedded-doc">
       <title>Embedded Documentation</title>
      
-      <para>
-        <firstterm>Embedded documentation</firstterm> is a portion of a source
-        file that contains documentation intended for a postprocessor such as
-        <literal>rdoc</literal>, and as such is ignored by the interpreter. It
-        is introduced by a line beginning <literal>=begin</literal>, that is
-        an equals sign (<literal>U＋003D</literal>) followed by the string
-        <literal>begin</literal>, and continues until a line beginning
-        <literal>=end</literal> is encountered.
-      </para>
+      <para><firstterm>Embedded documentation</firstterm> is a portion of a source file that contains documentation intended for a postprocessor such as <literal>rdoc</literal>, and as such is ignored by the interpreter. It is introduced by a line beginning <literal>=begin</literal>, that is an equals sign (<literal>U＋003D</literal>) followed by the string <literal>begin</literal>, and continues until a line beginning <literal>=end</literal> is encountered.</para>
       
-      <para>
-        Both <literal>=begin</literal> and <literal>=end</literal> may be
-        followed by arbitrary text, which is included in the embedded
-        documentation, as long as it is preceded by a whitespace character.
-        Conventionally, the text following <literal>=begin </literal> names
-        the tool for which the documentation is intended.
-      </para>
+      <para>Both <literal>=begin</literal> and <literal>=end</literal> may be followed by arbitrary text, which is included in the embedded documentation, as long as it is preceded by a whitespace character.  Conventionally, the text following <literal>=begin </literal> names the tool for which the documentation is intended.</para>
     </sect2>
 
     <sect2 xml:id="pro.whitespace">
       <title>Whitespace</title>
       
-      <para>
-        <firstterm>Whitespace</firstterm> consists only of
-        <literal>U＋0009</literal>,
-        <literal>U＋000B</literal>–<literal>U＋000D</literal>, and the space
-        character (<literal>U＋0020</literal>), i.e. <acronym>ASCII</acronym>
-        whitespace other than the newline. Its primary role in Ruby syntax is
-        to separate tokens and terminate statements. When whitespace is
-        syntactically significant it is typically collapsed to a single space.
-        The few areas of syntax where whitespace has different semantics are
-        clearly labeled.
-      </para>
+      <para><firstterm>Whitespace</firstterm> consists only of <literal>U＋0009</literal>, <literal>U＋000B</literal>–<literal>U＋000D</literal>, and the space character (<literal>U＋0020</literal>), i.e. <acronym>ASCII</acronym> whitespace other than the newline. Its primary role in Ruby syntax is to separate tokens and terminate statements. When whitespace is syntactically significant it is typically collapsed to a single space.  The few areas of syntax where whitespace has different semantics are clearly labeled.</para>
 
-      <para>
-        Newlines may function as whitespace, too, depending on the context in
-        which they are used. See the <link linkend="pro.statement-terminators"/> 
-        for further details.
-      </para>
+      <para>Newlines may function as whitespace, too, depending on the context in which they are used. See the <link linkend="pro.statement-terminators"/> for further details.</para>
     </sect2>
     
     <sect2 xml:id="pro.literals">
       <title>Literals</title>
       
-      <para>
-        An <firstterm>object literal</firstterm> is a syntactical shortcut for
-        the instantiation of a particular core object. Literals exist for
-        strings, numbers, symbols, arrays, hashes, ranges, lambdas.
-      </para>
+      <para>An <firstterm>object literal</firstterm> is a syntactical shortcut for the instantiation of a particular core object. Literals exist for strings, numbers, symbols, arrays, hashes, ranges, lambdas.</para>
     </sect2>
 
     <sect2 xml:id="pro.identifiers">
       <title>Identifiers</title>
       
-      <!--figure>
-        <title>The syntax of an identifier</title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/identifier.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-      
-      <para>
-        An <firstterm>identifier</firstterm> is the name of a <link
-          linkend="var.variables">variable</link> or <link
-          linkend="met.methods">method</link>. It must not contain any
-        <acronym>US</acronym>-<acronym>ASCII</acronym> character other than
-        the alphanumerics (A—Z, a—z, 0–9) and the low line
-        (<literal>U＋005F</literal>), or begin with a
-        <acronym>US</acronym>-<acronym>ASCII</acronym> digit. However, it may
-        contain any other character legal in the <link
-          linkend="enc.source">source encoding</link>.
-      </para>
+      <para>An <firstterm>identifier</firstterm> is the name of a <link linkend="var.variables">variable</link> or <link linkend="met.methods">method</link>. It must not contain any <acronym>US</acronym>-<acronym>ASCII</acronym> character other than the alphanumerics (A—Z, a—z, 0–9) and the low line (<literal>U＋005F</literal>), or begin with a <acronym>US</acronym>-<acronym>ASCII</acronym> digit. However, it may contain any other character legal in the <link linkend="enc.source">source encoding</link>.</para>
     </sect2>
   </sect1>
 
@@ -143,74 +55,18 @@
     <sect2 xml:id="pro.expressions">
       <title>Expressions</title>
       
-      <para>
-        An <firstterm>expression</firstterm><footnote>
-          <para>
-            We follow the lead of Aho, Sethi, &amp; Ullman in defining
-            <emphasis>expression</emphasis> by recursion rather than direct
-            description <biblioref linkend="bib.aho86"/>.  
-          </para>
-        </footnote> is a syntactical construct that
-        produces a value. Since every entity is an object, every expression
-        evaluates to an object. It is either primary or compound.
-      </para>
-      
-      <para>
-        <firstterm>Primary expressions</firstterm> comprise atomic<footnote>
-          <para>
-            As Turbak, Gifford, &amp; Sheldon note, this characterisation is
-            patently false even for toy languages since, in their example,
-            <quote>numerals can be broken down into digits</quote>, however
-            we, too, will <quote>ignore this detail</quote> <biblioref
-              begin="20" end="22" linkend="bib.turbak08" units="pages"/>. 
-          </para>
-        </footnote> units such as <link linkend="var.variables">variable
-        references</link> and numeric, <link
-        linkend="str.literals">string</link><footnote>
-          <para>Double‐quoted strings that interpolate other expressions are
-          compound expressions.</para>
-        </footnote>, and symbol, <link
-        linkend="reg.literals">regexp</link><footnote>
-          <para>
-            Regexps that interpolate other expressions are also compound
-            expressions.
-          </para>
-        </footnote>, and <link linkend="pro.keyword-literals">keyword</link>,
-        literals. <!-- Expressions can be combined with <link -->
-        <!-- linkend="pro.operators">operators</link>, <link -->
-        <!-- linkend="enu.array-literals">array</link>, <link -->
-        <!-- linkend="enu.hash-literals">hash</link>, <link -->
-        <!-- linkend="enu.range-literals">range</link>, and interpolating literals, -->
-        <!-- to produce <firstterm>compound expressions</firstterm>. --></para>
+      <para>An <firstterm>expression</firstterm><footnote><para>We follow the lead of Aho, Sethi, &amp; Ullman in defining <emphasis>expression</emphasis> by recursion rather than direct description <biblioref linkend="bib.aho86"/>.</para></footnote> is a syntactical construct that produces a value. Since every entity is an object, every expression evaluates to an object. It is either primary or compound.</para><para><firstterm>Primary expressions</firstterm> comprise atomic<footnote><para>As Turbak, Gifford, &amp; Sheldon note, this characterisation is patently false even for toy languages since, in their example, <quote>numerals can be broken down into digits</quote>, however we, too, will <quote>ignore this detail</quote> <biblioref begin="20" end="22" linkend="bib.turbak08" units="pages"/>.</para></footnote> units such as <link linkend="var.variables">variable references</link> and numeric, <link linkend="str.literals">string</link><footnote><para>Double‐quoted strings that interpolate other expressions are compound expressions.</para></footnote>, and symbol, <link linkend="reg.literals">regexp</link><footnote><para>Regexps that interpolate other expressions are also compound expressions.</para></footnote>, and <link linkend="pro.keyword-literals">keyword</link>, literals.</para>
 	
       <sect3 xml:id="pro.operators">
 	<title>Operators</title>
 
-	<para>Primary expressions can be combined with
-	<firstterm>operators</firstterm> to produce <firstterm>compound
-	expressions</firstterm>. An operator is a token with
-	<firstterm>precedence</firstterm>,
-	<firstterm>associativity</firstterm>, and <firstterm>arity</firstterm>,
-	which operates upon one or more values (termed its
-	<firstterm>operands</firstterm>).</para>
+	<para>Primary expressions can be combined with <firstterm>operators</firstterm> to produce <firstterm>compound expressions</firstterm>. An operator is a token with <firstterm>precedence</firstterm>, <firstterm>associativity</firstterm>, and <firstterm>arity</firstterm>, which operates upon one or more values (termed its <firstterm>operands</firstterm>).</para>
 
-	<para>Precedence dictates which of two different operations should be
-	carried out first. It can be overridden by grouping sub-expressions
-	that should be performed earlier with parentheses. When parenthetical
-	groups contain other parenthetical groups, the innermost is given the
-	highest precedence.</para>
+	<para>Precedence dictates which of two different operations should be carried out first. It can be overridden by grouping sub-expressions that should be performed earlier with parentheses. When parenthetical groups contain other parenthetical groups, the innermost is given the highest precedence.</para>
 
-	<para>If both operators have the same precedence, the tie is broken by
-	considering their associativity: left-associative expressions are
-	evaluated left to right; right-associative expressions are evaluated
-	right to left. If two operators have the same precedence and are both
-	non-associative, they cannot be used in the same expression without
-	parenthesising one or both.</para>
+	<para>If both operators have the same precedence, the tie is broken by considering their associativity: left-associative expressions are evaluated left to right; right-associative expressions are evaluated right to left. If two operators have the same precedence and are both non-associative, they cannot be used in the same expression without parenthesising one or both.</para>
 
-	<para>An operator’s arity is the number of arguments it takes. An arity
-	of 1 makes an operator <firstterm>unary</firstterm>, 2,
-	<firstterm>binary</firstterm>, and 3,
-	<firstterm>ternary</firstterm>.</para>
+	<para>An operator’s arity is the number of arguments it takes. An arity of 1 makes an operator <firstterm>unary</firstterm>, 2,	<firstterm>binary</firstterm>, and 3, <firstterm>ternary</firstterm>.</para>
 	
 	<table rules="groups">
 	  <caption>Operators in descdending order of precedence</caption>
@@ -363,91 +219,50 @@
         <sect4 xml:id="pro.true">
           <title><literal>true</literal></title>
           
-          <para>
-            The <literal>true</literal> keyword returns the singleton instance
-            of <literal>TrueClass</literal>. Its value is, by definition,
-            true.
-          </para>
+          <para>The <literal>true</literal> keyword returns the singleton instance of <literal>TrueClass</literal>. Its value is, by definition, true.</para>
         </sect4>
 
         <sect4 xml:id="pro.false">
           <title><literal>false</literal></title>
 
-          <para>
-            The <literal>false</literal> keyword returns the singleton
-            instance of <literal>FalseClass</literal>. Its value is, by
-            definition, false.
-          </para>
+          <para>The <literal>false</literal> keyword returns the singleton instance of <literal>FalseClass</literal>. Its value is, by definition, false.</para>
         </sect4>
 
         <sect4 xml:id="pro.nil">
           <title><literal>nil</literal></title>
 
-          <para>
-            The <literal>nil</literal> keyword returns the singleton instance
-            of <literal>NilClass</literal>. Its value is represents the
-            absence of a value.  The <literal>Kernel.nil?</literal> predicate
-            returns <literal>true</literal> if its value is
-            <literal>nil</literal>; <literal>false</literal> otherwise.
-          </para>
+          <para>The <literal>nil</literal> keyword returns the singleton instance of <literal>NilClass</literal>. Its value is represents the absence of a value. The <literal>Kernel.nil?</literal> predicate returns <literal>true</literal> if its value is <literal>nil</literal>; <literal>false</literal> otherwise.</para>
         </sect4>
 
         <sect4 xml:id="pro.self">
 
           <title><literal>self</literal></title>
 
-          <para>
-            <literal>self</literal> always evaluates to the current object.
-            Outside of any class definition, i.e. at the top‐level, the
-            current object is an instance of <literal>Object</literal> called
-            <literal>main</literal>. Inside a class definition, but outside of
-            a method definition, the current object is an instance of
-            <literal>Class</literal>. Within a method definition the current
-            object is the instance of the containing class.
-          </para>
+          <para><literal>self</literal> always evaluates to the current object. Outside of any class definition, i.e. at the top‐level, the current object is an instance of <literal>Object</literal> called <literal>main</literal>. Inside a class definition, but outside of a method definition, the current object is an instance of <literal>Class</literal>. Within a method definition the current object is the instance of the containing class.</para>
 
           <example xml:id="ex.self-as-the-implicit-receiver">
-            <title><literal>self</literal> is always defined; its value depends
-            on the enclosing context.</title>
+            <title><literal>self</literal> is always defined; its value depends on the enclosing context.</title>
 
-            <programlisting><xi:include 
-                href="examples/self-as-the-implicit-receiver.rb" 
-                parse="text"
-            /></programlisting>
+            <programlisting><xi:include href="examples/self-as-the-implicit-receiver.rb" parse="text"/></programlisting>
           </example>
         </sect4>
         
         <sect4 xml:id="pro.file">
           <title><literal>__FILE__</literal></title>
           
-          <para>
-            Evaluates to a string consisting of the name of the source file
-            currently being executed. The strings
-            <computeroutput>(eval)</computeroutput> and
-            <computeroutput>(irb)</computeroutput> are returned when in an
-            <literal>eval</literal> context and <acronym>IRB</acronym>
-            session, respectively.
-          </para>
+          <para>Evaluates to a string consisting of the name of the source file currently being executed. The strings <computeroutput>(eval)</computeroutput> and <computeroutput>(irb)</computeroutput> are returned when in an <literal>eval</literal> context and <acronym>IRB</acronym> session, respectively.</para>
         </sect4>
 
         <sect4 xml:id="pro.line">
           <title><literal>__LINE__</literal></title>
 
-          <para>
-            Evaluates to a <literal>Fixnum</literal> specifying the line
-            number in the current <link linkend="pro.file">__FILE__</link>
-            being executed.
-          </para>
+          <para>Evaluates to a <literal>Fixnum</literal> specifying the line number in the current <link linkend="pro.file">__FILE__</link> being executed.</para>
         </sect4>
         
         <sect4 xml:id="pro.encoding">
           <title><literal>__ENCODING__</literal></title>
 
-          <para>
-            Evaluates to an <literal>Encoding</literal> object representing
-            the current source encoding, i.e. that of <link
-              linkend="pro.file">__FILE__</link>.
-          </para>
+          <para>Evaluates to an <literal>Encoding</literal> object representing the current source encoding, i.e. that of <link linkend="pro.file">__FILE__</link>.</para>
         </sect4>
       </sect3>
     </sect2>
@@ -455,86 +270,31 @@
     <sect2 xml:id="pro.statements">
       <title>Statements</title>
       
-      <para>
-        A statement is an expression whose value is ignored<footnote>
-          <para>
-            Turbak, Gifford, &amp; Sheldon offer a further example of
-            distinguishing between statements and expressions by considering
-            their context <biblioref begin="472" end="476"
-              linkend="bib.turbak08" units="pages"/>.
-          </para>
-        </footnote>. In practice, this implies that a statement is executed
-        for its side-effects, because an expression executed for neither its
-        value nor effect is semantically meaningless.
-      </para>
+      <para>A statement is an expression whose value is ignored<footnote><para>Turbak, Gifford, &amp; Sheldon offer a further example of distinguishing between statements and expressions by considering their context <biblioref begin="472" end="476" linkend="bib.turbak08" units="pages"/>.</para></footnote>. In practice, this implies that a statement is executed for its side-effects, because an expression executed for neither its value nor effect is semantically meaningless.</para>
 
       <sect3 xml:id="pro.statement-terminators">
         <title>Statement Terminators &amp; Newlines</title>
         
-        <para>One statement must be separated from the next by a statement
-	terminator. This may be a semicolon (<literal>U＋003B</literal>) or
-	newline. The latter is preferred because it leads to a natural
-	separation: each statement on its own line. However, a newline does not
-	terminate a statement if: </para>
+        <para>One statement must be separated from the next by a statement terminator. This may be a semicolon (<literal>U＋003B</literal>) or newline. The latter is preferred because it leads to a natural separation: each statement on its own line. However, a newline does not terminate a statement if:</para>
+
 	<itemizedlist>
           <listitem>
-            <para>
-              It is immediately preceded by a reverse solidus
-              (<literal>U＋005C</literal>).
-            </para>
+            <para>It is immediately preceded by a reverse solidus (<literal>U＋005C</literal>).</para>
           </listitem>
           <listitem>
-            <para>
-              It is preceded by an <link
-                linkend="mes.operators">operator</link>, with optional
-              intervening <link linkend="pro.whitespace">whitespace</link>.
-            </para>
+            <para>It is preceded by an <link linkend="mes.operators">operator</link>, with optional intervening <link linkend="pro.whitespace">whitespace</link>.</para>
           </listitem>
           <listitem>
-            <para>
-              It is immediately preceded by a comma
-              (<literal>U＋002C</literal>) or full stop
-              (<literal>U＋002E</literal>) in a <link
-                linkend="mes.expressions">message expression</link> or <link
-                linkend="arr.arrays">array</link>/<link
-                linkend="has.hashes">hash</link> literal, with optional
-              intervening whitespace.
-            </para>
+            <para>It is immediately preceded by a comma (<literal>U＋002C</literal>) or full stop (<literal>U＋002E</literal>) in a <link linkend="mes.expressions">message expression</link> or <link linkend="arr.arrays">array</link>/<link linkend="has.hashes">hash</link> literal, with optional intervening whitespace.</para>
           </listitem>
           <listitem>
-            <para>
-              It is preceded by a left parenthesis, curly bracket, or square
-              bracket, with optional intervening whitespace. (Allows the
-              argument list of <link linkend="mes.expressions">message
-                expressions</link>, and <link
-                linkend="arr.arrays">array</link> or <link
-                linkend="has.hashes">hash</link> literals to span multiple
-              lines).
-            </para>
+            <para>It is preceded by a left parenthesis, curly bracket, or square bracket, with optional intervening whitespace. (Allows the argument list of <link linkend="mes.expressions">message expressions</link>, and <link linkend="arr.arrays">array</link> or <link linkend="has.hashes">hash</link> literals to span multiple lines).</para>
           </listitem>
           <listitem>
-            <para>
-              The first non-whitespace character on the following line is a
-              full stop (<literal>U＋002E</literal>). (Allows <link
-                linkend="mes.chaining">chained</link> message expressions to
-              span lines).
-          </para>
+            <para>The first non-whitespace character on the following line is a full stop (<literal>U＋002E</literal>). (Allows <link linkend="mes.chaining">chained</link> message expressions to span lines).</para>
           </listitem>
           <listitem>
-            <para>
-              It is preceded by one of the following keywords:
-              <literal>alias</literal>, <literal>and</literal>,
-              <literal>begin</literal>, <literal>def</literal>,
-              <literal>defined?</literal>, <literal>case</literal>,
-              <literal>class</literal>, <literal>else</literal>,
-              <literal>elsif</literal>, <literal>ensure</literal>,
-              <literal>for</literal>, <literal>if</literal>,
-              <literal>in</literal>, <literal>module</literal>,
-              <literal>not</literal>, <literal>or</literal>,
-              <literal>then</literal>, <literal>undef</literal>,
-              <literal>unless</literal>, <literal>until</literal>,
-              <literal>when</literal>, or <literal>while</literal>.
-            </para>
+            <para>It is preceded by one of the following keywords: <literal>alias</literal>, <literal>and</literal>, <literal>begin</literal>, <literal>def</literal>, <literal>defined?</literal>, <literal>case</literal>, <literal>class</literal>, <literal>else</literal>, <literal>elsif</literal>, <literal>ensure</literal>, <literal>for</literal>, <literal>if</literal>, <literal>in</literal>, <literal>module</literal>, <literal>not</literal>, <literal>or</literal>, <literal>then</literal>, <literal>undef</literal>, <literal>unless</literal>, <literal>until</literal>, <literal>when</literal>, or <literal>while</literal>.</para>
           </listitem>
         </itemizedlist>
       </sect3>
@@ -543,20 +303,12 @@
     <sect2 xml:id="pro.data">
       <title><literal>__END__</literal></title>
       
-      <para>If the interpreter encounters a line consisting solely of the token
-      <literal>__END__</literal>, it ignores any lines that follow. However, they are
-      made available to the program via a global, read-only <link
-      linkend="io.io"><literal>IO</literal></link> object named
-      <literal>DATA</literal>.</para>
+      <para>If the interpreter encounters a line consisting solely of the token <literal>__END__</literal>, it ignores any lines that follow. However, they are made available to the program via a global, read-only <link linkend="io.io"><literal>IO</literal></link> object named <literal>DATA</literal>.</para>
 
       <example xml:id="ex.__end__">
-	<title>Lines following <literal>__END__</literal> can be read via the
-        <literal>IO</literal> object <literal>DATA</literal>.</title>
+	<title>Lines following <literal>__END__</literal> can be read via the <literal>IO</literal> object <literal>DATA</literal>.</title>
 
-	<programlisting><xi:include 
-	  href="examples/__end__.rb" 
-	  parse="text"
-	/></programlisting>
+	<programlisting><xi:include href="examples/__end__.rb" parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
@@ -564,126 +316,51 @@
   <sect1 xml:id="pro.interpretation">
     <title>Interpretation</title>
     
-    <para>
-      The statements and expressions that comprise a program are collectively
-      known as its <firstterm>source code</firstterm>. To execute a program
-      its source code must be provided to a Ruby
-      <firstterm>interpreter</firstterm>: the program that executes Ruby
-      source code. The reference implementation<footnote>
-      <para>
-        There are several excellent alternative implementations such as <link
-          xlink:href="http://jruby.org/">JRuby</link> and <link
-          xlink:href="http://rubini.us/">Rubinius</link>. However, for the
-        purposes of this book neither are recommended because, although JRuby
-        is close, they are not yet compatible with Ruby 1.9.
-      </para>
-      </footnote> of Ruby, or <acronym>MRI</acronym>, contains an interpreter
-      called <literal>ruby</literal>, so when we speak of executing the
-      interpreter we are referring to running this program. The sections that
-      follow explain the various ways to execute source code.
-    </para>
+    <para>The statements and expressions that comprise a program are collectively known as its <firstterm>source code</firstterm>. To execute a program its source code must be provided to a Ruby <firstterm>interpreter</firstterm>: the program that executes Ruby source code. The reference implementation<footnote><para>There are several excellent alternative implementations such as <link xlink:href="http://jruby.org/">JRuby</link> and <link xlink:href="http://rubini.us/">Rubinius</link>. However, for the purposes of this book neither are recommended because, although JRuby is close, they are not yet compatible with Ruby 1.9.</para></footnote> of Ruby, or <acronym>MRI</acronym>, contains an interpreter called <literal>ruby</literal>, so when we speak of executing the interpreter we are referring to running this program. The sections that follow explain the various ways to execute source code.</para>
 
     <sect2 xml:id="pro.source-files">
       <title>Source Files</title>
       
-      <para>
-        Ruby programs are typically stored in plain text files with an
-        <literal>.rb</literal> filename extension. They are then executed by
-        supplying their filenames as arguments to the <literal>ruby</literal>
-        binary, e.g. <literal>ruby myfile.rb</literal> would execute the
-        source code saved in <literal>myfile.rb</literal>.
-      </para>
+      <para>Ruby programs are typically stored in plain text files with an <literal>.rb</literal> filename extension. They are then executed by supplying their filenames as arguments to the <literal>ruby</literal> binary, e.g. <literal>ruby myfile.rb</literal> would execute the source code saved in <literal>myfile.rb</literal>.</para>
     
       <sect3 xml:id="pro.shebang">
         <title>Shebang</title>
         
-        <para>
-          The <firstterm>shebang</firstterm><footnote>
-            <para>
-              A portmanteau of <emphasis>sharp</emphasis> and
-              <emphasis>bang</emphasis> <biblioref begin="1001" end="1001"
-                linkend="bib.wall00" units="pages"/>, colloquial terms for
-              the number sign (<literal>U＋0023</literal>) and the exclamation
-              mark (<literal>U＋0021</literal>), respectively.
-          </para>
-          </footnote> is a notation for informing a UNIX-like operating system
-          of the interpreter with which a script should be executed. If
-          present it must appear as the first line of a source file. It begins
-          with a number sign (<literal>U＋0023</literal>) making it a legal
-          comment line, therefore ignored by the interpreter, which is
-          followed by an exclamation mark (<literal>U＋0021</literal>) then
-          the path to the interpreter.
-        </para>
+        <para>The <firstterm>shebang</firstterm><footnote><para>A portmanteau of <emphasis>sharp</emphasis> and <emphasis>bang</emphasis> <biblioref begin="1001" end="1001" linkend="bib.wall00" units="pages"/>, colloquial terms for the number sign (<literal>U＋0023</literal>) and the exclamation mark (<literal>U＋0021</literal>), respectively.</para></footnote> is a notation for informing a UNIX-like operating system of the interpreter with which a script should be executed. If present it must appear as the first line of a source file. It begins with a number sign (<literal>U＋0023</literal>) making it a legal comment line, therefore ignored by the interpreter, which is followed by an exclamation mark (<literal>U＋0021</literal>) then the path to the interpreter.</para>
 
-        <para>
-          A typical shebang is <literal>#!/usr/bin/env ruby</literal> which
-          uses <command>env</command> to avoid hardcoding the path to the
-          interpreter.
-        </para>
+        <para>A typical shebang is <literal>#!/usr/bin/env ruby</literal> which uses <command>env</command> to avoid hardcoding the path to the interpreter.</para>
         
-        <para>
-          If a script containing a shebang is executable, it may be executed by
-          entering its filename in the shell. This allows the interpreter to
-          be invoked implicitly, and is a common approach.
-        </para>
+        <para>If a script containing a shebang is executable, it may be executed by entering its filename in the shell. This allows the interpreter to be invoked implicitly, and is a common approach.</para>
 
 	<example xml:id="ex.shebang">
-	  <title>A shebang allows Ruby source files to be executed from the shell
-	  like a system command</title>
+	  <title>A shebang allows Ruby source files to be executed from the shell like a system command</title>
 
-	  <programlisting><xi:include 
-	  href="examples/shebang.rb" 
-	  parse="text"
-	  /></programlisting>
+	  <programlisting><xi:include href="examples/shebang.rb" parse="text"/></programlisting>
 	</example>
 
 	<example xml:id="ex.shebang-shell">
 	  <title>Executing a file with a shebang</title>
 
-	  <programlisting><xi:include 
-	  href="examples/shebang-shell.txt" 
-	  parse="text"
-	  /></programlisting>
+	  <programlisting><xi:include href="examples/shebang-shell.txt" parse="text"/></programlisting>
 	</example>
       </sect3>
 
       <sect3 xml:id="pro.source-encoding">
         <title>Source Encoding</title>
         
-        <para>
-          Source files are assumed to only contain
-          <acronym>US</acronym>-<acronym>ASCII</acronym> characters, unless
-          they have been explicitly declared to have a different encoding.
-          This topic is explained fully in <link linkend="enc.source"/>.
-        </para>
+        <para>Source files are assumed to only contain <acronym>US</acronym>-<acronym>ASCII</acronym> characters, unless they have been explicitly declared to have a different encoding. This topic is explained fully in <link linkend="enc.source"/>.</para>
       </sect3>
 
       <sect3 xml:id="pro.warnings">
         <title>Warnings</title>
         
-        <para>
-          <firstterm>Warnings</firstterm>— notices of deprecated, ambiguous,
-          or otherwise problematic, code— are enabled when the interpreter is
-          given the <option>-w</option> switch, e.g. <literal>ruby -w
-            myfile.rb</literal>. For example, Ruby warns when a <link
-            linkend="var.constants">constant</link> that has already been
-          defined is assigned to.
-        </para>
+        <para><firstterm>Warnings</firstterm>— notices of deprecated, ambiguous, or otherwise problematic, code— are enabled when the interpreter is given the <option>-w</option> switch, e.g. <literal>ruby -w myfile.rb</literal>. For example, Ruby warns when a <link linkend="var.constants">constant</link> that has already been defined is assigned to.</para>
       </sect3>
 
       <sect3 xml:id="pro.require">
         <title><literal>require</literal></title>
 	
-        <para><function>Kernel.require</function> allows a program to load Ruby
-        code stored in an external file, or a Ruby extension. It takes a single
-        <literal>String</literal> argument, which may be the name of a file or
-        Gem (collectively termed <firstterm>features</firstterm>). The feature
-        is searched for in the directories specified by
-        <literal>$LOAD_PATH</literal>. If it is loaded successfully,
-        <literal>true</literal> is returned; if it was already loaded,
-        <literal>false</literal> is returned; otherwise, a
-        <literal>LoadError</literal> is raised. For example, to require
-        a…</para>
+        <para><function>Kernel.require</function> allows a program to load Ruby code stored in an external file, or a Ruby extension. It takes a single <literal>String</literal> argument, which may be the name of a file or Gem (collectively termed <firstterm>features</firstterm>). The feature is searched for in the directories specified by <literal>$LOAD_PATH</literal>. If it is loaded successfully, <literal>true</literal> is returned; if it was already loaded, <literal>false</literal> is returned; otherwise, a <literal>LoadError</literal> is raised. For example, to require a…</para>
 	
 	<variablelist>
 	  <varlistentry>
@@ -706,57 +383,34 @@
 	  </varlistentry>
 	</variablelist>
 
-	<remark>Mention that this enables features to be loaded conditionally?
-	Or is that implicit?</remark>
+	<remark>Mention that this enables features to be loaded conditionally?	Or is that implicit?</remark>
 
-	<para>This process is explained in detail below. A <emphasis>supported
-	extension</emphasis> is <literal>rb</literal>, along with the system’s
-	default extensions for shared libraries.</para>
+	<para>This process is explained in detail below. A <emphasis>supported extension</emphasis> is <literal>rb</literal>, along with the system’s default extensions for shared libraries.</para>
 
-	<remark>Discuss Gem specifications as well? Or would that be too much
-	detail?</remark>
+	<remark>Discuss Gem specifications as well? Or would that be too much detail?</remark>
 	
 	<sect4 xml:id="pro.unqualified-features">
 	  <title>Unqualified Features</title>
 
-	  <para>If <replaceable>feature</replaceable> is
-	  <firstterm>unqualified</firstterm>, in the sense that it does not begin
-	  with <literal>/</literal>, <literal>../</literal>,
-	  <literal>~/</literal>, or <literal>/</literal>, it is required as
-	  follows:</para>
+	  <para>If <replaceable>feature</replaceable> is <firstterm>unqualified</firstterm>, in the sense that it does not begin with <literal>/</literal>, <literal>../</literal>, <literal>~/</literal>, or <literal>/</literal>, it is required as follows:</para>
 
 	  <orderedlist>
 	    <listitem>
-	      <para>For each directory, <replaceable>dir</replaceable>, in
-	      <literal>$LOAD_PATH</literal>: If the file
-	      <literal><replaceable>dir</replaceable>/<replaceable>feature</replaceable></literal>
-	      exists, <link linkend="pro.require-try-load">try to load
-	      it</link>.</para>
+	      <para>For each directory, <replaceable>dir</replaceable>, in <literal>$LOAD_PATH</literal>: If the file <literal><replaceable>dir</replaceable>/<replaceable>feature</replaceable></literal> exists, <link linkend="pro.require-try-load">try to load it</link>.</para>
 	    </listitem>
 	    <listitem>
-	      <para>For each supported extension,
-	      <replaceable>ext</replaceable><footnote><para>This step runs even
-	      if <replaceable>feature</replaceable> already ends with an
-	      extension; the second extension is simply appended to the
-	      first…</para></footnote></para>
+	      <para>For each supported extension, <replaceable>ext</replaceable><footnote><para>This step runs even if <replaceable>feature</replaceable> already ends with an extension; the second extension is simply appended to the first…</para></footnote></para>
 	      <orderedlist>
 		<listitem>
-		  <para>Set <replaceable>file</replaceable> to
-		  <literal><replaceable>feature</replaceable>.<replaceable>ext</replaceable></literal>.</para>
+		  <para>Set <replaceable>file</replaceable> to <literal><replaceable>feature</replaceable>.<replaceable>ext</replaceable></literal>.</para>
 		</listitem>
 		<listitem>
-		  <para>Iterate through each directory,
-		  <replaceable>dir</replaceable>, in
-		  <literal>$LOAD_PATH</literal>. If
-		  <literal><replaceable>dir</replaceable>/<replaceable>file</replaceable></literal>
-		  exists, <link linkend="pro.require-try-load">try to load
-		  it</link>.</para>
+		  <para>Iterate through each directory, <replaceable>dir</replaceable>, in <literal>$LOAD_PATH</literal>. If <literal><replaceable>dir</replaceable>/<replaceable>file</replaceable></literal> exists, <link linkend="pro.require-try-load">try to load it</link>.</para>
 		</listitem>
 	      </orderedlist>
 	    </listitem>
 	    <listitem>
-	      <para><link linkend="pro.gem-search">Search the Gem path</link>
-	      for <replaceable>feature</replaceable>.</para>
+	      <para><link linkend="pro.gem-search">Search the Gem path</link> for <replaceable>feature</replaceable>.</para>
 	    </listitem>
 	  </orderedlist>
 	</sect4>
@@ -764,8 +418,7 @@
 	<sect4 xml:id="pro.qualified-features">
 	  <title>Qualified Features</title>
 
-	  <para>If the feature name is <firstterm>qualified</firstterm>, it is
-	  required as follows:</para>
+	  <para>If the feature name is <firstterm>qualified</firstterm>, it is required as follows:</para>
 	  
 	  <orderedlist>
 	    <listitem>
@@ -775,15 +428,12 @@
 		  <para>Set <replaceable>file</replaceable> to <literal><replaceable>feature</replaceable>.<replaceable>ext</replaceable></literal>.</para>
 		</listitem>
 		<listitem>
-		  <para>If <replaceable>file</replaceable> resolves relative to
-		  the current working directory, <link
-		  linkend="pro.require-try-load">try to load it</link>.</para>
+		  <para>If <replaceable>file</replaceable> resolves relative to the current working directory, <link linkend="pro.require-try-load">try to load it</link>.</para>
 		</listitem>
 	      </orderedlist>
 	    </listitem>
 	    <listitem>
-	      <para><link linkend="pro.gem-search">Search the Gem path</link>
-	      for <replaceable>feature</replaceable>.</para>
+	      <para><link linkend="pro.gem-search">Search the Gem path</link> for <replaceable>feature</replaceable>.</para>
 	    </listitem>
 	  </orderedlist>
 	</sect4>
@@ -795,41 +445,28 @@
 
 	  <orderedlist>
 	    <listitem>
-	      <para>For each Gem path<footnote><para>The Gem paths for your
-	      system are returned by <command>gem environment
-	      gempath</command>.</para></footnote>,
-	      <replaceable>path</replaceable>:</para>
+	      <para>For each Gem path<footnote><para>The Gem paths for your system are returned by <command>gem environment gempath</command>.</para></footnote>, <replaceable>path</replaceable>:</para>
 	      <orderedlist>
 		<listitem>
 		  <para>Append <literal>gems/</literal> to <replaceable>path</replaceable>.</para>
 		</listitem>
 		<listitem>
-		  <para>For each sub-directory, <replaceable>dir</replaceable>, of
-		  <replaceable>path</replaceable>:</para>
+		  <para>For each sub-directory, <replaceable>dir</replaceable>, of <replaceable>path</replaceable>:</para>
 		  <orderedlist>
 		    <listitem>
-		      <para>Set <replaceable>file</replaceable> to
-		      <literal><replaceable>dir</replaceable>/lib/<replaceable>feature</replaceable></literal>
-		      <footnote><para>This is literally a string concatenation:
-		      <replaceable>feature</replaceable> is not resolved relative to
-		      <literal><replaceable>dir</replaceable>/lib/</literal>; it is
-		    appended.</para></footnote>.</para></listitem>
+		      <para>Set <replaceable>file</replaceable> to <literal><replaceable>dir</replaceable>/lib/<replaceable>feature</replaceable></literal> <footnote><para>This is literally a string concatenation: <replaceable>feature</replaceable> is not resolved relative to <literal><replaceable>dir</replaceable>/lib/</literal>; it is appended.</para></footnote>.</para>
+		    </listitem>
 		    <listitem>
-		      <para>If <replaceable>file</replaceable> exists, <link
-		      linkend="pro.require-try-load">try to load
-			  it</link>.</para>
+		      <para>If <replaceable>file</replaceable> exists, <link linkend="pro.require-try-load">try to load it</link>.</para>
 		    </listitem>
 		    <listitem>
 		      <para>For each supported extension, <replaceable>ext</replaceable>:</para>
 		      <orderedlist>
 			<listitem>
-			  <para>Set <replaceable>file2</replaceable> to
-			  <literal><replaceable>file</replaceable>.<replaceable>ext</replaceable></literal>.</para>
+			  <para>Set <replaceable>file2</replaceable> to <literal><replaceable>file</replaceable>.<replaceable>ext</replaceable></literal>.</para>
 			</listitem>
 			<listitem>
-			  <para>If <replaceable>file2</replaceable> exists,
-			  <link linkend="pro.require-try-load">try to load
-			  it</link>.</para>
+			  <para>If <replaceable>file2</replaceable> exists, <link linkend="pro.require-try-load">try to load it</link>.</para>
 			</listitem>
 		      </orderedlist>
 		    </listitem>
@@ -846,57 +483,34 @@
 	<sect4 xml:id="pro.require-try-load">
 	  <title>Loading a Feature</title>
 
-	  <para>If one of the algorithms above finds a filename,
-	  <replaceable>file</replaceable>, that corresponds with the feature
-	  name, <function>require</function> tries to load it as
-	  follows:</para>
+	  <para>If one of the algorithms above finds a filename, <replaceable>file</replaceable>, that corresponds with the feature name, <function>require</function> tries to load it as follows:</para>
 	
 	  <orderedlist>
 	    <listitem>
-	      <para>If the <literal>$LOADED_FEATURES</literal>
-	      <literal>Array</literal> contains <replaceable>file</replaceable>,
-	      return <literal>false</literal>.</para>
+	      <para>If the <literal>$LOADED_FEATURES</literal> <literal>Array</literal> contains <replaceable>file</replaceable>, return <literal>false</literal>.</para>
 	    </listitem>
 	    <listitem>
-	      <para>Return the value of <link
-	      linkend="pro.load"><function>Kernel.load</function></link> when
-	      given <replaceable>file</replaceable> as an argument.</para>
+	      <para>Return the value of <link linkend="pro.load"><function>Kernel.load</function></link> when given <replaceable>file</replaceable> as an argument.</para>
 	    </listitem>
 	  </orderedlist>
 
-	  <para>To load a file unconditionally, i.e. without checking
-	  <literal>$LOADED_FEATURES</literal>, <function>load</function> can be
-	  invoked directly.</para>
+	  <para>To load a file unconditionally, i.e. without checking <literal>$LOADED_FEATURES</literal>, <function>load</function> can be invoked directly.</para>
 	</sect4>
       </sect3>
       
       <sect3 xml:id="pro.load">
         <title><literal>load</literal></title>
 	
-	<para><function>Kernel.load</function> executes a given source file or
-	extension, then imports its constants—therefore class and module
-	definitions—method definitions, and global-, class-, and instance
-	variables into the loading environment. If the optional second
-	parameter is true, the file is loaded into an anonymous module, so as
-	to avoid polluting the caller’s environment.</para>
+	<para><function>Kernel.load</function> executes a given source file or extension, then imports its constants—therefore class and module definitions—method definitions, and global-, class-, and instance variables into the loading environment. If the optional second parameter is true, the file is loaded into an anonymous module, so as to avoid polluting the caller’s environment.</para>
 	
-	<para>The filename to load is specified as a
-	<literal>String</literal>. Relative filenames are searched for in the
-	directories specified by <literal>$LOAD_PATH</literal>. Unlike
-	<function>require</function>, <literal>$LOADED_FEATURES</literal> is
-	ignored, so a file may be loaded multiple times.</para>
+	<para>The filename to load is specified as a <literal>String</literal>. Relative filenames are searched for in the directories specified by <literal>$LOAD_PATH</literal>. Unlike <function>require</function>, <literal>$LOADED_FEATURES</literal> is ignored, so a file may be loaded multiple times.</para>
 	
-	<para>For example, consider a file, <filename>a.rb</filename>, that
-	comprised the statement <literal>@ivar = :i</literal>. Located in the
-	same directory is the following file:</para>
+	<para>For example, consider a file, <filename>a.rb</filename>, that comprised the statement <literal>@ivar = :i</literal>. Located in the same directory is the following file:</para>
 
 	<example xml:id="ex.load">
 	  <title>Loading and executing an external file</title>
 
-	  <programlisting><xi:include 
-	  href="examples/load.rb" 
-	  parse="text"
-	  /></programlisting>
+	  <programlisting><xi:include href="examples/load.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
     </sect2>
@@ -904,54 +518,29 @@
     <sect2 xml:id="pro.irb">
       <title>IRB</title>
     
-      <para>
-        Ruby is distributed with a program called <command>irb</command> which
-        provides an interactive shell, or read‐eval‐print loop, for the
-        interpreter. <acronym>IRB</acronym> works as follows:
-      </para>
+      <para>Ruby is distributed with a program called <command>irb</command> which provides an interactive shell, or read‐eval‐print loop, for the interpreter. <acronym>IRB</acronym> works as follows:</para>
 
       <orderedlist>
         <listitem>
-          <para>
-            You enter a statement of Ruby and press <keycap>Enter</keycap>.
-          </para>
+          <para>You enter a statement of Ruby and press <keycap>Enter</keycap>.</para>
         </listitem>
         <listitem>
-          <para>
-            That statement is evaluated and its value printed to the screen.
-          </para>
+          <para>That statement is evaluated and its value printed to the screen.</para>
         </listitem>
         <listitem>
-          <para>
-            You go back to step 1.
-          </para>
+          <para>You go back to step 1.</para>
         </listitem>
       </orderedlist>
       
-      <para>
-        This provides a superb environment for learning Ruby. As you read this
-        book you can enter the examples in IRB and see for yourself how they
-        work.
-      </para>
+      <para>This provides a superb environment for learning Ruby. As you read this book you can enter the examples in IRB and see for yourself how they work.</para>
     </sect2>
 
     <sect2 xml:id="pro.eval">
       <title>Evaluating Strings</title>
     
-      <para>
-        Source code can be provided as an command-line argument to the
-        interpreter if it is invoked with the <option>-e</option> switch, e.g.
-        <literal>ruby -e 'puts 1 + 2'</literal> executes the code fragment and
-        displays <computeroutput>3</computeroutput>.
-      </para>
+      <para>Source code can be provided as an command-line argument to the interpreter if it is invoked with the <option>-e</option> switch, e.g. <literal>ruby -e 'puts 1 + 2'</literal> executes the code fragment and displays <computeroutput>3</computeroutput>.</para>
 
-      <para>
-        The <literal>Kernel.eval</literal> method provides similar
-        functionality from within a program. Pass it an arbitrary string of
-        source code as an argument and it will return the result. Continuing
-        with the above example, <literal>eval 'puts 1 + 2'</literal>, has the
-        same result.
-      </para>
+      <para>The <literal>Kernel.eval</literal> method provides similar functionality from within a program. Pass it an arbitrary string of source code as an argument and it will return the result. Continuing with the above example, <literal>eval 'puts 1 + 2'</literal>, has the same result.</para>
     </sect2>
   </sect1>
 </chapter>
