@@ -188,7 +188,7 @@ samp {
   font-weight: bold;
 }
 
-kbd {
+dfn, kbd {
   font-style: italic;
 }
 
