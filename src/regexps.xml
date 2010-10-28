@@ -491,40 +491,35 @@
       <programlisting><xi:include href="examples/regexp-backreferences-lvars.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="reg.quantifiers">
     <title>Quantifiers</title>
-    <para>A literal character, group, or character class may be followed by a
-    <firstterm>quantifier</firstterm> meta-character which specifies how many
-    consecutive occurrences are required at that point in the
-    pattern. <literal>+</literal> requires at least one; <literal>?</literal>,
-    zero or one; and <literal>*</literal>, zero or more. Alternatively, an
-    <firstterm>interval</firstterm> may be given, enclosed in a pair of curly
-    brackets. An interval of the form
-    <literal>{<replaceable>n</replaceable>}</literal> requires exactly
-    <replaceable>n</replaceable> occurrences;
-    <literal>{<replaceable>n</replaceable>,}</literal>, at least
-    <replaceable>n</replaceable>; and
-    <literal>{,<replaceable>n</replaceable>}</literal>, at most
-    <replaceable>n</replaceable>.
-    <literal>{<replaceable>min</replaceable>,<replaceable>max</replaceable>}</literal>
-    requires between <replaceable>min</replaceable> and
-    <replaceable>max</replaceable> occurrences.</para>
+    
+    <para>A literal character, group, or character class may be followed by a <firstterm>quantifier</firstterm> meta-character which specifies how many consecutive occurrences are required at that point in the pattern. <literal>+</literal> requires at least one; <literal>?</literal>, zero or one; and <literal>*</literal>, zero or more. Alternatively, an <firstterm>interval</firstterm> may be given, enclosed in a pair of curly brackets. An interval of the form <literal>{<replaceable>n</replaceable>}</literal> requires exactly <replaceable>n</replaceable> occurrences; <literal>{<replaceable>n</replaceable>,}</literal>, at least <replaceable>n</replaceable>; and <literal>{,<replaceable>n</replaceable>}</literal>, at most <replaceable>n</replaceable>. <literal>{<replaceable>min</replaceable>,<replaceable>max</replaceable>}</literal> requires between <replaceable>min</replaceable> and <replaceable>max</replaceable> occurrences.</para>
+    
     <example xml:id="ex.regexp-quantifiers">
       <title>Quantifying atoms in a regular expression
     </title>
       <programlisting><xi:include href="examples/regexp-quantifiers.rb" parse="text"/></programlisting>
     </example>
-    <para>The above quantifiers are termed <firstterm>greedy</firstterm> because they consume as many characters as
-    possible; in contrast, a <firstterm>lazy</firstterm>
-    quantifier consumes as few characters as possible. The <literal>+</literal>,
-    <literal>?</literal>, and <literal>*</literal> quantifiers are made lazy when
-    immediately followed by a question mark.</para>
+
+    <para>The above quantifiers are termed <firstterm>greedy</firstterm> because they consume as many characters as possible; in contrast, a <firstterm>lazy</firstterm> quantifier consumes as few characters as possible. The <literal>+</literal>, <literal>?</literal>, and <literal>*</literal> quantifiers are made lazy when immediately followed by a question mark.</para>
+
     <example xml:id="ex.lazy-quantifiers">
-      <title>Lazily quantifying atoms in a regular expression
-    </title>
+      <title>Lazily quantifying atoms in a regular expression</title>
+
       <programlisting><xi:include href="examples/lazy-quantifiers.rb" parse="text"/></programlisting>
     </example>
+
+    <para>Whether greedy or lazy quantifiers are used, Ruby tries all permutations of a pattern—a process known as <firstterm>backtracking</firstterm>—before declaring that it does not match the input. If a greedy quantifier is immediately followed by a plus sign—e.g., <literal>*</literal> becomes <literal>*+</literal>—it becomes <firstterm>possessive</firstterm>. Possessive quantifiers refuse to give up a partial match when backtracking. When they’ve found a match, they don’t let it go, even if this causes the match as a whole to fail. This is primarily useful for performance reasons, as it avoids backtracking that is known, a priori, to be redundant. However, they may also change the results of a match that depends upon a greedy quantifier backtracking. Accordingly, possessive quantifiers are only applicable when the atom they quantify should not match the atom that follows.</para>
+
+    <example xml:id="ex.reg-possessive">
+      <title>Possessively quantifying atoms in a regular expression</title>
+
+      <programlisting><xi:include href="examples/reg-possessive.rb" parse="text"/></programlisting>
+    </example>
   </sect1>
+
   <sect1 xml:id="reg.classes">
     <title>Character Classes</title>
 
