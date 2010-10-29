@@ -261,13 +261,39 @@
     <sect2 xml:id="enu.external">
       <title>External Iterators</title>
       
-      <para>The <literal>Enumerable</literal> methods are <firstterm>internal</firstterm> iterators because they internalise the details of the enumeration. Each method invokes <function>#each</function> anew, restarting iteration from the first element of the collection. Conversely, <firstterm>external</firstterm> iterators are driven by the programmer, who must explicitly request each element he requires. Ruby implements external iterators with <literal>Enumerator#next</literal>, which returns the next element of a collection each time it is called. The <literal>Enumerator</literal>, therefore, preserves state across calls, allowing multiple collections to be iterated simultaneously. When there are no more elements to return, <literal>StopIteration</literal> is raised. This exception is rescued automatically by <literal>loop</literal>. The state of an <literal>Enumerator</literal> may be reset with <function>Enumerator#rewind</function> such that a subsequent call to <function>#next</function> will return the first element. External iterators are implemented with <literal>Fiber</literal>s, so cannot be called across threads.</para>
+      <para>The <literal>Enumerable</literal> methods are termed <firstterm>internal</firstterm> iterators because they internalise the details of the enumeration. Each method invokes <function>#each</function> anew, restarting iteration from the first element of the collection. Conversely, <firstterm>external</firstterm> iterators are driven by the user, who must explicitly request each element he requires.</para> 
 
-    <example xml:id="ex.enu-next">
-      <title>Requesting the next element from an <literal>Enumerator</literal>.</title>
+      <para>An <literal>Enumerator</literal> implements an external iterator with a <literal>Fiber</literal> that maintains a pointer, <replaceable>p</replaceable>, to the next element in the receiver. Initially, <replaceable>p</replaceable> points to the first element. <function>#next</function> returns the value of <replaceable>p</replaceable>, then advances it to the next element; <function>#peek</function> returns <replaceable>p</replaceable> without advancing it. <function>#rewind</function> resets <replaceable>p</replaceable> to point to the first element. Due to a limitation of <literal>Fiber</literal>s, these methods cannot be called across threads.</para>
 
-      <programlisting><xi:include href="examples/enu-next.rb" parse="text"/></programlisting>
+      <example xml:id="ex.enu-next">
+	<title>Requesting the next element from an <literal>Enumerator</literal>.</title>
+      
+	<programlisting><xi:include href="examples/enu-next.rb" parse="text"/></programlisting>
+      </example>
+
+      <para>After <function>#next</function> has returned the last element of the receiver, subsequent calls to <function>#next</function> or <function>#peek</function> cause <literal>StopIteration</literal> to be raised. This exception is rescued automatically by <literal>Kernel.loop</literal>, but if rescued manually, <function>StopIteration#result</function> holds the return value of the enumerated method.</para>
+
+      <example xml:id="ex.enu-stopiteration">
+	<title><literal>StopIteration</literal> is raised when a collection is exhausted.</title>
+
+	<programlisting><xi:include href="examples/enu-stopiteration.rb" parse="text"/></programlisting>
     </example>
+
+      <para>A weakness of <function>#next</function> is that it cannot distinguish an element provided by <literal>yield</literal> from one provided by <literal>yield nil</literal>: it returns <literal>nil</literal> in both cases. <function>#next_values</function> offers a solution by wrapping the value of <function>#next</function> in an <literal>Array</literal>, returning <literal>[]</literal> for <literal>yield</literal> and <literal>[nil]</literal> for <literal>yield nil</literal>. <function>#peek_values</function> wraps the value of <function>#peek</function> in the same way. Both methods raise <literal>StopIteration</literal> as before.</para>
+
+      <example xml:id="ex.enu-next_values">
+	<title>Requesting the next value from an <literal>Enumerator</literal> as an <literal>Array</literal>.</title>
+
+	<programlisting><xi:include href="examples/enu-next_values.rb" parse="text"/></programlisting>
+      </example>
+
+      <para>By default, the value of <literal>yield <replaceable>e</replaceable></literal> in the enumerated method is <literal>nil</literal>. That is, when <literal>yield</literal>ed an element the <literal>Enumerator</literal> returns <literal>nil</literal>. <function>#feed(<replaceable>v</replaceable>)</function> takes an arbitrary object, <replaceable>v</replaceable>, and returns that the next—and only the next—time <literal>yield</literal> is called.</para>
+
+      <example xml:id="ex.enu-feed">
+	<title>Feeding an <literal>Enumerator</literal> a value.</title>
+
+	<programlisting><xi:include href="examples/enu-feed.rb" parse="text"/></programlisting>
+      </example>
     </sect2>
   </sect1>
 

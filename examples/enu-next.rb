@@ -1,5 +1,4 @@
 e = (1..3).to_enum
-loop { print e.next } # 123
+3.times{ print e.next } # 123
 e.rewind
-[e.next, e.next, e.next] #=> [1, 2, 3]
-e.next #=> StopIteration
+[e.peek, e.next, e.peek, e.peek, e.next] #=> [1, 1, 2, 2, 2]
