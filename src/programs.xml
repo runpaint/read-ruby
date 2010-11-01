@@ -497,7 +497,13 @@
 	  <para>To load a file unconditionally, i.e. without checking <literal>$LOADED_FEATURES</literal>, <function>load</function> can be invoked directly.</para>
 	</sect4>
       </sect3>
-      
+
+      <sect3 xml:id="pro.require_relative">
+	<title><literal>require_relative</literal></title>
+
+	<para><function>Kernel.require_relative</function> behaves like <function>require</function>, except it resolves the feature name relative to the file in which it is contained. <function>require_relative <replaceable>path</replaceable></function> is equivalent to <function>require File.expand_path(File.dirname(__FILE__)) + <replaceable>path</replaceable></function>.</para>
+      </sect3>
+
       <sect3 xml:id="pro.load">
         <title><literal>load</literal></title>
 	
