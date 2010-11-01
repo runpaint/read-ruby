@@ -249,4 +249,4 @@ desc 'Validate XML, build HTML, validate HTML, build PDF'
 task :default => %w{validate_xml html validate_html pdf}
 
 desc "Rebuild then rsync"
-task :upload => %w{default rsync}
+task :upload => %w{clobber default rsync push}

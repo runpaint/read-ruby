@@ -58,7 +58,7 @@
 	<meta name="subject" content="A free ebook about Ruby 1.9"/>
 	<meta name="keywords" content="ebook, ruby, 1.9, 1.9.2, programming, creative-commons, language"/>
 	<meta name="date" content="{$git_date}"/>
-        <meta name="author" content="Run Paint Run Run"/>
+	<meta name="author" content="Run Paint Run Run"/>
 	<body>
 	  <h1><xsl:value-of select="/d:book/d:title"/></h1>
 	  <p>Free ebook about the Ruby 1.9 programming language</p>
