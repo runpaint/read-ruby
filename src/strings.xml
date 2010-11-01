@@ -798,15 +798,11 @@
   </sect1>
   <sect1 xml:id="str.concatenation">
     <title>Concatenation</title>
-    <para><literal>String#+</literal> returns its receiver concatenated with its
-    <literal>String</literal> argument, without modifying the former. No coercion
-    is performed on the argument.</para>
-    <para><literal>String#&lt;&lt;</literal>, and its alias <literal>String#concat</literal>,
-    append their argument to their receiver, mutating the existing object
-    rather than creating a new one, and return the receiver. The argument must
-    be either an <literal>Integer</literal> codepoint, which is converted into the
-    corresponding character before concatenation, or a
-    <literal>String</literal>.</para>
+
+    <para><literal>String#+</literal> returns its receiver concatenated with its <literal>String</literal> argument, without modifying the former. No coercion is performed on the argument.</para>
+
+    <para><literal>String#&lt;&lt;</literal>, and its alias <literal>String#concat</literal>, append their argument to their receiver, mutating the existing object rather than creating a new one, and return the receiver. The argument must be either an <literal>Integer</literal> codepoint, which is converted into the corresponding character before concatenation, or a <literal>String</literal>. In tight loops, therefore, <function>#&lt;&lt;</function> should be preferred to <function>#+=</function>, as the latter creates a new object each time.</para>
+
     <example xml:id="ex.string-concat">
       <title>Concatenating <literal>String</literal>s
     </title>
