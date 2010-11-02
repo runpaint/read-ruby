@@ -57,51 +57,51 @@
   <sect1 xml:id="io.writing">
     <title>Writing to a Stream</title>
 
-    <para>If a stream has been opened for writing, we can write data to it using a variety of methods. We will begin, with the low-level <literal>IO#syswrite</literal>, which requires exactly one argument that it converts to a <literal>String</literal>, writes to the stream, then returns the number of bytes written. It uses a low-level system call to perform this operation, so the official documentation cautions that it should not be used in conjunction with other, higher-level writing methods<footnote><para>The rationale for this warning is that <literal>IO#syswrite</literal> ignores Ruby’s I/O buffer, as explained in <link linkend="io.buffering">Buffering</link>.</para></footnote>. <literal>IO#write</literal> behaves in the same manner, but without the risks. In fact, all other writing methods are implemented in terms of <literal>#write</literal>. For example, <literal>IO#printf</literal> formats its arguments with <link linkend="str.format">Kernel#sprintf</link> before passing the result to <literal>#write</literal>, i.e. <literal>write(sprintf *args)</literal>.</para>
+    <para>If a stream has been opened for writing, we can write data to it using a variety of methods. We will begin, with the low-level <function>IO#syswrite</function>, which requires exactly one argument that it converts to a <literal>String</literal>, writes to the stream, then returns the number of bytes written. It uses a low-level system call to perform this operation, so the official documentation cautions that it should not be used in conjunction with other, higher-level writing methods<footnote><para>The rationale for this warning is that <function>IO#syswrite</function> ignores Ruby’s I/O buffer, as explained in <xref linkend="io.buffering"/>.</para></footnote>.</para>
+
+    <para><function>IO#write</function> also requires a single argument that it coerces with <function>#to_s</function>, then writes to the stream. It returns the number of bytes written. However, unlike <function>#syswrite</function>, <function>#write</function> does use Ruby’s I/O buffer. All other writing methods are implemented in terms of <function>#write</function>. For example, <function>IO#printf</function> formats its arguments with <link linkend="str.format"><function>Kernel#sprintf</function></link> before passing the result to <function>#write</function>, i.e. <literal>write(sprintf *args)</literal>.</para>
 
     <example xml:id="ex.write-syswrite-printf">
-      <title>Displaying output with <literal>#write</literal>, <literal>#syswrite</literal>, and <literal>#printf</literal></title>
+      <title>Displaying output with <function>#write</function>, <function>#syswrite</function>, and <function>#printf</function></title>
 
       <programlisting><xi:include href="examples/write-syswrite-printf.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>IO#&lt;&lt;</literal> writes its argument to its receiver, which it then returns. This is a more common way to write to a stream because the selector is polymorphic, <link linkend="glo.less-than-less-than">conventionally</link> appending its argument to its receiver.</para>
+    <para><function>IO#&lt;&lt;</function> writes its argument to its receiver, which it then returns. This is a more common way to write to a stream because the selector is polymorphic, <link linkend="glo.less-than-less-than">conventionally</link> appending its argument to its receiver.</para>
 
-    <para><literal>IO#putc</literal> writes a single byte to its stream, then returns its argument. It interprets a <literal>Numeric</literal> argument as a character code, writing the least-significant byte of the character corresponding to its integer part. A non-numeric argument is converted to a <literal>String</literal>, then its least-significant byte is written to the stream. Please note the term <emphasis>byte</emphasis>: before Ruby 1.9.3, this method would only ever write a single byte, even when given a multi-byte character; as of 1.9.3, it behaves correctly with multi-byte characters.</para>
+    <para><function>IO#putc</function> writes a single byte to its stream, then returns its argument. It interprets a <literal>Numeric</literal> argument as a character code, writing the least-significant byte of the character corresponding to its integer part. A non-numeric argument is converted to a <literal>String</literal>, then its least-significant byte is written to the stream. Please note the term <emphasis>byte</emphasis>: before Ruby 1.9.3, this method would only ever write a single byte, even when given a multi-byte character; as of 1.9.3, it behaves correctly with multi-byte characters.</para>
 
     <example xml:id="ex.syswrite-write-putc">
-      <title>The <literal>#syswrite</literal>, <literal>#write</literal>, and <literal>#putc</literal> methods of <literal>IO</literal> write their arguments to an <literal>IO</literal> stream</title>
+      <title>The <function>#syswrite</function>, <function>#write</function>, and <function>#putc</function> methods of <function>IO</function> write their arguments to an <function>IO</function> stream</title>
 
       <programlisting><xi:include href="examples/syswrite-write-putc.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>Object#display</literal> converts its receiver to a <literal>String</literal>, then writes it to <literal>$stdout</literal>. If given an <literal>IO</literal> stream as an argument, it writes to that stream instead.</para>
+    <para><function>Object#display</function> converts its receiver to a <literal>String</literal>, then writes it to <literal>$stdout</literal>. If given an <literal>IO</literal> stream as an argument, it writes to that stream instead.</para>
     
     <example xml:id="ex.object-display">
-      <title><literal>Object#display</literal> writes its receiver to an <literal>IO</literal> stream</title>
+      <title><function>Object#display</function> writes its receiver to an <literal>IO</literal> stream</title>
       
       <programlisting><xi:include href="examples/object-display.rb" parse="text"/></programlisting>
 
     </example>
     
-    <para><literal>IO#print</literal> accepts any number of arguments, each of which are converted with <literal>#to_s</literal>, then their concatenation is written to the receiver. If no arguments are supplied, an argument of <literal>$_</literal> is assumed. <literal>Kernel#print</literal> behaves identically, expect it writes to <literal>$stdout</literal>.</para>
+    <para><function>IO#print</function> accepts any number of arguments, each of which are converted with <function>#to_s</function>, then their concatenation is written to the receiver. If no arguments are supplied, an argument of <literal>$_</literal> is assumed. <function>Kernel#print</function> behaves identically, expect it writes to <literal>$stdout</literal>.</para>
 
-    <para><literal>IO#puts</literal> also accepts any number of arguments, which it converts with <literal>#to_s</literal>. A newline is appended to each of these <literal>String</literal>s that do not already end with one. Then, their concatenation is written to their receiver. If no arguments are provided, <literal>nil</literal> is assumed, so by default a single newline is written. <literal>Array</literal> arguments are automatically expanded into their constituent elements, so each element is written on a line of its own. <literal>Kernel#puts</literal> writes to <literal>$stdout</literal>, instead.</para>
+    <para><function>IO#puts</function> also accepts any number of arguments, which it converts with <literal>#to_s</literal>. A newline is appended to each of these <literal>String</literal>s that do not already end with one. Then, their concatenation is written to their receiver. If no arguments are provided, <literal>nil</literal> is assumed, so by default a single newline is written. <literal>Array</literal> arguments are automatically expanded into their constituent elements, so each element is written on a line of its own. <function>Kernel#puts</function> writes to <literal>$stdout</literal>, instead.</para>
 
     <example xml:id="ex.print-puts">
-      <title>The <literal>#print</literal> and <literal>#puts</literal> methods of <literal>IO</literal> and <literal>Kernel</literal> write their arguments to an <literal>IO</literal> stream.</title>
+      <title>The <function>#print</function> and <function>#puts</function> methods of <function>IO</function> and <function>Kernel</function>> write their arguments to an <literal>IO</literal> stream.</title>
 
       <programlisting><xi:include href="examples/print-puts.rb" parse="text"/></programlisting>
-
     </example>
 
-    <para><literal>Kernel#p</literal> provides output suitable for debugging. It accepts any number of arguments, which it converts with <literal>#inspect</literal>, then writes each of them to <literal>$stdout</literal> separated by <literal>"\n"</literal>.</para>
+    <para><function>Kernel#p</function> provides output suitable for debugging. It accepts any number of arguments, which it converts with <literal>#inspect</literal>, then writes each of them to <literal>$stdout</literal> separated by <literal>"\n"</literal>.</para>
 
     <example xml:id="ex.object-p">
-      <title><literal>Object#p</literal> writes its argument’s <literal>#inspect</literal> output to <literal>$stdout</literal></title>
+      <title><function>Kernel#p</function> writes its argument’s <function>#inspect</function>> output to <literal>$stdout</literal></title>
       
       <programlisting><xi:include href="examples/object-p.rb" parse="text"/></programlisting>
-
     </example>
 
     <remark>This graf wants to be a descendant of the table</remark>
@@ -122,57 +122,57 @@
       </thead>
       <tbody>
 	<tr>
-	  <td><literal>IO#syswrite</literal></td>
+	  <td><function>IO#syswrite</function></td>
 	  <td>1</td>
-	  <td><literal>#to_s</literal></td>
+	  <td><function>#to_s</function></td>
 	  <td>N/A</td>
 	  <td><literal>Integer</literal></td>
 	  <td>N/A</td>
 	</tr>
 	<tr>
-	  <td><literal>IO#write</literal></td>
+	  <td><function>IO#write</function></td>
 	  <td>1</td>
-	  <td><literal>#to_s</literal></td>
+	  <td><function>#to_s</function></td>
 	  <td>N/A</td>
 	  <td><literal>Integer</literal></td>
 	  <td>N/A</td>
 	</tr>
 	<tr>
-	  <td><literal>IO#putc</literal></td>
+	  <td><function>IO#putc</function></td>
 	  <td>1</td>
-	  <td><literal>#to_s</literal> or <literal>#chr</literal></td>
+	  <td><function>#to_s</function> or <function>#chr</function></td>
 	  <td>N/A</td> 
 	  <td>Argument</td>
 	  <td>N/A</td>
 	</tr>
 	<tr>
-	  <td><literal>Object#display</literal></td>
+	  <td><function>Kernel#display</function></td>
 	  <td>0–1</td>
-	  <td><literal>#to_s</literal></td>
+	  <td><function>#to_s</function></td>
 	  <td>N/A</td>
 	  <td><literal>nil</literal></td>
 	  <td><literal>self.to_s</literal></td>
         </tr>
 	<tr>
-	  <td><literal>IO#print</literal></td>
+	  <td><function>IO#print</function></td>
 	  <td>-1</td>
-	  <td><literal>#to_s</literal></td>
+	  <td><function>#to_s</function></td>
 	  <td><literal>""</literal></td>
 	  <td><literal>nil</literal></td>
 	  <td><literal>$_.to_s</literal></td>
         </tr>
 	<tr>
-	  <td><literal>IO#puts</literal></td>
+	  <td><function>IO#puts</function></td>
 	  <td>-1</td>
-	  <td><literal>#to_s</literal></td>
+	  <td><function>#to_s</function></td>
 	  <td><literal>"\n"</literal> (if needed)</td>
 	  <td><literal>nil</literal></td>
 	  <td><literal>"\n"</literal></td>
         </tr>
 	<tr>
-	  <td><literal>Object#p</literal></td>
+	  <td><function>Kernel#p</function></td>
 	  <td>-1</td>
-	  <td><literal>#inspect</literal></td>
+	  <td><function>#inspect</function></td>
 	  <td><literal>\n</literal></td>
           <td>Arguments</td>
 	  <td><literal>""</literal></td>
@@ -187,11 +187,11 @@
      <sect2 xml:id="io.reading-bytes">
        <title>Bytes</title>
 
-       <para>At the most basic level, a stream can be thought of as a sequence of bytes. The next byte in a stream is returned by <literal>IO#getbyte</literal> as a <literal>Fixnum</literal>, or <literal>nil</literal> if EoF has been reached. <literal>IO#readbyte</literal> also returns the next byte from a stream, but when EoF is reached it raises an <literal>EOFError</literal> exception.</para>
+       <para>At the most basic level, a stream can be thought of as a sequence of bytes. The next byte in a stream is returned by <function>IO#getbyte</function> as a <literal>Fixnum</literal>, or <literal>nil</literal> if <acronym>EoF</acronym> has been reached. <function>IO#readbyte</function> also returns the next byte from a stream, but when EoF is reached it raises an <literal>EOFError</literal> exception.</para>
 
-       <para>A variable number of bytes may be read each time with <literal>IO#read</literal>. By default it reads every byte until EoF, at which point it returns <literal>nil</literal>. If provided with an <literal>Integer</literal> as its first argument, it will read at most the given number of bytes. When provided with a <literal>String</literal> as its second argument, it will assign the data it reads to that <literal>String</literal>. In all cases, the data is returned as a <literal>String</literal> with <link linkend="enc.ascii-8bit">ASCII-8BIT</link> encoding. <literal>IO#sysread</literal> behaves in a similar fashion, except it requires the <literal>Integer</literal> first argument, and raises <literal>EOFError</literal> at EoF.</para>
+       <para>A variable number of bytes may be read each time with <function>IO#read</function>. By default it reads every byte until <acronym>EoF</acronym>, at which point it returns <literal>nil</literal>. If provided with an <literal>Integer</literal> as its first argument, it will read at most the given number of bytes. When provided with a <literal>String</literal> as its second argument, it will assign the data it reads to that <literal>String</literal>. In all cases, the data is returned as a <literal>String</literal> with <link linkend="enc.ascii-8bit">ASCII-8BIT</link> encoding. <function>IO#sysread</function> behaves in a similar fashion, but requires the <literal>Integer</literal> first argument, and raises <literal>EOFError</literal> at <acronym>EoF</acronym>.</para>
 
-      <para>Rather than reading bytes piecemeal, <literal>IO#bytes</literal>, and its alias <literal>IO#each_byte</literal>, return an <literal>Enumerator</literal> of the stream’s bytes as <literal>Fixnum</literal>s. If a block is supplied, it is yielded each byte in turn.</para>
+      <para>Rather than reading bytes piecemeal, <function>IO#bytes</function>, and its alias <function>IO#each_byte</function>, return an <literal>Enumerator</literal> of the stream’s bytes as <literal>Fixnum</literal>s. If a block is supplied, it is yielded each byte in turn.</para>
 
       <table>
         <caption>Comparison of reader methods</caption>
@@ -200,29 +200,29 @@
             <th>Method</th>
 	    <th>Bytes Read</th>
 	    <th><literal>String</literal> Buffer?</th>
-	    <th>At EoF</th>
+	    <th>At <acronym>EoF</acronym></th>
 	  </tr>
 	</thead>
 	<tbody>
 	  <tr>
-	    <td><literal>IO#read(<replaceable>n</replaceable> = all,…)</literal></td>
+	    <td><function>IO#read(<replaceable>n</replaceable> = all,…)</function></td>
 	    <td><replaceable>n</replaceable></td> <td>✔</td>
 	    <td><literal>nil</literal></td>
 	  </tr>
 	  <tr>
-            <td><literal>IO#sysread(<replaceable>n</replaceable>, …)</literal></td> 
+            <td><function>IO#sysread(<replaceable>n</replaceable>, …)</function></td> 
 	    <td><replaceable>n</replaceable></td>
 	    <td>✔</td>
 	    <td><literal>EOFError</literal></td>
           </tr>
 	  <tr>
-            <td><literal>IO#getbyte</literal></td>
+            <td><function>IO#getbyte</function></td>
 	    <td>1</td>
 	    <td>✖</td>
 	    <td><literal>nil</literal></td>
 	  </tr>
 	  <tr>
-            <td><literal>IO#readbyte</literal></td>
+            <td><function>IO#readbyte</function></td>
 	    <td>1</td>
 	    <td>✖</td>
 	    <td><literal>EOFError</literal></td>
@@ -234,16 +234,16 @@
      <sect2 xml:id="io.reading-chars">
       <title>Characters</title>
 
-      <para>A stream may be read character-by-character with either <literal>IO#getc</literal> or <literal>IO#readchar</literal>, both of which return one-character <literal>String</literal>s. When EoF is reached, the former returns <literal>nil</literal>, while the latter raises an <literal>EOFError</literal>. Alternatively, <literal>IO#chars</literal>, and its alias <literal>IO#each_char</literal> return an <literal>Enumerator</literal> of the stream’s characters. As is customary, they may also be supplied with a block in which case they yield each character in turn.</para>
+      <para>A stream may be read character-by-character with either <function>IO#getc</function> or <function>IO#readchar</function>, both of which return one-character <literal>String</literal>s. When <acronym>EoF</acronym> is reached, the former returns <literal>nil</literal>, while the latter raises an <literal>EOFError</literal>. Alternatively, <literal>IO#chars</literal>, and its alias <literal>IO#each_char</literal> return an <literal>Enumerator</literal> of the stream’s characters. As is customary, they may also be supplied with a block in which case they yield each character in turn.</para>
     </sect2>
 
     <sect2 xml:id="io.io-reading-lines">
       <title>Lines</title>
       
-      <para><literal>IO#gets</literal> allows a stream to be processed as a sequence of “lines”, each separated by separator, <replaceable>sep</replaceable>. If <replaceable>sep</replaceable> is not given, it is assumed to have the value of <literal>$/</literal>, which is <literal>"\n"</literal> by default. If an <literal>Integer</literal> limit is supplied, at most that many bytes will be returned at a time; by default there is no limit. According to Thomas et al., a negative limit makes the search for <replaceable>sep</replaceable> more efficient by ignoring the stream’s encoding <biblioref linkend="bib.thom09" begin="551" end="551" units="pages"/>. The permutations of these arguments are enumerated below:</para>
+      <para><function>IO#gets</function> allows a stream to be processed as a sequence of “lines”, each separated by separator, <replaceable>sep</replaceable>. If <replaceable>sep</replaceable> is not given, it is assumed to have the value of <literal>$/</literal>, which is <literal>"\n"</literal> by default. If an <literal>Integer</literal> limit is supplied, at most that many bytes will be returned at a time; by default there is no limit. According to Thomas et al., a negative limit makes the search for <replaceable>sep</replaceable> more efficient by ignoring the stream’s encoding <biblioref linkend="bib.thom09" begin="551" end="551" units="pages"/>. The permutations of these arguments are enumerated below:</para>
 
       <table>
-        <caption>Arguments accepted by <literal>IO#gets</literal></caption>
+        <caption>Arguments accepted by <function>IO#gets</function></caption>
 	<thead>
           <tr>
             <th>Arguments</th> 
@@ -290,7 +290,7 @@
 	</tbody>
       </table>
 
-      <para><literal>IO#readline</literal> behaves identically, and expects the same arguments, but raises an <literal>EOFError</literal> when EoF is reached. <literal>IO#readlines</literal> also expects the same arguments, but returns an <literal>Array</literal>, each element of which is a line terminated by the given separator. <literal>IO#lines</literal>, and its alias <literal>IO#each_line</literal>, behave like <literal>IO#readlines</literal>, but return an <literal>Enumerator</literal> instead of an <literal>Array</literal>. When either method is given a block, it yields each line in turn.</para>
+      <para><function>IO#readline</function> behaves identically, and expects the same arguments, but raises an <literal>EOFError</literal> when <acronym>EoF</acronym> is reached. <literal>IO#readlines</literal> also expects the same arguments, but returns an <literal>Array</literal>, each element of which is a line terminated by the given separator. <literal>IO#lines</literal>, and its alias <literal>IO#each_line</literal>, behave like <literal>IO#readlines</literal>, but return an <literal>Enumerator</literal> instead of an <literal>Array</literal>. When either method is given a block, it yields each line in turn.</para>
     </sect2> 
   </sect1> 
 
@@ -406,7 +406,7 @@
   <sect1 xml:id="io.open"> 
     <title>Opening a File</title>
     
-    <para><literal>IO.sysopen</literal> <firstterm>opens</firstterm> a given pathname and returns a corresponding file descriptor. (Use the <link linkend="fil.files">File class</link> for higher-level interface to this operation). Optionally, it accepts an <link linkend="io.access-mode">access mode</link> as the second argument, and <link linkend="io.perm">permission bits</link> as the third.</para>
+    <para><literal>IO.sysopen</literal> <firstterm>opens</firstterm> a given pathname and returns a corresponding file descriptor. (Use the <link linkend="fil.files">File class</link> for a higher-level interface to this operation). Optionally, it accepts an <link linkend="io.access-mode">access mode</link> as the second argument, and <link linkend="io.perm">permission bits</link> as the third.</para>
     
     <sect2 xml:id="io.perm">
       <title>Permissions</title> 
@@ -442,7 +442,7 @@
 	  <td><literal><replaceable>external</replaceable></literal></td>
 	  <td rowspan="2"><replaceable>external</replaceable></td> 
 	  <td rowspan="2">✖ </td>
-          <td rowspan="2"><literal>Encoding.default_internal</literal></td>
+          <td rowspan="2"><function>Encoding.default_internal</function></td>
 	</tr> 
 	<tr> 
 	  <td><literal> <replaceable>external</replaceable>:-</literal></td>
@@ -451,7 +451,7 @@
           <td><literal>BOM|<replaceable>external</replaceable></literal></td> 
 	  <td rowspan="2"><replaceable>external</replaceable></td>
 	  <td rowspan="2">✔</td>
-          <td rowspan="2"><literal>Encoding.default_internal</literal></td> 
+          <td rowspan="2"><function>Encoding.default_internal</function></td> 
 	</tr> 
 	<tr> 
 	  <td><literal>BOM|<replaceable>external</replaceable>:-</literal></td>
@@ -524,9 +524,9 @@
     <sect1 xml:id="io.init"> 
       <title>Initializing a Stream</title> 
 
-      <para>An <literal>IO</literal> instance objectifies a given file descriptor. It may be initialized by supplying this file descriptor as the first argument to <literal>IO.new</literal>, or its alias <literal>IO.for_fd</literal>. Optionally, a <link linkend="io.mode-string">mode string</link>, or <link linkend="io.open-flags">numeric access mode</link>, can be provided as the second argument, however this must agree with the <link linkend="io.access-mode">access mode</link> already associated with the file descriptor. An <link linkend="io.options-hash">options Hash</link> may be provided as the final argument.</para>
+      <para>An <literal>IO</literal> instance objectifies a given file descriptor. It may be initialized by supplying this file descriptor as the first argument to <function>IO.new</function>, or its alias <function>IO.for_fd</function>. Optionally, a <link linkend="io.mode-string">mode string</link>, or <link linkend="io.open-flags">numeric access mode</link>, can be provided as the second argument, however this must agree with the <link linkend="io.access-mode">access mode</link> already associated with the file descriptor. An <link linkend="io.options-hash">options Hash</link> may be provided as the final argument.</para>
 
-      <para><literal>IO.open</literal> accepts the same arguments, but also expects a block. It initializes an <literal>IO</literal> object as before, yields it to the block, then ensures the stream is closed when the block exits.</para>
+      <para><function>IO.open</function> accepts the same arguments, but also expects a block. It initializes an <literal>IO</literal> object as before, yields it to the block, then ensures the stream is closed when the block exits.</para>
       
       <sect2 xml:id="io.mode-string">
 	<title>The Mode String</title> 
@@ -551,8 +551,8 @@
 	      <td><literal><replaceable>mode</replaceable></literal></td> 
 	      <td>✖</td>
 	      <td>✖</td> 
-	      <td><literal>Encoding.default_external</literal></td> 
-	      <td><literal>Encoding.default_internal</literal></td>
+	      <td><function>Encoding.default_external</function></td> 
+	      <td><function>Encoding.default_internal</function></td>
 	    </tr> 
 	    <tr>
 	      <td><literal><replaceable>mode</replaceable>t</literal></td> 
@@ -619,11 +619,10 @@
       <sect2 xml:id="io.options-hash">
 	<title>Options Hash</title> 
 
-	<para>Alternatively, many methods that open files accept an options <literal>Hash</literal> as their final argument. In addition to the keys listed below, those of the <link linkend="enc.options-hash">String#encode options Hash</link> are also recognised.</para>
+	<para>Alternatively, many methods that open files accept an options <literal>Hash</literal> as their final argument. In addition to the keys listed below, those of the <link linkend="enc.options-hash"><function>String#encode</function> options <literal>Hash</literal></link> are also recognised.</para>
 
 	<table>
-	  <caption>Options that may be specified as the second argument to <literal>Kernel.open</literal></caption>
-	  
+	  <caption>Options that may be specified as the second argument to <function>Kernel.open</function></caption>
 	  <thead> 
 	    <tr>
 	      <th>Key</th> 
@@ -661,13 +660,13 @@
 	    <tr>
 	      <td><literal>:external_encoding</literal></td> 
 	      <td><literal>Encoding</literal> object or encoding name</td> 
-	      <td><literal>Encoding.default_external</literal></td> 
+	      <td><function>Encoding.default_external</function></td> 
 	      <td>The external encoding to apply to the stream.</td>
 	    </tr> 
 	    <tr>
 	      <td><literal>:internal_encoding</literal></td> 
 	      <td>〃</td> 
-	      <td><literal>Encoding.default_internal</literal></td> 
+	      <td><function>Encoding.default_internal</function></td> 
 	      <td>The internal encoding to apply to the stream.</td> 
 	    </tr> 
 	    <tr> 
@@ -733,7 +732,7 @@
       <varlistentry>
         <term><literal>File:NOCTTY</literal></term> 
 	<listitem> 
-	  <para><quote>If the named file is a terminal device, don’t make it the controlling terminal for the process.</quote> <biblioref begin="333" end="334" linkend="bib.loosemore07" units="pages"/>. (<literal>IO#tty?</literal> can be used to determine whether the stream is a TTY).</para>
+	  <para><quote>If the named file is a terminal device, don’t make it the controlling terminal for the process.</quote> <biblioref begin="333" end="334" linkend="bib.loosemore07" units="pages"/>. (<function>IO#tty?</function> can be used to determine whether the stream is a TTY).</para>
         </listitem>
       </varlistentry> 
       <varlistentry>
@@ -798,11 +797,11 @@
 
     <para>Further, and for the same reasons, Ruby maintains her own I/O buffer. Therefore, before data is written to disk by Ruby, it passes first through her buffers, and then those of the underlying operating system. The latter are beyond the scope of this text, so we shall focus on the former from now on.</para>
 
-    <para>The <literal>IO</literal> methods for writing that we discussed above, all buffered-that is, they pass through Ruby’s buffers-with the exception of <literal>IO#syswrite</literal>. It was for this reason that we described it as a low-level method, and cautioned against its use in conjunction with other methods that perform writing. To understand why combining buffered writes with non-buffered writes is potentially dangerous, consider a scenario where a given stream has <literal>?a</literal> written to it with <literal>IO#print</literal>, then <literal>?b</literal> written to it with <literal>IO#syswrite</literal>, then <literal>?c</literal> written to it with <literal>IO#print</literal>. The first character written is buffered, the second is written directly, and the third is buffered. When the stream is closed, Ruby flushes her buffer, causing <literal>"ac"</literal> to be written.  Therefore, the data is written out of order: <literal>"bac"</literal>.</para>
+    <para>The <literal>IO</literal> methods for writing that we discussed above, all buffered-that is, they pass through Ruby’s buffers-with the exception of <function>IO#syswrite</function>. It was for this reason that we described it as a low-level method, and cautioned against its use in conjunction with other methods that perform writing. To understand why combining buffered writes with non-buffered writes is potentially dangerous, consider a scenario where a given stream has <literal>?a</literal> written to it with <function>IO#print</function>, then <literal>?b</literal> written to it with <function>IO#syswrite</function>, then <literal>?c</literal> written to it with <function>IO#print</function>. The first character written is buffered, the second is written directly, and the third is buffered. When the stream is closed, Ruby flushes her buffer, causing <literal>"ac"</literal> to be written.  Therefore, the data is written out of order: <literal>"bac"</literal>.</para>
 
-    <para>Ruby’s buffer can be flushed manually with <literal>IO#flush</literal>. This causes the contents of the buffer to be passed to the operating system, and the buffer to be emptied. Alternatively, buffering can be disabled for a given stream by setting <literal>IO#sync=</literal> to <literal>true</literal>; by default, it is <literal>false</literal>. This value can be queried with <literal>IO#sync</literal>.</para>
+    <para>Ruby’s buffer can be flushed manually with <function>IO#flush</function>. This causes the contents of the buffer to be passed to the operating system, and the buffer to be emptied. Alternatively, buffering can be disabled for a given stream by setting <function>IO#sync=</function> to <literal>true</literal>; by default, it is <literal>false</literal>. This value can be queried with <function>IO#sync</function>.</para>
 
-    <para>Reads are buffered by Ruby, too, hence the corresponding warning about <literal>IO#sysread</literal>. Buffered reads make possible what Loosemore et al. term <firstterm>unreading</firstterm>: <biblioref linkend="bib.loosemore07" units="pages" begin="241" end="241"/></para>
+    <para>Reads are buffered by Ruby, too, hence the corresponding warning about <function>IO#sysread</function>. Buffered reads make possible what Loosemore et al. term <firstterm>unreading</firstterm>: <biblioref linkend="bib.loosemore07" units="pages" begin="241" end="241"/></para>
     
     <blockquote>
       <attribution><biblioref linkend="bib.loosemore07" units="pages" begin="241" end="241"/></attribution>
@@ -810,9 +809,9 @@
       <para>Using stream I/O, you can peek ahead at input by first reading it and then <emphasis>unreading</emphasis> it (also called <emphasis>pushing it back</emphasis> on the stream). Unreading a character makes it available to be input again from the stream, by the next call to [an] input function on that stream.</para>
     </blockquote> 
     
-    <para>Two methods are provided for this purpose: <literal>IO#ungetc</literal> and <literal>IO#ungetbyte</literal>. Both expect an argument-characters for the former; bytes for the latter-which they unread. Subsequent buffered reads from the stream will return the unread characters/bytes in reverse chronological order before reading new data from the stream.</para>
+    <para>Two methods are provided for this purpose: <function>IO#ungetc</function> and <function>IO#ungetbyte</function>. Both expect an argument-characters for the former; bytes for the latter-which they unread. Subsequent buffered reads from the stream will return the unread characters/bytes in reverse chronological order before reading new data from the stream.</para>
     
-    <para><literal>IO#fsync</literal> wraps the system call of the same name, so may not be available on some platforms. Love describes <literal>fsync()</literal> from the perspective of the operating system <biblioref begin="37" end="38" linkend="bib.love07" units="pages"/>:</para>
+    <para><function>IO#fsync</function> wraps the system call of the same name, so may not be available on some platforms. Love describes <literal>fsync()</literal> from the perspective of the operating system <biblioref begin="37" end="38" linkend="bib.love07" units="pages"/>:</para>
     
     <blockquote>
       <attribution><biblioref begin="37" end="38" linkend="bib.love07" units="pages"/></attribution>
@@ -822,13 +821,13 @@
       <para>In the case of write caches on hard disks, it is not possible for <literal>fsync()</literal> to know whether the data is physically on the disk.  The hard drive can report that the data was written, but the data may in fact reside in the drive’s write cache. Fortunately, data in a hard disk’s cache should be committed to the disk in short order.</para>
     </blockquote>
 
-    <para><literal>IO#fsync</literal>, therefore, controls the operating system’s buffers, as opposed to <literal>IO#sync</literal> which controls Ruby’s. It returns <literal>0</literal> if supported; <literal>nil</literal> otherwise.</para>
+    <para><function>IO#fsync</function>, therefore, controls the operating system’s buffers, as opposed to <function>IO#sync</function> which controls Ruby’s. It returns <literal>0</literal> if supported; <literal>nil</literal> otherwise.</para>
   </sect1> 
 
   <sect1 xml:id="io.position">
     <title>Positions &amp; Seeking</title> 
 
-    <para>Beck et al. explain that an attribute of a file’s structure is <quote>the position of the read/ write pointer at which the next I/O operation will be carried out. This value is updated by every I/O operation and by the system calls <literal>lseek</literal> and <literal>llseek</literal>.</quote> (<biblioref begin="41" end="43" linkend="bib.beck98" units="pages"/>. Ruby exposes the current position in an I/O stream with <literal>IO#pos</literal>, or its more declarative alias <literal>IO#tell</literal>, as the offset in bytes. To seek to a given position in a stream, one can assign the new, <literal>Integer</literal>, offset to <literal>IO#pos=</literal>.  For more control over seeking, use <literal>IO#seek(<replaceable>pos</replaceable>, <replaceable>origin</replaceable>)</literal>, where <replaceable>pos</replaceable> is a byte offset specified as an <literal>Integer</literal>, and <replaceable>origin</replaceable> is one of the values given below. If <replaceable>origin</replaceable> is omitted, it defaults to <literal>IO::SEEK_SET</literal>:</para>
+    <para>Beck et al. explain that an attribute of a file’s structure is <quote>the position of the read/ write pointer at which the next I/O operation will be carried out. This value is updated by every I/O operation and by the system calls <literal>lseek</literal> and <literal>llseek</literal>.</quote> (<biblioref begin="41" end="43" linkend="bib.beck98" units="pages"/>. Ruby exposes the current position in an I/O stream with <function>IO#pos</function>, or its more declarative alias <function>IO#tell</function>, as the offset in bytes. To seek to a given position in a stream, one can assign the new, <literal>Integer</literal>, offset to <function>IO#pos=</function>.  For more control over seeking, use <function>IO#seek(<replaceable>pos</replaceable>, <replaceable>origin</replaceable>)</function>, where <replaceable>pos</replaceable> is a byte offset specified as an <literal>Integer</literal>, and <replaceable>origin</replaceable> is one of the values given below. If <replaceable>origin</replaceable> is omitted, it defaults to <literal>IO::SEEK_SET</literal>:</para>
  
     <variablelist>
       <varlistentry>
@@ -851,11 +850,11 @@
       </varlistentry> 
     </variablelist> 
     
-    <para><literal>IO#sysseek</literal> expects the same arguments, and behaves in the same manner, as <literal>IO#seek</literal>, except it works on a lower-level, ignoring Ruby’s I/O buffer.</para>
+    <para><function>IO#sysseek</function> expects the same arguments, and behaves in the same manner, as <function>IO#seek</function>, except it works on a lower-level, ignoring Ruby’s I/O buffer.</para>
     
-    <para>Ruby also keeps track of the current line number in a stream. The line-orientated reading methods increment the line number when they encounter the separator character. It initially has a value of zero, and its current value may be retrieved with <literal>IO#lineno</literal>, or its alias <literal>$.</literal>. It may be set explicitly by assigning an <literal>Integer</literal> to <literal>IO#lineno=</literal>.</para>
+    <para>Ruby also keeps track of the current line number in a stream. The line-orientated reading methods increment the line number when they encounter the separator character. It initially has a value of zero, and its current value may be retrieved with <function>IO#lineno</function>, or its alias <literal>$.</literal>. It may be set explicitly by assigning an <literal>Integer</literal> to <literal>IO#lineno=</literal>.</para>
     
-    <para>The current position and line number for a given stream may be reset to zero with <literal>IO#rewind</literal>. Subsequent reads and writes will then occur from the beginning of the stream.</para>
+    <para>The current position and line number for a given stream may be reset to zero with <function>IO#rewind</function>. Subsequent reads and writes will then occur from the beginning of the stream.</para>
   </sect1> 
   
   <sect1 xml:id="io.argv">
