@@ -37,7 +37,7 @@
       <para>When it is started by the shell, a program inherits three open files, with file descriptors 0, 1, and 2, called the standard input, the standard output, and the standard error. All of these are by default connected to the terminal, so if a program only reads file descriptor 0 and writes file descriptors 1 and 2, it can do I/O without having to open files. If the program opens any other files, they will have file descriptors 3, 4, etc.</para>
     </epigraph>
 
-    <para>Ruby behaves in the same manner. The constants <literal>STDIN</literal>, <literal>STDOUT</literal>, and <literal>STDERR</literal>, are defined automatically to refer to the program’s standard input, standard output, and standard error streams, respectively. The value of each constant is an <literal>IO</literal> object associated with the corresponding file descriptor.  <literal>IO#fileno</literal> returns the file descriptor it is associated with as an <literal>Integer</literal>, as shown below.</para>
+    <para>Ruby behaves in the same manner. The constants <literal>STDIN</literal>, <literal>STDOUT</literal>, and <literal>STDERR</literal>, are defined automatically to refer to the program’s standard input, standard output, and standard error streams, respectively. The value of each constant is an <literal>IO</literal> object associated with the corresponding file descriptor. <function>IO#fileno</function>, and its alias <function>IO#to_i</function>, return the associated file descriptor as an <literal>Integer</literal>.</para>
 
     <example xml:id="ex.stdin-stdout-stderr">
       <title>Ruby predefines three constants, referring to the standard input, standard output, and standard error streams</title>
