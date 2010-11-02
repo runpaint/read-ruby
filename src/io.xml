@@ -1,272 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?> <chapter version="5.0"
+<?xml version="1.0" encoding="utf-8"?>
+<chapter version="5.0"
          xml:id="io.io" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
 	 xmlns:xi="http://www.w3.org/2001/XInclude"
 	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
   <title>Input &amp; Output</title>
   
   <epigraph>
-    <attribution><biblioref begin="20" end="22" linkend="bib.wall00"
-    units="pages"/></attribution>
+    <attribution><biblioref begin="20" end="22" linkend="bib.wall00" units="pages"/></attribution>
 
-    <para>Unless you're using artificial intelligence to model a solipsistic
-    philosopher, your program needs some way to communicate with the outside
-    world.</para>
+    <para>Unless you're using artificial intelligence to model a solipsistic philosopher, your program needs some way to communicate with the outside world.</para>
   </epigraph>
 
-  <para>The <literal>IO</literal> class provides an interface to input and
-  output on the level of file descriptors, while its <literal>File</literal>
-  subclass deals with files on a higher level of abstraction. Accordingly,
-  <literal>File</literal>, which is discussed in <xref linkend="fil.files"/>,
-  is often more appropriate, and easier to use.</para>
+  <para>The <literal>IO</literal> class provides an interface to input and output on the level of file descriptors, while its <literal>File</literal> subclass deals with files on a higher level of abstraction. Accordingly, <literal>File</literal>, which is discussed in <xref linkend="fil.files"/>, is often more appropriate, and easier to use.</para>
 
   <blockquote>
-    <attribution><biblioref begin="201" end="202" linkend="bib.kernighan84"
-    units="pages"/></attribution>
+    <attribution><biblioref begin="201" end="202" linkend="bib.kernighan84" units="pages"/></attribution>
     
-    <para>All input and output is done by reading or writing files, because all
-    peripheral devices, even your terminal, are files in the file system. This
-    means that a single interface handles all communication between a program
-    and peripheral devices.</para>
+    <para>All input and output is done by reading or writing files, because all peripheral devices, even your terminal, are files in the file system. This means that a single interface handles all communication between a program and peripheral devices.</para>
   </blockquote>
   
-  <para>In keeping with Unix’s everything-is-a-file philosophy <biblioref
-  linkend="bib.raymond03" units="pages"/>, Ruby allows regular files,
-  directories, block and character devices, symbolic links, hard links,
-  sockets, unnamed pipes, and <acronym>FIFO</acronym>s (named pipes), to be
-  treated conceptually the same. They can be read from and written to.  Before
-  operating on a file, we need to <link linkend="io.open">open</link> it by
-  providing the operating system with the pathname and asking permission to
-  read it, write to it, or both. If our request is granted, we are provided
-  with a integer <emphasis>file descriptor</emphasis> which we must use to
-  refer to the file in future operations. We are allowed only to use the file
-  in the manner, or <link linkend="io.access-mode">access mode</link>, we
-  requested: it is illegal to write to a file opened for reading, or vice
-  versa. With this file descriptor we can <link linkend="io.init">initialize an
-  IO object</link>, or <emphasis>stream</emphasis><footnote>
-  
-    <para>Our using <emphasis>stream</emphasis> in this sense fits the spirit
-    if not the letter of its existing meaning in I/O. Loosemore et
-    al. <biblioref begin="220" end="221" linkend="bib.loosemore07"
-    units="pages"/>, for example, differentiate strongly between operations
-    performed on file descriptors and those performed on streams. However,
-    their description of streams as providing a <quote>higher-level interface,
-    layered on top of the primitive file descriptor facilities.</quote> and
-    their remark that <quote>You can also initially open a connection as a file
-    descriptor and then make a stream associated with that file
-    descriptor.</quote>, so closely follows the model of <literal>IO</literal>,
-    that our minor redefinition seems justified.</para>
+  <para>In keeping with Unix’s everything-is-a-file philosophy <biblioref linkend="bib.raymond03" units="pages"/>, Ruby allows regular files, directories, block and character devices, symbolic links, hard links, sockets, unnamed pipes, and <acronym>FIFO</acronym>s (named pipes), to be treated conceptually the same. They can be read from and written to.  Before operating on a file, we need to <link linkend="io.open">open</link> it by providing the operating system with the pathname and asking permission to read it, write to it, or both. If our request is granted, we are provided with a integer <emphasis>file descriptor</emphasis> which we must use to refer to the file in future operations. We are allowed only to use the file in the manner, or <link linkend="io.access-mode">access mode</link>, we requested: it is illegal to write to a file opened for reading, or vice versa. With this file descriptor we can <link linkend="io.init">initialize an IO object</link>, or <emphasis>stream</emphasis><footnote><para>Our using <emphasis>stream</emphasis> in this sense fits the spirit if not the letter of its existing meaning in I/O. Loosemore et al. <biblioref begin="220" end="221" linkend="bib.loosemore07" units="pages"/>, for example, differentiate strongly between operations performed on file descriptors and those performed on streams. However, their description of streams as providing a <quote>higher-level interface, layered on top of the primitive file descriptor facilities.</quote> and their remark that <quote>You can also initially open a connection as a file descriptor and then make a stream associated with that file descriptor.</quote>, so closely follows the model of <literal>IO</literal>, that our minor redefinition seems justified.</para></footnote>, which provides an interface for accessing the corresponding file.</para>
 
-  </footnote>, which provides an interface for accessing the corresponding
-  file.</para>
+  <para>A stream containing binary data can have its <link linkend="io.binmode">binmode</link> attribute set, which prevents it from being transcoded and associates it with the <link linkend="enc.ascii-8bit">ASCII-8BIT</link> encoding.  Conversely, a stream containing textual data can have its <link linkend="io.textmode">textmode</link> attribute set, which allows transcoding and newline normalisation.</para>
 
-  <para>A stream containing binary data can have its <link
-  linkend="io.binmode">binmode</link> attribute set, which prevents it from
-  being transcoded and associates it with the <link
-  linkend="enc.ascii-8bit">ASCII-8BIT</link> encoding.  Conversely, a stream
-  containing textual data can have its <link
-  linkend="io.textmode">textmode</link> attribute set, which allows transcoding
-  and newline normalisation.</para>
+  <para>Also, associated with a stream is a <firstterm>byte offset</firstterm>, or <link linkend="io.position">file position</link>, which specifies where the next read or write should occur. <quote>When a file is first opened, the file position is zero. Usually, as bytes in the file are read from or written to, byte-by-byte, the file position increases in kind. The file position may also be set manually to a given value, even a value beyond the end of the file.</quote> <biblioref begin="9" end="10" linkend="bib.love07" units="pages"/>. Attempting to read past the end of a file (<acronym>EoF</acronym>) will result in either a <literal>nil</literal> value or an exception being raised, depending on the method used. A file is appended to by writing to a position past its end. The size of a file may be reduced by truncating<footnote><para>We use <emphasis>truncate</emphasis> in its POSIX sense, i.e. to refer to the behaviour of <literal>truncate(2)</literal>. On most file systems, this operation can be used to increase as well as decrease the size of a file, hence our clarification.</para></footnote> it to a smaller size.</para>
 
-  <para>Also, associated with a stream is a <firstterm>byte offset</firstterm>,
-  or <link linkend="io.position">file position</link>, which specifies where
-  the next read or write should occur. <quote>When a file is first opened, the
-  file position is zero. Usually, as bytes in the file are read from or written
-  to, byte-by-byte, the file position increases in kind. The file position may
-  also be set manually to a given value, even a value beyond the end of the
-  file.</quote> <biblioref begin="9" end="10" linkend="bib.love07"
-  units="pages"/>. Attempting to read past the end of a file
-  (<acronym>EoF</acronym>) will result in either a <literal>nil</literal> value
-  or an exception being raised, depending on the method used. A file is
-  appended to by writing to a position past its end. The size of a file may be
-  reduced by truncating<footnote>
-  
-    <para>We use <emphasis>truncate</emphasis> in its POSIX sense, i.e. to
-    refer to the behaviour of <literal>truncate(2)</literal>. On most file
-    systems, this operation can be used to increase as well as decrease the
-    size of a file, hence our clarification.</para>
-  
-  </footnote> it to a smaller size.</para>
-
-  <para>Finally, having used a file descriptor, we should
-  <emphasis>close</emphasis> it to release it back to the operating
-  system.</para>
+  <para>Finally, having used a file descriptor, we should <emphasis>close</emphasis> it to release it back to the operating system.</para>
 
   <sect1 xml:id="io.standard-streams">
     <title>Standard Input, Output, &amp; Error</title>
 
     <epigraph>
-      <attribution><biblioref begin="201" end="202" linkend="bib.kernighan84"
-      units="pages"/></attribution>
+      <attribution><biblioref begin="201" end="202" linkend="bib.kernighan84" units="pages"/></attribution>
 
-      <para>When it is started by the shell, a program inherits three open
-      files, with file descriptors 0, 1, and 2, called the standard input, the
-      standard output, and the standard error. All of these are by default
-      connected to the terminal, so if a program only reads file descriptor 0
-      and writes file descriptors 1 and 2, it can do I/O without having to open
-      files. If the program opens any other files, they will have file
-      descriptors 3, 4, etc.</para>
+      <para>When it is started by the shell, a program inherits three open files, with file descriptors 0, 1, and 2, called the standard input, the standard output, and the standard error. All of these are by default connected to the terminal, so if a program only reads file descriptor 0 and writes file descriptors 1 and 2, it can do I/O without having to open files. If the program opens any other files, they will have file descriptors 3, 4, etc.</para>
     </epigraph>
 
-    <para>Ruby behaves in the same manner. The constants
-    <literal>STDIN</literal>, <literal>STDOUT</literal>, and
-    <literal>STDERR</literal>, are defined automatically to refer to the
-    program’s standard input, standard output, and standard error streams,
-    respectively. The value of each constant is an <literal>IO</literal> object
-    associated with the corresponding file descriptor.
-    <literal>IO#fileno</literal> returns the file descriptor it is associated
-    with as an <literal>Integer</literal>, as shown below.</para>
+    <para>Ruby behaves in the same manner. The constants <literal>STDIN</literal>, <literal>STDOUT</literal>, and <literal>STDERR</literal>, are defined automatically to refer to the program’s standard input, standard output, and standard error streams, respectively. The value of each constant is an <literal>IO</literal> object associated with the corresponding file descriptor.  <literal>IO#fileno</literal> returns the file descriptor it is associated with as an <literal>Integer</literal>, as shown below.</para>
 
     <example xml:id="ex.stdin-stdout-stderr">
-      <title>Ruby predefines three constants, referring to the standard input,
-      standard output, and standard error streams</title>
+      <title>Ruby predefines three constants, referring to the standard input, standard output, and standard error streams</title>
 
-      <programlisting><xi:include href="examples/stdin-stdout-stderr.rb"
-    parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/stdin-stdout-stderr.rb" parse="text"/></programlisting>
     </example>
 
-    <para>Three global variables are also defined
-    automatically-<literal>$stdin</literal>, <literal>$stdout</literal>, and
-    <literal>$stderr</literal>-which initially hold the value of the
-    corresponding constant. We have in fact been interacting with
-    <literal>$stdout</literal> implicitly all along:
-    <literal>Kernel.puts</literal> is equivalent to
-    <literal>$stdout.puts</literal>. Similarly, <literal>Kernel.warn</literal>
-    writes to <literal>$stderr</literal>. The reason for the existence of these
-    global variables in addition to the aforementioned constants is that by
-    assigning another <literal>IO</literal> object to one of the global
-    variables, we can temporarily redirect it elsewhere. Then, if we want to
-    restore the original behaviour, we can assign the corresponding constant to
-    the variable.</para>
+    <para>Three global variables are also defined automatically-<literal>$stdin</literal>, <literal>$stdout</literal>, and <literal>$stderr</literal>-which initially hold the value of the corresponding constant. We have in fact been interacting with <literal>$stdout</literal> implicitly all along: <literal>Kernel.puts</literal> is equivalent to <literal>$stdout.puts</literal>. Similarly, <literal>Kernel.warn</literal> writes to <literal>$stderr</literal>. The reason for the existence of these global variables in addition to the aforementioned constants is that by assigning another <literal>IO</literal> object to one of the global variables, we can temporarily redirect it elsewhere. Then, if we want to restore the original behaviour, we can assign the corresponding constant to the variable.</para>
 
     <example xml:id="ex.stdout-redirection">
-      <title>By assigning <literal>IO</literal> objects to
-      <literal>$stdout</literal> we can redirect our output</title>
+      <title>By assigning <literal>IO</literal> objects to <literal>$stdout</literal> we can redirect our output</title>
 
-      <programlisting><xi:include href="examples/stdout-redirection.rb"
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/stdout-redirection.rb" parse="text"/></programlisting>
     </example>
   </sect1>
    
   <sect1 xml:id="io.writing">
     <title>Writing to a Stream</title>
 
-    <para>If a stream has been opened for writing, we can write data to it
-    using a variety of methods. We will begin, with the low-level
-    <literal>IO#syswrite</literal>, which requires exactly one argument that it
-    converts to a <literal>String</literal>, writes to the stream, then returns
-    the number of bytes written. It uses a low-level system call to perform
-    this operation, so the official documentation cautions that it should not
-    be used in conjunction with other, higher-level writing methods<footnote>
-      
-      <para>The rationale for this warning is that
-      <literal>IO#syswrite</literal> ignores Ruby’s I/O buffer, as explained in
-      <link linkend="io.buffering">Buffering</link>.</para>
-    
-    </footnote>. <literal>IO#write</literal> behaves in the same manner, but
-    without the risks. In fact, all other writing methods are implemented in
-    terms of <literal>#write</literal>. For example,
-    <literal>IO#printf</literal> formats its arguments with <link
-    linkend="str.format">Kernel#sprintf</link> before passing the result to
-    <literal>#write</literal>, i.e. <literal>write(sprintf
-    *args)</literal>.</para>
+    <para>If a stream has been opened for writing, we can write data to it using a variety of methods. We will begin, with the low-level <literal>IO#syswrite</literal>, which requires exactly one argument that it converts to a <literal>String</literal>, writes to the stream, then returns the number of bytes written. It uses a low-level system call to perform this operation, so the official documentation cautions that it should not be used in conjunction with other, higher-level writing methods<footnote><para>The rationale for this warning is that <literal>IO#syswrite</literal> ignores Ruby’s I/O buffer, as explained in <link linkend="io.buffering">Buffering</link>.</para></footnote>. <literal>IO#write</literal> behaves in the same manner, but without the risks. In fact, all other writing methods are implemented in terms of <literal>#write</literal>. For example, <literal>IO#printf</literal> formats its arguments with <link linkend="str.format">Kernel#sprintf</link> before passing the result to <literal>#write</literal>, i.e. <literal>write(sprintf *args)</literal>.</para>
 
     <example xml:id="ex.write-syswrite-printf">
-      <title>Displaying output with <literal>#write</literal>,
-      <literal>#syswrite</literal>, and <literal>#printf</literal></title>
+      <title>Displaying output with <literal>#write</literal>, <literal>#syswrite</literal>, and <literal>#printf</literal></title>
 
-      <programlisting><xi:include href="examples/write-syswrite-printf.rb"
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/write-syswrite-printf.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>IO#&lt;&lt;</literal> writes its argument to its receiver,
-    which it then returns. This is a more common way to write to a stream
-    because the selector is polymorphic, <link
-    linkend="glo.less-than-less-than">conventionally</link> appending its
-    argument to its receiver.</para>
+    <para><literal>IO#&lt;&lt;</literal> writes its argument to its receiver, which it then returns. This is a more common way to write to a stream because the selector is polymorphic, <link linkend="glo.less-than-less-than">conventionally</link> appending its argument to its receiver.</para>
 
-    <para><literal>IO#putc</literal> writes a single byte to its stream, then
-    returns its argument. It interprets a <literal>Numeric</literal> argument
-    as a character code, writing the least-significant byte of the character
-    corresponding to its integer part. A non-numeric argument is converted to a
-    <literal>String</literal>, then its least-significant byte is
-    written to the stream. Please note the
-    term <emphasis>byte</emphasis>: before Ruby 1.9.3, this method
-    would only ever write a single byte, even when given a multi-byte
-    character; as of 1.9.3, it behaves correctly with multi-byte
-    characters.</para>
+    <para><literal>IO#putc</literal> writes a single byte to its stream, then returns its argument. It interprets a <literal>Numeric</literal> argument as a character code, writing the least-significant byte of the character corresponding to its integer part. A non-numeric argument is converted to a <literal>String</literal>, then its least-significant byte is written to the stream. Please note the term <emphasis>byte</emphasis>: before Ruby 1.9.3, this method would only ever write a single byte, even when given a multi-byte character; as of 1.9.3, it behaves correctly with multi-byte characters.</para>
 
     <example xml:id="ex.syswrite-write-putc">
-      <title>The <literal>#syswrite</literal>, <literal>#write</literal>, and
-      <literal>#putc</literal> methods of <literal>IO</literal> write their
-      arguments to an <literal>IO</literal> stream</title>
+      <title>The <literal>#syswrite</literal>, <literal>#write</literal>, and <literal>#putc</literal> methods of <literal>IO</literal> write their arguments to an <literal>IO</literal> stream</title>
 
-      <programlisting><xi:include href="examples/syswrite-write-putc.rb"
-    parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/syswrite-write-putc.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>Object#display</literal> converts its receiver to a
-    <literal>String</literal>, then writes it to <literal>$stdout</literal>. If
-    given an <literal>IO</literal> stream as an argument, it writes to that
-    stream instead.</para>
+    <para><literal>Object#display</literal> converts its receiver to a <literal>String</literal>, then writes it to <literal>$stdout</literal>. If given an <literal>IO</literal> stream as an argument, it writes to that stream instead.</para>
     
     <example xml:id="ex.object-display">
-      <title><literal>Object#display</literal> writes its receiver to an
-      <literal>IO</literal> stream</title>
+      <title><literal>Object#display</literal> writes its receiver to an <literal>IO</literal> stream</title>
       
-      <programlisting><xi:include href="examples/object-display.rb"
-    parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/object-display.rb" parse="text"/></programlisting>
 
     </example>
     
-    <para><literal>IO#print</literal> accepts any number of arguments, each of
-    which are converted with <literal>#to_s</literal>, then their concatenation
-    is written to the receiver. If no arguments are supplied, an argument of
-    <literal>$_</literal> is assumed. <literal>Kernel#print</literal> behaves
-    identically, expect it writes to <literal>$stdout</literal>.</para>
+    <para><literal>IO#print</literal> accepts any number of arguments, each of which are converted with <literal>#to_s</literal>, then their concatenation is written to the receiver. If no arguments are supplied, an argument of <literal>$_</literal> is assumed. <literal>Kernel#print</literal> behaves identically, expect it writes to <literal>$stdout</literal>.</para>
 
-    <para><literal>IO#puts</literal> also accepts any number of arguments,
-    which it converts with <literal>#to_s</literal>. A newline is appended to
-    each of these <literal>String</literal>s that do not already end with
-    one. Then, their concatenation is written to their receiver. If no
-    arguments are provided, <literal>nil</literal> is assumed, so by default a
-    single newline is written. <literal>Array</literal> arguments are
-    automatically expanded into their constituent elements, so each element is
-    written on a line of its own. <literal>Kernel#puts</literal> writes to
-    <literal>$stdout</literal>, instead.</para>
+    <para><literal>IO#puts</literal> also accepts any number of arguments, which it converts with <literal>#to_s</literal>. A newline is appended to each of these <literal>String</literal>s that do not already end with one. Then, their concatenation is written to their receiver. If no arguments are provided, <literal>nil</literal> is assumed, so by default a single newline is written. <literal>Array</literal> arguments are automatically expanded into their constituent elements, so each element is written on a line of its own. <literal>Kernel#puts</literal> writes to <literal>$stdout</literal>, instead.</para>
 
     <example xml:id="ex.print-puts">
-      <title>The <literal>#print</literal> and <literal>#puts</literal> methods
-      of <literal>IO</literal> and <literal>Kernel</literal> write their
-      arguments to an <literal>IO</literal> stream.</title>
+      <title>The <literal>#print</literal> and <literal>#puts</literal> methods of <literal>IO</literal> and <literal>Kernel</literal> write their arguments to an <literal>IO</literal> stream.</title>
 
-      <programlisting><xi:include href="examples/print-puts.rb"
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/print-puts.rb" parse="text"/></programlisting>
 
     </example>
 
-    <para><literal>Kernel#p</literal> provides output suitable for
-    debugging. It accepts any number of arguments, which it converts with
-    <literal>#inspect</literal>, then writes each of them to
-    <literal>$stdout</literal> separated by <literal>"\n"</literal>.</para>
+    <para><literal>Kernel#p</literal> provides output suitable for debugging. It accepts any number of arguments, which it converts with <literal>#inspect</literal>, then writes each of them to <literal>$stdout</literal> separated by <literal>"\n"</literal>.</para>
 
     <example xml:id="ex.object-p">
-      <title><literal>Object#p</literal> writes its argument’s
-      <literal>#inspect</literal> output to <literal>$stdout</literal></title>
+      <title><literal>Object#p</literal> writes its argument’s <literal>#inspect</literal> output to <literal>$stdout</literal></title>
       
-      <programlisting><xi:include href="examples/object-p.rb"
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/object-p.rb" parse="text"/></programlisting>
 
     </example>
 
     <remark>This graf wants to be a descendant of the table</remark>
 
-    <para>Each method converts its input as described in the
-    <emphasis>Converts</emphasis> column. If multiple arguments are expected
-    and received, they are concatenated with the contents of the
-    <emphasis>Separator</emphasis> column. The method returns the value in
-    <emphasis>Returns</emphasis>. If it can be invoked without any arguments,
-    the <emphasis>Default Output</emphasis> column describes what it
-    writes.</para>
+    <para>Each method converts its input as described in the <emphasis>Converts</emphasis> column. If multiple arguments are expected and received, they are concatenated with the contents of the <emphasis>Separator</emphasis> column. The method returns the value in <emphasis>Returns</emphasis>. If it can be invoked without any arguments, the <emphasis>Default Output</emphasis> column describes what it writes.</para>
     
     <table>
       <caption>A comparison of the methods that write to an <literal>IO</literal> stream.</caption>
@@ -347,55 +187,46 @@
      <sect2 xml:id="io.reading-bytes">
        <title>Bytes</title>
 
-       <para>At the most basic level, a stream can be thought of as a sequence
-       of bytes. The next byte in a stream is returned by
-       <literal>IO#getbyte</literal> as a <literal>Fixnum</literal>, or
-       <literal>nil</literal> if EoF has been
-       reached. <literal>IO#readbyte</literal> also returns the next byte from
-       a stream, but when EoF is reached it raises an
-       <literal>EOFError</literal> exception.</para>
+       <para>At the most basic level, a stream can be thought of as a sequence of bytes. The next byte in a stream is returned by <literal>IO#getbyte</literal> as a <literal>Fixnum</literal>, or <literal>nil</literal> if EoF has been reached. <literal>IO#readbyte</literal> also returns the next byte from a stream, but when EoF is reached it raises an <literal>EOFError</literal> exception.</para>
 
-       <para>A variable number of bytes may be read each time with
-       <literal>IO#read</literal>. By default it reads every byte until EoF, at
-       which point it returns <literal>nil</literal>. If provided with an
-       <literal>Integer</literal> as its first argument, it will read at most
-       the given number of bytes. When provided with a
-       <literal>String</literal> as its second argument, it will assign the
-       data it reads to that <literal>String</literal>. In all cases, the data
-       is returned as a <literal>String</literal> with <link
-       linkend="enc.ascii-8bit">ASCII-8BIT</link>
-       encoding. <literal>IO#sysread</literal> behaves in a similar fashion,
-       except it requires the <literal>Integer</literal> first argument, and
-       raises <literal>EOFError</literal> at EoF.</para>
+       <para>A variable number of bytes may be read each time with <literal>IO#read</literal>. By default it reads every byte until EoF, at which point it returns <literal>nil</literal>. If provided with an <literal>Integer</literal> as its first argument, it will read at most the given number of bytes. When provided with a <literal>String</literal> as its second argument, it will assign the data it reads to that <literal>String</literal>. In all cases, the data is returned as a <literal>String</literal> with <link linkend="enc.ascii-8bit">ASCII-8BIT</link> encoding. <literal>IO#sysread</literal> behaves in a similar fashion, except it requires the <literal>Integer</literal> first argument, and raises <literal>EOFError</literal> at EoF.</para>
 
-      <para>Rather than reading bytes piecemeal, <literal>IO#bytes</literal>,
-      and its alias <literal>IO#each_byte</literal>, return an
-      <literal>Enumerator</literal> of the stream’s bytes as
-      <literal>Fixnum</literal>s. If a block is supplied, it is yielded each
-      byte in turn.</para>
+      <para>Rather than reading bytes piecemeal, <literal>IO#bytes</literal>, and its alias <literal>IO#each_byte</literal>, return an <literal>Enumerator</literal> of the stream’s bytes as <literal>Fixnum</literal>s. If a block is supplied, it is yielded each byte in turn.</para>
 
       <table>
-        <caption>Comparison of reader methods</caption> <thead>
+        <caption>Comparison of reader methods</caption>
+	<thead>
           <tr>
-            <th>Method</th> <th>Bytes Read</th> <th><literal>String</literal>
-	    Buffer?</th> <th>At EoF</th>
-	  </tr> </thead> <tbody>
+            <th>Method</th>
+	    <th>Bytes Read</th>
+	    <th><literal>String</literal> Buffer?</th>
+	    <th>At EoF</th>
+	  </tr>
+	</thead>
+	<tbody>
 	  <tr>
-	    <td><literal>IO#read(<replaceable>n</replaceable> = all,
-	    …)</literal></td> <td><replaceable>n</replaceable></td> <td>✔</td>
-	    <td>
-              <literal>nil</literal> </td> </tr> <tr>
-            <td>
-              <literal>IO#sysread(<replaceable>n</replaceable>, …)</literal>
-            </td> <td>
-              <replaceable>n</replaceable> </td> <td>✔ </td> <td>
-              <literal>EOFError</literal> </td>
-          </tr> <tr>
-            <td><literal>IO#getbyte</literal></td> <td>1</td> <td>✖</td>
-	    <td><literal>nil</literal></td> </tr>
+	    <td><literal>IO#read(<replaceable>n</replaceable> = all,…)</literal></td>
+	    <td><replaceable>n</replaceable></td> <td>✔</td>
+	    <td><literal>nil</literal></td>
+	  </tr>
 	  <tr>
-            <td><literal>IO#readbyte</literal></td> <td>1</td> <td>✖</td>
-	    <td><literal>EOFError</literal></td> </tr>
+            <td><literal>IO#sysread(<replaceable>n</replaceable>, …)</literal></td> 
+	    <td><replaceable>n</replaceable></td>
+	    <td>✔</td>
+	    <td><literal>EOFError</literal></td>
+          </tr>
+	  <tr>
+            <td><literal>IO#getbyte</literal></td>
+	    <td>1</td>
+	    <td>✖</td>
+	    <td><literal>nil</literal></td>
+	  </tr>
+	  <tr>
+            <td><literal>IO#readbyte</literal></td>
+	    <td>1</td>
+	    <td>✖</td>
+	    <td><literal>EOFError</literal></td>
+	  </tr>
 	</tbody>
       </table>
      </sect2>
@@ -403,35 +234,16 @@
      <sect2 xml:id="io.reading-chars">
       <title>Characters</title>
 
-      <para>A stream may be read character-by-character with either
-      <literal>IO#getc</literal> or <literal>IO#readchar</literal>, both of
-      which return one-character <literal>String</literal>s. When EoF is
-      reached, the former returns <literal>nil</literal>, while the latter
-      raises an <literal>EOFError</literal>. Alternatively,
-      <literal>IO#chars</literal>, and its alias
-      <literal>IO#each_char</literal> return an <literal>Enumerator</literal>
-      of the stream’s characters. As is customary, they may also be supplied
-      with a block in which case they yield each character in turn.</para>
+      <para>A stream may be read character-by-character with either <literal>IO#getc</literal> or <literal>IO#readchar</literal>, both of which return one-character <literal>String</literal>s. When EoF is reached, the former returns <literal>nil</literal>, while the latter raises an <literal>EOFError</literal>. Alternatively, <literal>IO#chars</literal>, and its alias <literal>IO#each_char</literal> return an <literal>Enumerator</literal> of the stream’s characters. As is customary, they may also be supplied with a block in which case they yield each character in turn.</para>
     </sect2>
 
     <sect2 xml:id="io.io-reading-lines">
       <title>Lines</title>
       
-      <para><literal>IO#gets</literal> allows a stream to be processed as a
-      sequence of “lines”, each separated by separator,
-      <replaceable>sep</replaceable>. If <replaceable>sep</replaceable> is not
-      given, it is assumed to have the value of <literal>$/</literal>, which is
-      <literal>"\n"</literal> by default. If an <literal>Integer</literal>
-      limit is supplied, at most that many bytes will be returned at a time; by
-      default there is no limit. According to Thomas et al., a negative limit
-      makes the search for <replaceable>sep</replaceable> more efficient by
-      ignoring the stream’s encoding <biblioref linkend="bib.thom09"
-      begin="551" end="551" units="pages"/>. The permutations of these
-      arguments are enumerated below:</para>
+      <para><literal>IO#gets</literal> allows a stream to be processed as a sequence of “lines”, each separated by separator, <replaceable>sep</replaceable>. If <replaceable>sep</replaceable> is not given, it is assumed to have the value of <literal>$/</literal>, which is <literal>"\n"</literal> by default. If an <literal>Integer</literal> limit is supplied, at most that many bytes will be returned at a time; by default there is no limit. According to Thomas et al., a negative limit makes the search for <replaceable>sep</replaceable> more efficient by ignoring the stream’s encoding <biblioref linkend="bib.thom09" begin="551" end="551" units="pages"/>. The permutations of these arguments are enumerated below:</para>
 
       <table>
-        <caption>Arguments accepted by <literal>IO#gets</literal>
-	</caption>
+        <caption>Arguments accepted by <literal>IO#gets</literal></caption>
 	<thead>
           <tr>
             <th>Arguments</th> 
@@ -468,119 +280,118 @@
 	  <tr>
             <td><replaceable>limit</replaceable> (<literal>Integer</literal> &lt; 0)</td> 
 	    <td><replaceable>$/</replaceable></td> 
-	    <td>None </td> 
+	    <td>None</td> 
 	  </tr> 
 	  <tr>
-	    <td><replaceable>sep</replaceable> (<literal>String</literal>),
-	    <replaceable>limit</replaceable> (<literal>Integer</literal> &gt;
-	    0)</td> 
+	    <td><replaceable>sep</replaceable> (<literal>String</literal>), <replaceable>limit</replaceable> (<literal>Integer</literal> &gt; 0)</td>
 	    <td><replaceable>sep</replaceable></td> 
 	    <td><replaceable>limit</replaceable></td>
           </tr>
 	</tbody>
       </table>
 
-      <para><literal>IO#readline</literal> behaves identically, and expects the
-      same arguments, but raises an <literal>EOFError</literal> when EoF is
-      reached. <literal>IO#readlines</literal> also expects the same arguments,
-      but returns an <literal>Array</literal>, each element of which is a line
-      terminated by the given separator. <literal>IO#lines</literal>, and its
-      alias <literal>IO#each_line</literal>, behave like
-      <literal>IO#readlines</literal>, but return an
-      <literal>Enumerator</literal> instead of an
-      <literal>Array</literal>. When either method is given a block, it yields
-      each line in turn.</para>
+      <para><literal>IO#readline</literal> behaves identically, and expects the same arguments, but raises an <literal>EOFError</literal> when EoF is reached. <literal>IO#readlines</literal> also expects the same arguments, but returns an <literal>Array</literal>, each element of which is a line terminated by the given separator. <literal>IO#lines</literal>, and its alias <literal>IO#each_line</literal>, behave like <literal>IO#readlines</literal>, but return an <literal>Enumerator</literal> instead of an <literal>Array</literal>. When either method is given a block, it yields each line in turn.</para>
     </sect2> 
   </sect1> 
 
   <sect1 xml:id="io.access-mode"> 
     <title>Access Mode</title> 
 
-    <para>A file is opened with a particular <firstterm>access
-    mode</firstterm> which specifies the type of action that may be performed
-    on it. It is given as either a <literal>String</literal> or, less commonly,
-    a <link linkend="io.open-flags">bitmask</link>, as shown in the table
-    below. The default access mode is <literal>r</literal>.</para> 
+    <para>A file is opened with a particular <firstterm>access mode</firstterm> which specifies the type of action that may be performed on it. It is given as either a <literal>String</literal> or, less commonly, a <link linkend="io.open-flags">bitmask</link>, as shown in the table below. The default access mode is <literal>r</literal>.</para>
 
-    <para>In <xref linkend="io.access-mode-tbl"/>, the access mode is presented
-    as both a <emphasis>String</emphasis> and the equivalent
-    <emphasis>Bitmask</emphasis>. The <emphasis>Read?</emphasis> and
-    <emphasis>Write?</emphasis> columns indicate whether the opened file can be
-    read from or written to, respectively. <emphasis>Truncate?</emphasis>
-    specifies that existing files will be truncated before
-    use. <emphasis>Creates?</emphasis> specifies that non-existent files will
-    be created before use.  Finally, <emphasis>Start Position</emphasis> is the
-    position in the file reading/writing starts from:
-    <emphasis>Beginning</emphasis> is before the first byte;
-    <emphasis>End</emphasis> is after the last.</para>
+    <para>In <xref linkend="io.access-mode-tbl"/>, the access mode is presented as both a <emphasis>String</emphasis> and the equivalent <emphasis>Bitmask</emphasis>. The <emphasis>Read?</emphasis> and <emphasis>Write?</emphasis> columns indicate whether the opened file can be read from or written to, respectively. <emphasis>Truncate?</emphasis> specifies that existing files will be truncated before use. <emphasis>Creates?</emphasis> specifies that non-existent files will be created before use.  Finally, <emphasis>Start Position</emphasis> is the position in the file reading/writing starts from: <emphasis>Beginning</emphasis> is before the first byte; <emphasis>End</emphasis> is after the last.</para>
     
     <table xml:id="io.access-mode-tbl">
-      <caption>Access mode specifiers</caption> <thead>
+      <caption>Access mode specifiers</caption>
+      <thead>
 	<tr>
-	  <th>String</th> <th>Bitmask</th> <th>Read?</th>
-	  <th>Write?</th> <th>Truncates?</th>
-	  <th>Creates?</th> <th>Start Position</th>
-	</tr> </thead> <tbody>
+	  <th>String</th>
+	  <th>Bitmask</th>
+	  <th>Read?</th>
+	  <th>Write?</th>
+	  <th>Truncates?</th>
+	  <th>Creates?</th>
+	  <th>Start Position</th>
+	</tr>
+      </thead>
+      <tbody>
 	<tr>
 	  <td><literal>r</literal></td>
-	  <td><literal>File::RDONLY</literal></td> <td>✔</td> <td>✖</td>
-	  <td>✖</td> <td>✖</td> <td>Beginning</td>
-	</tr> <tr>
-	  <td><literal>r+</literal></td> <td><literal>File::RDWR</literal></td>
-	  <td>✔</td> <td>✔</td> <td>✖</td> <td>✖</td> <td>〃</td>
-	</tr> <tr>
+	  <td><literal>File::RDONLY</literal></td>
+	  <td>✔</td>
+	  <td>✖</td>
+	  <td>✖</td>
+	  <td>✖</td>
+	  <td>Beginning</td>
+	</tr>
+	<tr>
+	  <td><literal>r+</literal></td>
+	  <td><literal>File::RDWR</literal></td>
+	  <td>✔</td>
+	  <td>✔</td>
+	  <td>✖</td>
+	  <td>✖</td>
+	  <td>〃</td>
+	</tr>
+	<tr>
 	  <td><literal>w</literal></td>
 	  <td><literal>File::WRONLY | File::TRUNC | File::CREAT</literal></td>
           <td>✖</td>
-	  <td>✔</td> <td>✔</td> <td>✔</td> <td>〃</td>
-	</tr> <tr>
+	  <td>✔</td>
+	  <td>✔</td>
+	  <td>✔</td>
+	  <td>〃</td>
+	</tr>
+	<tr>
 	  <td><literal>w+</literal></td>
 	  <td><literal>File::RDWR | File::TRUNC | File::CREAT</literal></td>
           <td>✔</td>
-	  <td>✔</td> <td>✔</td> <td>✔</td> <td>〃</td>
-	</tr> <tr>
+	  <td>✔</td>
+	  <td>✔</td>
+	  <td>✔</td>
+	  <td>〃</td>
+	</tr>
+	<tr>
 	  <td><literal>a</literal></td>
 	  <td><literal>File::APPEND | File::WRONLY | File::CREAT</literal></td>
           <td>✖</td>
-	  <td>✔</td> <td>✖</td> <td>✔</td> <td>End.</td>
-	</tr> <tr>
+	  <td>✔</td>
+	  <td>✖</td>
+	  <td>✔</td>
+	  <td>End.</td>
+	</tr>
+	<tr>
 	  <td><literal>a+</literal></td>
 	  <td><literal>File::APPEND | File::RDWR | File::CREAT</literal></td>
           <td>✔</td>
-	  <td>✔</td> <td>✖</td> <td>✔</td> <td>〃</td>
-	</tr> </tbody>
-    </table> </sect1>
+	  <td>✔</td>
+	  <td>✖</td>
+	  <td>✔</td>
+	  <td>〃</td>
+	</tr>
+      </tbody>
+    </table>
+  </sect1>
 
   <sect1 xml:id="io.binmode-textmode">
     <title>Binary &amp; Text Mode</title>
 
-    <para>An <literal>IO</literal> stream may be configured to use binary mode
-    or text mode. These mutually exclusive options determine what automatic
-    modifications, if any, Ruby will make to data read from, and written to,
-    the stream. They have no relationship to the <link
-    linkend="io.access-mode">access mode</link>.</para> 
+    <para>An <literal>IO</literal> stream may be configured to use binary mode or text mode. These mutually exclusive options determine what automatic modifications, if any, Ruby will make to data read from, and written to, the stream. They have no relationship to the <link linkend="io.access-mode">access mode</link>.</para>
 
     <sect2 xml:id="io.binmode">
       <title>Binary Mode</title> 
 
-      <para><firstterm>Binary mode</firstterm> is disabled by default. It must
-      be enabled when reading a file with an <link
-      linkend="enc.compatibility">ASCII-incompatible</link> <link
-      linkend="enc.external">external encoding</link>. When enabled it has the
-      following effects:</para>
+      <para><firstterm>Binary mode</firstterm> is disabled by default. It must be enabled when reading a file with an <link linkend="enc.compatibility">ASCII-incompatible</link> <link linkend="enc.external">external encoding</link>. When enabled it has the following effects:</para>
  
       <itemizedlist>
         <listitem>
-          <para>Unless an external encoding has been specified explicitly, it
-	  is set to ASCII-8BIT.</para> 
+          <para>Unless an external encoding has been specified explicitly, it is set to ASCII-8BIT.</para>
 	</listitem> 
 	<listitem> 
-	  <para><link linkend="io.binmode-textmode">Newline conversion</link> is
-	  disabled.</para> 
+	  <para><link linkend="io.binmode-textmode">Newline conversion</link> is disabled.</para>
 	</listitem> 
 	<listitem>
-          <para>Transcoding is disabled unless both an internal and external
-	  encoding have been specified.</para> 
+          <para>Transcoding is disabled unless both an internal and external encoding have been specified.</para>
 	</listitem> 
       </itemizedlist>
     </sect2> 
@@ -588,53 +399,28 @@
     <sect2 xml:id="io.textmode"> 
       <title>Text Mode</title>
 
-      <para><firstterm>Text mode</firstterm> defaults to on under Microsoft
-      Windows, and off everywhere else. Reading a file in text mode causes
-      <literal>"\r\n"</literal> to be replaced by <literal>"\n"</literal>, and
-      other occurrences of <literal>"\r"</literal> to be replaced by
-      <literal>"\n"</literal>. Writing a file in text mode causes
-      <literal>"\n"</literal> to be replaced with <literal>"\r\n"</literal>
-      under Windows; having no effect on other platforms.</para>
+      <para><firstterm>Text mode</firstterm> defaults to on under Microsoft Windows, and off everywhere else. Reading a file in text mode causes <literal>"\r\n"</literal> to be replaced by <literal>"\n"</literal>, and other occurrences of <literal>"\r"</literal> to be replaced by <literal>"\n"</literal>. Writing a file in text mode causes <literal>"\n"</literal> to be replaced with <literal>"\r\n"</literal> under Windows; having no effect on other platforms.</para>
     </sect2> 
   </sect1> 
 
   <sect1 xml:id="io.open"> 
     <title>Opening a File</title>
     
-    <para><literal>IO.sysopen</literal> <firstterm>opens</firstterm> a given
-    pathname and returns a corresponding file descriptor. (Use the <link
-    linkend="fil.files">File class</link> for higher-level interface to this
-    operation). Optionally, it accepts an <link linkend="io.access-mode">access
-    mode</link> as the second argument, and <link linkend="io.perm">permission
-    bits</link> as the third.</para>
+    <para><literal>IO.sysopen</literal> <firstterm>opens</firstterm> a given pathname and returns a corresponding file descriptor. (Use the <link linkend="fil.files">File class</link> for higher-level interface to this operation). Optionally, it accepts an <link linkend="io.access-mode">access mode</link> as the second argument, and <link linkend="io.perm">permission bits</link> as the third.</para>
     
     <sect2 xml:id="io.perm">
       <title>Permissions</title> 
 
-      <para>If a file is being created, its initial permissions may be
-      specified as an <literal>Integer</literal>; otherwise, this argument is
-      ignored. On Unix-like systems, these permissions bits are interpreted in
-      the same fashion that <literal>chmod(1)</literal> interprets octal mode
-      arguments. For example, permissions of <literal>0400</literal> gives the
-      user read permission, and no permissions to anybody else. See <xref
-      linkend="fil.permissions"/> for further details.</para>
+      <para>If a file is being created, its initial permissions may be specified as an <literal>Integer</literal>; otherwise, this argument is ignored. On Unix-like systems, these permissions bits are interpreted in the same fashion that <literal>chmod(1)</literal> interprets octal mode arguments. For example, permissions of <literal>0400</literal> gives the user read permission, and no permissions to anybody else. See <xref linkend="fil.permissions"/> for further details.</para>
     </sect2> 
   </sect1> 
 
   <sect1 xml:id="io.string"> 
     <title>Encoding String</title>
     
-    <para><literal>IO</literal> methods that expect encoding names as
-    arguments, often accept <firstterm>encoding string</firstterm>s, which
-    allow one or both of the <link linkend="enc.external">external
-    encoding</link> and <link linkend="enc.internal">internal encoding</link>
-    to be specified at once in one of the forms below.</para>
+    <para><literal>IO</literal> methods that expect encoding names as arguments, often accept <firstterm>encoding string</firstterm>s, which allow one or both of the <link linkend="enc.external">external encoding</link> and <link linkend="enc.internal">internal encoding</link> to be specified at once in one of the forms below.</para>
 
-    <para>Both <replaceable>external</replaceable> and
-    <replaceable>internal</replaceable> are names of encodings. The
-    <emphasis>Inferred from BOM</emphasis> column indicates that the external
-    encoding is set to that specified by a <acronym>BOM</acronym>, if present,
-    otherwise to the named encoding.</para>
+    <para>Both <replaceable>external</replaceable> and <replaceable>internal</replaceable> are names of encodings. The <emphasis>Inferred from BOM</emphasis> column indicates that the external encoding is set to that specified by a <acronym>BOM</acronym>, if present, otherwise to the named encoding.</para>
     
     <table>
       <caption>The forms the value of the encoding string may take</caption>
@@ -653,7 +439,7 @@
       </thead> 
       <tbody> 
 	<tr> 
-	  <td><literal> <replaceable>external</replaceable> </literal></td>
+	  <td><literal><replaceable>external</replaceable></literal></td>
 	  <td rowspan="2"><replaceable>external</replaceable></td> 
 	  <td rowspan="2">✖ </td>
           <td rowspan="2"><literal>Encoding.default_internal</literal></td>
@@ -662,7 +448,7 @@
 	  <td><literal> <replaceable>external</replaceable>:-</literal></td>
 	</tr> 
 	<tr>
-          <td><literal>BOM|<replaceable>external</replaceable> </literal></td> 
+          <td><literal>BOM|<replaceable>external</replaceable></literal></td> 
 	  <td rowspan="2"><replaceable>external</replaceable></td>
 	  <td rowspan="2">✔</td>
           <td rowspan="2"><literal>Encoding.default_internal</literal></td> 
@@ -691,29 +477,19 @@
       </tbody> 
     </table> 
 
-    <para>The <literal>BOM|</literal> prefix deserves a fuller explanation. The
-    UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE encodings support the
-    presence of a byte-order mark: a special character occuring at the start of
-    the stream which indicates the byte order of the encoding. This can be used
-    to distinguish between the big-endian and little-endian forms of UTF-16,
-    for example. Prefixing one of the aforementioned encoding names with the
-    case-insensitive string <literal>BOM|</literal> has the following
-    result:</para>
+    <para>The <literal>BOM|</literal> prefix deserves a fuller explanation. The UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE encodings support the presence of a byte-order mark: a special character occuring at the start of the stream which indicates the byte order of the encoding. This can be used to distinguish between the big-endian and little-endian forms of UTF-16, for example. Prefixing one of the aforementioned encoding names with the case-insensitive string <literal>BOM|</literal> has the following result:</para>
 
     <itemizedlist>
       <listitem>
         <para>If no BOM is present, the named encoding is used.</para>
       </listitem> 
       <listitem>
-        <para>If a BOM is present, the encoding that it specifies is used
-	instead of the named encoding, and the BOM is stripped from the
-	data.</para> 
+        <para>If a BOM is present, the encoding that it specifies is used instead of the named encoding, and the BOM is stripped from the data.</para>
       </listitem> 
     </itemizedlist> 
 
     <table> 
-      <caption>Encodings that support byte-order marks, and the content of the
-      corresponding BOM.</caption>
+      <caption>Encodings that support byte-order marks, and the content of the corresponding BOM.</caption>
       <thead>
         <tr>
           <th>Encoding</th> 
@@ -748,46 +524,16 @@
     <sect1 xml:id="io.init"> 
       <title>Initializing a Stream</title> 
 
-      <para>An <literal>IO</literal> instance objectifies a given file
-      descriptor. It may be initialized by supplying this file descriptor as
-      the first argument to <literal>IO.new</literal>, or its alias
-      <literal>IO.for_fd</literal>. Optionally, a <link
-      linkend="io.mode-string">mode string</link>, or <link
-      linkend="io.open-flags">numeric access mode</link>, can be provided as
-      the second argument, however this must agree with the <link
-      linkend="io.access-mode">access mode</link> already associated with the
-      file descriptor. An <link linkend="io.options-hash">options Hash</link>
-      may be provided as the final argument.</para>
+      <para>An <literal>IO</literal> instance objectifies a given file descriptor. It may be initialized by supplying this file descriptor as the first argument to <literal>IO.new</literal>, or its alias <literal>IO.for_fd</literal>. Optionally, a <link linkend="io.mode-string">mode string</link>, or <link linkend="io.open-flags">numeric access mode</link>, can be provided as the second argument, however this must agree with the <link linkend="io.access-mode">access mode</link> already associated with the file descriptor. An <link linkend="io.options-hash">options Hash</link> may be provided as the final argument.</para>
 
-      <para><literal>IO.open</literal> accepts the same arguments, but also
-      expects a block. It initializes an <literal>IO</literal> object as
-      before, yields it to the block, then ensures the stream is closed when
-      the block exits.</para>
+      <para><literal>IO.open</literal> accepts the same arguments, but also expects a block. It initializes an <literal>IO</literal> object as before, yields it to the block, then ensures the stream is closed when the block exits.</para>
       
       <sect2 xml:id="io.mode-string">
 	<title>The Mode String</title> 
 
-	<para>The <firstterm>mode string</firstterm> is a concise way to
-	specify options for opening a file. At its simplest, it consists of
-	only the <link linkend="io.access-mode">access mode</link> as a
-	<literal>String</literal>, e.g. a mode string of <literal>"r"</literal>
-	opens a file in read-only mode. If the next character is
-	<literal>b</literal>, it specifies <link linkend="io.binmode">binary
-	mode</link>; if it is <literal>t </literal>, it specifies <link
-	linkend="io.textmode">text mode</link>. Finally, the <link
-	linkend="enc.external">external</link> and/or <link
-	linkend="enc.internal">internal</link> encodings may be
-	specified as an <link linkend="io.string">encoding
-	string</link>.</para>
+	<para>The <firstterm>mode string</firstterm> is a concise way to specify options for opening a file. At its simplest, it consists of only the <link linkend="io.access-mode">access mode</link> as a <literal>String</literal>, e.g. a mode string of <literal>"r"</literal> opens a file in read-only mode. If the next character is <literal>b</literal>, it specifies <link linkend="io.binmode">binary mode</link>; if it is <literal>t </literal>, it specifies <link linkend="io.textmode">text mode</link>. Finally, the <link linkend="enc.external">external</link> and/or <link linkend="enc.internal">internal</link> encodings may be specified as an <link linkend="io.string">encoding string</link>.</para>
 
-	<para>In the table below, <replaceable>mode</replaceable> denotes one
-	of the access modes given in the <link linkend="io.access-mode">Access
-	Mode</link> table.  The <emphasis>Binary?</emphasis> and
-	<emphasis>Text?</emphasis> columns indicates whether the stream is in
-	<link linkend="io.binmode">binary</link> or <link
-	linkend="io.textmode">text mode</link>, respectively. Both
-	<replaceable>internal</replaceable> and
-	<replaceable>external</replaceable> are names of encodings.</para>
+	<para>In the table below, <replaceable>mode</replaceable> denotes one of the access modes given in the <link linkend="io.access-mode">Access Mode</link> table.  The <emphasis>Binary?</emphasis> and <emphasis>Text?</emphasis> columns indicates whether the stream is in <link linkend="io.binmode">binary</link> or <link linkend="io.textmode">text mode</link>, respectively. Both <replaceable>internal</replaceable> and <replaceable>external</replaceable> are names of encodings.</para>
       
 	<table>
 	  <caption>The forms a mode string may take</caption>
@@ -867,25 +613,16 @@
 	  </tbody> 
 	</table>
  
-	<para>For example, <literal>r:ascii</literal> reads from the beginning
-	of a file, tagging the data it reads as US-ASCII;
-	<literal>a+:ascii:utf-8</literal> opens the file for reading and
-	appending, transcoding from US-ASCII to UTF-8 when reading, and in the
-	opposite direction when writing.</para>
+	<para>For example, <literal>r:ascii</literal> reads from the beginning of a file, tagging the data it reads as US-ASCII; <literal>a+:ascii:utf-8</literal> opens the file for reading and appending, transcoding from US-ASCII to UTF-8 when reading, and in the opposite direction when writing.</para>
       </sect2> 
 
       <sect2 xml:id="io.options-hash">
 	<title>Options Hash</title> 
 
-	<para>Alternatively, many methods that open files accept an options
-	<literal>Hash</literal> as their final argument. In addition to the
-	keys listed below, those of the <link
-	linkend="enc.options-hash">String#encode options Hash</link> are also
-	recognised.</para>
+	<para>Alternatively, many methods that open files accept an options <literal>Hash</literal> as their final argument. In addition to the keys listed below, those of the <link linkend="enc.options-hash">String#encode options Hash</link> are also recognised.</para>
 
 	<table>
-	  <caption>Options that may be specified as the second argument to
-	  <literal>Kernel.open</literal></caption>
+	  <caption>Options that may be specified as the second argument to <literal>Kernel.open</literal></caption>
 	  
 	  <thead> 
 	    <tr>
@@ -899,17 +636,14 @@
 	  <tbody> 
 	    <tr> 
 	      <td>:mode</td> 
-	      <td>The mode string or the access mode as an
-	      <literal>Integer</literal>.</td>
+	      <td>The mode string or the access mode as an <literal>Integer</literal>.</td>
 	      <td><literal>r</literal></td> 
-	      <td>Whether to open the file in read-only, read-write, or
-	      write-only mode, and whether to truncate existing files or append
-	      to them.</td>
+	      <td>Whether to open the file in read-only, read-write, or write-only mode, and whether to truncate existing files or append to them.</td>
 	    </tr> 
 	    <tr> 
 	      <td><link linkend="io.textmode">:textmode</link></td> 
 	      <td><literal>true</literal> or <literal>false</literal></td> 
-	      <td><literal>false</literal></td> 
+	      <td><literal>false</literal></td>
 	      <td>Whether to perform newline conversion.</td>
 	    </tr> 
 	    <tr>
@@ -939,16 +673,14 @@
 	    <tr> 
 	      <td><literal>:encoding</literal></td> 
 	      <td>Encoding name or two names separated by a colon.</td> 
-	      <td><literal><replaceable>default_external</replaceable>:<replaceable>default_internal</replaceable></literal></td> 
-	      <td>The external, or external and internal, encodings to apply to
-	      the stream.</td>
+	      <td><literal><replaceable>default_external</replaceable>:<replaceable>default_internal</replaceable></literal></td>
+	      <td>The external, or external and internal, encodings to apply to the stream.</td>
 	    </tr> 
 	    <tr> 
 	      <td><literal>:autoclose</literal></td> 
 	      <td><literal>true</literal> or <literal>false</literal></td> 
 	      <td><literal>true</literal></td> 
-	      <td>Whether to automatically close the file descriptor when the
-	      <literal>IO</literal> object is finalised.</td>
+	      <td>Whether to automatically close the file descriptor when the <literal>IO</literal> object is finalised.</td>
 	    </tr> 
 	  </tbody>
 	</table>
@@ -958,165 +690,76 @@
   <sect1 xml:id="io.open-flags"> 
     <title>Open Flags</title>
     
-    <para>The <link linkend="io.access-mode">access mode</link> may also be
-    given as an <literal>Integer</literal> formed by taking the bitwise OR of
-    one or more <firstterm>open flags</firstterm>, each of which is represented
-    by a constant in the <literal>File</literal> namespace. The available flags
-    are explained below.</para> 
+    <para>The <link linkend="io.access-mode">access mode</link> may also be given as an <literal>Integer</literal> formed by taking the bitwise OR of one or more <firstterm>open flags</firstterm>, each of which is represented by a constant in the <literal>File</literal> namespace. The available flags are explained below.</para>
 
     <variablelist>
       <varlistentry>
-        <term>
-          <literal>File::APPEND</literal> 
-	</term> 
+        <term><literal>File::APPEND</literal></term> 
 	<listitem> 
-	  <para>Opens the file in <firstterm>append mode</firstterm>. <quote>If
-	  set, then all write operations write the data at the end of the file,
-	  extending it, regardless of the current file position.  This is the
-	  only reliable way to append to a file. In append mode, you are
-	  guaranteed that the data you write will always go to the current end
-	  of the file, regardless of other processes writing to the
-	  file. Conversely, if you simply set the file position to the end of
-	  file and write, then another process can extend the file after you
-	  set the file position but before you write, resulting in your data
-	  appearing someplace before the real end of file.</quote> <biblioref
-	  begin="335" end="335" linkend="bib.loosemore07"
-	  units="pages"/>.</para>
+	  <para>Opens the file in <firstterm>append mode</firstterm>. <quote>If set, then all write operations write the data at the end of the file, extending it, regardless of the current file position.  This is the only reliable way to append to a file. In append mode, you are guaranteed that the data you write will always go to the current end of the file, regardless of other processes writing to the file. Conversely, if you simply set the file position to the end of file and write, then another process can extend the file after you set the file position but before you write, resulting in your data appearing someplace before the real end of file.</quote> <biblioref begin="335" end="335" linkend="bib.loosemore07" units="pages"/>.</para>
 	</listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File::BINARY</literal> 
-	</term> 
+        <term><literal>File::BINARY</literal></term> 
 	<listitem> 
-	  <para>Puts the stream in <link linkend="io.binmode">binary
-	  mode</link>.</para>
+	  <para>Puts the stream in <link linkend="io.binmode">binary mode</link>.</para>
 	</listitem> 
       </varlistentry> 
       <varlistentry> 
-	<term>
-          <literal>File::CREAT</literal> 
-	</term> 
+	<term><literal>File::CREAT</literal></term> 
 	<listitem> 
-	  <para>Creates the file if it doesn’t already exist. If the file
-	  already exists, this has no effect unless
-	  <literal>File::EXCL</literal> is also given.</para>
+	  <para>Creates the file if it doesn’t already exist. If the file already exists, this has no effect unless <literal>File::EXCL</literal> is also given.</para>
 	</listitem> 
       </varlistentry> 
       <varlistentry> 
-	<term>
-          <literal>File::DSYNC</literal> 
-	</term> 
+	<term><literal>File::DSYNC</literal></term> 
 	<listitem> 
 	  <para>
-	    <quote>… specifies that only normal data be synchronized after each
-	    write operation, not metadata.</quote> <biblioref begin="40"
-	    end="40" linkend="bib.love07" units="pages"/>. On Linux, this is
-	    synonymous with <literal>File::SYNC</literal>.</para>
+	    <quote>… specifies that only normal data be synchronized after each write operation, not metadata.</quote> <biblioref begin="40" end="40" linkend="bib.love07" units="pages"/>. On Linux, this is synonymous with <literal>File::SYNC</literal>.</para>
 	</listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File::EXCL</literal> 
-	</term> 
+        <term><literal>File::EXCL</literal></term> 
 	<listitem> 
-	  <para>When given with <literal>File::CREAT</literal>, an
-	  <literal>Errno::EXIST</literal> exception will be raised if the file
-	  already exists. <quote>This is used to prevent race conditions on
-	  file creation.</quote> <biblioref begin="24" end="26"
-	  linkend="bib.love07" units="pages"/>.</para>
+	  <para>When given with <literal>File::CREAT</literal>, an <literal>Errno::EXIST</literal> exception will be raised if the file already exists. <quote>This is used to prevent race conditions on file creation.</quote> <biblioref begin="24" end="26" linkend="bib.love07" units="pages"/>.</para>
         </listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File:NOATIME</literal> 
-	</term> 
+        <term><literal>File:NOATIME</literal></term> 
 	<listitem> 
-	  <para>Do not update the access time (<emphasis>atime</emphasis>) of
-	  the file. <quote>This is used by programs that do backups, so that
-	  backing a file up does not count as reading it. Only the owner of the
-	  file or the superuser may use this bit.</quote> <biblioref
-	  begin="335" end="335" linkend="bib.loosemore07"/>.</para>
+	  <para>Do not update the access time (<emphasis>atime</emphasis>) of the file. <quote>This is used by programs that do backups, so that backing a file up does not count as reading it. Only the owner of the file or the superuser may use this bit.</quote> <biblioref begin="335" end="335" linkend="bib.loosemore07"/>.</para>
 	</listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-	  <literal>File:NOCTTY</literal> 
-	</term> 
+        <term><literal>File:NOCTTY</literal></term> 
 	<listitem> 
-	  <para>
-	    <quote>If the named file is a terminal device, don’t make it the
-	    controlling terminal for the process.</quote> <biblioref
-	    begin="333" end="334" linkend="bib.loosemore07"
-	    units="pages"/>. (<literal>IO#tty?</literal> can be used to
-	    determine whether the stream is a TTY).</para>
+	  <para><quote>If the named file is a terminal device, don’t make it the controlling terminal for the process.</quote> <biblioref begin="333" end="334" linkend="bib.loosemore07" units="pages"/>. (<literal>IO#tty?</literal> can be used to determine whether the stream is a TTY).</para>
         </listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File::NOFOLLOW</literal> 
-	</term> 
+        <term><literal>File::NOFOLLOW</literal></term> 
 	<listitem> 
-	  <para>If the pathname is a symbolic link, an
-	  <literal>Errno::ELOOP</literal> exception will be
-	  raised. <quote>Normally, the link is resolved, and the target file is
-	  opened. If other components in the given path are links, the call
-	  will still succeed. For example, if name is
-	  <filename>/etc/ship/plank.txt</filename>, the call will fail if
-	  <filename>plank.txt</filename> is a symbolic link. It will succeed,
-	  however, if <filename>etc</filename> or <filename>ship</filename> is
-	  a symbolic link, so long as <filename>plank.txt</filename> is
-	  not.</quote> <biblioref begin="24" end="26" linkend="bib.love07"
-	  units="pages"/>.</para>
+	  <para>If the pathname is a symbolic link, an <literal>Errno::ELOOP</literal> exception will be raised. <quote>Normally, the link is resolved, and the target file is opened. If other components in the given path are links, the call will still succeed. For example, if name is <filename>/etc/ship/plank.txt</filename>, the call will fail if <filename>plank.txt</filename> is a symbolic link. It will succeed, however, if <filename>etc</filename> or <filename>ship</filename> is a symbolic link, so long as <filename>plank.txt</filename> is not.</quote> <biblioref begin="24" end="26" linkend="bib.love07" units="pages"/>.</para>
 	</listitem> 
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File:NONBLOCK</literal> 
-	</term> 
+        <term><literal>File:NONBLOCK</literal></term> 
 	<listitem> 
-	  <para>
-	    <quote>If possible, the file will be opened in nonblocking mode.
-	    Neither the <literal>open()</literal> call, nor any other operation
-	    will cause the process to block (sleep) on the I/O.  This behavior
-	    may be defined only for FIFOs.</quote> <biblioref begin="24"
-	    end="26" linkend="bib.love07" units="pages"/>.</para>
+	  <para><quote>If possible, the file will be opened in nonblocking mode.  Neither the <literal>open()</literal> call, nor any other operation will cause the process to block (sleep) on the I/O.  This behavior may be defined only for FIFOs.</quote> <biblioref begin="24" end="26" linkend="bib.love07" units="pages"/>.</para>
 	</listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File:RDONLY</literal> 
-	</term> 
-	<listitem> 
-	  <para>Opens the file for reading.</para>
-	</listitem>
+        <term><literal>File:RDONLY</literal></term> 
+	<listitem><para>Opens the file for reading.</para></listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File:RDWR</literal> 
-	</term> 
-	<listitem> 
-	  <para>Opens the file for reading and writing.</para>
-	</listitem>
+        <term><literal>File:RDWR</literal></term> 
+	<listitem><para>Opens the file for reading and writing.</para></listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File::RSYNC</literal> 
-	</term> 
+        <term><literal>File::RSYNC</literal></term> 
 	<listitem> 
-	  <para>
-	    <quote>…specifies the synchronization of read requests as well as
-	    write requests. It must be used with one of
-	    [<literal>File::SYNC</literal>] or
-	    [<literal>File::DSYNC</literal>]. As mentioned earlier, reads are
-	    already synchronized—they do not return until they have something
-	    to give the user, after all. The [<literal>File::RSYNC</literal>]
-	    flag stipulates that any side effects of a read operation be
-	    synchronized, too. This means that metadata updates resulting from
-	    a read must be written to disk before the call returns.</quote>
-	    <biblioref begin="40" end="40" linkend="bib.love07"
-	    units="pages"/>. On Linux, this is synonymous with
-	    <literal>File::SYNC</literal>.</para>
+	  <para><quote>…specifies the synchronization of read requests as well as write requests. It must be used with one of [<literal>File::SYNC</literal>] or [<literal>File::DSYNC</literal>]. As mentioned earlier, reads are already synchronized—they do not return until they have something to give the user, after all. The [<literal>File::RSYNC</literal>] flag stipulates that any side effects of a read operation be synchronized, too. This means that metadata updates resulting from a read must be written to disk before the call returns.</quote> <biblioref begin="40" end="40" linkend="bib.love07" units="pages"/>. On Linux, this is synonymous with <literal>File::SYNC</literal>.</para>
 	</listitem>
       </varlistentry> 
       <varlistentry>
@@ -1128,33 +771,15 @@
 	</listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File::SYNC</literal> 
-	</term> 
+        <term><literal>File::SYNC</literal></term> 
 	<listitem> 
-	  <para>
-	    <quote>The file will be opened for synchronous I/O. No write
-	    operation will complete until the data has been physically written
-	    to disk; normal read operations are already synchronous, so this
-	    flag has no effect on reads.</quote> <biblioref begin="24" end="26"
-	    linkend="bib.love07" units="pages"/>.</para>
+	  <para><quote>The file will be opened for synchronous I/O. No write operation will complete until the data has been physically written to disk; normal read operations are already synchronous, so this flag has no effect on reads.</quote> <biblioref begin="24" end="26" linkend="bib.love07" units="pages"/>.</para>
 	</listitem> 
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>File::TRUNC</literal> 
-	</term> 
+        <term><literal>File::TRUNC</literal></term> 
 	<listitem> 
-	  <para>
-	    <quote>If the file exists, it is a regular file, and the given
-	    flags allow for writing, the file will be truncated to zero
-	    length. Use of [<literal>File::TRUNC</literal>] on a FIFO or
-	    terminal device is ignored. Use on other file types is undefined.
-	    Specifying [<literal>File::TRUNC</literal>] with
-	    [<literal>File::RDONLY</literal>] is also undefined, as you need
-	    write access to the file in order to truncate it.</quote>
-	    <biblioref begin="24" end="26" linkend="bib.love07"
-	    units="pages"/>.</para>
+	  <para><quote>If the file exists, it is a regular file, and the given flags allow for writing, the file will be truncated to zero length. Use of [<literal>File::TRUNC</literal>] on a FIFO or terminal device is ignored. Use on other file types is undefined.  Specifying [<literal>File::TRUNC</literal>] with [<literal>File::RDONLY</literal>] is also undefined, as you need write access to the file in order to truncate it.</quote> <biblioref begin="24" end="26" linkend="bib.love07" units="pages"/>.</para>
         </listitem>
       </varlistentry> 
     </variablelist> 
@@ -1163,238 +788,109 @@
   <sect1 xml:id="io.buffering">
     <title>Buffering</title> 
     
-    <para>
-      <quote>Buffering writes provides a <emphasis>huge</emphasis> performance
-      improvement, and consequently, any operating system even halfway
-      deserving the mark “modern” implements delayed writes via
-      buffers.</quote> <biblioref begin="37" end="37" linkend="bib.love07"
-      units="pages"/>. Love explains the Linux kernel’s approach-which is
-      similar to that of other operating systems-to write buffering as
-      follows:</para>
+    <para><quote>Buffering writes provides a <emphasis>huge</emphasis> performance improvement, and consequently, any operating system even halfway deserving the mark “modern” implements delayed writes via buffers.</quote> <biblioref begin="37" end="37" linkend="bib.love07" units="pages"/>. Love explains the Linux kernel’s approach-which is similar to that of other operating systems-to write buffering as follows:</para>
     
     <blockquote>
-      <attribution><biblioref begin="37" end="37" linkend="bib.love07"
-      units="pages"/></attribution>
+      <attribution><biblioref begin="37" end="37" linkend="bib.love07" units="pages"/></attribution>
 
-      <para>…when a user-space application issues a <literal>write()</literal>
-      system call, the Linux kernel performs a few checks, and then simply
-      copies the data into a buffer.  Later, in the background, the kernel
-      gathers up all of the “dirty” buffers, sorts them optimally, and writes
-      them out to disk (a process known as
-      <emphasis>writeback</emphasis>). This allows write calls to occur
-      lightning fast, returning almost immediately. It also allows the kernel
-      to defer writes to more idle periods, and batch many writes
-      together.</para>
+      <para>…when a user-space application issues a <literal>write()</literal> system call, the Linux kernel performs a few checks, and then simply copies the data into a buffer.  Later, in the background, the kernel gathers up all of the “dirty” buffers, sorts them optimally, and writes them out to disk (a process known as <emphasis>writeback</emphasis>). This allows write calls to occur lightning fast, returning almost immediately. It also allows the kernel to defer writes to more idle periods, and batch many writes together.</para>
     </blockquote> 
 
-    <para>Further, and for the same reasons, Ruby maintains her own I/O
-    buffer. Therefore, before data is written to disk by Ruby, it passes first
-    through her buffers, and then those of the underlying operating system. The
-    latter are beyond the scope of this text, so we shall focus on the former
-    from now on.</para>
+    <para>Further, and for the same reasons, Ruby maintains her own I/O buffer. Therefore, before data is written to disk by Ruby, it passes first through her buffers, and then those of the underlying operating system. The latter are beyond the scope of this text, so we shall focus on the former from now on.</para>
 
-    <para>The <literal>IO</literal> methods for writing that we discussed
-    above, all buffered-that is, they pass through Ruby’s buffers-with the
-    exception of <literal>IO#syswrite</literal>. It was for this reason that we
-    described it as a low-level method, and cautioned against its use in
-    conjunction with other methods that perform writing. To understand why
-    combining buffered writes with non-buffered writes is potentially
-    dangerous, consider a scenario where a given stream has
-    <literal>?a</literal> written to it with <literal>IO#print</literal>, then
-    <literal>?b</literal> written to it with <literal>IO#syswrite</literal>,
-    then <literal>?c</literal> written to it with
-    <literal>IO#print</literal>. The first character written is buffered, the
-    second is written directly, and the third is buffered. When the stream is
-    closed, Ruby flushes her buffer, causing <literal>"ac"</literal> to be
-    written.  Therefore, the data is written out of order:
-    <literal>"bac"</literal>.</para>
+    <para>The <literal>IO</literal> methods for writing that we discussed above, all buffered-that is, they pass through Ruby’s buffers-with the exception of <literal>IO#syswrite</literal>. It was for this reason that we described it as a low-level method, and cautioned against its use in conjunction with other methods that perform writing. To understand why combining buffered writes with non-buffered writes is potentially dangerous, consider a scenario where a given stream has <literal>?a</literal> written to it with <literal>IO#print</literal>, then <literal>?b</literal> written to it with <literal>IO#syswrite</literal>, then <literal>?c</literal> written to it with <literal>IO#print</literal>. The first character written is buffered, the second is written directly, and the third is buffered. When the stream is closed, Ruby flushes her buffer, causing <literal>"ac"</literal> to be written.  Therefore, the data is written out of order: <literal>"bac"</literal>.</para>
 
-    <para>Ruby’s buffer can be flushed manually with
-    <literal>IO#flush</literal>. This causes the contents of the buffer to be
-    passed to the operating system, and the buffer to be
-    emptied. Alternatively, buffering can be disabled for a given stream by
-    setting <literal>IO#sync=</literal> to <literal>true</literal>; by default,
-    it is <literal>false</literal>. This value can be queried with
-    <literal>IO#sync</literal>.</para>
+    <para>Ruby’s buffer can be flushed manually with <literal>IO#flush</literal>. This causes the contents of the buffer to be passed to the operating system, and the buffer to be emptied. Alternatively, buffering can be disabled for a given stream by setting <literal>IO#sync=</literal> to <literal>true</literal>; by default, it is <literal>false</literal>. This value can be queried with <literal>IO#sync</literal>.</para>
 
-    <para>Reads are buffered by Ruby, too, hence the corresponding warning
-    about <literal>IO#sysread</literal>. Buffered reads make possible what
-    Loosemore et al. term <firstterm>unreading</firstterm>: <biblioref
-    linkend="bib.loosemore07" units="pages" begin="241" end="241"/></para>
+    <para>Reads are buffered by Ruby, too, hence the corresponding warning about <literal>IO#sysread</literal>. Buffered reads make possible what Loosemore et al. term <firstterm>unreading</firstterm>: <biblioref linkend="bib.loosemore07" units="pages" begin="241" end="241"/></para>
     
     <blockquote>
-      <attribution><biblioref linkend="bib.loosemore07" units="pages" 
-      begin="241" end="241"/></attribution>
+      <attribution><biblioref linkend="bib.loosemore07" units="pages" begin="241" end="241"/></attribution>
 
-      <para>Using stream I/O, you can peek ahead at input by first reading it
-      and then <emphasis>unreading</emphasis> it (also called <emphasis>pushing
-      it back</emphasis> on the stream). Unreading a character makes it
-      available to be input again from the stream, by the next call to [an]
-      input function on that stream.</para>
+      <para>Using stream I/O, you can peek ahead at input by first reading it and then <emphasis>unreading</emphasis> it (also called <emphasis>pushing it back</emphasis> on the stream). Unreading a character makes it available to be input again from the stream, by the next call to [an] input function on that stream.</para>
     </blockquote> 
     
-    <para>Two methods are provided for this purpose:
-    <literal>IO#ungetc</literal> and <literal>IO#ungetbyte</literal>. Both
-    expect an argument-characters for the former; bytes for the latter-which
-    they unread. Subsequent buffered reads from the stream will return the
-    unread characters/bytes in reverse chronological order before reading new
-    data from the stream.</para>
+    <para>Two methods are provided for this purpose: <literal>IO#ungetc</literal> and <literal>IO#ungetbyte</literal>. Both expect an argument-characters for the former; bytes for the latter-which they unread. Subsequent buffered reads from the stream will return the unread characters/bytes in reverse chronological order before reading new data from the stream.</para>
     
-    <para><literal>IO#fsync</literal> wraps the system call of the same name,
-    so may not be available on some platforms. Love describes
-    <literal>fsync()</literal> from the perspective of the operating system
-    <biblioref begin="37" end="38" linkend="bib.love07" units="pages"/>:</para>
+    <para><literal>IO#fsync</literal> wraps the system call of the same name, so may not be available on some platforms. Love describes <literal>fsync()</literal> from the perspective of the operating system <biblioref begin="37" end="38" linkend="bib.love07" units="pages"/>:</para>
     
     <blockquote>
-      <attribution><biblioref begin="37" end="38" linkend="bib.love07" 
-      units="pages"/></attribution>
+      <attribution><biblioref begin="37" end="38" linkend="bib.love07" units="pages"/></attribution>
       
-      <para>A call to <literal>fsync()</literal> ensures that all dirty data
-      associated with the file mapped by the file descriptor
-      <literal>fd</literal> is written back to disk. The file descriptor
-      <literal>fd</literal> must be open for writing. The call writes back both
-      data and metadata, such as creation timestamps, and other attributes
-      contained in the inode. It will not return until the hard drive says that
-      the data and metadata are on the disk.</para>
+      <para>A call to <literal>fsync()</literal> ensures that all dirty data associated with the file mapped by the file descriptor <literal>fd</literal> is written back to disk. The file descriptor <literal>fd</literal> must be open for writing. The call writes back both data and metadata, such as creation timestamps, and other attributes contained in the inode. It will not return until the hard drive says that the data and metadata are on the disk.</para>
       
-      <para>In the case of write caches on hard disks, it is not possible for
-      <literal>fsync()</literal> to know whether the data is physically on the
-      disk.  The hard drive can report that the data was written, but the data
-      may in fact reside in the drive’s write cache. Fortunately, data in a
-      hard disk’s cache should be committed to the disk in short order.</para>
+      <para>In the case of write caches on hard disks, it is not possible for <literal>fsync()</literal> to know whether the data is physically on the disk.  The hard drive can report that the data was written, but the data may in fact reside in the drive’s write cache. Fortunately, data in a hard disk’s cache should be committed to the disk in short order.</para>
     </blockquote>
 
-    <para><literal>IO#fsync</literal>, therefore, controls the operating
-    system’s buffers, as opposed to <literal>IO#sync</literal> which controls
-    Ruby’s. It returns <literal>0</literal> if supported;
-    <literal>nil</literal> otherwise.</para>
+    <para><literal>IO#fsync</literal>, therefore, controls the operating system’s buffers, as opposed to <literal>IO#sync</literal> which controls Ruby’s. It returns <literal>0</literal> if supported; <literal>nil</literal> otherwise.</para>
   </sect1> 
 
   <sect1 xml:id="io.position">
     <title>Positions &amp; Seeking</title> 
 
-    <para>Beck et al. explain that an attribute of a file’s structure is
-    <quote>the position of the read/ write pointer at which the next I/O
-    operation will be carried out. This value is updated by every I/O operation
-    and by the system calls <literal>lseek</literal> and
-    <literal>llseek</literal>.</quote> (<biblioref begin="41" end="43"
-    linkend="bib.beck98" units="pages"/>. Ruby exposes the current position in
-    an I/O stream with <literal>IO#pos</literal>, or its more declarative alias
-    <literal>IO#tell</literal>, as the offset in bytes. To seek to a given
-    position in a stream, one can assign the new, <literal>Integer</literal>,
-    offset to <literal>IO#pos=</literal>.  For more control over seeking, use
-    <literal>IO#seek(<replaceable>pos</replaceable>,
-    <replaceable>origin</replaceable>)</literal>, where
-    <replaceable>pos</replaceable> is a byte offset specified as an
-    <literal>Integer</literal>, and <replaceable>origin</replaceable> is one of
-    the values given below. If <replaceable>origin</replaceable> is omitted, it
-    defaults to <literal>IO::SEEK_SET</literal>:</para>
+    <para>Beck et al. explain that an attribute of a file’s structure is <quote>the position of the read/ write pointer at which the next I/O operation will be carried out. This value is updated by every I/O operation and by the system calls <literal>lseek</literal> and <literal>llseek</literal>.</quote> (<biblioref begin="41" end="43" linkend="bib.beck98" units="pages"/>. Ruby exposes the current position in an I/O stream with <literal>IO#pos</literal>, or its more declarative alias <literal>IO#tell</literal>, as the offset in bytes. To seek to a given position in a stream, one can assign the new, <literal>Integer</literal>, offset to <literal>IO#pos=</literal>.  For more control over seeking, use <literal>IO#seek(<replaceable>pos</replaceable>, <replaceable>origin</replaceable>)</literal>, where <replaceable>pos</replaceable> is a byte offset specified as an <literal>Integer</literal>, and <replaceable>origin</replaceable> is one of the values given below. If <replaceable>origin</replaceable> is omitted, it defaults to <literal>IO::SEEK_SET</literal>:</para>
  
     <variablelist>
       <varlistentry>
-        <term>
-          <literal>IO::SEEK_CUR</literal> 
-	</term> 
+        <term><literal>IO::SEEK_CUR</literal></term> 
 	<listitem> 
-	  <para>The current position is set to its current value plus
-	  <replaceable>pos</replaceable>, which can be negative, zero, or
-	  positive. If <replaceable>pos</replaceable> is zero the current
-	  position is unchanged.</para>
+	  <para>The current position is set to its current value plus <replaceable>pos</replaceable>, which can be negative, zero, or positive. If <replaceable>pos</replaceable> is zero the current position is unchanged.</para>
 	</listitem>
       </varlistentry> 
       <varlistentry>
-        <term>
-          <literal>IO::SEEK_END</literal> 
-	</term> 
+        <term><literal>IO::SEEK_END</literal></term> 
 	<listitem> 
-	  <para>The current position is set to the length of the file plus
-	  <replaceable>pos</replaceable>, which can be negative, zero, or
-	  positive. If <replaceable>pos</replaceable> is zero the current
-	  position is set to the end of the file.</para>
+	  <para>The current position is set to the length of the file plus <replaceable>pos</replaceable>, which can be negative, zero, or positive. If <replaceable>pos</replaceable> is zero the current position is set to the end of the file.</para>
 	</listitem> 
       </varlistentry> 
       <varlistentry> 
-	<term>
-          <literal>IO::SEEK_SET</literal> 
-	</term> 
+	<term><literal>IO::SEEK_SET</literal></term> 
 	<listitem> 
-	  <para>The current position is set to
-	  <replaceable>pos</replaceable>. If <replaceable>pos</replaceable> is
-	  zero the current position is set to the beginning of the file.</para>
+	  <para>The current position is set to <replaceable>pos</replaceable>. If <replaceable>pos</replaceable> is zero the current position is set to the beginning of the file.</para>
         </listitem>
       </varlistentry> 
     </variablelist> 
     
-    <para><literal>IO#sysseek</literal> expects the same arguments, and behaves
-    in the same manner, as <literal>IO#seek</literal>, except it works on a
-    lower-level, ignoring Ruby’s I/O buffer.</para>
-    <para>Ruby also keeps track of the
-    current line number in a stream. The line-orientated reading methods
-    increment the line number when they encounter the separator character. It
-    initially has a value of zero, and its current value may be retrieved with
-    <literal>IO#lineno</literal>, or its alias <literal>$.</literal>. It may be
-    set explicitly by assigning an <literal>Integer</literal> to
-    <literal>IO#lineno=</literal>.</para> 
-    <para>The current position and line
-    number for a given stream may be reset to zero with
-    <literal>IO#rewind</literal>. Subsequent reads and writes will then occur
-    from the beginning of the stream.</para>
+    <para><literal>IO#sysseek</literal> expects the same arguments, and behaves in the same manner, as <literal>IO#seek</literal>, except it works on a lower-level, ignoring Ruby’s I/O buffer.</para>
+    
+    <para>Ruby also keeps track of the current line number in a stream. The line-orientated reading methods increment the line number when they encounter the separator character. It initially has a value of zero, and its current value may be retrieved with <literal>IO#lineno</literal>, or its alias <literal>$.</literal>. It may be set explicitly by assigning an <literal>Integer</literal> to <literal>IO#lineno=</literal>.</para>
+    
+    <para>The current position and line number for a given stream may be reset to zero with <literal>IO#rewind</literal>. Subsequent reads and writes will then occur from the beginning of the stream.</para>
   </sect1> 
   
   <sect1 xml:id="io.argv">
     <title><literal>ARGV</literal></title> 
     
-    <para>The command-line arguments given to a program are available as
-    elements of the <literal>ARGV</literal> <literal>Array</literal>. If
-    <literal>ARGV</literal> is empty, no arguments were provided. Therefore,
-    unlike C, <literal>ARGV[0]</literal> does not hold the program name, which
-    is available as <literal>$0</literal> instead. This
-    <literal>Array</literal> can be modified, so programs may remove an element
-    after they have processed it.</para>
+    <para>The command-line arguments given to a program are available as elements of the <literal>ARGV</literal> <literal>Array</literal>. If <literal>ARGV</literal> is empty, no arguments were provided. Therefore, unlike C, <literal>ARGV[0]</literal> does not hold the program name, which is available as <literal>$0</literal> instead. This <literal>Array</literal> can be modified, so programs may remove an element after they have processed it.</para>
 
     <example xml:id="ex.argv">
-      <title>Using <literal>ARGV</literal> to examine our command-line
-      arguments</title> 
+      <title>Using <literal>ARGV</literal> to examine our command-line arguments</title> 
 
-      <programlisting><xi:include href="examples/argv.rb" 
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/argv.rb" parse="text"/></programlisting>
     </example> 
 
     <example xml:id="ex.argv-shell">
-      <title>How command-line arguments are interpreted by
-      <literal>ARGV</literal></title>
+      <title>How command-line arguments are interpreted by <literal>ARGV</literal></title>
 
-      <programlisting><xi:include href="examples/argv-shell.txt" 
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/argv-shell.txt" parse="text"/></programlisting>
     </example> 
   </sect1> 
 
   <sect1 xml:id="io.argf"> 
     <title><literal>ARGF</literal></title>
     
-    <para><literal>ARGF</literal> is an <literal>IO</literal> stream
-    abstracting the contents of a program’s file arguments. If
-    <literal>ARGV</literal> is empty, <literal>ARGF</literal> refers to
-    <literal>STDIN</literal>. Otherwise, each element of
-    <literal>ARGV</literal> is assumed to name a file, and
-    <literal>ARGF</literal> represents the concatenation of their contents. An
-    implication of this behaviour is that non-file arguments should be removed
-    from <literal>ARGV</literal> prior to using <literal>ARGF</literal>.</para>
+    <para><literal>ARGF</literal> is an <literal>IO</literal> stream abstracting the contents of a program’s file arguments. If <literal>ARGV</literal> is empty, <literal>ARGF</literal> refers to <literal>STDIN</literal>. Otherwise, each element of <literal>ARGV</literal> is assumed to name a file, and <literal>ARGF</literal> represents the concatenation of their contents. An implication of this behaviour is that non-file arguments should be removed from <literal>ARGV</literal> prior to using <literal>ARGF</literal>.</para>
     
     <example xml:id="ex.argf">
-      <title><literal>ARGF</literal> encapsulates the file arguments of a
-      program</title>
+      <title><literal>ARGF</literal> encapsulates the file arguments of a program</title>
 
-      <programlisting><xi:include href="examples/argf.rb" 
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/argf.rb" parse="text"/></programlisting>
     </example> 
 
     <example xml:id="ex.argf-shell">
-      <title>How <literal>ARGF</literal> interprets command-line
-      arguments</title>
+      <title>How <literal>ARGF</literal> interprets command-line arguments</title>
 
-      <programlisting><xi:include href="examples/argf-shell.txt" 
-      parse="text"/></programlisting>      
+      <programlisting><xi:include href="examples/argf-shell.txt" parse="text"/></programlisting>      
     </example> 
   </sect1> 
 </chapter>
