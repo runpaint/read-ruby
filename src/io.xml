@@ -404,7 +404,7 @@
   </sect1> 
 
   <sect1 xml:id="io.open"> 
-    <title>Opening a File</title>
+    <title>Opening a Stream</title>
     
     <para><literal>IO.sysopen</literal> <firstterm>opens</firstterm> a given pathname and returns a corresponding file descriptor. (Use the <link linkend="fil.files">File class</link> for a higher-level interface to this operation). Optionally, it accepts an <link linkend="io.access-mode">access mode</link> as the second argument, and <link linkend="io.perm">permission bits</link> as the third.</para>
     
@@ -822,7 +822,19 @@
     </blockquote>
 
     <para><function>IO#fsync</function>, therefore, controls the operating system’s buffers, as opposed to <function>IO#sync</function> which controls Ruby’s. It returns <literal>0</literal> if supported; <literal>nil</literal> otherwise.</para>
-  </sect1> 
+  </sect1>
+ 
+  <sect1 xml:id="io.close">
+    <title>Closing a Stream</title>
+
+    <para>Once an <literal>IO</literal> stream is finished with, it should be <firstterm>closed</firstterm>. This ensures that Ruby’s write buffer is flushed, and the associated file-descriptor is released back to the operating system. A stream is closed for reading and writing with <function>IO#close</function>, which is also called automatically when the <literal>IO</literal> object is finalised. Attempting to read from or write to a closed stream causes an <literal>IOError</literal> to be raised. A duplex stream may also be closed just for writing or just for reading, using <function>IO#close_write</function> and <function>IO#close_read</function>, respectively. The <function>IO#closed?</function> predicate returns <literal>true</literal> if its receiver is closed for both reading and writing; <literal>false</literal>, otherwise.</para>
+
+    <example xml:id="ex.io-close">
+      <title>Closing an <literal>IO</literal> stream</title>
+
+      <programlisting><xi:include parse="text" href="examples/io-close.rb"/></programlisting>
+    </example>
+  </sect1>
 
   <sect1 xml:id="io.position">
     <title>Positions &amp; Seeking</title> 
