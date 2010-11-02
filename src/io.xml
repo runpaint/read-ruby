@@ -834,6 +834,20 @@
 
       <programlisting><xi:include parse="text" href="examples/io-close.rb"/></programlisting>
     </example>
+
+    <para>On a Linux system a process launched via <function>Kernel.exec</function> inherits the file descriptors of its parent. Depending on the application, this may constitute an information leak in that the child is able to access data that he shouldn’t have access to. If given a true argument, <function>IO#close_on_exec=</function> ensures that its receiver is closed before <function>exec()</function>; otherwise, it does not. <function>IO#close_on_exec?</function> returns <literal>true</literal> if the stream will be closed before <function>exec()</function>; <literal>false</literal>, otherwise. On systems that don’t support this feature, these methods raise <literal>NotImplementedError</literal>.</para>
+    
+    <example xml:id="ex.io-close_on_exec">
+      <title>By deafult, child processes can access their parent’s file descriptors</title>
+
+      <programlisting><xi:include parse="text" href="examples/io-close_on_exec.rb"/></programlisting>
+    </example>
+
+    <example xml:id="ex.io-close_on_exec2">
+      <title>If the <emphasis>close-on-exec</emphasis> flag is set, child processes cannot access their parent’s file descriptors</title>
+
+      <programlisting><xi:include parse="text" href="examples/io-close_on_exec2.rb"/></programlisting>
+    </example>
   </sect1>
 
   <sect1 xml:id="io.position">
