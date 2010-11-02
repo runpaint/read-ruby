@@ -732,7 +732,7 @@
       <varlistentry>
         <term><literal>File:NOCTTY</literal></term> 
 	<listitem> 
-	  <para><quote>If the named file is a terminal device, don’t make it the controlling terminal for the process.</quote> <biblioref begin="333" end="334" linkend="bib.loosemore07" units="pages"/>. (<function>IO#tty?</function> can be used to determine whether the stream is a TTY).</para>
+	  <para><quote>If the named file is a terminal device, don’t make it the controlling terminal for the process.</quote> <biblioref begin="333" end="334" linkend="bib.loosemore07" units="pages"/>. (<function>IO#tty?</function>, or its alias <function>IO#isatty</function>, can be used to determine whether the stream is a TTY).</para>
         </listitem>
       </varlistentry> 
       <varlistentry>
