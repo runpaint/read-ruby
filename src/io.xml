@@ -394,6 +394,8 @@
           <para>Transcoding is disabled unless both an internal and external encoding have been specified.</para>
 	</listitem> 
       </itemizedlist>
+
+      <para>Binary mode may be enabled when opening a stream by either including the <literal>b</literal> modifier in the <link linkend="io.mode-string">mode string</link>, or supplying <literal>binmode: true</literal> for the <link linkend="io.options-hash">options <literal>Hash</literal></link>. It may be enabled for an existing stream with <function>IO#binmode</function>. <function>IO#binmode?</function> returns <literal>true</literal> if its receiver is in binary mode; <literal>false</literal>, otherwise.</para> 
     </sect2> 
 
     <sect2 xml:id="io.textmode"> 
