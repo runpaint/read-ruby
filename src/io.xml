@@ -291,6 +291,8 @@
       </table>
 
       <para><function>IO#readline</function> behaves identically, and expects the same arguments, but raises an <literal>EOFError</literal> when <acronym>EoF</acronym> is reached. <literal>IO#readlines</literal> also expects the same arguments, but returns an <literal>Array</literal>, each element of which is a line terminated by the given separator. <literal>IO#lines</literal>, and its alias <literal>IO#each_line</literal>, behave like <literal>IO#readlines</literal>, but return an <literal>Enumerator</literal> instead of an <literal>Array</literal>. When either method is given a block, it yields each line in turn.</para>
+
+      <para>The methods described above are all instance methods, so before use they require that an <literal>IO</literal> object is created. When the only reason for instantiating this object is to enumerate it, a more elegant approach is <function>IO.foreach(<replaceable>fn</replaceable>)</function>, which yields each line of the file named <replaceable>fn</replaceable> to a block, or returns an <literal>Enumerator</literal> if the block is omitted. Optionally, a limit and separator may be supplied as the second and third arguments, with the same semantics as for <function>#gets</function>. An <link linkend="io.options-hash">options <literal>Hash</literal></link> may be given as the final argument. <function>IO.readlines(<replaceable>fn</replaceable>)</function> behaves similarly, except it returns the lines as an <literal>Array</literal>, ignoring any block.</para>
     </sect2> 
   </sect1> 
 
