@@ -827,13 +827,15 @@
   <sect1 xml:id="io.close">
     <title>Closing a Stream</title>
 
-    <para>Once an <literal>IO</literal> stream is finished with, it should be <firstterm>closed</firstterm>. This ensures that Ruby’s write buffer is flushed, and the associated file-descriptor is released back to the operating system. A stream is closed for reading and writing with <function>IO#close</function>, which is also called automatically when the <literal>IO</literal> object is finalised. Attempting to read from or write to a closed stream causes an <literal>IOError</literal> to be raised. A duplex stream may also be closed just for writing or just for reading, using <function>IO#close_write</function> and <function>IO#close_read</function>, respectively. The <function>IO#closed?</function> predicate returns <literal>true</literal> if its receiver is closed for both reading and writing; <literal>false</literal>, otherwise.</para>
+    <para>Once an <literal>IO</literal> stream is finished with, it should be <firstterm>closed</firstterm>. This ensures that Ruby’s write buffer is flushed, and the associated file-descriptor is released back to the operating system. A stream is closed for reading and writing with <function>IO#close</function>. Subsequent attempts to read from or write to a closed stream causes an <literal>IOError</literal> to be raised. A duplex stream may also be closed just for writing or just for reading, using <function>IO#close_write</function> and <function>IO#close_read</function>, respectively. The <function>IO#closed?</function> predicate returns <literal>true</literal> if its receiver is closed for both reading and writing; <literal>false</literal>, otherwise.</para>
 
     <example xml:id="ex.io-close">
       <title>Closing an <literal>IO</literal> stream</title>
 
       <programlisting><xi:include parse="text" href="examples/io-close.rb"/></programlisting>
     </example>
+
+    <para>When an <literal>IO</literal> object is finalised its <firstterm>auto-close</firstterm> flag determines whether the underlying file descriptor is closed automatically. By default, this flag has the value <literal>true</literal>, but it can be set explicitly with <function>IO#autoclose=</function>. Its current value is returned by <function>IO#autoclose?</function>.</para>
 
     <para>On a Linux system a process launched via <function>Kernel.exec</function> inherits the file descriptors of its parent. Depending on the application, this may constitute an information leak in that the child is able to access data that he shouldn’t have access to. If given a true argument, <function>IO#close_on_exec=</function> ensures that its receiver is closed before <function>exec()</function>; otherwise, it does not. <function>IO#close_on_exec?</function> returns <literal>true</literal> if the stream will be closed before <function>exec()</function>; <literal>false</literal>, otherwise. On systems that don’t support this feature, these methods raise <literal>NotImplementedError</literal>.</para>
     
