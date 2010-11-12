@@ -936,6 +936,12 @@
     <para>As described in the introduction to this chapter, a position past the end of a stream is termed <emphasis>End of File</emphasis>, or <acronym>EoF</acronym>. Depending on the method, reading from a stream at <acronym>EoF</acronym> causes either an <literal>EoFError</literal> exception to be raised or <literal>nil</literal> to be returned. If a stream is open for reading, this condition can be tested for with the <function>IO#eof?</function> predicate, or its alias <function>IO#eof</function>, which return <literal>true</literal> in the affirmative; otherwise, <literal>false</literal>.</para>
   </sect1> 
   
+  <sect1 xml:id="io.coercion">
+    <title>Coercion</title>
+
+    <para>Objects that can be coerced into <literal>IO</literal> objects implement the explicit conversion protocol with a <function>#to_io</function> method. Subclasses of <literal>IO</literal> typically return themselves in response to this method. A method that expects an <literal>IO</literal>-like argument, can coerce it with <literal>IO.try_convert</literal>. This returns the corresponding <literal>IO</literal> object if the argument responds to <function>#to_io</function>, or  <literal>nil</literal> if not.</para>
+  </sect1>
+
   <sect1 xml:id="io.argv">
     <title><literal>ARGV</literal></title> 
     
