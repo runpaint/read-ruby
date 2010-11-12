@@ -37,7 +37,7 @@
     <section id="{$id}">
       <h1><xsl:value-of select="d:abbrev"/></h1>
       
-      <p><cite><xsl:value-of select="d:title"/></cite>;
+      <p><cite><xsl:value-of select="d:title"/></cite>;<xsl:text> </xsl:text>
 	<xsl:call-template name="biblio-authorgroup"/>; 
 	<xsl:value-of select="d:pubdate"/>; 
 	<xsl:value-of select="d:publisher/d:publishername"/></p>
