@@ -10,7 +10,7 @@
 
   <!-- Tables 
        A DocBook table is, effectively, identical to a HTML table, so we simply
-       copy over the constituent elements verbatim. We deliberately ignore any
+       copy over the constituent elements verbatim. We deliberately ignore most
        attributes on these elements, so as to avoid interspersing layout
        information with content.
   -->
@@ -53,6 +53,12 @@
   <!-- Td -->
   <xsl:template match="d:td">
     <td>
+      <xsl:apply-templates/>
+    </td>
+  </xsl:template>
+
+  <xsl:template match="d:td[@rowspan]">
+    <td rowspan="{@rowspan}">
       <xsl:apply-templates/>
     </td>
   </xsl:template>

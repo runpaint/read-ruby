@@ -240,10 +240,51 @@
     <sect2 xml:id="io.io-reading-lines">
       <title>Lines</title>
       
-      <para><function>IO#gets</function> allows a stream to be processed as a sequence of “lines”, each separated by separator, <replaceable>sep</replaceable>. If <replaceable>sep</replaceable> is not given, it is assumed to have the value of <literal>$/</literal>, which is <literal>"\n"</literal> by default. If an <literal>Integer</literal> limit is supplied, at most that many bytes will be returned at a time; by default there is no limit. According to Thomas et al., a negative limit makes the search for <replaceable>sep</replaceable> more efficient by ignoring the stream’s encoding <biblioref linkend="bib.thom09" begin="551" end="551" units="pages"/>. The permutations of these arguments are enumerated below:</para>
+      <para>A stream may be read line by line with the methods described below. They differ in their behaviour when EoF is reached, and whether they return a single line or multiple lines. <function>#gets</function> and <function>#readline</function> assign the last line read to <literal>$_</literal>.</para> 
 
       <table>
-        <caption>Arguments accepted by <function>IO#gets</function></caption>
+        <caption>Instance methods for reading an <literal>IO</literal> stream by line</caption>
+	<thead>
+          <tr>
+            <th>Method</th> 
+	    <th>Returns</th>
+	    <th><acronym>EoF</acronym>?</th>
+	  </tr>
+	</thead> 
+	<tbody> 
+	  <tr> 
+	    <td><function>IO#gets</function></td>
+	    <td>Next line as a <literal>String</literal></td> 
+	    <td>Returns <literal>nil</literal></td>
+	  </tr> 
+	  <tr> 
+	    <td><function>IO#readline</function></td>
+	    <td>Next line as a <literal>String</literal></td>
+	    <td>Raises <literal>EOFError</literal></td>	    
+	  </tr> 
+	  <tr> 
+	    <td><function>IO#readlines</function></td>
+	    <td>All lines as an <literal>Array</literal></td>
+	    <td>N/A</td>	    
+	  </tr> 
+	  <tr> 
+	    <td><function>IO#each</function></td>
+	    <td rowspan="3">All lines as an <literal>Enumerator</literal> or <literal>self</literal></td>
+	    <td rowspan="3">N/A</td>	    
+	  </tr>
+	  <tr>
+	    <td><function>IO#each_line</function></td>
+	  </tr>
+	  <tr>
+	    <td><function>IO#lines</function></td>
+	  </tr>
+	</tbody>
+      </table>
+      
+      <para>Optionally, these methods accept arguments specifying a separator and limit. The separator is the <literal>String</literal> with which lines are delimited. The default separator is <literal>$/</literal>, which initially has the value <literal>"\n"</literal>. If the separator is <literal>nil</literal>, the entire stream is treated as a single line. If the separator is an empty <literal>String</literal>, it is equivalent to <literal>"\n\n"</literal>. The limit is the number of bytes to return. There is no limit by default. According to Thomas et al., a negative limit makes the search for <replaceable>sep</replaceable> more efficient by ignoring the stream’s encoding <biblioref linkend="bib.thom09" begin="551" end="551" units="pages"/>.</para>
+
+      <table>
+        <caption>The <replaceable>Separator</replaceable> and <replaceable>limit</replaceable></caption>
 	<thead>
           <tr>
             <th>Arguments</th> 
@@ -290,9 +331,7 @@
 	</tbody>
       </table>
 
-      <para><function>IO#readline</function> behaves identically, and expects the same arguments, but raises an <literal>EOFError</literal> when <acronym>EoF</acronym> is reached. <literal>IO#readlines</literal> also expects the same arguments, but returns an <literal>Array</literal>, each element of which is a line terminated by the given separator. <function>IO#each</function><footnote><para><literal>IO</literal> is an <literal>Enumerable</literal>, so its <literal>Enumerable</literal> methods work in terms of lines.</para></footnote>, <function>IO#lines</function>, and <function>IO#each_line</function>—the latter two being aliases of the first—behave like <literal>IO#readlines</literal>, but yield each line to a block, if given, or return an <literal>Enumerator</literal>.</para>
-
-      <para>The methods described above are all instance methods, so before use they require that an <literal>IO</literal> object is created. When the only reason for instantiating this object is to enumerate it, a more elegant approach is <function>IO.foreach(<replaceable>fn</replaceable>)</function>, which yields each line of the file named <replaceable>fn</replaceable> to a block, or returns an <literal>Enumerator</literal> if the block is omitted. Optionally, a limit and separator may be supplied as the second and third arguments, with the same semantics as for <function>#gets</function>. An <link linkend="io.options-hash">options <literal>Hash</literal></link> may be given as the final argument. <function>IO.readlines(<replaceable>fn</replaceable>)</function> behaves similarly, except it returns the lines as an <literal>Array</literal>, ignoring any block.</para>
+      <para>The methods described above are all instance methods, so before use they require that an <literal>IO</literal> object is created. When the only reason for instantiating this object is to enumerate it, a more elegant approach is <function>IO.foreach(<replaceable>fn</replaceable>)</function>, which yields each line of the file named <replaceable>fn</replaceable> to a block, or returns an <literal>Enumerator</literal> if the block is omitted. Optionally, a limit and separator may be supplied as the second and third arguments, with the same semantics as for the instance methods. An <link linkend="io.options-hash">options <literal>Hash</literal></link> may be given as the final argument. <function>IO.readlines(<replaceable>fn</replaceable>)</function> behaves similarly, except it returns the lines as an <literal>Array</literal>, ignoring any block.</para>
     </sect2> 
   </sect1> 
 
