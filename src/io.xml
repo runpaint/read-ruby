@@ -234,9 +234,9 @@
      </sect2>
      
      <sect2 xml:id="io.reading-chars">
-      <title>Characters</title>
+      <title>Characters &amp; Codepoints</title>
 
-      <para>A stream may be read character-by-character with either <function>IO#getc</function> or <function>IO#readchar</function>, both of which return one-character <literal>String</literal>s. When <acronym>EoF</acronym> is reached, the former returns <literal>nil</literal>, while the latter raises an <literal>EOFError</literal>. Alternatively, <literal>IO#chars</literal>, and its alias <literal>IO#each_char</literal> return an <literal>Enumerator</literal> of the stream’s characters. As is customary, they may also be supplied with a block in which case they yield each character in turn.</para>
+      <para>A stream may be read character-by-character with either <function>IO#getc</function> or <function>IO#readchar</function>, both of which return one-character <literal>String</literal>s. When <acronym>EoF</acronym> is reached, the former returns <literal>nil</literal>, while the latter raises an <literal>EOFError</literal>. Alternatively, <function>IO#chars</function>, and its alias <function>IO#each_char</function> return an <literal>Enumerator</literal> of the stream’s characters.Similarly, <function>IO#codepoints</function> and its alias <function>IO#each_codepoint</function> return an <literal>Enumerator</literal> of the stream’s Unicode codepoints. As is customary, <function>#chars</function> and <function>#codepoints</function> may also be supplied with a block in which case they yield each character/codepoint in turn.</para>
     </sect2>
 
     <sect2 xml:id="io.io-reading-lines">
