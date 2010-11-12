@@ -184,6 +184,8 @@
    <sect1 xml:id="io.reading">
      <title>Reading from a Stream</title>
 
+     <para><function>IO.read(<replaceable>fn</replaceable>)</function> returns the contents of the file named <replaceable>fn</replaceable> as a <literal>String</literal>. If an optional second argument is given, it specifies the maximum number of bytes to return. If an optional third argument is given, it is the offset to which <function>IO.read</function> seeks before reading. An <link linkend="io.options-hash">options <literal>Hash</literal></link> may be supplied as the last argument. <function>IO.binread</function> behaves similarly, but opens <replaceable>fn</replaceable> with a mode of <literal>rb:ASCII-8BIT</literal>, i.e. the <literal>String</literal> it returns has <literal>ASCII-8BIT</literal> encoding. It does not accept the options <literal>Hash</literal> argument.</para>
+
      <sect2 xml:id="io.reading-bytes">
        <title>Bytes</title>
 
