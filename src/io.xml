@@ -932,6 +932,8 @@
     <para>Ruby also keeps track of the current line number in a stream. The line-orientated reading methods increment the line number when they encounter the separator character. It initially has a value of zero, and its current value may be retrieved with <function>IO#lineno</function>, or its alias <literal>$.</literal>. It may be set explicitly by assigning an <literal>Integer</literal> to <literal>IO#lineno=</literal>.</para>
     
     <para>The current position and line number for a given stream may be reset to zero with <function>IO#rewind</function>. Subsequent reads and writes will then occur from the beginning of the stream.</para>
+
+    <para>As described in the introduction to this chapter, a position past the end of a stream is termed <emphasis>End of File</emphasis>, or <acronym>EoF</acronym>. Depending on the method, reading from a stream at <acronym>EoF</acronym> causes either an <literal>EoFError</literal> exception to be raised or <literal>nil</literal> to be returned. If a stream is open for reading, this condition can be tested for with the <function>IO#eof?</function> predicate, or its alias <function>IO#eof</function>, which return <literal>true</literal> in the affirmative; otherwise, <literal>false</literal>.</para>
   </sect1> 
   
   <sect1 xml:id="io.argv">
