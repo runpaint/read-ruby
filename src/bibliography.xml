@@ -646,6 +646,19 @@
       <pagenums>44–50</pagenums>
     </biblioentry>    
 
+    <biblioentry xml:id="bib.ruby-core-28281">
+      <abbrev>ruby-core:28281</abbrev>     
+        <author>
+          <personname>
+            <firstname>Yusuke</firstname><surname>Endoh</surname>
+          </personname>
+        </author>
+      <title>[ruby-core:28281] [Bug:trunk] add explicit constraints for WONTFIX IO bug</title>
+      <pubdate>2010</pubdate>
+      <!-- <remark>Lnk to thread on blade when that's back up</remark>  -->
+      <biblioid class="uri">http://osdir.com/ml/ruby-core/2010-02/msg00293.html</biblioid>
+    </biblioentry>    
+
     <biblioentry xml:id="bib.tr15285">
       <abbrev>Tr15285</abbrev>     
         <author>

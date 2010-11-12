@@ -572,6 +572,8 @@
       <para>An <literal>IO</literal> instance objectifies a given file descriptor. It may be initialized by supplying this file descriptor as the first argument to <function>IO.new</function>, or its alias <function>IO.for_fd</function>. Optionally, a <link linkend="io.mode-string">mode string</link>, or <link linkend="io.open-flags">numeric access mode</link>, can be provided as the second argument, however this must agree with the <link linkend="io.access-mode">access mode</link> already associated with the file descriptor. An <link linkend="io.options-hash">options Hash</link> may be provided as the final argument.</para>
 
       <para><function>IO.open</function> accepts the same arguments, but also expects a block. It initializes an <literal>IO</literal> object as before, yields it to the block, then ensures the stream is closed when the block exits.</para>
+
+      <para><function>IO#reopen(<replaceable>other</replaceable>)</function> replaces the receiver with the <literal>IO</literal> object <replaceable>other</replaceable>. <function>IO#reopen(<replaceable>path</replaceable>, <replaceable>mode</replaceable>)</function> creates a new <literal>IO</literal> object for <replaceable>path</replaceable>, then uses it to replace the receiver. However, due to the way I/O operations perform buffering, reopening a stream—especially one that has already been read from—can lead to unexpected behaviour. See <xref linkend="io.buffering"/> and <biblioref linkend="bib.ruby-core-28281"/> for more details.</para>   
       
       <sect2 xml:id="io.mode-string">
 	<title>The Mode String</title> 
@@ -846,7 +848,9 @@
 
     <para>Ruby’s buffer can be flushed manually with <function>IO#flush</function>. This causes the contents of the buffer to be passed to the operating system, and the buffer to be emptied. Alternatively, buffering can be disabled for a given stream by setting <function>IO#sync=</function> to <literal>true</literal>; by default, it is <literal>false</literal>. This value can be queried with <function>IO#sync</function>.</para>
 
-    <para>Reads are buffered by Ruby, too, hence the corresponding warning about <function>IO#sysread</function>. Buffered reads make possible what Loosemore et al. term <firstterm>unreading</firstterm>: <biblioref linkend="bib.loosemore07" units="pages" begin="241" end="241"/></para>
+    <para>Reads are buffered by Ruby, too, hence the corresponding warning about <function>IO#sysread</function>. However, they come with a caveat: for performance reasons, Ruby may read more data that the user requests, buffering the the surplus for future reads. Accordingly, when a stream is read from then duplicated or reopened, its replica may return data out of order or report negative values for <function>IO#pos</function>. See <biblioref linkend="bib.ruby-core-28281"/> for more details.</para>
+
+    <para>Buffered reads make possible what Loosemore et al. term <firstterm>unreading</firstterm>: <biblioref linkend="bib.loosemore07" units="pages" begin="241" end="241"/></para>
     
     <blockquote>
       <attribution><biblioref linkend="bib.loosemore07" units="pages" begin="241" end="241"/></attribution>
