@@ -956,6 +956,46 @@
     </example>
   </sect1>
 
+  <sect1 xml:id="io.async">
+    <title>Asynchronous I/O</title>
+
+    <para>By default, I/O operations are <firstterm>blocking</firstterm> (<firstterm>synchronous</firstterm>): they do not return control to their caller until finished. This can be problematic given the performance disparity between <acronym>CPU</acronym>s and devices such as hard disks and routers. An I/O-bound program may spend the majority of its time idly waiting. Conversely, <firstterm>non-blocking</firstterm> (<firstterm>asynchronous</firstterm>) operations return immediately. They try to perform the operation as normal, but if doing so would require blocking, they signal an error and return.</para>
+
+    <para>We have already seen a partial solution to this problem in the <literal>File::NONBLOCK</literal> flag taken by <literal>Kernel.open</literal>. <function>IO#read_nonblock(<replaceable>max</replaceable>)</function> builds upon this approach by setting the <literal>NONBLOCK</literal> flag for the file descriptor, then attempting to read at most <replaceable>max</replaceable> bytes without blocking. If an optional second argument is supplied, it is a <literal>String</literal> to which the received data is appended. This method works as follows:</para>
+
+    <orderedlist>
+      <listitem>
+	<para>If there is data in Ruby’s read buffer, up to <replaceable>max</replaceable> bytes are returned.</para>
+      </listitem>
+      <listitem>
+	<para>If the stream can be read from without blocking, at most <replaceable>max</replaceable> bytes are read and returned.</para>
+      </listitem>
+      <listitem>
+	<para>If <function>IO#read</function> would have raised an exception when attempting to read from this stream, the same exception is raised.</para>
+      </listitem>
+      <listitem>
+	<para>Otherwise, either <literal>Errno::EWOULDBLOCK</literal> or <literal>Errno::EAGAIN</literal> is raised to indicate that the stream can not be read without blocking. These two exceptions are virtually synonymous<footnote><para><acronym>POSIX</acronym> allows both to have the same value.</para></footnote>, so Ruby mixes in <literal>IO::WaitReadable</literal> to both, allowing <literal>rescue IO::WaitReadable</literal> to handle either.</para>
+      </listitem>
+      <listitem>
+	<para>If <acronym>EoF</acronym> is reached, <literal>EOFError</literal> is raised.</para>
+      </listitem>
+    </orderedlist>
+
+    <para>The principle, then, is that if <function>#read_nonblock</function> raises <literal>Errno::EWOULDBLOCK</literal> or <literal>Errno::EAGAIN</literal>, the program can attend to other tasks before it retries the call. <function>IO#readpartial</function> is identical, except it does not set the <literal>NONBLOCK</literal> flag on the file descriptor: if blocking is unavoidable, it blocks.</para>
+
+    <para><function>IO#write_nonblock(<replaceable>string</replaceable>)</function> is similar to <function>#read_nonblock</function>. It flushes the write buffer, then tries to write <replaceable>string</replaceable> to the receiver, raising <literal>Errno::EAGAIN</literal> or <literal>Errno::EWOULDBLOCK</literal> if the write would have blocked. It returns the number of bytes written, which should be compared to <literal><replaceable>string</replaceable>.bytesize</literal> to detect partial writes. On Windows, some <literal>IO</literal> objects cannot be used in this way, so <literal>#write_nonblock</literal> raises <literal>Errno::EBADF</literal>.</para>
+
+    <para>Given a collection of <literal>IO</literal> objects, how does a program know which are available for writing or reading? <function>Kernel.select</function> is one answer. It accepts up to three <literal>Array</literal>s of <literal>IO</literal> objects: those in the first <literal>Array</literal> are monitored for reading, the second, for writing, and the third, for errors. It returns a three-element <literal>Array</literal> of the same configuration containing only the <literal>IO</literal> objects that are ready for their respective operation. If a fourth argument is given, it is a timeout: if none of the streams are ready in the given amount of seconds <function>Kernel.select</function> returns <literal>nil</literal>.</para>
+    
+    <example xml:id="ex.io-select">
+      <title>Managing a message queue with <function>Kernel.select</function></title>
+
+      <programlisting><xi:include href="examples/io-select.rb" parse="text"/></programlisting>
+    </example>
+
+    <remark>Mention io/wait in callout?</remark>
+  </sect1>
+
   <sect1 xml:id="io.argv">
     <title><literal>ARGV</literal></title> 
     
