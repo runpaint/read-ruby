@@ -886,7 +886,7 @@
 
     <para>When an <literal>IO</literal> object is finalised its <firstterm>auto-close</firstterm> flag determines whether the underlying file descriptor is closed automatically. By default, this flag has the value <literal>true</literal>, but it can be set explicitly with <function>IO#autoclose=</function>. Its current value is returned by <function>IO#autoclose?</function>.</para>
 
-    <para>On a Linux system a process launched via <function>Kernel.exec</function> inherits the file descriptors of its parent. Depending on the application, this may constitute an information leak in that the child is able to access data that he shouldn’t have access to. If given a true argument, <function>IO#close_on_exec=</function> ensures that its receiver is closed before <function>exec()</function>; otherwise, it does not. <function>IO#close_on_exec?</function> returns <literal>true</literal> if the stream will be closed before <function>exec()</function>; <literal>false</literal>, otherwise. On systems that don’t support this feature, these methods raise <literal>NotImplementedError</literal>.</para>
+    <para>On a Linux system a process launched via <function>Kernel.exec</function><remark>clarify exec()-family</remark> inherits the file descriptors of its parent. Depending on the application, this may constitute an information leak in that the child is able to access data that he shouldn’t have access to. If given a true argument, <function>IO#close_on_exec=</function> ensures that its receiver is closed before <function>exec()</function>; otherwise, it does not. <function>IO#close_on_exec?</function> returns <literal>true</literal> if the stream will be closed before <function>exec()</function>; <literal>false</literal>, otherwise. On systems that don’t support this feature, these methods raise <literal>NotImplementedError</literal>.</para>
     
     <example xml:id="ex.io-close_on_exec">
       <title>By deafult, child processes can access their parent’s file descriptors</title>
@@ -940,6 +940,20 @@
     <title>Coercion</title>
 
     <para>Objects that can be coerced into <literal>IO</literal> objects implement the explicit conversion protocol with a <function>#to_io</function> method. Subclasses of <literal>IO</literal> typically return themselves in response to this method. A method that expects an <literal>IO</literal>-like argument, can coerce it with <literal>IO.try_convert</literal>. This returns the corresponding <literal>IO</literal> object if the argument responds to <function>#to_io</function>, or  <literal>nil</literal> if not.</para>
+  </sect1>
+
+  <sect1 xml:id="io.pipes">
+    <title>Pipes</title>
+
+    <para>A <firstterm>pipe</firstterm> is a unidirectional<footnote><para>Bi-directional pipes also exit in some systems. <acronym>POSIX</acronym> only requires unidirectional semantics, however, so it is there that we shall focus.</para></footnote>, or <firstterm>half-duplex</firstterm>, inter-process communication channel. It comprises two file descriptors: one of which is open for reading, and the other, writing. Data written to the write end of a pipe can be read from the read end on a first-in-first-out basis.</para>
+
+    <para>A pipe is created in Ruby using <function>IO.pipe</function>. It returns a two-element <literal>Array</literal> of <literal>IO</literal> objects, the first of which is the read end, and the second the write end. The encoding associated with the pipe may be specified as an argument to <function>IO.pipe</function>. If a single <literal>Encoding</literal> object is given, it specifies the external encoding; a <literal>String</literal> comprising the name of the external encoding separated from the name of the internal encoding by a colon, specifies both external and internal encodings; likewise, if two <literal>Encoding</literal> objects are given, the first is the external encoding, and the second, the internal. An encoding <link linkend="enc.options-hash">options <literal>Hash</literal></link> may be supplied as the final argument to control how the specified encodings are used. If <function>IO.pipe</function> is given a block, it is passed both <literal>IO</literal> objects as arguments, and ensures they are closed when the block exits. The write end of the pipe has its sync mode set automatically such that Ruby does not buffer writes. The read end will block until the write end has been closed for writing. However, as W. Richard Stevens notes <quote>A pipe in a single process is next to useless.</quote> <biblioref linkend="bib.stevens05" units="pages" begin="428" end="429"/>; the <emphasis>Processes &amp; Signals</emphasis><remark>Make into xref</remark> chapter discusses how pipes are used to communicate between processes.</para>
+
+    <example xml:id="ex.io-pipe">
+      <title>Communicating via a pipe</title>
+
+      <programlisting><xi:include href="examples/io-pipe.rb" parse="text"/></programlisting>
+    </example>
   </sect1>
 
   <sect1 xml:id="io.argv">

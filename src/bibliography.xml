@@ -497,6 +497,27 @@
       <biblioid class="isbn">978-0-12-633951-2</biblioid>
     </biblioentry>    
 
+    <biblioentry xml:id="bib.stevens05">
+      <abbrev>Stevens05</abbrev>     
+        <author>
+          <personname>
+            <firstname>W.</firstname><othername>Richard</othername><surname>Stevens</surname>
+          </personname>
+        </author>
+        <author>
+          <personname>
+            <firstname>Stephen</firstname><othername>A.</othername><surname>Rago</surname>
+          </personname>
+        </author>
+      <publisher>
+        <publishername>Addison Wesley Professional</publishername>
+      </publisher>
+      <edition>2</edition>
+      <title>Advanced Programming in the UNIX® Environment</title>
+      <pubdate>2005</pubdate>
+      <biblioid class="isbn">0201433079</biblioid>
+    </biblioentry>    
+
     <biblioentry xml:id="bib.thom09">
       <abbrev>Thom06</abbrev>     
       <authorgroup>
