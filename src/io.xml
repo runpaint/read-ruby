@@ -870,7 +870,7 @@
       <para>In the case of write caches on hard disks, it is not possible for <literal>fsync()</literal> to know whether the data is physically on the disk.  The hard drive can report that the data was written, but the data may in fact reside in the drive’s write cache. Fortunately, data in a hard disk’s cache should be committed to the disk in short order.</para>
     </blockquote>
 
-    <para><function>IO#fsync</function>, therefore, controls the operating system’s buffers, as opposed to <function>IO#sync</function> which controls Ruby’s. It returns <literal>0</literal> if supported; <literal>nil</literal> otherwise.</para>
+    <para><function>IO#fsync</function>, therefore, controls the operating system’s buffers, as opposed to <function>IO#sync</function> which controls Ruby’s. It returns <literal>0</literal> if supported, or raises <literal>NotImplementedError</literal> otherwise. <function>IO#fdatasync</function>—which also wraps the eponymous system call—synchronises only the file’s data—not its metadata—so is potentially faster than <function>#fsync</function>. It also returns <literal>0</literal> on success, raising <literal>NotImplementedError</literal> on unsupported platforms.</para>
   </sect1>
  
   <sect1 xml:id="io.close">
