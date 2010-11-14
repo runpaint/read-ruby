@@ -296,14 +296,7 @@
     <sect2 xml:id="fil.file-stat">
       <title><literal>File::Stat</literal></title>
 
-      <para>
-        <literal>File::Stat</literal> objects represents file metadata. They
-        are normally created with <literal>File#stat</literal> or
-        <literal>File.stat(<replaceable>file</replaceable>)</literal>.
-        <literal>File#lstat</literal> and <literal>File.lstat</literal> are
-        used to the same end, but they do not follow the last symbolic link,
-        if any, in the file path; they return metadata for the link itself.
-      </para>
+      <para><literal>File::Stat</literal> objects represents file metadata. They are normally created with <function>IO#stat</function>, <literal>File#stat</literal> or <literal>File.stat(<replaceable>file</replaceable>)</literal>.  <literal>File#lstat</literal> and <literal>File.lstat</literal> are used to the same end, but they do not follow the last symbolic link, if any, in the file path; they return metadata for the link itself.</para>
 
       <table>
         <caption>Attributes of files</caption>
