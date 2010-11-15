@@ -934,8 +934,20 @@
     <para>The current position and line number for a given stream may be reset to zero with <function>IO#rewind</function>. Subsequent reads and writes will then occur from the beginning of the stream.</para>
 
     <para>As described in the introduction to this chapter, a position past the end of a stream is termed <emphasis>End of File</emphasis>, or <acronym>EoF</acronym>. Depending on the method, reading from a stream at <acronym>EoF</acronym> causes either an <literal>EoFError</literal> exception to be raised or <literal>nil</literal> to be returned. If a stream is open for reading, this condition can be tested for with the <function>IO#eof?</function> predicate, or its alias <function>IO#eof</function>, which return <literal>true</literal> in the affirmative; otherwise, <literal>false</literal>.</para>
-  </sect1> 
-  
+  </sect1>  
+
+  <sect1 xml:id="io.copy">
+    <title>Copying Streams</title>
+
+    <para><function>IO.copy_stream(<replaceable>from</replaceable>, <replaceable>to</replaceable>)</function>, where both arguments are either file names or open <literal>IO</literal> objects, copies the data from <replaceable>from</replaceable> into <replaceable>to</replaceable>. The return value is the number of bytes that were copied. If a third argument is supplied, it specifies the maximum number of bytes to copy; otherwise, all bytes are copied. If a fourth argument is given, it is the byte offset from which copying should begin; otherwise, copying begins at the current file position of <replaceable>from</replaceable>.</para>
+
+    <example xml:id="ex.io-copy">
+      <title>Copying data from one stream to another</title>
+
+      <programlisting><xi:include parse="text" href="examples/io-copy.rb"/></programlisting>
+    </example>    
+  </sect1>
+ 
   <sect1 xml:id="io.coercion">
     <title>Coercion</title>
 
