@@ -55,7 +55,7 @@
   </sect1>
    
   <sect1 xml:id="io.writing">
-    <title>Writing to a Stream</title>
+    <title>Writing</title>
 
     <para>If a stream has been opened for writing, we can write data to it using a variety of methods. We will begin, with the low-level <function>IO#syswrite</function>, which requires exactly one argument that it converts to a <literal>String</literal>, writes to the stream, then returns the number of bytes written. It uses a low-level system call to perform this operation, so the official documentation cautions that it should not be used in conjunction with other, higher-level writing methods<footnote><para>The rationale for this warning is that <function>IO#syswrite</function> ignores Ruby’s I/O buffer, as explained in <xref linkend="io.buffering"/>.</para></footnote>.</para>
 
@@ -182,7 +182,7 @@
    </sect1>
 
    <sect1 xml:id="io.reading">
-     <title>Reading from a Stream</title>
+     <title>Reading</title>
 
      <para><function>IO.read(<replaceable>fn</replaceable>)</function> returns the contents of the file named <replaceable>fn</replaceable> as a <literal>String</literal>. If an optional second argument is given, it specifies the maximum number of bytes to return. If an optional third argument is given, it is the offset to which <function>IO.read</function> seeks before reading. An <link linkend="io.options-hash">options <literal>Hash</literal></link> may be supplied as the last argument. <function>IO.binread</function> behaves similarly, but opens <replaceable>fn</replaceable> with a mode of <literal>rb:ASCII-8BIT</literal>, i.e. the <literal>String</literal> it returns has <literal>ASCII-8BIT</literal> encoding. It does not accept the options <literal>Hash</literal> argument.</para>
 
@@ -449,7 +449,7 @@
   </sect1> 
 
   <sect1 xml:id="io.open"> 
-    <title>Opening a Stream</title>
+    <title>Opening</title>
     
     <para><literal>IO.sysopen</literal> <firstterm>opens</firstterm> a given pathname and returns a corresponding file descriptor. (Use the <link linkend="fil.files">File class</link> for a higher-level interface to this operation). Optionally, it accepts an <link linkend="io.access-mode">access mode</link> as the second argument, and <link linkend="io.perm">permission bits</link> as the third.</para>
     
@@ -567,7 +567,7 @@
     </sect1> 
 
     <sect1 xml:id="io.init"> 
-      <title>Initializing a Stream</title> 
+      <title>Initializing</title> 
 
       <para>An <literal>IO</literal> instance objectifies a given file descriptor. It may be initialized by supplying this file descriptor as the first argument to <function>IO.new</function>, or its alias <function>IO.for_fd</function>. Optionally, a <link linkend="io.mode-string">mode string</link>, or <link linkend="io.open-flags">numeric access mode</link>, can be provided as the second argument, however this must agree with the <link linkend="io.access-mode">access mode</link> already associated with the file descriptor. An <link linkend="io.options-hash">options Hash</link> may be provided as the final argument.</para>
 
@@ -576,7 +576,7 @@
       <para><function>IO#reopen(<replaceable>other</replaceable>)</function> replaces the receiver with the <literal>IO</literal> object <replaceable>other</replaceable>. <function>IO#reopen(<replaceable>path</replaceable>, <replaceable>mode</replaceable>)</function> creates a new <literal>IO</literal> object for <replaceable>path</replaceable>, then uses it to replace the receiver. However, due to the way I/O operations perform buffering, reopening a stream—especially one that has already been read from—can lead to unexpected behaviour. See <xref linkend="io.buffering"/> and <biblioref linkend="bib.ruby-core-28281"/> for more details.</para>   
       
       <sect2 xml:id="io.mode-string">
-	<title>The Mode String</title> 
+	<title>Mode String</title> 
 
 	<para>The <firstterm>mode string</firstterm> is a concise way to specify options for opening a file. At its simplest, it consists of only the <link linkend="io.access-mode">access mode</link> as a <literal>String</literal>, e.g. a mode string of <literal>"r"</literal> opens a file in read-only mode. If the next character is <literal>b</literal>, it specifies <link linkend="io.binmode">binary mode</link>; if it is <literal>t </literal>, it specifies <link linkend="io.textmode">text mode</link>. Finally, the <link linkend="enc.external">external</link> and/or <link linkend="enc.internal">internal</link> encodings may be specified as an <link linkend="io.string">encoding string</link>.</para>
 
@@ -874,7 +874,7 @@
   </sect1>
  
   <sect1 xml:id="io.close">
-    <title>Closing a Stream</title>
+    <title>Closing</title>
 
     <para>Once an <literal>IO</literal> stream is finished with, it should be <firstterm>closed</firstterm>. This ensures that Ruby’s write buffer is flushed, and the associated file-descriptor is released back to the operating system. A stream is closed for reading and writing with <function>IO#close</function>. Subsequent attempts to read from or write to a closed stream causes an <literal>IOError</literal> to be raised. A duplex stream may also be closed just for writing or just for reading, using <function>IO#close_write</function> and <function>IO#close_read</function>, respectively. The <function>IO#closed?</function> predicate returns <literal>true</literal> if its receiver is closed for both reading and writing; <literal>false</literal>, otherwise.</para>
 
@@ -937,7 +937,7 @@
   </sect1>  
 
   <sect1 xml:id="io.copy">
-    <title>Copying Streams</title>
+    <title>Copying</title>
 
     <para><function>IO.copy_stream(<replaceable>from</replaceable>, <replaceable>to</replaceable>)</function>, where both arguments are either file names or open <literal>IO</literal> objects, copies the data from <replaceable>from</replaceable> into <replaceable>to</replaceable>. The return value is the number of bytes that were copied. If a third argument is supplied, it specifies the maximum number of bytes to copy; otherwise, all bytes are copied. If a fourth argument is given, it is the byte offset from which copying should begin; otherwise, copying begins at the current file position of <replaceable>from</replaceable>.</para>
 
@@ -969,7 +969,7 @@
   </sect1>
 
   <sect1 xml:id="io.async">
-    <title>Asynchronous I/O</title>
+    <title>Asynchronous &amp; Multiplexed</title>
 
     <para>By default, I/O operations are <firstterm>blocking</firstterm> (<firstterm>synchronous</firstterm>): they do not return control to their caller until finished. This can be problematic given the performance disparity between <acronym>CPU</acronym>s and devices such as hard disks and routers. An I/O-bound program may spend the majority of its time idly waiting. Conversely, <firstterm>non-blocking</firstterm> (<firstterm>asynchronous</firstterm>) operations return immediately. They try to perform the operation as normal, but if doing so would require blocking, they signal an error and return.</para>
 
