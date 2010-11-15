@@ -1008,6 +1008,80 @@
     <remark>Mention io/wait in callout?</remark>
   </sect1>
 
+  <sect1 xml:id="io.fcntl">
+    <title>Manipulating File Descriptors</title>
+
+    <para><function>IO#fcntl(<replaceable>cmd</replaceable>, <replaceable>arg</replaceable>)</function> performs <replaceable>cmd</replaceable> on the receiver, where <replaceable>cmd</replaceable> is an platform-specific <literal>Integer</literal>. The <literal>Fcntl</literal> module in the standard library provides constants corresponding to some of the more common commands. If <replaceable>cmd</replaceable> requires an argument, it should be supplied as <replaceable>arg</replaceable>.</para>
+
+    <table>
+      <caption><literal>IO#fcntl</literal> commands with corresponding constants defined in the <literal>Fcntl</literal> module</caption>
+      <thead>
+	<tr>
+	  <th>Command</th>
+	  <th>Argument</th>
+	  <th>Returns</th>
+	  <th>Description</th>
+      </tr>
+      </thead>
+      <tr>
+	<td><literal>F_DUPFD</literal></td>
+	<td><literal>Integer</literal></td>
+	<td>Positive <literal>Integer</literal>; <literal>-1</literal> on error</td>
+	<td>Find the lowest numbered available file descriptor greater than or equal to <replaceable>arg</replaceable> and make it a copy of the receiver’s file descriptor. If <replaceable>arg</replaceable> is omitted, it is assumed to be equal to the receiver’s file descriptor.</td> 
+      </tr>
+      <tr>
+	<td><literal>F_GETFD</literal></td>
+	<td>N/A</td>
+	<td>File descriptor flags</td>
+	<td>Retrieves the associated file descriptor flags. Currently, these are either <literal>0</literal> or <literal>FD_CLOEXEC</literal>. These flags may be set with <literal>F_SETFD</literal>.</td>
+      </tr>
+      <tr>
+	<td><literal>F_GETFL</literal></td>
+	<td>N/A</td>
+	<td><literal>Integer</literal></td>
+	<td>Returns the file status flags, i.e. a bitwise OR of <literal>O_APPEND</literal>, <literal>O_ASYNC</literal>, <literal>O_DIRECT</literal>, etc. <literal>O_ACCMODE</literal> is a bitmask for extracting the access mode from these flags.</td>
+      </tr>
+      <tr>
+	<td><literal>F_GETLK</literal></td>
+	<td><literal>struct flock *</literal></td>
+	<td>N/A</td>
+	<td>The argument describes a lock the caller wishes to place on the file. If this is possible, the <literal>l_type</literal> field of the struct is set to <literal>Fcntl::F_UNLCK</literal>; otherwise the struct is updated with details of the current lock holder.</td>
+      </tr>
+      <tr>
+	<td><literal>F_SETFD</literal></td>
+	<td><literal>FD_CLOEXEC</literal> or <literal>0</literal></td>
+	<td><literal>0</literal>; <literal>-1</literal> on error</td>
+	<td>Sets the file descriptor flags to <replaceable>arg</replaceable>.When <replaceable>arg</replaceable> is <literal>FD_CLOEXEC</literal>, this is equivalent to <function>#close_on_exec=true</function>.</td>
+      </tr>
+      <tr>
+	<td><literal>F_SETFL</literal></td>
+	<td><literal>Integer</literal></td>
+	<td><literal>0</literal>; <literal>-1</literal> on error</td>
+	<td>Set the file status flags to <replaceable>arg</replaceable></td>
+      </tr>
+      <tr>
+	<td><literal>F_SETLK</literal></td>
+	<td><literal>struct flock *</literal></td>
+	<td><literal>0</literal>; <literal>-1</literal> on error.</td>
+	<td>When the struct’s <literal>l_type</literal> field has the value <literal>F_RDLCK</literal> or <literal>F_WRLCK</literal>, acquires the lock; when it has the value <literal>F_UNLCK</literal>, releases the lock.</td>
+      </tr>
+      <tr>
+	<td><literal>F_SETLKW</literal></td>
+	<td><literal>struct flock *</literal></td>
+	<td><literal>0</literal>; <literal>-1</literal> on error.</td>
+	<td>Behaves like <literal>F_SETLK</literal>, except when a conflicting lock is held this call blocks until  the lock is released or a signal is caught.</td>
+      </tr>
+    </table>
+
+    <example xml:id="ex.io-fcntl">
+      <title>Using <literal>IO#fcntl</literal></title> 
+
+      <programlisting><xi:include href="examples/io-fcntl.rb" parse="text"/></programlisting>
+    </example>
+
+    <para>Unfortunately, the locking commands are awkward to use from Ruby because they require <replaceable>arg</replaceable> to be a binary <literal>String</literal> representing a specific C struct… If you insist, consult <literal>man 2 fcntl</literal> and <link linkend="str.unpack"><function>String#unpack</function></link>.</para>
+  </sect1>
+
   <sect1 xml:id="io.argv">
     <title><literal>ARGV</literal></title> 
     
