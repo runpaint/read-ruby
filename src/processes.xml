@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter version="5.0" xml:id="prc.processes" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Processes</title>
+
+  <sect1 xml:id="prc.backticks">
+    <title>Backticks</title>
+
+    <para>A double-quoted string delimited with grave accents (<literal>U＋0060</literal>) characters, or “backticks”, executes its contents as an operating system command and returns the output. This is achieved by the <function>Kernel.`</function> method, which can be redefined to alter these semantics. Alternative delimiters can be used with the corresponding <literal>%x<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> construct, which follows the same rules as <link linkend="str.double-quoted-q">%Q</link>.</para>
+    
+    <example xml:id="ex.backticks">
+      <title>Using backticks to execute commands and retrieve the output</title>
+
+      <programlisting><xi:include href="examples/backticks.rb" parse="text"/></programlisting>
+    </example>
+  </sect1>
+</chapter>

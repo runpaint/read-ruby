@@ -557,22 +557,6 @@
       </informaltable>
     </sect2>
   </sect1>
-  <sect1 xml:id="str.backticks">
-    <title>Backticks</title>
-    <para>A double-quoted string delimited with grave accents (<literal>U＋0060</literal>) characters, or “backticks”,
-    executes its contents as an operating system command and returns
-    the output. This is achieved by the <literal>Kernel.`</literal> method,
-    which can be redefined to alter these semantics. Alternative
-    delimiters can be used with the corresponding
-    <literal>%x<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal>
-    construct, which follows the same rules as <link linkend="str.double-quoted-q">%Q</link>.</para>
-    <example xml:id="ex.backticks">
-      <title>Using backticks to execute commands and retrieve
-      the output
-    </title>
-      <programlisting><xi:include href="examples/backticks.rb" parse="text"/></programlisting>
-    </example>
-  </sect1>
   <sect1 xml:id="str.characters">
     <title>Characters</title>
     <para><emphasis>Character</emphasis> is defined by the ISO/IEC as <quote>A
