@@ -207,7 +207,7 @@
         </tr>
         <tr>
           <td><link linkend="reg.anchors">\b</link></td>
-          <td>Word boundary</td>
+          <td>Word boundary outside of character class; backspace otheriwse.</td>
         </tr>
         <tr>
           <td><link linkend="reg.anchors">\B</link></td>
@@ -504,7 +504,7 @@
   <sect1 xml:id="reg.anchors">
     <title>Anchoring</title>
 
-    <para>A regular expression matches a <literal>String</literal> if the former is <emphasis>contained</emphasis> in the latter. For example, <literal>/\d/</literal> matches <literal>"2"</literal>, as well as <literal>"2 by 4"</literal> and <literal>"DoB: 19/2/1922"</literal>. Alternatively, a pattern may be <firstterm>anchored</firstterm> to a specific portion of the <literal>String</literal>. Whereas many of the metacharacters introduced so far match sequences of characters, anchors match positions.</para>
+    <para>A regular expression matches a <literal>String</literal> if the former is <emphasis>contained</emphasis> in the latter. For example, <literal>/\d/</literal> matches <literal>"2"</literal>, as well as <literal>"2 by 4"</literal> and <literal>"DoB: 19/2/1922"</literal>. Alternatively, a pattern may be <firstterm>anchored</firstterm> to a specific portion of the <literal>String</literal>. Whereas many of the metacharacters introduced so far match sequences of characters, anchors match positions. They are not recognised inside of character classes.</para>
     
     <informaltable>
       <thead>
