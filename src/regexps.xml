@@ -250,10 +250,6 @@
           <td>A character without the <link linkend="reg.properties">Unicode property</link><replaceable>name</replaceable></td>
         </tr>
         <tr>
-          <td><literal>\Q</literal></td>
-          <td>Quote metacharacters that follow</td>
-        </tr>
-        <tr>
           <td><literal>\s</literal></td>
           <td>Whitespace</td>
         </tr>
