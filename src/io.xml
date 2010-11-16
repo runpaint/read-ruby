@@ -1080,6 +1080,14 @@
     </example>
 
     <para>Unfortunately, the locking commands are awkward to use from Ruby because they require <replaceable>arg</replaceable> to be a binary <literal>String</literal> representing a specific C struct… If you insist, consult <literal>man 2 fcntl</literal> and <link linkend="str.unpack"><function>String#unpack</function></link>.</para>
+
+    <para>In a similar vein, <function>IO#ioctl(<replaceable>cmd</replaceable>, <replaceable>arg</replaceable>)</function> is an esoteric way to send commands to hardware devices. <replaceable>cmd</replaceable> is the <literal>Integer</literal> associated with the command, and <replaceable>arg</replaceable> is its optional argument. This is utterly unportable because commands and their values are typically specific to particular operating systems, drivers, and hardware. For example, on Linux <literal>man 2 ioctl_list</literal> provides a partial list of values for <replaceable>cmd</replaceable>. One of them is <literal>CDROMEJECT</literal>, which on my system has the value <literal>0x00005309</literal> and doesn’t accept arguments. When sent to a CD-ROM drive, it causes the disc to eject. When <replaceable>arg</replaceable> is an integer it can be supplied as an <literal>Integer</literal>, otherwise <function>String#unpack</function> will be required to craft a <literal>String</literal> resembling the expected data structure. The example that follows animates the <acronym>LED</acronym>s corresponding to my <keycap>Num Lock</keycap>, <keycap>Caps Lock</keycap>, and <keycap>Scroll Lock</keycap> keys. To have any chance of running it on another system, you will at least need to adjust the value of <literal>KDSETLED</literal>.</para>
+
+    <example xml:id="ex.io-ioctl">
+      <title>Using <literal>IO#ioctl</literal> to animate <acronym>LED</acronym>s on a keyboard</title> 
+
+      <programlisting><xi:include href="examples/io-ioctl.rb" parse="text"/></programlisting>
+    </example>
   </sect1>
 
   <sect1 xml:id="io.argv">
