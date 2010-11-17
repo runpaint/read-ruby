@@ -1,0 +1,2 @@
+exec("uname", "-s")
+# Linux

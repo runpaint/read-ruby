@@ -13,4 +13,34 @@
       <programlisting><xi:include href="examples/backticks.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
+  <sect1 xml:id="prc.exec">
+    <title><function>Kernel.exec</function></title>
+
+    <para><function>Kernel.exec</function> replaces the current process image with a new process image. Accordingly, it will not return if successful; if it fails, <literal>SystemCallError</literal> is raised. If a single argument is provided, it is a <literal>String</literal> containing a command line that should be executed by the shell—<literal>/bin/sh</literal> on Unix-like systems; the value of <literal>ENV['RUBYSHELL']</literal> or <literal>ENV['COMPSEC']</literal> otherwise—so is subject to shell expansion. </para>
+
+    <example xml:id="ex.kernel-exec-1">
+      <title>Executing commands with <function>Kernel.exec</function> and the shell</title>
+
+      <programlisting><xi:include href="examples/kernel-exec-1.rb" parse="text"/></programlisting>
+    </example>
+
+    <para>If multiple <literal>String</literal> arguments are given, the first is the name of a command in the user’s path, and the remainder are the command’s arguments. The command may be either a binary in your path, or an executable script with a shebang. It is executed by a system call from the <literal>exec(3)</literal> family<footnote><para>A consequence is that open file descriptors are passed to the new process. To avoid this, use <link linkend="prc.closing"><function>IO#close_on_exec=</function></link></para></footnote>, so neither the command or arguments are subject to shell expansion. If the command name is given as an <literal>Array</literal> of the form <literal>[<replaceable>name</replaceable>, <replaceable>argv0</replaceable>]</literal>, <replaceable>name</replaceable> is the command’s name, and <replaceable>argv0</replaceable> is the filename associated with <replaceable>name</replaceable><footnote><para>Changing <replaceable>argv0</replaceable> is useful because some programs, such as <literal>ps(1)</literal> and <literal>top(1)</literal>, will use it in place of the command name, while others, such as <literal>csh(1)</literal>, treat it specially.</para></footnote>.</para>
+
+    <example xml:id="ex.kernel-exec-2">
+      <title>Executing commands with <function>Kernel.exec</function></title>
+
+      <programlisting><xi:include href="examples/kernel-exec-2.rb" parse="text"/></programlisting>
+    </example>
+
+    <para>In either of these forms, the new process’s environment may be modified by providing a <literal>Hash</literal> of environment variables before the first argument. An environment variable is created for each <literal>String</literal> key, or unset if the corresponding value is <literal>nil</literal>.</para>
+
+    <example xml:id="ex.kernel-exec-3">
+      <title>Executing commands in a given environment with <function>Kernel.exec</function></title>
+
+      <programlisting><xi:include href="examples/kernel-exec-3.rb" parse="text"/></programlisting>
+    </example>
+
+    <remark>TODO: Document options Hash</remark>
+  </sect1>
 </chapter>
