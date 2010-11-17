@@ -27,6 +27,7 @@
   <xi:include href="src/strings.xml"/>
   <xi:include href="src/regexps.xml"/>
   <xi:include href="src/io.xml"/>
+  <xi:include href="src/processes.xml"/>
 
   <xi:include href="src/bibliography.xml"/>
 

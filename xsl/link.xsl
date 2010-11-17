@@ -201,6 +201,7 @@
       <xsl:when test="starts-with($id, 'str.')">strings</xsl:when>
       <xsl:when test="starts-with($id, 'reg.')">regexps</xsl:when>
       <xsl:when test="starts-with($id, 'io.')">io</xsl:when>
+      <xsl:when test="starts-with($id, 'prc.')">processes</xsl:when>
       <xsl:when test="starts-with($id, 'pun.')">punctuation</xsl:when>
       <xsl:when test="starts-with($id, 'glo.')">globals</xsl:when>
       <xsl:when test="starts-with($id, 'glo.')">glossary</xsl:when>
