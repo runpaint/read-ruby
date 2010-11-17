@@ -28,7 +28,7 @@
 	<programlisting><xi:include href="examples/kernel-exec-1.rb" parse="text"/></programlisting>
       </example>
 
-      <para>If multiple <literal>String</literal> arguments are given, the first is the name of a command in the user’s path, and the remainder are the command’s arguments. The command may be either a binary, or an executable script with a shebang. It is executed by a system call from the <literal>exec(3)</literal> family<footnote><para>A consequence is that open file descriptors are passed to the new process. To avoid this, use <link linkend="io.close"><function>IO#close_on_exec=</function></link></para></footnote>, so neither the command or arguments are subject to shell expansion. If the command name is given as an <literal>Array</literal> of the form <literal>[<replaceable>name</replaceable>, <replaceable>argv0</replaceable>]</literal>, <replaceable>name</replaceable> is the command’s name, and <replaceable>argv0</replaceable> is the filename associated with <replaceable>name</replaceable><footnote><para>Changing <replaceable>argv0</replaceable> is useful because some programs, such as <literal>ps(1)</literal> and <literal>top(1)</literal>, will use it in place of the command name, while others, such as <literal>csh(1)</literal>, treat it specially.</para></footnote>.</para>
+      <para>If multiple <literal>String</literal> arguments are given, the first is the name of a command in the user’s path, and the remainder are the command’s arguments. The command may be either a binary, or an executable script with a shebang. It is executed by a system call from the <literal>exec(3)</literal> family<footnote><para>A consequence is that open file descriptors are passed to the new process. To avoid this, use <link linkend="io.close"><function>IO#close_on_exec=</function></link> or the <literal>:close_others</literal> key in the <link linkend="prc.options-hash">options <literal>Hash</literal></link></para></footnote>, so neither the command or arguments are subject to shell expansion. If the command name is given as an <literal>Array</literal> of the form <literal>[<replaceable>name</replaceable>, <replaceable>argv0</replaceable>]</literal>, <replaceable>name</replaceable> is the command’s name, and <replaceable>argv0</replaceable> is the filename associated with <replaceable>name</replaceable><footnote><para>Changing <replaceable>argv0</replaceable> is useful because some programs, such as <literal>ps(1)</literal> and <literal>top(1)</literal>, will use it in place of the command name, while others, such as <literal>csh(1)</literal>, treat it specially.</para></footnote>.</para>
 
       <example xml:id="ex.kernel-exec-2">
 	<title>Executing commands with <function>Kernel.exec</function></title>
@@ -36,7 +36,7 @@
 	<programlisting><xi:include href="examples/kernel-exec-2.rb" parse="text"/></programlisting>
       </example>
 
-      <para>In either of these forms, the new process’s environment may be modified by providing a <literal>Hash</literal> of environment variables before the first argument. An environment variable is created for each <literal>String</literal> key, or unset if the corresponding value is <literal>nil</literal>.</para>
+      <para>In either of these forms, the new process’s environment may be modified by providing a <literal>Hash</literal> of environment variables before the first argument. An environment variable is created for each <literal>String</literal> key, or unset if the corresponding value is <literal>nil</literal>. An <link linkend="prc.options-hash">options <literal>Hash</literal></link> may be supplied for the final argument.</para>
 
       <example xml:id="ex.kernel-exec-3">
 	<title>Executing commands in a given environment with <function>Kernel.exec</function></title>
@@ -55,8 +55,6 @@
 
 	<programlisting><xi:include href="examples/kernel-system.rb" parse="text"/></programlisting>
       </example>
-
-      <remark>TODO: Document options Hash</remark>
     </sect2>
 
     <sect2 xml:id="prc.spawn">
@@ -69,6 +67,137 @@
 
 	<programlisting><xi:include href="examples/kernel-spawn.rb" parse="text"/></programlisting>
       </example>
+    </sect2>
+
+    <sect2 xml:id="prc.options-hash">
+      <title>Options <literal>Hash</literal></title>
+
+      <para><function>exec</function>, <function>system</function>, and <function>spawn</function> all accept an options <literal>Hash</literal> as their last argument. It may contain any of the following keys.</para>
+
+      <informaltable>
+	<thead>
+	  <tr>
+	    <th>Key</th>
+	    <th>Default Value</th>
+	    <th>Description</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td><literal>:unsetenv_others</literal></td>
+	    <td><literal>false</literal></td>
+	    <td>If <literal>true</literal> clears the environment variables not named in the <replaceable>env</replaceable> <literal>Hash</literal></td>
+	  </tr>
+	  <tr>
+	    <td><literal>:pgroup</literal></td>
+	    <td><literal>nil</literal></td>
+	    <td>If <literal>true</literal> or <literal>0</literal>, make a new process group; if an <literal>Integer</literal> join the process group with that ID; if <literal>nil</literal>, don’t change the process group.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>:rlimit_<replaceable>resource</replaceable></literal></td>
+	    <td><literal>Process.getrlimit(<replaceable>resource</replaceable>)</literal></td>
+	    <td>Where <replaceable>resource</replaceable> is a resource name recognised by <function>Process.setrlimit</function>/<function>Process.getrlimit</function>, sets that resource to the given value. If the value is an <literal>Array</literal>, its first element is the new soft limit, and its second is the new hard limit.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>:chdir</literal></td>
+	    <td><literal>Dir.pwd</literal></td>
+	    <td>The value is a <literal>String</literal> naming the directory to change to before invoking the command.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>:umask</literal></td>
+	    <td><literal>File.umask</literal></td>
+	    <td>The value is an <literal>Integer</literal> specifying the new value of the process’s file creation mask, or <firstterm>umask</firstterm>.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>:in</literal></td>
+	    <td><literal>STDIN</literal></td>
+	    <td>Redirects the standard input stream to the given stream.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>:out</literal></td>
+	    <td><literal>STDOUT</literal></td>
+	    <td>Redirects the standard output stream to the given stream.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>:err</literal></td>
+	    <td><literal>STDERR</literal></td>
+	    <td>Redirects the standard error stream to the given stream.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>Integer</literal></td>
+	    <td>N/A</td>
+	    <td>When the key is an <literal>Integer</literal>, it is interpreted as a file descriptor to redirect to the given stream.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>IO</literal></td>
+	    <td>N/A</td>
+	    <td>When the key is an <literal>IO</literal> object, its file descriptor is redirected to the given stream.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>Array</literal></td>
+	    <td>N/A</td>
+	    <td>Each element is a file descriptor specified in any of the formats listed above. They are all redirected to the given stream.</td>
+	  </tr>  
+	  <tr>
+	    <td><literal>:close_others</literal></td>
+	    <td><literal>true</literal> for <function>system</function> and <function>exec</function>; <literal>false</literal> otherwise.</td>
+	    <td>If <literal>true</literal>, the process does not inherit its parent’s file descriptors; otherwise it does.</td>
+	  </tr>  
+	</tbody>
+      </informaltable>
+      
+      <para>The options that redirect an I/O stream, may be given a value in any of the following formats.</para>
+
+      <variablelist spacing="compact">
+	<varlistentry>
+	  <term><literal>:in</literal></term>
+	  <listitem>
+	    <para>Standard input</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>:out</literal></term>
+	  <listitem>
+	    <para>Standard output</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>:err</literal></term>
+	  <listitem>
+	    <para>Standard error</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>String</literal></term>
+	  <listitem>
+	    <para>File descriptor of <literal>open(<replaceable>string</replaceable>, ?w)</literal></para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>[String]</literal></term>
+	  <listitem>
+	    <para>As above, but with a mode of <literal>File::RDONLY</literal></para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>[String, Integer]</literal></term>
+	  <listitem>
+	    <para>As above, but with the open mode given by the second argument</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>[String, Integer, Integer]</literal></term>
+	  <listitem>
+	    <para>As above, but with the open permissions given by the third argument</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>:close</literal></term>
+	  <listitem>
+	    <para>Close this file descriptor</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
     </sect2>
   </sect1>
 </chapter>
