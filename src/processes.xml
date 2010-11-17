@@ -3,7 +3,7 @@
   <title>Processes</title>
 
   <sect1 xml:id="prc.executing">
-    <title>Executing Commands</title>
+    <title>Executing</title>
 
     <sect2 xml:id="prc.backticks">
       <title>Backticks</title>
@@ -57,6 +57,18 @@
       </example>
 
       <remark>TODO: Document options Hash</remark>
+    </sect2>
+
+    <sect2 xml:id="prc.spawn">
+      <title><function>Kernel.spawn</function></title>
+
+      <para><function>Kernel.spawn</function> also interprets its arguments in the same way as <function>exec</function>, but executes the command in a subshell then returns without waiting for the command to complete. Its return value is an <literal>Integer</literal> holding the <acronym>PID</acronym> of the new process.</para>
+
+      <example xml:id="ex.kernel-spawn">
+	<title>Executing commands with <function>Kernel.spawn</function></title>
+
+	<programlisting><xi:include href="examples/kernel-spawn.rb" parse="text"/></programlisting>
+      </example>
     </sect2>
   </sect1>
 </chapter>
