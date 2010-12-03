@@ -229,5 +229,11 @@
 
       <para>The <function>Process::GID.sid_available?</function> predicate returns <literal>true</literal> if the operating system supports saved GIDs; <literal>false</literal>, otherwise. In the latter case, Ruby saves the GID itself and tries to emulate this functionality.</para>
     </sect2>
+
+    <sect2 xml:id="prc.process-uid">
+      <title><literal>Process::UID</literal></title>
+
+      <para>The <literal>Process::UID</literal> module is the equivalent of <literal>Process::GID</literal> for UIDs. The methods it provides are identical except they manipulate UIDs/EUIDs rather than GIDs/EGIDs. The <function>setresuid(2)</function> or <function>setreuid(2)</function> system call is required for exchanging the UID with the EUID.</para> 
+    </sect2>
   </sect1>
 </chapter>
