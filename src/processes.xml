@@ -235,5 +235,80 @@
 
       <para>The <literal>Process::UID</literal> module is the equivalent of <literal>Process::GID</literal> for UIDs. The methods it provides are identical except they manipulate UIDs/EUIDs rather than GIDs/EGIDs. The <function>setresuid(2)</function> or <function>setreuid(2)</function> system call is required for exchanging the UID with the EUID.</para> 
     </sect2>
+
+    <sect2 xml:id="prc.process-sys">
+      <title><literal>Process::Sys</literal></title>
+
+      <para>The <literal>Process::Sys</literal> module, however, provides lower-level access to the system calls used for manipulating user and group IDs. The <function>Process::Sys.getegid</function>, <function>Process::Sys.geteuid</function>, <function>Process::Sys.geteuid</function>, <function>Process::Sys.getgid</function>, and <function>Process::Sys.getuid</function> methods are aliases of <function>Process.egid</function>, <function>Process.euid</function>, <function>Process.gid</function>, and <function>Process.uid</function>, respectively. The following methods are defined in terms of the system call with the same name as the method. Each raises an <literal>Errno</literal> exception if the system call fails, or <literal>NotImplementedError</literal> if the system call does not exist.</para>
+
+       <variablelist>
+	 <varlistentry>
+	   <term><literal>Process::Sys.issetugid</literal></term>
+	   <listitem>
+	     <para>Returns <literal>true</literal> if the process is either setuid or setgid; <literal>false</literal>, otherwise.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setegid(<replaceable>gid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the EGID to <replaceable>gid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.seteuid(<replaceable>uid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the EUID to <replaceable>uid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setgid(<replaceable>gid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the GID to <replaceable>gid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setregid(<replaceable>gid</replaceable>, <replaceable>egid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the real GID to <replaceable>gid</replaceable>, and the EGID to <replaceable>egid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setresgid(<replaceable>gid</replaceable>, <replaceable>egid</replaceable>, <replaceable>sgid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the real GID to <replaceable>gid</replaceable>, the EGID to <replaceable>egid</replaceable>, and the saved GID to <replaceable>sgid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setresuid(<replaceable>uid</replaceable>, <replaceable>euid</replaceable>, <replaceable>suid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the real UID to <replaceable>uid</replaceable>, the EUID to <replaceable>euid</replaceable>, and the saved UID to <replaceable>suid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setreuid(<replaceable>uid</replaceable>, <replaceable>euid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the real UID to <replaceable>uid</replaceable>, and the EUID to <replaceable>euid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setrgid(<replaceable>gid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the real GID to <replaceable>gid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setruid(<replaceable>uid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the real UID to <replaceable>uid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term><literal>Process::Sys.setuid(<replaceable>uid</replaceable>)</literal></term>
+	   <listitem>
+	     <para>Sets the UID to <replaceable>uid</replaceable>.</para>
+	   </listitem>
+	 </varlistentry>
+      </variablelist>
+    </sect2>
   </sect1>
 </chapter>
