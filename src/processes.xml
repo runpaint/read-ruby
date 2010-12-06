@@ -325,6 +325,41 @@
     <para>This method uses the <function>daemon(3)</function> syscall if its available, or forks then calls <function>Process.setssid</function>. On platforms with neither option available, a <literal>NotImplementedError</literal> is raised.</para>
   </sect1>
 
+  <sect1 xml:id="prc.priority">
+    <title>Priorities</title>
+
+    <para>On platforms that support the <function>getpriority(2)</function> and <function>setpriority(2)</function> system calls, the scheduling priority associated with a process, process group, or user, may be obtained and set. A priority is an <literal>Integer</literal> between −20 and 19, which defaults to 0. Lower priorities cause more favourable scheduling, but only the superuser may decrease a priority.</para>
+
+    <para><function>Process.getpriority(<replaceable>which</replaceable>, <replaceable>who</replaceable>)</function> returns the most favourable priority associated with the specified processes. <function>Process.setpriority(<replaceable>which</replaceable>, <replaceable>who</replaceable>, <replaceable>prio</replaceable>)</function> sets the priorities of all the specified processes to <replaceable>prio</replaceable>, returning <literal>0</literal>. <replaceable>which</replaceable> is a constant describing the type of priority, <replaceable>who</replaceable> is an <literal>Integer</literal> identifying an instance of that type, and <replaceable>prio</replaceable> is an <literal>Integer</literal>. If <replaceable>who</replaceable> is <literal>0</literal> it refers to the current instance of that type, as shown below.</para>
+
+    <informaltable>
+      <thead>
+	<tr>
+	  <th><replaceable>which</replaceable></th>
+	  <th><replaceable>who</replaceable></th>
+	  <th><replaceable>who</replaceable> = 0</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td><literal>Process::PRIO_PROCESS</literal> (process)</td>
+	  <td>Process ID</td>
+	  <td>Calling process</td>
+	</tr>
+	<tr>
+	  <td><literal>Process::PRIO_PGRP</literal> (process group)</td>
+	  <td>Process group ID</td>
+	  <td>Process group of calling process</td>
+	</tr>
+	<tr>
+	  <td><literal>Process::PRIO_USER</literal> (user)</td>
+	  <td>User ID</td>
+	  <td>Real user ID of calling process</td>
+	</tr>
+      </tbody>
+    </informaltable>
+  </sect1>
+
   <sect1 xml:id="prc.ids">
     <title>IDs</title>
 
