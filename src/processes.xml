@@ -146,7 +146,7 @@
 	</tbody>
       </informaltable>
       
-      <para>The options that redirect an I/O stream, may be given a value in any of the following formats.</para>
+      <para>The options that redirect an I/O stream may be given a value in any of the following formats.</para>
 
       <variablelist spacing="compact">
 	<varlistentry>
@@ -199,6 +199,16 @@
 	</varlistentry>
       </variablelist>
     </sect2>
+  </sect1>
+
+  <sect1 xml:id="prc.terminate">
+    <title>Terminating</title>
+
+    <para>The current process may be terminated with <function>Kernel.exit(<replaceable>status</replaceable>=1)</function>. If <function>exit</function> is used within a <literal>begin</literal> block, it raises a <literal>SystemExit</literal> exception which may be caught by a corresponding <literal>rescue</literal> clause. Otherwise, it terminates the process with <literal>exit(2)</literal>, using <replaceable>status</replaceable> as the exit status. If  <replaceable>status</replaceable> is <literal>true</literal>, it has the value <literal>0</literal>; if <literal>false</literal> or omitted, it has the value <literal>1</literal>. Prior to termination, <function>exit</function> runs any <link linkend="flo.at_exit"><function>at_exit</function></link> functions or object finalisers. <function>Kernel.exit!</function> is identical to <function>exit</function> except it bypasses both <function>at_exit</function> functions and finalisers.</para>
+
+    <para><function>Kernel.abort(<replaceable>msg</replaceable>=nil)</function> displays the optional message on the standard error stream then terminates the current process. It is equivalent to <literal>$stderr.puts <replaceable>msg</replaceable></literal>—if <replaceable>msg</replaceable> is given—then <literal>exit(false)</literal>.</para>
+
+    <remark>Xref Process.kill when it is written</remark>
   </sect1>
 
   <sect1 xml:id="prc.status">
