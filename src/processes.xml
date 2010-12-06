@@ -260,6 +260,8 @@
 	  </listitem>
 	</varlistentry>
       </variablelist>
+
+      <para>A child process that is not waited on may become a <firstterm>zombie</firstterm>—remaining in the process table in case somebody wants to retrieve its status. <function>Process.detach(<replaceable>pid</replaceable>)</function> offers a solution by running a background thread to monitor the status of <replaceable>pid</replaceable>, then reap it—i.e. remove the process from the process table—when terminated. It returns the <literal>Thread</literal> object.</para>
     </sect2>
 
     <sect2 xml:id="prc.process-status">
