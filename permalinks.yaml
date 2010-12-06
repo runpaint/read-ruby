@@ -566,3 +566,6 @@ http://ruby.runpaint.org/processes#ids: http://goo.gl/85qG1
 http://ruby.runpaint.org/processes#process-gid: http://goo.gl/XZ2Lu
 http://ruby.runpaint.org/processes#process-uid: http://goo.gl/nwrRv
 http://ruby.runpaint.org/processes#process-sys: http://goo.gl/PvYab
+http://ruby.runpaint.org/processes#status: http://goo.gl/dgISr
+http://ruby.runpaint.org/processes#process-status: http://goo.gl/dVjXo
+http://ruby.runpaint.org/processes#wait: http://goo.gl/2NRD3

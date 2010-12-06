@@ -201,6 +201,110 @@
     </sect2>
   </sect1>
 
+  <sect1 xml:id="prc.status">
+    <title>Status</title>
+
+    <para>POSIX systems record the status of stopped and terminated processes as a 16-bit integer. The lower 8 bits are the process’s <firstterm>exit status</firstterm>, i.e. the value returned to its parent; the higher bits are platform-dependent. The status is encapsulated by a <literal>Process::Status</literal> object.</para>
+
+    <para><function>Kernel.`</function> and <function>Kernel.system</function> set the global variable <literal>$?</literal> to the <literal>Process::Status</literal> object corresponding to the command they executed. Methods such as <function>exec</function>, <function>fork</function>, and <function>spawn</function>, cannot set <function>$?</function> because they return before the command has terminated. To retrieve the <literal>Process::Status</literal> object associated with such processes, we must first <firstterm>wait</firstterm> for them to exit.</para>
+
+    <sect2 xml:id="prc.wait">
+      <title>Waiting</title>
+
+      <para><function>Process.wait</function> waits for <emphasis>any</emphasis> child process to exit, then returns its PID. <literal>$?</literal> is set to the corresponding <literal>Process::Status</literal> object. <function>Process.wait2</function> also waits for any child process to exit, but returns an <literal>Array</literal> comprising its PID and <literal>Process::Status</literal> object. Both methods raise a <literal>SystemError</literal> if there aren’t any child processes.</para>
+
+      <para><function>Process.waitall</function> waits for <emphasis>all</emphasis> child processes to exit, then returns an <literal>Array</literal> of <literal>[<replaceable>pid</replaceable>, <replaceable>status</replaceable>]</literal> pairs, where <replaceable>pid</replaceable> is the process’s PID, and <replaceable>status</replaceable> its <literal>Process:Status</literal> object. If there are no child processes, an empty <literal>Array</literal> is returned.</para>
+
+      <para><function>Process.waitpid(<replaceable>pid</replaceable>, <replaceable>flags</replaceable>=0)</function> waits on the child process described by <replaceable>pid</replaceable> to exit, then returns its PID. <function>Process.waitpid2(<replaceable>pid</replaceable>, <replaceable>flags</replaceable>=0)</function> does likewise, but returns an <literal>Array</literal> comprising the PID and corresponding <literal>Process::Status</literal> object. Both methods interpret <replaceable>pid</replaceable> as follows:</para>
+
+      <informaltable>
+	<thead>
+	  <tr>
+	    <th><replaceable>pid</replaceable></th>
+	    <th>Semantics</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td>&lt; −1</td>
+	    <td>Any child whose process group ID equals the absolute value of <replaceable>pid</replaceable></td>
+	  </tr>
+	  <tr>
+	    <td>−1</td>
+	    <td>Any child</td>
+	  </tr>
+	  <tr>
+	    <td>0</td>
+	    <td>Any child whose process group ID equals that of the current process.</td>
+	  </tr>
+	  <tr>
+	    <td>&gt; 0</td>
+	    <td>The child with the PID of <replaceable>pid</replaceable>.</td>
+	  </tr>
+	</tbody>
+      </informaltable>
+
+      <para><replaceable>flags</replaceable> is either 0, or a logical OR of the following constants. Some platforms may not support these flags.</para>
+
+      <variablelist spacing="compact">
+	<varlistentry>
+	  <term><literal>Process::WNOHANG</literal></term>
+	  <listitem>
+	    <para>The method will not block if status is not immediately available for one of the specified child processes.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Process::WUNTRACED</literal></term>
+	  <listitem>
+	    <para>The status of any specified child processes that are stopped, but whose status has not been reported since they stopped, will also be reported.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+
+    <sect2 xml:id="prc.process-status">
+      <title><literal>Process::Status</literal></title>
+
+      <para>If a process has exited, <function>Process::Status#exitstatus</function> returns its exit status as an <literal>Integer</literal> byte. If it exited because of a signal, <function>Process::Status#termsig</function> returns the signal number; otherwise it returns <literal>nil</literal>. If the process was stopped by a signal, <function>Process::Status#stopsig</function> returns the signal number; otherwise it returns <literal>nil</literal>. <function>Process::Status#pid</function> returns the PID of the corresponding process. In addition, the following predicates are defined:</para>
+
+      <variablelist>
+	<varlistentry>
+	  <term><literal>Process::Status#coredump?</literal></term>
+	  <listitem>
+	    <para>Returns <literal>true</literal> if the process generated a coredump when it terminated; <literal>false</literal> otherwise.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Process::Status#exited?</literal></term>
+	  <listitem>
+	    <para>Returns <literal>true</literal> if the process terminated normally; <literal>false</literal> otherwise.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Process::Status#signaled?</literal></term>
+	  <listitem>
+	    <para>Returns <literal>true</literal> if the process terminated due to the receipt of a signal which was not caught; <literal>false</literal> otherwise.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Process::Status#stopped?</literal></term>
+	  <listitem>
+	    <para>Returns <literal>true</literal> if the process is currently stopped; <literal>false</literal> otherwise. Only meaningful if the <literal>Process::WUNTRACED</literal> flag was given to <function>waitpid</function> or <function>waitpid2</function>.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><literal>Process::Status#success?</literal></term>
+	  <listitem>
+	    <para>Returns <literal>true</literal> if the process exited normally, <literal>false</literal> if it exited abnormally, and <literal>nil</literal> if it hasn’t exited.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+
+	
+      <para>A <literal>Process::Status</literal> object may also be treated as a collection of bits: <function>Process::Status#to_i</function> returns the status as an <literal>Integer</literal>; <function>Process::Status#&amp;(<replaceable>n</replaceable>)</function> performs a logical AND of the bits with <replaceable>n</replaceable>; and <function>Process::Status#&gt;&gt;(<replaceable>n</replaceable>)</function> shifts the bits right by <replaceable>n</replaceable> places.</para>
+    </sect2>
+  </sect1>
+
   <sect1 xml:id="prc.ids">
     <title>IDs</title>
 
