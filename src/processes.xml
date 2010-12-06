@@ -307,6 +307,14 @@
     </sect2>
   </sect1>
 
+  <sect1 xml:id="prc.daemons">
+    <title>Daemons</title>
+
+    <para>A <firstterm>daemon</firstterm> is a process that runs in the background—rather than under the direct control of a user—to provide a service for other programs. <function>Process.daemon(<replaceable>keep_dir</replaceable>=false, <replaceable>redirect</replaceable>=false)</function> detaches the current process from its controlling terminal, then runs it in the background. The process’s working directory is set to <filename>/</filename> unless <replaceable>keep_dir</replaceable> is <literal>true</literal>. If <replaceable>redirect</replaceable> is <literal>true</literal>, the process’s standard input, output, and error streams are all redirected to <filename>/dev/null</filename>. If the process is successfully daemonised, this method returns <literal>0</literal>; otherwise an <literal>Errno</literal> exception is raised.</para>
+
+    <para>This method uses the <function>daemon(3)</function> syscall if its available, or forks then calls <function>Process.setssid</function>. On platforms with neither option available, a <literal>NotImplementedError</literal> is raised.</para>
+  </sect1>
+
   <sect1 xml:id="prc.ids">
     <title>IDs</title>
 
