@@ -8,36 +8,26 @@
 
   <title>Numerics</title>
 
-  <para>A <firstterm>numeric</firstterm> is an object representing a number, an instance of one of Ruby’s numeric classes:</para>
-
-  <variablelist>
-    <varlistentry>
-      <term><link linkend="num.integers">Integer</link></term>
-      <listitem>
-	<para>Integers, or “counting numbers”, e.g. 4.</para>
-      </listitem>
-    </varlistentry>
-    <varlistentry>
-      <term><link linkend="num.floats">Float</link></term>
-      <listitem>
-	<para>Floating-point numbers, i.e. numbers with digits after the decimal place, e.g. 3.14</para>
-      </listitem>
-    </varlistentry>
-    <varlistentry>
-      <term><link linkend="num.rationals">Rational</link></term>
-      <listitem>
-	<para>Rational numbers, or “fractions”, e.g. ⅔.</para>
-      </listitem>
-    </varlistentry>
-    <varlistentry>
-      <term><link linkend="num.complex">Complex</link>
-      </term>
-      <listitem><para>Complex numbers, i.e. those having both a real and an imaginary part.</para>
-      </listitem>
-    </varlistentry>
-  </variablelist>
-  
-  <para>Instances of these classes are collectively termed “numerics” after their parent class: <literal>Numeric</literal>.</para>
+  <para>A <firstterm>numeric</firstterm><footnote><para>The name is due to the parent class of <literal>Integer</literal>, <literal>Float</literal>, <literal>Rational</literal>, and <literal>Complex</literal>: <literal>Numeric</literal>.</para></footnote> is an object representing a number. It is an instance of one of Ruby’s numeric classes:</para>
+ 
+  <informaltable>
+    <tr>
+      <td><link linkend="num.integers">Integer</link></td>
+      <td>Integers, or “counting numbers”, e.g. 4.</td>
+    </tr>
+    <tr>
+      <td><link linkend="num.floats">Float</link></td>
+      <td>Floating-point numbers, i.e. numbers with digits after the decimal place, e.g. 3.14</td>
+    </tr>
+    <tr>
+      <td><link linkend="num.rationals">Rational</link></td>
+      <td>Rational numbers, or “fractions”, e.g. ⅔.</td>
+    </tr>
+    <tr>
+      <td><link linkend="num.complex">Complex</link></td>
+      <td>Complex numbers, i.e. those having both a real and an imaginary part.</td>
+    </tr>
+  </informaltable>
 
   <sect1 xml:id="num.integers">
     <title>Integers</title>
