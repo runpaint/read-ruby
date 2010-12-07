@@ -648,342 +648,94 @@
   <sect1 xml:id="num.trigonometry">
     <title>Trigonometry</title>
 
-    <para>The standard trigonometric functions are available as methods of the <literal>Math</literal> module. Angles are measured in radians.</para>
-    
-    <sect2 xml:id="num.sin">
-      <title>Sine</title>
-    
-      <variablelist>
-	<varlistentry>
+    <para>The standard trigonometric functions are available as methods of the <literal>Math</literal> module. They measure angles in radians, and return <literal>Float</literal>s.</para>
+
+    <variablelist>
+      <varlistentry xml:id="num.sin">
 	  <term><literal>Math.sin(<replaceable>x</replaceable>)</literal></term>
 	  <listitem>
-	    <para>The sine of angle <replaceable>x</replaceable> as a <literal>Float</literal>.</para>
+	    <para>The sine of angle <replaceable>x</replaceable>.</para>
 	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.sin(Float::NAN)</literal></term>
-	  <term><literal>Math.sin(±Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para><literal>Float::NAN</literal></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.asin">
-      <title>Arc Sine</title>
-
-      <variablelist>
-	<varlistentry>
-	  <term><literal>Math.asin(<replaceable>x</replaceable></literal>)</term>
-	  <listitem>
-	    <para>The principal value of the arc sine of <replaceable>x</replaceable>-i.e. the value whose sine is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.asin(<replaceable>x</replaceable> &gt; 1)</literal></term>
-	  <term><literal>Math.asin(<replaceable>x</replaceable> &lt; -1)</literal></term>
-	  <term><literal>Math.asin(Float::NAN)</literal></term>
-	  <listitem>
-	    <para>A <literal>Math::DomainError</literal> is raised.</para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.sinh">
-      <title>Hyperbolic Sine</title>
-      <variablelist>
-	<varlistentry>
-	  <term><literal>Math.sinh(<replaceable>x</replaceable>)</literal></term>
-	  <listitem>
-	    <para>The hyperbolic sine of hyperbolic angle <replaceable>x</replaceable> as a <literal>Float</literal>.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.sinh(<replaceable>x</replaceable> = Float::NAN)</literal></term>
-	  <term><literal>Math.sinh(<replaceable>x</replaceable> = ±Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para><replaceable>x</replaceable></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.asinh">
-      <title>Inverse Hyperbolic Sine</title>
-
-      <variablelist>
-	<varlistentry>
+      </varlistentry>
+      <varlistentry xml:id="num.asin">
+	<term><literal>Math.asin(<replaceable>x</replaceable></literal>)</term>
+	<listitem>
+	  <para>The principal value of the arc sine of <replaceable>x</replaceable>, i.e. the value whose sine is <replaceable>x</replaceable>.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry xml:id="num.sinh">
+	<term><literal>Math.sinh(<replaceable>x</replaceable>)</literal></term>
+	<listitem>
+	  <para>The hyperbolic sine of hyperbolic angle <replaceable>x</replaceable>.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry xml:id="num.asinh">
 	  <term><literal>Math.asinh(<replaceable>x</replaceable></literal>)</term>
-
 	  <listitem>
-	    <para>The inverse hyperbolic sine of <replaceable>x</replaceable>-i.e. the value whose hyperbolic sine is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	    <para>The inverse hyperbolic sine of <replaceable>x</replaceable>, i.e. the value whose hyperbolic sine is <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.asinh(<replaceable>x</replaceable> = Float::NAN)</literal>
-	  </term>
-	  <term><literal>Math.asinh(<replaceable>x</replaceable> = ±Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para><replaceable>x</replaceable></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.cos">
-      <title>Cosine</title>
-
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.cos">
 	  <term><literal>Math.cos(<replaceable>x</replaceable></literal>)</term>
 	  <listitem>
-	    <para>The cosine of angle <replaceable>x</replaceable> as a <literal>Float</literal>.</para>
+	    <para>The cosine of angle <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.cos(<replaceable>x</replaceable> = Float::NAN)</literal></term>
-	  <term><literal>Math.cos(<replaceable>x</replaceable> = ±Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para><literal>Float::NAN</literal></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.acos">
-      <title>Arc Cosine</title>
-
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.acos">
 	  <term><literal>Math.acos(<replaceable>x</replaceable>)</literal></term>
 	  <listitem>
-	    <para>The arc cosine of <replaceable>x</replaceable>-i.e. the value whose cosine is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	    <para>The arc cosine of <replaceable>x</replaceable>, i.e. the value whose cosine is <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.acos(<replaceable>x</replaceable> &gt; 1)</literal></term>
-	  <term><literal>Math.acos(<replaceable>x</replaceable> &lt; -1)</literal></term>
-	  <term><literal>Math.acos(<replaceable>x</replaceable> = ±Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para>A <literal>Math::DomainError</literal> is raised.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.acos(<replaceable>x</replaceable> = Float::NAN)</literal></term>
-	  <listitem>
-	    <para><replaceable>x</replaceable></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.cosh">
-      <title>Hyperbolic Cosine</title>
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.cosh">
 	  <term><literal>Math.cosh(<replaceable>x</replaceable>)</literal></term>
 	  <listitem>
-	    <para>The hyperbolic cosine of hyperbolic angle <replaceable>x</replaceable> as a <literal>Float</literal>.</para>
+	    <para>The hyperbolic cosine of hyperbolic angle <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.cosh(<replaceable>x</replaceable> = Float::NAN)</literal></term>
-	  <listitem>
-	    <para><replaceable>x</replaceable></para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.cosh(<replaceable>x</replaceable> = ±Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para><literal>Float::INFINITY</literal></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.acosh">
-      <title>Inverse Hyperbolic Cosine</title>
-
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.acosh">
 	  <term><literal>Math.acosh(<replaceable>x</replaceable>)</literal></term>
 	  <listitem>
-	    <para>The inverse hyperbolic cosine of <replaceable>x</replaceable>-i.e. the value whose hyperbolic cosine is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	    <para>The inverse hyperbolic cosine of <replaceable>x</replaceable>, i.e. the value whose hyperbolic cosine is <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.acosh(<replaceable>x</replaceable> = Float::NAN)</literal></term>
-	  <term><literal>Math.acosh(<replaceable>x</replaceable> = Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para><replaceable>x</replaceable></para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.acosh(<replaceable>x</replaceable> &lt; 1)</literal></term>
-	  <listitem>
-	    <para>A <literal>Math::DomainError</literal> is raised.</para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.tan">
-      <title>Tangent</title>
-
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.tan">
 	  <term><literal>Math.tan(<replaceable>x</replaceable>)</literal></term>
-	  <term><literal>Math.tan(<replaceable>x</replaceable> = Float::NAN)</literal></term>
-	  <term><literal>Math.tan(<replaceable>x</replaceable> = ±Float::INFINITY)</literal></term>
 	  <listitem>
-	    <para><literal>Float::NAN</literal></para>
+	    <para>The tangent of angle <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.atan">
-      <title>Arc Tangent</title>
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.atan">
 	  <term><literal>Math.atan(<replaceable>x</replaceable>)</literal></term>
 	  <listitem>
-	    <para>The arc tangent of <replaceable>x</replaceable>-i.e. the value whose tangent is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	    <para>The arc tangent of <replaceable>x</replaceable>, i.e. the value whose tangent is <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atan(<replaceable>x</replaceable> = Float::NAN)</literal></term>
-	  <listitem>
-	    <para><literal>Float::NAN</literal></para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
+	<varlistentry xml:id="num.atan2">
 	  <term><literal>Math.atan2(<replaceable>y</replaceable>, <replaceable>x</replaceable>)</literal></term>
 	  <listitem>
-	    <para>The principal value of the arc tangent of <literal><replaceable>y</replaceable>/<replaceable>x</replaceable></literal> as a <literal>Float</literal>.</para>
+	    <para>The principal value of the arc tangent of <literal><replaceable>y</replaceable>/<replaceable>x</replaceable></literal>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atan2(Float::NAN, <replaceable>x</replaceable>)</literal></term>
-	  <term><literal>Math.atan2(<replaceable>y</replaceable>, Float::NAN)</literal></term>
-	  <listitem>
-	    <para><literal>Float::NAN</literal></para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atan2(<replaceable>y</replaceable>, -Float::INFINITY)</literal>, <replaceable>y</replaceable> is finite</term>
-	  <listitem>
-	    <para><literal>Math::PI</literal> with the same sign as <replaceable>y</replaceable>.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atan2(<replaceable>y</replaceable>, Float::INFINITY)</literal>, <replaceable>y</replaceable> is finite</term>
-	  <listitem>
-	    <para><literal>0.0</literal> with the same sign as <replaceable>y</replaceable>.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atan2(<replaceable>y</replaceable> = ±Float::INFINITY, <replaceable>x</replaceable>)</literal>, <replaceable>x</replaceable> is finite</term>
-	  <listitem>
-	    <para><literal>Math::PI / 2</literal> with the same sign as <replaceable>y</replaceable>.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atan2(<replaceable>y</replaceable> = ±Float::INFINITY, <replaceable>x</replaceable> = -Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para><literal>3 * Math::PI / 4</literal> with the same sign as <replaceable>y</replaceable>.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atan2(<replaceable>y</replaceable> = ±Float::INFINITY, <replaceable>x</replaceable> = Float::INFINITY)</literal></term>
-	  <listitem>
-	    <para><literal>Math::PI / 4</literal> with the same sign as <replaceable>y</replaceable>.</para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.tanh">
-      <title>Hyperbolic Tangent</title>
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.tanh">
 	  <term><literal>Math.tanh(<replaceable>x</replaceable>)</literal></term>
 	  <listitem>
-	    <para>The hyperbolic tangent of hyperbolic angle <replaceable>x</replaceable> as a <literal>Float</literal>.</para>
+	    <para>The hyperbolic tangent of hyperbolic angle <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.tanh(Float::NAN)</literal></term>
-	  <listitem>
-	    <para><literal>Float::NAN</literal></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.atanh">
-      <title>Inverse Hyperbolic Tangent</title>
-
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.atanh">
 	  <term><literal>Math.atanh(<replaceable>x</replaceable>)</literal></term>
-
 	  <listitem>
-	    <para>The inverse hyperbolic tangent of <replaceable>x</replaceable>-i.e. the value whose hyperbolic tangent is <replaceable>x</replaceable>-as a <literal>Float</literal>.</para>
+	    <para>The inverse hyperbolic tangent of <replaceable>x</replaceable>, i.e. the value whose hyperbolic tangent is <replaceable>x</replaceable>.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atanh(<replaceable>x</replaceable> = 1)</literal></term>
-	  <term><literal>Math.atanh(<replaceable>x</replaceable> = -1)</literal></term>
-	  <listitem>
-	    <para><literal>Float::INFINITY</literal> with the same sign as <replaceable>x</replaceable>.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atanh(<replaceable>x</replaceable> &gt; 1)</literal></term>
-	  <term><literal>Math.atanh(<replaceable>x</replaceable> &lt; -1)</literal></term>
-	  <listitem>
-	    <para>A <literal>Math::DomainError</literal> is raised.</para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.atanh(Float::NAN)</literal></term>
-	  <listitem>
-	    <para><literal>Float::NAN</literal></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2 xml:id="num.hypot">
-      <title>Euclidean Distance Function</title>
-
-      <variablelist>
-	<varlistentry>
+	<varlistentry xml:id="num.hypot">
 	  <term><literal>Math.hypot(<replaceable>x</replaceable>, <replaceable>y</replaceable>)</literal></term>
 	  <listitem>
-	    <para>The hypotenuse of a right-angled triangle with sides <replaceable>x</replaceable> and <replaceable>y</replaceable>, or the distance of point (<replaceable>x</replaceable>,<replaceable>y</replaceable>) from the origin, as a <literal>Float</literal>. Equivalent to <literal>Math.sqrt(<replaceable>x</replaceable>**2 + <replaceable>y</replaceable>**2)</literal>.</para>
+	    <para>The hypotenuse of a right-angled triangle with sides <replaceable>x</replaceable> and <replaceable>y</replaceable>, or the distance of point (<replaceable>x</replaceable>,<replaceable>y</replaceable>) from the origin.</para>
 	  </listitem>
 	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.hypot(<replaceable>x</replaceable>, Float::INFINITY)</literal></term>
-	  <term><literal>Math.hypot(Float::INFINITY, <replaceable>y</replaceable>)</literal></term>
-	  <listitem>
-	    <para><literal>Float::INFINITY</literal></para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term><literal>Math.hypot(<replaceable>x</replaceable>, Float::NAN)</literal>, <replaceable>x</replaceable> is finite.</term>
-	  <term><literal>Math.hypot(Float::NAN, <replaceable>y</replaceable>)</literal>, <replaceable>y</replaceable> is finite.</term>
-	  <term><literal>Math.hypot(Float::NAN, Float::NAN)</literal></term>
-	  <listitem>
-	    <para><literal>Float::NAN</literal></para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </sect2>
+    </variablelist>
   </sect1>
 
   <sect1 xml:id="num.logarithms">
