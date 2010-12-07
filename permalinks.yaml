@@ -572,3 +572,7 @@ http://ruby.runpaint.org/processes#wait: http://goo.gl/2NRD3
 http://ruby.runpaint.org/processes#terminate: http://goo.gl/cX95h
 http://ruby.runpaint.org/processes#daemons: http://goo.gl/fgx4K
 http://ruby.runpaint.org/processes#priority: http://goo.gl/MXP2b
+http://ruby.runpaint.org/processes#signal: http://goo.gl/faoN4
+http://ruby.runpaint.org/processes#signal-send: http://goo.gl/FUPp7
+http://ruby.runpaint.org/processes#signal-trap: http://goo.gl/Ey5Ib
+http://ruby.runpaint.org/processes#signal-exit: http://goo.gl/r3Tqy

@@ -13,6 +13,17 @@
     <code class="filename"><xsl:apply-templates/></code>
   </xsl:template>
 
+  <!-- Keycombo -->
+  <xsl:template match="d:keycombo">
+    <kbd><xsl:apply-templates/></kbd>
+  </xsl:template>
+
+  <!-- Keycombo > keycap-->
+  <xsl:template match="d:keycombo/d:keycap">
+    <kbd><xsl:apply-templates/></kbd>
+    <xsl:if test="following-sibling::d:keycap">+</xsl:if>
+  </xsl:template>
+
   <!-- Keycap -->
   <xsl:template match="d:keycap">
     <kbd><xsl:apply-templates/></kbd>
