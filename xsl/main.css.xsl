@@ -28,7 +28,7 @@
 	font-style: normal;
 }
 
-body {
+body, kbd > span {
   font-family: 'Linux Libertine', Palatino, 'Palatino Linotype', 
                'Book Antiqua', Georgia, 'Times New Roman', serif;
 }

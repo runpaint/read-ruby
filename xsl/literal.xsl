@@ -21,7 +21,10 @@
   <!-- Keycombo > keycap-->
   <xsl:template match="d:keycombo/d:keycap">
     <kbd><xsl:apply-templates/></kbd>
-    <xsl:if test="following-sibling::d:keycap">+</xsl:if>
+    <!-- Separate the key names with '&nbsp;+&nbsp;'. This fragment
+    appears in non-monospaced font; the <span> provides a styling
+    hook.  -->
+    <xsl:if test="following-sibling::d:keycap"><span>&#160;+&#160;</span></xsl:if>
   </xsl:template>
 
   <!-- Keycap -->
