@@ -733,4 +733,37 @@
       <para>A program may have at most one signal handler per signal. If <replaceable>sig</replaceable> already has a handler registered, the old handler is replaced with the new, and the old handler is returned; otherwise, <function>trap</function> returns <literal>nil</literal>.</para>
     </sect2>
   </sect1>
+
+  <sect1 xml:id="prc.times">
+    <title>Times</title>
+
+    <para>The current process times are returned by <function>Process.times</function> as a <literal>Struct::Tms</literal> object with the following methods:</para>
+
+    <variablelist>
+      <varlistentry>
+	<term><function>#utime</function></term>
+	<listitem>
+	  <para>User time: CPU time, in seconds, spent executing instructions of the calling process.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><function>#stime</function></term>
+	<listitem>
+	  <para>System time: CPU time, in seconds, spent in the system while executing tasks for the calling process.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><function>#cutime</function></term>
+	<listitem>
+	  <para>User time of children: sum of <function>#utime</function> and <function>#cutime</function> values for all waited-for terminated child processes.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><function>#utime</function></term>
+	<listitem>
+	  <para>System time of children: sum of <function>#stime</function> and <function>#cstime</function> values for all waited-for terminated children.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect1>
 </chapter>
