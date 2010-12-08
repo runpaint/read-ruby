@@ -69,6 +69,28 @@
       </example>
     </sect2>
 
+    <sect2 xml:id="prc.fork">
+      <title><function>Kernel.fork</function></title>
+
+      <para><function>Kernel.fork</function>, and its alias <function>Process.fork</function>, creates a subprocess by duplicating the current process. This method raises a <literal>NotImplementedError</literal> on platforms such as Microsoft Windows that don’t implement the <function>fork(2)</function> system call. If given a block, that block is run in the subprocess, then the subprocess terminates with an exit status of <literal>0</literal>.</para>
+
+      <example xml:id="ex.kernel-fork">
+	<title>Executing commands with <function>Kernel.fork</function> given a block</title>
+
+	<programlisting><xi:include href="examples/kernel-fork.rb" parse="text"/></programlisting>
+      </example>
+ 
+      <para>If the block is omitted, <function>fork</function> returns the PID of the child to the current process, and <literal>nil</literal> in the child process.</para>
+
+      <example xml:id="ex.kernel-fork-2">
+	<title>Executing commands with <function>Kernel.fork</function></title>
+
+	<programlisting><xi:include href="examples/kernel-fork-2.rb" parse="text"/></programlisting>
+      </example>
+
+      <para>In both examples above, the child process may become a <emphasis>zombie</emphasis>; see <xref linkend="prc.status"/> for how to avoid this.</para>
+    </sect2>
+
     <sect2 xml:id="prc.options-hash">
       <title>Options <literal>Hash</literal></title>
 
