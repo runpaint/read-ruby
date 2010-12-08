@@ -383,7 +383,7 @@
   </sect1>
 
   <sect1 xml:id="prc.limit">
-    <title>Limits</title>
+    <title>Resource Limits</title>
 
     <para>On platforms that support the <function>getrlimit(2)</function> and <function>setrlimit(2)</function> system calls, <function>Process.getrlimit(<replaceable>resource</replaceable>)</function> and <function>Process.setrlimit(<replaceable>resource</replaceable>, <replaceable>soft</replaceable>, <replaceable>hard</replaceable>)</function> may be used to obtain and set, respectively, resource limits.</para>
 
