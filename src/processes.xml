@@ -60,7 +60,7 @@
     <sect2 xml:id="prc.spawn">
       <title><function>Kernel.spawn</function></title>
 
-      <para><function>Kernel.spawn</function> also interprets its arguments in the same way as <function>exec</function>, but executes the command in a subshell then returns without waiting for the command to complete. Its return value is an <literal>Integer</literal> holding the <acronym>PID</acronym> of the new process.</para>
+      <para><function>Kernel.spawn</function>, and its alias <function>Process.spawn</function>, also interpret their arguments in the same way as <function>exec</function>, but execute the command in a subshell then return without waiting for the command to complete. Their return value is an <literal>Integer</literal> holding the <acronym>PID</acronym> of the new process.</para>
 
       <example xml:id="ex.kernel-spawn">
 	<title>Executing commands with <function>Kernel.spawn</function></title>
