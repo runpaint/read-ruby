@@ -2,8 +2,44 @@
 <chapter version="5.0" xml:id="prc.processes" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Processes</title>
 
+  <para>A <firstterm>process</firstterm> is an instance of a computer program. We use the term <firstterm>current process</firstterm> to refer to an instance of Ruby running your program. The semantics of processes are partly platform-specific. Ruby abstracts these differences where possible, but for the best experience use a UNIX-based system such as <emphasis>GNU/Linux</emphasis> or <emphasis>Mac OS</emphasis>.</para>
+
   <sect1 xml:id="prc.executing">
-    <title>Executing</title>
+    <title>Executing &amp; Forking</title>
+
+    <para>A process is often created by <firstterm>executing</firstterm> a program: loading a specific binary program into memory. The program is identified by a filename which is either absolute or relative to a directory in the user’s path<footnote><para>That is, his <emphasis>search path</emphasis>: a list of directories which contain program files. On UNIX-based systems, this is the value of the environment variable <envar>$PATH</envar>.</para></footnote> . Broadly, Ruby provides four approaches for executing programs, which are summarised in the table below. Alternatively, <function>Kernel.fork</function> creates a new process by duplicating the current process. The remainder of this section explains these methods in detail.</para>
+
+    <informaltable>
+      <thead>
+	<tr>
+	  <th>Method</th>
+	  <th>Returns</th>
+	  <th>Blocks Until Process Exits?</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td><function>Kernel.`</function></td>
+	  <td>The process’s output</td>
+	  <td>Yes</td>
+	</tr>
+	<tr>
+	  <td><function>Kernel.exec</function></td>
+	  <td>Nothing on success (replaces the current process with the new process)</td>
+	  <td>N/A</td>
+	</tr>
+	<tr>
+	  <td><function>Kernel.system</function></td>
+	  <td>Whether the process executed successfully</td>
+	  <td>Yes</td>
+	</tr>
+	<tr>
+	  <td><function>Kernel.spawn</function></td>
+	  <td>The process’s PID</td>
+	  <td>No</td>
+	</tr>
+      </tbody>
+    </informaltable>
 
     <sect2 xml:id="prc.backticks">
       <title>Backticks</title>
@@ -72,7 +108,9 @@
     <sect2 xml:id="prc.fork">
       <title><function>Kernel.fork</function></title>
 
-      <para><function>Kernel.fork</function>, and its alias <function>Process.fork</function>, creates a subprocess by duplicating the current process. This method raises a <literal>NotImplementedError</literal> on platforms such as Microsoft Windows that don’t implement the <function>fork(2)</function> system call. If given a block, that block is run in the subprocess, then the subprocess terminates with an exit status of <literal>0</literal>.</para>
+    <para>On UNIX-based systems<footnote><para>Typically, forking is how UNIX executes all programs: first it forks, then in the new process it uses the <function>execve(2)</function> system call—provided by Ruby as <function>Kernel.exec</function>—to replace this process with the result of executing the program.</para></footnote>, a new process may also be created by duplicating<footnote><para>The new process is not <emphasis>identical</emphasis> to the current process—an obvious difference is that the new process has a different PID—but the differences are minor; for details, consult your system manuals for <function>fork(2)</function>.</para></footnote>—or <emphasis>forking</emphasis>—the current process. If this is successful, both processes continue to run as normal.</para>
+
+      <para>Ruby implements forking with <function>Kernel.fork</function>, and its alias <function>Process.fork</function>. These methods raise a <literal>NotImplementedError</literal> on platforms such as Microsoft Windows that don’t implement the <function>fork(2)</function> system call. If given a block, that block is run in the subprocess, then the subprocess terminates with an exit status of <literal>0</literal>.</para>
 
       <example xml:id="ex.kernel-fork">
 	<title>Executing commands with <function>Kernel.fork</function> given a block</title>
