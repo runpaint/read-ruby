@@ -360,6 +360,111 @@
     </informaltable>
   </sect1>
 
+  <sect1 xml:id="prc.limit">
+    <title>Limits</title>
+
+    <para>On platforms that support the <function>getrlimit(2)</function> and <function>setrlimit(2)</function> system calls, <function>Process.getrlimit(<replaceable>resource</replaceable>)</function> and <function>Process.setrlimit(<replaceable>resource</replaceable>, <replaceable>soft</replaceable>, <replaceable>hard</replaceable>)</function> may be used to obtain and set, respectively, resource limits.</para>
+
+    <para>The resources supported by Ruby are listed below. Those supported by your platform have a corresponding constant defined named <literal>Process::RLIMIT_<replaceable>name</replaceable></literal>, where <replaceable>name</replaceable> is the resource’s name. Both <function>Process.setrlimit</function> and <function>Process.getrlimit</function> accept <replaceable>resource</replaceable> as a resource name—given as a <literal>String</literal> or <literal>Symbol</literal>—or the value of the corresponding constant.
+</para>
+
+    <informaltable>
+      <thead>
+	<tr>
+	  <th>Name</th>
+	  <th>Platform</th>
+	  <th>Description</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td><literal>AS</literal></td>
+	  <td>SUSv3, NetBSD, FreeBSD, OpenBSD</td>
+	  <td>Limits the maximum size of the process’s address space, in bytes. If the stack expands beyond this limit, the process is sent the <literal>SIGSEGV</literal> signal.</td>
+	</tr>
+	<tr>
+	  <td><literal>CORE</literal></td>
+	  <td>SUSv3</td>
+	  <td>Limits the maximum size of core files, in bytes. If <literal>0</literal>, they are never created; otherwise, they’re truncated to this size.</td>
+	</tr>
+	<tr>
+	  <td><literal>CPU</literal></td>
+	  <td>SUSv3</td>
+	  <td>Limits the maximum CPU time the process can consume, in seconds. If a process overruns it is sent the <literal>SIGXCPU</literal> signal.</td>
+	</tr>
+	<tr>
+	  <td><literal>DATA</literal></td>
+	  <td>SUSv3</td>
+	  <td>Limits the maximum size of process’s data segment and heap, in bytes.</td>
+	</tr>
+	<tr>
+	  <td><literal>FSIZE</literal></td>
+	  <td>SUSv3</td>
+	  <td>Limits the maximum file size a process may create, in bytes. If the process expands a file beyond this limit, it is sent the <literal>SIGXFSZ</literal> signal.</td>
+	</tr>
+	<tr>
+	  <td><literal>MEMLOCK</literal></td>
+	  <td>BSD, GNU/Linux</td>
+	  <td>Limits the maximum number of bytes a process<footnote><para>Processes with the <literal>CAP_SYS_IPC</literal> capability, effectively root processes, are exempt.</para></footnote> can lock into memory.</td>
+	</tr>
+	<tr>
+	  <td><literal>MSGQUEUE</literal></td>
+	  <td>GNU/Linux</td>
+	  <td>Limits the maximum number of bytes allocated for <acronym>POSIX</acronym> message queues.</td>
+	</tr>
+	<tr>
+	  <td><literal>NICE</literal></td>
+	  <td>GNU/Linux</td>
+	  <td>Limits the maximum number<footnote><para>Since a <emphasis>nice</emphasis> value, <replaceable>n</replaceable>, may be negative, this value is interpreted as 20 − <replaceable>n</replaceable>.</para></footnote> to which a process can lower its <emphasis>nice</emphasis> value.</td>
+	</tr>
+	<tr>
+	  <td><literal>NOFILE</literal></td>
+	  <td>SUSv3</td>
+	  <td>Limits the maximum number, less 1, of file descriptors the process may have open.</td>
+	</tr>
+	<tr>
+	  <td><literal>NPROC</literal></td>
+	  <td>BSD, GNU/Linux</td>
+	  <td>Limits the maximum number of processes the user may have running at any given time.</td>
+	</tr>
+	<tr>
+	  <td><literal>RSS</literal></td>
+	  <td>BSD, GNU/Linux ~&lt;= 2.4</td>
+	  <td>Limits the resident set size (maximum number of pages the process may have resident in memory).</td>
+	</tr>
+	<tr>
+	  <td><literal>RTPRIO</literal></td>
+	  <td>GNU/Linux</td>
+	  <td>Limits the maximum real-time priority level a process<footnote><para>Processes with the <literal>CAP_SYS_NICE</literal> capability, effectively root processes, are exempt.</para></footnote> may request.</td>
+	</tr>
+	<tr>
+	  <td><literal>RTTIME</literal></td>
+	  <td>GNU/Linux</td>
+	  <td>Limits the CPU time a process scheduled under a real-time policy may consume without making a blocking system call, in microseconds.</td>
+	</tr>
+	<tr>
+	  <td><literal>SBSIZE</literal></td>
+	  <td>NetBSD, FreeBSD</td>
+	  <td>Limits the maximum size of socket buffer usage for this user, in bytes.</td> 
+	</tr>
+	<tr>
+	  <td><literal>SIGPENDING</literal></td>
+	  <td>GNU/Linux</td>
+	  <td>Limits the maximum number of signals that may be queued for this user.</td>
+	</tr>
+	<tr>
+	  <td><literal>STACK</literal></td>
+	  <td>SUSv3</td>
+	  <td>Limits the maximum size of a process’s stack, in bytes. If a process’s stack grows beyond this point, it is sent a <literal>SIGSEGV</literal> signal.</td>
+	</tr>
+      </tbody>
+    </informaltable>
+
+    <para>A resource has both a <firstterm>soft limit</firstterm> and a <firstterm>hard limit</firstterm>. The hard limit is a ceiling on the soft limit, so may only be set by privileged processes. Either limit may be set to <literal>0</literal> or <literal>:INFINITY</literal>/<literal>Process::RLIM_INFINITY</literal>, which disable the resource and remove all limits on the resource, respectively. A process inherits the limits of its parent.</para>
+
+    <para><function>Process.getrlimit</function> returns an <literal>Array</literal> whose first element is the soft limit of <replaceable>resource</replaceable>, and its last, the hard limit of <replaceable>resource</replaceable>. <function>Process.setrlimit</function> sets the soft limit of <replaceable>resource</replaceable> to <replaceable>soft</replaceable>, and, if permitted, the hard limit of <replaceable>resource</replaceable> to <replaceable>hard</replaceable>; if <replaceable>hard</replaceable> is omitted, it has the value <replaceable>soft</replaceable>.</para>
+  </sect1>
+
   <sect1 xml:id="prc.ids">
     <title>IDs</title>
 
