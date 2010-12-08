@@ -348,7 +348,7 @@
   </sect1>
 
   <sect1 xml:id="prc.priority">
-    <title>Priorities</title>
+    <title>Scheduling Priorities</title>
 
     <para>On platforms that support the <function>getpriority(2)</function> and <function>setpriority(2)</function> system calls, the scheduling priority associated with a process, process group, or user, may be obtained and set. A priority is an <literal>Integer</literal> between −20 and 19, which defaults to 0. Lower priorities cause more favourable scheduling, but only the superuser may decrease a priority.</para>
 
