@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter version="5.0" xml:id="tim.times" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Times</title>
+
+  <sect1 xml:id="tim.instantiation">
+    <title>Instantiation</title>
+
+    <para><function>Time.new</function>, and its alias <function>Time.now</function>, creates a <literal>Time</literal> instance for the current time, with the resolution of the system clock. Alternatively, <function>Time.new</function> may be given between one and seven arguments specifying the year, month, day, hour, minute, second, and offset from UTC, of the desired time. All but the year argument are optional.</para>
+
+    <para><function>Time.at(<replaceable>seconds</replaceable>, <replaceable>microseconds</replaceable>=0)</function> creates a <literal>Time</literal> object representing <replaceable>seconds</replaceable> seconds and <replaceable>microseconds</replaceable> microseconds from the Epoch. Both arguments may be any non-<literal>Complex</literal> numeric: if <replaceable>microseconds</replaceable> is a <literal>Float</literal> or <literal>Rational</literal>, the time has nanosecond granularity. If <function>Time.at</function> is given a <literal>Time</literal> object as its sole argument, the argument is returned.</para>
+
+    <para><function>Time.utc</function>, and its alias <function>Time.gm</function>, create a <literal>Time</literal> object for a given time in <acronym>UTC</acronym>. In the first form, between one and seven arguments are required as shown below; optional arguments may be omitted or <literal>nil</literal>.</para>
+
+    <informaltable>
+      <thead>
+	<tr>
+	  <th>Argument</th>
+	  <th>Description</th>
+	  <th>Default</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td>Year</td>
+	  <td><literal>Integer</literal>.</td>
+	  <td>N/A</td>
+	</tr>
+	<tr>
+	  <td>Month</td>
+	  <td><literal>Integer</literal> (1–12) or three-letter English abbreviation, e.g. <emphasis>3</emphasis> or <emphasis>Feb</emphasis> for February.</td>
+	  <td>1 (January)</td>
+	</tr>
+	<tr>
+	  <td>Day of month</td>
+	  <td><literal>Integer</literal>: 1–31.</td>
+	  <td>1</td>
+	</tr>
+	<tr>
+	  <td>Hour</td>
+	  <td><literal>Integer</literal>: 0–23.</td>
+	  <td>0</td>
+	</tr>
+	<tr>
+	  <td>Minute</td>
+	  <td><literal>Integer</literal>: 0–59.</td>
+	  <td>0</td>
+	</tr>
+	<tr>
+	  <td>Seconds</td>
+	  <td><literal>Integer</literal>: 0–60.</td>
+	  <td>0</td>
+	</tr>
+	<tr>
+	  <td>Microseconds</td>
+	  <td>Positive numeric less than 1000000000.</td>
+	  <td>0</td>
+	</tr>
+      </tbody>
+    </informaltable>
+
+    <para>In the second form, ten arguments are required as follows:</para>
+
+    <informaltable>
+      <thead>
+	<tr>
+	  <th>Argument</th>
+	  <th>Description</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td>Seconds</td>
+	  <td><literal>Integer</literal>: 0–60.</td>
+	</tr>
+	<tr>
+	  <td>Minute</td>
+	  <td><literal>Integer</literal>: 0–59.</td>
+	</tr>
+	<tr>
+	  <td>Hour</td>
+	  <td><literal>Integer</literal>: 0–23.</td>
+	</tr>
+	<tr>
+	  <td>Day of month</td>
+	  <td><literal>Integer</literal>: 1–31.</td>
+	</tr>
+	<tr>
+	  <td>Month</td>
+	  <td><literal>Integer</literal> (1–12) or three-letter English abbreviation, e.g. <emphasis>3</emphasis> or <emphasis>Feb</emphasis> for February.</td>
+	</tr>
+	<tr>
+	  <td>Year</td>
+	  <td><literal>Integer</literal>.</td>
+	</tr>
+	<tr>
+	  <td>Day of week</td>
+	  <td><literal>Integer</literal>: 0–6, with Sunday being 0.</td>
+	</tr>
+	<tr>
+	  <td>In daylight saving time?</td>
+	  <td><literal>true</literal> or <literal>false</literal>.</td>
+	</tr>
+	<tr>
+	  <td>Time zone abbreviation</td>
+	  <td><literal>String</literal>, e.g. <emphasis>UTC</emphasis> or <emphasis>CST</emphasis>.</td>
+	</tr>
+      </tbody>
+    </informaltable>
+
+    <para><function>Time.local</function>, and its alias <function>Time.mktime</function>, are identical except they interpret their arguments in the local time zone.</para>
+  </sect1>
+</chapter>
