@@ -118,4 +118,70 @@
       </tbody>
     </informaltable>
   </sect1>
+
+ <sect1 xml:id="tim.predicates">
+   <title>Predicates</title>
+
+   <para><literal>Time</literal> objects respond to the following predicates. They return <literal>true</literal> if the condition is true; <literal>false</literal>, otherwise.</para>
+
+   <variablelist>
+     <varlistentry>
+       <term><function>Time#dst?</function></term>
+       <term><function>Time#isdst</function></term>
+       <listitem>
+	 <para>Occurs in <acronym>DST</acronym></para>
+       </listitem>
+     </varlistentry>
+     <varlistentry>
+       <term><function>Time#friday?</function></term>
+       <listitem>
+	 <para>Occurs on a Friday</para>
+       </listitem>
+     </varlistentry>
+     <varlistentry>
+       <term><function>Time#gmt?</function></term>
+       <term><function>Time#utc?</function></term>
+       <listitem>
+	 <para>Occurs in <acronym>UTC</acronym></para>
+       </listitem>
+     </varlistentry>
+     <varlistentry>
+       <term><function>Time#monday?</function></term>
+       <listitem>
+	 <para>Occurs on a Monday</para>
+       </listitem>
+     </varlistentry>
+     <varlistentry>
+       <term><function>Time#saturday?</function></term>
+       <listitem>
+	 <para>Occurs on a Saturday</para>
+       </listitem>
+     </varlistentry>
+     <varlistentry>
+       <term><function>Time#sunday?</function></term>
+       <listitem>
+	 <para>Occurs on a Sunday</para>
+       </listitem>
+     </varlistentry>
+     <varlistentry>
+       <term><function>Time#thursday?</function></term>
+       <listitem>
+	 <para>Occurs on a Thursday</para>
+       </listitem>
+     </varlistentry>
+     <varlistentry>
+       <term><function>Time#tuesday?</function></term>
+       <listitem>
+	 <para>Occurs on a Tuesday</para>
+       </listitem>
+     </varlistentry>
+     <varlistentry>
+       <term><function>Time#wednesday?</function></term>
+       <listitem>
+	 <para>Occurs on a Wednesday</para>
+       </listitem>
+     </varlistentry>
+   </variablelist>
+ </sect1>
+  
 </chapter>
