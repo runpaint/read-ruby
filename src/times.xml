@@ -2,111 +2,120 @@
 <chapter version="5.0" xml:id="tim.times" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Times</title>
 
+
   <sect1 xml:id="tim.instantiation">
     <title>Instantiation</title>
 
-    <para><function>Time.new</function>, and its alias <function>Time.now</function>, creates a <literal>Time</literal> instance for the current time, with the resolution of the system clock. Alternatively, <function>Time.new</function> may be given between one and seven arguments specifying the year, month, day, hour, minute, second, and offset from UTC, of the desired time. All but the year argument are optional.</para>
+    <para><function>Time.now</function> creates a <literal>Time</literal> instance for the current time, with the resolution of the system clock. <function>Time.new</function> is identical when called without arguments; otherwise it must be given between one and seven arguments specifying the year, month, day, hour, minute, second, and offset from UTC, with which it initialises a <literal>Time</literal> object. All but the year argument are optional.</para>
 
     <para><function>Time.at(<replaceable>seconds</replaceable>, <replaceable>microseconds</replaceable>=0)</function> creates a <literal>Time</literal> object representing <replaceable>seconds</replaceable> seconds and <replaceable>microseconds</replaceable> microseconds from the Epoch. Both arguments may be any non-<literal>Complex</literal> numeric: if <replaceable>microseconds</replaceable> is a <literal>Float</literal> or <literal>Rational</literal>, the time has nanosecond granularity. If <function>Time.at</function> is given a <literal>Time</literal> object as its sole argument, the argument is returned.</para>
 
-    <para><function>Time.utc</function>, and its alias <function>Time.gm</function>, create a <literal>Time</literal> object for a given time in <acronym>UTC</acronym>. In the first form, between one and seven arguments are required as shown below; optional arguments may be omitted or <literal>nil</literal>.</para>
+    <para><function>Time.utc</function>, and its alias <function>Time.gm</function>, create a <literal>Time</literal> object for a given time in <acronym>UTC</acronym>. If ten arguments are given they are: second, minute, hour, day of month, year, day of week, isDST?, and the time zone abbreviation. Otherwise, between one and seven arguments are required: year, month, day of month, hour, minute, second, microseconds. In the second form, all but the first argument are optional; the latter may be omitted or <literal>nil</literal>. <function>Time.local</function>, and its alias <function>Time.mktime</function>, are identical to <function>Time.utc</function>, except they interpret their arguments in the local time zone.</para>
+
+    <para>The arguments listed above all correspond to attributes of <literal>Time</literal> objects, so are described in <xref linkend="tim.attributes"/>.</para>
+  </sect1>
+
+  <sect1 xml:id="tim.attributes">
+    <title>Attributes</title>
+
+    <para>A <literal>Time</literal> object has the following primary attributes. If a <literal>Time</literal> method expects an argument corresponding to a given attribute, the argument must satisfy the attribute’s range; if the argument is omitted, the attribute’s default value is assumed.</para>
 
     <informaltable>
       <thead>
 	<tr>
-	  <th>Argument</th>
+	  <th>Attribute</th>
 	  <th>Description</th>
+	  <th>Range</th>
 	  <th>Default</th>
+	  <th>Accessor</th>
 	</tr>
       </thead>
       <tbody>
 	<tr>
 	  <td>Year</td>
-	  <td><literal>Integer</literal>.</td>
+	  <td>Year (possibly including century)</td>
+	  <td>Positive <literal>Integer</literal>.</td>
 	  <td>N/A</td>
+	  <td><function>Time#year</function></td>
 	</tr>
 	<tr>
 	  <td>Month</td>
+	  <td>Month of year</td>
 	  <td><literal>Integer</literal> (1–12) or three-letter English abbreviation, e.g. <emphasis>3</emphasis> or <emphasis>Feb</emphasis> for February.</td>
-	  <td>1 (January)</td>
+	  <td>1</td>
+	  <td><function>Time#mon</function>, <function>Time#month</function></td>
 	</tr>
 	<tr>
+	  <td>Day</td>
 	  <td>Day of month</td>
 	  <td><literal>Integer</literal>: 1–31.</td>
 	  <td>1</td>
+	  <td><function>Time#day</function>, <function>Time#mday</function></td>
+	</tr>
+	<tr>
+	  <td>Week day</td>
+	  <td>Day of week</td>
+	  <td><literal>Integer</literal>: 0–6, where Sunday is 0.</td>
+	  <td>0</td>
+	  <td><function>Time#wday</function></td>
+	</tr>
+	<tr>
+	  <td>Year day</td>
+	  <td>Day of year</td>
+	  <td><literal>Integer</literal>: 1–366.</td>
+	  <td>1</td>
+	  <td><function>Time#yday</function></td>
 	</tr>
 	<tr>
 	  <td>Hour</td>
+	  <td>Hour on 24-hour clock</td>
 	  <td><literal>Integer</literal>: 0–23.</td>
 	  <td>0</td>
+	  <td><function>Time#hour</function></td>
 	</tr>
 	<tr>
 	  <td>Minute</td>
+	  <td>Minute of hour</td>
 	  <td><literal>Integer</literal>: 0–59.</td>
 	  <td>0</td>
+	  <td><function>Time#min</function></td>
 	</tr>
 	<tr>
-	  <td>Seconds</td>
-	  <td><literal>Integer</literal>: 0–60.</td>
+	  <td>Second</td>
+	  <td>Second of minute</td>
+	  <td><literal>Integer</literal>: 0–60<footnote><para>This range allows for leap seconds.</para></footnote>.</td>
 	  <td>0</td>
+	  <td><function>Time#sec</function></td>
 	</tr>
 	<tr>
 	  <td>Microseconds</td>
+	  <td>Microsecond<footnote><para>1 microsecond is 10<superscript>−6</superscript> seconds</para></footnote> of second</td>
 	  <td>Positive numeric less than 1000000000.</td>
 	  <td>0</td>
-	</tr>
-      </tbody>
-    </informaltable>
-
-    <para>In the second form, ten arguments are required as follows:</para>
-
-    <informaltable>
-      <thead>
-	<tr>
-	  <th>Argument</th>
-	  <th>Description</th>
-	</tr>
-      </thead>
-      <tbody>
-	<tr>
-	  <td>Seconds</td>
-	  <td><literal>Integer</literal>: 0–60.</td>
+	  <td><function>Time#usec</function>, <function>Time#tv_usec</function></td>
 	</tr>
 	<tr>
-	  <td>Minute</td>
-	  <td><literal>Integer</literal>: 0–59.</td>
+	  <td>Nanoseconds</td>
+	  <td>Nanosecond<footnote><para>1 nanosecond is 10<superscript>−9</superscript> seconds</para></footnote> of microsoecond</td>
+	  <td><literal>Integer</literal></td>
+	  <td>0</td>
+	  <td><function>Time#nsec</function>, <function>Time#tv_nsec</function></td>
 	</tr>
 	<tr>
-	  <td>Hour</td>
-	  <td><literal>Integer</literal>: 0–23.</td>
-	</tr>
-	<tr>
-	  <td>Day of month</td>
-	  <td><literal>Integer</literal>: 1–31.</td>
-	</tr>
-	<tr>
-	  <td>Month</td>
-	  <td><literal>Integer</literal> (1–12) or three-letter English abbreviation, e.g. <emphasis>3</emphasis> or <emphasis>Feb</emphasis> for February.</td>
-	</tr>
-	<tr>
-	  <td>Year</td>
-	  <td><literal>Integer</literal>.</td>
-	</tr>
-	<tr>
-	  <td>Day of week</td>
-	  <td><literal>Integer</literal>: 0–6, with Sunday being 0.</td>
-	</tr>
-	<tr>
-	  <td>In daylight saving time?</td>
-	  <td><literal>true</literal> or <literal>false</literal>.</td>
-	</tr>
-	<tr>
+	  <td>Zone</td>
 	  <td>Time zone abbreviation</td>
 	  <td><literal>String</literal>, e.g. <emphasis>UTC</emphasis> or <emphasis>CST</emphasis>.</td>
+	  <td>UTC<remark>TODO: Check this</remark></td>
+	  <td><function>Time#zone</function></td>
+	</tr>
+	<tr>
+	  <td>isDST?</td>
+	  <td>Does the time occur in daylight saving time?</td>
+	  <td><literal>true</literal> (yes) or <literal>false</literal> (no).</td>
+	  <td><literal>false</literal><remark>TODO: Check this</remark></td>
+	  <td><function>Time#isdst</function>, <function>Time#dst?</function></td>
 	</tr>
       </tbody>
     </informaltable>
-
-    <para><function>Time.local</function>, and its alias <function>Time.mktime</function>, are identical except they interpret their arguments in the local time zone.</para>
   </sect1>
 </chapter>
