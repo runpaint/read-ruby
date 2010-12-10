@@ -184,4 +184,11 @@
    </variablelist>
  </sect1>
   
+ <sect1 xml:id="tim.arithmetic">
+   <title>Arithmetic</title>
+   
+   <para><function>Time#+(<replaceable>numeric</replaceable>)</function> adds <replaceable>numeric</replaceable> seconds to the receiver, and returns the result. Conversely, <function>Time#-(<replaceable>numeric</replaceable>)</function> subtracts <replaceable>numeric</replaceable> seconds from the receiver and returns the result. If <function>Time#-</function> is given a <literal>Time</literal> argument instead, it returns a new <literal>Time</literal> object representing the difference between them.</para>
+
+   <para><literal>Time</literal> objects implement <function>Time#&lt;=&gt;</function> with the <link linkend="obj.order">standard semantics</link>, and mix-in the <literal>Comparable</literal> module. This allows inequalities to be tested between a <literal>Time</literal> object and a <literal>Numeric</literal> object—where the latter represents a number a seconds since the Unix epoch—or two <literal>Time</literal> objects.</para>
+ </sect1>
 </chapter>
