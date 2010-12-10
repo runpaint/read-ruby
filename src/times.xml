@@ -324,4 +324,14 @@
      </tbody>
    </informaltable>
  </sect1>
+
+ <sect1 xml:id="tim.coercion">
+   <title>Coercion</title>
+   
+   <para><function>Time#to_a</function> coerces its receiver into a ten-element <literal>Array</literal> of its attributes in this order: <emphasis>second</emphasis>, <emphasis>minute</emphasis>, <emphasis>hour</emphasis>, <emphasis>day of month</emphasis>, <emphasis>month</emphasis>, <emphasis>year</emphasis>, <emphasis>day of week</emphasis>, <emphasis>day of year</emphasis>, <emphasis>isDST?</emphasis>, and <emphasis>zone</emphasis>. All elements are <literal>Integer</literal>s except <emphasis>isDST?</emphasis>, which is <literal>true</literal> or <literal>false</literal>, and <emphasis>zone</emphasis>, which is a <literal>String</literal>.</para>
+
+   <para>A <literal>Time</literal> object may be coerced into a <literal>Float</literal> or <literal>Rational</literal> with <function>Time#to_f</function> and <function>Time#to_r</function>, respectively. <function>Time#to_i</function>, and its alias <function>Time#tv_sec</function>, converts the receiver into an <literal>Integer</literal> by truncating any fractional seconds, i.e. it is equivalent to <literal>time.to_f.to_i</literal>.</para>
+
+   <para>For a local time, <function>Time#to_s</function> is equivalent to calling <function>Time#strftime('%Y-%m-%d %H:%M:%S %z')</function>; for a UTC times, it is equivalent to <function>Time#strftime('%Y-%m-%d %H:%M:%S UTC')</function>. Alternatively, <function>Time#asctime</function>, and its alias <function>Time#ctime</function>, return a canonical <literal>String</literal> representation of their receiver, equivalent to <function>Time#strftime('%a %b %e %T %Y')</function>.</para>
+ </sect1>
 </chapter>
