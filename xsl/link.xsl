@@ -203,6 +203,7 @@
       <xsl:when test="starts-with($id, 'io.')">io</xsl:when>
       <xsl:when test="starts-with($id, 'prc.')">processes</xsl:when>
       <xsl:when test="starts-with($id, 'tim.')">times</xsl:when>
+      <xsl:when test="starts-with($id, 'con.')">concurrency</xsl:when>
       <xsl:when test="starts-with($id, 'pun.')">punctuation</xsl:when>
       <xsl:when test="starts-with($id, 'glo.')">globals</xsl:when>
       <xsl:when test="starts-with($id, 'glo.')">glossary</xsl:when>

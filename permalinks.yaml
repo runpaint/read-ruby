@@ -585,3 +585,7 @@ http://ruby.runpaint.org/times#predicates: http://goo.gl/2OtOa
 http://ruby.runpaint.org/times#arithmetic: http://goo.gl/omdt8
 http://ruby.runpaint.org/times#format: http://goo.gl/wZus2
 http://ruby.runpaint.org/times#coercion: http://goo.gl/QUlYM
+http://ruby.runpaint.org/times#zone: http://goo.gl/nXOMr
+http://ruby.runpaint.org/concurrency#threads: http://goo.gl/mZPUA
+http://ruby.runpaint.org/concurrency#thread-init: http://goo.gl/9supM
+http://ruby.runpaint.org/concurrency#thread-status: http://goo.gl/O03dQ

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter version="5.0" xml:id="con.concurrency" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Concurrency</title>
+
+  <sect1 xml:id="con.threads">
+    <title>Threads</title>
+
+    <sect2 xml:id="con.thread-init">
+      <title>Initialisation</title>
+
+      <para>Threads are created by passing a block to <function>Thread.new</function> which creates a new thread to run the block then returns immediately. Any arguments given are passed to the block as block paramaters. <function>Thread.start</function>, and its alias <function>Thread.fork</function>, behave identically except if their receiver is a subclass of <literal>Thread</literal> its <literal>initialize</literal> method is not called.</para>
+    </sect2>
+
+    <sect2 xml:id="con.thread-status">
+      <title>Status</title>
+      
+      <para>A thread is always in one of five possible states—<emphasis>runnable</emphasis>, <emphasis>sleeping</emphasis>, <emphasis>aborting</emphasis>, <emphasis>terminated normally</emphasis>, or <emphasis>terminated exceptionally</emphasis>—which may be queried as shown below.</para>
+
+      <informaltable>
+	<thead>
+	  <tr>
+	    <th>State</th>
+	    <th><function>Thread#status</function></th>
+	    <th><function>Thread#alive?</function></th>
+	    <th><function>Thread#stop?</function></th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td>Runnable</td>
+	    <td><literal>"run"</literal></td>
+	    <td><literal>true</literal></td>
+	    <td><literal>false</literal></td>
+	  </tr>
+	  <tr>
+	    <td>Sleeping</td>
+	    <td><literal>"sleep"</literal></td>
+	    <td><literal>true</literal></td>
+	    <td><literal>true</literal></td>
+	  </tr>
+	  <tr>
+	    <td>Aborting</td>
+	    <td><literal>"aborting"</literal></td>
+	    <td><literal>false</literal></td>
+	    <td><literal>true</literal></td>
+	  </tr>
+	  <tr>
+	    <td>Terminated normally</td>
+	    <td><literal>false</literal></td>
+	    <td><literal>false</literal></td>
+	    <td><literal>true</literal></td>
+	  </tr>
+	  <tr>
+	    <td>Terminated exceptionally</td>
+	    <td><literal>nil</literal></td>
+	    <td><literal>false</literal></td>
+	    <td><literal>true</literal></td>
+	  </tr>
+	</tbody>
+      </informaltable>
+
+      <para>When a thread is created it is <emphasis>runnable</emphasis>. It enters the <emphasis>sleeping</emphasis> state while <function>Kernel.sleep</function><footnote><para>If <function>Kernel.sleep</function> is called without an argument, it blocks until the thread is awoken or terminated.</para></footnote> or an <literal>IO</literal> method is blocking, after which it returns to <emphasis>runnable</emphasis>. A thread that calls <function>Thread.stop</function> also switches to <emphasis>sleeping</emphasis>, where it remains until awoken, then schedules execution of another thread. A <emphasis>sleeping</emphasis> thread may be made <emphasis>runnable</emphasis> with <function>Thread#wakeup</function> or <function>Thread#run</function>, unless it is sleeping due to blocking I/O. <function>Thread#run</function> then invokes the thread scheduler, possibly causing the thread to begin running; <function>Thread#wakeup</function> does not.</para> 
+
+      <para>A thread that raises an exception, which it does not subsequently rescue, enters the <emphasis>terminated exceptionally</emphasis> state. <remark>Link to Thread#raise</remark> Otherwise, after a thread has executed its final statement its status is <replaceable>terminated normally</replaceable>. This is also the case when the thread is terminated with <function>Thread#kill</function>—which is alised to <function>Thread#exit</function> and <function>Thread#terminate</function>—however while the thread is exiting its status will be <emphasis>aborting</emphasis>. <function>Thread#kill!</function>, which is aliased to <function>Thread#terminate!</function> and <function>Thread#exit!</function>, behaves like <function>Thread#kill</function> except it bypasses any <literal>ensure</literal> clauses in the receiver.</para>
+    </sect2>
+  </sect1>
+</chapter>
