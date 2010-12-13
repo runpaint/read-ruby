@@ -458,4 +458,12 @@
 
    <para>For a local time, <function>Time#to_s</function> is equivalent to calling <function>Time#strftime('%Y-%m-%d %H:%M:%S %z')</function>; for a UTC times, it is equivalent to <function>Time#strftime('%Y-%m-%d %H:%M:%S UTC')</function>. Alternatively, <function>Time#asctime</function>, and its alias <function>Time#ctime</function>, return a canonical <literal>String</literal> representation of their receiver, equivalent to <function>Time#strftime('%a %b %e %T %Y')</function>.</para>
  </sect1>
+
+ <sect1 xml:id="tim.zone">
+   <title>Zone Conversions</title>
+
+   <para>The time zone associated with a <literal>Time</literal> object is set during <link linkend="tim.instantiation">initialisation</link>, and queried with <function>Time#zone</function>. It can be changed to UTC with <function>Time#getutc</function>, and its alias <function>Time#getgm</function>, which return a new <literal>Time</literal> object representing the receiver in UTC. <function>Time#utc</function>, and its alias <function>Time#gmtime</function>, do likewise but convert the receiver in-place.</para>
+
+   <para>Similarly, <function>Time#getlocal</function> returns a new <literal>Time</literal> object representing the receiver in the local time zone. <function>Time#localtime</function> is identical except it modifies the receiver in-place.</para>
+ </sect1>
 </chapter>
