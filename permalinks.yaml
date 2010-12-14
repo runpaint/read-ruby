@@ -589,3 +589,6 @@ http://ruby.runpaint.org/times#zone: http://goo.gl/nXOMr
 http://ruby.runpaint.org/concurrency#threads: http://goo.gl/mZPUA
 http://ruby.runpaint.org/concurrency#thread-init: http://goo.gl/9supM
 http://ruby.runpaint.org/concurrency#thread-status: http://goo.gl/O03dQ
+http://ruby.runpaint.org/concurrency#thread-variables: http://goo.gl/H9eF0
+http://ruby.runpaint.org/concurrency#thread-join: http://goo.gl/X7Yd8
+http://ruby.runpaint.org/concurrency#thread-exceptions: http://goo.gl/fk3R2
