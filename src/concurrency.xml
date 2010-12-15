@@ -98,6 +98,16 @@
       <para>Threads initially have a priority of zero, with a higher priority implying more favourable scheduling. <function>Thread#priority</function> returns the receiver’s priority as an <literal>Integer</literal>; <function>Thread#priority=(<replaceable>priority</replaceable>)</function> sets the receiver’s priority to <replaceable>priority</replaceable>. However, priorities are merely hints to the thread scheduler: they may be entirely disregarded, as they are under Linux for non-privileged users.</para>
 
       <para>There are, broadly, two approaches for allocating CPU cycles to threads: cooperative multitasking and preemptive multitasking. In the former, a context switch occurs when a thread explicitly yields control back to the CPU, or performs a blocking operation such as I/O. In the latter, each thread is run only for a certain amount of time before being interrupted so that another thread may run instead. Under a cooperative approach, a thread which neither yields nor performs blocking operations may <firstterm>starve</firstterm> the process’s other threads from executing, monopolising the CPU. As a workaround, compute-bound threads may use <function>Thread.pass</function> to explicitly yield to the thread scheduler.</para>
-    </sect2>  
+    </sect2>
+
+    <sect2 xml:id="con.thread-groups">
+      <title>Groups</title>
+
+      <para>Ruby maintains an <literal>Array</literal> named <literal>Thread.list</literal> of all runnable or sleeping threads. It will always contain at least one entry: the main thread. When a thread terminates, it is removed from this list.</para>
+
+      <para>A thread is also a member of exactly one <firstterm>thread group</firstterm>, which provides finer-grained control over subsets of threads. The main thread is a member of the <literal>ThreadGroup::Default</literal> group, and new threads are members of their parent’s group.</para>
+
+      <para><function>Thread#group</function> returns the <literal>ThreadGroup</literal> containing the receiver. The members of a group are returned as an <literal>Array</literal> by <function>ThreadGroup#list</function>. A thread may be added to a different group with <function>ThreadGroup#add</function>, which first removes the thread from its original group. A group may be <firstterm>enclosed</firstterm>, preventing other threads from being explicitly added; however, threads created by existing members of the group will still be made members. <function>ThreadGroup#enclose</function> encloses its receiver. The <function>ThreadGroup#enclosed?</function> predicate returns <literal>true</literal> if its receiver is enclosed; <literal>false</literal> otherwise. Lastly, a new group may be created with <function>ThreadGroup.new</function>.</para>
+    </sect2>
   </sect1>
 </chapter>
