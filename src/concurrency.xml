@@ -15,6 +15,12 @@
       <para>Threads are created by passing a block to <function>Thread.new</function> which creates a new thread to run the block then returns immediately. Any arguments given are passed to the block as block paramaters. <function>Thread.start</function>, and its alias <function>Thread.fork</function>, behave identically except if their receiver is a subclass of <literal>Thread</literal> its <literal>initialize</literal> method is not called.</para>
     </sect2>
 
+    <sect2 xml:id="con.thread-termination">
+      <title>Termination</title>
+ 
+      <para>A given thread can be terminated with <function>Thread#kill</function>—which is aliased to <function>Thread#exit</function> and <function>Thread#terminate</function>. Similarly, <function>Thread.kill(<replaceable>thread</replaceable>)</function>, where <replaceable>thread</replaceable> is a <literal>Thread</literal> object, terminates the given thread. <function>Thread#kill!</function>—which is aliased to <function>Thread#exit!</function> and <function>Thread#terminate!</function>—behaves like <function>Thread#kill</function> except it bypasses any <literal>ensure</literal> clauses in the receiver. <function>Thread.exit</function> terminates the current thread, which it returns if already marked to be killed. Ruby exits when its main thread is terminated.</para>
+    </sect2>
+
     <sect2 xml:id="con.thread-status">
       <title>Status</title>
       
@@ -65,7 +71,7 @@
 
       <para>When a thread is created it is <emphasis>runnable</emphasis>. It enters the <emphasis>sleeping</emphasis> state while <function>Kernel.sleep</function><footnote><para>If <function>Kernel.sleep</function> is called without an argument, it blocks until the thread is awoken or terminated.</para></footnote> or an <literal>IO</literal> method is blocking, after which it returns to <emphasis>runnable</emphasis>. A thread that calls <function>Thread.stop</function> also switches to <emphasis>sleeping</emphasis>, where it remains until awoken, then schedules execution of another thread. A <emphasis>sleeping</emphasis> thread may be made <emphasis>runnable</emphasis> with <function>Thread#wakeup</function> or <function>Thread#run</function>, unless it is sleeping due to blocking I/O. <function>Thread#run</function> then invokes the thread scheduler, possibly causing the thread to begin running; <function>Thread#wakeup</function> does not.</para> 
 
-      <para>A thread that raises an exception, which it does not subsequently rescue, enters the <emphasis>terminated exceptionally</emphasis> state. <remark>Link to Thread#raise</remark> Otherwise, after a thread has executed its final statement its status is <replaceable>terminated normally</replaceable>. This is also the case when the thread is terminated with <function>Thread#kill</function>—which is aliased to <function>Thread#exit</function> and <function>Thread#terminate</function>—however while the thread is exiting its status will be <emphasis>aborting</emphasis>. <function>Thread#kill!</function>, which is aliased to <function>Thread#terminate!</function> and <function>Thread#exit!</function>, behaves like <function>Thread#kill</function> except it bypasses any <literal>ensure</literal> clauses in the receiver.</para>
+      <para>A thread that raises an exception, which it does not subsequently rescue, enters the <emphasis>terminated exceptionally</emphasis> state. <remark>Link to Thread#raise</remark> Otherwise, after a thread has executed its final statement its status is <replaceable>terminated normally</replaceable>. When a thread is terminated explicitly, its status becomes <emphasis>aborting</emphasis>. Unless it was terminated with <function>Thread#kill!</function>—or an alias thereof—it then executes its <literal>ensure</literal> clause, the contents of which may cause the thread to change state again. Finally, when the thread actually terminates, its state will be <emphasis>terminated normally</emphasis>.</para>
     </sect2>
 
     <sect2 xml:id="con.thread-variables">
