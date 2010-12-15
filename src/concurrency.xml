@@ -109,5 +109,138 @@
 
       <para><function>Thread#group</function> returns the <literal>ThreadGroup</literal> containing the receiver. The members of a group are returned as an <literal>Array</literal> by <function>ThreadGroup#list</function>. A thread may be added to a different group with <function>ThreadGroup#add</function>, which first removes the thread from its original group. A group may be <firstterm>enclosed</firstterm>, preventing other threads from being explicitly added; however, threads created by existing members of the group will still be made members. <function>ThreadGroup#enclose</function> encloses its receiver. The <function>ThreadGroup#enclosed?</function> predicate returns <literal>true</literal> if its receiver is enclosed; <literal>false</literal> otherwise. Lastly, a new group may be created with <function>ThreadGroup.new</function>.</para>
     </sect2>
+
+    <sect2 xml:id="con.thread-synchronisation">
+      <title>Synchronisation</title>
+      
+      <para>When multiple threads need to access a shared, modifiable resource, they must ensure consistency such that no thread sees it an inconsistent state. Otherwise, a <firstterm>race condition</firstterm>—when a result is dependent on the order in which the threads finish—may occur, making the result non-deterministic. The solution is <firstterm>synchronisation</firstterm>.</para>
+
+      <para>A popular example is the <emphasis>"too much milk"</emphasis> problem:</para>
+
+      <informaltable>
+	<thead>
+	  <tr>
+	    <th>Time</th>
+	    <th>You</th>
+	    <th>Roommate</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td>5:00</td>
+	    <td>Arrive home</td>
+	    <td>&#160;</td>
+	  </tr>
+	  <tr>
+	    <td>5:05</td>
+	    <td>Discover you’ve ran out of milk</td>
+	    <td>&#160;</td>
+	  </tr>
+	  <tr>
+	    <td>5:10</td>
+	    <td>Leave for grocery shop</td>
+	    <td>&#160;</td>
+	  </tr>
+	  <tr>
+	    <td>5:15</td>
+	    <td>&#160;</td>
+	    <td>Arrive home</td>
+	  </tr>
+	  <tr>
+	    <td>5:20</td>
+	    <td>Arrive at shop</td>
+	    <td>Discover you’ve ran out of milk</td>
+	  </tr>
+	  <tr>
+	    <td>5:25</td>
+	    <td>Buy milk</td>
+	    <td>Leave for grocery shop</td>
+	  </tr>
+	  <tr>
+	    <td>5:30</td>
+	    <td>Arrive home, put milk in fridge</td>
+	    <td>&#160;</td>
+	  </tr>
+	  <tr>
+	    <td>5:35</td>
+	    <td>&#160;</td>
+	    <td>Arrive at shop</td>
+	  </tr>
+	  <tr>
+	    <td>5:40</td>
+	    <td>&#160;</td>
+	    <td>Buy milk</td>
+	  </tr>
+	  <tr>
+	    <td>5:45</td>
+	    <td>&#160;</td>
+	    <td>Arrive home, put milk in fridge…drat!</td>
+	  </tr>
+	</tbody>
+      </informaltable>
+
+      <para>The solution, clearly, is that exactly one person—you or your roommate—buys milk. To do so, you must synchronise your actions:</para> 
+
+      <orderedlist>
+	<listitem>
+	  <para>If your roommate’s left a note telling you that he’s gone to get milk, just wait for him to return. Otherwise, leave a note for your roommate: “I’m buying milk”, then go to step 2.</para>
+	  </listitem>
+	 <listitem>
+	   <para>If there is no milk, go to the shop, buy some, then put the milk in the fridge.</para>
+	 </listitem>
+	 <listitem>
+	   <para>Throw away the note you left.</para>
+	 </listitem>
+      </orderedlist>
+
+      <para>We can generalise this solution to any shared, modifiable resource with a mutual exclusion—abbreviated as <emphasis>mutex</emphasis>—lock around the code—termed the <emphasis>critical section</emphasis>—which accesses the shared resource. A mutex works like so:</para>
+
+      <orderedlist>
+	<listitem>
+	  <para>Before entering the critical section, request the mutex. If another thread already holds the mutex, wait until it releases it.</para>
+	  </listitem>
+	 <listitem>
+	   <para>Perform the critical section: access the shared resource.</para>
+	 </listitem>
+	 <listitem>
+	   <para>Release the mutex.</para>
+	 </listitem>
+      </orderedlist>
+
+      <para><function>Thread.exclusive</function> expects a block constituting a critical section of code, then uses a global mutex to ensure only one thread calls the block at any one time. More generally, a <literal>Mutex</literal> object represents a mutex which can be locked and unlocked independently of any other <literal>Mutex</literal> instance. A <literal>Mutex</literal> is created with <function>Mutex.new</function>. <function>Mutex#synchronize</function> is given a block representing a critical section, which it executes only if no other thread already holds this specific mutex. Both <function>Thread.exclusive</function> and <function>Mutex#synchronize</function> return the value of their block.</para>
+
+      <para>Alternatively, a lower-level interface is available. <function>Mutex#lock</function> obtains a lock with this mutex if possible; it blocks if this mutex is already locked by another thread; and raises a <literal>ThreadError</literal> if this mutex is already locked by the current thread. <function>Mutex#try_lock</function> behaves like <function>#lock</function>, except it never blocks: if this mutex is not locked, it’s locked, and <literal>true</literal> is returned; otherwise, <literal>false</literal> is returned. The <function>Mutex#locked?</function> predicate returns <literal>true</literal> if this mutex is locked; <literal>false</literal>, otherwise. If a given mutex was locked by the current thread, it may be unlocked with <function>Mutex#unlock</function>. Lastly, <function>Mutex#sleep(<replaceable>time</replaceable>)</function> releases the current thread’s lock on this mutex, sleeps for <replaceable>time</replaceable> seconds—or forever if <replaceable>time</replaceable> is <literal>nil</literal>—then locks this mutex. It returns the number of seconds that were slept.</para>
+
+      <para><firstterm>Deadlock</firstterm> is a condition in which two or more threads are waiting for an event that can only be generated by these same threads. It has the following prerequisites, all of which must hold:</para>
+
+      <variablelist>
+	<varlistentry>
+	  <term>Mutual exclusion</term>
+	  <listitem>
+	    <para>At least one thread must hold a resource that can not be shared. Requests are delayed until this resource is released.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Hold and wait</term>
+	  <listitem>
+	    <para>A thread holds one resource while it waits for another.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>No preemption</term>
+	  <listitem>
+	    <para>Resources are only released voluntarily after completion; neither another thread nor the OS can force the thread to release the resource.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Circular wait</term>
+	  <listitem>
+	    <para>Two or more threads form a circular chain where each waits for a resource that the next thread in the chain holds.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+
+      <para>Deadlock may be solved by breaking at least one of these conditions.</para>
+    </sect2>
   </sect1>
 </chapter>

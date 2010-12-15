@@ -592,3 +592,6 @@ http://ruby.runpaint.org/concurrency#thread-status: http://goo.gl/O03dQ
 http://ruby.runpaint.org/concurrency#thread-variables: http://goo.gl/H9eF0
 http://ruby.runpaint.org/concurrency#thread-join: http://goo.gl/X7Yd8
 http://ruby.runpaint.org/concurrency#thread-exceptions: http://goo.gl/fk3R2
+http://ruby.runpaint.org/concurrency#thread-scheduling: http://goo.gl/9oNUo
+http://ruby.runpaint.org/concurrency#thread-groups: http://goo.gl/PlFd5
+http://ruby.runpaint.org/concurrency#thread-synchronisation: http://goo.gl/rzI9s
