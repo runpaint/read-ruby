@@ -91,5 +91,13 @@
 
       <para>The flag may be set globally with <function>Thread.abort_on_exception=</function> or per-thread with <function>Thread#abort_on_exception=</function>. These values may be retrieved with <function>Thread.abort_on_exception</function> and <function>Thread#abort_on_exception</function>, respectively. If <literal>$DEBUG</literal> is <literal>true</literal>—as it is when the interpreter is given the <option>-d</option> flag—threads behave as if <function>Thread.abort_on_exception</function> is also <literal>true</literal>.</para>
     </sect2>
+
+    <sect2 xml:id="con.thread-scheduling">
+      <title>Scheduling</title>
+
+      <para>Threads initially have a priority of zero, with a higher priority implying more favourable scheduling. <function>Thread#priority</function> returns the receiver’s priority as an <literal>Integer</literal>; <function>Thread#priority=(<replaceable>priority</replaceable>)</function> sets the receiver’s priority to <replaceable>priority</replaceable>. However, priorities are merely hints to the thread scheduler: they may be entirely disregarded, as they are under Linux for non-privileged users.</para>
+
+      <para>There are, broadly, two approaches for allocating CPU cycles to threads: cooperative multitasking and preemptive multitasking. In the former, a context switch occurs when a thread explicitly yields control back to the CPU, or performs a blocking operation such as I/O. In the latter, each thread is run only for a certain amount of time before being interrupted so that another thread may run instead. Under a cooperative approach, a thread which neither yields nor performs blocking operations may <firstterm>starve</firstterm> the process’s other threads from executing, monopolising the CPU. As a workaround, compute-bound threads may use <function>Thread.pass</function> to explicitly yield to the thread scheduler.</para>
+    </sect2>  
   </sect1>
 </chapter>
