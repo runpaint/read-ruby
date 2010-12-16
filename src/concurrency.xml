@@ -19,6 +19,8 @@
       <title>Termination</title>
  
       <para>A given thread can be terminated with <function>Thread#kill</function>—which is aliased to <function>Thread#exit</function> and <function>Thread#terminate</function>. Similarly, <function>Thread.kill(<replaceable>thread</replaceable>)</function>, where <replaceable>thread</replaceable> is a <literal>Thread</literal> object, terminates the given thread. <function>Thread#kill!</function>—which is aliased to <function>Thread#exit!</function> and <function>Thread#terminate!</function>—behaves like <function>Thread#kill</function> except it bypasses any <literal>ensure</literal> clauses in the receiver. <function>Thread.exit</function> terminates the current thread, which it returns if already marked to be killed. Ruby exits when its main thread is terminated.</para>
+
+      <para>Other than <function>Thread.exit</function>, however, these methods have a significant flaw: they may terminate a thread at <emphasis>any</emphasis> point, potentially leaving resources in inconsistent states. Accordingly, JRuby’s Charles Nutter states <quote>there is no safe way to use <function>Thread#kill</function> or <function>Thread#raise</function></quote> <biblioref linkend="bib.nutter08"/>.</para>
     </sect2>
 
     <sect2 xml:id="con.thread-status">
@@ -93,7 +95,7 @@
     <sect2 xml:id="con.thread-exceptions">
       <title>Exceptions</title>
 
-      <para>A thread can raise an exception with the <literal>raise</literal> keyword, like any other piece of Ruby. <function>Thread#raise</function> accepts the same arguments as <literal>raise</literal>, but raises the exception in the thread represented by the receiver.</para>
+      <para>A thread can raise an exception with the <literal>raise</literal> keyword, like any other piece of Ruby. <function>Thread#raise</function> accepts the same arguments as <literal>raise</literal>, but raises the exception in the thread represented by the receiver. However, see the warning in <xref linkend="con.thread-termination"/> regarding this method.</para>
 
       <para>When an unhandled exception occurs in the main thread, Ruby prints the backtrace then exits. When another thread raises, but does not handle, an exception, its behaviour depends on an <emphasis>abort on exception</emphasis> flag.</para>
 

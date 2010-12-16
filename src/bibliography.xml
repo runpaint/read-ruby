@@ -652,6 +652,18 @@
       <pubdate>1998</pubdate>
     </biblioentry>
 
+    <biblioentry xml:id="bib.nutter08">
+      <abbrev>Nutter08</abbrev>
+      <author>
+        <personname>
+          <firstname>Charles</firstname><surname>Nutter</surname>
+        </personname>
+      </author>
+      <biblioid class="uri">http://blog.headius.com/2008/02/rubys-threadraise-threadkill-timeoutrb.html</biblioid>
+      <title>Ruby’s Thread#raise, Thread#kill, timeout.rb, and net/protocol.rb libraries are broken</title>
+      <pubdate>2008</pubdate>
+    </biblioentry>
+
     <biblioentry xml:id="bib.taivalsaari96">
       <abbrev>Taivalsaari96</abbrev>     
         <author>
