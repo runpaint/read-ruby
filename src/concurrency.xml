@@ -255,4 +255,18 @@
       </variablelist>
     </sect2>
   </sect1>
+
+  <sect1 xml:id="con.fibers">
+    <title>Fibers</title>
+
+    <para>Execution of blocks and methods always begins from their first statement. Each time, their local variables are initialised anew. If they need to retain state across calls, they must do so explicitly, using either global variables or variables defined in their enclosing scope. A <firstterm>fiber</firstterm>—a lightweight, semi-coroutine—provides an alternative approach. It is effectively a block whose execution can be suspended—passing control back to its caller. The caller may subsequently resume the fiber from the point at which it was suspended. A fiber, therefore, automatically maintains state across calls: its local variables are initialised only the first time it is resumed. Only one fiber may execute at any one time, so, like threads, they merely create the illusion of concurrency.</para>
+ 
+      <para>A <literal>Fiber</literal> object is created by passing a block to <function>Fiber.new</function>. The block is not called until the fiber is resumed.</para>
+
+      <para>Resuming a fiber that has not been resumed previously, executes the block from the beginning. If the block opts to pass control back to its caller, the fiber suspends itself, and execution jumps to the statement following that which resumed the fiber. If this fiber is resumed again, it will continue executing its block from where it left off last time. A fiber may repeat this process as often as it likes.</para>
+
+      <para>A fiber is resumed with <function>Fiber#resume</function>. It passes control back to its caller with <function>Fiber.yield</function>—which has no relation to the <literal>yield</literal> keyword. Any arguments supplied to <function>#resume</function> are passed to the fiber: if the fiber had not been resumed previously, they are passed in as block arguments; otherwise, they become the return value of the corresponding <function>Fiber.yield</function> invocation. Likewise, any arguments passed to <function>Fiber.yield</function> become the return value of the corresponding <function>Fiber#resume</function> invocation.</para>
+
+      <para>When the block exits, the fiber <emphasis>dies</emphasis>. Attempting to resume a dead fiber causes a <literal>FiberError</literal> to be raised. This exception will also be raised if a fiber is created in one thread but resumed from another.</para>
+  </sect1>
 </chapter>
