@@ -494,6 +494,41 @@
       </example>
     </sect2>
 
+    <sect2 xml:id="fil.flock">
+      <title>Locks</title>
+      
+      <para><function>File#flock(<replaceable>operation</replaceable>)</function> places or removes an advisory lock on the receiver’s file, where <replaceable>operation</replaceable> is a logical OR of the constants below. A lock is either <emphasis>exclusive</emphasis> or <emphasis>shared</emphasis>: the former may only be held by a single process for a given file; the latter may be held by multiple processes. A single file can only have one type of lock.</para>
+
+      <informaltable>
+	<thead>
+	  <tr>
+	    <th>Constant</th>
+	    <th>Meaning</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td><literal>File::LOCK_EX</literal></td>
+	    <td>Place an exclusive lock on the file.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>File::LOCK_NB</literal></td>
+	    <td>Don’t block when locking.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>File::LOCK_SH</literal></td>
+	    <td>Place a shared lock on the file.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>File::LOCK_UN</literal></td>
+	    <td>Remove the lock on the file.</td>
+	  </tr>
+	</tbody>
+      </informaltable>
+
+      <para><function>#flock</function> blocks if attempting to lock a file that has an incompatible lock, e.g. if a file has an exlcusive lock, another process that attempted to place an exclusive lock on the same file would block until the first process released its lock. Alternatively, if <replaceable>operation</replaceable> includes <literal>File::LOCK_NB</literal> and <function>#flock</function> would have blocked, <literal>false</literal> is returned immediately. Otherwise, <function>#flock</function> returns <literal>0</literal>. When all file descriptors associated with a locked file have been closed, the lock is automatically released.</para>
+    </sect2>
+
     <sect2 xml:id="fil.fnmatch">
       <title>Filename Matching</title>
       
