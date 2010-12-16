@@ -338,6 +338,13 @@
 	switches were given; <literal>1</literal> otherwise. Read‐only.</td>
 	<td>✖</td>
       </tr>
+      <tr>
+	<td><literal>$1</literal>–<literal>$<replaceable>n</replaceable></literal></td>
+	<td> </td>
+	<td><literal>String</literal></td>
+	<td>Text matched by the <replaceable>n</replaceable><superscript>th</superscript> capturing group in the last pattern match; <literal>nil</literal> if the match failed or there were fewer than <replaceable>n</replaceable> groups. Read‐only.</td>
+	<td>✔</td>
+      </tr>
     </tbody>
   </table>
 </appendix>
