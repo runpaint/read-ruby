@@ -19,6 +19,7 @@
 	<th><literal>English</literal> Name</th>
 	<th>Value</th>
 	<th>Meaning</th>
+	<th>Thread-local</th>
       </tr>
     </thead>
     <tbody>
@@ -27,19 +28,21 @@
 	<td><literal>$ARGV</literal></td>
 	<td><literal>Array</literal></td>
 	<td>Read‐only alias of <literal>ARGV</literal></td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$$</literal></td>
 	<td><literal>$PID</literal> / <literal>$PROCESS_ID</literal></td>
 	<td><literal>Fixnum</literal></td>
 	<td>ID of the current Ruby process. Read‐only.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$?</literal></td>
 	<td><literal>$CHILD_STATUS</literal></td>
 	<td><literal>nil</literal> or <literal>Process::Status</literal></td>
-	<td>Exit status of the last terminated process. Read‐only, 
-	thread‐local.</td>
+	<td>Exit status of the last terminated process. Read‐only.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$-d</literal></td>
@@ -48,6 +51,7 @@
 	<literal>false</literal></td>
 	<td rowspan="2">Whether Ruby was invoked with the <option>-d</option> 
 	or <option>--debug</option> switches. </td>
+	<td rowspan="2">✖</td>
       </tr>
       <tr>
 	<td><literal>$DEBUG</literal></td>
@@ -60,6 +64,7 @@
 	<td rowspan="2">Absolute filenames of files loaded with 
 	<function>Kernel.load</function> or 
 	<function>Kernel.require</function>. Read‐only.</td>
+	<td rowspan="2">✖</td>
       </tr>
       <tr>
 	<td><literal>$LOADED_FEATURES</literal></td>
@@ -73,6 +78,7 @@
 	<function>Kernel.load</function> or 
 	<function>Kernel.require</function>. Read‐only, but the contents of the 
 	<literal>Array</literal> can be modified.</td>
+	<td rowspan="3">✖</td>
       </tr>
       <tr>
 	<td><literal>$LOAD_PATH</literal></td>
@@ -88,6 +94,7 @@
 	<literal>-</literal> if the program was read from STDIN, or 
 	<literal>-e</literal> if <literal>ruby</literal> was supplied with the 
 	<literal>-e</literal> switch.</td>
+	<td rowspan="2">✖</td>
       </tr>
       <tr>
 	<td><literal>$PROGRAM_NAME</literal></td>
@@ -96,7 +103,8 @@
 	<td><literal>$SAFE</literal></td>
 	<td> </td>
 	<td><literal>Fixnum</literal>s</td>
-	<td>Current safe level. Thread‐local.</td>
+	<td>Current safe level.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$-w</literal></td>
@@ -109,6 +117,7 @@
 	<option>-W0</option> switch was supplied; <literal>false</literal>, 
 	otherwise. Assigning <literal>nil</literal> to this variable 
 	suppresses all warnings.</td>
+	<td rowspan="3">✖</td>
       </tr>
       <tr>
 	<td><literal>$-v</literal></td>
@@ -121,8 +130,8 @@
 	<td><literal>$ERROR_INFO</literal></td>
 	<td><literal>Exception</literal></td>
 	<td>Inside a <literal>rescue</literal> clause or after the 
-	<literal>rescue</literal> modifier holds the current exception. 
-	Thread‐local.</td>
+	<literal>rescue</literal> modifier holds the current exception.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$@</literal></td>
@@ -130,7 +139,8 @@
 	<td><literal>Array</literal> of <literal>String</literal>s</td>
 	<td>Inside a <literal>rescue</literal> clause or after the 
 	<literal>rescue</literal> modifier holds the stack trace of the current 
-	exception. Thread‐local. <remark>TODO: Xref from Exceptions</remark></td>
+	exception. <remark>TODO: Xref from Exceptions</remark></td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$_</literal></td>
@@ -138,25 +148,29 @@
 	<td><literal>String</literal></td>
 	<td>Last <literal>String</literal> read by 
 	<function>Kernel.gets</function> or 
-	<function>Kernel.readline</function>. Thread‐local, method‐local.</td>
+	<function>Kernel.readline</function>. Method‐local.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$&lt;</literal></td>
 	<td><literal>$DEFAULT_INPUT</literal></td>
 	<td><literal>ARGF</literal></td>
 	<td>Read‐only alias for <literal>ARGF</literal>.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$stdin</literal></td>
 	<td> </td>
 	<td><literal>IO</literal></td>
 	<td>Standard input stream.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$&gt;</literal></td>
 	<td rowspan="2"><literal>$DEFAULT_OUTPUT</literal></td>
 	<td rowspan="2"><literal>IO</literal>s</td>
 	<td rowspan="2">Standard output stream.</td>
+	<td rowspan="2">✖</td>
       </tr>
       <tr>
 	<td><literal>$stdout</literal></td>
@@ -166,6 +180,7 @@
 	<td> </td>
 	<td><literal>IO</literal></td>
 	<td>Standard error stream.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$FILENAME</literal></td>
@@ -174,6 +189,7 @@
 	<td>Filename of the file currently being read from 
 	<literal>ARGF</literal>; <literal>-</literal> if <literal>ARGF</literal> is 
 	empty or reading from <literal>STDIN</literal>. Read‐only.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$.</literal></td>
@@ -181,6 +197,7 @@
 	<td><literal>Fixnum</literal></td>
 	<td>Number of the last line read from the current input file in 
 	<literal>ARGF</literal>.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$/</literal></td>
@@ -190,6 +207,7 @@
 	<td rowspan="2">Input record separator. Default value is 
 	<literal>"\n"</literal>. Can be set with the <option>-0</option> 
 	switch.</td>
+	<td rowspan="2">✖</td>
       </tr>
       <tr>
 	<td><literal>$-0</literal></td>
@@ -202,6 +220,7 @@
 	<td>Appended to <function>Kernel.print</function> output if 
 	non‐<literal>nil</literal>. Default value is <literal>nil</literal>, or 
 	<literal>$/</literal> if the <option>-l</option> switch is given.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$,</literal></td>
@@ -212,6 +231,7 @@
 	<function>Kernel.print</function> and the default separator of 
 	<function>Array.join</function>. Equal to <literal>nil</literal> by 
 	default.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$;</literal></td>
@@ -223,6 +243,7 @@
 	<function>String#split</function>. Default value is 
 	<literal>nil</literal> or the argument to the <option>-F</option> 
 	switch.</td>
+	<td rowspan="2">✖</td>
       </tr>
       <tr>
 	<td><literal>$-F</literal></td>
@@ -235,41 +256,45 @@
 	<option>-n</option>/<option>-p</option> switches were given, holds the 
 	return value of <function>String#split</function> for the current input 
 	line.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$~</literal></td>
 	<td><literal>$MATCH_INFO</literal></td>
 	<td><literal>MatchData</literal> or <literal>nil</literal></td>
-	<td><literal>MatchData</literal> from the last regexp match. Thread‐ 
-	and method‐local.</td>
+	<td><literal>MatchData</literal> from the last regexp match. Method‐local.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$&amp;</literal></td>
 	<td><literal>$MATCH</literal></td>
 	<td><literal>String</literal></td>
-	<td>Text matched by last regexp match. Read‐only. Thread‐ and 
-	method‐local.</td>
+	<td>Text matched by last regexp match. Read‐only. Method‐local.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$`</literal></td>
 	<td><literal>$PREMATCH</literal></td>
 	<td><literal>String</literal></td>
 	<td>Text preceding the match of the last regexp match. 
-	Read‐only. Thread‐ and method‐local.</td>
+	Read‐only. Method‐local.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$'</literal></td>
 	<td><literal>$POSTMATCH</literal></td>
 	<td><literal>String</literal></td>
 	<td>Text following the match of the last regexp match. 
-	Read‐only. Thread‐ and method‐local.</td>
+	Read‐only. Method‐local.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$+</literal></td>
 	<td><literal>$LAST_PAREN_MATCH</literal></td>
 	<td><literal>String</literal></td>
 	<td>Text enclosed in the last successfully matched group of the last 
-	regexp match. Read‐only. Thread‐ and method‐local.</td>
+	regexp match. Read‐only. Method‐local.</td>
+	<td>✔</td>
       </tr>
       <tr>
 	<td><literal>$-a</literal></td>
@@ -277,6 +302,7 @@
 	<td><literal>true</literal> or <literal>false</literal></td>
 	<td><literal>true</literal> if the <option>-a</option> switch was 
 	given; <literal>false</literal> otherwise. Read‐only.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$-i</literal></td>
@@ -284,6 +310,7 @@
 	<td><literal>true</literal> or <literal>false</literal></td>
 	<td>Argument of the <option>-i</option> switch, if given; otherwise 
 	<literal>nil</literal>; <literal>false</literal> otherwise.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$-l</literal></td>
@@ -291,6 +318,7 @@
 	<td><literal>true</literal> or <literal>false</literal></td>
 	<td><literal>true</literal> if the <option>-l</option> switch was 
 	given; <literal>false</literal> otherwise. Read‐only.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$-p</literal></td>
@@ -298,6 +326,7 @@
 	<td><literal>true</literal> or <literal>false</literal></td>
 	<td><literal>true</literal> if the <option>-p</option> switch was 
 	given; <literal>false</literal> otherwise. Read‐only.</td>
+	<td>✖</td>
       </tr>
       <tr>
 	<td><literal>$-W</literal></td>
@@ -307,6 +336,7 @@
 	<option>-W0</option> switch was given; <literal>2</literal> if the 
 	<option>-w</option>, <option>-v</option>, or <option>--verbose</option> 
 	switches were given; <literal>1</literal> otherwise. Read‐only.</td>
+	<td>✖</td>
       </tr>
     </tbody>
   </table>
