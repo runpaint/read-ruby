@@ -91,6 +91,8 @@
     <sect2 xml:id="con.thread-exceptions">
       <title>Exceptions</title>
 
+      <para>A thread can raise an exception with the <literal>raise</literal> keyword, like any other piece of Ruby. <function>Thread#raise</function> accepts the same arguments as <literal>raise</literal>, but raises the exception in the thread represented by the receiver.</para>
+
       <para>When an unhandled exception occurs in the main thread, Ruby prints the backtrace then exits. When another thread raises, but does not handle, an exception, its behaviour depends on an <emphasis>abort on exception</emphasis> flag.</para>
 
       <para>If <emphasis>abort on exception</emphasis> is <literal>false</literal>, as it is by default, an unhandled exception causes a thread to terminate silently; when waited on—with either <function>Thread#join</function> or <function>Thread#value</function>—the exception is raised in the calling thread. If <emphasis>abort on exception</emphasis> is <literal>true</literal>, all threads behave like the main thread when encountering unhandled exceptions: they print its backtrace then cause the interpreter to exit.</para>
