@@ -11,73 +11,24 @@
   <sect1 xml:id="fil.file">
     <title>Files</title>
 
-    <para>
-      A file is an entity on a filesystem addressable by a <link
-        linkend="fil.file-paths">path</link>. It can be represented as an
-      instance of the <literal>File</literal> class, which provides a
-      high-level API for reading, writing to, and querying and manipulating
-      the metadata of, files.  <literal>File</literal> is a subclass of <link
-        linkend="io.io">IO</link>, so the latter’s methods are available in
-      addition to those defined by <literal>File</literal>.
-    </para>
+    <para>A file is an entity on a filesystem addressable by a <link linkend="fil.file-paths">path</link>. It can be represented as an instance of the <literal>File</literal> class, which provides a high-level API for reading, writing to, and querying and manipulating the metadata of, files.  <literal>File</literal> is a subclass of <link linkend="io.io">IO</link>, so the latter’s methods are available in addition to those defined by <literal>File</literal>.</para>
 
     <sect2 xml:id="fil.file-paths">
       <title>Paths</title>
 
-      <para>
-        A file’s <firstterm>path</firstterm> is a <literal>String</literal>
-        describing its location in the filesystem. It consists of one or more
-        <firstterm>components</firstterm>, which in the latter case are
-        separated with the <firstterm>path separator</firstterm>. On
-        non-Windows platforms the path separator is the solidus character.
-        Ruby expects paths to be given in the Unix-style, but automatically
-        uses the correct path separator for the platform it is running on.
-      </para>
+      <para>A file’s <firstterm>path</firstterm> is a <literal>String</literal> describing its location in the filesystem. It consists of one or more <firstterm>components</firstterm>, which in the latter case are separated with the <firstterm>path separator</firstterm>. On non-Windows platforms the path separator is the solidus character. Ruby expects paths to be given in the Unix-style, but automatically uses the correct path separator for the platform it is running on. </para>
 
-      <para>
-        We use the term <emphasis>path</emphasis> to refer either to a
-        <literal>String</literal>, whose contents is a path, or an object that
-        responds to <literal>:to_path</literal> with such a
-        <literal>String</literal>. A method that expects a path as an argument
-        will accept either of these representations.
-      </para>
+      <para>We use the term <emphasis>path</emphasis> to refer either to a <literal>String</literal>, whose contents is a path, or an object that responds to <literal>:to_path</literal> with such a <literal>String</literal>. A method that expects a path as an argument will accept either of these representations. </para>
 
-      <para>
-        <literal>File.path</literal> returns the non-normalised path of its
-        argument. If its argument is a <literal>String</literal>, it will be returned
-        as-is, otherwise the result of sending the argument
-        <literal>:to_path</literal> will be returned. The path associated with a
-        <literal>File</literal> object is returned by <literal>File#path</literal>.
-      </para>
+      <para><literal>File.path</literal> returns the non-normalised path of its argument. If its argument is a <literal>String</literal>, it will be returned as-is, otherwise the result of sending the argument <literal>:to_path</literal> will be returned. The path associated with a <literal>File</literal> object is returned by <literal>File#path</literal>. </para>
 
-      <para>
-        <literal>File.dirname</literal> returns the directory name of its
-        argument: all components other than the last. Conversely, the last
-        component of a filename is returned by
-        <literal>File.basename</literal>. The filename extension, e.g.
-        <literal>.txt</literal>, is returned by
-        <literal>File.extname</literal>. If these methods are given a path
-        without the requested component, they return the empty
-        <literal>String</literal>.  <literal>File.split</literal> returns a
-        two-element <literal>Array</literal> with the file’s dirname as the
-        first element, and its basename as the last.
-        <literal>File.join</literal> performs the inverse operation: given a
-        list of path components it joins them with the path separator into a
-        <literal>String</literal>.
-      </para>
+      <para><literal>File.dirname</literal> returns the directory name of its argument: all components other than the last. Conversely, the last component of a filename is returned by <literal>File.basename</literal>. The filename extension, e.g. <literal>.txt</literal>, is returned by <literal>File.extname</literal>. If these methods are given a path without the requested component, they return the empty <literal>String</literal>.  <literal>File.split</literal> returns a two-element <literal>Array</literal> with the file’s dirname as the first element, and its basename as the last. <literal>File.join</literal> performs the inverse operation: given a list of path components it joins them with the path separator into a <literal>String</literal>. </para>
 
       <remark>This graf wants to be a child of the table</remark>
-      <para>
-        In the table that follows, each column indicates the output of the
-        corresponding <literal>File</literal> class method for the path given
-        in the first column.
-      </para>
+      <para>In the table that follows, each column indicates the output of the corresponding <literal>File</literal> class method for the path given in the first column.</para>
 
       <table>
-        <caption>
-          Examples of how path components are interpreted by the named class
-          methods of <literal>File</literal>
-        </caption>
+        <caption>Examples of how path components are interpreted by the named class methods of <literal>File</literal> </caption>
         <thead>
           <tr>
             <th><literal>path</literal></th>
@@ -119,178 +70,77 @@
         </tbody>
       </table>
 
-      <para>
-        A <firstterm>relative path</firstterm> is a path given in terms of
-        another path, as opposed to an <firstterm>absolute path</firstterm>
-        which stands alone. On Unix-like systems, the former are paths that do
-        not begin with a solidus, and the latter are the opposite.
-      </para>
+      <para>A <firstterm>relative path</firstterm> is a path given in terms of another path, as opposed to an <firstterm>absolute path</firstterm> which stands alone. On Unix-like systems, the former are paths that do not begin with a solidus, and the latter are the opposite.</para>
 
-      <para>
-        A relative path may be expanded to an absolute path with
-        <literal>File.expand_path</literal>. Absolute paths are returned
-        as-is.  Otherwise, they are assumed to be relative to the current
-        directory. If an optional second argument is given, it names the
-        directory the first argument is relative to. If the relative path
-        begins with a tilde, it is interpreted as relative to the current
-        user’s home directory (as returned by <literal>ENV['HOME']</literal>).
-        If the relative path begins with a tilde followed by a username, it is
-        relative to the named user’s home directory.
-        <literal>File.absolute_path</literal> behaves in the same fashion
-        except it doesn’t treat tildes specially, i.e. it interprets a path of
-        <literal>~/glark</literal> as <literal>./~/glark</literal>.
-      </para>
+      <para>A relative path may be expanded to an absolute path with <literal>File.expand_path</literal>. Absolute paths are returned as-is.  Otherwise, they are assumed to be relative to the current directory. If an optional second argument is given, it names the directory the first argument is relative to. If the relative path begins with a tilde, it is interpreted as relative to the current user’s home directory (as returned by <literal>ENV['HOME']</literal>). If the relative path begins with a tilde followed by a username, it is relative to the named user’s home directory. <literal>File.absolute_path</literal> behaves in the same fashion except it doesn’t treat tildes specially, i.e. it interprets a path of <literal>~/glark</literal> as <literal>./~/glark</literal>. </para>
 
       <example xml:id="ex.file-expand-path">
-        <title><literal>File.expand_path</literal> resolves relative paths
-          into absolute paths</title>
+        <title><literal>File.expand_path</literal> resolves relative paths into absolute paths</title>
 
-        <programlisting><xi:include href="examples/file-expand-path.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include href="examples/file-expand-path.rb" parse="text"/></programlisting>
       </example>
 
-      <para>
-        Neither <literal>File.absolute_path</literal> nor
-        <literal>File.expand_path</literal> resolve relative paths by
-        traversing the filesystem: at most, they request the current working
-        directory or a user’s home directory from the environment. An
-        implication is that they will quite happily return paths that do not
-        exist on the filesystem.  <literal>File.realpath</literal> is an
-        alternative. It creates an absolute path from a relative path by
-        interrogating the filesystem, and following symbolic links if
-        necessary. It resolves relative to the current working directory, or
-        the directory given by the optional second argument. An exception is
-        raised if the absolute path it resolves does not exist.
-        <literal>File.realdirpath</literal> accepts the same arguments, and
-        performs the same operation, but allows the last component of the path
-        to be non-existent.
-      </para>
+      <para>Neither <literal>File.absolute_path</literal> nor <literal>File.expand_path</literal> resolve relative paths by traversing the filesystem: at most, they request the current working directory or a user’s home directory from the environment. An implication is that they will quite happily return paths that do not exist on the filesystem.  <literal>File.realpath</literal> is an alternative. It creates an absolute path from a relative path by interrogating the filesystem, and following symbolic links if necessary. It resolves relative to the current working directory, or the directory given by the optional second argument. An exception is raised if the absolute path it resolves does not exist. <literal>File.realdirpath</literal> accepts the same arguments, and performs the same operation, but allows the last component of the path to be non-existent. </para>
 
       <example xml:id="ex.file-realpath">
-        <title><literal>File.realpath</literal> and
-          <literal>File.realdirpath</literal> resolve relative paths by
-          walking the filesystem</title>
+        <title><literal>File.realpath</literal> and <literal>File.realdirpath</literal> resolve relative paths by walking the filesystem</title>
 
-        <programlisting><xi:include href="examples/file-realpath.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include href="examples/file-realpath.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="fil.file-read">
       <title>Reading</title>
       
-      <para>
-        Reading a file is the process of retrieving its contents. It can be
-        achieved by passing a path argument to <literal>File.read</literal>
-        which returns the contents as a <literal>String</literal>. An optional
-        second argument specifies the number of bytes to read, and an optional
-        third argument specifies the offset from which to begin reading. An
-        <link linkend="io.options-hash">options Hash</link> may be supplied as
-        the final argument.  <literal>File.binread</literal> takes the same
-        arguments but reads the file in <link linkend="io.binmode">binary
-          mode</link>.
-      </para>
+      <para>Reading a file is the process of retrieving its contents. It can be achieved by passing a path argument to <literal>File.read</literal> which returns the contents as a <literal>String</literal>. An optional second argument specifies the number of bytes to read, and an optional third argument specifies the offset from which to begin reading. An <link linkend="io.options-hash">options Hash</link> may be supplied as the final argument.  <literal>File.binread</literal> takes the same arguments but reads the file in <link linkend="io.binmode">binary mode</link>. </para>
 
       <example xml:id="ex.file-read">
         <title>Reading a file with <literal>File.read</literal></title>
 
-        <programlisting><xi:include href="examples/file-read.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include href="examples/file-read.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="fil.file-open">
       <title>Opening</title>
       
-      <para>
-        Opening a file enables one to read from, write to, or otherwise
-        manipulate and query, the resource. <literal>Kernel.open</literal>
-        opens the file with the given path, returning a corresponding
-        <literal>File</literal> object. It is typically used with a block,
-        which receives the opened <literal>File</literal> object as an
-        argument. Having executed the block, the file is automatically
-        closed, even if the block raises an exception. The block-form has a
-        return value equal to that of the block; otherwise a new
-        <literal>File</literal> object is returned. Both forms accept an <link
-          linkend="io.options-hash">options Hash</link> as their final
-        argument.
-      </para>
+      <para>Opening a file enables one to read from, write to, or otherwise manipulate and query, the resource. <literal>Kernel.open</literal> opens the file with the given path, returning a corresponding <literal>File</literal> object. It is typically used with a block, which receives the opened <literal>File</literal> object as an argument. Having executed the block, the file is automatically closed, even if the block raises an exception. The block-form has a return value equal to that of the block; otherwise a new <literal>File</literal> object is returned. Both forms accept an <link linkend="io.options-hash">options Hash</link> as their final argument.</para>
 
       <example xml:id="ex.kernel-open-opts">
         <title>Creating, appending to, and reading from a file</title>
 
-        <programlisting><xi:include href="examples/kernel-open-opts.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include href="examples/kernel-open-opts.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="fil.file-exists">
       <title>Existence</title>
       
-      <para>
-        It is often necessary to determine whether a given file exists, as
-        methods that accept path arguments may raise exceptions otherwise.  To
-        this end Ruby provides the predicate <literal>File.exists?</literal>,
-        and its alias <literal>File.exist?</literal>.
-      </para>
+      <para>It is often necessary to determine whether a given file exists, as methods that accept path arguments may raise exceptions otherwise.  To this end Ruby provides the predicate <literal>File.exists?</literal>, and its alias <literal>File.exist?</literal>. </para>
     </sect2>
 
     <sect2 xml:id="fil.file-delete">
       <title>Deletion</title>
       
-      <para>
-        Files may be deleted by supplying a list of their paths as arguments
-        to <literal>File.delete</literal>, or its alias
-        <literal>File.unlink</literal>. An <literal>Integer</literal> is
-        returned indicating how many files were deleted.
-        <literal>File.truncate</literal>, which is not available on all
-        platforms, truncates a given file to a given number of bytes. It
-        expects a path as its first argument, and the number of bytes as an
-        <literal>Integer</literal> for its second.
-        <literal>File#truncate</literal> behaves in the same fashion, but
-        truncates its receiver to the size given as its sole argument.
-      </para>
+      <para>Files may be deleted by supplying a list of their paths as arguments to <literal>File.delete</literal>, or its alias <literal>File.unlink</literal>. An <literal>Integer</literal> is returned indicating how many files were deleted. <literal>File.truncate</literal>, which is not available on all platforms, truncates a given file to a given number of bytes. It expects a path as its first argument, and the number of bytes as an <literal>Integer</literal> for its second. <literal>File#truncate</literal> behaves in the same fashion, but truncates its receiver to the size given as its sole argument. </para> 
     </sect2>
 
     <sect2 xml:id="fil.file-rename">
       <title>Renaming</title>
       
-      <para>
-        Files may be renamed by invoking <literal>File.rename</literal> with
-        their current path as the first argument, and their desired path as
-        the second.
-      </para>
+      <para>Files may be renamed by invoking <literal>File.rename</literal> with their current path as the first argument, and their desired path as the second.</para>
     </sect2>
 
     <sect2 xml:id="fil.file-size">
       <title>Size</title>
       
-      <para>
-        A file that exists has a size. The <literal>File.size</literal> method
-        returns the size of its argument, and <literal>File#size</literal>
-        returns that of its receiver. In both cases, the size is an
-        <literal>Integer</literal> and in bytes. The
-        <literal>File.size?</literal> predicate returns the size of the file
-        named by its argument if it exists and has a non-zero size, or
-        otherwise: <literal>nil</literal>. Similarly,
-        <literal>File.zero?</literal> returns <literal>true</literal> if the
-        file named by its argument exists and has a size of zero;
-        <literal>false</literal> otherwise.
-      </para>
+      <para>A file that exists has a size. The <literal>File.size</literal> method returns the size of its argument, and <literal>File#size</literal> returns that of its receiver. In both cases, the size is an <literal>Integer</literal> and in bytes. The <literal>File.size?</literal> predicate returns the size of the file named by its argument if it exists and has a non-zero size, or otherwise: <literal>nil</literal>. Similarly, <literal>File.zero?</literal> returns <literal>true</literal> if the file named by its argument exists and has a size of zero; <literal>false</literal> otherwise.</para>
     </sect2>
 
     <sect2 xml:id="fil.file-comparison">
       <title>Comparison</title>
       
-      <para>
-        The <literal>File.identical?</literal> predicate is used to determine
-        whether the two files it is given as arguments are the same: returning
-        <literal>true</literal> if they are, <literal>false</literal>
-        otherwise. Two files are considered identical if their paths normalise
-        to the same path, or if one or both are symbolic links with identical
-        targets.  It is not sufficient that two files merely contain the same
-        content for this method to succeed.
-      </para>
+      <para>The <literal>File.identical?</literal> predicate is used to determine whether the two files it is given as arguments are the same: returning <literal>true</literal> if they are, <literal>false</literal> otherwise. Two files are considered identical if their paths normalise to the same path, or if one or both are symbolic links with identical targets. It is not sufficient that two files merely contain the same content for this method to succeed. </para>
     </sect2>
 
     <sect2 xml:id="fil.file-stat">
@@ -311,10 +161,7 @@
         <tbody>
           <tr>
             <td>Last access time</td>
-            <td><literal>File::Stat#atime</literal> /
-                <literal>File.atime</literal> /
-                <literal>File#atime</literal>
-            </td>
+            <td><literal>File::Stat#atime</literal> / <literal>File.atime</literal> / <literal>File#atime</literal> </td>
             <td><literal>Time</literal></td>
             <td><literal>?A</literal></td>
           </tr>
@@ -333,9 +180,7 @@
           <tr>
             <td>Inode change time</td>
             <td>
-              <literal>File::Stat#ctime</literal> /
-              <literal>File.ctime</literal> / <literal>File#ctime</literal>
-            </td>
+              <literal>File::Stat#ctime</literal> / <literal>File.ctime</literal> / <literal>File#ctime</literal> </td>
             <td><literal>Time</literal></td>
             <td><literal>?C</literal></td>
           </tr>
@@ -383,9 +228,7 @@
           </tr>
           <tr>
             <td>Last modify time</td>
-            <td><literal>File::Stat#mtime</literal> /
-              <literal>File.mtime</literal> /
-              <literal>File#mtime</literal></td>
+            <td><literal>File::Stat#mtime</literal> / <literal>File.mtime</literal> / <literal>File#mtime</literal></td>
             <td><literal>Time</literal></td>
             <td><literal>?M</literal></td>
           </tr>
@@ -415,10 +258,7 @@
           </tr>
           <tr>
             <td>Size (bytes)</td>
-            <td>
-                <literal>File::Stat#size</literal> /
-                <literal>File#size</literal> / <literal>File.size</literal>
-            </td>
+            <td><literal>File::Stat#size</literal> / <literal>File#size</literal> / <literal>File.size</literal> </td>
             <td><literal>Fixnum</literal></td>
             <td> </td>
           </tr>
@@ -435,28 +275,10 @@
     <sect2 xml:id="fil.file-type">
       <title>Types</title>
       
-      <para>
-        To determine whether a given file is of a given type, one may use the
-        appropriate predicate method of the <literal>File</literal> class. For
-        example, <literal>File.directory?</literal> determines whether its argument is
-        a directory. Alternatively, <literal>File::Stat#ftype</literal> returns a
-        <literal>String</literal> identifying the type of the represented file. In the
-        case of a directory, <literal>#ftype</literal> returns <literal>directory</literal>.
-        These two approaches are summarised in the table that follows.
-      </para>
+      <para>To determine whether a given file is of a given type, one may use the appropriate predicate method of the <literal>File</literal> class. For example, <literal>File.directory?</literal> determines whether its argument is a directory. Alternatively, <literal>File::Stat#ftype</literal> returns a <literal>String</literal> identifying the type of the represented file. In the case of a directory, <literal>#ftype</literal> returns <literal>directory</literal>. These two approaches are summarised in the table that follows. </para>
 
       <remark>This graf wants to be a descendant of the table</remark>
-      <para>
-        In the table below, the
-        <emphasis><literal>File::Stat#ftype</literal></emphasis> column
-        contains the <literal>String</literal> that method returns for a file
-        of the corresponding type.  <emphasis>Predicate</emphasis> is a method
-        that expects a path as argument, returning <literal>true</literal> iff
-        the named file is of the corresponding type. The
-        <emphasis>Creation</emphasis> column specifies, where possible, how a
-        file of the corresponding type may be created in Ruby.  Examples
-        assume a Linux/Debian platform.
-      </para>
+      <para>In the table below, the <emphasis><literal>File::Stat#ftype</literal></emphasis> column contains the <literal>String</literal> that method returns for a file of the corresponding type.  <emphasis>Predicate</emphasis> is a method that expects a path as argument, returning <literal>true</literal> iff the named file is of the corresponding type. The <emphasis>Creation</emphasis> column specifies, where possible, how a file of the corresponding type may be created in Ruby. Examples assume a Linux/Debian platform. </para>
 
       <table>
         <caption>Types of file Ruby knows about</caption>
@@ -542,26 +364,10 @@
     <sect2 xml:id="fil.permissions">
       <title>Permissions</title>
 
-      <para>
-        The permission bits associated with a file may be retrieved from the
-        corresponding <literal>File::Stat</literal> object. The fields of
-        interest are described below. Be aware that on
-        non-<acronym>POSIX</acronym> systems the semantics of file permissions
-        are quite different, and are likely to be less granular. To
-        compensate, on these disadvantaged platforms Ruby attempts to
-        synthesize a numeric mode such that it is broadly similar to what
-        POSIX requires. However, given the lack of granularity and other
-        incompatibilities, these factitious modes are cumbersome and
-        error-prone. It is therefore recommended that the permission bits are
-        treated as opaque, as far as possible, and the predicates described
-        later are used instead.
-      </para>
+      <para>The permission bits associated with a file may be retrieved from the corresponding <literal>File::Stat</literal> object. The fields of interest are described below. Be aware that on non-<acronym>POSIX</acronym> systems the semantics of file permissions are quite different, and are likely to be less granular. To compensate, on these disadvantaged platforms Ruby attempts to synthesize a numeric mode such that it is broadly similar to what POSIX requires. However, given the lack of granularity and other incompatibilities, these factitious modes are cumbersome and error-prone. It is therefore recommended that the permission bits are treated as opaque, as far as possible, and the predicates described later are used instead.</para>
 
       <table>
-        <caption>
-            Permission and ownership attributes of
-            <literal>File::Stat</literal> objects
-          </caption>
+        <caption>Permission and ownership attributes of <literal>File::Stat</literal> objects </caption>
         <thead>
           <tr>
             <th>Attribute</th>
@@ -588,60 +394,17 @@
         </tbody>
       </table>
 
-      <para>
-        The permissions of a file may be changed with
-        <literal>File.chmod</literal> by providing the new permission bits as
-        the first argument, and a list of files as the subsequent arguments.
-        Each file listed has its permissions changed accordingly. The meaning
-        of the permission bits is platform-specific, but on Unix-like systems
-        they correspond to the numeric mode understood by
-        <literal>chmod(1)</literal>. Some systems, such as the
-        <acronym>BSD</acronym>s, support a variant of <literal>chmod</literal>
-        that does not follow symbolic links, therefore acts upon the link
-        rather than its target. If available, Ruby exposes this functionality
-        via <literal>File.lchmod</literal>, which takes the same arguments as
-        <literal>File.chmod</literal>. <literal>File</literal> also provides
-        the instance methods <literal>File#chmod</literal> and
-        <literal>File#lchmod</literal>, which require the permission bits to
-        assign to their receiver as their sole argument.
-      </para>
+      <para>The permissions of a file may be changed with <literal>File.chmod</literal> by providing the new permission bits as the first argument, and a list of files as the subsequent arguments. Each file listed has its permissions changed accordingly. The meaning of the permission bits is platform-specific, but on Unix-like systems they correspond to the numeric mode understood by <literal>chmod(1)</literal>. Some systems, such as the <acronym>BSD</acronym>s, support a variant of <literal>chmod</literal> that does not follow symbolic links, therefore acts upon the link rather than its target. If available, Ruby exposes this functionality via <literal>File.lchmod</literal>, which takes the same arguments as <literal>File.chmod</literal>. <literal>File</literal> also provides the instance methods <literal>File#chmod</literal> and <literal>File#lchmod</literal>, which require the permission bits to assign to their receiver as their sole argument. </para>
 
-      <para>
-        The owner and group of a file may be changed-although the former
-        requires root permissions-with <literal>File.chown</literal>. It takes
-        a numeric user ID, and numeric group ID, as the first and second
-        arguments, respectively, and a list of files as the subsequent
-        arguments. The ownership of each file listed that the user has
-        permission to change is adjusted accordingly.
-        <literal>File.lchown</literal> functions similarly, but does not
-        follow symlinks. Its availability mirrors that of
-        <literal>File.lchmod</literal>. The instance method,
-        <literal>File#chown</literal>, requires a numeric user ID, and numeric
-        group ID, as its arguments, which it applies to its receiver.
-      </para>
+      <para>The owner and group of a file may be changed-although the former requires root permissions-with <literal>File.chown</literal>. It takes a numeric user ID, and numeric group ID, as the first and second arguments, respectively, and a list of files as the subsequent arguments. The ownership of each file listed that the user has permission to change is adjusted accordingly. <literal>File.lchown</literal> functions similarly, but does not follow symlinks. Its availability mirrors that of <literal>File.lchmod</literal>. The instance method, <literal>File#chown</literal>, requires a numeric user ID, and numeric group ID, as its arguments, which it applies to its receiver. </para>
 
-      <para>
-        The umask value of the current process is set by supplying
-        <literal>File.umask</literal> with the new value as an
-        <literal>Integer</literal> argument. It returns the previous umask
-        value. When called without arguments, <literal>File.umask</literal>
-        returns the current umask.
-      </para>
+      <para>The umask value of the current process is set by supplying <literal>File.umask</literal> with the new value as an <literal>Integer</literal> argument. It returns the previous umask value. When called without arguments, <literal>File.umask</literal> returns the current umask.</para>
 
       <remark>This graft wants to be a descendant of the table</remark>
-      <para>
-        In the table below, methods take a filename as argument and return either
-        <literal>true</literal> or <literal>false</literal> unless stated
-        otherwise.  The
-        <emphasis><literal>Kernel.test</literal></emphasis> column
-        indicates the corresponding command for use with
-        <literal>test</literal>.
-      </para>
+      <para>In the table below, methods take a filename as argument and return either <literal>true</literal> or <literal>false</literal> unless stated otherwise. The <emphasis><literal>Kernel.test</literal></emphasis> column indicates the corresponding command for use with <literal>test</literal>.</para>
 
       <table>
-        <caption>
-            Permissions predicate methods of the <literal>File</literal> class
-        </caption>
+        <caption>Permissions predicate methods of the <literal>File</literal> class </caption>
         <thead>
           <tr>
             <th>Predicate</th>
@@ -697,14 +460,12 @@
           </tr>
           <tr>
             <td><literal>File.world_readable?</literal></td>
-            <td>Readable by others? (Returns permission bits or
-                <literal>nil</literal>)</td>
+            <td>Readable by others? (Returns permission bits or <literal>nil</literal>)</td>
             <td> </td>
           </tr>
           <tr>
             <td><literal>File.world_writable?</literal></td>
-            <td>Writable by others? (Returns permission bits or
-              <literal>nil</literal>)</td>
+            <td>Writable by others? (Returns permission bits or <literal>nil</literal>)</td>
             <td> </td>
           </tr>
           <tr>
@@ -724,49 +485,25 @@
     <sect2 xml:id="fil.links">
       <title>Links</title>
 
-      <para>
-        On platforms that support symlinks, <literal>File.symlink</literal>
-        will create a link to the file named as its first argument, with the
-        name given as its second. <literal>File.link</literal> takes the same
-        arguments, but creates hard links instead. The
-        <literal>File.symlink?</literal> predicate can be used to test whether
-        its argument is a symlink, and <literal>File.readlink</literal>
-        returns the target of a given link.
-      </para>
+      <para>On platforms that support symlinks, <literal>File.symlink</literal> will create a link to the file named as its first argument, with the name given as its second. <literal>File.link</literal> takes the same arguments, but creates hard links instead. The <literal>File.symlink?</literal> predicate can be used to test whether its argument is a symlink, and <literal>File.readlink</literal> returns the target of a given link. </para>
 
       <example xml:id="ex.file-symlink">
-        <title>A symbolic link can be created with
-          <literal>File.symlink</literal></title>
+        <title>A symbolic link can be created with <literal>File.symlink</literal></title>
 
-        <programlisting><xi:include href="examples/file-symlink.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include href="examples/file-symlink.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="fil.fnmatch">
       <title>Filename Matching</title>
       
-      <para>
-        <literal>File.fnmatch?</literal>, and its alias
-        <literal>File.fnmatch</literal>, determine whether a given <link
-          linkend="fil.dir-glob">globbing pattern</link> matches a given
-        filename. The pattern is given as the first argument, and the pathname
-        as the second. The optional third argument is a bitmask of flags,
-        which are explained below in <xref linkend="fil.dir-glob"/>. If the
-        pathname matches the pattern, <literal>true</literal> is returned;
-        otherwise <literal>false</literal>.
-      </para>
+      <para><literal>File.fnmatch?</literal>, and its alias <literal>File.fnmatch</literal>, determine whether a given <link linkend="fil.dir-glob">globbing pattern</link> matches a given filename. The pattern is given as the first argument, and the pathname as the second. The optional third argument is a bitmask of flags, which are explained below in <xref linkend="fil.dir-glob"/>. If the pathname matches the pattern, <literal>true</literal> is returned; otherwise <literal>false</literal>.</para>
     </sect2>
 
     <sect2 xml:id="fil.kernel-test">
       <title><literal>Kernel.test</literal></title>
 
-      <para>
-        <literal>Kernel.test</literal> performs a given test on a given file. It
-        accepts 2–3 arguments, the first of which is a single character
-        command, and the remainder are the files on which to perform the
-        test.
-      </para>
+      <para><literal>Kernel.test</literal> performs a given test on a given file. It accepts 2–3 arguments, the first of which is a single character command, and the remainder are the files on which to perform the test. </para>
 
       <table>
         <caption>Commands supported by <literal>Kernel.test</literal></caption>
@@ -949,15 +686,13 @@
           </tr>
           <tr>
             <td><literal>?&lt;</literal></td>
-            <td>Is the modification time of the first operand prior to that of
-                the second?</td>
+            <td>Is the modification time of the first operand prior to that of the second?</td>
             <td><literal>true</literal> or <literal>false</literal></td>
             <td>2</td>
           </tr>
           <tr>
             <td><literal>?&gt;</literal></td>
-            <td>Is the modification time of the first operand after that of
-                the second?</td>
+            <td>Is the modification time of the first operand after that of the second?</td>
             <td><literal>true</literal> or <literal>false</literal></td>
             <td>2</td>
           </tr>
@@ -969,236 +704,102 @@
   <sect1 xml:id="fil.dir">
     <title>Directories</title>
 
-    <para>
-      Directory streams are represented by the <literal>Dir</literal> class.
-      <literal>Dir</literal> is neither a subclass of <literal>File</literal>
-      nor <literal>IO</literal>. As with files, directories are identified by
-      pathnames which may be absolute or relative. The pathname
-      <literal>.</literal> refers to the <link
-        linkend="fil.working-directory">current working directory</link>, and
-      <literal>..</literal> its parent. The pathname associated with a
-      <literal>Dir</literal> object is returned by
-      <literal>Dir#path</literal>, or its alias
-      <literal>Dir#to_path</literal>.
-    </para>
+    <para>Directory streams are represented by the <literal>Dir</literal> class. <literal>Dir</literal> is neither a subclass of <literal>File</literal> nor <literal>IO</literal>. As with files, directories are identified by pathnames which may be absolute or relative. The pathname <literal>.</literal> refers to the <link linkend="fil.working-directory">current working directory</link>, and <literal>..</literal> its parent. The pathname associated with a <literal>Dir</literal> object is returned by <literal>Dir#path</literal>, or its alias <literal>Dir#to_path</literal>. </para>
 
     <sect2 xml:id="fil.working-directory">
       <title>Working Directory</title>
 
-      <para>
-        A Ruby process has the notion of a <firstterm>current working
-          directory</firstterm>, an absolute directory path from which
-        relative paths are resolved. This is returned by
-        <literal>Dir.pwd</literal>, or its alias <literal>Dir.getwd</literal>,
-        as a <literal>String</literal>. It can be changed by invoking
-        <literal>Dir.chdir</literal> with the new working directory as an
-        argument. If the argument is omitted, it defaults to
-        <literal>ENV['HOME']</literal> or <literal>ENV['LOGDIR']</literal>,
-        whichever is set.
-      </para>
+      <para>A Ruby process has the notion of a <firstterm>current working directory</firstterm>, an absolute directory path from which relative paths are resolved. This is returned by <literal>Dir.pwd</literal>, or its alias <literal>Dir.getwd</literal>, as a <literal>String</literal>. It can be changed by invoking <literal>Dir.chdir</literal> with the new working directory as an argument. If the argument is omitted, it defaults to <literal>ENV['HOME']</literal> or <literal>ENV['LOGDIR']</literal>, whichever is set. </para>
 
-      <para>
-        If <literal>Dir.chdir</literal> is called with a block, it changes the
-        working directory as before, but resets it to its original value at
-        the end of the block. The block is passed the new directory as an
-        argument, and its return value becomes that of
-        <literal>Dir.chdir</literal>. These blocks may be nested, but the
-        official documentation cautions that in multi-threaded programs a
-        thread must not open a <literal>Dir.chdir</literal> block while
-        another thread is inside one.
-      </para>
+      <para>If <literal>Dir.chdir</literal> is called with a block, it changes the working directory as before, but resets it to its original value at the end of the block. The block is passed the new directory as an argument, and its return value becomes that of <literal>Dir.chdir</literal>. These blocks may be nested, but the official documentation cautions that in multi-threaded programs a thread must not open a <literal>Dir.chdir</literal> block while another thread is inside one. </para>
     </sect2>
 
     <sect2 xml:id="fil.home-directory">
       <title>Home Directory</title>
       
-      <para>
-        The home directory of the current user is returned by
-        <literal>Dir.home</literal>. This is the value of
-        <literal>ENV['HOME']</literal>, or the result of expanding
-        <literal>~</literal>.  The home directory of an arbitrary user can be
-        obtained by passing their username as an argument.  An
-        <literal>ArgumentError</literal> is raised if that user does not
-        exist.
-      </para>
+      <para>The home directory of the current user is returned by <literal>Dir.home</literal>. This is the value of <literal>ENV['HOME']</literal>, or the result of expanding <literal>~</literal>.  The home directory of an arbitrary user can be obtained by passing their username as an argument. An <literal>ArgumentError</literal> is raised if that user does not exist. </para>
     </sect2>
 
     <sect2 xml:id="fil.dir-init">
       <title>Instantiation</title>
       
-      <para>
-        A <literal>Dir</literal> object can be instantiated by supplying
-        <literal>Dir.new</literal> with a directory name argument.
-        <literal>Dir.open</literal> behaves the same way, but if its supplied
-        with a block, it yields the new <literal>Dir</literal> object to the
-        block, then ensures it is closed when the block finishes. The return
-        value of this form is that of the block.
-      </para>
+      <para>A <literal>Dir</literal> object can be instantiated by supplying <literal>Dir.new</literal> with a directory name argument. <literal>Dir.open</literal> behaves the same way, but if its supplied with a block, it yields the new <literal>Dir</literal> object to the block, then ensures it is closed when the block finishes. The return value of this form is that of the block. </para>
 
-      <para>
-        Both forms assume the default filesystem encoding, but this can be
-        overridden by supplying a second argument of <literal>encoding:
-          <replaceable>encoding</replaceable></literal>, where
-        <replaceable>encoding</replaceable> is the name of an encoding as a
-        <literal>String</literal> or an <literal>Encoding</literal> object.
-      </para>
+      <para>Both forms assume the default filesystem encoding, but this can be overridden by supplying a second argument of <literal>encoding: <replaceable>encoding</replaceable></literal>, where <replaceable>encoding</replaceable> is the name of an encoding as a <literal>String</literal> or an <literal>Encoding</literal> object. </para>
 
-      <para>
-        If the block form is not used, the directory handle should be closed
-        explicitly with <literal>Dir#close</literal>.
-      </para>
+      <para>If the block form is not used, the directory handle should be closed explicitly with <literal>Dir#close</literal>.</para>
     </sect2>
 
     <sect2 xml:id="fil.directory-entries">
       <title>Entries</title>
       
-      <para>
-        A directory’s <firstterm>entries</firstterm> are the names of the
-        files and other directories which it contains. On a Unix-like system
-        the first two entries for every directory are <literal>.</literal> and
-        <literal>..</literal>, which refer to the current directory and its
-        parent directory, respectively.
-      </para>
+      <para>A directory’s <firstterm>entries</firstterm> are the names of the files and other directories which it contains. On a Unix-like system the first two entries for every directory are <literal>.</literal> and <literal>..</literal>, which refer to the current directory and its parent directory, respectively. </para>
 
-      <para>
-        <literal>Dir.entries</literal> returns the entries of the directory
-        named by its argument as an <literal>Array</literal> of
-        <literal>String</literal>s, or raises a
-        <literal>SystemCallError</literal> if it doesn’t exist.
-        <literal>Dir.foreach</literal> also accepts a directory name as an
-        argument, but returns an <literal>Enumerator</literal> of its entries.
-        If called with a block, <literal>Dir.foreach</literal> yields each
-        entry in turn.
-      </para>
+      <para><literal>Dir.entries</literal> returns the entries of the directory named by its argument as an <literal>Array</literal> of <literal>String</literal>s, or raises a <literal>SystemCallError</literal> if it doesn’t exist. <literal>Dir.foreach</literal> also accepts a directory name as an argument, but returns an <literal>Enumerator</literal> of its entries. If called with a block, <literal>Dir.foreach</literal> yields each entry in turn. </para>
 
-      <para>
-        The entries of a directory represented by a <literal>Dir</literal>
-        object, are returned by <literal>Dir#each</literal>. An
-        <literal>Enumerator</literal> is returned if no block is given,
-        otherwise each entry is yielded in turn.  Indeed,
-        <literal>Dir</literal> mixes-in the <literal>Enumerable</literal>
-        module, so all of its methods are available for manipulating these
-        entries.
-      </para>
+      <para>The entries of a directory represented by a <literal>Dir</literal> object, are returned by <literal>Dir#each</literal>. An <literal>Enumerator</literal> is returned if no block is given, otherwise each entry is yielded in turn.  Indeed, <literal>Dir</literal> mixes-in the <literal>Enumerable</literal> module, so all of its methods are available for manipulating these entries.</para>
 
-      <para>
-        Alternatively, a <literal>Dir</literal> instance can be treated like
-        an <literal>Enumerator</literal> by calling
-        <literal>Dir#read</literal> to return the next entry.
-        <literal>nil</literal> is returned when no entries remain.
-        <literal>Dir#rewind</literal> resets the stream such that the next
-        call to <literal>Dir#read</literal> will return the first entry again.
-      </para>
+      <para>Alternatively, a <literal>Dir</literal> instance can be treated like an <literal>Enumerator</literal> by calling <literal>Dir#read</literal> to return the next entry. <literal>nil</literal> is returned when no entries remain. <literal>Dir#rewind</literal> resets the stream such that the next call to <literal>Dir#read</literal> will return the first entry again. </para>
     </sect2>
 
     <sect2 xml:id="fil.creating-dir">
       <title>Creation</title>
       
-      <para>
-        A directory can be created by supplying its name as an argument to
-        <literal>Dir.mkdir</literal>. An optional second argument specifies
-        the permissions of the new directory. These are platform-specific
-        permission bits, in the <link linkend="io.perm">same form</link> as
-        <literal>IO</literal> and <literal>File</literal> accept them. They
-        respect the current umask value, and are completely ignored on
-        Windows.
-      </para>
+      <para>A directory can be created by supplying its name as an argument to <literal>Dir.mkdir</literal>. An optional second argument specifies the permissions of the new directory. These are platform-specific permission bits, in the <link linkend="io.perm">same form</link> as <literal>IO</literal> and <literal>File</literal> accept them. They respect the current umask value, and are completely ignored on Windows. </para>
     </sect2>
 
     <sect2 xml:id="fil.existing-dir">
       <title>Existence</title>
       
-      <para>
-        The <literal>Dir.exist?</literal> predicate, and its alias
-        <literal>Dir.exists?</literal>, return <literal>true</literal> if
-        their argument is both an existing path and a directory;
-        <literal>false</literal> otherwise.
-      </para>
+      <para>The <literal>Dir.exist?</literal> predicate, and its alias <literal>Dir.exists?</literal>, return <literal>true</literal> if their argument is both an existing path and a directory; <literal>false</literal> otherwise. </para>
     </sect2>
 
     <sect2 xml:id="fil.deleting-dir">
       <title>Deletion</title>
       
-      <para>
-        <literal>Dir.rmdir</literal>, and its aliases
-        <literal>Dir.delete</literal> and <literal>Dir.unlink</literal>,
-        delete the directory named by their argument.  However, the directory
-        must already be empty, otherwise an exception is raised.
-      </para>
+      <para><literal>Dir.rmdir</literal>, and its aliases <literal>Dir.delete</literal> and <literal>Dir.unlink</literal>, delete the directory named by their argument.  However, the directory must already be empty, otherwise an exception is raised.</para>
     </sect2>
 
     <sect2 xml:id="fil.dir-glob">
       <title>Globbing</title>
       
-      <para>
-        <literal>Dir.glob</literal> accepts a pattern, similar in form to a
-        shell glob, and returns an <literal>Array</literal> of matching
-        filenames.  Characters in a pattern match themselves unless they take
-        one of the following forms.
-      </para>
+      <para><literal>Dir.glob</literal> accepts a pattern, similar in form to a shell glob, and returns an <literal>Array</literal> of matching filenames.  Characters in a pattern match themselves unless they take one of the following forms. </para>
 
       <variablelist>
         <varlistentry>
           <term><literal>*</literal> (Asterisk)</term>
           <listitem>
-            <para>
-              An asterisk matches zero or more characters. It does not match a
-              leading full stop unless the <link
-                linkend="fil.fnm-dotmatch">FNM_DOTMATCH</link> flag is given.
-            </para>
+            <para>An asterisk matches zero or more characters. It does not match a leading full stop unless the <link linkend="fil.fnm-dotmatch">FNM_DOTMATCH</link> flag is given.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term><literal>?</literal> (Question Mark)</term>
           <listitem>
-            <para>
-              A question mark matches exactly one character. It does not match
-              a leading full stop unless the <link
-                linkend="fil.fnm-dotmatch">FNM_DOTMATCH</link> flag is given.
-            </para>
+            <para>A question mark matches exactly one character. It does not match a leading full stop unless the <link linkend="fil.fnm-dotmatch">FNM_DOTMATCH</link> flag is given. </para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term><literal>**</literal> (Double Asterisk)</term>
           <listitem>
-            <para>
-              Two consecutive asterisks match zero or more directory components.
-            </para>
+            <para>Two consecutive asterisks match zero or more directory components. </para>
           </listitem>
         </varlistentry>
         <varlistentry>
-          <term><literal>[<replaceable>characters</replaceable>]</literal>
-            (Character Class)</term>
+          <term><literal>[<replaceable>characters</replaceable>]</literal> (Character Class)</term>
           <listitem>
-            <para>
-              A sequence of characters enclosed in square brackets match any
-              one of the specified characters. Two characters separated by a
-              hyphen-minus sign (<literal>-</literal>) represent the inclusive
-              range of characters between them. If the first character is a
-              caret (<literal>^</literal>), the meaning of the class is
-              inverted: it matches any character not specified.
-            </para>
+            <para>A sequence of characters enclosed in square brackets match any one of the specified characters. Two characters separated by a hyphen-minus sign (<literal>-</literal>) represent the inclusive range of characters between them. If the first character is a caret (<literal>^</literal>), the meaning of the class is inverted: it matches any character not specified. </para>
           </listitem>
         </varlistentry>
         <varlistentry>
-          <term><literal>{<replaceable>pat</replaceable><subscript>0</subscript>,…,<replaceable>pat</replaceable><subscript><replaceable>n</replaceable></subscript>}</literal>
-            (Alternation)</term>
+          <term><literal>{<replaceable>pat</replaceable><subscript>0</subscript>,…,<replaceable>pat</replaceable><subscript><replaceable>n</replaceable></subscript>}</literal> (Alternation)</term>
           <listitem>
-            <para>
-              Curly brackets enclose one or more glob patterns separated by
-              commas. Filenames matching any of the given patterns are
-              matched.
-            </para>
+            <para>Curly brackets enclose one or more glob patterns separated by commas. Filenames matching any of the given patterns are matched. </para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term><literal>\</literal> (Reverse Solidus)</term>
           <listitem>
-            <para>
-              A reverse solidus escapes the metacharacter that follows it,
-              removing its special significance. Matches itself if the <link
-                linkend="fil.fnm-noescape">FNM_NOESCAPE</link> flag is given.
-            </para>
+            <para>A reverse solidus escapes the metacharacter that follows it, removing its special significance. Matches itself if the <link linkend="fil.fnm-noescape">FNM_NOESCAPE</link> flag is given. </para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -1206,49 +807,28 @@
       <example xml:id="ex.dir-glob">
         <title>Matching filenames with glob patterns</title>
 
-        <programlisting><xi:include href="examples/dir-glob.rb"
-            parse="text"/></programlisting>
+        <programlisting><xi:include href="examples/dir-glob.rb" parse="text"/></programlisting>
       </example>
 
-      <para>
-        The semantics of the match may be altered by supplying a bitmask of
-        flags as the second argument. The flags are represented by the
-        constants listed below. If multiple flags are given they should be
-        combined with bitwise OR. For example, to specify that a pattern
-        should treat <literal>\</literal> literally and ignore case, the
-        second argument to <literal>Dir.glob </literal> should be
-        <literal>File::FNM_NOESCAPE | File::FNM_CASEFOLD</literal>.
-      </para>
+      <para>The semantics of the match may be altered by supplying a bitmask of flags as the second argument. The flags are represented by the constants listed below. If multiple flags are given they should be combined with bitwise OR. For example, to specify that a pattern should treat <literal>\</literal> literally and ignore case, the second argument to <literal>Dir.glob </literal> should be <literal>File::FNM_NOESCAPE | File::FNM_CASEFOLD</literal>. </para>
 
       <variablelist>
         <varlistentry xml:id="fil.fnm-noescape">
           <term><literal>File::FNM_NOESCAPE</literal></term>
           <listitem>
-            <para>
-              Backslash matches itself. By default, a backlash is a
-              metacharacter, escaping the metacharacter which follows it; this
-              flag reduces it to a lowly literal character.
-            </para>
+            <para>Backslash matches itself. By default, a backlash is a metacharacter, escaping the metacharacter which follows it; this flag reduces it to a lowly literal character. </para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term><literal>File::FNM_PATHNAME</literal></term>
           <listitem>
-            <para>
-              Prevent asterisk or question mark from matching a solidus. To
-              match a literal solidus, the pattern must contain one when using
-              this flag.
-            </para>
+            <para>Prevent asterisk or question mark from matching a solidus. To match a literal solidus, the pattern must contain one when using this flag.</para>
           </listitem>
         </varlistentry>
         <varlistentry xml:id="fil.fnm-dotmatch">
           <term><literal>File::FNM_DOTMATCH</literal></term>
           <listitem>
-            <para>
-              Allow asterisk or question mark to match a leading full stop in
-              a path component; by default leading full stops are only matched
-              if specified literally.
-            </para>
+            <para>Allow asterisk or question mark to match a leading full stop in a path component; by default leading full stops are only matched if specified literally. </para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -1259,31 +839,13 @@
         </varlistentry>
       </variablelist>
 
-      <para>
-        <literal>Dir[]</literal> takes a glob as its sole argument, returning
-        matching filenames as an <literal>Array</literal>. It is equivalent to
-        <literal>Dir.glob</literal> with a second argument of
-        <literal>0</literal>.
-      </para>
+      <para><literal>Dir[]</literal> takes a glob as its sole argument, returning matching filenames as an <literal>Array</literal>. It is equivalent to <literal>Dir.glob</literal> with a second argument of <literal>0</literal>. </para>
     </sect2>
 
     <sect2 xml:id="fil.dir-position">
       <title>Position &amp; Seeking</title>
       
-      <para>
-        Directory streams support seeking similarly to <link
-          linkend="io.position">IO objects</link>. The current position is
-        returned by <literal>Dir#tell</literal>, or its alias
-        <literal>Dir#pos</literal>, as an <literal>Integer</literal>.
-        Initially, this value is <literal>0</literal>, but is increased after
-        every call to <literal>Dir#read</literal>. A specific position can be
-        sought by supplying it as argument to <literal>Dir#pos=</literal> or
-        <literal>Dir#seek</literal>. However, <literal>Dir#read</literal>
-        increments the position in a seemingly arbitrary fashion, so the only
-        sensible position to seek to is one previously returned by
-        <literal>Dir#pos</literal>.  <literal>Dir#rewind</literal> resets the
-        position to <literal>0</literal>.
-      </para>
+      <para>Directory streams support seeking similarly to <link linkend="io.position">IO objects</link>. The current position is returned by <literal>Dir#tell</literal>, or its alias <literal>Dir#pos</literal>, as an <literal>Integer</literal>. Initially, this value is <literal>0</literal>, but is increased after every call to <literal>Dir#read</literal>. A specific position can be sought by supplying it as argument to <literal>Dir#pos=</literal> or <literal>Dir#seek</literal>. However, <literal>Dir#read</literal> increments the position in a seemingly arbitrary fashion, so the only sensible position to seek to is one previously returned by <literal>Dir#pos</literal>.  <literal>Dir#rewind</literal> resets the position to <literal>0</literal>. </para>
     </sect2>
   </sect1>
 </chapter>
