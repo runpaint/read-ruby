@@ -123,9 +123,11 @@
     <sect2 xml:id="con.thread-synchronisation">
       <title>Synchronisation</title>
       
-      <para>When multiple threads need to access a shared, modifiable resource, they must ensure consistency such that no thread sees it an inconsistent state. Otherwise, a <firstterm>race condition</firstterm>—when a result is dependent on the order in which the threads finish—may occur, making the result non-deterministic. The solution is <firstterm>synchronisation</firstterm>.</para>
+      <para>When multiple threads need to access a shared, modifiable resource, they must ensure consistency such that no thread sees it an inconsistent state. Otherwise, a <firstterm>race condition</firstterm>—when a result is dependent on the order in which the threads finish—may occur, making the result non-deterministic.</para>
 
-      <para>A popular example is the <emphasis>"too much milk"</emphasis> problem:</para>
+      <para>For a trivial example, consider a thread that invokes <literal>puts "foo"</literal>. <function>Kernel.puts</function> first prints <literal>"foo"</literal>, then prints a newline. If another thread is scheduled in between these two operations, additional text could be written to STDOUT before the newline. Indeed, if the second thread invoked <literal>puts "bar"</literal>, the typically result is <literal>"foobar\n\n"</literal>.</para>
+
+      <para>Another example is the popular <emphasis>"too much milk"</emphasis> problem:</para>
 
       <informaltable>
 	<thead>
