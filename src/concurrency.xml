@@ -2,6 +2,8 @@
 <chapter version="5.0" xml:id="con.concurrency" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Concurrency</title>
 
+  <para>Most of the programs we have considered so far have been synchronous: they execute sequentially, from start to finish. <function>Kernel.fork</function> stood out as it allows an arbitrary block of code to be executed as a separate, concurrent process. This chapter explores two other techniques for writing concurrent<footnote><para>Or, at least, <emphasis>seemingly</emphasis> concurrent…</para></footnote> programs.</para>
+
   <sect1 xml:id="con.threads">
     <title>Threads</title>
 
