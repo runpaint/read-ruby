@@ -132,15 +132,17 @@
     <sect2 xml:id="prc.popen">
       <title><function>IO.popen</function></title>
 
-      <para><function>IO.popen(<replaceable>cmd</replaceable>, <replaceable>mode</replaceable>='r')</function> executes a command, <replaceable>cmd</replaceable>, as a subprocess, opening a pipe to this subprocess’s standard input and output streams, which it returns as an <literal>IO</literal> object. If <replaceable>mode</replaceable> is supplied, its the access mode of the pipe, and may be any of the values accepted by <function>Kernel.open</function> for this argument.</para>
+      <para><function>IO.popen(<replaceable>cmd</replaceable>, <replaceable>mode</replaceable>='r')</function> executes a command, <replaceable>cmd</replaceable>, as a subprocess, opening a pipe to this subprocess’s standard input and output streams, which it returns as an <literal>IO</literal> object. The default <link linkend="io.access-mode">access mode</link> of the pipe is <literal>"r"</literal>, but this may be overridden with the <replaceable>mode</replaceable> argument.</para>
 
-      <para>If <replaceable>cmd</replaceable> is a <literal>String</literal> it names a command in the user’s path, and is subject to shell expansion. If it is a <literal>"-"</literal>, and the platform supports forking, the subprocess is a forked copy of the current process.</para>
+      <para>If <replaceable>cmd</replaceable> is a <literal>String</literal> it names a command in the user’s path, and is subject to shell expansion. If it is a <literal>"-"</literal>, and the platform supports forking, the current process forks: an <literal>IO</literal> pipe connected to the child’s standard input and output streams is returned to the parent; <literal>nil</literal> is returned to the child.</para>
 
       <para>Otherwise, <replaceable>cmd</replaceable> is an <literal>Array</literal> of <literal>String</literal>s, the first of which specifies the command name; the remainder, its arguments. The shell is bypassed, so none of these <literal>String</literal>s are subject to shell expansion. If the first element of this <literal>Array</literal> is a <literal>Hash</literal>, it specifies the names and corresponding values of environment variables that should be set in the subprocess. An <link linkend="prc.options-hash">options <literal>Hash</literal></link> may be supplied as the last element of this <literal>Array</literal>.</para>
 
-      <para>If a block is supplied, <replaceable>cmd</replaceable> is run as a subprocess connected to Ruby with a pipe. Ruby’s end of the pipe is passed to the block as a parameter, then closed when the block exits. <literal>$?</literal> is set to the exit status of the subprocess, and the value of the block is returned.</para>
+      <para>If a block is supplied, Ruby’s end of the pipe is passed to it as a parameter, then closed when the block exits. <literal>$?</literal> is set to the exit status of the subprocess, and the value of the block is returned.</para>
 
-      <para>When a block is supplied along with a <replaceable>cmd</replaceable> of <literal>"-"</literal>, Ruby forks, running the block in both processes. In the parent process the block is passed a pipe—as an <literal>IO</literal> object—connected to the child’s standard input and output streams; in the child process the block is passed <literal>nil</literal>.</para>
+      <para>When a block is supplied along with a <replaceable>cmd</replaceable> of <literal>"-"</literal>, Ruby forks, running the block in both processes. In the parent process the block is passed an <literal>IO</literal> pipe connected to the child’s standard input and output streams; in the child process the block is passed <literal>nil</literal>.</para>
+
+      <para><literal>Kernel.open("|<replaceable>cmd</replaceable>", <replaceable>mode</replaceable>='r')</literal> behaves like <literal>IO.popen(<replaceable>cmd</replaceable>, <replaceable>mode</replaceable>='r')</literal>, when <replaceable>cmd</replaceable> is a <literal>String</literal>. Likewise, <literal>Kernel.open("|-", <replaceable>mode</replaceable>='r')</literal> behaves like <literal>IO.popen("-", <replaceable>mode</replaceable>='r')</literal></para>
 
       <para>In all of these cases, the process ID of the subprocess may be retrieved with <function>IO#pid</function>.</para>
     </sect2>
