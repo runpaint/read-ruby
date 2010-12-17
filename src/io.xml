@@ -666,10 +666,10 @@
       <sect2 xml:id="io.options-hash">
 	<title>Options Hash</title> 
 
-	<para>Alternatively, many methods that open files accept an options <literal>Hash</literal> as their final argument. In addition to the keys listed below, those of the <link linkend="enc.options-hash"><function>String#encode</function> options <literal>Hash</literal></link> are also recognised.</para>
+	<para>Alternatively, many methods that open files accept an options <literal>Hash</literal> as their final argument. Class methods of <literal>IO</literal> that accept this <literal>Hash</literal> recognise an <literal>:open_args</literal> key whose value is an <literal>Array</literal> of arguments for the underlying <function>open</function> method; if this key is supplied, all others are ignored. In addition to the keys listed below, those of the <link linkend="enc.options-hash"><function>String#encode</function> options <literal>Hash</literal></link> are also recognised.</para>
 
 	<table>
-	  <caption>Options that may be specified as the second argument to <function>Kernel.open</function></caption>
+	  <caption>Options that may be specified as a <literal>Hash</literal> for certain methods that open files</caption>
 	  <thead> 
 	    <tr>
 	      <th>Key</th> 
@@ -681,22 +681,28 @@
 	  </thead> 
 	  <tbody> 
 	    <tr> 
-	      <td>:mode</td> 
+	      <td><literal>:mode</literal></td> 
 	      <td>The mode string or the access mode as an <literal>Integer</literal>.</td>
 	      <td><literal>r</literal></td> 
 	      <td>Whether to open the file in read-only, read-write, or write-only mode, and whether to truncate existing files or append to them.</td>
 	    </tr> 
 	    <tr> 
-	      <td><link linkend="io.textmode">:textmode</link></td> 
+	      <td><link linkend="io.textmode"><literal>:textmode</literal></link></td> 
 	      <td><literal>true</literal> or <literal>false</literal></td> 
 	      <td><literal>false</literal></td>
 	      <td>Whether to perform newline conversion.</td>
 	    </tr> 
 	    <tr>
-	      <td><link linkend="io.binmode">:binmode</link></td> 
+	      <td><link linkend="io.binmode"><literal>:binmode</literal></link></td> 
 	      <td><literal>true</literal> or <literal>false</literal></td>
 	      <td><literal>false</literal></td> 
 	      <td>Whether to treat the file as a stream of bytes.</td>
+	    </tr> 
+	    <tr>
+	      <td><literal>:open_args</literal></td> 
+	      <td><literal>Array</literal></td>
+	      <td><literal>[]</literal></td> 
+	      <td>Arguments for <function>Kernel.open</function>.</td>
 	    </tr> 
 	    <tr>
 	      <td><literal>:perm</literal></td> 
