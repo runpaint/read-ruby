@@ -129,10 +129,26 @@
       <para>In both examples above, the child process may become a <emphasis>zombie</emphasis>; see <xref linkend="prc.status"/> for how to avoid this.</para>
     </sect2>
 
+    <sect2 xml:id="prc.popen">
+      <title><function>IO.popen</function></title>
+
+      <para><function>IO.popen(<replaceable>cmd</replaceable>, <replaceable>mode</replaceable>='r')</function> executes a command, <replaceable>cmd</replaceable>, as a subprocess, opening a pipe to this subprocess’s standard input and output streams, which it returns as an <literal>IO</literal> object. If <replaceable>mode</replaceable> is supplied, its the access mode of the pipe, and may be any of the values accepted by <function>Kernel.open</function> for this argument.</para>
+
+      <para>If <replaceable>cmd</replaceable> is a <literal>String</literal> it names a command in the user’s path, and is subject to shell expansion. If it is a <literal>"-"</literal>, and the platform supports forking, the subprocess is a forked copy of the current process.</para>
+
+      <para>Otherwise, <replaceable>cmd</replaceable> is an <literal>Array</literal> of <literal>String</literal>s, the first of which specifies the command name; the remainder, its arguments. The shell is bypassed, so none of these <literal>String</literal>s are subject to shell expansion. If the first element of this <literal>Array</literal> is a <literal>Hash</literal>, it specifies the names and corresponding values of environment variables that should be set in the subprocess. An <link linkend="prc.options-hash">options <literal>Hash</literal></link> may be supplied as the last element of this <literal>Array</literal>.</para>
+
+      <para>If a block is supplied, <replaceable>cmd</replaceable> is run as a subprocess connected to Ruby with a pipe. Ruby’s end of the pipe is passed to the block as a parameter, then closed when the block exits. <literal>$?</literal> is set to the exit status of the subprocess, and the value of the block is returned.</para>
+
+      <para>When a block is supplied along with a <replaceable>cmd</replaceable> of <literal>"-"</literal>, Ruby forks, running the block in both processes. In the parent process the block is passed a pipe—as an <literal>IO</literal> object—connected to the child’s standard input and output streams; in the child process the block is passed <literal>nil</literal>.</para>
+
+      <para>In all of these cases, the process ID of the subprocess may be retrieved with <function>IO#pid</function>.</para>
+    </sect2>
+
     <sect2 xml:id="prc.options-hash">
       <title>Options <literal>Hash</literal></title>
 
-      <para><function>exec</function>, <function>system</function>, and <function>spawn</function> all accept an options <literal>Hash</literal> as their last argument. It may contain any of the following keys.</para>
+      <para><function>exec</function>, <function>system</function>, <function>spawn</function>, and <function>IO.popen</function> all accept an options <literal>Hash</literal> as their last argument. It may contain any of the following keys.</para>
 
       <informaltable>
 	<thead>
