@@ -695,9 +695,11 @@
   <sect1 xml:id="reg.properties">
     <title>Character Properties</title>
 
-    <para>A generalization of pre-defined <link linkend="reg.classes">character classes</link> is the Unicode property escape. The construct <literal>\p{<replaceable>property</replaceable>}</literal> represents characters with the property <replaceable>property</replaceable>; while the construct <literal>\P{<replaceable>property</replaceable>}</literal> represents its inverse.  <replaceable>property</replaceable> is a case-insensitive string, in which the space and low line characters are ignored. For example, <literal>\p{Lowercase_Letter}</literal>, <literal>\p{lowercase letter}</literal>, and <literal>\p{lowercaseletter}</literal>, are all equivalent.</para>
-    
-    <para>The majority of property names correspond to Unicode properties, but Ruby also defines the following:</para>
+    <para>A generalisation of predefined <link linkend="reg.classes">character classes</link> is the character property escape. The construct <literal>\p{<replaceable>property</replaceable>}</literal> represents characters with the property <replaceable>property</replaceable>; while the construct <literal>\P{<replaceable>property</replaceable>}</literal> represents its inverse. The encoding of a pattern dictates the property escapes it may use. In all encodings <replaceable>property</replaceable> may be the name of a predefined character class: <link linkend="reg.alnum">Alnum</link>, <link linkend="reg.alpha">Alpha</link>, <link linkend="reg.ascii">ASCII</link>, <link linkend="reg.blank">Blank</link>, <link linkend="reg.cntrl">Cntrl</link>, <link linkend="reg.digit">Digit</link>, <link linkend="reg.graph">Graph</link>, <link linkend="reg.lower">Lower</link>, <link linkend="reg.print">Print</link>, <link linkend="reg.punct">Punct</link>, <link linkend="reg.space">Space</link>, <link linkend="reg.upper">Upper</link>, <link linkend="reg.word">Word</link>, and <link linkend="reg.xdigit">XDigit</link>.</para>
+
+    <para>Further, in <emphasis>Shift JIS</emphasis> and <emphasis>EUC-JP</emphasis> encodings, the properties <emphasis>Katakana</emphasis> and <emphasis>Hiragana</emphasis> are available to match characters in the named script. In Unicode encodings, all properties are available and <replaceable>property</replaceable> is normalised by ignoring case<footnote><para>As of Ruby 1.9.3, <replaceable>property</replaceable> is case-insensitive for all encodings if it’s the name of a predefined character class.</para></footnote>, spaces, and low line characters. For example, in a Unicode pattern <literal>\p{Lowercase_Letter}</literal>, <literal>\p{lowercase letter}</literal>, and <literal>\p{lowercaseletter}</literal>, are all equivalent.</para>
+
+    <para>The majority of the remaining property names correspond to Unicode properties, but Ruby also defines the following:</para>
     
     <variablelist>
       <varlistentry xml:id="reg.newline">
@@ -719,56 +721,6 @@
         </listitem>
       </varlistentry>
     </variablelist>
-
-    <para>In addition, the names of the pre-defined character classes introduced <link linkend="reg.classes">above</link>, are also valid properties. They have the same semantics as previously noted. For example, <literal>/\p{Digit}/</literal> is equivalent to <literal>/[[:digit:]]/</literal>. They are as follows:</para>
-
-    <itemizedlist>
-      <listitem>
-        <para><link linkend="reg.alnum">Alnum</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.alpha">Alpha</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.any">Any</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.ascii">Ascii</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.blank">Blank</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.cntrl">Cntrl</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.digit">Digit</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.graph">Graph</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.lower">Lower</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.print">Print</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.punct">Punct</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.space">Space</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.upper">Upper</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.word">Word</link></para>
-      </listitem>
-      <listitem>
-        <para><link linkend="reg.xdigit">Xdigit</link></para>
-      </listitem>
-    </itemizedlist>
 
     <sect2 xml:id="reg.general-categories">
       <title>General Categories</title>
