@@ -819,6 +819,9 @@
 	</title>
 	<programlisting><xi:include href="examples/visibility-specifiers-args.rb" parse="text"/></programlisting>
       </example>
+
+      <para>Method visibility is a property of the binding between a method and a class. An implication is that even when a class is frozen, the visibility of the methods it defines may still be changed using <function>Object#send</function>.</para>
+
       <!--figure>
 	<title>Syntax diagram of visibility specifiers
 	</title>
