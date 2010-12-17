@@ -223,7 +223,10 @@
       automatic destruction by Ruby. The lifetime of an object is
       determined by its longest living reference. If an object is
       intended to be temporal, its references must be likewise.</para>
+
+      <para>An object may register <literal>Proc</literal>s that the garbage collector will invoke just prior to destroying the object. These are called <firstterm>finalizers</firstterm>, and are registered with <function>ObjectSpace.define_finalizer(<replaceable>obj</replaceable>, <replaceable>proc</replaceable>)</function>, where <replaceable>proc</replaceable> is a <literal>Proc</literal> that should be called when <replaceable>obj</replaceable> is about to be garbage collected. If multiple finalizers are attached to a single object, they are invoked in the order they were attached. The <literal>Proc</literal> is passed the object’s ID as an <literal>Integer</literal> block parameter, but must not attempt to reference the object being destroyed. The finalizers associated with <replaceable>obj</replaceable> can be unregistered with <function>ObjectSpace.undefine_finalizer(<replaceable>obj</replaceable>)</function>.</para>
   </sect1>
+
   <sect1 xml:id="obj.basicobject">
     <title>BasicObject</title>
     <para><literal>BasicObject</literal> is the root of the class hierarchy:
