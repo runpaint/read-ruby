@@ -5,30 +5,22 @@
 	 xmlns="http://docbook.org/ns/docbook"
 	 xmlns:xi="http://www.w3.org/2001/XInclude"
 	 xmlns:xlink="http://www.w3.org/1999/xlink">
+
   <title>Objects</title>
   
-  <para>An <firstterm>object</firstterm> is a
-    compilation of data (attributes) and behaviour (methods) which encapsulate
-    a specific <emphasis>instance</emphasis> of a <link
-    linkend="cla.classes">class</link>. The
-    <literal>String</literal><literal>"hello"</literal> and the
-    <literal>Integer</literal> <literal>3</literal> are both examples of
-    objects, and instances of the <literal>String</literal> and
-    <literal>Integer</literal> classes, respectively. They constitute data
-    (<emphasis>hello</emphasis> and <emphasis>3</emphasis>, respectively) and
-    behaviour relevant to that data.</para>
+  <para>An <firstterm>object</firstterm> is a compilation of data (attributes) and behaviour (methods) which encapsulate a specific <emphasis>instance</emphasis> of a <link linkend="cla.classes">class</link>. The <literal>String</literal><literal>"hello"</literal> and the <literal>Integer</literal> <literal>3</literal> are both examples of objects, and instances of the <literal>String</literal> and <literal>Integer</literal> classes, respectively. They constitute data (<emphasis>hello</emphasis> and <emphasis>3</emphasis>, respectively) and behaviour relevant to that data.</para>
 
   <sect1 xml:id="obj.instantiation">
     <title>Instantiation</title>
-    <para>There are five main ways to <firstterm>instantiate</firstterm>, or
-      <emphasis>create</emphasis>, an object:</para>
+
+    <para>There are five main ways to <firstterm>instantiate</firstterm>, or <emphasis>create</emphasis>, an object:</para>
+
     <itemizedlist>
       <listitem>
         <para>Using a <link linkend="pro.literals">literal</link>.</para>
       </listitem>
       <listitem>
-        <para>Sending a <link linkend="obj.constructors">constructor</link> message to an
-        existing object (usually a class).</para>
+        <para>Sending a <link linkend="obj.constructors">constructor</link> message to an existing object (usually a class).</para>
       </listitem>
       <listitem>
         <para><link linkend="obj.cloning">Cloning</link> or <link linkend="obj.duplication">duplicating</link> an existing object.</para>
@@ -37,340 +29,212 @@
         <para>Loading a serialized, or <link linkend="obj.marshaling">Marshaled</link>, object.</para>
       </listitem>
     </itemizedlist>
-    <para>In addition, certain core objects always exist without being
-      instantiated: they are created by the Ruby interpreter.</para>
+    <para>In addition, certain core objects always exist without being instantiated: they are created by the Ruby interpreter.</para>
+
     <sect2 xml:id="obj.constructors">
       <title>Constructors</title>
+
       <sect3 xml:id="obj.dot-new">
         <title><literal>.new</literal></title>
-        <para>Sending the <literal>:new</literal> message to a class
-          instantiates that class. For example, <literal>Array.new</literal>
-          creates an <literal>Array</literal> object. A method that
-          instantiates a class is a <firstterm>constructor</firstterm>: it allocates an
-          object then initializes its state.</para>
+
+        <para>Sending the <literal>:new</literal> message to a class instantiates that class. For example, <literal>Array.new</literal> creates an <literal>Array</literal> object. A method that instantiates a class is a <firstterm>constructor</firstterm>: it allocates an object then initializes its state.</para>
       </sect3>
       <sect3 xml:id="obj.allocation">
         <title>Allocation</title>
-        <para><literal>Class#allocate</literal> allocates memory for a new
-          object and returns a reference to it. It cannot be overridden.
-          If invoked manually, it returns an uninitialized instance of
-          the class.</para>
+
+        <para><literal>Class#allocate</literal> allocates memory for a new object and returns a reference to it. It cannot be overridden.  If invoked manually, it returns an uninitialized instance of the class.</para>
       </sect3>
+
       <sect3 xml:id="obj.initialization">
         <title>Initialization</title>
-        <para>The newly allocated object is sent an
-          <literal>:initialize</literal> message along with the arguments
-          passed to <literal>.new</literal>. The <literal>#initialize</literal>
-          method typically validates the constructor’s arguments then
-          assigns them to instance variables. It is a private method so
-          cannot be called from outside the class.</para>
-        <para>The <literal>.new</literal> constructor ignores the return value
-          of <literal>#initialize</literal>, so as to return the initialized
-          object instead.</para>
-        <para>It is good practice for a class—particularly one with a
-          superclass other than <literal>Object</literal>—that defines an
-          <literal>#initialize</literal> method to call its parent’s
-          <literal>#initialize</literal> with <link linkend="met.super">super</link>. This allows the
-          superclass and any included modules to perform their own
-          initialization routines.</para>
+
+        <para>The newly allocated object is sent an <literal>:initialize</literal> message along with the arguments passed to <literal>.new</literal>. The <literal>#initialize</literal> method typically validates the constructor’s arguments then assigns them to instance variables. It is a private method so cannot be called from outside the class.</para>
+        
+	<para>The <literal>.new</literal> constructor ignores the return value of <literal>#initialize</literal>, so as to return the initialized object instead.</para>
+        
+	<para>It is good practice for a class—particularly one with a superclass other than <literal>Object</literal>—that defines an <literal>#initialize</literal> method to call its parent’s <literal>#initialize</literal> with <link linkend="met.super">super</link>. This allows the superclass and any included modules to perform their own initialization routines.</para>
       </sect3>
     </sect2>
   </sect1>
+
   <sect1 xml:id="obj.identity">
     <title>Identity</title>
-    <para>Every object has a numeric identifier that is unique among other
-      objects and constant for the object’s lifetime. It is returned as a
-      <literal>Fixnum</literal> by <literal>Object#object_id</literal>.</para>
-    <para><literal>ObjectSpace._id2ref</literal> returns a reference to an object given
-      its ID. For example, <literal>ObjectSpace._id2ref([1, 2].object_id) = [1,
-        2]</literal>.</para>
-    <para>An object’s ID should not be confused with its hash code as returned by
-      <literal>Object#hash</literal>. Logically identical objects should have the same
-      hash code, yet will have different object IDs if they are pointed to by
-      different references. For example, <literal>[].object_id !=
-        [].object_id</literal> yet <literal>[].hash == [].hash</literal>.</para>
+
+    <para>Every object has a numeric identifier that is unique among other objects and constant for the object’s lifetime. It is returned as a <literal>Fixnum</literal> by <literal>Object#object_id</literal>.</para>
+    
+    <para><literal>ObjectSpace._id2ref</literal> returns a reference to an object given its ID. For example, <literal>ObjectSpace._id2ref([1, 2].object_id) = [1, 2]</literal>.</para>
+    
+    <para>An object’s ID should not be confused with its hash code as returned by <literal>Object#hash</literal>. Logically identical objects should have the same hash code, yet will have different object IDs if they are pointed to by different references. For example, <literal>[].object_id != [].object_id</literal> yet <literal>[].hash == [].hash</literal>.</para>
   </sect1>
+
   <sect1 xml:id="obj.class">
     <title>Class</title>
-    <para>The class of an object is returned by
-      <literal>Object#class</literal>. To test whether an object is an
-      instance of a given class, use the
-      <literal>Object#is_a?(<replaceable>class</replaceable>)</literal> predicate, where
-      <replaceable>class</replaceable> is a <literal>Class</literal> object.</para>
+
+    <para>The class of an object is returned by <literal>Object#class</literal>. To test whether an object is an instance of a given class, use the <literal>Object#is_a?(<replaceable>class</replaceable>)</literal> predicate, where <replaceable>class</replaceable> is a <literal>Class</literal> object.</para>
   </sect1>
+
   <sect1 xml:id="obj.methods">
     <title>Methods</title>
-    <para>The names of methods defined for an object are returned by
-      <literal>Object#methods</literal> as an <literal>Array</literal> of
-      <literal>Symbol</literal>s. For an object that is neither a class nor a
-      module, the methods returned are the intersection of its instance and
-      singleton methods; otherwise, they are its singleton methods only.
-      <literal>#public_methods</literal>, <literal>#private_methods</literal>, and
-      <literal>#protected_methods</literal> only return the names of methods with
-      the corresponding visibility. If a second argument of <literal>false</literal>
-      is given, inherited methods are omitted from the result.</para>
+
+    <para>The names of methods defined for an object are returned by <literal>Object#methods</literal> as an <literal>Array</literal> of <literal>Symbol</literal>s. For an object that is neither a class nor a module, the methods returned are the intersection of its instance and singleton methods; otherwise, they are its singleton methods only.  <literal>#public_methods</literal>, <literal>#private_methods</literal>, and <literal>#protected_methods</literal> only return the names of methods with the corresponding visibility. If a second argument of <literal>false</literal> is given, inherited methods are omitted from the result.</para>
+    
     <example xml:id="ex.object-methods">
-      <title>Querying the methods defined on an object
-      </title>
+      <title>Querying the methods defined on an object</title>
+
       <programlisting><xi:include href="examples/object-methods.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="obj.relations">
     <title>Relations</title>
+
     <sect2 xml:id="obj.order">
       <title>Order</title>
-      <para>If instances of a class suggest an ordering relationship such that
-        one instance is either less than, greater than, or equal to, another,
-        they are said to be <firstterm>comparable</firstterm>. The
-        class can define a method named <literal>&lt;=&gt;</literal> (the <firstterm>spaceship operator</firstterm>) expecting a
-        single argument and
-        following the <literal>qsort(3)</literal> convention  of
-        returning <literal>-1</literal> if <literal>self</literal> is less than the
-        argument, <literal>0</literal> if they are equal, or <literal>1</literal> if
-        <literal>self</literal> is greater.</para>
-      <para>The class then mixes in the <literal>Comparable</literal> module, which
-        provides <literal>#&lt;</literal>, <literal>#==</literal>, and <literal>#&gt;</literal>
-        methods implemented in terms of <literal>#&lt;=&gt;</literal>.</para>
+
+      <para>If instances of a class suggest an ordering relationship such that one instance is either less than, greater than, or equal to, another, they are said to be <firstterm>comparable</firstterm>. The class can define a method named <literal>&lt;=&gt;</literal> (the <firstterm>spaceship operator</firstterm>) expecting a single argument and following the <literal>qsort(3)</literal> convention of returning <literal>-1</literal> if <literal>self</literal> is less than the argument, <literal>0</literal> if they are equal, or <literal>1</literal> if <literal>self</literal> is greater.</para>
+      
+      <para>The class then mixes in the <literal>Comparable</literal> module, which provides <literal>#&lt;</literal>, <literal>#==</literal>, and <literal>#&gt;</literal> methods implemented in terms of <literal>#&lt;=&gt;</literal>.</para>
     </sect2>
+
     <sect2 xml:id="obj.equivalence">
       <title>Equivalence</title>
-      <para>The means by which objects are compared for equality depend on the type
-        of equality desired.</para>
-      <para><literal>Object#equal?</literal> considers the receiver equal to the argument
-        if the two objects are identical, i.e. their object IDs are equal. For
-        example, <literal>[].equal?([]) == false</literal>. Classes are discouraged from
-        overriding this method, so its semantics should not change.</para>
-      <para><literal>Object#==</literal> is an alias of <literal>Object#equal?</literal>, but
-        <emphasis>is</emphasis> normally overridden in subclasses to denote <emphasis>logical</emphasis>
-        equivalence. For example, <literal>Array#==</literal> regards two
-        <literal>Array</literal> objects equal if they contain the same number of
-        elements and each element is <literal>==</literal> to its corresponding element.
-        So, <literal>[O.new] == [O.new]</literal> is <literal>true</literal> if <literal>O.new ==
-          O.new</literal>.</para>
-      <para><literal>Object#!=</literal> returns the inverse of <literal>Object#==</literal>,
-        so it does not normally need to be defined explicitly. It can be, however.</para>
-      <para><literal>Object#eql?</literal> is also an alias of
-        <literal>Object#equal?</literal> that subclasses often override. It differs
-        from <literal>Object#==</literal> in that it denotes <emphasis>strict</emphasis> logical
-        comparison without performing type conversion. For example, consider 1
-        and 1.0. The two are logically equivalent if converted to the same
-        class, so <literal>1 == 1.0</literal>.  However, <literal>1.eql?(1.0) ==
-          false</literal> because <literal>Object#eql?</literal> does not perform type
-        conversion.</para>
-      <para>Flanagan &amp; Matsumoto state that <quote>If two objects are
-      <literal>eql?</literal>, their <literal>hash</literal> methods must also
-      return the same value.</quote> <biblioref begin="77" end="78"
-      linkend="bib.flan08" units="pages"/>, going on to recommend that classes
-      implement <literal>#eql?</literal> in terms of
-      <literal>#hash</literal>.</para>
+
+      <para>The means by which objects are compared for equality depend on the type of equality desired.</para>
+      
+      <para><literal>Object#equal?</literal> considers the receiver equal to the argument if the two objects are identical, i.e. their object IDs are equal. For example, <literal>[].equal?([]) == false</literal>. Classes are discouraged from overriding this method, so its semantics should not change.</para>
+      
+      <para><literal>Object#==</literal> is an alias of <literal>Object#equal?</literal>, but <emphasis>is</emphasis> normally overridden in subclasses to denote <emphasis>logical</emphasis> equivalence. For example, <literal>Array#==</literal> regards two <literal>Array</literal> objects equal if they contain the same number of elements and each element is <literal>==</literal> to its corresponding element.  So, <literal>[O.new] == [O.new]</literal> is <literal>true</literal> if <literal>O.new == O.new</literal>.</para>
+      
+      <para><literal>Object#!=</literal> returns the inverse of <literal>Object#==</literal>, so it does not normally need to be defined explicitly. It can be, however.</para>
+      
+      <para><literal>Object#eql?</literal> is also an alias of <literal>Object#equal?</literal> that subclasses often override. It differs from <literal>Object#==</literal> in that it denotes <emphasis>strict</emphasis> logical comparison without performing type conversion. For example, consider 1 and 1.0. The two are logically equivalent if converted to the same class, so <literal>1 == 1.0</literal>.  However, <literal>1.eql?(1.0) == false</literal> because <literal>Object#eql?</literal> does not perform type conversion.</para>
+      
+      <para>Flanagan &amp; Matsumoto state that <quote>If two objects are <literal>eql?</literal>, their <literal>hash</literal> methods must also return the same value.</quote> <biblioref begin="77" end="78" linkend="bib.flan08" units="pages"/>, going on to recommend that classes implement <literal>#eql?</literal> in terms of <literal>#hash</literal>.</para>
     </sect2>
   </sect1>
+
   <sect1 xml:id="obj.state">
     <title>State</title>
+
     <sect2 xml:id="obj.instance-variables">
       <title>Instance Variables</title>
-      <para>The state of an object is encapsulated in its <link linkend="var.instance">instance variables</link>, whose
-        values are local to that particular object, hidden 
-        from others. An object will not respond to a message selecting one if its
-        instance variables unless a corresponding method has been defined, either
-        explicitly, or implicitly with <literal>attr</literal> .</para>
-      <para>An instance variable is typically defined in an instance method. If
-        defined in the context of a class it is a <link linkend="cla.class-instance-variables">class instance variable</link>.</para>
+
+      <para>The state of an object is encapsulated in its <link linkend="var.instance">instance variables</link>, whose values are local to that particular object, hidden from others. An object will not respond to a message selecting one if its instance variables unless a corresponding method has been defined, either explicitly, or implicitly with <literal>attr</literal> .</para>
+      
+      <para>An instance variable is typically defined in an instance method. If defined in the context of a class it is a <link linkend="cla.class-instance-variables">class instance variable</link>.</para>
     </sect2>
+
     <sect2 xml:id="obj.attributes">
       <title>Attributes</title>
-      <para>An attribute, <replaceable>a</replaceable>, is a pair <biblioref
-      begin="94" end="95" linkend="bib.flan08" units="pages"/> of public
-      methods—an accessor (<replaceable>a</replaceable>) and a writer
-      (<replaceable>a=</replaceable>)—exposing a property of an object’s state
-      to other objects. They can be created automatically by supplying their
-      names to <literal>Module#attr_accessor</literal> or
-      <literal>Module#attr_writer</literal> inside a class definition. This
-      assumes, as is typical, that an attribute corresponds to an instance
-      variable of the same name, i.e.  <replaceable>a</replaceable> returns
-      <replaceable>@a</replaceable>; <replaceable>a=</replaceable> sets
-      <replaceable>@a</replaceable>. If the attribute value is not backed by an
-      instance variable, it should be exposed in the same way <biblioref
-      begin="55" end="57" linkend="bib.meyer00" units="pages"/> by defining the
-      methods manually.</para>
-      <para>The writer method <link linkend="var.lvalue-attribute">behaves
-          specially</link> when used as an <link linkend="var.lvalues">lvalue</link> in an
-        <link linkend="var.assignment">assignment expression</link>.</para>
+
+      <para>An attribute, <replaceable>a</replaceable>, is a pair <biblioref begin="94" end="95" linkend="bib.flan08" units="pages"/> of public methods—an accessor (<replaceable>a</replaceable>) and a writer (<replaceable>a=</replaceable>)—exposing a property of an object’s state to other objects. They can be created automatically by supplying their names to <literal>Module#attr_accessor</literal> or <literal>Module#attr_writer</literal> inside a class definition. This assumes, as is typical, that an attribute corresponds to an instance variable of the same name, i.e.  <replaceable>a</replaceable> returns <replaceable>@a</replaceable>; <replaceable>a=</replaceable> sets <replaceable>@a</replaceable>. If the attribute value is not backed by an instance variable, it should be exposed in the same way <biblioref begin="55" end="57" linkend="bib.meyer00" units="pages"/> by defining the methods manually.</para>
+      
+      <para>The writer method <link linkend="var.lvalue-attribute">behaves specially</link> when used as an <link linkend="var.lvalues">lvalue</link> in an <link linkend="var.assignment">assignment expression</link>.</para>
     </sect2>
+
     <sect2 xml:id="obj.mutability">
       <title>Mutability</title>
-      <para><literal>Object#freeze</literal> makes the receiver immutable: attempts to
-        change its state elicit a <literal>RuntimeError</literal>. The
-        <literal>Object#frozen?</literal> predicate returns <literal>true</literal> if the
-        receiver is frozen. There is not a <literal>#thaw</literal> method, so this
-        operation is not reversible. However, duplicating an object  removes its frozen state.</para>
+
+      <para><literal>Object#freeze</literal> makes the receiver immutable: attempts to change its state elicit a <literal>RuntimeError</literal>. The <literal>Object#frozen?</literal> predicate returns <literal>true</literal> if the receiver is frozen. There is not a <literal>#thaw</literal> method, so this operation is not reversible. However, duplicating an object removes its frozen state.</para>
+      
       <note>
-          <para>Freezing works on objects not variables, so it is permissible to assign
-          a new value to a “frozen variable”.</para>
+	<para>Freezing works on objects not variables, so it is permissible to assign a new value to a “frozen variable”.</para>
         </note>
     </sect2>
   </sect1>
+
   <sect1 xml:id="obj.references">
     <title>References &amp; Garbage Collection</title>
-    <para>Variables store references to objects. Assignment is,
-      therefore, the copying of the reference on the right-hand side to
-      the variable named on the left, leaving both sides referring to
-      the same object. However, a reference may not be dereferenced; it
-      is not a pointer.</para>
-    <para>An object is deemed <firstterm>unreachable</firstterm> when there are no references to it, or
-      the sources of the remaining references are themselves
-      unreachable. Such objects are subject to garbage collection:
-      automatic destruction by Ruby. The lifetime of an object is
-      determined by its longest living reference. If an object is
-      intended to be temporal, its references must be likewise.</para>
+
+    <para>Variables store references to objects. Assignment is, therefore, the copying of the reference on the right-hand side to the variable named on the left, leaving both sides referring to the same object. However, a reference may not be dereferenced; it is not a pointer.</para>
+    
+    <para>An object is deemed <firstterm>unreachable</firstterm> when there are no references to it, or the sources of the remaining references are themselves unreachable. Such objects are subject to garbage collection: automatic destruction by Ruby. The lifetime of an object is determined by its longest living reference. If an object is intended to be temporal, its references must be likewise.</para>
 
       <para>An object may register <literal>Proc</literal>s that the garbage collector will invoke just prior to destroying the object. These are called <firstterm>finalizers</firstterm>, and are registered with <function>ObjectSpace.define_finalizer(<replaceable>obj</replaceable>, <replaceable>proc</replaceable>)</function>, where <replaceable>proc</replaceable> is a <literal>Proc</literal> that should be called when <replaceable>obj</replaceable> is about to be garbage collected. If multiple finalizers are attached to a single object, they are invoked in the order they were attached. The <literal>Proc</literal> is passed the object’s ID as an <literal>Integer</literal> block parameter, but must not attempt to reference the object being destroyed. The finalizers associated with <replaceable>obj</replaceable> can be unregistered with <function>ObjectSpace.undefine_finalizer(<replaceable>obj</replaceable>)</function>.</para>
   </sect1>
 
   <sect1 xml:id="obj.basicobject">
     <title>BasicObject</title>
-    <para><literal>BasicObject</literal> is the root of the class hierarchy:
-    from this all other classes ultimately inherit. Its superclass is
-    <literal>nil</literal>.  It defines the bare minimum of methods so as to be
-    a “blank slate”: <quote>…useful as the superclass of delegating wrapper
-    classes…</quote> <biblioref begin="235" end="235" linkend="bib.flan08"
-    units="pages"/>. (A thorough explanation of “blank slate” classes in Ruby
-    is found in <citetitle>Ruby Best Practices</citetitle> <biblioref
-    begin="57" end="62" linkend="bib.brown09" units="pages"/>.</para>
+    
+    <para><literal>BasicObject</literal> is the root of the class hierarchy: from this all other classes ultimately inherit. Its superclass is <literal>nil</literal>.  It defines the bare minimum of methods so as to be a “blank slate”: <quote>…useful as the superclass of delegating wrapper classes…</quote> <biblioref begin="235" end="235" linkend="bib.flan08" units="pages"/>. (A thorough explanation of “blank slate” classes in Ruby is found in <citetitle>Ruby Best Practices</citetitle> <biblioref begin="57" end="62" linkend="bib.brown09" units="pages"/>.</para>
   </sect1>
+
   <sect1 xml:id="obj.duplication">
     <title>Duplication</title>
-    <para><literal>Object#dup</literal> creates a shallow copy of the receiver. A new
-      instance of the receiver’s class is allocated, tainted if the original
-      object was, then populated with shallow copies of the receiver’s
-      instance variables. Neither singleton methods nor frozen state are
-      duplicated<footnote><para>To copy these items use <link linkend="obj.cloning">Object#clone</link> instead.
-      </para></footnote>. Corresponding instance variables
-      will refer to the same object because they are copied by reference; not
-      referent.</para>
-    <para>If the duplicated object responds to <literal>:initialize_dup</literal>, it
-      will be sent this message with the receiver as an argument. Its return
-      value is ignored. A common use is to perform a deep copyَ<footnote><para>Another way to perform a deep copy of an object is:
-      <literal>Marshal.load(Marshal.dump(<replaceable>object</replaceable>))</literal>.
-    </para></footnote> of instance variables by explicitly
-      duplicating them. If an object may only
-      be duplicated under certain circumstances, <literal>#initialize_dup</literal>
-      may choose to raise an exception.</para>
-    <para>If an object doesn’t respond to <literal>:initialize_dup</literal>, but
-      does respond to <literal>:initialize_copy</literal>, it is sent the latter
-      instead, with the same semantics as <literal>:initialize_dup</literal>.</para>
-    <para>Objects that shouldn’t be duplicated can privatise their
-    <literal>#dup</literal> method or define it to raise an informative
-    exception <biblioref begin="243" end="245" linkend="bib.flan08"
-    units="pages"/>.</para>
+
+    <para><literal>Object#dup</literal> creates a shallow copy of the receiver. A new instance of the receiver’s class is allocated, tainted if the original object was, then populated with shallow copies of the receiver’s instance variables. Neither singleton methods nor frozen state are duplicated<footnote><para>To copy these items use <link linkend="obj.cloning">Object#clone</link> instead.  </para></footnote>. Corresponding instance variables will refer to the same object because they are copied by reference; not referent.</para>
+    
+    <para>If the duplicated object responds to <literal>:initialize_dup</literal>, it will be sent this message with the receiver as an argument. Its return value is ignored. A common use is to perform a deep copyَ<footnote><para>Another way to perform a deep copy of an object is: <literal>Marshal.load(Marshal.dump(<replaceable>object</replaceable>))</literal>.  </para></footnote> of instance variables by explicitly duplicating them. If an object may only be duplicated under certain circumstances, <literal>#initialize_dup</literal> may choose to raise an exception.</para>
+    
+    <para>If an object doesn’t respond to <literal>:initialize_dup</literal>, but does respond to <literal>:initialize_copy</literal>, it is sent the latter instead, with the same semantics as <literal>:initialize_dup</literal>.</para>
+    
+    <para>Objects that shouldn’t be duplicated can privatise their <literal>#dup</literal> method or define it to raise an informative exception <biblioref begin="243" end="245" linkend="bib.flan08" units="pages"/>.</para>
   </sect1>
+
   <sect1 xml:id="obj.cloning">
     <title>Cloning</title>
-    <para><literal>Kernel#clone</literal>, behaves like <link linkend="obj.duplication">Kernel#dup</link> except it also copies
-      singleton methods and frozen state. Further, instead of sending
-      <literal>:initialize_dup</literal> to its receiver it sends
-      <literal>:initialize_clone</literal>, falling back to
-      <literal>:initialize_copy</literal>, if the former isn’t defined.</para>
+
+    <para><literal>Kernel#clone</literal>, behaves like <link linkend="obj.duplication">Kernel#dup</link> except it also copies singleton methods and frozen state. Further, instead of sending <literal>:initialize_dup</literal> to its receiver it sends <literal>:initialize_clone</literal>, falling back to <literal>:initialize_copy</literal>, if the former isn’t defined.</para>
   </sect1>
+
   <sect1 xml:id="obj.marshaling">
     <title>Marshaling</title>
-    <para>An object may be serialized as a binary <literal>String</literal> by
-      supplying it to <literal>Marshal.dump</literal>. If an <literal>IO</literal> object is
-      supplied as the second argument, the marshaled object is written to it.
-      <literal>Marshal.load</literal> reverses this process by recreating the object
-      from its marshaled form, which may be a string  or <literal>IO</literal> object.</para>
-    <para>The Marshal data format is versioned with a major and minor number,
-      which are stored in the first two bytes of marshaled data.
-      <literal>Marshal.load</literal> raises a <literal>TypeError</literal> unless the data
-      has the current major version and a minor version ≤ the current
-      minor version.</para>
-    <para>Objects may control how they’re dumped by responding to
-      <literal>:marshal_dump</literal> with another object to be serialized in their
-      place. If so, they must also respond to <literal>:marshal_load</literal>, which
-      is sent to an allocated, uninitialized instance of their class with the
-      recreated object as an argument. It is expected to initialize the state of
-      the receiver from that of its argument. The return value is ignored.</para>
+
+    <para>An object may be serialized as a binary <literal>String</literal> by supplying it to <literal>Marshal.dump</literal>. If an <literal>IO</literal> object is supplied as the second argument, the marshaled object is written to it.  <literal>Marshal.load</literal> reverses this process by recreating the object from its marshaled form, which may be a string or <literal>IO</literal> object.</para>
+    
+    <para>The Marshal data format is versioned with a major and minor number, which are stored in the first two bytes of marshaled data.  <literal>Marshal.load</literal> raises a <literal>TypeError</literal> unless the data has the current major version and a minor version ≤ the current minor version.</para>
+    
+    <para>Objects may control how they’re dumped by responding to <literal>:marshal_dump</literal> with another object to be serialized in their place. If so, they must also respond to <literal>:marshal_load</literal>, which is sent to an allocated, uninitialized instance of their class with the recreated object as an argument. It is expected to initialize the state of the receiver from that of its argument. The return value is ignored.</para>
   </sect1>
+
   <sect1 xml:id="obj.taint">
     <title>Taint</title>
-    <para>Taint checking is a security mechanism that blacklists objects
-      influenced by external input, propagating this trait to derivative
-      objects. Data read from <literal>IO</literal> streams and user input is
-      automatically tainted. An object can be explicitly tainted by
-      sending it <literal>:taint</literal>. The <literal>#tainted?</literal>
-      predicate returns <literal>true</literal> if the receiver, or an object
-      from which it derived, is tainted. Taintedness persists over
-      duplication and cloning. It can be removed with
-      <literal>Object#untaint</literal>.</para>
-    <para>If <literal>$SAFE &gt; 0</literal> certain methods raise
-      <literal>SecurityError</literal>s when given tainted objects.</para>
+
+    <para>Taint checking is a security mechanism that blacklists objects influenced by external input, propagating this trait to derivative objects. Data read from <literal>IO</literal> streams and user input is automatically tainted. An object can be explicitly tainted by sending it <literal>:taint</literal>. The <literal>#tainted?</literal> predicate returns <literal>true</literal> if the receiver, or an object from which it derived, is tainted. Taintedness persists over duplication and cloning. It can be removed with <literal>Object#untaint</literal>.</para>
+    
+    <para>If <literal>$SAFE &gt; 0</literal> certain methods raise <literal>SecurityError</literal>s when given tainted objects.</para>
   </sect1>
+
   <sect1 xml:id="obj.trust">
     <title>Trust</title>
-    <para>Objects and running code are either trusted or untrusted. They
-      are trusted by default unless <literal>$SAFE</literal> ≥ 3, in which
-      case they are untrusted. Untrusted code is prohibited from
-      modifying trusted objects.</para>
-    <para>An object may be explicitly trusted by sending it
-      <literal>:trust</literal> when <literal>$SAFE &lt; 3</literal>; a message of
-      <literal>:untrust</literal> does the converse when <literal>$SAFE &lt;
-        4</literal>. The <literal>Object#untrusted?</literal> predicate returns
-      <literal>true</literal> when the receiver is not trusted;
-      <literal>false</literal> otherwise.</para>
+
+    <para>Objects and running code are either trusted or untrusted. They are trusted by default unless <literal>$SAFE</literal> ≥ 3, in which case they are untrusted. Untrusted code is prohibited from modifying trusted objects.</para>
+    
+    <para>An object may be explicitly trusted by sending it <literal>:trust</literal> when <literal>$SAFE &lt; 3</literal>; a message of <literal>:untrust</literal> does the converse when <literal>$SAFE &lt; 4</literal>. The <literal>Object#untrusted?</literal> predicate returns <literal>true</literal> when the receiver is not trusted; <literal>false</literal> otherwise.</para>
   </sect1>
+
   <sect1 xml:id="obj.context">
     <title>Context</title>
-    <para><literal>BasicObject#instance_eval</literal> takes a string or block
-    which it evaluates in the receiver’s context, setting
-    <literal>self</literal> to the receiver. The evaluated code can access the
-    object’s instance variables, invoke its private and protected
-    methods, and define methods on its singleton class.</para>
-    <para><literal>BasicObject#instance_exec</literal> is similar, but accepts
-    any number of arguments which it passes to the required block.</para>
+
+    <para><literal>BasicObject#instance_eval</literal> takes a string or block which it evaluates in the receiver’s context, setting <literal>self</literal> to the receiver. The evaluated code can access the object’s instance variables, invoke its private and protected methods, and define methods on its singleton class.</para>
+    
+    <para><literal>BasicObject#instance_exec</literal> is similar, but accepts any number of arguments which it passes to the required block.</para>
   </sect1>
+
   <sect1 xml:id="obj.conversion">
     <title>Conversion</title>
-    <para>Selectors whose
-    names begin with <emphasis>to_</emphasis> are expected to return the receiver
-    converted to an object of the indicated class. A conversion is
-    either <emphasis>implicit</emphasis> or <emphasis>explicit</emphasis>, as explained below:</para>
+
+    <para>Selectors whose names begin with <emphasis>to_</emphasis> are expected to return the receiver converted to an object of the indicated class. A conversion is either <emphasis>implicit</emphasis> or <emphasis>explicit</emphasis>, as explained below:</para>
+    
     <sect2 xml:id="obj.implicit-conversion">
       <title>Implicit Conversion</title>
-      <para>A method may expect an argument of a particular class. If it
-      receives an object of another class it wishes to automatically
-      convert that object into one of the desired class.</para>
-      <para>For example, <literal>Array.new</literal> may be called with an Array as
-      an argument, which is copied to produce a new Array. If the argument
-      is not of class <literal>Array</literal>, <literal>Array.new</literal> sends
-      <literal>:to_ary</literal> to the argument, implicitly converting it to an
-      <literal>Array</literal>.</para>
-      <para><literal>Array.new</literal> sent <literal>:to_ary</literal> because it is part
-      of the implicit conversion protocol. By responding to this message
-      with an <literal>Array</literal>  objects are declaring that they may be
-      used in place of an <literal>Array</literal>.</para>
-      <para>If the argument responds to <literal>:to_a</literal> it can also be
-      automatically converted to an <literal>Array</literal>. However,
-      <literal>Array.new</literal> does not send this message for it is part of
-      the <emphasis>explicit</emphasis> conversion protocol; the sender of the message
-      must send the argument <literal>:to_a</literal> himself if he requires the
-      conversion.</para>
-      <para>Flanagan &amp; Matsumoto suggest that objects should implement an
-      implicit conversion protocol if they have <quote>strong
-      characteristics</quote> of the target class <biblioref begin="80"
-      end="80" linkend="bib.flan08" units="pages"/>.</para>
+    
+      <para>A method may expect an argument of a particular class. If it receives an object of another class it wishes to automatically convert that object into one of the desired class.</para>
+      
+      <para>For example, <literal>Array.new</literal> may be called with an Array as an argument, which is copied to produce a new Array. If the argument is not of class <literal>Array</literal>, <literal>Array.new</literal> sends <literal>:to_ary</literal> to the argument, implicitly converting it to an <literal>Array</literal>.</para>
+      
+      <para><literal>Array.new</literal> sent <literal>:to_ary</literal> because it is part of the implicit conversion protocol. By responding to this message with an <literal>Array</literal> objects are declaring that they may be used in place of an <literal>Array</literal>.</para>
+      
+      <para>If the argument responds to <literal>:to_a</literal> it can also be automatically converted to an <literal>Array</literal>. However, <literal>Array.new</literal> does not send this message for it is part of the <emphasis>explicit</emphasis> conversion protocol; the sender of the message must send the argument <literal>:to_a</literal> himself if he requires the conversion.</para>
+      
+      <para>Flanagan &amp; Matsumoto suggest that objects should implement an implicit conversion protocol if they have <quote>strong characteristics</quote> of the target class <biblioref begin="80" end="80" linkend="bib.flan08" units="pages"/>.</para>
+      
       <sect3 xml:id="obj.try-convert">
         <title><literal>try_convert</literal></title>
-        <para><literal>Array</literal>, <literal>Hash</literal>, <literal>IO</literal>,
-        <literal>Regexp</literal>, and <literal>String</literal> define a class
-        method named <literal>try_convert</literal> which uses the appropriate
-        implicit conversion protocol to convert the argument to the
-        receiver’s class. If the argument does not respond to the
-        appropriate implicit conversion message,
-        <literal>.try_convert</literal> returns <literal>nil</literal>.</para>
-        <para>For example,
-        <literal>String.try_convert(<replaceable>object</replaceable>)</literal> returns
-        <literal><replaceable>object</replaceable>.to_str</literal> if <replaceable>object</replaceable>
-        responds to <literal>:to_str</literal>; <literal>nil</literal> otherwise.</para>
+      
+	<para><literal>Array</literal>, <literal>Hash</literal>, <literal>IO</literal>, <literal>Regexp</literal>, and <literal>String</literal> define a class method named <literal>try_convert</literal> which uses the appropriate implicit conversion protocol to convert the argument to the receiver’s class. If the argument does not respond to the appropriate implicit conversion message, <literal>.try_convert</literal> returns <literal>nil</literal>.</para>
+        
+	<para>For example, <literal>String.try_convert(<replaceable>object</replaceable>)</literal> returns <literal><replaceable>object</replaceable>.to_str</literal> if <replaceable>object</replaceable> responds to <literal>:to_str</literal>; <literal>nil</literal> otherwise.</para>
       </sect3>
 
       <sect3 xml:id="obj.conversion-rules">
@@ -380,238 +244,146 @@
 
 	<orderedlist>
 	  <listitem>
-	    <para>A method may send implicit conversion messages to its
-	    arguments.</para>
+	    <para>A method may send implicit conversion messages to its arguments.</para>
 	  </listitem>
 	  <listitem>
-	    <para>Objects responding to such messages are declaring that they may
-	    be used in this way.</para>
+	    <para>Objects responding to such messages are declaring that they may be used in this way.</para>
 	  </listitem>
 	  <listitem>
-	    <para>A method must not send explicit conversion messages to its
-	    arguments.</para>
+	    <para>A method must not send explicit conversion messages to its arguments.</para>
 	  </listitem>
 	</orderedlist>
       </sect3>
     </sect2>
+
     <sect2 xml:id="obj.explicit-conversion">
       <title>Explicit Conversion</title>
-      <para>An object which can be represented as an object of another class
-      may implement the relevant explicit conversion protocol. It is
-      explicit because the user must explicitly send the conversion message
-      to the object to effect the conversion; the message should never be
-      sent automatically by another method.</para>
-      <para>If an object implements an implicit conversion protocol that
-      corresponds with an explicit conversion protocol, it should implement
-      the explicit protocol, too. The implicit protocol is a superset of the
-      explicit protocol, so there will not exist a scenario where an object
-      would need to implement the former without the latter. This can be easily
-      achieved by aliasing the implicit method to the explicit method. For
-      example, if an object responds to <literal>:to_ary</literal> but not to
-      <literal>:to_a</literal> it should alias <literal>:to_a</literal> to
-      <literal>:to_ary</literal>.</para>
+
+      <para>An object which can be represented as an object of another class may implement the relevant explicit conversion protocol. It is explicit because the user must explicitly send the conversion message to the object to effect the conversion; the message should never be sent automatically by another method.</para>
+      
+      <para>If an object implements an implicit conversion protocol that corresponds with an explicit conversion protocol, it should implement the explicit protocol, too. The implicit protocol is a superset of the explicit protocol, so there will not exist a scenario where an object would need to implement the former without the latter. This can be easily achieved by aliasing the implicit method to the explicit method. For example, if an object responds to <literal>:to_ary</literal> but not to <literal>:to_a</literal> it should alias <literal>:to_a</literal> to <literal>:to_ary</literal>.</para>
+      
       <para>From the discussion above we can derive the following rules:</para>
+      
       <orderedlist>
         <listitem>
-          <para>A method should not send explicit conversion messages to its
-        arguments.</para>
+          <para>A method should not send explicit conversion messages to its arguments.</para>
         </listitem>
         <listitem>
-          <para>Objects responding to implicit conversion messages that have
-        explicit counterparts should respond to the latter, too.</para>
+          <para>Objects responding to implicit conversion messages that have explicit counterparts should respond to the latter, too.</para>
         </listitem>
       </orderedlist>
     </sect2>
+
     <sect2 xml:id="obj.conversion-summary">
       <title>Summary</title>
       
-      <para>The conversion protocol is summarised in the table below. The
-      <emphasis>Target Class</emphasis> column indicates the class of the object the
-      conversion method should return. The <emphasis>Implicit</emphasis> column specifies
-      the message, if any, that is part of the implicit conversion protocol
-      for the target class. Likewise, the <emphasis>Explicit</emphasis> column specifies
-      the message, if any, that is part of the explicit conversion protocol
-      for the target class. If a protocol is not defined for a class, it has a
-      value of <emphasis>N/A</emphasis> is given.</para>
-      <para>Note that the absence of an implicit protocol for a class implies
-      that it should not be converted implicitly. Methods expecting arguments
-      of a non-convertible class should raise a <literal>TypeError</literal> if they
-      receive arguments of an unsuitable type.</para>
+      <para>The conversion protocol is summarised in the table below. The <emphasis>Target Class</emphasis> column indicates the class of the object the conversion method should return. The <emphasis>Implicit</emphasis> column specifies the message, if any, that is part of the implicit conversion protocol for the target class. Likewise, the <emphasis>Explicit</emphasis> column specifies the message, if any, that is part of the explicit conversion protocol for the target class. If a protocol is not defined for a class, it has a value of <emphasis>N/A</emphasis> is given.</para>
+      
+      <para>Note that the absence of an implicit protocol for a class implies that it should not be converted implicitly. Methods expecting arguments of a non-convertible class should raise a <literal>TypeError</literal> if they receive arguments of an unsuitable type.</para>
 
     <informaltable xml:id="obj.conversion-methods-tbl">
       <thead>
         <tr>
-          <th>Target Class 
-          </th>
-          <th>Implicit 
-          </th>
-          <th>Explicit
-          </th>
-          <th>Note
-      </th>
+          <th>Target Class</th>
+          <th>Implicit</th>
+          <th>Explicit</th>
+          <th>Note</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            <literal>Array</literal>
-          </td>
-          <td>
-            <literal>:to_ary</literal>
-          </td>
-          <td>
-            <literal>:to_a</literal>
-          </td>
-          <td> 
-        </td>
+          <td><literal>Array</literal></td>
+          <td><literal>:to_ary</literal></td>
+          <td><literal>:to_a</literal></td>
+          <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>Complex</literal>
-          </td>
-          <td>
-            <literal>:to_c</literal>
-          </td>
+          <td><literal>Complex</literal></td>
+          <td><literal>:to_c</literal></td>
           <td>N/A</td>
           <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>Enumerator</literal>
-          </td>
+          <td><literal>Enumerator</literal></td>
           <td>N/A</td>
-          <td>
-            <literal>:to_enum</literal>
-          </td>
+          <td><literal>:to_enum</literal></td>
           <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>Float</literal>
-          </td>
-          <td>
-            <literal>:to_f</literal>
-          </td>
+          <td><literal>Float</literal></td>
+          <td><literal>:to_f</literal></td>
           <td>N/A</td>
           <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>Hash</literal>
-          </td>
-          <td>
-            <literal>:to_hash</literal>
-          </td>
+          <td><literal>Hash</literal></td>
+          <td><literal>:to_hash</literal></td>
           <td>N/A</td>
           <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>Integer</literal>
-          </td>
-          <td>
-            <literal>:to_int</literal>
-          </td>
-          <td>
-            <literal>:to_i</literal>
-          </td>
+          <td><literal>Integer</literal></td>
+          <td><literal>:to_int</literal></td>
+          <td><literal>:to_i</literal></td>
           <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>IO</literal>
-          </td>
-          <td>
-            <literal>:to_io</literal>
-          </td>
+          <td><literal>IO</literal></td>
+          <td><literal>:to_io</literal></td>
           <td>N/A</td>
           <td>Sent by <literal>IO.try_convert</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>IO</literal>
-          </td>
-          <td>
-            <literal>:to_open</literal>
-          </td>
+          <td><literal>IO</literal></td>
+          <td><literal>:to_open</literal></td>
           <td>N/A</td>
           <td>Sent by <literal>Kernel#open</literal> to its first argument</td>
         </tr>
         <tr>
-          <td>
-            <literal>Proc</literal>
-          </td>
-          <td>
-            <literal>:to_proc</literal>
-          </td>
+          <td><literal>Proc</literal></td>
+          <td><literal>:to_proc</literal></td>
           <td>N/A</td>
           <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>Rational</literal>
-          </td>
-          <td>
-            <literal>:to_r</literal>
-          </td>
+          <td><literal>Rational</literal></td>
+          <td><literal>:to_r</literal></td>
           <td>N/A</td>
           <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>Regexp</literal>
-          </td>
-          <td>
-            <literal>:to_regexp</literal>
-          </td>
+          <td><literal>Regexp</literal></td>
+          <td><literal>:to_regexp</literal></td>
           <td>N/A</td>
           <td>Sent by <literal>Regexp.try_convert</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>String</literal>
-          </td>
-          <td>
-            <literal>:to_str</literal>
-          </td>
-          <td>
-            <literal>:to_s</literal>
-          </td>
+          <td><literal>String</literal></td>
+          <td><literal>:to_str</literal></td>
+          <td><literal>:to_s</literal></td>
           <td> </td>
         </tr>
         <tr>
-          <td>
-            <literal>String</literal>
-          </td>
-          <td>
-            <literal>:to_path</literal>
-          </td>
+          <td><literal>String</literal></td>
+          <td><literal>:to_path</literal></td>
           <td>N/A</td>
-          <td>Sent by methods expecting a file path as an argument, such as
-            the class methods of <literal>File</literal></td>
+          <td>Sent by methods expecting a file path as an argument, such as the class methods of <literal>File</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>Symbol</literal>
-          </td>
-          <td>
-            <literal>:to_sym</literal>
-          </td>
+          <td><literal>Symbol</literal></td>
+          <td><literal>:to_sym</literal></td>
           <td>N/A</td>
           <td> </td>
         </tr>
       </tbody>
     </informaltable>
   </sect2>
-    <sect2 xml:id="obj.converting-to-boolean">
-      <title>Converting to “Boolean”</title>
-      <para>It is rarely necessary to convert an object to a “Boolean” because Ruby
-      automatically treats <literal>false</literal> and <literal>nil</literal> as false, and
-      any other value as true. However, if a method wishes to return either
-      <literal>true</literal> or <literal>false</literal> it may use the
-      <literal>!!<replaceable>object</replaceable></literal> idiom. This returns <literal>false</literal> if
-      <replaceable>object</replaceable> is <literal>false</literal> or <literal>nil</literal>;
-      <literal>true</literal> otherwise.</para>
+
+  <sect2 xml:id="obj.converting-to-boolean">
+    <title>Converting to “Boolean”</title>
+    
+  <para>It is rarely necessary to convert an object to a “Boolean” because Ruby automatically treats <literal>false</literal> and <literal>nil</literal> as false, and any other value as true. However, if a method wishes to return either <literal>true</literal> or <literal>false</literal> it may use the <literal>!!<replaceable>object</replaceable></literal> idiom. This returns <literal>false</literal> if <replaceable>object</replaceable> is <literal>false</literal> or <literal>nil</literal>; <literal>true</literal> otherwise.</para>
     </sect2>
   </sect1>
 </chapter>
