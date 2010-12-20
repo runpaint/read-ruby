@@ -187,6 +187,141 @@
     <para>Objects may control how they’re dumped by responding to <literal>:marshal_dump</literal> with another object to be serialized in their place. If so, they must also respond to <literal>:marshal_load</literal>, which is sent to an allocated, uninitialized instance of their class with the recreated object as an argument. It is expected to initialize the state of the receiver from that of its argument. The return value is ignored.</para>
   </sect1>
 
+  <sect1 xml:id="obj.safe">
+    <title>Safe Levels</title>
+
+    <para>When Ruby is used in an untrusted environment, such as a <acronym>CGI</acronym> script on a public web server, a <emphasis>safe level</emphasis> can be set to prevent potentially dangerous methods from being invoked. The safe level is an <literal>Integer</literal> between 0, no restrictions, and 4, the most restrictive. The default safe level is 0. It is set by assigning the appropriate <literal>Integer</literal> to <literal>$SAFE</literal>, however it can never be lowered. Alternatively, it can be set when the interpreter is invoked by supplying a <option>-T<replaceable>level</replaceable></option> argument, where <replaceable>level</replaceable> is the desired safe level; if <replaceable>level</replaceable> is omitted, it defaults to 1.</para>
+
+    <sect2 xml:id="obj.safe-1">
+      <title>Level 1</title>
+
+      <para>At a safe level of 1 or more, potentially dangerous methods are prohibited from accepting tainted arguments. Specifically:</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para>Certain methods of <literal>Dir</literal>, <literal>IO</literal>, <literal>File</literal>, and <literal>FileTest</literal> refuse to accept tainted arguments.</para>
+	</listitem>
+	<listitem>
+	  <para>Tainted arguments are forbidden by <function>Kernel.eval</function>, <function>Kernel.load</function>—unless the load is wrapped—<function>Kernel.require</function>, <function>Kernel.test</function>, and <function>Kernel.trap</function>.</para>
+	</listitem>
+	<listitem>
+	    <para>The <envar>RUBYLIB</envar> and <envar>RUBYOPT</envar> environment variables are ignored at startup.</para>
+	</listitem>
+	<listitem>
+	  <para>The following command-line options are prohibited: <option>-e</option>, <option>-i</option>, <option>-I</option>, <option>-r</option>, <option>-s</option>, <option>-S</option>, and <option>-x</option>.</para>
+	</listitem>
+	<listitem>
+	  <para>Methods that execute programs prohibit tainted arguments, or executing a program relative to <envar>PATH</envar> when a directory in <envar>PATH</envar> is world-writable.</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2 xml:id="obj.safe-2">
+      <title>Level 2</title>
+
+      <para>At a safe level of 2 or higher, the following additional constraints are imposed on the manipulation of files and processes:</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para>Directories can not be created, deleted, or changed: <function>Dir.chdir</function>,  <function>Dir.chroot</function>, <function>Fir.mkdir</function>, and <function>Dir.rmdir</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>File metadata can not be changed: <function>File.chmod</function>, <function>File#chmod</function>, <function>File.chown</function>, <function>File#chown</function>, <function>File.lchmod</function>, <function>File#lchown</function>, <function>File.umask</function>, <function>File.utime</function>, and <function>IO#ioctl</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>File metadata can not be queried: <function>File.ftype</function>, <function>File.executable?</function>, <function>File.executable_real?</function>, <function>File.identical?</function>, <function>File.lstat</function>, <function>File#lstat</function>, <function>File.setuid?</function>, <function>File.stat</function>, <function>File::Stat.new</function>, <function>File.symlink?</function>, <function>File.readable?</function>, <function>File.readable_real?</function>, <function>File.writable?</function>, <function>File.writable_real?</function>, <function>File.readlink</function>, <function>File.realpath</function>, and <function>Kernel.test</function> are disabled.</para>
+	</listitem>	
+	<listitem>
+	  <para>Files can not be deleted, renamed, or locked: <function>File.delete</function>, <function>File.flock</function>, <function>File#flock</function>, <function>File.rename</function>, <function>File.truncate</function>, <function>File#truncate</function>, <function>File.unlink</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Symbolic and hard links can not be created: <function>File.link</function> and <function>File.symlink</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Syscalls can not be made: <function>Kernel.syscall</function> is disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Process IDs can not be queried: <function>Process.pid</function>, <function>Process.ppid</function>, <function>Process.getpgrp</function>, <function>Process::Sys.issetugid</function>, and <function>Process.getpgid</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Process IDs can not be changed: <function>Process.setpgrp</function>, <function>Process.setpgid</function>, <function>Process.setsid</function>, <function>Process::Sys.setgid</function>, <function>Process::Sys.setrgid</function>, <function>Process::Sys.setegid</function>, <function>Process::Sys.setregid</function>, <function>Process::Sys.setresgid</function>, <function>Process.gid=</function>, <function>Process::GID.change_privilege</function>, <function>Process::GID.grant_privilege</function>, <function>Process.egid=</function>, <function>Process::GID.eid=</function>, <function>Process::GID.re_exchange</function>, <function>Process::GID.switch</function>, and <function>Process::UID.switch</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Processes can not be manipulated: <function>Process.wait</function>, <function>Process.waitall</function>, <function>Process.detach</function>, <function>Process.daemon</function>. are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Processes can not be executed: <function>Kernel.`</function>, <function>Kernel.exec</function>, <function>Kernel.fork</function>, <function>Kernel.system</function>, and  <function>Kernel.spawn</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Process priorities and limits can neither be queried nor set: <function>Process.getpriority</function>, <function>Process.setpriority</function>, <function>Process.getrlimit</function>, <function>Process.setrlimit</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Signals can be neither sent nor trapped: <function>Process.kill</function> and <function>Process.trap</function> are disabled.</para>
+	</listitem>
+	<listitem>
+	  <para>Garbage collection can not be disabled: <function>GC.stress</function> is disabled.</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2 xml:id="obj.safe-3">
+      <title>Level 3</title>
+
+      <para>At a safe level of 3 or higher, objects other than those predefined in the global environment, are tainted and untrusted by default. Further, objects can neither be untainted or trusted because <function>Object#untaint</function> and <function>Object#trust</function> are disabled.</para>
+    </sect2>
+
+    <sect2 xml:id="obj.safe-4">
+      <title>Level 4</title>
+
+      <para>At a safe level of 4, the following additional restrictions are imposed:</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para><literal>Object</literal> and untainted <literal>Array</literal>s, <literal>Hash</literal>s, and <literal>String</literal>s can’t be modified.</para>
+	</listitem>
+	<listitem>
+	  <para>Neither global variables nor environment variables can be modified.</para>
+	</listitem>
+	<listitem>
+	  <para>Instance variables in untainted objects can neither be accessed nor removed.</para>
+	</listitem>
+	<listitem>
+	  <para>Untainted files be neither closed nor reopened. Neither files nor pipes can be written to.</para>
+	</listitem>
+	<listitem>
+	  <para>Untainted objects can’t be frozen, and those created at a lower safe level can’t be modified either. No object can be tainted or untrusted.</para>
+	</listitem>
+	<listitem>
+	  <para>Method visibility can’t be changed.</para>
+	</listitem>
+	<listitem>
+	  <para>In untainted classes and modules, modules can’t be included, and methods can not be aliased, defined, redefined, undefined, or removed.</para>
+	</listitem>
+	<listitem>
+	  <para>Objects can’t be queried for metadata such as method and variable lists.</para>
+	</listitem>
+	<listitem>
+	  <para>Threads can not be manipulated, terminated—unless the thread is the current thread—use <function>Thread.abort_on_exception=</function> or <function>Thread#abort_on_exception=</function>, moved between thread groups, or have thread-local variables.</para>
+	</listitem>
+	<listitem>
+	  <para>The interpreter can’t be terminated with <function>Kernel.exit</function>, <function>Kernel.exit!</function>, or <function>Kernel.abort</function>.</para>
+	</listitem>
+	<listitem>
+	  <para>Files can not be loaded with <function>Kernel.require</function>, <function>Kernel.autoload</function> or unwrapped-<function>Kernel.load</function>.</para>
+	</listitem>
+	<listitem>
+	  <para>Symbols can’t be converted to object references.</para>
+	</listitem>
+	<listitem>
+	  <para>The pseudo-random number generator can’t be seeded with <function>Kernel.srand</function> or <function>Random.srand</function>.</para>
+	</listitem>
+	<listitem>
+	  <para><function>Kernel.eval</function> can be passed a tainted <literal>String</literal>; this was prohibited at safe level 1, but safe level 4 is so restrictive that it’s allowed again.</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+
   <sect1 xml:id="obj.taint">
     <title>Taint</title>
 
