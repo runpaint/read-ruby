@@ -289,6 +289,12 @@
     <remark>Xref Process.kill when it is written</remark>
   </sect1>
 
+  <sect1 xml:id="prc.environment">
+    <title>Environment</title>
+
+    <para><literal>ENV</literal> provides <literal>Hash</literal>-like access to the current process’s environment variables. <function>ENV[<replaceable>var</replaceable>]</function> retrieves the value of the environment variable named <replaceable>var</replaceable>; <function>ENV[<replaceable>var</replaceable>]=<replaceable>value</replaceable></function> sets its value to <replaceable>value</replaceable>. In both cases <replaceable>var</replaceable> is a <literal>String</literal>. If <replaceable>value</replaceable> is <literal>nil</literal>, the environment variable is deleted.</para>
+  </sect1>
+
   <sect1 xml:id="prc.status">
     <title>Status</title>
 
