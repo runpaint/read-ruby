@@ -316,12 +316,140 @@
   <sect1 xml:id="pro.interpretation">
     <title>Interpretation</title>
     
-    <para>The statements and expressions that comprise a program are collectively known as its <firstterm>source code</firstterm>. To execute a program its source code must be provided to a Ruby <firstterm>interpreter</firstterm>: the program that executes Ruby source code. The reference implementation<footnote><para>There are several excellent alternative implementations such as <link xlink:href="http://jruby.org/">JRuby</link> and <link xlink:href="http://rubini.us/">Rubinius</link>. However, for the purposes of this book neither are recommended because, although JRuby is close, they are not yet compatible with Ruby 1.9.</para></footnote> of Ruby, or <acronym>MRI</acronym>, contains an interpreter called <literal>ruby</literal>, so when we speak of executing the interpreter we are referring to running this program. The sections that follow explain the various ways to execute source code.</para>
+
+    <sect2 xml:id="pro.interpreter">
+      <title>Interpreter</title>
+
+      <para>The statements and expressions that comprise a program are collectively known as its <firstterm>source code</firstterm>. To execute a program its source code must be provided to a Ruby <firstterm>interpreter</firstterm>: the program that executes Ruby source code. The reference implementation<footnote><para>There are several excellent alternative implementations such as <link xlink:href="http://jruby.org/">JRuby</link> and <link xlink:href="http://rubini.us/">Rubinius</link>. However, for the purposes of this book neither are recommended because, although JRuby is close, they are not yet compatible with Ruby 1.9.</para></footnote> of Ruby, or <acronym>MRI</acronym>, contains an interpreter called <command>ruby</command>, so when we speak of <emphasis>executing the interpreter</emphasis> we are referring to running this program.</para>
+
+      <para>The <command>ruby</command> program is invoked as <literal>ruby <replaceable>options</replaceable> <replaceable>file</replaceable> <replaceable>arguments</replaceable></literal>, all of which are optional. If the <envar>RUBYOPT</envar> environment variable includes the <option>-W</option>, <option>-w</option>, <option>-v</option>, <option>-d</option>, <option>-I</option>, <option>-r</option>, and <option>-K</option> options, they are treated as if they were specified on the command line.</para>
+
+      <para><replaceable>options</replaceable> is zero or more of the options tabulated below. They are passed to the interpreter. If the <option>-e</option> option is given, its argument is the Ruby code to execute. If <replaceable>file</replaceable> is given and it’s the name of a file containing Ruby code, the file is executed. If <replaceable>file</replaceable> is <literal>-</literal> or omitted, the Ruby code to execute is read from standard input. If <replaceable>arguments</replaceable> are given, they are passed to the Ruby program as elements of <literal>ARGV</literal>.</para>
+
+      <informaltable>
+	<thead>
+	  <tr>
+	    <th>Option</th>
+	    <th>Description</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td><option>-0<replaceable>n</replaceable></option></td>
+	    <td>Set the record separator to the character with ASCII code <replaceable>n</replaceable>, which is interpreted as up to three octal digits. If <replaceable>n</replaceable> is omitted, it is 0; if <replaceable>n</replaceable> explicitly specified as <literal>0</literal>, the record separator is <literal>"\n\n"</literal>; if <replaceable>n</replaceable> is <literal>777</literal>, the record separator is <literal>nil</literal>.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-a</option></td>
+	    <td>Auto-split mode: when used in conjunction with <option>-n</option> or <option>-p</option>, places <literal>$F = $_.split</literal> at the beginning of the loop body.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-C <replaceable>directory</replaceable></option> / <option>-X <replaceable>directory</replaceable></option></td>
+	    <td>Change to the directory named <replaceable>directory</replaceable> before executing the program.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-c</option></td>
+	    <td>Check syntax without executing the program: prints an error message if there are syntax errors; prints nothing if there aren’t.</td>
+	  </tr>
+	  <tr>
+	    <td><option>--copyright</option></td>
+	    <td>Display the copyright notice then exits.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-d</option> / <option>--debug</option></td>
+	    <td>Assign <literal>true</literal> to <literal>$DEBUG</literal> and <literal>$VERBOSE</literal>, which enables warnings.</td>
+	  </tr>
+	  <tr>
+	    <td><option>--disable-gems</option></td>
+	    <td>Don’t load <emphasis>rubygems</emphasis> implicitly or add gem directories to the load path.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-E <replaceable>encoding</replaceable></option> / <option>--encoding <replaceable>encoding</replaceable></option></td>
+	    <td>Set the default encoding. If <replaceable>encoding</replaceable> is a single encoding name, it is the default external encoding; if it is two encoding names separated by colons, the first encoding is the default external, and the second, the default internal.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-e <replaceable>string</replaceable></option></td>
+	    <td>Execute <replaceable>string</replaceable> as Ruby code. If this option is given multiple times, its arguments form successive lines of the same program.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-F <replaceable>sep</replaceable></option></td>
+	    <td>Set the input field separator (<literal>$;</literal>) to <replaceable>sep</replaceable>, where <replaceable>sep</replaceable> is a single character or regular expression without the <literal>/…/</literal> delimiters.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-h</option> / <option>--help</option></td>
+	    <td>Display usage help then exit.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-I <replaceable>directories</replaceable></option></td>
+	    <td>Prepend <replaceable>directories</replaceable> to <literal>$LOAD_PATH</literal>. If <replaceable>directories</replaceable> contains multiple directories, they are separated by a colon on Unix-like systems; a semicolon on Windows systems. May be given multiple times.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-i <replaceable>extension</replaceable></option></td>
+	    <td>For each file named in <literal>ARGV</literal>, data written to the standard output stream will be written to that file. If <replaceable>extension</replaceable> is given, then before a file, <replaceable>file</replaceable>, is modified it is copied to <literal><replaceable>file</replaceable><replaceable>extension</replaceable></literal>.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-K<replaceable>code</replaceable></option></td>
+	    <td>Set the default external encoding and source encoding to <emphasis>US-ASCII</emphasis> if <replaceable>code</replaceable> is <literal>a</literal>, <literal>A</literal>, <literal>n</literal>, or <literal>N</literal>; <emphasis>UTF-8</emphasis> if <replaceable>code</replaceable> is <literal>u</literal> or <literal>U</literal>; <emphasis>Shift-JIS</emphasis> is <replaceable>code</replaceable> is <literal>s</literal> or <literal>S</literal>; or <emphasis>EUC-JP</emphasis> if <literal>code</literal> is <literal>e</literal> or <literal>E</literal>.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-l</option></td>
+	    <td>Set <literal>$\</literal> to <literal>$/</literal> and remove <literal>$/</literal> from the end of input lines.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-n</option></td>
+	    <td>Assume a <literal>while gets; … ; end</literal> loop around the Ruby program.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-p</option></td>
+	    <td>Assume a <literal>while gets; … ; print; end</literal> loop around the Ruby program.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-r<replaceable>library</replaceable></option></td>
+	    <td>Require the library or gem named <replaceable>library</replaceable> before executing the program.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-S</option></td>
+	    <td>Try to locate the specified program file relative to the <envar>RUBYPATH</envar> or <envar>PATH</envar> environment variables, before locating it normally.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-s</option></td>
+	    <td>Remove any options following the program filename from <literal>ARGV</literal>, then create a global variable named after the option and assign to it the option’s value. Options without values are assumed to be <literal>true</literal>.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-T<replaceable>level</replaceable></option></td>
+	    <td>Set the safe level to <replaceable>level</replaceable>, or <literal>1</literal> if <replaceable>level</replaceable> is omitted.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-U</option></td>
+	    <td>Set the default internal encoding to UTF-8.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-v</option> / <option>--verbose</option></td>
+	    <td>Enable warnings by setting <literal>$VERBOSE</literal> to <literal>true</literal>, then print the interpreter version number. If a program is specified, execute it.</td>
+	  </tr>
+	  <tr>
+	    <td><option>--version</option></td>
+	    <td>Display the interpreter version number then exits.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-w</option></td>
+	    <td>Enable warnings by setting <literal>$VERBOSE</literal> to <literal>true</literal>, then execute the named program—if given—or read the program from standard input.</td> 
+	  </tr>
+	  <tr>
+	    <td><option>-W<replaceable>level</replaceable></option></td>
+	    <td>Set the warning level to <replaceable>level</replaceable>: silence all warnings if <replaceable>level</replaceable> is <literal>0</literal>; use standard warning level if <replaceable>level</replaceable> is <literal>1</literal>; otherwise, or if <replaceable>level</replaceable> is omitted, equivalent to <option>-w</option>.</td>
+	  </tr>
+	  <tr>
+	    <td><option>-x <replaceable>directory</replaceable></option></td>
+	    <td>Strip each line of the program file that precede a line beginning <literal>#!ruby</literal>, change to the directory named <replaceable>directory</replaceable>—if given—then execute the program.</td>
+	  </tr>
+	</tbody>
+      </informaltable>
+    </sect2>
 
     <sect2 xml:id="pro.source-files">
       <title>Source Files</title>
       
-      <para>Ruby programs are typically stored in plain text files with an <literal>.rb</literal> filename extension. They are then executed by supplying their filenames as arguments to the <literal>ruby</literal> binary, e.g. <literal>ruby myfile.rb</literal> would execute the source code saved in <literal>myfile.rb</literal>.</para>
+      <para>Ruby programs are typically stored in plain text files with an <literal>.rb</literal> filename extension. As explained above, they are typically executed by supplying their filenames as arguments to the <command>ruby</command> interpreter, e.g. <literal>ruby myfile.rb</literal> would execute the source code saved in <literal>myfile.rb</literal>.</para>
     
       <sect3 xml:id="pro.shebang">
         <title>Shebang</title>
