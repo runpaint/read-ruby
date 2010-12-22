@@ -276,7 +276,7 @@
   <sect1 xml:id="arr.set">
     <title>Set Operations</title>
 
-    <para><literal>#- <replaceable>a</replaceable></literal> returns the difference between the receiver and <literal>Array</literal> <replaceable>a</replaceable>, i.e., the elements of the receiver less the elements of <replaceable>a</replaceable>. <literal>#&amp; <replaceable>a</replaceable></literal> returns the intersection of the receiver and <literal>Array</literal> <replaceable>a</replaceable>, i.e., elements common to both, without duplicates <literal>#| <replaceable>a</replaceable></literal> returns the union of the receiver and <literal>Array</literal> <replaceable>a</replaceable>, i.e. their concatenation, minus any duplicates.</para>
+    <para>Set operations find the difference, intersection, and union of the receiver and another <literal>Array</literal>, <replaceable>a</replaceable>. <function>Array#-(<replaceable>a</replaceable>)</function> returns the difference between the receiver and <replaceable>a</replaceable>, i.e., the elements of the receiver less the elements of <replaceable>a</replaceable>. <function>Array#&amp;(<replaceable>a</replaceable>)</function> returns the intersection of the receiver and <replaceable>a</replaceable>, i.e., elements common to both, without duplicates. <function>Array#|(<replaceable>a</replaceable>)</function> returns the union of the receiver and <replaceable>a</replaceable>, i.e. their concatenation, minus any duplicates.</para>
 
     <example xml:id="ex.array-set">
       <title>Performing set operations on <literal>Array</literal>s</title>
