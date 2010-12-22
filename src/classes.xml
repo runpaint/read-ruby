@@ -430,14 +430,7 @@
   <sect1 xml:id="cla.methods">
     <title>Methods</title>
 
-    <para>
-      The methods defined on a class can be listed with
-      <literal>Object#methods</literal> or
-      <literal>Object#instance_methods</literal>. They are returned as an
-      <literal>Array</literal> of <literal>Symbol</literal>s. If either method
-      is given an argument of <literal>false</literal>, superclass methods are
-      omitted.
-    </para>
+    <para><function>Module#instance_methods</function> returns the names of non-private instance methods defined in its receiver and superclasses as an <literal>Array</literal> of <literal>Symbol</literal>s. <function>Module#public_instance_methods</function>, <function>Module#private_instance_methods</function>, and <function>Module#protected_instance_methods</function> are identical, except they return only those instance methods with the corresponding visibility. If these methods are given an argument which is <literal>false</literal>, methods defined in the receiver’s superclass are omitted. To query another type of object for the methods it defines, see <xref linkend="obj.methods"/>.</para>
 
     <sect2 xml:id="cla.method-defined">
       <title><literal>method_defined?</literal> Predicate</title>
