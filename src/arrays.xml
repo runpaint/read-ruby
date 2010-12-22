@@ -288,11 +288,7 @@
   <sect1 xml:id="arr.order">
     <title>Ordering</title>
 
-    <para>The order of elements in an <literal>Array</literal> can be reversed with <literal>#reverse</literal>. <literal>#reverse!</literal> is identical except that it modifies the receiver in-place.</para>
-
-    <para><literal>#shuffle</literal> returns a copy of the receiver in a pseudo-random order. <literal>#shuffle!</literal> is identical except it modifies the receiver in-place. <remark>TODO: Document 1.9.3 feature: 'random:' argument</remark><remark>TODO: Xref #sample?</remark></para>
-
-    <para>The <literal>#sort!</literal> and <literal>#sort_by!</literal> methods behave like <literal>Enumerable#sort</literal> and <literal>Enumerable#sort_by</literal>, respectively, except they modify their receiver in-place.</para>
+    <para>An <literal>Array</literal> is sorted with either <function>Array#sort</function> or <function>Array#sort_by</function>, both of which behave like their namesakes in the <literal>Enumerable</literal> module. The elements in an <literal>Array</literal> can be reversed with <function>Array#reverse</function>, or sorted in a pseudo-random order with <function>Array#shuffle</function><remark>TODO: Document 1.9.3 feature: 'random:' argument</remark><remark>TODO: Xref #sample?</remark>. All four methods order a copy of the receiver, which they return; to modify the receiver in-place, append an exclamation mark to the method name, e.g. <function>Array#shuffle!</function>.</para>
 
     <example xml:id="ex.array-order">
       <title>Sorting the elements of an <literal>Array</literal></title>
