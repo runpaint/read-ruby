@@ -10,57 +10,26 @@
   
   <remark>TODO: #pack</remark>
   
-  <para>An <literal>Array</literal> is a mutable, heterogeneous, ordered
-  collection of objects, termed <firstterm>elements</firstterm>, indexed by an
-  <literal>Integer</literal> subscript. Its mutability means that elements can
-  be added to, and removed from, the collection at any point in its lifetime,
-  causing the <literal>Array</literal> to expand or contract as needed. In
-  keeping with her philosophy of duck-typing, Ruby does not require the
-  elements to have a specific type: any permutation of objects may be stored in
-  an <literal>Array</literal>. That each element is indexed by a unique
-  <literal>Integer</literal>, enforces unambiguous order on the
-  collection.</para>
+  <para>An <literal>Array</literal> is a mutable, heterogeneous, ordered collection of objects, termed <firstterm>elements</firstterm>, indexed by an <literal>Integer</literal> subscript. Its mutability means that elements can be added to, and removed from, the collection at any point in its lifetime, causing the <literal>Array</literal> to expand or contract as needed. In keeping with her philosophy of duck-typing, Ruby does not require the elements to have a specific type: any permutation of objects may be stored in an <literal>Array</literal>. That each element is indexed by a unique <literal>Integer</literal>, enforces unambiguous order on the collection.</para>
 
-  <para>The first element of an <literal>Array</literal> has the index
-  <literal>0</literal>, so the last element has an index one less than the
-  total number of elements. Methods that accept <literal>Array</literal>
-  indices as arguments, interpret negative indices as counting backward from
-  the last element, i.e. <literal>-2</literal> refers to the penultimate
-  element.</para>
+  <para>The first element of an <literal>Array</literal> has the index <literal>0</literal>, so the last element has an index one less than the total number of elements. Methods that accept <literal>Array</literal> indices as arguments, interpret negative indices as counting backward from the last element, i.e. <literal>-2</literal> refers to the penultimate element.</para>
 
-  <para>Instances of <literal>Array</literal> are <link
-  linkend="enu.enumerables"><literal>Enumerable</literal></link>, so in
-  addition to the methods described in this chapter, they also respond to the
-  <literal>Enumerable</literal> methods.</para>
+  <para>Instances of <literal>Array</literal> are <link linkend="enu.enumerables"><literal>Enumerable</literal></link>, so in addition to the methods described in this chapter, they also respond to the <literal>Enumerable</literal> methods.</para>
 
   <sect1 xml:id="arr.literals">
     <title>Literals</title>
 
-    <para>An <literal>Array</literal> literal is a comma-separated list of
-    expressions enclosed in square brackets (<literal>[</literal>,
-    <literal>]</literal>). For example, <literal>[1, :two, 'three']</literal>
-    creates a three-element <literal>Array</literal> object with
-    <literal>1</literal> as the first element. </para>
+    <para>An <literal>Array</literal> literal is a comma-separated list of expressions enclosed in square brackets (<literal>[</literal>, <literal>]</literal>). For example, <literal>[1, :two, 'three']</literal> creates a three-element <literal>Array</literal> object with <literal>1</literal> as the first element. </para>
 
     <sect2 xml:id="arr.literal-w">
       <title>Alternative Delimiters</title>
     
-      <para>The
-      <literal>%w<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal>
-      construct is a syntactical shortcut for instantiating an array of
-      strings. The delimiters take the same form as those of <link
-      linkend="str.single-quoted-q">%q</link>. The text between them is split
-      on whitespace, each substring becoming an element on the array.
-      <literal>%w</literal> interprets its contents with single-quoted string
-      semantics; its counterpart, <literal>%W</literal>, behaves in the same
-      way using double-quoted string semantics.</para>
+      <para>The <literal>%w<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> construct is a syntactical shortcut for instantiating an array of strings. The delimiters take the same form as those of <link linkend="str.single-quoted-q">%q</link>. The text between them is split on whitespace, each substring becoming an element on the array.  <literal>%w</literal> interprets its contents with single-quoted string semantics; its counterpart, <literal>%W</literal>, behaves in the same way using double-quoted string semantics.</para>
     
       <example xml:id="ex.array-literal-w">
 	<title>Creating an array of strings with the <literal>%w</literal> and <literal>%W</literal> constructs</title>
 
-	<programlisting><xi:include 
-	href="examples/array-literal-w.rb"
-	parse="text"/></programlisting>
+	<programlisting><xi:include href="examples/array-literal-w.rb" parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
@@ -68,314 +37,158 @@
   <sect1 xml:id="arr.new">
     <title><literal>Array.new</literal></title>
 
-    <para><literal>Array</literal>s are typically instantiated with the literal
-    syntax explained above. <literal>Array.new</literal> offers more control
-    over this process. When called with no arguments it is equivalent to
-    <literal>[]</literal>. <literal>Array.new(<replaceable>size</replaceable>,
-    <replaceable>o</replaceable>)</literal> creates a
-    <replaceable>size</replaceable>-element <literal>Array</literal> with each
-    value set to <replaceable>o</replaceable>. If <replaceable>o</replaceable>
-    is omitted, it defaults to <literal>nil</literal>. When given an
-    <literal>Array</literal> argument, <replaceable>a</replaceable>, it returns
-    <literal>a.to_ary</literal>. Lastly, if a numeric argument,
-    <replaceable>size</replaceable>, and block are provided, the block is
-    called <replaceable>size</replaceable> times, with its return value
-    becoming the corresponding <literal>Array</literal> value.</para>
+    <para><literal>Array</literal>s are typically instantiated with the literal syntax explained above. <literal>Array.new</literal> offers more control over this process. When called with no arguments it is equivalent to <literal>[]</literal>. <literal>Array.new(<replaceable>size</replaceable>, <replaceable>o</replaceable>)</literal> creates a <replaceable>size</replaceable>-element <literal>Array</literal> with each value set to <replaceable>o</replaceable>. If <replaceable>o</replaceable> is omitted, it defaults to <literal>nil</literal>. When given an <literal>Array</literal> argument, <replaceable>a</replaceable>, it returns <literal>a.to_ary</literal>. Lastly, if a numeric argument, <replaceable>size</replaceable>, and block are provided, the block is called <replaceable>size</replaceable> times, with its return value becoming the corresponding <literal>Array</literal> value.</para>
 
     <example xml:id="ex.array-new">
       <title>Creating an <literal>Array</literal> with <literal>Array.new</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-new.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-new.rb" parse="text"/></programlisting>
     </example>
   </sect1>
 
   <sect1 xml:id="arr.lookup">
     <title>Lookup</title>
     
-    <para>The element at index <replaceable>n</replaceable> can be retrieved
-    with
-    <literal>#[<replaceable>n</replaceable>]</literal>. <literal>#at(<replaceable>n</replaceable>)</literal>
-    and <literal>#slice(<replaceable>n</replaceable>)</literal> behave in the
-    same manner. If the index <replaceable>n</replaceable> lies outside of the
-    array, these methods return <literal>nil</literal>.  The
-    <literal>#fetch</literal> method also returns the element at a given index,
-    however it differs from the aforementioned in how it reacts to non-existent
-    indices. <literal>#fetch(<replaceable>n</replaceable>)</literal> raises an
-    <literal>IndexError</literal>, or, if given a block, returns the value of
-    the block when passed
-    <replaceable>n</replaceable>. <literal>#fetch(<replaceable>n</replaceable>,
-    <replaceable>default</replaceable>)</literal> returns
-    <replaceable>default</replaceable>.</para>
+    <para>The element at index <replaceable>n</replaceable> can be retrieved with <literal>#[<replaceable>n</replaceable>]</literal>. <literal>#at(<replaceable>n</replaceable>)</literal> and <literal>#slice(<replaceable>n</replaceable>)</literal> behave in the same manner. If the index <replaceable>n</replaceable> lies outside of the array, these methods return <literal>nil</literal>.  The <literal>#fetch</literal> method also returns the element at a given index, however it differs from the aforementioned in how it reacts to non-existent indices. <literal>#fetch(<replaceable>n</replaceable>)</literal> raises an <literal>IndexError</literal>, or, if given a block, returns the value of the block when passed <replaceable>n</replaceable>. <literal>#fetch(<replaceable>n</replaceable>, <replaceable>default</replaceable>)</literal> returns <replaceable>default</replaceable>.</para>
 
     <example xml:id="ex.array-lookup-single">
       <title>Looking-up a single element in an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-lookup-single.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-lookup-single.rb" parse="text"/></programlisting>
     </example>
 
-    <para>Whereas the methods above returned the element corresponding to a
-    given index, <literal>#index(<replaceable>e</replaceable>)</literal>, or
-    its alias <literal>#find_index(<replaceable>e</replaceable>)</literal>
-    return the index corresponding to a given element. Specifically,
-    <literal>#index(<replaceable>e</replaceable>)</literal> returns the index
-    of the first element <literal>#==</literal> to <literal>e</literal>. If
-    either method is provided a block instead of <replaceable>e</replaceable>,
-    it calls the block with each element in turn, returning the index of the
-    first element for which the block returns
-    <literal>true</literal>. <literal>#rindex</literal> behaves identically to
-    <literal>#index</literal> except it tests the elements in reverse
-    order.</para>
+    <para>Whereas the methods above returned the element corresponding to a given index, <literal>#index(<replaceable>e</replaceable>)</literal>, or its alias <literal>#find_index(<replaceable>e</replaceable>)</literal> return the index corresponding to a given element. Specifically, <literal>#index(<replaceable>e</replaceable>)</literal> returns the index of the first element <literal>#==</literal> to <literal>e</literal>. If either method is provided a block instead of <replaceable>e</replaceable>, it calls the block with each element in turn, returning the index of the first element for which the block returns <literal>true</literal>. <literal>#rindex</literal> behaves identically to <literal>#index</literal> except it tests the elements in reverse order.</para>
 
     <example xml:id="ex.array-index">
       <title>Looking-up an element’s index in an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-index.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-index.rb" parse="text"/></programlisting>
     </example>
     
-    <para>To lookup multiple elements at once,
-    <literal>#[](<replaceable>start</replaceable>,
-    <replaceable>length</replaceable>)</literal> or
-    <literal>#[](<replaceable>range</replaceable>)</literal>, or its alias,
-    <literal>#slice</literal>, can be used. The first form returns an
-    <literal>Array</literal> of at most <replaceable>length</replaceable>
-    consecutive elements, beginning at index
-    <replaceable>start</replaceable>. The second returns an
-    <literal>Array</literal> of the elements at the indices covered by the
-    given <literal>Range</literal>. Alternatively,
-    <literal>#values_at</literal> accepts any combination of
-    <literal>Integer</literal> and <literal>Range</literal> arguments,
-    returning the elements at any of the given indices.</para>
+    <para>To lookup multiple elements at once, <literal>#[](<replaceable>start</replaceable>, <replaceable>length</replaceable>)</literal> or <literal>#[](<replaceable>range</replaceable>)</literal>, or its alias, <literal>#slice</literal>, can be used. The first form returns an <literal>Array</literal> of at most <replaceable>length</replaceable> consecutive elements, beginning at index <replaceable>start</replaceable>. The second returns an <literal>Array</literal> of the elements at the indices covered by the given <literal>Range</literal>. Alternatively, <literal>#values_at</literal> accepts any combination of <literal>Integer</literal> and <literal>Range</literal> arguments, returning the elements at any of the given indices.</para>
 
     <example xml:id="ex.array-aref">
       <title>Looking-up slices of an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-aref.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-aref.rb" parse="text"/></programlisting>
     </example>
 
-    <para>The element at index <literal>0</literal> can be retrieved with
-    <literal>#[0]</literal> or <literal>#first</literal>. If
-    <literal>#first</literal> is given an <literal>Integer</literal> argument,
-    <replaceable>n</replaceable>, it is equivalent to
-    <literal>#[0...<replaceable>n</replaceable>]</literal>: it returns the
-    first <replaceable>n</replaceable> elements as an
-    <literal>Array</literal>. Conversely, <literal>#last</literal> is
-    equivalent to <literal>#[-1]</literal>, and
-    <literal>#last(<replaceable>n</replaceable>)</literal> means
-    <literal>#[-<replaceable>n</replaceable>..-1]</literal>.</para>
+    <para>The element at index <literal>0</literal> can be retrieved with <literal>#[0]</literal> or <literal>#first</literal>. If <literal>#first</literal> is given an <literal>Integer</literal> argument, <replaceable>n</replaceable>, it is equivalent to <literal>#[0...<replaceable>n</replaceable>]</literal>: it returns the first <replaceable>n</replaceable> elements as an <literal>Array</literal>. Conversely, <literal>#last</literal> is equivalent to <literal>#[-1]</literal>, and <literal>#last(<replaceable>n</replaceable>)</literal> means <literal>#[-<replaceable>n</replaceable>..-1]</literal>.</para>
 
     <example xml:id="ex.array-first-last">
-      <title>Looking-up the first and last elements of an
-      <literal>Array</literal></title>
+      <title>Looking-up the first and last elements of an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-first-last.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-first-last.rb" parse="text"/></programlisting>
     </example>
 
-    <para>Lastly, <literal>#sample(<replaceable>n</replaceable>)</literal>
-    returns <replaceable>n</replaceable> random elements, where
-    <replaceable>n</replaceable> is capped at the size of the receiver. If
-    <replaceable>n</replaceable> is omitted, it defaults to
-    <literal>1</literal>. <remark>TODO: Describe the `random:` argument as a
-    1.9.3 feature</remark></para>
+    <para>Lastly, <literal>#sample(<replaceable>n</replaceable>)</literal> returns <replaceable>n</replaceable> random elements, where <replaceable>n</replaceable> is capped at the size of the receiver. If <replaceable>n</replaceable> is omitted, it defaults to <literal>1</literal>. <remark>TODO: Describe the `random:` argument as a 1.9.3 feature</remark></para>
 
     <example xml:id="ex.array-sample">
-      <title>Looking-up “random” elements of an
-      <literal>Array</literal></title>
+      <title>Looking-up “random” elements of an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-sample.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-sample.rb" parse="text"/></programlisting>
     </example>
   </sect1>
 
   <sect1 xml:id="arr.insertion">
     <title>Insertion</title>
 
-    <para><literal>#insert(<replaceable>i</replaceable>,
-    <replaceable>o</replaceable><subscript>0</subscript>,…,<replaceable>o</replaceable><subscript><replaceable>n</replaceable></subscript>)</literal>
-    inserts objects 0…<replaceable>n</replaceable> before the element with
-    index <replaceable>i</replaceable> if <replaceable>i</replaceable> is
-    positive. If <replaceable>i</replaceable> is negative, it counts from the
-    end of the <literal>Array</literal>, and the objects are inserted after
-    it.</para>
+    <para><literal>#insert(<replaceable>i</replaceable>, <replaceable>o</replaceable><subscript>0</subscript>,…,<replaceable>o</replaceable><subscript><replaceable>n</replaceable></subscript>)</literal> inserts objects 0…<replaceable>n</replaceable> before the element with index <replaceable>i</replaceable> if <replaceable>i</replaceable> is positive. If <replaceable>i</replaceable> is negative, it counts from the end of the <literal>Array</literal>, and the objects are inserted after it.</para>
 
     <example xml:id="ex.array-insert">
       <title>Inserting elements into an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-insert.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-insert.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>#push(<replaceable>o</replaceable>)</literal> and
-    <literal>#&lt;&lt; <replaceable>o</replaceable></literal> are equivalent to
-    <literal>#insert(-1, <replaceable>o</replaceable>)</literal>, while
-    <literal>#unshift(<replaceable>o</replaceable>)</literal> is equivalent to
-    <literal>#insert(0, <replaceable>o</replaceable>)</literal>.</para>
+    <para><literal>#push(<replaceable>o</replaceable>)</literal> and <literal>#&lt;&lt; <replaceable>o</replaceable></literal> are equivalent to <literal>#insert(-1, <replaceable>o</replaceable>)</literal>, while <literal>#unshift(<replaceable>o</replaceable>)</literal> is equivalent to <literal>#insert(0, <replaceable>o</replaceable>)</literal>.</para>
 
     <remark>TODO: Xref #pop and #shift?</remark>
 
     <example xml:id="ex.array-push-unshift">
-      <title>Appending and prepending elements to an
-      <literal>Array</literal></title>
+      <title>Appending and prepending elements to an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-push-unshift.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-push-unshift.rb" parse="text"/></programlisting>
     </example>
   </sect1>
 
   <sect1 xml:id="arr.replace">
     <title>Replacement</title>
 
-    <para>To replace the object at index <replaceable>n</replaceable> with
-    <replaceable>o</replaceable>, use
-    <literal>#[<replaceable>n</replaceable>]</literal> as an lvalue,
-    e.g. <literal>#[<replaceable>n</replaceable>] =
-    <replaceable>o</replaceable></literal>. If <literal>#[]=</literal> is given
-    a pair of <literal>Integer</literal>s or a <literal>Range</literal> for its
-    arguments, the affected slice is replaced by the rvalue.</para>
+    <para>To replace the object at index <replaceable>n</replaceable> with <replaceable>o</replaceable>, use <literal>#[<replaceable>n</replaceable>]</literal> as an lvalue, e.g. <literal>#[<replaceable>n</replaceable>] = <replaceable>o</replaceable></literal>. If <literal>#[]=</literal> is given a pair of <literal>Integer</literal>s or a <literal>Range</literal> for its arguments, the affected slice is replaced by the rvalue.</para>
 
     <example xml:id="ex.array-aref-set">
       <title>Replacing elements of an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-aref-set.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-aref-set.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>#fill</literal> replaces one sequence of elements with
-    another. <literal>#fill(<replaceable>o</replaceable>)</literal> substitutes
-    every element of the receiver for
-    <replaceable>o</replaceable>. <literal>#fill(<replaceable>o</replaceable>,
-    <replaceable>start</replaceable>,
-    <replaceable>length</replaceable>)</literal> replaces index
-    <replaceable>start</replaceable> through to index
-    <replaceable>length</replaceable> with <replaceable>o</replaceable>. If
-    <replaceable>length</replaceable> is omitted, it is assumed to be the
-    length of the receiver. <literal>#fill(<replaceable>o</replaceable>,
-    <replaceable>range</replaceable>)</literal> replaces the elements whose
-    indices are covered by the <literal>Range</literal>
-    <replaceable>range</replaceable> with <replaceable>o</replaceable>. If the
-    <replaceable>o</replaceable> argument is omitted, and a block supplied
-    instead, the selected elements are replaced with the value of the block
-    when passed their index.</para>
+    <para><literal>#fill</literal> replaces one sequence of elements with another. <literal>#fill(<replaceable>o</replaceable>)</literal> substitutes every element of the receiver for <replaceable>o</replaceable>. <literal>#fill(<replaceable>o</replaceable>, <replaceable>start</replaceable>, <replaceable>length</replaceable>)</literal> replaces index <replaceable>start</replaceable> through to index <replaceable>length</replaceable> with <replaceable>o</replaceable>. If <replaceable>length</replaceable> is omitted, it is assumed to be the length of the receiver. <literal>#fill(<replaceable>o</replaceable>, <replaceable>range</replaceable>)</literal> replaces the elements whose indices are covered by the <literal>Range</literal> <replaceable>range</replaceable> with <replaceable>o</replaceable>. If the <replaceable>o</replaceable> argument is omitted, and a block supplied instead, the selected elements are replaced with the value of the block when passed their index.</para>
 
     <example xml:id="ex.array-fill">
       <title>Replacing slices of an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-fill.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-fill.rb" parse="text"/></programlisting>
     </example>
   </sect1>
 
   <sect1 xml:id="arr.concat">
     <title>Concatenation</title>
 
-    <para><literal>#concat(<replaceable>a</replaceable>)</literal> and its
-    alias, <literal>#+ <replaceable>a</replaceable></literal>, append the
-    elements of <literal>Array</literal> to the receiver.</para>
+    <para><literal>#concat(<replaceable>a</replaceable>)</literal> and its alias, <literal>#+ <replaceable>a</replaceable></literal>, append the elements of <literal>Array</literal> to the receiver.</para>
 
-    <para><literal>#join</literal> concatenates the elements of the receiver
-    with <literal>$,</literal> to produce a <literal>String</literal>. If given
-    a <literal>String</literal> argument, that is used in place of
-    <literal>$,</literal></para>
+    <para><literal>#join</literal> concatenates the elements of the receiver with <literal>$,</literal> to produce a <literal>String</literal>. If given a <literal>String</literal> argument, that is used in place of <literal>$,</literal></para>
     
-    <para><literal>#* <replaceable>string</replaceable></literal> is equivalent
-    to <literal>#join(<replaceable>string</replaceable>)</literal>. <literal>#*
-    <replaceable>integer</replaceable></literal> is equivalent to concatenating
-    <replaceable>integer</replaceable> copies of the receiver.</para>
+    <para><literal>#* <replaceable>string</replaceable></literal> is equivalent to <literal>#join(<replaceable>string</replaceable>)</literal>. <literal>#* <replaceable>integer</replaceable></literal> is equivalent to concatenating <replaceable>integer</replaceable> copies of the receiver.</para>
     
     <example xml:id="ex.array-concat">
       <title>Concatenating <literal>Array</literal>s and their elements</title>
 
-      <programlisting><xi:include
-			  href="examples/array-concat.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-concat.rb" parse="text"/></programlisting>
     </example>
   </sect1>
   
   <sect1 xml:id="arr.deletion">
     <title>Deletion</title>
 
-    <para><literal>#delete_at(<replaceable>n</replaceable>)</literal> deletes
-    and returns the element at index <replaceable>n</replaceable>. As special
-    cases, <literal>#shift</literal> is equivalent to
-    <literal>#delete_at(0)</literal>, and <literal>#pop</literal> is
-    equivalent to <literal>#delete_at(-1)</literal>.</para>
+    <para><literal>#delete_at(<replaceable>n</replaceable>)</literal> deletes and returns the element at index <replaceable>n</replaceable>. As special cases, <literal>#shift</literal> is equivalent to <literal>#delete_at(0)</literal>, and <literal>#pop</literal> is equivalent to <literal>#delete_at(-1)</literal>.</para>
 
     <example xml:id="ex.array-delete-at">
-      <title>Deleting an <literal>Array</literal> element at a specific
-      index</title>
+      <title>Deleting an <literal>Array</literal> element at a specific index</title>
 
-      <programlisting><xi:include
-			  href="examples/array-delete-at.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-delete-at.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>#delete(<replaceable>e</replaceable>)</literal> deletes all
-    elements equal to <replaceable>e</replaceable>. If no deletions occurred,
-    <literal>nil</literal> is returned. If a block is supplied, its value is
-    returned in place of <literal>nil</literal>.</para>
+    <para><literal>#delete(<replaceable>e</replaceable>)</literal> deletes all elements equal to <replaceable>e</replaceable>. If no deletions occurred, <literal>nil</literal> is returned. If a block is supplied, its value is returned in place of <literal>nil</literal>.</para>
 
     <example xml:id="ex.array-delete">
       <title>Deleting <literal>Array</literal> elements</title>
 
-      <programlisting><xi:include
-			  href="examples/array-delete.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-delete.rb" parse="text"/></programlisting>
     </example>
     
-    <para><literal>#delete_if</literal> passes each element in turn to the
-    associated block, deleting those for which the block evaluates to
-    <literal>true</literal>. Its inverse is <literal>#keep_if</literal>, which
-    deletes elements for which the block evaluates to
-    <literal>false</literal>. <literal>#reject!</literal> and
-    <literal>#select!</literal> behave like <literal>#delete_if!</literal> and
-    <literal>#keep_if!</literal>, respectively, except they return the receiver
-    if they made changes; <literal>nil</literal> otherwise.</para>
+    <para><literal>#delete_if</literal> passes each element in turn to the associated block, deleting those for which the block evaluates to <literal>true</literal>. Its inverse is <literal>#keep_if</literal>, which deletes elements for which the block evaluates to <literal>false</literal>. <literal>#reject!</literal> and <literal>#select!</literal> behave like <literal>#delete_if!</literal> and <literal>#keep_if!</literal>, respectively, except they return the receiver if they made changes; <literal>nil</literal> otherwise.</para>
 
     <example xml:id="ex.array-delete-if">
       <title>Deleting <literal>Array</literal> elements using a block</title>
 
-      <programlisting><xi:include
-			  href="examples/array-delete-if.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-delete-if.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>#compact!</literal> deletes all <literal>nil</literal>
-    elements, while <literal>#uniq!</literal> deletes all duplicates. Both
-    methods have non-bang variants which return a copy of their receiver with
-    the elements removed.</para>
+    <para><literal>#compact!</literal> deletes all <literal>nil</literal> elements, while <literal>#uniq!</literal> deletes all duplicates. Both methods have non-bang variants which return a copy of their receiver with the elements removed.</para>
 
     <example xml:id="ex.array-compact-uniq">
-      <title>Deleting <literal>nil</literal> and duplicate elements from an
-      <literal>Array</literal></title>
+      <title>Deleting <literal>nil</literal> and duplicate elements from an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-compact-uniq.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-compact-uniq.rb" parse="text"/></programlisting>
     </example>
 
-    <para>To remove every element from an <literal>Array</literal>,
-    <literal>#clear</literal> can be used.</para>
+    <para>To remove every element from an <literal>Array</literal>, <literal>#clear</literal> can be used.</para>
     
     <example xml:id="ex.array-clear">
       <title>Deleting all elements from an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-clear.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-clear.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 
@@ -384,239 +197,131 @@
     
     <remark>TODO: Discuss creation?</remark>
 
-    <para>An <firstterm><literal>Array</literal> of
-    <literal>Array</literal>s</firstterm> is an <literal>Array</literal> whose
-    elements are <literal>Array</literal>s. <literal>#flatten</literal>
-    replaces every element that is an <literal>Array</literal> with its
-    contents, recursively. If <literal>#flatten</literal> is given an
-    <literal>Integer</literal> argument, <replaceable>limit</replaceable>, it
-    recurses to a maximum depth of
-    <replaceable>limit</replaceable>. <literal>#flatten!</literal> is identical
-    except it modifies the receiver in-place.</para>
+    <para>An <firstterm><literal>Array</literal> of <literal>Array</literal>s</firstterm> is an <literal>Array</literal> whose elements are <literal>Array</literal>s. <literal>#flatten</literal> replaces every element that is an <literal>Array</literal> with its contents, recursively. If <literal>#flatten</literal> is given an <literal>Integer</literal> argument, <replaceable>limit</replaceable>, it recurses to a maximum depth of <replaceable>limit</replaceable>. <literal>#flatten!</literal> is identical except it modifies the receiver in-place.</para>
 
     <example xml:id="ex.array-flatten">
       <title>Flattening a recursive <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-flatten.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-flatten.rb" parse="text"/></programlisting>
     </example>    
 
-    <para><literal>#assoc(<replaceable>o</replaceable>)</literal> assumes the
-    receiver is an <literal>Array</literal> of <literal>Array</literal>s, and
-    returns the first <literal>Array</literal> whose first element is equal to
-    <replaceable>o</replaceable>. <literal>#rassoc(<replaceable>o</replaceable>)</literal>
-    does likewise, except it compares the second element of each
-    <literal>Array</literal> with <replaceable>o</replaceable>. In both cases,
-    <literal>nil</literal> is returned when no matching
-    <literal>Array</literal> was found.</para>
+    <para><literal>#assoc(<replaceable>o</replaceable>)</literal> assumes the receiver is an <literal>Array</literal> of <literal>Array</literal>s, and returns the first <literal>Array</literal> whose first element is equal to <replaceable>o</replaceable>. <literal>#rassoc(<replaceable>o</replaceable>)</literal> does likewise, except it compares the second element of each <literal>Array</literal> with <replaceable>o</replaceable>. In both cases, <literal>nil</literal> is returned when no matching <literal>Array</literal> was found.</para>
 
     <example xml:id="ex.array-assoc">
       <title>Querying an associative <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-assoc.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-assoc.rb" parse="text"/></programlisting>
     </example>    
 
-    <para>Assuming the receiver is an <literal>Array</literal> of
-    <literal>Array</literal>s, where each row has the same number of columns,
-    <literal>#transpose</literal> returns the result of transposing the rows
-    and columns.</para>
+    <para>Assuming the receiver is an <literal>Array</literal> of <literal>Array</literal>s, where each row has the same number of columns, <literal>#transpose</literal> returns the result of transposing the rows and columns.</para>
  
     <example xml:id="ex.array-transpose">
-      <title>Transposing the rows and columns of a recursive
-      <literal>Array</literal></title>
-
-      <programlisting><xi:include
-			  href="examples/array-transpose.rb"
-			  parse="text"/></programlisting>
+      <title>Transposing the rows and columns of a recursive <literal>Array</literal></title>
+      <programlisting><xi:include href="examples/array-transpose.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 
   <sect1 xml:id="arr.permutations">
     <title>Permutations &amp; Combinations</title>
 
-    <para><literal>#permutation(<replaceable>size</replaceable>)</literal>
-    generates all permutations of the receiver of length
-    <replaceable>size</replaceable>. If <replaceable>size</replaceable> is
-    omitted, it is assumed to be that of the receiver. When a block is given,
-    each permutation is yielded; otherwise an <literal>Enumerator</literal> is
-    returned. <literal>#repeated_permutation(<replaceable>size</replaceable>)</literal>
-    computes permutations of length <replaceable>size</replaceable>
-    recursively, either yielding them to a block or returning an
-    <literal>Enumerator</literal>.</para>
+    <para><literal>#permutation(<replaceable>size</replaceable>)</literal> generates all permutations of the receiver of length <replaceable>size</replaceable>. If <replaceable>size</replaceable> is omitted, it is assumed to be that of the receiver. When a block is given, each permutation is yielded; otherwise an <literal>Enumerator</literal> is returned. <literal>#repeated_permutation(<replaceable>size</replaceable>)</literal> computes permutations of length <replaceable>size</replaceable> recursively, either yielding them to a block or returning an <literal>Enumerator</literal>.</para>
 
     <example xml:id="ex.array-permutation">
       <title>Permuting an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-permutation.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-permutation.rb" parse="text"/></programlisting>
     </example>    
 
-    <para><literal>#combination(<replaceable>size</replaceable>)</literal>
-    computes combinations of the receiver’s elements with length
-    <replaceable>size</replaceable>. <literal>#repeated_combination(<replaceable>size</replaceable>)</literal>
-    behaves likewise, except it generates combinations recursively. Both
-    methods either yield each combination to a block, or return an
-    <literal>Enumerator</literal>.</para>
+    <para><literal>#combination(<replaceable>size</replaceable>)</literal> computes combinations of the receiver’s elements with length <replaceable>size</replaceable>. <literal>#repeated_combination(<replaceable>size</replaceable>)</literal> behaves likewise, except it generates combinations recursively. Both methods either yield each combination to a block, or return an <literal>Enumerator</literal>.</para>
 
     <example xml:id="ex.array-combination">
       <title>Combinations of an <literal>Array</literal>’s elements</title>
 
-      <programlisting><xi:include
-			  href="examples/array-combination.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-combination.rb" parse="text"/></programlisting>
     </example>    
     
-    <para><literal>#product</literal> accepts any number of
-    <literal>Array</literal> arguments, then returns an
-    <literal>Array</literal> of <literal>Array</literal>s comprising all
-    combinations of picking an element from the receiver and each
-    argument. If <literal>#product</literal> is given
-    <replaceable>n</replaceable> arguments, each element of the
-    <literal>Array</literal> it returns has
-    <literal><replaceable>n</replaceable> + 1</literal> elements.</para>
+    <para><literal>#product</literal> accepts any number of <literal>Array</literal> arguments, then returns an <literal>Array</literal> of <literal>Array</literal>s comprising all combinations of picking an element from the receiver and each argument. If <literal>#product</literal> is given <replaceable>n</replaceable> arguments, each element of the <literal>Array</literal> it returns has <literal><replaceable>n</replaceable> + 1</literal> elements.</para>
 
     <example xml:id="ex.array-product">
       <title>Products of an <literal>Array</literal>’s elements</title>
 
-      <programlisting><xi:include
-			  href="examples/array-product.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-product.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 
   <sect1 xml:id="arr.rotation">
     <title>Rotation</title>
 
-    <para><literal>#rotate(<replaceable>n</replaceable>)</literal> returns a
-    new <literal>Array</literal> comprising the element at index
-    <replaceable>n</replaceable>, each consecutive element, then the element at
-    index <literal>0</literal> through to the element at index
-    <literal><replaceable>n</replaceable> - 1</literal>. If
-    <replaceable>n</replaceable> is omitted, it is assumed to have the value
-    <literal>1</literal>. <literal>#rotate!(<replaceable>size</replaceable>)</literal>
-    behaves in the same manner, except it modifies the receiver
-    in-place.</para>
+    <para><literal>#rotate(<replaceable>n</replaceable>)</literal> returns a new <literal>Array</literal> comprising the element at index <replaceable>n</replaceable>, each consecutive element, then the element at index <literal>0</literal> through to the element at index <literal><replaceable>n</replaceable> - 1</literal>. If <replaceable>n</replaceable> is omitted, it is assumed to have the value <literal>1</literal>. <literal>#rotate!(<replaceable>size</replaceable>)</literal> behaves in the same manner, except it modifies the receiver in-place.</para>
 
     <example xml:id="ex.array-rotate">
       <title>Rotating an <literal>Array</literal>’s elements</title>
 
-      <programlisting><xi:include
-			  href="examples/array-rotate.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-rotate.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 
   <sect1 xml:id="arr.iterate">
     <title>Iteration</title>
     
-    <para><literal>#each</literal> yields each element of the receiver in turn
-    to the associated block. <literal>#each_with_index</literal> yields each
-    element along with its index. Both methods return an
-    <literal>Enumerator</literal> when called without a block.</para>
+    <para><literal>#each</literal> yields each element of the receiver in turn to the associated block. <literal>#each_with_index</literal> yields each element along with its index. Both methods return an <literal>Enumerator</literal> when called without a block.</para>
 
     <example xml:id="ex.array-iteration">
       <title>Iterating an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-iteration.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-iteration.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
   
   <sect1 xml:id="arr.set">
     <title>Set Operations</title>
 
-    <para><literal>#- <replaceable>a</replaceable></literal> returns the
-    difference between the receiver and <literal>Array</literal>
-    <replaceable>a</replaceable>, i.e., the elements of the receiver less the
-    elements of <replaceable>a</replaceable>.</para>
-    
-    <para><literal>#&amp; <replaceable>a</replaceable></literal> returns the
-    intersection of the receiver and <literal>Array</literal>
-    <replaceable>a</replaceable>, i.e., elements common to both, without
-    duplicates.</para>
-
-    <para><literal>#| <replaceable>a</replaceable></literal> returns the union
-    of the receiver and <literal>Array</literal> <replaceable>a</replaceable>,
-    i.e. their concatenation, minus any duplicates.</para>
+    <para><literal>#- <replaceable>a</replaceable></literal> returns the difference between the receiver and <literal>Array</literal> <replaceable>a</replaceable>, i.e., the elements of the receiver less the elements of <replaceable>a</replaceable>. <literal>#&amp; <replaceable>a</replaceable></literal> returns the intersection of the receiver and <literal>Array</literal> <replaceable>a</replaceable>, i.e., elements common to both, without duplicates <literal>#| <replaceable>a</replaceable></literal> returns the union of the receiver and <literal>Array</literal> <replaceable>a</replaceable>, i.e. their concatenation, minus any duplicates.</para>
 
     <example xml:id="ex.array-set">
       <title>Performing set operations on <literal>Array</literal>s</title>
 
-      <programlisting><xi:include
-			  href="examples/array-set.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-set.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 
   <sect1 xml:id="arr.order">
     <title>Ordering</title>
 
-    <para>The order of elements in an <literal>Array</literal> can be reversed
-    with <literal>#reverse</literal>. <literal>#reverse!</literal> is identical
-    except that it modifies the receiver in-place.</para>
+    <para>The order of elements in an <literal>Array</literal> can be reversed with <literal>#reverse</literal>. <literal>#reverse!</literal> is identical except that it modifies the receiver in-place.</para>
 
-    <para><literal>#shuffle</literal> returns a copy of the receiver in a
-    pseudo-random order. <literal>#shuffle!</literal> is identical except it
-    modifies the receiver in-place. <remark>TODO: Document 1.9.3 feature:
-    'random:' argument</remark><remark>TODO: Xref #sample?</remark></para>
+    <para><literal>#shuffle</literal> returns a copy of the receiver in a pseudo-random order. <literal>#shuffle!</literal> is identical except it modifies the receiver in-place. <remark>TODO: Document 1.9.3 feature: 'random:' argument</remark><remark>TODO: Xref #sample?</remark></para>
 
-    <para>The <literal>#sort!</literal> and <literal>#sort_by!</literal>
-    methods behave like <literal>Enumerable#sort</literal> and
-    <literal>Enumerable#sort_by</literal>, respectively, except they modify
-    their receiver in-place.</para>
+    <para>The <literal>#sort!</literal> and <literal>#sort_by!</literal> methods behave like <literal>Enumerable#sort</literal> and <literal>Enumerable#sort_by</literal>, respectively, except they modify their receiver in-place.</para>
 
     <example xml:id="ex.array-order">
       <title>Sorting the elements of an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-order.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-order.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 
   <sect1 xml:id="arr.size">
     <title>Size</title>
     
-    <para>The length of an <literal>Array</literal> is the number of elements
-    it contains. It is given as an <literal>Integer</literal> greater than or
-    equal to <literal>0</literal> by <literal>#length</literal> or its alias
-    <literal>#size</literal>. The <literal>#empty?</literal> predicate returns
-    <literal>true</literal> when the receiver has a size of
-    <literal>0</literal>; <literal>false</literal> otherwise.</para>
+    <para>The length of an <literal>Array</literal> is the number of elements it contains. It is given as an <literal>Integer</literal> greater than or equal to <literal>0</literal> by <literal>#length</literal> or its alias <literal>#size</literal>. The <literal>#empty?</literal> predicate returns <literal>true</literal> when the receiver has a size of <literal>0</literal>; <literal>false</literal> otherwise.</para>
 
     <example xml:id="ex.array-size">
       <title>Finding the size of an <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-size.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-size.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 
   <sect1 xml:id="arr.coercion">
     <title>Coercion</title>
     
-    <para>In <xref linkend="obj.conversion"/> the <literal>:to_a</literal> and
-    <literal>:to_ary</literal> messages were introduced for converting an
-    object into an <literal>Array</literal> either explicitly or implicitly,
-    respectively.  <literal>Array.try_convert</literal> was introduced as a
-    wrapper around <literal>:to_ary</literal>: it returns its argument
-    implicitly converted to an <literal>Array</literal> if possible, otherwise
-    <literal>nil</literal>. Lastly, <literal>Kernel.Array</literal> attempts to
-    convert its argument to an <literal>Array</literal> first implicitly, then
-    explicitly.</para>
+    <para>In <xref linkend="obj.conversion"/> the <literal>:to_a</literal> and <literal>:to_ary</literal> messages were introduced for converting an object into an <literal>Array</literal> either explicitly or implicitly, respectively. <literal>Array.try_convert</literal> was introduced as a wrapper around <literal>:to_ary</literal>: it returns its argument implicitly converted to an <literal>Array</literal> if possible, otherwise <literal>nil</literal>. Lastly, <literal>Kernel.Array</literal> attempts to convert its argument to an <literal>Array</literal> first implicitly, then explicitly.</para>
 
     <example xml:id="ex.array-coercion">
       <title>Coercing to and from <literal>Array</literal></title>
 
-      <programlisting><xi:include
-			  href="examples/array-coercion.rb"
-			  parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-coercion.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 </chapter>
