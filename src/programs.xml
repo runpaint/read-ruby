@@ -248,15 +248,9 @@
         </sect4>
         
         <sect4 xml:id="pro.file">
-          <title><literal>__FILE__</literal></title>
-          
-          <para>Evaluates to a string consisting of the name of the source file currently being executed. The strings <computeroutput>(eval)</computeroutput> and <computeroutput>(irb)</computeroutput> are returned when in an <literal>eval</literal> context and <acronym>IRB</acronym> session, respectively.</para>
-        </sect4>
+          <title><literal>__FILE__</literal> / <literal>__LINE__</literal></title>
 
-        <sect4 xml:id="pro.line">
-          <title><literal>__LINE__</literal></title>
-
-          <para>Evaluates to a <literal>Fixnum</literal> specifying the line number in the current <link linkend="pro.file">__FILE__</link> being executed.</para>
+	  <para>See <xref linkend="pro.tracing"/>.</para>          
         </sect4>
         
         <sect4 xml:id="pro.encoding">
@@ -553,5 +547,11 @@
 
       <para>The <literal>Kernel.eval</literal> method provides similar functionality from within a program. Pass it an arbitrary string of source code as an argument and it will return the result. Continuing with the above example, <literal>eval 'puts 1 + 2'</literal>, has the same result.</para>
     </sect2>
+  </sect1>
+
+  <sect1 xml:id="pro.tracing">
+    <title>Tracing</title>
+
+    <para>Although Ruby does not include a debugger, she offers a variety of features to aid debugging. The keyword <literal>__FILE__</literal> evaluates to a <literal>String</literal> naming the source file currently being executed. The strings <computeroutput>(eval)</computeroutput> and <computeroutput>(irb)</computeroutput> are returned when in an <literal>eval</literal> context and <acronym>IRB</acronym> session, respectively. The keyword <literal>__LINE__</literal> evaluates to a <literal>Fixnum</literal> specifying the line number in the current <literal>__FILE__</literal> being executed. Taken together, thee keywords can be used to produce error messages and warnings that identify the errant code. Indeed, <function>Kernel.eval</function>, <function>Object.instance_eval</function>, and <function>Module.class_eval</function>, accept a filename and line number as their final two arguments, which they use when reporting errors: by using <literal>__FILE__</literal> and <literal>__LINE__</literal> as these values, it becomes easier to trace dynamically generated code.</para>
   </sect1>
 </chapter>
