@@ -553,5 +553,9 @@
     <title>Tracing</title>
 
     <para>Although Ruby does not include a debugger, she offers a variety of features to aid debugging. The keyword <literal>__FILE__</literal> evaluates to a <literal>String</literal> naming the source file currently being executed. The strings <computeroutput>(eval)</computeroutput> and <computeroutput>(irb)</computeroutput> are returned when in an <literal>eval</literal> context and <acronym>IRB</acronym> session, respectively. The keyword <literal>__LINE__</literal> evaluates to a <literal>Fixnum</literal> specifying the line number in the current <literal>__FILE__</literal> being executed. Taken together, thee keywords can be used to produce error messages and warnings that identify the errant code. Indeed, <function>Kernel.eval</function>, <function>Object.instance_eval</function>, and <function>Module.class_eval</function>, accept a filename and line number as their final two arguments, which they use when reporting errors: by using <literal>__FILE__</literal> and <literal>__LINE__</literal> as these values, it becomes easier to trace dynamically generated code.</para>
+
+    <para>Similarly, <function>Kernel.__method__</function>, and its alias: <function>Kernel.__callee__</function>, return the name of the current method as a <literal>Symbol</literal>. If the current method was invoked via an alias, its original name is returned.</para>
+
+    <para><function>Kernel.caller</function> returns a stack trace that culminates with the method that invoked the current method. The <literal>Array</literal> returned has one element per stack frame, organised in reverse chronological order. Each frame is represented as a <literal>String</literal>, which usually includes the filename, line number, and method name. If <function>caller</function> is given an argument, it specifies how many frames to drop from the beginning.</para>    
   </sect1>
 </chapter>
