@@ -30,7 +30,7 @@
       <sidebar>
 	<title>Notation</title>
 
-	<para>It is conventional to employ the	<literal><replaceable>Class</replaceable>.<replaceable>method</replaceable></literal> notation when referring to singleton methods in documentation and	prose. For example: <literal>File.exists?</literal>.</para>
+	<para>It is conventional to employ the <literal><replaceable>Class</replaceable>.<replaceable>method</replaceable></literal> notation when referring to singleton methods in documentation and prose. For example: <literal>File.exists?</literal>.</para>
       </sidebar>
 
       <sect2 xml:id="met.class">
