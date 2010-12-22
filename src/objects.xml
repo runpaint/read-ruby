@@ -76,7 +76,7 @@
   <sect1 xml:id="obj.methods">
     <title>Methods</title>
 
-    <para>The names of methods defined for an object are returned by <literal>Object#methods</literal> as an <literal>Array</literal> of <literal>Symbol</literal>s. For an object that is neither a class nor a module, the methods returned are the intersection of its instance and singleton methods; otherwise, they are its singleton methods only.  <literal>#public_methods</literal>, <literal>#private_methods</literal>, and <literal>#protected_methods</literal> only return the names of methods with the corresponding visibility. If a second argument of <literal>false</literal> is given, inherited methods are omitted from the result.</para>
+    <para>The names of methods defined for an object are returned by <function>Module#methods</function> as an <literal>Array</literal> of <literal>Symbol</literal>s. For an object that is neither a class nor a module, the methods returned are the intersection of its instance and singleton methods; otherwise, they are its singleton methods only. To view only the receiver’s singleton methods, use <function>Module#singleton_methods</function>. <function>Module#public_methods</function>, <function>Module#private_methods</function>, and <function>Module#protected_methods</function> only return the names of methods with the corresponding visibility. If a second argument of <literal>false</literal> is given to any of these methods, names of inherited methods are omitted from the <literal>Array</literal>.</para>
     
     <example xml:id="ex.object-methods">
       <title>Querying the methods defined on an object</title>
