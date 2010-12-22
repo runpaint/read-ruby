@@ -207,7 +207,7 @@
         </tr>
         <tr>
           <td><link linkend="reg.anchors">\b</link></td>
-          <td>Word boundary outside of character class; backspace otheriwse.</td>
+          <td>Word boundary outside of character class; backspace, otherwise.</td>
         </tr>
         <tr>
           <td><link linkend="reg.anchors">\B</link></td>
