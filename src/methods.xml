@@ -6,399 +6,221 @@
 	 xmlns:xi="http://www.w3.org/2001/XInclude"
 	 xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Methods</title>
-  <para>
-    <quote>A <firstterm>method</firstterm> is a named block of
-    parameterized code associated with one or more objects.</quote> (<biblioref
-    begin="176" end="176" linkend="bib.flan08" units="pages"/>. It is the
-    <quote>code found in a class <emphasis>for responding to a
-    message</emphasis>
-    </quote> (<biblioref begin="523" end="523"
-    linkend="bib.mitchell04" units="pages"/>, emphasis mine.</para>
-    <para>Having received a message, an object <firstterm>invokes</firstterm> a
-    method in response. <emphasis>Invoke</emphasis> describes the calling of a
-    specific method, in contrast to <emphasis>send</emphasis>, which is used at
-    a higher level to describe a request for an object to perform a certain
-    operation.</para>
-    <sect1 xml:id="met.instance">
-      <title>Instance Methods</title>
-      <para>An <firstterm>instance method</firstterm> is a method defined,
-      without an explicit receiver, in the context of a class. Instances of
-      this class invoke the method when sent a message with its name as the
-      selector. Therefore, an object’s instance methods determine its
-      behaviour.</para>
+  
+  <para><quote>A <firstterm>method</firstterm> is a named block of parameterized code associated with one or more objects.</quote> (<biblioref begin="176" end="176" linkend="bib.flan08" units="pages"/>. It is the <quote>code found in a class <emphasis>for responding to a message</emphasis> </quote> (<biblioref begin="523" end="523" linkend="bib.mitchell04" units="pages"/>, emphasis mine.</para>
+    
+  <para>Having received a message, an object <firstterm>invokes</firstterm> a method in response. <emphasis>Invoke</emphasis> describes the calling of a specific method, in contrast to <emphasis>send</emphasis>, which is used at a higher level to describe a request for an object to perform a certain operation.</para>
+  
+  <sect1 xml:id="met.instance">
+    <title>Instance Methods</title>
+    
+    <para>An <firstterm>instance method</firstterm> is a method defined, without an explicit receiver, in the context of a class. Instances of this class invoke the method when sent a message with its name as the selector. Therefore, an object’s instance methods determine its behaviour.</para>
+    
+    <sidebar>
+      <title>Notation</title>
+      
+      <para>It is conventional to employ the <literal>Class#method</literal> notation when referring to instance methods in documentation and prose. For example: <literal>Integer#even?</literal>.</para>
+    </sidebar>
+  </sect1>
+  
+  <sect1 xml:id="met.singleton">
+    <title>Singleton Methods</title>
+    
+    <para>A <firstterm>singleton method</firstterm> is a method defined in the context of an object’s <link linkend="cla.singleton">singleton class</link>. It is commonly described as a method defined on a specific object, rather than on all instances of a certain class.</para>
       <sidebar>
 	<title>Notation</title>
-	<para>It is conventional to employ the <literal>Class#method</literal>
-	notation when referring to instance methods in documentation and
-	prose. For example: <literal>Integer#even?</literal>.</para>
-      </sidebar>
-    </sect1>
-    <sect1 xml:id="met.singleton">
-      <title>Singleton Methods</title>
-      <para>A <firstterm>singleton method</firstterm> is a method defined in
-      the context of an object’s <link linkend="cla.singleton">singleton
-      class</link>. It is commonly described as a method defined on a specific
-      object, rather than on all instances of a certain class.</para>
-      <sidebar>
-	<title>Notation</title>
-	<para>It is conventional to employ the
-	<literal>
-	  <replaceable>Class</replaceable>.<replaceable>method</replaceable>
-	</literal>
-	notation when referring to singleton methods in documentation and
-	prose. For example: <literal>File.exists?</literal>.</para>
+
+	<para>It is conventional to employ the	<literal><replaceable>Class</replaceable>.<replaceable>method</replaceable></literal> notation when referring to singleton methods in documentation and	prose. For example: <literal>File.exists?</literal>.</para>
       </sidebar>
 
       <sect2 xml:id="met.class">
 	<title>Class Methods</title>
-	<para>Singleton methods defined on <literal>Class</literal> objects are
-	known as <firstterm>class methods</firstterm>. For example,
-	<literal>File.absolute_path</literal> is a class method defined on the
-	<literal>File</literal> class. Class methods are further distinguished
-	from singleton methods in that <quote>a method defined as a singleton
-	method of a class object can also be called on subclasses of that
-	class.</quote>: class methods are considered by the method lookup
-	algorithm so, unlike other singleton methods, they are inherited
-	<biblioref begin="384" end="385" linkend="bib.black09"
-		   units="pages"/>.</para>
-	<para>Class methods are typically <firstterm>factory
-        methods</firstterm> in that they are constructors (<emphasis>manufacturers</emphasis>)
-	of the class’ instances.</para>
+
+	<para>Singleton methods defined on <literal>Class</literal> objects are known as <firstterm>class methods</firstterm>. For example, <literal>File.absolute_path</literal> is a class method defined on the <literal>File</literal> class. Class methods are further distinguished from singleton methods in that <quote>a method defined as a singleton method of a class object can also be called on subclasses of that class.</quote>: class methods are considered by the method lookup algorithm so, unlike other singleton methods, they are inherited <biblioref begin="384" end="385" linkend="bib.black09" units="pages"/>.</para>
+	
+	<para>Class methods are typically <firstterm>factory methods</firstterm> in that they are constructors (<emphasis>manufacturers</emphasis>) of the class’ instances.</para>
       </sect2>
+
       <sect2 xml:id="met.per-object-behaviour">
 	<title>Per-Object Behaviour</title>
-	<para>
-	  <quote>In [the] prototype-based [programming] paradigm…there are no
-	  classes. Rather, new kinds of objects are formed more directly by
-	  composing concrete, full-fledged objects, which are often referred to as
-	  prototypes.</quote> 
-	  <biblioref begin="1" end="1"
-		     linkend="bib.taivalsaari96" units="pages"/>.  Taivalsaari continues:
-	  <quote>…unlike in class-based languages in which the structure of an
-	  instance is dictated by its class, in prototype-based languages it is
-	  usually possible to add or remove methods and variables at the level of
-	  individual objects.</quote> (<emphasis>ibid.</emphasis>,
-	pp. 8–10).</para>
-	<para>
-	  <link linkend="met.singleton">Singleton methods</link> (along with <link linkend="var.instance-reflection">Kernel#instance_variable_set</link>)
-	  afford the same abilities to the ostensibly class-based Ruby. Whereas
-	  inheritance allows a class to be created that specializes a more
-	  general class, singleton methods allow creation of an object that
-	  specializes on a more general object. (Ruby can also support
-	  Taivalsaari’s observation that <quote>…in prototype-based languages
-	  object creation usually takes place by copying…</quote> (<emphasis>ibid.</emphasis>)
-	through <link linkend="obj.cloning">Kernel#clone</link>).</para>
-	<para>The ability to specify per-object behaviour is an improvement Ruby
-	made on her predecessors. For example, in the context of Smalltalk Budd
-	remarked that <quote>It is not possible to provide a method for an
-	individual object; rather every object must be associated with some
-	class, and the behaviour of the object in response to messages will be
-	dictated by the methods associated with that class.</quote> 
-	<biblioref
-	    begin="5" end="9" linkend="bib.budd87" units="pages"/>.</para>
+
+	<para><quote>In [the] prototype-based [programming] paradigm…there are no classes. Rather, new kinds of objects are formed more directly by composing concrete, full-fledged objects, which are often referred to as prototypes.</quote> <biblioref begin="1" end="1" linkend="bib.taivalsaari96" units="pages"/>.  Taivalsaari continues: <quote>…unlike in class-based languages in which the structure of an instance is dictated by its class, in prototype-based languages it is usually possible to add or remove methods and variables at the level of individual objects.</quote> (<emphasis>ibid.</emphasis>, pp. 8–10).</para>
+
+	<para><link linkend="met.singleton">Singleton methods</link> (along with <link linkend="var.instance-reflection">Kernel#instance_variable_set</link>) afford the same abilities to the ostensibly class-based Ruby. Whereas inheritance allows a class to be created that specializes a more general class, singleton methods allow creation of an object that specializes on a more general object. (Ruby can also support Taivalsaari’s observation that <quote>…in prototype-based languages object creation usually takes place by copying…</quote> (<emphasis>ibid.</emphasis>) through <link linkend="obj.cloning">Kernel#clone</link>).</para>
+
+	<para>The ability to specify per-object behaviour is an improvement Ruby made on her predecessors. For example, in the context of Smalltalk Budd remarked that <quote>It is not possible to provide a method for an individual object; rather every object must be associated with some class, and the behaviour of the object in response to messages will be dictated by the methods associated with that class.</quote> <biblioref begin="5" end="9" linkend="bib.budd87" units="pages"/>.</para>
       </sect2>
     </sect1>
+
     <sect1 xml:id="met.return-values">
       <title>Return Values</title>
+
       <para>A method is invoked with an expression so always returns a value<footnote>
-      <para>A <literal>def</literal> expression also returns a value
-      (<literal>nil</literal>), but this is distinct from that of invoking the
-      method. 
-      </para>
-      </footnote>:
-      the last statement executed, or <literal>nil</literal> if the method body is
-      empty. If this value is an <literal>Array</literal> the method effectively
-      returns multiple values.</para>
+      <para>A <literal>def</literal> expression also returns a value (<literal>nil</literal>), but this is distinct from that of invoking the method.</para></footnote>: the last statement executed, or <literal>nil</literal> if the method body is empty. If this value is an <literal>Array</literal> the method effectively returns multiple values.</para>
+
       <example xml:id="ex.def-implicit-return">
-	<title>A method which returns the Symbol <literal>:to_sender</literal>
-	</title>
+	<title>A method which returns the Symbol <literal>:to_sender</literal></title>
+
 	<programlisting><xi:include href="examples/def-implicit-return.rb" parse="text"/></programlisting>
       </example>
+
       <example xml:id="ex.def-implicit-return-multiple">
 	<title>A method which returns multiple values as an <literal>Array</literal></title>
 
 	<programlisting><xi:include href="examples/def-implicit-return-multiple.rb" parse="text"/></programlisting>
       </example>
-      <para>A <literal>return</literal> statement in the body of a method causes it to
-      terminate prematurely, immediately passing control back to the caller. The
-      value returned is that of <literal>return</literal>’s arguments, or
-      <literal>nil</literal> if it has none. If multiple arguments are given they will
-      be returned as an <literal>Array</literal>.</para>
+
+      <para>A <literal>return</literal> statement in the body of a method causes it to terminate prematurely, immediately passing control back to the caller. The value returned is that of <literal>return</literal>’s arguments, or <literal>nil</literal> if it has none. If multiple arguments are given they will be returned as an <literal>Array</literal>.</para>
+      
       <example xml:id="ex.def-explicit-return-multiple">
-	<title>A method which explicitly returns multiple values.
-	</title>
+	<title>A method which explicitly returns multiple values.</title>
+
 	<programlisting><xi:include href="examples/def-explicit-return-multiple.rb" parse="text"/></programlisting>
       </example>
-      <!--figure>
-	<title>Syntax diagram of the <literal>return</literal> statement
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/return-statement.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
+
       <para>This gives rise to two conventions:</para>
+
       <itemizedlist>
 	<listitem>
-	  <para>A method uses a <literal>return</literal> statement iff it may return
-	  before its last statement.</para>
+	  <para>A method uses a <literal>return</literal> statement iff it may return before its last statement.</para>
 	</listitem>
 	<listitem>
-	  <para>A method intended to return a value has that value as its last
-	  statement</para>
+	  <para>A method intended to return a value has that value as its last statement</para>
 	</listitem>
       </itemizedlist>
     </sect1>
+
     <sect1 xml:id="met.super">
       <title><literal>super</literal></title>
-      <!--figure>
-	<title>Syntax diagram of the <literal>super</literal> statement
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/super-statement.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
-      <para>The <literal>super</literal> keyword is used in method definitions to invoke
-      a method defined in the superclass, or an ancestor thereof (collectively
-      hereafter: an <emphasis>ancestor</emphasis>), with the same name. An implication worth
-      stating explicitly is that an instance method in a class may use
-      <literal>super</literal> to invoke an instance method in an included module.</para>
-      <para>If called without arguments it invokes the ancestor method with the
-      arguments received by the current method (this is known as the
-      <firstterm>implicit argument form of <literal>super</literal>
-      </firstterm>). Otherwise, it
-      passes the arguments it has been given to the ancestor method. In either
-      case, the arguments are sent as they currently exist: if they have been
-      modified by the method, their modified forms are sent. To explicitly
-      invoke the ancestor method without any arguments use
-      <literal>super()</literal>.</para>
+
+      <para>The <literal>super</literal> keyword is used in method definitions to invoke a method defined in the superclass, or an ancestor thereof (collectively hereafter: an <emphasis>ancestor</emphasis>), with the same name. An implication worth stating explicitly is that an instance method in a class may use <literal>super</literal> to invoke an instance method in an included module.</para>
+      
+      <para>If called without arguments it invokes the ancestor method with the arguments received by the current method (this is known as the <firstterm>implicit argument form of <literal>super</literal> </firstterm>). Otherwise, it passes the arguments it has been given to the ancestor method. In either case, the arguments are sent as they currently exist: if they have been modified by the method, their modified forms are sent. To explicitly invoke the ancestor method without any arguments use <literal>super()</literal>.</para>
+      
       <example xml:id="ex.super">
-	<title>
-	  <literal>super</literal> invokes the corresponding ancestor
-	  method with the current method’s arguments.
-	</title>
+	<title><literal>super</literal> invokes the corresponding ancestor method with the current method’s arguments.</title>
+
 	<programlisting><xi:include href="examples/super.rb" parse="text"/></programlisting>
       </example>
-      <para>A <literal>NoMethodError</literal> is raised if a corresponding method is not
-      defined in an ancestor<footnote>
-      <para>
-	<literal>super</literal> does obey the <link linkend="met.method-missing">Method Missing</link> protocol, however, so before
-	raising the exception it will send <literal>:method_missing</literal> to each
-	class it encounters.
-      </para>
-      </footnote>. This can be avoided by conditioning
-      the call to <literal>super</literal>, on <literal>defined? super</literal>, which
-      returns <literal>nil</literal> in this case.</para>
+
+      <para>A <literal>NoMethodError</literal> is raised if a corresponding method is not defined in an ancestor<footnote><para><literal>super</literal> does obey the <link linkend="met.method-missing">Method Missing</link> protocol, however, so before raising the exception it will send <literal>:method_missing</literal> to each class it encounters.</para></footnote>. This can be avoided by conditioning the call to <literal>super</literal>, on <literal>defined? super</literal>, which returns <literal>nil</literal> in this case.</para>
+
       <example xml:id="ex.super-module">
-	<title>
-	  <literal>super</literal> adds included modules to its search path
-	  in the reverse order that they were included.
-	</title>
+	<title><literal>super</literal> adds included modules to its search path in the reverse order that they were included.</title>
+
 	<programlisting><xi:include href="examples/super-module.rb" parse="text"/></programlisting>
       </example>
     </sect1>
+
     <sect1 xml:id="met.names">
       <title>Names</title>
-      <!--figure>
-	<title>Syntax diagram of a method name
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/symbol.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
+
       <para>A valid method name is one of the following:</para>
+
       <itemizedlist>
 	<listitem>
-	  <para>An <link linkend="pro.identifiers">identifier</link> that is optionally
-	  followed by an equals sign (<literal>U＋003D</literal>),
-	  question mark (<literal>U＋003F</literal>), or exclamation
-	  mark (<literal>U＋0021</literal>).</para>
+	  <para>An <link linkend="pro.identifiers">identifier</link> that is optionally followed by an equals sign (<literal>U＋003D</literal>), question mark (<literal>U＋003F</literal>), or exclamation mark (<literal>U＋0021</literal>).</para>
 	</listitem>
 	<listitem>
 	  <para>An <link linkend="mes.operators">operator method selector</link>.</para>
 	</listitem>
 	<listitem>
-	  <para>The <link linkend="glo.aref">element reference</link>
-	  (<literal>[]</literal>) selector.</para>
+	  <para>The <link linkend="glo.aref">element reference</link> (<literal>[]</literal>) selector.</para>
 	</listitem>
 	<listitem>
-	  <para>The <link linkend="glo.aref-set">element set</link>
-	  (<literal>[]=</literal>) selector.</para>
+	  <para>The <link linkend="glo.aref-set">element set</link> (<literal>[]=</literal>) selector.</para>
 	</listitem>
       </itemizedlist>
+
       <sidebar>
 	<title>Abbreviated Assignment</title>
-	<para>Pseudo operators such as <literal>+=</literal> and
-	<literal>||=</literal> are neither operator methods nor methods; they are
-	<link linkend="var.abbreviated-assignment">abbreviated assignment</link>
-	operators.</para>
+
+	<para>Pseudo operators such as <literal>+=</literal> and <literal>||=</literal> are neither operator methods nor methods; they are <link linkend="var.abbreviated-assignment">abbreviated assignment</link> operators.</para>
       </sidebar>
-      <para>Names that begin with an identifier conventionally begin with a
-      lowercase<footnote>
-      <para>It is legal for a method name to begin with an
-      uppercase letter, but then they may be confused with <link linkend="var.constants">constants</link> or class names. In fact,
-      several core classes use this convention for precisely this reason: they
-      provide a syntactical shortcut for constructing instances.  For example,
-      <literal>Array()</literal> is a method of <literal>Kernel</literal> which coerces
-      its argument into an <literal>Array</literal> object.  
-      </para>
-      </footnote> letter or low line (<literal>U＋005F</literal>).</para>
+
+      <para>Names that begin with an identifier conventionally begin with a lowercase<footnote><para>It is legal for a method name to begin with an uppercase letter, but then they may be confused with <link linkend="var.constants">constants</link> or class names. In fact, several core classes use this convention for precisely this reason: they provide a syntactical shortcut for constructing instances.  For example, <literal>Array()</literal> is a method of <literal>Kernel</literal> which coerces its argument into an <literal>Array</literal> object.</para></footnote> letter or low line (<literal>U＋005F</literal>).</para>
+
       <example xml:id="ex.def-non-ascii-name">
-	<title>Defining a method with a non-<acronym>ASCII name
-      </acronym>
-	</title>
+	<title>Defining a method with a non-<acronym>ASCII</acronym> name.</title>
+
 	<programlisting><xi:include href="examples/def-non-ascii-name.rb" parse="text"/></programlisting>
       </example>
+
       <remark>The Method? column of the Operator Methods table has been removed; add it here</remark>
+
       <sect2 xml:id="met.operators">
 	<title>Operator Methods</title>
 
-	<para>An <firstterm>operator method</firstterm> is an <link
-	linkend="mes.operators">operator</link> definable as a method. By
-	defining a method with the corresponding name an object can receive an
-	operator message like core classes do. For example, the expression
-	<literal>3 + 2</literal> is a syntactical shortcut for
-	<literal>3.+(2)</literal>; by defining a method named
-	<literal>+</literal> you can<footnote> <para>…in the sense that you
-	<emphasis>can</emphasis> learn Java: insanityAndScornFromYourPeers
-	<emphasis>will</emphasis> result.</para></footnote> redefine, or
-	<emphasis>overload</emphasis>, the fundamentals of arithmetic.</para>
+	<para>An <firstterm>operator method</firstterm> is an <link linkend="mes.operators">operator</link> definable as a method. By defining a method with the corresponding name an object can receive an operator message like core classes do. For example, the expression <literal>3 + 2</literal> is a syntactical shortcut for <literal>3.+(2)</literal>; by defining a method named <literal>+</literal> you can<footnote> <para>…in the sense that you <emphasis>can</emphasis> learn Java: insanityAndScornFromYourPeers <emphasis>will</emphasis> result.</para></footnote> redefine, or <emphasis>overload</emphasis>, the fundamentals of arithmetic.</para>
       </sect2>
     </sect1>
 
     <sect1 xml:id="met.defining">
       <title>Defining</title>
 
-      <para>A method consists of a <link linkend="met.names">name</link>, an
-      optional <link linkend="met.arguments">parameter list</link>, and a
-      body. Names have already been discussed, the parameter list is explained
-      in <link linkend="met.arguments">Arguments</link> below.  The
-      <firstterm>body</firstterm> is a sequence of statements terminated with
-      the <literal>end</literal> keyword.</para>
-      <!--figure>
-	<title>Syntax diagram of a method definition
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/def-expression.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
-      <para>If <literal> <replaceable>expression</replaceable>.</literal> is
-      omitted, an <link linkend="met.instance">instance method</link> named
-      <replaceable>symbol</replaceable> is defined on the enclosing class;
-      otherwise a <link linkend="met.singleton">singleton method</link>
-      <footnote>
-	<para>
-	  <link linkend="met.dynamic-definition">Kernel#define_singleton_method</link>
-	  may be used to the same end.
-	</para>
-	</footnote> named
-      <replaceable>symbol</replaceable> is defined on <replaceable>expression</replaceable>.</para>
+      <para>A method consists of a <link linkend="met.names">name</link>, an optional <link linkend="met.arguments">parameter list</link>, and a body. Names have already been discussed, the parameter list is explained in <link linkend="met.arguments">Arguments</link> below.  The <firstterm>body</firstterm> is a sequence of statements terminated with the <literal>end</literal> keyword.</para>
+
+      <para>If <literal> <replaceable>expression</replaceable>.</literal> is omitted, an <link linkend="met.instance">instance method</link> named <replaceable>symbol</replaceable> is defined on the enclosing class; otherwise a <link linkend="met.singleton">singleton method</link><footnote><para><link linkend="met.dynamic-definition">Kernel#define_singleton_method</link>may be used to the same end.</para></footnote> named <replaceable>symbol</replaceable> is defined on <replaceable>expression</replaceable>.</para>
+
       <example xml:id="ex.def-instance-method">
-	<title>Defining an instance method named <literal>bark</literal> for the
-	<literal>Dog</literal> class with the <literal>def</literal> keyword.
-	</title>
+	<title>Defining an instance method named <literal>bark</literal> for the <literal>Dog</literal> class with the <literal>def</literal> keyword.</title>
+
 	<programlisting><xi:include href="examples/def-instance-method.rb" parse="text"/></programlisting>
       </example>
-      <para>Therefore, <literal>def self.<replaceable>name</replaceable>
-      </literal> defines a <link linkend="met.class">class method</link> for the enclosing class. <literal>def
-      <replaceable>class</replaceable>.<replaceable>name</replaceable>
-      </literal> defines a method named
-      <replaceable>name</replaceable> on the class named <replaceable>class</replaceable>.</para>
+
+      <para>Therefore, <literal>def self.<replaceable>name</replaceable> </literal> defines a <link linkend="met.class">class method</link> for the enclosing class. <literal>def <replaceable>class</replaceable>.<replaceable>name</replaceable> </literal> defines a method named <replaceable>name</replaceable> on the class named <replaceable>class</replaceable>.</para>
+      
       <example xml:id="ex.def-singleton-method">
-	<title>Defining a singleton method named <literal>breed</literal> for the
-	<literal>Dog</literal> class.
-	</title>
+	<title>Defining a singleton method named <literal>breed</literal> for the <literal>Dog</literal> class.</title>
+
 	<programlisting><xi:include href="examples/def-singleton-method.rb" parse="text"/></programlisting>
       </example>
+
       <sect2 xml:id="met.method-added">
 	<title><literal>method_added</literal> Callback</title>
-	<para>When an instance method is defined, the receiver (i.e. the containing
-	class) is sent a <literal>:method_added</literal> message with the new
-	method’s name as an argument. Similarly, when a singleton method is
-	defined the receiver is sent <literal>:singleton_method_added</literal>
-	instead.</para>
+
+	<para>When an instance method is defined, the receiver (i.e. the containing class) is sent a <literal>:method_added</literal> message with the new method’s name as an argument. Similarly, when a singleton method is defined the receiver is sent <literal>:singleton_method_added</literal> instead.</para>
       </sect2>
+
       <sect2 xml:id="met.dynamic-definition">
 	<title>Dynamic Method Definition</title>
-	<para>An instance method can be defined dynamically with
-	<literal>Module#define_method(<replaceable>name</replaceable>, <replaceable>body</replaceable>)</literal>,
-	where <replaceable>name</replaceable> is the method’s name given as a
-	<literal>Symbol</literal>, and <replaceable>body</replaceable> is its body given as a <link linkend="clo.closures">Proc</link>, <link linkend="met.method-objects">Method, </link>
-	<link linkend="met.unboundmethod-objects">UnboundMethod</link>, or <link linkend="clo.procs">block literal</link>. This allows methods to be
-        defined at runtime, in contrast to <literal>def</literal> which requires the
-        method name and body to appear literally in the source code.</para>
+
+	<para>An instance method can be defined dynamically with <literal>Module#define_method(<replaceable>name</replaceable>, <replaceable>body</replaceable>)</literal>, where <replaceable>name</replaceable> is the method’s name given as a <literal>Symbol</literal>, and <replaceable>body</replaceable> is its body given as a <link linkend="clo.closures">Proc</link>, <link linkend="met.method-objects">Method, </link> <link linkend="met.unboundmethod-objects">UnboundMethod</link>, or <link linkend="clo.procs">block literal</link>. This allows methods to be defined at runtime, in contrast to <literal>def</literal> which requires the method name and body to appear literally in the source code.</para>
+	
 	<example xml:id="ex.define-method">
-	  <title>Using <literal>define_method</literal> to dynamically create a
-	  method with a user-supplied name and body.
-	  </title>
+	  <title>Using <literal>define_method</literal> to dynamically create a method with a user-supplied name and body.</title>
+
 	  <programlisting><xi:include href="examples/define-method.rb" parse="text"/></programlisting>
 	</example>
-	<para>
-	  <literal>Module#define_method</literal> is a private method so must be
-	  called from within the class the method is being defined on.
-	  Alternatively, it can be invoked inside <literal>class_eval</literal> like
-	so:</para>
+
+	<para><literal>Module#define_method</literal> is a private method so must be called from within the class the method is being defined on.  Alternatively, it can be invoked inside <literal>class_eval</literal> like so:</para>
+
 	<example xml:id="ex.define-method-class-eval">
-	  <title>Using <literal>define_method</literal> inside
-	  <literal>class_eval</literal> to dynamically create a method with a
-	  user-supplied name and body.
-	  </title>
+	  <title>Using <literal>define_method</literal> inside <literal>class_eval</literal> to dynamically create a method with a user-supplied name and body.</title>
+
 	  <programlisting><xi:include href="examples/define-method-class-eval.rb" parse="text"/></programlisting>
 	</example>
-	<para>
-	  <literal>Kernel#define_singleton_method</literal> is called with the same
-	  arguments as <literal>Module#define_method</literal> to define a singleton
-	method on the receiver.</para>
+
+	<para><literal>Kernel#define_singleton_method</literal> is called with the same arguments as <literal>Module#define_method</literal> to define a singleton method on the receiver.</para>
+
 	<example xml:id="ex.define-singleton-method">
-	  <title>Using <literal>define_singleton_method</literal> to
-	  dynamically create a method.
-	  </title>
+	  <title>Using <literal>define_singleton_method</literal> to dynamically create a method.</title>
+
 	  <programlisting><xi:include href="examples/define-singleton-method.rb" parse="text"/></programlisting>
 	</example>
       </sect2>
     </sect1>
+
     <sect1 xml:id="met.arguments">
       <title>Arguments</title>
-      <!--figure>
-	<title>Syntax diagram of a method parameter list
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/method-parameter-list.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
-      <para>We have already discussed how messages may be sent along with <link
-      linkend="mes.arguments">arguments</link>. A method expecting to receive these
-      arguments must define their type and quantity via a <firstterm>parameter
-      list</firstterm>.</para>
-      <!--figure>
-	<title>Syntax diagram of a parameter list
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/parameter-list.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
-      <para>When a method is defined with the <literal>def</literal> keyword, its
-      parameter list follows its name, and is usually<footnote>
-      <para>The parentheses are actually optional, but their
-      omission doesn't enhance readability so they are recommended.
-      </para>
-      </footnote> enclosed in a
-      set of parentheses (<literal>U＋0028</literal>, <literal>U＋0029</literal>). It specifies:</para>
+
+      <para>We have already discussed how messages may be sent along with <link linkend="mes.arguments">arguments</link>. A method expecting to receive these arguments must define their type and quantity via a <firstterm>parameter list</firstterm>.</para>
+      
+      <para>When a method is defined with the <literal>def</literal> keyword, its parameter list follows its name, and is usually<footnote> <para>The parentheses are actually optional, but their omission doesn't enhance readability so they are recommended.</para></footnote> enclosed in a set of parentheses (<literal>U＋0028</literal>, <literal>U＋0029</literal>). It specifies:</para>
+
       <itemizedlist>
 	<listitem>
-	  <para>The local variable names (hereafter: <firstterm>parameters</firstterm>) to which the
-	  corresponding argument will be aliased inside the method.</para>
+	  <para>The local variable names (hereafter: <firstterm>parameters</firstterm>) to which the corresponding argument will be aliased inside the method.</para>
 	</listitem>
 	<listitem>
 	  <para>Whether the arguments are required or optional.</para>
@@ -413,168 +235,94 @@
 	  <para>Whether an argument is expected to be a block.</para>
 	</listitem>
       </itemizedlist>
+
       <para>Each parameter name must be unique in the parameter list.</para>
-      <para>Parameters are <firstterm>positional</firstterm>:
-      they describe the argument in the corresponding position of the argument
-      list. The correspondence isn’t one‐to‐one, as we will see below, but each
-      parameter consumes as many arguments as it can, leaving those that remain
-      for the following parameters.</para>
+
+      <para>Parameters are <firstterm>positional</firstterm>: they describe the argument in the corresponding position of the argument list. The correspondence isn’t one‐to‐one, as we will see below, but each parameter consumes as many arguments as it can, leaving those that remain for the following parameters.</para>
+      
       <sect2 xml:id="met.required-arguments">
 	<title>Required Arguments</title>
-	<!--figure>
-	  <title>Syntax diagram</title>
-	  <mediaobject>
-	    <imageobject>
-	      <imagedata fileref="figures/required-parameters.png" format="PNG" width="4in"/>
-	    </imageobject>
-	  </mediaobject>
-	</figure-->
-	<para>A <firstterm>required argument</firstterm> 
-	<emphasis>must</emphasis> be supplied by the
-	caller: A method which requires exactly <replaceable>n</replaceable> arguments must
-	receive them all, otherwise it raises an <literal>ArgumentError</literal>.</para>
+
+	<para>A <firstterm>required argument</firstterm> <emphasis>must</emphasis> be supplied by the caller: A method which requires exactly <replaceable>n</replaceable> arguments must receive them all, otherwise it raises an <literal>ArgumentError</literal>.</para>
+	
 	<sidebar>
-	  <title>
-	    <code>nil</code> and <code>false</code>
-	  </title>
-	  <para>
-	    <literal>nil</literal> and <literal>false</literal> are as valid
-	    an argument any other. If a method requires an argument and
-	    <literal>nil</literal> is supplied in its place, Ruby will not
-	    complain. Methods wishing to prohibit such values must do so
-	  themselves.</para>
+	  <title><code>nil</code> and <code>false</code></title>
+
+	  <para><literal>nil</literal> and <literal>false</literal> are as valid an argument any other. If a method requires an argument and <literal>nil</literal> is supplied in its place, Ruby will not complain. Methods wishing to prohibit such values must do so themselves.</para>
 	</sidebar>
-	<para>Required arguments are specified with a comma-separated list of
-	identifiers. Each parameter represents a mandatory argument.</para>
+
+	<para>Required arguments are specified with a comma-separated list of identifiers. Each parameter represents a mandatory argument.</para>
+	
 	<example xml:id="ex.required-arguments">
-	  <title>Defining a method which requires exactly two arguments.
-	  </title>
+	  <title>Defining a method which requires exactly two arguments.</title>
+
 	  <programlisting><xi:include href="examples/required-arguments.rb" parse="text"/></programlisting>
 	</example>
       </sect2>
+
       <sect2 xml:id="met.optional-arguments">
 	<title>Optional Arguments and Default Values</title>
-	<!--figure>
-	  <title>Syntax diagram of optional parameters
-	  </title>
-	  <mediaobject>
-	    <imageobject>
-	      <imagedata fileref="figures/optional-parameters.png" format="PNG" width="4in"/>
-	    </imageobject>
-	  </mediaobject>
-	</figure-->
-	<para>An <firstterm>optional argument</firstterm> 
-	<emphasis>may</emphasis>
-	be supplied by the caller. If it is not, the corresponding parameter
-	will be assigned the value given as its default.</para>
-	<!--figure>
-	  <title>Syntax diagram of an optional parameter
-	  </title>
-	  <mediaobject>
-	    <imageobject>
-	      <imagedata fileref="figures/optional-parameter.png" format="PNG" width="4in"/>
-	    </imageobject>
-	  </mediaobject>
-	</figure-->
-	<para>Optional arguments are specified with a comma-separated list of
-	<literal>
-	  <replaceable>name</replaceable>=<replaceable>value</replaceable>
-	  </literal> pairs, where
-	  <replaceable>name</replaceable> is a parameter name and <replaceable>value</replaceable> is its default
-	  value. The <replaceable>value</replaceable> may be any Ruby expression, and is permitted
-	  to refer to previous parameters. The default value expression is
-	  evaluated each time the method is invoked, so may, for example,
-	instantiate an object on every invocation.</para>
+
+	<para>An <firstterm>optional argument</firstterm> <emphasis>may</emphasis> be supplied by the caller. If it is not, the corresponding parameter will be assigned the value given as its default.</para>
+
+	<para>Optional arguments are specified with a comma-separated list of <literal><replaceable>name</replaceable>=<replaceable>value</replaceable></literal> pairs, where <replaceable>name</replaceable> is a parameter name and <replaceable>value</replaceable> is its default value. The <replaceable>value</replaceable> may be any Ruby expression, and is permitted to refer to previous parameters. The default value expression is evaluated each time the method is invoked, so may, for example, instantiate an object on every invocation.</para>
+
 	<example xml:id="ex.optional-arguments">
-	  <title>Defining a method which takes an optional argument.
-	  </title>
+	  <title>Defining a method which takes an optional argument.</title>
+
 	  <programlisting><xi:include href="examples/optional-arguments.rb" parse="text"/></programlisting>
 	</example>
-	<para>Optional and required arguments can be specified alongside each
-	other in a reasonably natural fashion. However, all optional arguments
-	must be adjacent. For instance, it is a syntax error to
-	both precede and follow a required argument with optional
-	arguments.</para>
+
+	<para>Optional and required arguments can be specified alongside each other in a reasonably natural fashion. However, all optional arguments must be adjacent. For instance, it is a syntax error to both precede and follow a required argument with optional arguments.</para>
+	
 	<example xml:id="ex.required-arguments-with-optional-arguments">
-	  <title>Defining a method which takes both optional and required
-	  arguments.
-	  </title>
+	  <title>Defining a method which takes both optional and required arguments.</title>
+
 	  <programlisting><xi:include href="examples/required-arguments-with-optional-arguments.rb" parse="text"/></programlisting>
 	</example>
       </sect2>
+
       <sect2 xml:id="met.rest-parameters">
 	<title>Variable-Length Argument Lists</title>
-	<!--figure>
-	  <title>Syntax diagram of the rest parameter
-	  </title>
-	  <mediaobject>
-	    <imageobject>
-	      <imagedata fileref="figures/rest-parameter.png" format="PNG" width="4in"/>
-	    </imageobject>
-	  </mediaobject>
-	</figure-->
-	<para>A <firstterm>rest parameter</firstterm> (or <firstterm>splat
-	parameter</firstterm>) consumes every argument that follows it while
-	still allowing subsequent required parameters to receive their
-	corresponding arguments. Put simply: it takes an arbitrary
-	number—including zero—of arguments from its position onward. It is passed
-	to the method as an <literal>Array</literal> containing one argument per
-	element.</para>
-	<para>A rest parameter is specified by preceding a parameter name with an
-	asterisk (<literal>U＋002A</literal>). Only one rest parameter may appear
-	in a parameter list, and any optional parameters must precede it.</para>
+
+	<para>A <firstterm>rest parameter</firstterm> (or <firstterm>splat parameter</firstterm>) consumes every argument that follows it while still allowing subsequent required parameters to receive their corresponding arguments. Put simply: it takes an arbitrary number—including zero—of arguments from its position onward. It is passed to the method as an <literal>Array</literal> containing one argument per element.</para>
+	
+	<para>A rest parameter is specified by preceding a parameter name with an asterisk (<literal>U＋002A</literal>). Only one rest parameter may appear in a parameter list, and any optional parameters must precede it.</para>
+	
 	<example xml:id="ex.rest-arguments">
-	  <title>Defining a method which takes a variable number of
-	  arguments.
-	  </title>
+	  <title>Defining a method which takes a variable number of arguments.</title>
+
 	  <programlisting><xi:include href="examples/rest-arguments.rb" parse="text"/></programlisting>
 	</example>
-	<para>A rest parameter may be supplied as a sole asterisk, omitting the
-	corresponding parameter name.  The effect is to consume the
-	corresponding arguments as an ordinary rest parameter, without
-	assigning them to a local variable. The arguments are ignored.  This
-	allows methods to accept an arbitrary number of arguments, but
-	discard, say, all but the last.</para>
-	<para>Thomas et al. suggest that this technique can used in conjunction
-	with the implicit-argument form of <link linkend="met.super">super</link>
-	to define a method which accepts an arbitrary number of arguments then
-	passes them all to its superclass <biblioref begin="138" end="139"
-	units="pages" linkend="bib.thom09"/>.</para>
+
+	<para>A rest parameter may be supplied as a sole asterisk, omitting the corresponding parameter name.  The effect is to consume the corresponding arguments as an ordinary rest parameter, without assigning them to a local variable. The arguments are ignored.  This allows methods to accept an arbitrary number of arguments, but discard, say, all but the last.</para>
+	
+	<para>Thomas et al. suggest that this technique can used in conjunction with the implicit-argument form of <link linkend="met.super">super</link> to define a method which accepts an arbitrary number of arguments then passes them all to its superclass <biblioref begin="138" end="139" units="pages" linkend="bib.thom09"/>.</para>
+	
 	<example xml:id="ex.rest-parameter-with-super">
-	  <title>A method which accepts a variable number of arguments
-	  then passes them to its superclass (<literal>Parent</literal>) with
-	  <literal>super</literal>.
-	  </title>
+	  <title>A method which accepts a variable number of arguments then passes them to its superclass (<literal>Parent</literal>) with <literal>super</literal>.</title>
+
 	  <programlisting><xi:include href="examples/rest-parameter-with-super.rb" parse="text"/></programlisting>
 	</example>
       </sect2>
+
       <sect2 xml:id="met.named-arguments">
 	<title>Named Arguments</title>
-	<para>The parameter forms described above are positional in nature. An
-	alternative approach, that can aid the readability of otherwise ungainly
-	parameter lists, is <firstterm>named arguments</firstterm>, which allow
-	the method to be invoked with a series of key-value pairs, arranged in
-	an arbitrary order.</para>
-	<para>This style of argument passing is not supported explicitly, but can
-	be ably approximated by defining methods that expect a <literal>Hash</literal>
-	argument: the keys of which become the parameter names; and the values,
-	the arguments. This technique is used by core methods such as
-	<literal>File.open</literal> and <literal>String#encode</literal>.</para>
+
+	<para>The parameter forms described above are positional in nature. An alternative approach, that can aid the readability of otherwise ungainly parameter lists, is <firstterm>named arguments</firstterm>, which allow the method to be invoked with a series of key-value pairs, arranged in an arbitrary order.</para>
+	
+	<para>This style of argument passing is not supported explicitly, but can be ably approximated by defining methods that expect a <literal>Hash</literal> argument: the keys of which become the parameter names; and the values, the arguments. This technique is used by core methods such as <literal>File.open</literal> and <literal>String#encode</literal>.</para>
+	
 	<example xml:id="ex.named-arguments-with-hash">
-	  <title>A method which uses a <literal>Hash</literal> argument to
-	  simulate named arguments.
-	  </title>
+	  <title>A method which uses a <literal>Hash</literal> argument to simulate named arguments.</title>
+
 	  <programlisting><xi:include href="examples/named-arguments-with-hash.rb" parse="text"/></programlisting>
 	</example>
-	<para>If a <link linkend="has.literals">Hash literal</link> is the
-	final argument, other than a block, that a method expects, the curly
-	braces which delimit it can be omitted, as long as there is white space
-	between the selector and the first key. For example,
-	<literal>
-	  <replaceable>selector</replaceable>({ key: :value })</literal> can be written as
-	  <literal>
-	<replaceable>selector</replaceable> key: :value</literal>.</para>
+
+	<para>If a <link linkend="has.literals">Hash literal</link> is the final argument, other than a block, that a method expects, the curly braces which delimit it can be omitted, as long as there is white space between the selector and the first key. For example, <literal> <replaceable>selector</replaceable>({ key: :value })</literal> can be written as <literal> <replaceable>selector</replaceable> key: :value</literal>.</para>
+
 	<para>The advantages of this approach include:</para>
+
 	<itemizedlist>
 	  <listitem>
 	    <para>Arguments can be specified in any order.</para>
@@ -583,644 +331,374 @@
 	    <para>Arguments with default values can be omitted.</para>
 	  </listitem>
 	  <listitem>
-	    <para>If <literal>Symbol</literal>s are used for the <literal>Hash</literal>
-	    keys the invocation is particularly readable.</para>
+	    <para>If <literal>Symbol</literal>s are used for the <literal>Hash</literal> keys the invocation is particularly readable.</para>
 	  </listitem>
 	  <listitem>
 	    <para>Variable-length argument lists are supported.</para>
 	  </listitem>
 	</itemizedlist>
+
 	<example xml:id="ex.named-arguments-with-defaults">
-	  <title>A method which uses a <literal>Hash</literal> argument to
-	  simulate named arguments with default values.
-	  </title>
+	  <title>A method which uses a <literal>Hash</literal> argument to simulate named arguments with default values.</title>
+
 	  <programlisting><xi:include href="examples/named-arguments-with-defaults.rb" parse="text"/></programlisting>
 	</example>
-	<para>The primary shortcoming is that Ruby can not determine
-	automatically whether an invalid number of arguments have been
-	supplied; the programmer must validate the arguments instead. This is
-	unlikely to be particularly significant, however, because a method
-	expecting a variable number of arguments would otherwise use a <link linkend="met.rest-parameters">rest parameter</link>, which also preclude
-	automatic validation.</para>
+
+	<para>The primary shortcoming is that Ruby can not determine automatically whether an invalid number of arguments have been supplied; the programmer must validate the arguments instead. This is unlikely to be particularly significant, however, because a method expecting a variable number of arguments would otherwise use a <link linkend="met.rest-parameters">rest parameter</link>, which also preclude automatic validation.</para>
       </sect2>
+
       <sect2 xml:id="met.block-arguments">
 	<title>Block Arguments</title>
-	<!--figure>
-	  <title>Syntax diagram of a block parameter
-	  </title>
-	  <mediaobject>
-	    <imageobject>
-	      <imagedata fileref="figures/block-parameter.png" format="PNG" width="4in"/>
-	    </imageobject>
-	  </mediaobject>
-	</figure-->
-	<para>Any method may be sent a <link linkend="mes.block-argument">block
-        argument</link>. The block may be yielded to,
-	allowing its return value to be captured, or objectified and assigned
-	to a variable. A method may determine whether it has received a block
-	with the <literal>Kernel.block_given?</literal> predicate.</para>
+
+	<para>Any method may be sent a <link linkend="mes.block-argument">block argument</link>. The block may be yielded to, allowing its return value to be captured, or objectified and assigned to a variable. A method may determine whether it has received a block with the <literal>Kernel.block_given?</literal> predicate.</para>
+	
 	<sidebar>
 	  <title>Iterator Methods</title>
-	  <para>Flanagan &amp; Matsumoto insist <biblioref linkend="bib.flan08"/>
-	  insist on <quote>[using] the term iterator…to mean any method that uses
-	  the <literal>yield</literal> statement</quote>, despite admitting that
-	  this doesn't make sense if the method doesn’t actually
-	  <emphasis>iterate</emphasis> over the block it has been given. We will
-	  not perpetuate this confusion: an <emphasis>iterator method</emphasis>
-	  iterates over the block it has been given; a method which expects a
-	  block but does not iterate over it is simply <emphasis>a method that
-	  expects a block</emphasis>.</para>
+	
+	  <para>Flanagan &amp; Matsumoto insist <biblioref linkend="bib.flan08"/> insist on <quote>[using] the term iterator…to mean any method that uses the <literal>yield</literal> statement</quote>, despite admitting that this doesn't make sense if the method doesn’t actually <emphasis>iterate</emphasis> over the block it has been given. We will not perpetuate this confusion: an <emphasis>iterator method</emphasis> iterates over the block it has been given; a method which expects a block but does not iterate over it is simply <emphasis>a method that expects a block</emphasis>.</para>
 	</sidebar>
+
 	<example xml:id="ex.method-invocation-with-block-literal">
-	  <title>A method which receives, and ignores, a block specified
-	  with either of the block literal constructs.
-	  </title>
+	  <title>A method which receives, and ignores, a block specified with either of the block literal constructs.</title>
+
 	  <programlisting><xi:include href="examples/method-invocation-with-block-literal.rb" parse="text"/></programlisting>
 	</example>
 
-	<para>A block passed to a method in this way is not automatically
-	called; the method must use the yield keyword to do so. An implication
-	is that methods not expecting blocks will ignore them.</para>
+	<para>A block passed to a method in this way is not automatically called; the method must use the yield keyword to do so. An implication is that methods not expecting blocks will ignore them.</para>
 
 	<example xml:id="ex.method-using-block-given-yield">
-	  <title>A method which uses the <literal>block_given?</literal>
-	  predicate to determine whether it has been passed a block, and if so
-	  calls it.
-	  </title>
+	  <title>A method which uses the <literal>block_given?</literal> predicate to determine whether it has been passed a block, and if so calls it.</title>
+
 	  <programlisting><xi:include href="examples/method-using-block-given-yield.rb" parse="text"/></programlisting>
 	</example>
-	<para>A method needing a reference to the block it was given, perhaps
-	to pass to another method, is defined with a final parameter whose name
-	is prefixed with an ampersand (<literal>U＋0026</literal>). The method
-	can access the block as a <literal>Proc</literal> object named after
-	the parameter (sans ampersand).  It may invoke the block via its
-	<literal>Proc#call</literal> method, or yield to it. In either case,
-	the method is invoked in precisely the same way as before.</para>
+
+	<para>A method needing a reference to the block it was given, perhaps to pass to another method, is defined with a final parameter whose name is prefixed with an ampersand (<literal>U＋0026</literal>). The method can access the block as a <literal>Proc</literal> object named after the parameter (sans ampersand).  It may invoke the block via its <literal>Proc#call</literal> method, or yield to it. In either case, the method is invoked in precisely the same way as before.</para>
+	
 	<example xml:id="ex.method-using-block-argument">
-	  <title>A method which uses a <literal>block</literal> parameter
-	  to refer to the block it is given.
-	  </title>
+	  <title>A method which uses a <literal>block</literal> parameter to refer to the block it is given.</title>
+
 	  <programlisting><xi:include href="examples/method-using-block-argument.rb" parse="text"/></programlisting>
 	</example>
-	<para>The discussion above applies only to block <emphasis>literals</emphasis>; a method
-	expecting a <emphasis>reference</emphasis> to a block, i.e. a <literal>proc</literal>
-	or <literal>lambda</literal>, need not pay heed. Such a method employs
-	precisely the same parameter list as in the previous sections.</para>
+
+	<para>The discussion above applies only to block <emphasis>literals</emphasis>; a method expecting a <emphasis>reference</emphasis> to a block, i.e. a <literal>proc</literal> or <literal>lambda</literal>, need not pay heed. Such a method employs precisely the same parameter list as in the previous sections.</para>
+	
 	<example xml:id="ex.method-receiving-block-ref">
-	  <title>A method which expects a reference to a block uses the
-	  same parameter list as it would if expecting any other type of
-	  variable.
-	  </title>
+	  <title>A method which expects a reference to a block uses the same parameter list as it would if expecting any other type of variable.</title>
+
 	  <programlisting><xi:include href="examples/method-receiving-block-ref.rb" parse="text"/></programlisting>
 	</example>
       </sect2>
+
       <sect2 xml:id="met.pass-by-reference">
 	<title>Pass By Reference</title>
-	<para>Arguments are passed to methods by reference instead of value.  If
-	the method modifies an object it receives the caller’s copy is
-	modified, too.</para>
+
+	<para>Arguments are passed to methods by reference instead of value.  If the method modifies an object it receives the caller’s copy is modified, too.</para>
+	
 	<example xml:id="ex.pass-by-reference">
-	  <title>The effect of a method’s modification of an argument on
-	  its caller
-	  </title>
+	  <title>The effect of a method’s modification of an argument on its caller.</title>
+
 	  <programlisting><xi:include href="examples/pass-by-reference.rb" parse="text"/></programlisting>
 	</example>
-	<para>Alternatively, an argument may be <link linkend="obj.duplication">duplicated</link> to create a copy
-	independent of the caller’s.</para>
+
+	<para>Alternatively, an argument may be <link linkend="obj.duplication">duplicated</link> to create a copy independent of the caller’s.</para>
+	
 	<example xml:id="ex.pass-by-reference-dup">
-	  <title>The effect of a method’s modification of a
-	  <literal>dup</literal>’d argument on its caller
-	  </title>
+	  <title>The effect of a method’s modification of a <literal>dup</literal>’d argument on its caller.</title>
+
 	  <programlisting><xi:include href="examples/pass-by-reference-dup.rb" parse="text"/></programlisting>
 	</example>
       </sect2>
+
       <sect2 xml:id="met.arity">
 	<title>Arity</title>
-	<para>The arity of a method is the number of arguments it takes. If the
-	method expects a fixed number of arguments, this number is its arity.  If
-	the method expects a variable number of arguments, its arity is the
-	additive inverse of its parameter count. Methods implemented in C, i.e.
-	most core methods, have an arity of <literal>-1</literal> if they accept a
-	variable number of parameters. It follows, then, that an arity ≥ 0
-	indicates a fixed number of parameters; a negative value, a variable
-	number. <literal>Method</literal> and <literal>Proc</literal> objects have
-	<literal>#arity</literal> methods which return the arity for the method/proc it
-	objectifies.</para>
+
+	<para>The arity of a method is the number of arguments it takes. If the method expects a fixed number of arguments, this number is its arity.  If the method expects a variable number of arguments, its arity is the additive inverse of its parameter count. Methods implemented in C, i.e.  most core methods, have an arity of <literal>-1</literal> if they accept a variable number of parameters. It follows, then, that an arity ≥ 0 indicates a fixed number of parameters; a negative value, a variable number. <literal>Method</literal> and <literal>Proc</literal> objects have <literal>#arity</literal> methods which return the arity for the method/proc it objectifies.</para>
+	
 	<sect3 xml:id="met.classification-by-arity">
 	  <title>Classification by Arity</title>
-	  <para>Methods with fixed arities can be classified as follows: A
-	  <firstterm>unary method</firstterm> expects exactly one operand (its receiver),
-	  a <firstterm>binary method</firstterm> requires two (its receiver and one
-	  argument), <firstterm>ternary-method</firstterm> requires exactly three (its
-	  receiver and two arguments), an <firstterm>
-	  <replaceable>n</replaceable>-ary method</firstterm>
-	  requires <replaceable>n</replaceable> operands (its receiver, and <replaceable>n</replaceable>-1
-	  arguments).</para>
+	
+	  <para>Methods with fixed arities can be classified as follows: A <firstterm>unary method</firstterm> expects exactly one operand (its receiver), a <firstterm>binary method</firstterm> requires two (its receiver and one argument), <firstterm>ternary-method</firstterm> requires exactly three (its receiver and two arguments), an <firstterm> <replaceable>n</replaceable>-ary method</firstterm> requires <replaceable>n</replaceable> operands (its receiver, and <replaceable>n</replaceable>-1 arguments).</para>
 	</sect3>
       </sect2>
     </sect1>
+
     <sect1 xml:id="met.undefining">
       <title>Undefining</title>
-      <para>
-	<firstterm>Undefining</firstterm> a method prevents the
-	current class from responding to it. If the method was defined in a
-	superclass, that copy is unaffected. For example, consider a
-	<literal>Rectangle</literal> class which defines <literal>:height</literal> and
-	<literal>:width</literal> methods.  A <literal>Square</literal> class inherits from
-	it, but it doesn’t make sense for <literal>Square</literal> to have both
-	<literal>:height</literal> 
-	<emphasis>and</emphasis> 
-	<literal>:width</literal> methods.
-	<literal>Square</literal> can <literal>undef</literal> 
-	<literal>:height</literal>,
-	preventing <literal>Square#height</literal> from being called without affecting
-      <literal>Rectangle#height</literal>.</para>
-      <!--figure>
-	<title>Syntax diagram of the <literal>undef</literal> statement
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/undef-statement.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
-      <para>The <literal>undef</literal> statement takes one or more
-      <literal>Symbol</literal>s/identifiers as arguments, then undefines the
-      corresponding instance methods. Undefining singleton methods requires
-      <literal>undef</literal> to be used in the context of the corresponding
-      singleton class.</para>
-      <para>Alternatively, <literal>Module#undef_method</literal> may be used with the
-      same effect. Unlike <literal>undef</literal>, <literal>undef_method</literal> doesn’t
-      accept an identifier as an argument; it expects to receive the method name
-      as a <literal>Symbol</literal> or <literal>String</literal>. However,
-      <literal>#undef_method</literal> has the advantage of being a method, as opposed
-      to <literal>undef</literal> which is a keyword, which allows it to be used with
-      Ruby’s reflective capabilities.</para>
+
+      <para><firstterm>Undefining</firstterm> a method prevents the current class from responding to it. If the method was defined in a superclass, that copy is unaffected. For example, consider a <literal>Rectangle</literal> class which defines <literal>:height</literal> and <literal>:width</literal> methods.  A <literal>Square</literal> class inherits from it, but it doesn’t make sense for <literal>Square</literal> to have both <literal>:height</literal> <emphasis>and</emphasis> <literal>:width</literal> methods.  <literal>Square</literal> can <literal>undef</literal> <literal>:height</literal>, preventing <literal>Square#height</literal> from being called without affecting <literal>Rectangle#height</literal>.</para>
+
+      <para>The <literal>undef</literal> statement takes one or more <literal>Symbol</literal>s/identifiers as arguments, then undefines the corresponding instance methods. Undefining singleton methods requires <literal>undef</literal> to be used in the context of the corresponding singleton class.</para>
+      
+      <para>Alternatively, <literal>Module#undef_method</literal> may be used with the same effect. Unlike <literal>undef</literal>, <literal>undef_method</literal> doesn’t accept an identifier as an argument; it expects to receive the method name as a <literal>Symbol</literal> or <literal>String</literal>. However, <literal>#undef_method</literal> has the advantage of being a method, as opposed to <literal>undef</literal> which is a keyword, which allows it to be used with Ruby’s reflective capabilities.</para>
+      
       <example xml:id="ex.undef-method">
-	<title>Undefining a method with <literal>undef</literal>.
-	</title>
+	<title>Undefining a method with <literal>undef</literal>.</title>
+
 	<programlisting><xi:include href="examples/undef-method.rb" parse="text"/></programlisting>
       </example>
+
       <sect2 xml:id="met.method-undefined">
 	<title><literal>method_undefined</literal> Callback</title>
 	
-	<para>When an instance method is undefined, the receiver (i.e. the
-	containing class) is sent a <literal>:method_undefined</literal> message with
-	the method’s name as an argument. Similarly, when a singleton method is
-	undefined the receiver is sent <literal>:singleton_method_undefined</literal>
-	instead.</para>
+	<para>When an instance method is undefined, the receiver (i.e. the containing class) is sent a <literal>:method_undefined</literal> message with the method’s name as an argument. Similarly, when a singleton method is undefined the receiver is sent <literal>:singleton_method_undefined</literal> instead.</para>
       </sect2>
     </sect1>
+
     <sect1 xml:id="met.removing">
       <title>Removing</title>
-      <para>
-	<literal>Module#remove_method <replaceable>name</replaceable>
-	</literal> removes the method
-	named <replaceable>name</replaceable> from the current class only. A <firstterm>removed
-	method</firstterm> differs from an undefined method in that the former
-      delegates the request to its superclass, whereas the latter doesn’t.</para>
+
+      <para><literal>Module#remove_method <replaceable>name</replaceable> </literal> removes the method named <replaceable>name</replaceable> from the current class only. A <firstterm>removed method</firstterm> differs from an undefined method in that the former delegates the request to its superclass, whereas the latter doesn’t.</para>
+
       <example xml:id="ex.remove-method">
-	<title>Using <literal>remove_method</literal> to remove a method
-	definition from a class, causing the superclass method to be invoked
-	in its place.
-	</title>
+	<title>Using <literal>remove_method</literal> to remove a method definition from a class, causing the superclass method to be invoked in its place.</title>
+
 	<programlisting><xi:include href="examples/remove-method.rb" parse="text"/></programlisting>
       </example>
       <sect2 xml:id="met.method-removed">
 	<title><literal>method_removed</literal> Callback</title>
 
-	<para>When an instance method is removed, the receiver (i.e. the containing
-	class) is sent a <literal>:method_removed</literal> message with the method’s
-	name as an argument. Similarly, when a singleton method is removed the
-	receiver is sent <literal>:singleton_method_removed</literal> instead.</para>
+	<para>When an instance method is removed, the receiver (i.e. the containing class) is sent a <literal>:method_removed</literal> message with the method’s name as an argument. Similarly, when a singleton method is removed the receiver is sent <literal>:singleton_method_removed</literal> instead.</para>
       </sect2>
     </sect1>
+
     <sect1 xml:id="met.visibility">
       <title>Visibility</title>
-      <para>An instance method is either <emphasis>public</emphasis>, <emphasis>private</emphasis>, or
-      <emphasis>protected</emphasis>. It is declared as such with <literal>Module#public</literal>,
-      <literal>Module#private</literal>, and <literal>Module#protected</literal> (hereafter:
-      <emphasis>visibility specifiers</emphasis>), respectively.</para>
-      <para>A visibility specifier invoked without arguments affects every method
-      subsequently defined in the same class definition until another visibility
-      specifier is encountered.</para>
+
+      <para>An instance method is either <emphasis>public</emphasis>, <emphasis>private</emphasis>, or <emphasis>protected</emphasis>. It is declared as such with <literal>Module#public</literal>, <literal>Module#private</literal>, and <literal>Module#protected</literal> (hereafter: <emphasis>visibility specifiers</emphasis>), respectively.</para>
+      
+      <para>A visibility specifier invoked without arguments affects every method subsequently defined in the same class definition until another visibility specifier is encountered.</para>
+      
       <example xml:id="ex.visibility-specifiers">
-	<title>Declaring the visibility of methods with visibility
-	specifiers
-	</title>
+	<title>Declaring the visibility of methods with visibility specifiers.</title>
+
 	<programlisting><xi:include href="examples/visibility-specifiers.rb" parse="text"/></programlisting>
       </example>
-      <para>A visibility specifier with one or more method names (given as
-      <literal>Symbol</literal>s or <literal>String</literal>s) affects only the named
-      methods, which must have already been defined.</para>
+
+      <para>A visibility specifier with one or more method names (given as <literal>Symbol</literal>s or <literal>String</literal>s) affects only the named methods, which must have already been defined.</para>
+      
       <example xml:id="ex.visibility-specifiers-args">
-	<title>Declaring the visibility of methods with visibility
-	specifiers that take arguments
-	</title>
+	<title>Declaring the visibility of methods with visibility specifiers that take arguments.</title>
+
 	<programlisting><xi:include href="examples/visibility-specifiers-args.rb" parse="text"/></programlisting>
       </example>
 
       <para>Method visibility is a property of the binding between a method and a class. An implication is that even when a class is frozen, the visibility of the methods it defines may still be changed using <function>Object#send</function>.</para>
 
-      <!--figure>
-	<title>Syntax diagram of visibility specifiers
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/visibility-specifier.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
       <sect2 xml:id="met.advisory-privacy">
 	<title>Advisory Privacy</title>
-	<para>Method visibility is merely an advisory construct. Ruby does not
-	<emphasis>prohibit</emphasis> the invocation of private methods; she ensures that they
-	will not be called accidentally as follows:</para>
+
+	<para>Method visibility is merely an advisory construct. Ruby does not <emphasis>prohibit</emphasis> the invocation of private methods; she ensures that they will not be called accidentally as follows:</para>
+	
 	<itemizedlist>
 	  <listitem>
-	    <para>Standard method invocation syntax (<literal>obj.method</literal>) raises
-	    a <literal>NoMethodError</literal>, signaling that the programmer's intent
-	    is ill-advised. The caviller programmer must use a technique such as
-	    <literal>Object#send</literal> to explicitly ignore the privacy advice.</para>
+	    <para>Standard method invocation syntax (<literal>obj.method</literal>) raises a <literal>NoMethodError</literal>, signaling that the programmer's intent is ill-advised. The caviller programmer must use a technique such as <literal>Object#send</literal> to explicitly ignore the privacy advice.</para>
 	  </listitem>
 	  <listitem>
-	    <para>The method introspection API (e.g.
-	    <literal>Object#private_methods</literal>,
-	    <literal>Object#protected_methods</literal>, and
-	    <literal>Object#public_methods</literal>) delineates methods by their
-	    visibility, allowing private and protected methods to be determined
-	    automatically.</para>
+	    <para>The method introspection API (e.g.  <literal>Object#private_methods</literal>, <literal>Object#protected_methods</literal>, and <literal>Object#public_methods</literal>) delineates methods by their visibility, allowing private and protected methods to be determined automatically.</para>
 	  </listitem>
 	  <listitem>
 	    <para>RDoc/<literal>ri</literal> only displays public methods by default.</para>
 	  </listitem>
 	</itemizedlist>
       </sect2>
+
       <sect2 xml:id="met.public">
 	<title>Public Methods</title>
-	<para>A method is public unless explicitly declared otherwise, or declared
-	outside of a class definition. The <literal>initialize</literal> method is
-	private by default.</para>
+
+	<para>A method is public unless explicitly declared otherwise, or declared outside of a class definition. The <literal>initialize</literal> method is private by default.</para>
       </sect2>
       <sect2 xml:id="met.private">
 	<title>Private Methods</title>
-	<para>A <firstterm>private method</firstterm> cannot be invoked with
-	an explicit receiver: it can only be called by other instance methods of
-	the class in which defined, or a subclass thereof.</para>
-	<para>
-	  <literal>self</literal> is also regarded as an explicit receiver so a
-	  method invocation of the form <literal>self.<replaceable>private</replaceable>
-	  </literal>,
-	  where <replaceable>private</replaceable> is a private instance method in the same class,
-	is disallowed.</para>
+	
+	<para>A <firstterm>private method</firstterm> cannot be invoked with an explicit receiver: it can only be called by other instance methods of the class in which defined, or a subclass thereof.</para>
+	
+	<para><literal>self</literal> is also regarded as an explicit receiver so a method invocation of the form <literal>self.<replaceable>private</replaceable> </literal>, where <replaceable>private</replaceable> is a private instance method in the same class, is disallowed.</para>
+
 	<sidebar>
 	  <title>Private by Default</title>
-	  <para>Methods created outside of a class or module definition, i.e. at the
-	  top level, are private by default The <literal>:initialize</literal> method
-	  is, too, because it is only intended to be invoked from the object’s
-	  <literal>:new</literal> method.</para>
+
+	  <para>Methods created outside of a class or module definition, i.e. at the top level, are private by default The <literal>:initialize</literal> method is, too, because it is only intended to be invoked from the object’s <literal>:new</literal> method.</para>
 	</sidebar>
       </sect2>
+
       <sect2 xml:id="met.protected">
 	<title>Protected Methods</title>
-	<para>Protected methods can invoked only from the class in which they were
-	defined or a subclass thereof, that is they behave the same as private
-	methods. However, unlike private methods they can be explicitly invoked
-	on any instance of their class.</para>
-	<para>Flanagan &amp; Matsumoto suggest that <quote>A protected method can
-	be used, for example, to define an accessor that allows instances of a
-	class to share internal state with each other, but does not allow users
-	of the class to access that state.</quote> 
-	<biblioref
-	    linkend="bib.flan08"/>
-	</para>
+
+	<para>Protected methods can invoked only from the class in which they were defined or a subclass thereof, that is they behave the same as private methods. However, unlike private methods they can be explicitly invoked on any instance of their class.</para>
+	
+	<para>Flanagan &amp; Matsumoto suggest that <quote>A protected method can be used, for example, to define an accessor that allows instances of a class to share internal state with each other, but does not allow users of the class to access that state.</quote><biblioref linkend="bib.flan08"/></para>
       </sect2>
+
       <sect2 xml:id="met.class-method-privacy">
 	<title>Class Methods</title>
-	<para>A class  method named <replaceable>name</replaceable> can be
-	privatised with <literal>Module#private_class_method <replaceable>name</replaceable>
-	</literal>.
-	Private class methods can be made public with
-	<literal>Module#public_class_method <replaceable>name</replaceable>
-	</literal>. It is nonsensical
-	to deign a class method protected, so there is not a corresponding
-	visibility specifier.</para>
+
+	<para>A class method named <replaceable>name</replaceable> can be privatised with <literal>Module#private_class_method <replaceable>name</replaceable> </literal>.  Private class methods can be made public with <literal>Module#public_class_method <replaceable>name</replaceable> </literal>. It is nonsensical to deign a class method protected, so there is not a corresponding visibility specifier.</para>
       </sect2>
     </sect1>
+
     <sect1 xml:id="met.aliases">
       <title>Aliases</title>
-      <para>An <firstterm>alias</firstterm> of a method is an alternate
-      name by which it can be referred. For a method, <replaceable>m</replaceable>, and its
-      alias, <replaceable>a</replaceable>, invoking <replaceable>m</replaceable> is equivalent to invoking
-      <replaceable>a</replaceable>.</para>
-      <para>The alias refers to a copy of the existing method’s body. If the
-      existing method is redefined after being aliased, the alias will continue
-      to refer to the method’s original definition.</para>
-      <para>Aliases are often used to provide synonyms for method names. For
-      instance, <literal>:size</literal> may be aliased to <literal>:length</literal>.  This
-      allows the programmer to use method names which “read” more naturally in a
-      given context.</para>
-      <para>An alias is created with the <literal>alias</literal> keyword from inside
-      the class of the existing method. The syntax is <literal>alias
-      <replaceable>new_name</replaceable> 
-      <replaceable>current_name</replaceable>
-      </literal>, where both
-      <replaceable>new_name</replaceable> and <replaceable>current_name</replaceable> are <literal>Symbol</literal>
-      literals or identifiers. A method named <replaceable>current_name</replaceable> must
-      already be defined.  If a method named <replaceable>new_name</replaceable> already
-      exists it is overwritten.</para>
-      <!--figure>
-	<title>Syntax diagram of the <literal>alias</literal> statement
-	</title>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="figures/alias-statement.png" format="PNG" width="4in"/>
-	  </imageobject>
-	</mediaobject>
-      </figure-->
-      <para>
-	<literal>Module#alias_method <replaceable>new_name</replaceable>,
-	<replaceable>current_name</replaceable>
-	</literal> can be used to the same effect, the
-	difference being that it uses standard method semantics to interpret
-	identifier arguments: treating them as expressions; not literal method
-	names. This allows methods to be aliased dynamically. For example,
-	<literal>alias new old</literal> interprets its arguments as literal
-	identifiers, whereas <literal>alias_method <replaceable>new</replaceable>,
-	<replaceable>old</replaceable>
-	</literal> sees them as variables, whose values are the
-	method names. By implication, if the arguments to
-	<literal>Module#alias_method</literal> 
-	<emphasis>should</emphasis> be interpreted as literal
-	identifiers they must be supplied as <literal>String</literal> or
-      <literal>Symbol</literal> literals, e.g. <literal>alias_method :new, :old</literal>.</para>
-      <para>Aliasing is also used to create a method which wraps the method of the
-      same name by performing its own computations then calling the original
-      method. For example, in the example below we wrap <literal>String#to_i</literal>
-      such that it raises an exception if the string doesn't contain digits.
-      (Normally, <literal>String#to_i</literal> returns <literal>0</literal> for such
-      strings).</para>
+
+      <para>An <firstterm>alias</firstterm> of a method is an alternate name by which it can be referred. For a method, <replaceable>m</replaceable>, and its alias, <replaceable>a</replaceable>, invoking <replaceable>m</replaceable> is equivalent to invoking <replaceable>a</replaceable>.</para>
+      
+      <para>The alias refers to a copy of the existing method’s body. If the existing method is redefined after being aliased, the alias will continue to refer to the method’s original definition.</para>
+      
+      <para>Aliases are often used to provide synonyms for method names. For instance, <literal>:size</literal> may be aliased to <literal>:length</literal>.  This allows the programmer to use method names which “read” more naturally in a given context.</para>
+      
+      <para>An alias is created with the <literal>alias</literal> keyword from inside the class of the existing method. The syntax is <literal>alias <replaceable>new_name</replaceable> <replaceable>current_name</replaceable> </literal>, where both <replaceable>new_name</replaceable> and <replaceable>current_name</replaceable> are <literal>Symbol</literal> literals or identifiers. A method named <replaceable>current_name</replaceable> must already be defined.  If a method named <replaceable>new_name</replaceable> already exists it is overwritten.</para>
+      
+      <para><literal>Module#alias_method <replaceable>new_name</replaceable>, <replaceable>current_name</replaceable> </literal> can be used to the same effect, the difference being that it uses standard method semantics to interpret identifier arguments: treating them as expressions; not literal method names. This allows methods to be aliased dynamically. For example, <literal>alias new old</literal> interprets its arguments as literal identifiers, whereas <literal>alias_method <replaceable>new</replaceable>, <replaceable>old</replaceable> </literal> sees them as variables, whose values are the method names. By implication, if the arguments to <literal>Module#alias_method</literal> <emphasis>should</emphasis> be interpreted as literal identifiers they must be supplied as <literal>String</literal> or <literal>Symbol</literal> literals, e.g. <literal>alias_method :new, :old</literal>.</para>
+
+      <para>Aliasing is also used to create a method which wraps the method of the same name by performing its own computations then calling the original method. For example, in the example below we wrap <literal>String#to_i</literal> such that it raises an exception if the string doesn't contain digits.  (Normally, <literal>String#to_i</literal> returns <literal>0</literal> for such strings).</para>
+      
       <example xml:id="ex.alias-for-wrapping">
-	<title>Using <literal>alias</literal> to wrap a method
-	</title>
+	<title>Using <literal>alias</literal> to wrap a method.</title>
+
 	<programlisting><xi:include href="examples/alias-for-wrapping.rb" parse="text"/></programlisting>
       </example>
     </sect1>
+
     <sect1 xml:id="met.lookup-algorithm">
       <title>Lookup Algorithm</title>
-      <para>Evaluating a message expression requires the corresponding method
-      definition be located in the receiver. The steps below illustrate the
-      lookup algorithm for a message with a selector of <replaceable>selector</replaceable>, and
-      arguments of <replaceable>arguments</replaceable>, where <replaceable>class</replaceable> is set the
-      receiver’s singleton class. When a method is found whose name is equal to
-      <replaceable>selector</replaceable> the process terminates. It will always ultimately
-      succeed because <literal>BasicObject</literal> defines a
-      <literal>:method_missing</literal> method.</para>
+
+      <para>Evaluating a message expression requires the corresponding method definition be located in the receiver. The steps below illustrate the lookup algorithm for a message with a selector of <replaceable>selector</replaceable>, and arguments of <replaceable>arguments</replaceable>, where <replaceable>class</replaceable> is set the receiver’s singleton class. When a method is found whose name is equal to <replaceable>selector</replaceable> the process terminates. It will always ultimately succeed because <literal>BasicObject</literal> defines a <literal>:method_missing</literal> method.</para>
+      
       <orderedlist>
 	<listitem>
 	  <para>Search the instance methods of <replaceable>class</replaceable>.</para>
 	</listitem>
 	<listitem>
-	  <para>Search the instance methods of each module included by
-	  <replaceable>class</replaceable>, in reverse order of inclusion.</para>
+	  <para>Search the instance methods of each module included by <replaceable>class</replaceable>, in reverse order of inclusion.</para>
 	</listitem>
 	<listitem>
-	  <para>If <replaceable>class</replaceable> has a superclass<footnote>
-	  <para>
-	    <literal>BasicObject</literal> doesn't have a
-	    superclass, so this step is guaranteed to terminate.
-	  </para>
-	  </footnote>, assign its name to
-	  <replaceable>class</replaceable> then go to step one.</para>
+	  <para>If <replaceable>class</replaceable> has a superclass<footnote><para><literal>BasicObject</literal> doesn't have a superclass, so this step is guaranteed to terminate.</para></footnote>, assign its name to <replaceable>class</replaceable> then go to step one.</para>
 	</listitem>
 	<listitem>
-	  <para>Prepend <replaceable>selector</replaceable> to <replaceable>arguments</replaceable>. Set
-	  <replaceable>selector</replaceable> to <literal>:method_missing</literal>, 
-	  <replaceable>class</replaceable> back to the receiver’s singleton class, and go to step
-	  one.</para>
+	  <para>Prepend <replaceable>selector</replaceable> to <replaceable>arguments</replaceable>. Set <replaceable>selector</replaceable> to <literal>:method_missing</literal>, <replaceable>class</replaceable> back to the receiver’s singleton class, and go to step one.</para>
 	</listitem>
       </orderedlist>
+
       <example xml:id="ex.method-lookup">
-	<title>Identifies the order in which methods are searched when an
-	object is sent a message, with 1 being first.
-	</title>
+	<title>Identifies the order in which methods are searched when an object is sent a message, with 1 being first.</title>
+
 	<programlisting><xi:include href="examples/method-lookup.rb" parse="text"/></programlisting>
       </example>
     </sect1>
+
     <sect1 xml:id="met.method-missing">
       <title>Missing Methods</title>
+
       <sidebar>
 	<title><literal>NoMethodError</literal></title>
 
-	<para>The <literal>NoMethodError</literal> exception has an <literal>#args</literal>
-	method which returns the arguments sent to the original method as an
-	<literal>Array</literal>, and <literal>#name</literal> which returns the original
-	method name as a <literal>Symbol</literal>. This information can be used to
-	perform introspection on the caught exception and enhance error
-	messages.</para>
+	<para>The <literal>NoMethodError</literal> exception has an <literal>#args</literal> method which returns the arguments sent to the original method as an <literal>Array</literal>, and <literal>#name</literal> which returns the original method name as a <literal>Symbol</literal>. This information can be used to perform introspection on the caught exception and enhance error messages.</para>
       </sidebar>
-      <para>The exposition above shows that sending an object a message for which a
-      corresponding method is not defined causes each object on the search path
-      to be sent <literal>:method_missing</literal> with the original selector as the
-      first argument, and the original arguments as the remainder.
-      <literal>BasicObject</literal> defines <literal>:method_missing</literal> to provide
-      the default behaviour of raising <literal>NoMethodError</literal> for
-      non-existent methods. However, if another object defines
-      <literal>:method_missing</literal> they can intervene, averting the exception
-      and responding to the message themselves.</para>
-      <example xml:id="ex.basicobject-method-missing">
-	<title>A demonstration of <literal>BasicObject#method_missing</literal>
-	</title>
+ 
+     <para>The exposition above shows that sending an object a message for which a corresponding method is not defined causes each object on the search path to be sent <literal>:method_missing</literal> with the original selector as the first argument, and the original arguments as the remainder.  <literal>BasicObject</literal> defines <literal>:method_missing</literal> to provide the default behaviour of raising <literal>NoMethodError</literal> for non-existent methods. However, if another object defines <literal>:method_missing</literal> they can intervene, averting the exception and responding to the message themselves.</para>
+     
+     <example xml:id="ex.basicobject-method-missing">
+	<title>A demonstration of <literal>BasicObject#method_missing</literal>.</title>
+
 	<programlisting><xi:include href="examples/basicobject-method-missing.rb" parse="text"/></programlisting>
       </example>
+
       <sidebar>
 	<title>Infinite Loops</title>
-	<para>Logic errors inside <literal>method_missing</literal> can easily lead to
-	infinite loops, which can be troublesome to debug. The typical mistake
-	is for a statement in the body of <literal>method_missing</literal> to send a
-	non-existent message to the same object. The object does not respond to
-	that message, so the <literal>method_missing</literal> method is invoked a
-	second time, and so the loop continues.</para>
+
+	<para>Logic errors inside <literal>method_missing</literal> can easily lead to infinite loops, which can be troublesome to debug. The typical mistake is for a statement in the body of <literal>method_missing</literal> to send a non-existent message to the same object. The object does not respond to that message, so the <literal>method_missing</literal> method is invoked a second time, and so the loop continues.</para>
       </sidebar>
-      <para>If <literal>method_missing</literal> is invoked with a message it
-      does not wish to respond to, it should use the implicit-argument form of
-      <literal>super</literal> to delegate to its parent. This gives the parent the
-      option of responding to the message, or otherwise triggers the default
-      behaviour.</para>
-      <para>Fowler describes the use of <literal>method_missing</literal> to
-      <quote>respond differently to an unknown message.</quote> as “Dynamic
-      Reception” <biblioref linkend="bib.fowler08"/>. One use he suggests is to
-      <quote>convert what might otherwise be method parameters into the name of
-      the method.</quote>, contrasting <literal>find_by("firstname", "martin",
-      "lastname", "fowler")</literal> with the
-      <literal>method_missing</literal>-supported
-      <literal>find_by_firstname_and_lastname("martin",
-      "fowler")</literal>
-      <footnote>
-	<para>The example was derived from a feature
-	of Ruby on Rails <biblioref linkend="bib.buck06"/>.</para>
-	</footnote>. He
-	identifies a variation on this idea where a <quote>a sequence of Dynamic
-	Receptions</quote> are chained together, such that each method returns an
-	“Expression Builder”, e.g.
-      <literal>find_by.firstname("martin").and.lastname("fowler)</literal>.</para>
+
+      <para>If <literal>method_missing</literal> is invoked with a message it does not wish to respond to, it should use the implicit-argument form of <literal>super</literal> to delegate to its parent. This gives the parent the option of responding to the message, or otherwise triggers the default behaviour.</para>
+      
+      <para>Fowler describes the use of <literal>method_missing</literal> to <quote>respond differently to an unknown message.</quote> as “Dynamic Reception” <biblioref linkend="bib.fowler08"/>. One use he suggests is to <quote>convert what might otherwise be method parameters into the name of the method.</quote>, contrasting <literal>find_by("firstname", "martin", "lastname", "fowler")</literal> with the <literal>method_missing</literal>-supported <literal>find_by_firstname_and_lastname("martin", "fowler")</literal><footnote><para>The example was derived from a feature of Ruby on Rails <biblioref linkend="bib.buck06"/>.</para></footnote>. He identifies a variation on this idea where a <quote>a sequence of Dynamic Receptions</quote> are chained together, such that each method returns an “Expression Builder”, e.g. <literal>find_by.firstname("martin").and.lastname("fowler)</literal>.</para>
+
       <sect2 xml:id="met.respond-to-missing">
 	<title><literal>Kernel#respond_to_missing?</literal></title>
 
-	<para>A consequence of defining methods dynamically with
-	<literal>Kernel#method_missing</literal> is that an object may respond to a given
-	message, yet return <literal>false</literal> for
-	<literal>Kernel#respond_to?(<replaceable>selector</replaceable>)</literal>.</para>
-	<para>Before <literal>Kernel#respond_to?</literal> returns <literal>false</literal>
-	it tries to send itself a message named
-	<literal>:respond_to_missing?</literal> with a first argument of the
-	selector in question, and the second the value of
-	<replaceable>include_private</replaceable>
-	<footnote>
-	  <para>If <literal>#respond_to?</literal> is called with a
-	  second argument of <literal>true</literal>, <replaceable>include_private</replaceable> is
-	  <literal>true</literal> and private methods should be considered; otherwise
-	  it’s <literal>false</literal> and they shouldn’t.
-	  </para>
-	  </footnote>.If
-	  <literal>#respond_to_missing?</literal> is defined and returns a true value,
-	  <literal>#respond_to?</literal> returns <literal>true</literal>; otherwise
-	<literal>#respond_to?</literal> returns <literal>false</literal>.</para>
-	<para>Therefore, <literal>#respond_to?</literal> can be made to work with methods
-	defined with <literal>method_missing</literal> by defining a
-	<literal>#respond_to_missing?</literal> method which returns <literal>true</literal>
-	when passed the name of such a method.</para>
+	<para>A consequence of defining methods dynamically with <literal>Kernel#method_missing</literal> is that an object may respond to a given message, yet return <literal>false</literal> for <literal>Kernel#respond_to?(<replaceable>selector</replaceable>)</literal>.</para>
+
+	<para>Before <literal>Kernel#respond_to?</literal> returns <literal>false</literal> it tries to send itself a message named <literal>:respond_to_missing?</literal> with a first argument of the selector in question, and the second the value of <replaceable>include_private</replaceable><footnote><para>If <literal>#respond_to?</literal> is called with a second argument of <literal>true</literal>, <replaceable>include_private</replaceable> is <literal>true</literal> and private methods should be considered; otherwise it’s <literal>false</literal> and they shouldn’t.</para></footnote>. If <literal>#respond_to_missing?</literal> is defined and returns a true value, <literal>#respond_to?</literal> returns <literal>true</literal>; otherwise <literal>#respond_to?</literal> returns <literal>false</literal>.</para>
+
+	<para>Therefore, <literal>#respond_to?</literal> can be made to work with methods defined with <literal>method_missing</literal> by defining a <literal>#respond_to_missing?</literal> method which returns <literal>true</literal> when passed the name of such a method.</para>
       </sect2>
     </sect1>
+
     <sect1 xml:id="met.method-objects">
-      <title>
-      <literal>Method</literal> Objects</title>
-      <para>An instance of the <literal>Method</literal> class represents a method bound
-      to an object. This <firstterm>method object</firstterm> enables you
-      to store a reference to a method in a variable, as you would any other
-      object, query the method’s metadata, and manipulate it. This is quite
-      distinct from capturing the return value of a method.</para>
-      <para>Method objects can be created with <literal>Kernel#method</literal>:
-      <literal>
-	<replaceable>receiver</replaceable>.method(<replaceable>name</replaceable>)</literal>, where
-	<replaceable>name</replaceable> is the method name as a <literal>Symbol</literal> or
-	<literal>String</literal>. For example, <literal>method(:eval)</literal> returns a
-	<literal>Method</literal> object for <literal>Kernel#eval</literal>. If the object
-	does not <literal>respond_to?</literal> the given method a
-	<literal>NameError</literal> will be raised<footnote>
-	<para>By implication, if the receiver’s <link linkend="met.respond-to-missing">#respond_to_missing?</link> returns
-	<literal>true</literal> for the method in question, the method object will be
-	created successfully; only when the underlying method needs to be called
-	will Ruby establish the veracity of this claim.
-	</para>
-      </footnote>.</para>
-      <para>
-	<literal>Kernel#public_method</literal> works in the same way, but raises a
-      <literal>NameError</literal> if the given method is private or protected.</para>
+      <title><literal>Method</literal> Objects</title>
+
+      <para>An instance of the <literal>Method</literal> class represents a method bound to an object. This <firstterm>method object</firstterm> enables you to store a reference to a method in a variable, as you would any other object, query the method’s metadata, and manipulate it. This is quite distinct from capturing the return value of a method.</para>
+      
+      <para>Method objects can be created with <literal>Kernel#method</literal>: <literal>
+	<replaceable>receiver</replaceable>.method(<replaceable>name</replaceable>)</literal>, where <replaceable>name</replaceable> is the method name as a <literal>Symbol</literal> or <literal>String</literal>. For example, <literal>method(:eval)</literal> returns a <literal>Method</literal> object for <literal>Kernel#eval</literal>. If the object	does not <literal>respond_to?</literal> the given method a <literal>NameError</literal> will be raised<footnote><para>By implication, if the receiver’s <link linkend="met.respond-to-missing">#respond_to_missing?</link> returns <literal>true</literal> for the method in question, the method object will be created successfully; only when the underlying method needs to be called will Ruby establish the veracity of this claim.</para></footnote>.</para>
+
+      <para><literal>Kernel#public_method</literal> works in the same way, but raises a <literal>NameError</literal> if the given method is private or protected.</para>
+
       <sect2 xml:id="met.method-objects-arity">
 	<title>Arity</title>
-	<para>
-	  <literal>Method#arity</literal> returns an <literal>Integer</literal>
-	corresponding to the method’s arity.</para>
+
+	<para><literal>Method#arity</literal> returns an <literal>Integer</literal> corresponding to the method’s arity.</para>
       </sect2>
+
       <sect2 xml:id="met.method-objects-calling">
 	<title>Calling</title>
-	<para>The method represented by a <literal>Method</literal> object can be
-	invoked with <literal>Method#call</literal> or its alias
-	<literal>Method#[]</literal>.  The semantics are the same as for standard
-	method invocation, however Flanagan &amp; Matsumoto caution:
-	<quote>…invoking a method through a <literal>Method</literal> object is
-	less efficient than invoking it directly.</quote> 
-	<biblioref
-	    linkend="bib.flan08"/>
-	</para>
+
+	<para>The method represented by a <literal>Method</literal> object can be invoked with <literal>Method#call</literal> or its alias <literal>Method#[]</literal>.  The semantics are the same as for standard method invocation, however Flanagan &amp; Matsumoto caution: <quote>…invoking a method through a <literal>Method</literal> object is less efficient than invoking it directly.</quote> <biblioref linkend="bib.flan08"/></para>
       </sect2>
+
       <sect2 xml:id="met.method-objects-to-proc">
-	<title>Converting to a <literal>Proc</literal>
-	</title>
-	<para>A method object can be converted to a <literal>Proc</literal> by
-	prefixing it with an ampersand (<literal/>). Therefore it can be passed
-	to a method expecting a block.</para>
+	<title>Converting to a <literal>Proc</literal>.</title>
+
+	<para>A method object can be converted to a <literal>Proc</literal> by prefixing it with an ampersand (<literal/>). Therefore it can be passed to a method expecting a block.</para>
       </sect2>
+
       <sect2 xml:id="met.method-objects-equality">
 	<title>Equality</title>
-	<para>
-	  <literal>Method#==</literal> returns true if both
-	  methods are bound to the same object and have the same body. The first
-	  requirement means that the objects must be identical in the sense of
-	  <literal>Object.equal?</literal>. The second encompasses methods defined with
-	  <literal>Object#define_method</literal> using the same
-	  <literal>Proc</literal>/block, aliases created with <literal>alias</literal>, and
-	core method aliases.</para>
+
+	<para><literal>Method#==</literal> returns true if both methods are bound to the same object and have the same body. The first requirement means that the objects must be identical in the sense of <literal>Object.equal?</literal>. The second encompasses methods defined with <literal>Object#define_method</literal> using the same <literal>Proc</literal>/block, aliases created with <literal>alias</literal>, and core method aliases.</para>
       </sect2>
+
       <sect2 xml:id="met.method-objects-source-location">
 	<title>Source Location</title>
-	<para>The filename and line number where a method was defined is returned
-	as an <literal>Array</literal> by <literal>Method#source_location</literal>. If the
-	method is core, i.e. implemented in C, it returns <literal>nil</literal>. This
-	is primarily useful for extracting a method’s signature and any
-	preceding documentation.</para>
+
+	<para>The filename and line number where a method was defined is returned as an <literal>Array</literal> by <literal>Method#source_location</literal>. If the method is core, i.e. implemented in C, it returns <literal>nil</literal>. This is primarily useful for extracting a method’s signature and any preceding documentation.</para>
       </sect2>
+
       <sect2 xml:id="met.method-objects-parameters">
 	<title>Parameters</title>
-	<para> 
-	  <literal>Method#parameters</literal> returns an <literal>Array</literal>, each
-	  element of which is a sub-<literal>Array</literal> of <literal>Symbol</literal>s
-	  that describe the corresponding parameter expected by the method. The
-	  first <literal>Symbol</literal> is <literal>:req</literal> for a required parameter,
-	  <literal>:opt</literal> if it is optional, <literal>:rest</literal> if its of
-	  variable length, or <literal>:block</literal> if it corresponds to a block.
-	  The last <literal>Symbol</literal> is the name of the parameter. An empty
-	<literal>Array</literal> is returned for method’s expecting no arguments.</para>
+
+	<para><literal>Method#parameters</literal> returns an <literal>Array</literal>, each element of which is a sub-<literal>Array</literal> of <literal>Symbol</literal>s that describe the corresponding parameter expected by the method. The first <literal>Symbol</literal> is <literal>:req</literal> for a required parameter, <literal>:opt</literal> if it is optional, <literal>:rest</literal> if its of variable length, or <literal>:block</literal> if it corresponds to a block.  The last <literal>Symbol</literal> is the name of the parameter. An empty <literal>Array</literal> is returned for method’s expecting no arguments.</para>
       </sect2>
     </sect1>
+
     <sect1 xml:id="met.unboundmethod-objects">
       <title><literal>UnboundMethod</literal> Objects</title>
 
-      <para>An <literal>UnboundMethod</literal> object is a <literal>Method</literal> object
-      disassociated from the object on which it was defined.</para>
-      <para>A <literal>Method</literal> object may converted to an
-      <literal>UnboundMethod</literal> object with <literal>Method#unbind</literal>.
-      Alternatively, they can be created with
-      <literal>Module#instance_method</literal>. For example,
-      <literal>String.instance_method(:downcase)</literal> creates an
-      <literal>UnboundMethod</literal> object for <literal>String#downcase</literal>.
-      <literal>Module#public_instance_method</literal> works in the same way, but
-      raises a <literal>NameError</literal> if the given method is private or
-      protected.</para>
-      <para>Before an <literal>UnboundMethod</literal> is invoked it must be
-      re-associated with, or <firstterm>bound</firstterm> to, to an object
-      which is a <literal>Object#kind_of?</literal> its original class. This is
-      achieved by passing an object reference to
-      <literal>UnboundMethod#bind</literal>.</para>
-      <para>With the exception of <literal>#call</literal>, for the reason described
-      above, <literal>UnboundMethod</literal> objects support the same method’s as
-      <literal>Method</literal> objects.</para>
-      <para>Black <biblioref begin="418" end="420" linkend="bib.black09"/>
-      provides the following example (with minor adjustments for formating) of
-      using <literal>UnboundMethod</literal> objects:</para>
+      <para>An <literal>UnboundMethod</literal> object is a <literal>Method</literal> object disassociated from the object on which it was defined.</para>
+      
+      <para>A <literal>Method</literal> object may converted to an <literal>UnboundMethod</literal> object with <literal>Method#unbind</literal>.  Alternatively, they can be created with <literal>Module#instance_method</literal>. For example, <literal>String.instance_method(:downcase)</literal> creates an <literal>UnboundMethod</literal> object for <literal>String#downcase</literal>.  <literal>Module#public_instance_method</literal> works in the same way, but raises a <literal>NameError</literal> if the given method is private or protected.</para>
+      
+      <para>Before an <literal>UnboundMethod</literal> is invoked it must be re-associated with, or <firstterm>bound</firstterm> to, to an object which is a <literal>Object#kind_of?</literal> its original class. This is achieved by passing an object reference to <literal>UnboundMethod#bind</literal>.</para>
+      
+      <para>With the exception of <literal>#call</literal>, for the reason described above, <literal>UnboundMethod</literal> objects support the same method’s as <literal>Method</literal> objects.</para>
+      
+      <para>Black <biblioref begin="418" end="420" linkend="bib.black09"/> provides the following example (with minor adjustments for formating) of using <literal>UnboundMethod</literal> objects:</para>
+      
       <blockquote>
 	<para>The following question comes up periodically in Ruby forums:</para>
+
 	<blockquote>
-	  <para>Suppose I’ve got a class hierarchy where a method gets
-	  redefined:</para>
+	  <para>Suppose I’ve got a class hierarchy where a method gets redefined:</para>
+	  
 	  <example xml:id="ex.unboundmethod-black">
-	    <title>A class hierarchy where a method is redefined
-	    </title>
+	    <title>A class hierarchy where a method is redefined.</title>
+
 	    <programlisting><xi:include href="examples/unboundmethod-black.rb" parse="text"/></programlisting>
 	  </example>
-	  <para>And I’ve got an instance of the subclass (<literal>c = C.new</literal>).
-	  Is there any way to get that instance of the lowest class to respond
-	  to the message (<literal>a_method</literal>) by executing the version of the
-	  method in the class two classes up the chain?</para>
+
+	  <para>And I’ve got an instance of the subclass (<literal>c = C.new</literal>).  Is there any way to get that instance of the lowest class to respond to the message (<literal>a_method</literal>) by executing the version of the method in the class two classes up the chain?</para>
 	</blockquote>
-	<para>By default, of course, the instance doesn’t do that; it executes the
-	first matching method it finds as it traverses the method search path:
-	<literal>c.a_method</literal>. The output is <computeroutput>Definition in class B
-        (subclass of A)</computeroutput>. But you can force the issue through an unbind
-	and bind operation:
-	<literal>A.instance_method(:a_method).bind(c).call</literal>. Here the
-      output is <computeroutput>Definition in class A</computeroutput>.</para>
+
+	<para>By default, of course, the instance doesn’t do that; it executes the first matching method it finds as it traverses the method search path: <literal>c.a_method</literal>. The output is <computeroutput>Definition in class B (subclass of A)</computeroutput>. But you can force the issue through an unbind and bind operation: <literal>A.instance_method(:a_method).bind(c).call</literal>. Here the output is <computeroutput>Definition in class A</computeroutput>.</para>
     </blockquote>
   </sect1>
 </chapter>
