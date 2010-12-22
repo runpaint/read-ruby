@@ -154,9 +154,118 @@
   </sect1>
 
   <sect1 xml:id="obj.each_object">
-    <title><function>ObjectSpace.each_object</function></title>
+    <title>Listing and Counting</title>
 
     <para>The list of non-immediate objects currently defined is returned as an <literal>Enumerator</literal> by <function>ObjectSpace.each_object</function>. If given a <literal>Class</literal> or <literal>Module</literal> argument, it only returns objects with this class, module, or a subclass thereof. When a block is supplied, each object is yielded to it in turn.</para>
+
+    <para><function>ObjectSpace.count_objects</function> returns a <literal>Hash</literal> whose keys are names of the interpreter’s internal data types, and values the number of existing objects with the corresponding type.</para>
+
+    <informaltable>
+      <thead>
+	<tr>
+	  <th>Data Type</th>
+	  <th>Ruby Class</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td><literal>T_ARRAY</literal></td>
+	  <td><literal>Array</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_BIGNUM</literal></td>
+	  <td><literal>Bignum</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_CLASS</literal></td>
+	  <td><literal>Class</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_COMPLEX</literal></td>
+	  <td><literal>Complex</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_DATA</literal></td>
+	  <td><literal>Data</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_FALSE</literal></td>
+	  <td><literal>FalseClass</literal> (<literal>false</literal>)</td>
+	</tr>
+	<tr>
+	  <td><literal>T_FILE</literal></td>
+	  <td><literal>IO</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_FIXNUM</literal></td>
+	  <td><literal>Fixnum</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_FLOAT</literal></td>
+	  <td><literal>Float</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_HASH</literal></td>
+	  <td><literal>Hash</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_ICLASS</literal></td>
+	  <td>N/A</td>
+	</tr>
+	<tr>
+	  <td><literal>T_MATCH</literal></td>
+	  <td>N/A</td>
+	</tr>
+	<tr>
+	  <td><literal>T_NIL</literal></td>
+	  <td><literal>NilClass</literal> (<literal>nil</literal>)</td>
+	</tr>
+	<tr>
+	  <td><literal>T_NODE</literal></td>
+	  <td>N/A</td>
+	</tr>
+	<tr>
+	  <td><literal>T_MODULE</literal></td>
+	  <td><literal>Module</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_OBJECT</literal></td>
+	  <td>Any class not specified in this table.</td>
+	</tr>
+	<tr>
+	  <td><literal>T_RATIONAL</literal></td>
+	  <td><literal>Rational</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_REGEXP</literal></td>
+	  <td><literal>Regexp</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_STRING</literal></td>
+	  <td><literal>String</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_STRUCT</literal></td>
+	  <td><literal>Struct</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_SYMBOL</literal></td>
+	  <td><literal>Symbol</literal></td>
+	</tr>
+	<tr>
+	  <td><literal>T_TRUE</literal></td>
+	  <td><literal>TrueClass</literal> (<literal>true</literal>)</td>
+	</tr>
+	<tr>
+	  <td><literal>T_UNDEF</literal></td>
+	  <td>N/A</td>
+	</tr>
+	<tr>
+	  <td><literal>T_ZOMBIE</literal></td>
+	  <td>N/A</td>
+	</tr>
+      </tbody>
+    </informaltable>
   </sect1>
 
   <sect1 xml:id="obj.basicobject">
