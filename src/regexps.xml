@@ -548,6 +548,10 @@
           <td><literal>\B</literal></td>
           <td>Non-word boundary</td>
         </tr>
+        <tr>
+          <td><literal>\G</literal></td>
+          <td>Point where last match finished</td>
+        </tr>
       </tbody>
     </informaltable>
 
