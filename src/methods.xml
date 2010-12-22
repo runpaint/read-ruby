@@ -464,17 +464,15 @@
     <sect1 xml:id="met.visibility">
       <title>Visibility</title>
 
-      <para>An instance method is either <emphasis>public</emphasis>, <emphasis>private</emphasis>, or <emphasis>protected</emphasis>. It is declared as such with <literal>Module#public</literal>, <literal>Module#private</literal>, and <literal>Module#protected</literal> (hereafter: <emphasis>visibility specifiers</emphasis>), respectively.</para>
-      
-      <para>A visibility specifier invoked without arguments affects every method subsequently defined in the same class definition until another visibility specifier is encountered.</para>
-      
+      <para>The <firstterm>visibility</firstterm> of a method specifies the contexts in which it may be invoked. A method is <emphasis>public</emphasis> by default unless defined outside of a class definition. Public methods are accessible to everyone. A method created outside of a class or module definition, or named <literal>initialize</literal>, is <emphasis>private</emphasis> by default. Private methods can only be invoked with an implicit receiver, therefore from their defining class or a subclass thereof. Instance methods may also be <emphasis>protected</emphasis>, which means that they may only be invoked by objects of their defining class or a subclass thereof.</para>
+
       <example xml:id="ex.visibility-specifiers">
 	<title>Declaring the visibility of methods with visibility specifiers.</title>
 
 	<programlisting><xi:include href="examples/visibility-specifiers.rb" parse="text"/></programlisting>
-      </example>
+      </example> 
 
-      <para>A visibility specifier with one or more method names (given as <literal>Symbol</literal>s or <literal>String</literal>s) affects only the named methods, which must have already been defined.</para>
+      <para>The visibility of an instance method may be altered with <function>Module#public</function>, <function>Module#private</function>, and <function>Module#protected</function>—collectively <firstterm>visibility specifiers</firstterm>. A visibility specifier invoked without arguments affects every method subsequently defined in the same class definition until another visibility specifier is encountered. Alternatively, a visibility specifier may be given an argument list of method names—as <literal>Symbol</literal>s or <literal>String</literal>s—whose visibility it alters. The visibility of a class method may be altered with <function>Module#public_class_method</function> or <function>Module#private_class_method</function>, both of which require an argument list of method names.</para>
       
       <example xml:id="ex.visibility-specifiers-args">
 	<title>Declaring the visibility of methods with visibility specifiers that take arguments.</title>
@@ -500,39 +498,6 @@
 	    <para>RDoc/<literal>ri</literal> only displays public methods by default.</para>
 	  </listitem>
 	</itemizedlist>
-      </sect2>
-
-      <sect2 xml:id="met.public">
-	<title>Public Methods</title>
-
-	<para>A method is public unless explicitly declared otherwise, or declared outside of a class definition. The <literal>initialize</literal> method is private by default.</para>
-      </sect2>
-      <sect2 xml:id="met.private">
-	<title>Private Methods</title>
-	
-	<para>A <firstterm>private method</firstterm> cannot be invoked with an explicit receiver: it can only be called by other instance methods of the class in which defined, or a subclass thereof.</para>
-	
-	<para><literal>self</literal> is also regarded as an explicit receiver so a method invocation of the form <literal>self.<replaceable>private</replaceable> </literal>, where <replaceable>private</replaceable> is a private instance method in the same class, is disallowed.</para>
-
-	<sidebar>
-	  <title>Private by Default</title>
-
-	  <para>Methods created outside of a class or module definition, i.e. at the top level, are private by default The <literal>:initialize</literal> method is, too, because it is only intended to be invoked from the object’s <literal>:new</literal> method.</para>
-	</sidebar>
-      </sect2>
-
-      <sect2 xml:id="met.protected">
-	<title>Protected Methods</title>
-
-	<para>Protected methods can invoked only from the class in which they were defined or a subclass thereof, that is they behave the same as private methods. However, unlike private methods they can be explicitly invoked on any instance of their class.</para>
-	
-	<para>Flanagan &amp; Matsumoto suggest that <quote>A protected method can be used, for example, to define an accessor that allows instances of a class to share internal state with each other, but does not allow users of the class to access that state.</quote><biblioref linkend="bib.flan08"/></para>
-      </sect2>
-
-      <sect2 xml:id="met.class-method-privacy">
-	<title>Class Methods</title>
-
-	<para>A class method named <replaceable>name</replaceable> can be privatised with <literal>Module#private_class_method <replaceable>name</replaceable> </literal>.  Private class methods can be made public with <literal>Module#public_class_method <replaceable>name</replaceable> </literal>. It is nonsensical to deign a class method protected, so there is not a corresponding visibility specifier.</para>
       </sect2>
     </sect1>
 

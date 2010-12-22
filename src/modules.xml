@@ -182,15 +182,13 @@
         is to mix the current module into its <link linkend="cla.singleton">singleton class</link>:</para>
         <itemizedlist>
           <listitem>
-            <para><link linkend="met.public">Public</link> instance methods can
+            <para><link linkend="met.visibility">Public</link> instance methods can
           be invoked as instance methods in the context of the module,
           i.e. without an explicit receiver, and singleton methods of the
           module from anywhere.</para>
           </listitem>
           <listitem>
-            <para><link linkend="met.private">Private</link> and <link
-          linkend="met.protected">protected</link> instance methods can only be
-          invoked from within the context of the module.</para>
+            <para><link linkend="met.visibility">Private and protected</link> instance methods can only be invoked from within the context of the module.</para>
           </listitem>
         </itemizedlist>
         <para>An example of <literal>extend self</literal> is provided in a

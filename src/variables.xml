@@ -275,7 +275,7 @@
       
       <para>A predicate method, <function>Module#const_defined?</function>, exists for determining whether a class or module defines a given constant.</para>
 
-      <para>Both <function>#const_get</function> and <function>const_defined?</function> accept an optional second argument to control whether they look for inherited constants. By default this argument is <literal>true</literal>, but if it is set to <literal>false</literal> the method only considers constants defined directly in the receiver. Lastly, the <link linkend="met.private">private method</link> <function>Module#remove_const</function> takes the name of a constant to remove from the receiver.</para>
+      <para>Both <function>#const_get</function> and <function>const_defined?</function> accept an optional second argument to control whether they look for inherited constants. By default this argument is <literal>true</literal>, but if it is set to <literal>false</literal> the method only considers constants defined directly in the receiver. Lastly, the <link linkend="met.visibility">private method</link> <function>Module#remove_const</function> takes the name of a constant to remove from the receiver.</para>
     </sect2>
   </sect1>
 
@@ -335,7 +335,7 @@
 
       <para>The names of an object’s instance variables are returned as an <literal>Array</literal> of <literal>Symbol</literal>s by <literal>Kernel#instance_variables</literal> in the order they were assigned.</para>
       
-      <para>Their values may be retrieved and modified from another object with <literal>Kernel#instance_variable_get(<replaceable>ivar</replaceable>)</literal> and <literal>Kernel#instance_variable_set(<replaceable>ivar</replaceable>, <replaceable>value</replaceable>)</literal>, respectively, where <replaceable>ivar</replaceable> is the variable’s name as a <literal>Symbol</literal>, including the <literal>@</literal> prefix. An instance variable may be removed with the <link linkend="met.private">private method</link><literal>Kernel#remove_instance_variable(<replaceable>ivar</replaceable>)</literal>. These methods should be used sparingly as they break encapsulation.</para>
+      <para>Their values may be retrieved and modified from another object with <literal>Kernel#instance_variable_get(<replaceable>ivar</replaceable>)</literal> and <literal>Kernel#instance_variable_set(<replaceable>ivar</replaceable>, <replaceable>value</replaceable>)</literal>, respectively, where <replaceable>ivar</replaceable> is the variable’s name as a <literal>Symbol</literal>, including the <literal>@</literal> prefix. An instance variable may be removed with the <link linkend="met.visibility">private method</link><literal>Kernel#remove_instance_variable(<replaceable>ivar</replaceable>)</literal>. These methods should be used sparingly as they break encapsulation.</para>
     </sect2>
   </sect1>
 
