@@ -559,5 +559,46 @@
     <para><function>Kernel.caller</function> returns a stack trace that culminates with the method that invoked the current method. The <literal>Array</literal> returned has one element per stack frame, organised in reverse chronological order. Each frame is represented as a <literal>String</literal>, which usually includes the filename, line number, and method name. If <function>caller</function> is given an argument, it specifies how many frames to drop from the beginning.</para>
 
     <para>If a global constant named <literal>SCRIPT_LINES__</literal> is assigned a <literal>Hash</literal>, <function>Kernel.require</function>, <function>Kernel.require_relative</function>, and <function>Kernel.load</function>, append an entry to it for each file they load. The key is the filename as a <literal>String</literal>, and the value is that file’s contents, also as a <literal>String</literal>.</para>
+
+    <para>Finally, <function>Kernel.set_trace_func(<replaceable>proc</replaceable>)</function> registers the given <literal>Proc</literal> to be called when an event occurs. It receives up to six arguments: the event name, a filename, a line number, an object ID, a binding, and a class name. If <replaceable>proc</replaceable> is <literal>nil</literal>, tracing is disabled. <remark>Sidebar: tracer library</remark></para>
+
+    <informaltable>
+      <thead>
+	<tr>
+	  <td>Event</td>
+	  <td>Description</td>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td>c-call</td>
+	  <td>A method written in C is invoked.</td>
+	</tr>
+	<tr>
+	  <td>c-return</td>
+	  <td>A method written in C returns.</td>
+	</tr>
+	<tr>
+	  <td>call</td>
+	  <td>A method written in Ruby is invoked.</td>
+	</tr>
+	<tr>
+	  <td>class</td>
+	  <td>A <literal>Class</literal> or <literal>Module</literal> is opened.</td>
+	</tr>
+	<tr>
+	  <td>line</td>
+	  <td>A new line of Ruby code is executed.</td>
+	</tr>
+	<tr>
+	  <td>raise</td>
+	  <td>An exception is raised.</td>
+	</tr>
+	<tr>
+	  <td>return</td>
+	  <td>A method written in Ruby returns.</td>
+	</tr>
+      </tbody>
+    </informaltable>
   </sect1>
 </chapter>
