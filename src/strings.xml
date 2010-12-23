@@ -9,364 +9,160 @@
   
   <title>Strings</title>
   
-  <para><literal>String</literal>s are mutable sequences of <link
-  linkend="str.characters">characters</link> with an associated <link
-  linkend="enc.encoding">encoding</link>. They are generally created with
-  literals, as explained below.</para>
+  <para><literal>String</literal>s are mutable sequences of <link linkend="str.characters">characters</link> with an associated <link linkend="enc.encoding">encoding</link>. They are generally created with literals, as explained below.</para>
   
   <sect1 xml:id="str.literals">
     <title>Literals</title>
 
-    <para>A <firstterm>string literal</firstterm> is either a
-    double-quoted string literal or a single-quoted string literal.</para>
-    <!--figure>
-      <title>Syntax diagram of the string literal
-    </title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="figures/string-literal.png" format="PNG" width="4in"/>
-        </imageobject>
-      </mediaobject>
-    </figure-->
+    <para>A <firstterm>string literal</firstterm> is either a double-quoted string literal or a single-quoted string literal.</para>
+  
     <sect2 xml:id="str.single-quoted">
       <title>Single-Quoted Strings</title>
-      <!--figure>
-        <title>Syntax diagram of the single-quoted string literal
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/single-quoted-string-literal.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-      <para>A single-quoted <literal>String</literal> is a string delimited by apostrophe
-      (<literal>U＋0027</literal>) characters or <link linkend="str.single-quoted-q">%q</link>. Its contents are not subject
-      to <link linkend="str.interpolation">interpolation</link>. The only recognised <link linkend="str.escapes">escape sequences</link> are <literal>\\</literal> and
-      <literal>\<replaceable>delimiter</replaceable></literal>; any other escape is interpreted
-      literally, i.e. as a reverse solidus followed by a single character.</para>
+
+      <para>A single-quoted <literal>String</literal> is a string delimited by apostrophe (<literal>U＋0027</literal>) characters or <link linkend="str.single-quoted-q">%q</link>. Its contents are not subject to <link linkend="str.interpolation">interpolation</link>. The only recognised <link linkend="str.escapes">escape sequences</link> are <literal>\\</literal> and <literal>\<replaceable>delimiter</replaceable></literal>; any other escape is interpreted literally, i.e. as a reverse solidus followed by a single character.</para>
+
       <sect3 xml:id="str.single-quoted-q">
         <title>Alternative Delimiters</title>
-        <!--figure>
-          <title>Syntax diagram of the <literal>%q</literal>
-          single-quoted string literal
-        </title>
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="figures/single-quoted-string-literal-q.png" format="PNG" width="4in"/>
-            </imageobject>
-          </mediaobject>
-        </figure-->
-        <para>A single-quoted string may also be delimited by arbitrary
-        delimiters with the
-        <literal>%q<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> construct,
-        where <replaceable>delimiter</replaceable> is a single character.  If
-        <replaceable>delimiter</replaceable> appears in the string it must be escaped.</para>
-        <para>If the opening delimiter is <literal>(</literal>, <literal>[</literal>,
-        <literal>&lt;</literal>, or <literal>{</literal>, the closing delimiter must be
-        the corresponding closing bracket. For example, if the opening
-        delimiter is <literal>[</literal>, the closing delimiter must be
-        <literal>]</literal>. When these paired delimiters are used, the same pair
-        may appear inside the string as long as they are properly
-        balanced.</para>
+
+        <para>A single-quoted string may also be delimited by arbitrary delimiters with the <literal>%q<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> construct, where <replaceable>delimiter</replaceable> is a single character.  If <replaceable>delimiter</replaceable> appears in the string it must be escaped.</para>
+        
+	<para>If the opening delimiter is <literal>(</literal>, <literal>[</literal>, <literal>&lt;</literal>, or <literal>{</literal>, the closing delimiter must be the corresponding closing bracket. For example, if the opening delimiter is <literal>[</literal>, the closing delimiter must be <literal>]</literal>. When these paired delimiters are used, the same pair may appear inside the string as long as they are properly balanced.</para>
+
         <example xml:id="ex.single-quoted-string-literal-q">
-          <title>Constructing a single-quoted string with alternative
-          delimiters using <literal>%q</literal></title>
+          <title>Constructing a single-quoted string with alternative delimiters using <literal>%q</literal></title>
+
           <programlisting><xi:include href="examples/single-quoted-string-literal-q.rb" parse="text"/></programlisting>
         </example>
       </sect3>
     </sect2>
+
     <sect2 xml:id="str.double-quoted">
       <title>Double-Quoted Strings</title>
-      <!--figure>
-        <title>Syntax diagram of the double-quoted string literal
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/double-quoted-string-literal.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
       
-      <para>A double-quoted <literal>String</literal> is a
-      <literal>String</literal> delimited with quotation marks
-      (<literal>U＋0022</literal>) characters or <link
-      linkend="str.double-quoted-q">%Q</link>. Its contents are subject to
-      <link linkend="str.interpolation">interpolation</link> and <link
-      linkend="str.escapes">character escapes</link>.</para>
+      <para>A double-quoted <literal>String</literal> is a <literal>String</literal> delimited with quotation marks (<literal>U＋0022</literal>) characters or <link linkend="str.double-quoted-q">%Q</link>. Its contents are subject to <link linkend="str.interpolation">interpolation</link> and <link linkend="str.escapes">character escapes</link>.</para>
       
       <sect3 xml:id="str.interpolation">
         <title>String Interpolation</title>
-        <!--figure>
-          <title>Syntax diagram of the string interpolation
-          construct
-        </title>
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="figures/string-interpolation.png" format="PNG" width="4in"/>
-            </imageobject>
-          </mediaobject>
-        </figure-->
-        <para><firstterm>Interpolation</firstterm> is
-        the embedding of the value of an expression within a string.
-        The general form of the syntax is
-        <literal>#{<replaceable>expression</replaceable>}</literal>.  It is common for
-        <replaceable>expression</replaceable> to be simply the name of a local
-        variable which is to be substituted for its value.</para>
-        <para>The braces can be omitted if <replaceable>expression</replaceable> is the
-        name of a global—, class—, or instance variable. However, in
-        this case the variable name cannot be immediately followed by
-        a character legal in an identifier, as ambiguity results.</para>
+
+        <para><firstterm>Interpolation</firstterm> is the embedding of the value of an expression within a string.  The general form of the syntax is <literal>#{<replaceable>expression</replaceable>}</literal>.  It is common for <replaceable>expression</replaceable> to be simply the name of a local variable which is to be substituted for its value.</para>
+        
+	<para>The braces can be omitted if <replaceable>expression</replaceable> is the name of a global—, class—, or instance variable. However, in this case the variable name cannot be immediately followed by a character legal in an identifier, as ambiguity results.</para>
       </sect3>
+
       <sect3 xml:id="str.double-quoted-q">
         <title>Alternative Delimiters</title>
-        <!--figure>
-          <title>Syntax diagram of the <literal>%Q</literal>
-          double-quoted string literal
-        </title>
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="figures/double-quoted-string-literal-q.png" format="PNG" width="4in"/>
-            </imageobject>
-          </mediaobject>
-        </figure-->
-        <para>A double-quoted string may also be delimited by arbitrary
-        delimiters with the
-        <literal>%Q<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> and
-        <literal>%<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal>constructs,
-        where <replaceable>delimiter</replaceable> is a single character.  If
-        <replaceable>delimiter</replaceable> appears in the string it must be escaped.</para>
-        <para>If the opening delimiter is <literal>(</literal>, <literal>[</literal>,
-        <literal>&lt;</literal>, or <literal>{</literal>, the closing delimiter
-        must be the corresponding closing bracket. For example, if the
-        opening delimiter is <literal>[</literal>, the closing delimiter
-        must be <literal>]</literal>. When these paired delimiters are used,
-        the same pair may appear inside the string as long as they are
-        properly balanced.</para>
+
+        <para>A double-quoted string may also be delimited by arbitrary delimiters with the <literal>%Q<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> and <literal>%<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal>constructs, where <replaceable>delimiter</replaceable> is a single character.  If <replaceable>delimiter</replaceable> appears in the string it must be escaped.</para>
+        
+	<para>If the opening delimiter is <literal>(</literal>, <literal>[</literal>, <literal>&lt;</literal>, or <literal>{</literal>, the closing delimiter must be the corresponding closing bracket. For example, if the opening delimiter is <literal>[</literal>, the closing delimiter must be <literal>]</literal>. When these paired delimiters are used, the same pair may appear inside the string as long as they are properly balanced.</para>
+
         <example xml:id="ex.double-quoted-string-literal-q">
-          <title>Constructing a double-quoted string with
-          alternative delimiters using <literal>%Q</literal></title>
-          <programlisting><xi:include href="examples/double-quoted-string-literal-q.rb" parse="text"/></programlisting>
+          <title>Constructing a double-quoted string with alternative delimiters using <literal>%Q</literal></title>
+          
+	  <programlisting><xi:include href="examples/double-quoted-string-literal-q.rb" parse="text"/></programlisting>
         </example>
       </sect3>
     </sect2>
+
     <sect2 xml:id="str.here-documents">
       <title>Here Documents</title>
-      <!--figure>
-        <title>Syntax diagram of the here document
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/here-doc.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-      <para><firstterm>Here documents</firstterm> extend the concept of alternative
-      delimiters to allow an arbitrary <emphasis>sequence</emphasis> of characters
-      as a delimiter. They begin with <literal>&lt;&lt;</literal> followed
-      immediately by an arbitrary identifier or string literal. Their
-      content begins on the following line and continues until that
-      same identifier/string is seen on a line by itself with no
-      intervening whitespace. If there is a hyphen between the
-      opening <literal>&lt;&lt;</literal> and the delimiter, i.e.
-      <literal>&lt;&lt;-<replaceable>delimiter</replaceable></literal>, the closing
-      delimiter may be preceded with whitespace. The final newline
-      character before the closing delimiter is part of the here
-      document’s contents: a minimal here document is equivalent to
-      <literal>"\n"</literal>.</para>
-      <para>If the delimiter is an identifier or double quoted string,
-      the contents of the here document is interpreted with
-      double-quoted string semantics. Otherwise, the here document’s
-      contents are interpreted literally: all escape sequences and
-      interpolation constructs are ignored.</para>
+
+      <para><firstterm>Here documents</firstterm> extend the concept of alternative delimiters to allow an arbitrary <emphasis>sequence</emphasis> of characters as a delimiter. They begin with <literal>&lt;&lt;</literal> followed immediately by an arbitrary identifier or string literal. Their content begins on the following line and continues until that same identifier/string is seen on a line by itself with no intervening whitespace. If there is a hyphen between the opening <literal>&lt;&lt;</literal> and the delimiter, i.e.  <literal>&lt;&lt;-<replaceable>delimiter</replaceable></literal>, the closing delimiter may be preceded with whitespace. The final newline character before the closing delimiter is part of the here document’s contents: a minimal here document is equivalent to <literal>"\n"</literal>.</para>
+      
+      <para>If the delimiter is an identifier or double quoted string, the contents of the here document is interpreted with double-quoted string semantics. Otherwise, the here document’s contents are interpreted literally: all escape sequences and interpolation constructs are ignored.</para>
+      
       <example xml:id="ex.here-doc">
-        <title>Using a here document to render a poem
-      </title>
+        <title>Using a here document to render a poem</title>
+
         <programlisting><xi:include href="examples/here-doc.rb" parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
+
   <sect1 xml:id="str.escapes">
     <title>String Escapes</title>
-    <!--figure>
-      <title>Syntax diagram of the string escape
-    </title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="figures/escape.png" format="PNG" width="4in"/>
-        </imageobject>
-      </mediaobject>
-    </figure-->
-    <para><firstterm>Escape sequences</firstterm> are
-    character sequences prefixed with a reverse solidus (<literal>U＋005C</literal>) that have a meaning other
-    than their constituent characters when appearing in double-quoted
-    <literal>String</literal>s.</para>
+
+    <para><firstterm>Escape sequences</firstterm> are character sequences prefixed with a reverse solidus (<literal>U＋005C</literal>) that have a meaning other than their constituent characters when appearing in double-quoted <literal>String</literal>s.</para>
+
     <sect2 xml:id="str.character-escapes">
       <title>Character Escapes</title>
-      <!--figure>
-        <title>Syntax diagram of a character escape
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/character-escape.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-      <para>A character escape consists of a reverse solidus followed by a
-      single character, <replaceable>char</replaceable>. If
-      <replaceable>char</replaceable> is one of
-      [<literal>abcefnrstuvxCM01234567</literal>], the escape has the meaning
-      given in the table below. If <replaceable>char</replaceable> is a literal
-      <link linkend="pro.statement-terminators">line terminator</link>, both
-      the reverse solidus and the line terminator are removed from the
-      string. In all other cases
-      <literal>\<replaceable>char</replaceable></literal> evaluates to
-      <replaceable>char</replaceable>.</para>
+
+      <para>A character escape consists of a reverse solidus followed by a single character, <replaceable>char</replaceable>. If <replaceable>char</replaceable> is one of [<literal>abcefnrstuvxCM01234567</literal>], the escape has the meaning given in the table below. If <replaceable>char</replaceable> is a literal <link linkend="pro.statement-terminators">line terminator</link>, both the reverse solidus and the line terminator are removed from the string. In all other cases <literal>\<replaceable>char</replaceable></literal> evaluates to <replaceable>char</replaceable>.</para>
 
       <example xml:id="ex.character-escape">
-        <title>A character escape is a reverse solidus followed by
-        a single character
-      </title>
+        <title>A character escape is a reverse solidus followed by a single character</title>
+
         <programlisting><xi:include href="examples/character-escape.rb" parse="text"/></programlisting>
       </example>
     </sect2>
+
     <sect2 xml:id="str.byte-escapes">
       <title>Byte Escapes</title>
-      <!--figure>
-        <title>Syntax diagram of the byte escape
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/byte-escape.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-      
-      <note><para>Both byte escapes force the string in which they are
-      embedded to have <link linkend="enc.ascii-8bit">ASCII-8BIT</link>
-      encoding if the bytes are invalid in the <link
-      linkend="enc.source">source encoding</link>.</para></note>
+
+      <note><para>Both byte escapes force the string in which they are embedded to have <link linkend="enc.ascii-8bit">ASCII-8BIT</link> encoding if the bytes are invalid in the <link linkend="enc.source">source encoding</link>.</para></note>
 
       <sect3 xml:id="str.octal-byte">
         <title>Octal Byte Escapes</title>
-        <para>A reverse solidus followed by an octal number between zero and
-        377<subscript>8</subscript> represents the given byte.</para>
+
+	<para>A reverse solidus followed by an octal number between zero and 377<subscript>8</subscript> represents the given byte.</para>
+
         <example xml:id="ex.octal-byte-escape">
-          <title>An octal byte escape consists of a backslash
-          followed by a character code in base 8
-        </title>
+          <title>An octal byte escape consists of a backslash followed by a character code in base 8</title>
+
           <programlisting><xi:include href="examples/octal-byte-escape.rb" parse="text"/></programlisting>
         </example>
       </sect3>
+
       <sect3 xml:id="str.hex-byte">
         <title>Hexadecimal Byte Escapes</title>
-        <para>A hexadecimal byte escape consists of <literal>\x</literal> followed by
-        a hexadecimal number ≤ FF<subscript>16</subscript>. It represents the given
-        byte.</para>
+
+        <para>A hexadecimal byte escape consists of <literal>\x</literal> followed by a hexadecimal number ≤ FF<subscript>16</subscript>. It represents the given byte.</para>
+
         <example xml:id="ex.hex-byte-escape">
-          <title>A hexadecimal byte escape consists of a backslash
-          followed by an <literal>x</literal> followed by one or two
-          hexadecimal digits
-        </title>
+          <title>A hexadecimal byte escape consists of a backslash followed by an <literal>x</literal> followed by one or two hexadecimal digits</title>
+
           <programlisting><xi:include href="examples/hex-byte-escape.rb" parse="text"/></programlisting>
         </example>
       </sect3>
     </sect2>
+
     <sect2 xml:id="str.control-escapes">
       <title>Control Escapes</title>
-      <!--figure>
-        <title>Syntax diagram for the control escape
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/control-escape.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
 
-      <para>The escape sequence for <link
-      xlink:href="http://en.wikipedia.org/wiki/Control_character">control
-        character</link><keycap>Ctrl</keycap>-<keycap><replaceable>char</replaceable></keycap>
-      consists of a reverse solidus, either <literal>c</literal> or
-      <literal>C-</literal>, then <replaceable>char</replaceable>, which may be
-      a character or escape.  (<replaceable>char</replaceable> must not be a
-      control, Unicode, <link linkend="str.hex-byte">hexadecimal</link>, or
-      three-digit <link linkend="str.octal-byte">octal</link>, escape). Its
-      value is the character whose character code is
-      <replaceable>char</replaceable> ∧ 0x9F.</para>
+      <para>The escape sequence for <link xlink:href="http://en.wikipedia.org/wiki/Control_character">control character</link><keycap>Ctrl</keycap>-<keycap><replaceable>char</replaceable></keycap> consists of a reverse solidus, either <literal>c</literal> or <literal>C-</literal>, then <replaceable>char</replaceable>, which may be a character or escape.  (<replaceable>char</replaceable> must not be a control, Unicode, <link linkend="str.hex-byte">hexadecimal</link>, or three-digit <link linkend="str.octal-byte">octal</link>, escape). Its value is the character whose character code is <replaceable>char</replaceable> ∧ 0x9F.</para>
 
       <example xml:id="ex.control-escape">
-        <title>The control escape represents a control key
-      </title>
+        <title>The control escape represents a control key</title>
+
         <programlisting><xi:include href="examples/control-escape.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="str.meta-escapes">
       <title>Meta Character Escapes</title>
-      <!--figure>
-        <title>Syntax diagram of the meta character escape
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/meta-escape.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
 
-      <para>The meta character escape
-      <literal>\M-<replaceable>char</replaceable></literal> represents the
-      character whose character code is that of <replaceable>char</replaceable>
-      ∨ 0x80, where <replaceable>char</replaceable> is a single character or
-      escape. (<replaceable>char</replaceable> must not be a meta character,
-      Unicode, <link linkend="str.hex-byte">hexadecimal</link>, or three-digit
-      <link linkend="str.octal-byte">octal</link>, escape).</para>
+      <para>The meta character escape <literal>\M-<replaceable>char</replaceable></literal> represents the character whose character code is that of <replaceable>char</replaceable> ∨ 0x80, where <replaceable>char</replaceable> is a single character or escape. (<replaceable>char</replaceable> must not be a meta character, Unicode, <link linkend="str.hex-byte">hexadecimal</link>, or three-digit <link linkend="str.octal-byte">octal</link>, escape).</para>
 
       <example xml:id="ex.meta-escape">
-        <title>The meta character escape represents the given meta
-        character.
-      </title>
+        <title>The meta character escape represents the given meta character.</title>
+
         <programlisting><xi:include href="examples/meta-escape.rb" parse="text"/></programlisting>
       </example>
     </sect2>
     <sect2 xml:id="str.unicode-escapes">
       <title>Unicode Escapes</title>
-      <!--figure>
-        <title>Syntax diagram of the Unicode <literal>\u</literal>
-        escape
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/unicode-escape.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-      <para>An arbitrary <link xlink:href="http://en.wikipedia.org/wiki/Unicode">Unicode</link>
-      character may be embedded in a string by specifying its <link linkend="str.codepoints">codepoint</link> as four hexadecimal digits following
-      <literal>\u</literal>.</para>
-      <para>The <literal>\u{}</literal> construct extends this ability to
-      embedding multiple codepoints with the same escape.
-      The curly braces delimit one or more hexadecimal codepoints
-      separated by whitespace. This form does not restrict a
-      codepoint to four digits.</para>
-      <!--figure>
-        <title>Syntax diagram of a Unicode codepoint in hexadecimal
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/hex-codepoint.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
+
+      <para>An arbitrary <link xlink:href="http://en.wikipedia.org/wiki/Unicode">Unicode</link> character may be embedded in a string by specifying its <link linkend="str.codepoints">codepoint</link> as four hexadecimal digits following <literal>\u</literal>.</para>
+
+      <para>The <literal>\u{}</literal> construct extends this ability to embedding multiple codepoints with the same escape.  The curly braces delimit one or more hexadecimal codepoints separated by whitespace. This form does not restrict a codepoint to four digits.</para>
+ 
       <example xml:id="ex.unicode-escape">
-        <title>A Unicode escape represents a Unicode character with
-        the given codepoint(s)
-      </title>
+        <title>A Unicode escape represents a Unicode character with the given codepoint(s)</title>
+
         <programlisting><xi:include href="examples/unicode-escape.rb" parse="text"/></programlisting>
       </example>
-      <para>Both forms of the Unicode escape sequence force the string in
-      which they are embedded to have UTF-8 encoding. Therefore they are
-      illegal in a file that has both a non-UTF-8 source encoding and a
-      string containing literal multibyte characters in that encoding.</para>
+
+      <para>Both forms of the Unicode escape sequence force the string in which they are embedded to have UTF-8 encoding. Therefore they are illegal in a file that has both a non-UTF-8 source encoding and a string containing literal multibyte characters in that encoding.</para>
     </sect2>
     
     <sect2 xml:id="str.escapes-summary">
@@ -376,410 +172,224 @@
 	<thead>
 	  <tr>
 	    <th>Escape Sequence</th>
-	    <th>Interpretation
-	    </th>
+	    <th>Interpretation</th>
 	  </tr>
 	</thead>
 	<tbody>
 	  <tr>
-	    <td>
-	      <literal>\a</literal>
-	    </td>
-	    <td><literal>U＋0007</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Bell_character">BEL</link> character.
-            Rings the console bell.
+	    <td><literal>\a</literal></td>
+
+	    <td><literal>U＋0007</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Bell_character">BEL</link> character. Rings the console bell.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>\b</literal></td>
+	    <td><literal>U＋0008</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Backspace">Backspace</link> character.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>\e</literal></td>
+	    <td><literal>U＋001B</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Esc">ESC</link> character.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>\f</literal></td>
+	    <td><literal>U＋000C</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Form_feed">Form Feed</link> character.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>\n</literal></td>
+	    <td><literal>U＋000A</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Newline">Newline</link> character.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>\r</literal></td>
+	    <td><literal>U＋000D</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Carriage_return">Carriage Return</link> character.</td>
+	  </tr>
+	  <tr>
+	    <td><literal>\s</literal></td>
+
+	    <td><literal>U＋0020</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Space_key">Space</link> character.
 	    </td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <literal>\b</literal>
-	    </td>
-	    <td><literal>U＋0008</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Backspace">Backspace</link>
-            character.
+	    <td><literal>\t</literal></td>
+
+	    <td><literal>U＋0009</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Tab_character">Tab</link> character</td>
+	  </tr>
+	  <tr>
+	    <td><link linkend="str.unicode-escapes">\uhexhexhexhex</link></td>
+
+	    <td>The Unicode codepoint specified by the four given hexadecimal digits.
 	    </td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <literal>\e</literal>
-	    </td>
-	    <td><literal>U＋001B</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Esc">ESC</link> character.
-	    </td>
+	    <td><link linkend="str.unicode-escapes">\u{codepoints}</link></td>
+
+	    <td>The Unicode codepoint(s) specified by <link linkend="str.unicode-escapes">codepoints</link>.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <literal>\f</literal>
-	    </td>
-	    <td><literal>U＋000C</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Form_feed">Form Feed</link>
-            character.
-	    </td>
+	    <td><literal>\v</literal></td>
+	    <td><literal>U＋000B</literal>: The vertical tab character.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <literal>\n</literal>
-	    </td>
-	    <td><literal>U＋000A</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Newline">Newline</link>
-            character.
-	    </td>
+	    <td>&#160;</td>
+	    <td>The byte specified by the three given octal digits, whose combined value does not exceed 377<subscript>8</subscript>.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <literal>\r</literal>
-	    </td>
-	    <td><literal>U＋000D</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Carriage_return">Carriage
-	    Return</link> character.
-	    </td>
+	    <td><link linkend="str.octal-byte">\octaloctal</link></td>
+	    <td>The byte specified by the two given octal digits.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <literal>\s</literal>
-	    </td>
-	    <td><literal>U＋0020</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Space_key">Space</link>
-            character.
-	    </td>
+	    <td><link linkend="str.octal-byte">\octal</link></td>
+	    <td>The byte specified by the given octal digit.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <literal>\t</literal>
-	    </td>
-	    <td><literal>U＋0009</literal>: The <link xlink:href="http://en.wikipedia.org/wiki/Tab_character">Tab</link>
-            character
-	    </td>
+	    <td><link linkend="str.hex-byte">\xhexhex</link></td>
+	    <td>The byte specified by the two given hexadecimal digits.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <link linkend="str.unicode-escapes">\uhexhexhexhex</link>
-	    </td>
-	    <td>The Unicode codepoint specified by the four given
-            hexadecimal digits.
-	    </td>
+	    <td><link linkend="str.hex-byte">\xhex</link></td>
+	    <td>The byte specified by the given hexadecimal digit.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <link linkend="str.unicode-escapes">\u{codepoints}</link>
-	    </td>
-	    <td>The Unicode codepoint(s) specified by
-            <link linkend="str.unicode-escapes">codepoints</link>.
-	    </td>
+	    <td><link linkend="str.control-escapes">\cchar</link></td>
+	    <td rowspan="2">The control character <keycap>Ctrl</keycap>-<keycap><replaceable>char</replaceable></keycap>.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <literal>\v</literal>
-	    </td>
-	    <td><literal>U＋000B</literal>: The vertical tab
-            character.
-	    </td>
+	    <td><link linkend="str.control-escapes">\C-char</link></td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <link linkend="str.octal-byte">\octaloctaloctal</link>
-	    </td>
-	    <td>The byte specified by the three given octal digits,
-            whose combined value does not exceed 377<subscript>8</subscript>.
-	    </td>
+	    <td><link linkend="str.meta-escapes">\M-char</link></td>
+	    <td>Meta character <replaceable>char</replaceable>.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <link linkend="str.octal-byte">\octaloctal</link>
-	    </td>
-	    <td>The byte specified by the two given octal digits.
-	    </td>
+	    <td><literal>\</literal><literal>U＋000A</literal></td>
+	    <td rowspan="3">A backslash before a <link xlink:href="http://en.wikipedia.org/wiki/Newline">line terminator</link> escapes it, removing both the line terminator and backslash from the string.</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <link linkend="str.octal-byte">\octal</link>
-	    </td>
-	    <td>The byte specified by the given octal digit.
-	    </td>
+	    <td><literal>\</literal><literal>U＋000D</literal></td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <link linkend="str.hex-byte">\xhexhex</link>
-	    </td>
-	    <td>The byte specified by the two given hexadecimal
-            digits.
-	    </td>
+	    <td><literal>\</literal>〈<literal>U＋000D</literal>, <literal>U＋000A</literal>〉</td>
 	  </tr>
 	  <tr>
-	    <td>
-	      <link linkend="str.hex-byte">\xhex</link>
-	    </td>
-	    <td>The byte specified by the given hexadecimal digit.
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <link linkend="str.control-escapes">\cchar</link>
-	    </td>
-	    <td rowspan="2">The control character
-	    <keycap>Ctrl</keycap>-<keycap><replaceable>char</replaceable></keycap>.
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <link linkend="str.control-escapes">\C-char</link>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <link linkend="str.meta-escapes">\M-char</link>
-	    </td>
-	    <td>Meta character <replaceable>char</replaceable>.
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <literal>\</literal>
-	      <literal>U＋000A</literal>
-	    </td>
-	    <td rowspan="3">A backslash before a <link xlink:href="http://en.wikipedia.org/wiki/Newline">line terminator</link>
-            escapes it, removing both the line
-            terminator and backslash from the string
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <literal>\</literal>
-	      <literal>U＋000D</literal>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td><literal>\</literal>〈<literal>U＋000D</literal>, <literal>U＋000A</literal>〉
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <literal>\<replaceable>char</replaceable></literal>
-	    </td>
-	    <td>A backslash before any other character evaluates to
-            the character itself
-	    </td>
+	    <td><literal>\<replaceable>char</replaceable></literal></td>
+	    <td>A backslash before any other character evaluates to the character itself.</td>
 	  </tr>
 	</tbody>
       </informaltable>
     </sect2>
   </sect1>
+
   <sect1 xml:id="str.characters">
     <title>Characters</title>
-    <para><emphasis>Character</emphasis> is defined by the ISO/IEC as <quote>A
-    member of a set of elements used for the organisation, control, or
-    representation of data.</quote> <biblioref linkend="bib.tr15285"
-    units="pages"/>. The <emphasis>set</emphasis> of which they are members is
-    an encoding. Therefore, in Ruby, a character is a specific byte sequence
-    interpreted according to a given encoding. An implication is that by
-    changing the encoding of a <literal>String</literal>, one also changes what
-    characters it contains.</para>
-    <!--figure>
-      <title>Syntax diagram of the character literal
-    </title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="figures/character-literal.png" format="PNG" width="4in"/>
-        </imageobject>
-      </mediaobject>
-    </figure-->
-    <para>A character is represented as a <literal>String</literal> of <link linkend="str.size">length</link> 1, i.e. there is no explicit <emphasis>Character</emphasis>
-    class. It can be created with the standard <literal>String</literal> literal
-    syntax, e.g. <literal>'l'</literal>, or via a <firstterm>character literal</firstterm>. The
-    latter comprises a question mark followed by a single character, i.e.
-    <literal>?<replaceable>char</replaceable></literal>, where <replaceable>char</replaceable> is a literal
-    character, or a <link linkend="str.character-escapes">character escape</link> that
-    results in a single character, such as <literal>\u<replaceable>hex</replaceable></literal>,
-    <literal>\n</literal>, <literal>\t</literal>, or a byte escape.
-    <literal>?<replaceable>char</replaceable></literal> is entirely equivalent to
-    <literal>"<replaceable>char</replaceable>"</literal>. To create a character for a given
-    codepoint, see <link linkend="str.codepoints">Codepoints</link>.</para>
-    <para><literal>String#chars</literal>, and its alias <literal>String#each_char</literal>,
-    return an <literal>Enumerator</literal> of the receiver’s characters. Both yield
-    each character in turn if a block is given.</para>
-    <para>A <literal>String</literal> may be treated as an
-    <literal>Array</literal> of characters with <link
-    linkend="str.substrings">String#[]</link>. However, Flanagan ㏂p; Matsumoto
-    suggest that the aforementioned enumerators <quote>may be more
-    efficient</quote> when processing a <literal>String</literal>
-    character-by-character <biblioref begin="58" end="58" linkend="bib.flan08"
-    units="pages"/>.</para>
+
+    <para><emphasis>Character</emphasis> is defined by the ISO/IEC as <quote>A member of a set of elements used for the organisation, control, or representation of data.</quote> <biblioref linkend="bib.tr15285" units="pages"/>. The <emphasis>set</emphasis> of which they are members is an encoding. Therefore, in Ruby, a character is a specific byte sequence interpreted according to a given encoding. An implication is that by changing the encoding of a <literal>String</literal>, one also changes what characters it contains.</para>
+    
+    <para>A character is represented as a <literal>String</literal> of <link linkend="str.size">length</link> 1, i.e. there is no explicit <emphasis>Character</emphasis> class. It can be created with the standard <literal>String</literal> literal syntax, e.g. <literal>'l'</literal>, or via a <firstterm>character literal</firstterm>. The latter comprises a question mark followed by a single character, i.e.  <literal>?<replaceable>char</replaceable></literal>, where <replaceable>char</replaceable> is a literal character, or a <link linkend="str.character-escapes">character escape</link> that results in a single character, such as <literal>\u<replaceable>hex</replaceable></literal>, <literal>\n</literal>, <literal>\t</literal>, or a byte escape.  <literal>?<replaceable>char</replaceable></literal> is entirely equivalent to <literal>"<replaceable>char</replaceable>"</literal>. To create a character for a given codepoint, see <link linkend="str.codepoints">Codepoints</link>.</para>
+    
+    <para><literal>String#chars</literal>, and its alias <literal>String#each_char</literal>, return an <literal>Enumerator</literal> of the receiver’s characters. Both yield each character in turn if a block is given.</para>
+    
+    <para>A <literal>String</literal> may be treated as an <literal>Array</literal> of characters with <link linkend="str.substrings">String#[]</link>. However, Flanagan ㏂p; Matsumoto suggest that the aforementioned enumerators <quote>may be more efficient</quote> when processing a <literal>String</literal> character-by-character <biblioref begin="58" end="58" linkend="bib.flan08" units="pages"/>.</para>
   </sect1>
+
   <sect1 xml:id="str.bytes">
     <title>Bytes</title>
-    <para>Fundamentally a <literal>String</literal> is an array of bytes. An ordered
-    sequence of numbers, each of which is in the range 0–255. Bytes have
-    no inherent meaning, so are typically used in conjunction with a
-    scheme that ascribes them semantics or values. In the case of a binary
-    data format, this scheme may be embodied in a program’s algorithms, or be
-    otherwise out-of-band. For textual data, this scheme is termed an <link linkend="str.encoding">encoding</link>.</para>
-    <para>Byte-level access generally assumes, but does not enforce, that the
-    <literal>String</literal>’s encoding is <link linkend="enc.ascii-8bit">ASCII-8BIT</link>. Explicitly manipulating byte
-    sequences in a <literal>String</literal> containing text is at best ill-advised.
-    It breaks the abstraction of an encoding, and may result in
-    <literal>String</literal>s with invalid encodings and spurious exceptions being
-    raised.
+
+    <para>Fundamentally a <literal>String</literal> is an array of bytes. An ordered sequence of numbers, each of which is in the range 0–255. Bytes have no inherent meaning, so are typically used in conjunction with a scheme that ascribes them semantics or values. In the case of a binary data format, this scheme may be embodied in a program’s algorithms, or be otherwise out-of-band. For textual data, this scheme is termed an <link linkend="str.encoding">encoding</link>.</para>
     
-    <literal>String#bytes</literal>, and its alias <literal>String#each_byte</literal>,
-    return an <literal>Enumerator</literal> of their receiver’s bytes, represented
-    as <literal>Fixnum</literal>s. A specific byte position may be assigned to with
-    <literal>String#setbyte(<replaceable>index</replaceable>, <replaceable>byte</replaceable>)</literal>, where
-    <replaceable>index</replaceable> is the zero-based offset of the byte to be changed, and
-    <replaceable>byte</replaceable> is the new value as an <literal>Integer</literal>. A byte may be
-    retrieved from a given offset with
-    <literal>String#getbyte(<replaceable>index</replaceable>)</literal>. The length of a
-    <literal>String</literal> in bytes is returned by <literal>String#bytesize</literal>
-    as an <literal>Integer</literal>.</para>
+    <para>Byte-level access generally assumes, but does not enforce, that the <literal>String</literal>’s encoding is <link linkend="enc.ascii-8bit">ASCII-8BIT</link>. Explicitly manipulating byte sequences in a <literal>String</literal> containing text is at best ill-advised.  It breaks the abstraction of an encoding, and may result in <literal>String</literal>s with invalid encodings and spurious exceptions being raised.</para>
+    
+    <para><literal>String#bytes</literal>, and its alias <literal>String#each_byte</literal>, return an <literal>Enumerator</literal> of their receiver’s bytes, represented as <literal>Fixnum</literal>s. A specific byte position may be assigned to with <literal>String#setbyte(<replaceable>index</replaceable>, <replaceable>byte</replaceable>)</literal>, where <replaceable>index</replaceable> is the zero-based offset of the byte to be changed, and <replaceable>byte</replaceable> is the new value as an <literal>Integer</literal>. A byte may be retrieved from a given offset with <literal>String#getbyte(<replaceable>index</replaceable>)</literal>. The length of a <literal>String</literal> in bytes is returned by <literal>String#bytesize</literal> as an <literal>Integer</literal>.</para>
   </sect1>
+
   <sect1 xml:id="str.codepoints">
     <title>Codepoints</title>
-    <para>Unicode assigns each character in its repertoire a unique integer
-    <firstterm>codepoint</firstterm>. This identifies a character, irrespective of its
-    encoding. It is typically represented with the
-    notation <literal>U＋<replaceable>hex</replaceable></literal>, where <replaceable>hex</replaceable> is
-    the codepoint in uppercase hexadecimal digits. For example, <literal>U＋010E</literal> is the codepoint for Ď (<emphasis>Latin Capital Letter
-      D with Carron</emphasis>). In the UTF-8 encoding this character is represented
-    by the byte sequence <literal>"\xc4\x8e"</literal>, in EUC-JP it is represented
-    as <literal>"\x8f\xaa\xb0"</literal>, and in ISO-8859-2 it is simply
-    <literal>"\xcf"</literal>. However, all three cases represent the same
-    character, so all three consist of the codepoint 270.</para>
-    <para>The Unicode character escape allows a character with a given codepoint
-    to be embedded into a <literal>String</literal>. Similarly,
-    <literal>Integer#chr(<replaceable>encoding</replaceable>)</literal> interprets its receiver as a
-    codepoint in the named encoding, and returns the corresponding character.
-    If the codepoint does not exist in the given encoding, an
-    <literal>ArgumentError</literal> is raised.</para>
-    <para>Conversely, <literal>String#ord</literal> returns the codepoint of the first
-    character in its receiver as an <literal>Integer</literal>. More generally,
-    <literal>String#codepoints</literal>, and its alias
-    <literal>String#each_codepoint</literal>, return an <literal>Enumerator</literal> of
-    their receiver’s codepoints represented as <literal>Integer</literal>s. If given
-    a block, each codepoint is yielded to it in turn. All three methods will
-    raise an <literal>ArgumentError</literal> if their receiver has an invalid
-    encoding.</para>
+
+    <para>Unicode assigns each character in its repertoire a unique integer <firstterm>codepoint</firstterm>. This identifies a character, irrespective of its encoding. It is typically represented with the notation <literal>U＋<replaceable>hex</replaceable></literal>, where <replaceable>hex</replaceable> is the codepoint in uppercase hexadecimal digits. For example, <literal>U＋010E</literal> is the codepoint for Ď (<emphasis>Latin Capital Letter D with Carron</emphasis>). In the UTF-8 encoding this character is represented by the byte sequence <literal>"\xc4\x8e"</literal>, in EUC-JP it is represented as <literal>"\x8f\xaa\xb0"</literal>, and in ISO-8859-2 it is simply <literal>"\xcf"</literal>. However, all three cases represent the same character, so all three consist of the codepoint 270.</para>
+    
+    <para>The Unicode character escape allows a character with a given codepoint to be embedded into a <literal>String</literal>. Similarly, <literal>Integer#chr(<replaceable>encoding</replaceable>)</literal> interprets its receiver as a codepoint in the named encoding, and returns the corresponding character.  If the codepoint does not exist in the given encoding, an <literal>ArgumentError</literal> is raised.</para>
+    
+    <para>Conversely, <literal>String#ord</literal> returns the codepoint of the first character in its receiver as an <literal>Integer</literal>. More generally, <literal>String#codepoints</literal>, and its alias <literal>String#each_codepoint</literal>, return an <literal>Enumerator</literal> of their receiver’s codepoints represented as <literal>Integer</literal>s. If given a block, each codepoint is yielded to it in turn. All three methods will raise an <literal>ArgumentError</literal> if their receiver has an invalid encoding.</para>
   </sect1>
+
   <sect1 xml:id="str.iteration">
     <title>Iteration</title>
-    <para>A <literal>String</literal> can be iterated over by <link linkend="str.bytes">byte</link>,
-    <link linkend="str.characters">character</link>, <link linkend="str.codepoints">codepoint</link>, or
-    line, using the methods summarised below. Each method returns an
-    <literal>Enumerator</literal>, or yields each element in turn to a given block.</para>
+
+    <para>A <literal>String</literal> can be iterated over by <link linkend="str.bytes">byte</link>, <link linkend="str.characters">character</link>, <link linkend="str.codepoints">codepoint</link>, or line, using the methods summarised below. Each method returns an <literal>Enumerator</literal>, or yields each element in turn to a given block.</para>
+
     <informaltable>
       <thead>
         <tr>
-          <th>Method
-          </th>
-          <th>Iterates  
-      </th>
+          <th>Method</th>
+          <th>Iterates</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            <literal>String#bytes</literal>
-          </td>
-          <td rowspan="2">Bytes as <literal>Fixnum</literal>s
-        </td>
+          <td><literal>String#bytes</literal></td>
+          <td rowspan="2">Bytes as <literal>Fixnum</literal>s</td>
         </tr>
         <tr>
-          <td>
-            <literal>String#each_byte</literal>
-          </td>
+          <td><literal>String#each_byte</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>String#chars</literal>
-          </td>
-          <td rowspan="2">Characters as <literal>String</literal>s
-        </td>
+          <td><literal>String#chars</literal></td>
+          <td rowspan="2">Characters as <literal>String</literal>s</td>
         </tr>
         <tr>
-          <td>
-            <literal>String#each_char</literal>
-          </td>
+          <td><literal>String#each_char</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>String#codepoints</literal>
-          </td>
-          <td rowspan="2">Codepoints as <literal>Fixnum</literal>s
-        </td>
+          <td><literal>String#codepoints</literal></td>
+          <td rowspan="2">Codepoints as <literal>Fixnum</literal>s</td>
         </tr>
         <tr>
-          <td>
-            <literal>String#each_codepoint</literal>
-          </td>
+          <td><literal>String#each_codepoint</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>String#lines</literal>
-          </td>
-          <td rowspan="2">Lines as <literal>String</literal>s
-        </td>
+          <td><literal>String#lines</literal></td>
+          <td rowspan="2">Lines as <literal>String</literal>s</td>
         </tr>
         <tr>
-          <td>
-            <literal>String#each_line</literal>
-          </td>
+          <td><literal>String#each_line</literal></td>
         </tr>
       </tbody>
     </informaltable>
-    <para>A sequence of consecutive characters may be enumerated with
-    <literal>String#next</literal>, and its alias <literal>String#succ</literal>, which
-    return a copy of the receiver with the codepoint of its last character
-    incremented by one. However, ASCII alphanumeric characters are
-    special-cased: <emphasis>z</emphasis>/<emphasis>Z</emphasis> is followed by <emphasis>aa</emphasis>/<emphasis>AA</emphasis>; and
-    digits increment as integers. There are bang variants of both methods,
-    which modify their receiver in-place. This behaviour forms the basis of
-    <literal>String#upto(<replaceable>e</replaceable>)</literal>, which returns an
-    <literal>Enumerator</literal> of the sequence beginning with its receiver and
-    ending with <replaceable>e</replaceable>. If given a block, it yields each element in
-    turn.</para>
+
+    <para>A sequence of consecutive characters may be enumerated with <literal>String#next</literal>, and its alias <literal>String#succ</literal>, which return a copy of the receiver with the codepoint of its last character incremented by one. However, ASCII alphanumeric characters are special-cased: <emphasis>z</emphasis>/<emphasis>Z</emphasis> is followed by <emphasis>aa</emphasis>/<emphasis>AA</emphasis>; and digits increment as integers. There are bang variants of both methods, which modify their receiver in-place. This behaviour forms the basis of <literal>String#upto(<replaceable>e</replaceable>)</literal>, which returns an <literal>Enumerator</literal> of the sequence beginning with its receiver and ending with <replaceable>e</replaceable>. If given a block, it yields each element in turn.</para>
+
     <example xml:id="ex.string-upto">
       <title><literal>String#upto</literal> and <literal>String#succ</literal></title>
+
       <programlisting><xi:include href="examples/string-upto.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.size">
     <title>Size</title>
-    <para>“How long is a piece of string.” isn’t always a rhetorical question,
-    but in Ruby the answer depends on your unit of measurement.
-    <literal>String#length</literal>, and its alias <literal>String#size</literal>, return
-    the number of characters in their receiver. Therefore, they are dependent
-    on the associated encoding: the length of a <literal>String</literal> may change
-    simply by associating it with a different encoding.
-    <literal>String#bytesize</literal>, however, returns the number of bytes
-    contained in its receiver. It is unaffected by
-    <literal>String#force_encoding</literal>.</para>
-    <para>A <literal>String</literal> is <firstterm>empty</firstterm> if it
-    has a length of <literal>0</literal>. This can be tested with the predicate
-    <literal>String#empty?</literal>, and effected with the destructive
-    <literal>String#clear</literal>.</para>
+
+    <para>“How long is a piece of string.” isn’t always a rhetorical question, but in Ruby the answer depends on your unit of measurement.  <literal>String#length</literal>, and its alias <literal>String#size</literal>, return the number of characters in their receiver. Therefore, they are dependent on the associated encoding: the length of a <literal>String</literal> may change simply by associating it with a different encoding.  <literal>String#bytesize</literal>, however, returns the number of bytes contained in its receiver. It is unaffected by <literal>String#force_encoding</literal>.</para>
+    
+    <para>A <literal>String</literal> is <firstterm>empty</firstterm> if it has a length of <literal>0</literal>. This can be tested with the predicate <literal>String#empty?</literal>, and effected with the destructive <literal>String#clear</literal>.</para>
   </sect1>
+
   <sect1 xml:id="str.equivalence">
     <title>Equivalence</title>
-    <para>For two <literal>String</literal>s to compare as equal in terms of
-    <literal>String#==</literal> they must be byte-wise identical and associated
-    with the same encoding. This last condition is dropped when both
-    <literal>String</literal>s consist entirely of ASCII characters and have an
-    ASCII-compatible encoding. If the second operand responds to the implicit
-    conversion protocol of <literal>#to_str</literal>, it is converted thus, then
-    the result is tested for equivalence with the receiver.
-    <literal>String#eql?</literal> behaves in the same manner, but does not attempt
-    to convert its operand.</para>
+
+    <para>For two <literal>String</literal>s to compare as equal in terms of <literal>String#==</literal> they must be byte-wise identical and associated with the same encoding. This last condition is dropped when both <literal>String</literal>s consist entirely of ASCII characters and have an ASCII-compatible encoding. If the second operand responds to the implicit conversion protocol of <literal>#to_str</literal>, it is converted thus, then the result is tested for equivalence with the receiver.  <literal>String#eql?</literal> behaves in the same manner, but does not attempt to convert its operand.</para>
   </sect1>
+
   <sect1 xml:id="str.comparison">
     <title>Comparison</title>
-    <para><literal>String#&lt;=&gt;</literal> compares its receiver with its
-    <literal>String</literal> argument in terms of their character codes. Neither
-    operand is normalised. <literal>String</literal> mixes in
-    <literal>Comparable</literal>, so gains <literal>String#&lt;</literal>,
-    <literal>String#≤</literal>, <literal>String#&gt;</literal>, and
-    <literal>String#≥</literal>, also.</para>
-    <para>The aforementioned methods are, by implication, case sensitive.
-    <literal>String#casecmp</literal> provides a case-insensitive alternative for
-    ASCII <literal>String</literal>s; non-ASCII characters are compared as
-    above. Alternatively, one must normalise the case of the two
-    <literal>String</literal>s themselves before comparing them.</para>
+
+    <para><literal>String#&lt;=&gt;</literal> compares its receiver with its <literal>String</literal> argument in terms of their character codes. Neither operand is normalised. <literal>String</literal> mixes in <literal>Comparable</literal>, so gains <literal>String#&lt;</literal>, <literal>String#≤</literal>, <literal>String#&gt;</literal>, and <literal>String#≥</literal>, also.</para>
+    
+    <para>The aforementioned methods are, by implication, case sensitive.  <literal>String#casecmp</literal> provides a case-insensitive alternative for ASCII <literal>String</literal>s; non-ASCII characters are compared as above. Alternatively, one must normalise the case of the two <literal>String</literal>s themselves before comparing them.</para>
+    
     <example xml:id="ex.string-comparison">
-      <title>Comparing <literal>String</literal>s
-    </title>
+      <title>Comparing <literal>String</literal>s</title>
+
       <programlisting><xi:include href="examples/string-comparison.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.concatenation">
     <title>Concatenation</title>
 
@@ -788,16 +398,16 @@
     <para><literal>String#&lt;&lt;</literal>, and its alias <literal>String#concat</literal>, append their argument to their receiver, mutating the existing object rather than creating a new one, and return the receiver. The argument must be either an <literal>Integer</literal> codepoint, which is converted into the corresponding character before concatenation, or a <literal>String</literal>. In tight loops, therefore, <function>#&lt;&lt;</function> should be preferred to <function>#+=</function>, as the latter creates a new object each time.</para>
 
     <example xml:id="ex.string-concat">
-      <title>Concatenating <literal>String</literal>s
-    </title>
+      <title>Concatenating <literal>String</literal>s</title>
+
       <programlisting><xi:include href="examples/string-concat.rb" parse="text"/></programlisting>
     </example>
-    <para>Either approach requires at least one of the following conditions to
-    hold:</para>
+
+    <para>Either approach requires at least one of the following conditions to hold:</para>
+
     <itemizedlist>
       <listitem>
-        <para>Both encodings are ASCII-compatible and one of the
-      <literal>String</literal>s is ASCII-only.</para>
+        <para>Both encodings are ASCII-compatible and one of the <literal>String</literal>s is ASCII-only.</para>
       </listitem>
       <listitem>
         <para>One of the <literal>String</literal>s is empty.</para>
@@ -807,1203 +417,733 @@
       </listitem>
     </itemizedlist>
   </sect1>
+
   <sect1 xml:id="str.repetition">
     <title>Repetition</title>
-    <para><literal>String#*</literal> returns a new <literal>String</literal> comprising
-    <replaceable>n</replaceable> copies of itself, where <replaceable>n</replaceable> is given by an
-    <literal>Integer</literal> argument. The receiver is not modified.</para>
+
+    <para><literal>String#*</literal> returns a new <literal>String</literal> comprising <replaceable>n</replaceable> copies of itself, where <replaceable>n</replaceable> is given by an <literal>Integer</literal> argument. The receiver is not modified.</para>
+    
     <example xml:id="ex.string-repetition">
-      <title>Using <literal>String#*</literal> to multiply its receiver.
-    </title>
+      <title>Using <literal>String#*</literal> to multiply its receiver.</title>
+
       <programlisting><xi:include href="examples/string-repetition.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.substrings">
     <title>Substrings</title>
-    <para><literal>String#[]</literal>, and its alias <literal>String#slice</literal>,
-    provide access to specific portions of a <literal>String</literal>, allowing it
-    to be treated as an array of characters.</para>
-    <para>An <literal>Integer</literal> argument, <replaceable>i</replaceable>, returns the
-    <replaceable>i</replaceable><superscript>th</superscript> character, where the first character has the
-    index <literal>0</literal>. If <replaceable>i</replaceable> is negative, it counts backward from
-    the last character, so <literal>String#[-2]</literal> returns the penultimate
-    character.</para>
-    <para>When two <literal>Integer</literal> arguments are given,
-    <literal>String#[<replaceable>i</replaceable>, <replaceable>l</replaceable>]</literal>, the <replaceable>l</replaceable>
-    characters are starting from index <replaceable>i</replaceable> are returned. <replaceable>i</replaceable>
-    may be negative, with the same semantics as before, but <replaceable>l</replaceable>
-    cannot be.</para>
-    <para>When the argument is a <literal>Range</literal>,
-    <literal>String#[<replaceable>i</replaceable>..<replaceable>j</replaceable>]</literal>, a substring beginning at
-    index <replaceable>i</replaceable> and ending at index <replaceable>j</replaceable> is returned.</para>
-    <para>A <literal>String</literal> argument is returned if contained in the
-    receiver. Likewise, when a <literal>Regexp</literal> argument is given, whose
-    pattern matches the receiver, the return value is the first matching
-    substring. The latter may be accompanied by a second argument indicating
-    the group of captured text to return: an <literal>Integer</literal> refers to
-    the numbered group, a <literal>Symbol</literal> or <literal>String</literal> refers to
-    the named group. However, if a group is specified but the pattern fails to
-    match, an <literal>IndexError</literal> is raised.</para>
-    <para>If the receiver does not contain the given substring, <literal>nil</literal>
-    is returned. If it does, <literal>String#[]=</literal> may also be used as an
-    lvalue with any of the above forms. The result is that the substring
-    returned is replaced in the receiver with the rvalue. For example,
-    <literal>'ab'[0] = ?b</literal> returns <literal>"bb"</literal>.</para>
+
+    <para><literal>String#[]</literal>, and its alias <literal>String#slice</literal>, provide access to specific portions of a <literal>String</literal>, allowing it to be treated as an array of characters.</para>
+    
+    <para>An <literal>Integer</literal> argument, <replaceable>i</replaceable>, returns the <replaceable>i</replaceable><superscript>th</superscript> character, where the first character has the index <literal>0</literal>. If <replaceable>i</replaceable> is negative, it counts backward from the last character, so <literal>String#[-2]</literal> returns the penultimate character.</para>
+    
+    <para>When two <literal>Integer</literal> arguments are given, <literal>String#[<replaceable>i</replaceable>, <replaceable>l</replaceable>]</literal>, the <replaceable>l</replaceable> characters are starting from index <replaceable>i</replaceable> are returned. <replaceable>i</replaceable> may be negative, with the same semantics as before, but <replaceable>l</replaceable> cannot be.</para>
+    
+    <para>When the argument is a <literal>Range</literal>, <literal>String#[<replaceable>i</replaceable>..<replaceable>j</replaceable>]</literal>, a substring beginning at index <replaceable>i</replaceable> and ending at index <replaceable>j</replaceable> is returned.</para>
+    
+    <para>A <literal>String</literal> argument is returned if contained in the receiver. Likewise, when a <literal>Regexp</literal> argument is given, whose pattern matches the receiver, the return value is the first matching substring. The latter may be accompanied by a second argument indicating the group of captured text to return: an <literal>Integer</literal> refers to the numbered group, a <literal>Symbol</literal> or <literal>String</literal> refers to the named group. However, if a group is specified but the pattern fails to match, an <literal>IndexError</literal> is raised.</para>
+    
+    <para>If the receiver does not contain the given substring, <literal>nil</literal> is returned. If it does, <literal>String#[]=</literal> may also be used as an lvalue with any of the above forms. The result is that the substring returned is replaced in the receiver with the rvalue. For example, <literal>'ab'[0] = ?b</literal> returns <literal>"bb"</literal>.</para>
+    
     <example xml:id="ex.substrings">
-      <title>Slicing a <literal>String</literal> into substrings
-    </title>
+      <title>Slicing a <literal>String</literal> into substrings</title>
+
       <programlisting><xi:include href="examples/substrings.rb" parse="text"/></programlisting>
     </example>
-    <para><literal>String#insert(<replaceable>i</replaceable>, <replaceable>s</replaceable>)</literal> is equivalent to
-    <literal>String#[<replaceable>i</replaceable>] = <replaceable>s</replaceable></literal>. However, in addition to
-    modifying its receiver, <literal>#insert</literal> returns the new
-    <literal>String</literal>, as opposed to <literal>#[]=</literal> which returns
-    <replaceable>s</replaceable>.</para>
-    <para><literal>String#slice!</literal> accepts all the same combinations of
-    arguments, but deletes the substring from the receiver.</para>
-    <para><literal>String#index</literal> returns the first zero-based index of the
-    matched substring, as opposed to the substring itself. The substring may
-    be given as a <literal>String</literal> argument, and optionally followed by an
-    <literal>Integer</literal> specifying the index to search from. If a
-    <literal>Regexp</literal> argument is provided instead, the index of the start
-    of the match is returned. By contrast, <literal>String#rindex</literal> accepts
-    the same arguments but returns the index of the rightmost match. When no
-    matching substring is found, <literal>nil</literal> is returned.</para>
+
+    <para><literal>String#insert(<replaceable>i</replaceable>, <replaceable>s</replaceable>)</literal> is equivalent to <literal>String#[<replaceable>i</replaceable>] = <replaceable>s</replaceable></literal>. However, in addition to modifying its receiver, <literal>#insert</literal> returns the new <literal>String</literal>, as opposed to <literal>#[]=</literal> which returns <replaceable>s</replaceable>.</para>
+    
+    <para><literal>String#slice!</literal> accepts all the same combinations of arguments, but deletes the substring from the receiver.</para>
+    
+    <para><literal>String#index</literal> returns the first zero-based index of the matched substring, as opposed to the substring itself. The substring may be given as a <literal>String</literal> argument, and optionally followed by an <literal>Integer</literal> specifying the index to search from. If a <literal>Regexp</literal> argument is provided instead, the index of the start of the match is returned. By contrast, <literal>String#rindex</literal> accepts the same arguments but returns the index of the rightmost match. When no matching substring is found, <literal>nil</literal> is returned.</para>
+    
     <example xml:id="ex.string-index">
-      <title>Finding the offset of an occurrence of a substring
-    </title>
+      <title>Finding the offset of an occurrence of a substring</title>
+
       <programlisting><xi:include href="examples/string-index.rb" parse="text"/></programlisting>
     </example>
-    <para><literal>String#[]</literal> can be used to test for the presence of a
-    substring on account of its returning <literal>nil</literal> when the substring
-    is not present. A slightly clearer approach is
-    <literal>String#include?</literal>, which returns <literal>true</literal> if its
-    <literal>String</literal> argument is contained within the receiver;
-    <literal>false</literal> otherwise. <literal>String#start_with?</literal> and
-    <literal>String#end_with?</literal> behave similarly, but require the substring
-    to be located at the beginning or end, respectively, of the receiver.</para>
+
+    <para><literal>String#[]</literal> can be used to test for the presence of a substring on account of its returning <literal>nil</literal> when the substring is not present. A slightly clearer approach is <literal>String#include?</literal>, which returns <literal>true</literal> if its <literal>String</literal> argument is contained within the receiver; <literal>false</literal> otherwise. <literal>String#start_with?</literal> and <literal>String#end_with?</literal> behave similarly, but require the substring to be located at the beginning or end, respectively, of the receiver.</para>
+    
     <example xml:id="ex.substring-test">
-      <title>Determining whether a given substring is present
-    </title>
+      <title>Determining whether a given substring is present</title>
+
       <programlisting><xi:include href="examples/substring-test.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.searching">
     <title>Searching &amp; Replacing</title>
-    <para><literal>String#sub(<replaceable>r</replaceable>, <replaceable>s</replaceable>)</literal> replaces the first
-    occurrence of a <literal>Regexp</literal>, <replaceable>r</replaceable>, with a
-    <literal>String</literal>, <replaceable>s</replaceable>, then returns the new
-    <literal>String</literal>. <replaceable>s</replaceable> may contain back-references to capture
-    groups in the pattern, which are substituted for the corresponding match.
-    In a single-quoted <literal>String</literal> a numbered group is referenced as
-    <literal>\<replaceable>d</replaceable></literal>, where <replaceable>d</replaceable> is the group number, while
-    <literal>\k&lt;<replaceable>n</replaceable>&gt;</literal> references the capture group named
-    <replaceable>n</replaceable>. In a double-quoted <literal>String</literal> the reverse solidus
-    must be doubled, i.e. <literal>\\<replaceable>d</replaceable></literal> and
-    <literal>\\k&lt;<replaceable>n</replaceable>&gt;</literal>.</para>
-    <para>The first argument can be given as a <literal>String</literal> instead of a
-    <literal>Regexp</literal>, in which case it is treated like a pattern with the
-    metacharacters escaped. Therefore, this form is similar to
-    <literal>String#[<replaceable>r</replaceable>] = <replaceable>s</replaceable></literal>.</para>
-    <para>If the second argument is omitted, a block must be supplied. It is
-    passed the matched text and must return the replacement
-    <literal>String</literal>. If it is a <literal>Hash</literal> that has the match as a
-    key, the replacement <literal>String</literal> is the corresponding value.</para>
-    <para>To replace all occurrences of a pattern use <literal>String#gsub</literal>
-    instead, with the arguments described above. If <literal>String#gsub</literal>
-    is called with neither a replacement <literal>String</literal> nor a block, it
-    returns an <literal>Enumerator</literal>.</para>
-    <para>The <literal>String#sub!</literal> and <literal>String#gsub!</literal> variants
-    behave identically to their unadorned equivalents except they modify the
-    receiver in-place. If the substitution succeeded, the return value is the
-    receiver; otherwise, it is <literal>nil</literal>.</para>
+
+    <para><literal>String#sub(<replaceable>r</replaceable>, <replaceable>s</replaceable>)</literal> replaces the first occurrence of a <literal>Regexp</literal>, <replaceable>r</replaceable>, with a <literal>String</literal>, <replaceable>s</replaceable>, then returns the new <literal>String</literal>. <replaceable>s</replaceable> may contain back-references to capture groups in the pattern, which are substituted for the corresponding match.  In a single-quoted <literal>String</literal> a numbered group is referenced as <literal>\<replaceable>d</replaceable></literal>, where <replaceable>d</replaceable> is the group number, while <literal>\k&lt;<replaceable>n</replaceable>&gt;</literal> references the capture group named <replaceable>n</replaceable>. In a double-quoted <literal>String</literal> the reverse solidus must be doubled, i.e. <literal>\\<replaceable>d</replaceable></literal> and <literal>\\k&lt;<replaceable>n</replaceable>&gt;</literal>.</para>
+    
+    <para>The first argument can be given as a <literal>String</literal> instead of a <literal>Regexp</literal>, in which case it is treated like a pattern with the metacharacters escaped. Therefore, this form is similar to <literal>String#[<replaceable>r</replaceable>] = <replaceable>s</replaceable></literal>.</para>
+    
+    <para>If the second argument is omitted, a block must be supplied. It is passed the matched text and must return the replacement <literal>String</literal>. If it is a <literal>Hash</literal> that has the match as a key, the replacement <literal>String</literal> is the corresponding value.</para>
+    
+    <para>To replace all occurrences of a pattern use <literal>String#gsub</literal> instead, with the arguments described above. If <literal>String#gsub</literal> is called with neither a replacement <literal>String</literal> nor a block, it returns an <literal>Enumerator</literal>.</para>
+    
+    <para>The <literal>String#sub!</literal> and <literal>String#gsub!</literal> variants behave identically to their unadorned equivalents except they modify the receiver in-place. If the substitution succeeded, the return value is the receiver; otherwise, it is <literal>nil</literal>.</para>
+    
     <example xml:id="ex.string-sub-gsub">
       <title>Searching and replacing in a <literal>String</literal></title>
+    
       <programlisting><xi:include href="examples/string-sub-gsub.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.split">
     <title>Splitting, Partitioning, &amp; Scanning</title>
-    <para><literal>String#split</literal> returns an <literal>Array</literal> of its receiver
-    divided into space-separated substrings, i.e. <literal>'Horses for
-      courses'.split</literal> returns <literal>['Horses', 'for', 'courses']</literal>.
-    If a <literal>String</literal> or <literal>Regexp</literal> argument is given, that is
-    used as the delimiter. The delimiter is omitted from the results.</para>
-    <para><literal>String#partition</literal> also requires a <literal>String</literal> or
-    <literal>Regexp</literal> argument specifying a delimiter. It always returns a
-    three-element <literal>Array</literal> comprising the text preceding the first
-    occurrence of the delimiter, the delimiter itself, then the text following
-    the first occurrence of the delimiter. <literal>String#rpartition</literal>
-    behaves similarly except it uses the last occurrence of the delimiter.</para>
+
+    <para><literal>String#split</literal> returns an <literal>Array</literal> of its receiver divided into space-separated substrings, i.e. <literal>'Horses for courses'.split</literal> returns <literal>['Horses', 'for', 'courses']</literal>.  If a <literal>String</literal> or <literal>Regexp</literal> argument is given, that is used as the delimiter. The delimiter is omitted from the results.</para>
+    
+    <para><literal>String#partition</literal> also requires a <literal>String</literal> or <literal>Regexp</literal> argument specifying a delimiter. It always returns a three-element <literal>Array</literal> comprising the text preceding the first occurrence of the delimiter, the delimiter itself, then the text following the first occurrence of the delimiter. <literal>String#rpartition</literal> behaves similarly except it uses the last occurrence of the delimiter.</para>
+    
     <example xml:id="ex.string-split">
       <title>Splitting and partitioning a <literal>String</literal></title>
+
       <programlisting><xi:include href="examples/string-split.rb" parse="text"/></programlisting>
     </example>
-    <para><literal>String#scan</literal> is almost the inverse of <literal>#split</literal>.
-    It repeatedly matches its <literal>Regexp</literal> argument against the
-    receiver, returning an <literal>Array</literal> of the results, i.e. whereas
-    <literal>#split</literal> returned the text surrounding the matches;
-    <literal>#scan</literal> returns the matches themselves. If the pattern contains
-    capturing groups, each element of the <literal>Array</literal> is an
-    <literal>Array</literal> of captures; otherwise it is a <literal>String</literal>
-    containing the matched text. If the argument is given as a
-    <literal>String</literal>, it is interpreted literally: regular expression
-    metacharacters are ignored. If a block is supplied, it receives each
-    element of the result <literal>Array</literal> in turn.</para>
+
+    <para><literal>String#scan</literal> is almost the inverse of <literal>#split</literal>.  It repeatedly matches its <literal>Regexp</literal> argument against the receiver, returning an <literal>Array</literal> of the results, i.e. whereas <literal>#split</literal> returned the text surrounding the matches; <literal>#scan</literal> returns the matches themselves. If the pattern contains capturing groups, each element of the <literal>Array</literal> is an <literal>Array</literal> of captures; otherwise it is a <literal>String</literal> containing the matched text. If the argument is given as a <literal>String</literal>, it is interpreted literally: regular expression metacharacters are ignored. If a block is supplied, it receives each element of the result <literal>Array</literal> in turn.</para>
+    
     <example xml:id="ex.string-scan">
-      <title>Repeatedly matching a pattern against a <literal>String</literal>
-      with <literal>String#scan</literal></title>
+      <title>Repeatedly matching a pattern against a <literal>String</literal> with <literal>String#scan</literal></title>
+
       <programlisting><xi:include href="examples/string-scan.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.case">
     <title>Letter Case</title>
-    <para><literal>String#downcase</literal> converts all characters in its receiver to
-    lowercase, while <literal>String#upcase</literal> does the opposite.
-    <literal>String#swapcase</literal> toggles the case of each character: lowercase
-    characters are converted to uppercase, and vice versa.
-    <literal>String#capitalize</literal> converts its receiver to lowercase then
-    converts its first character to uppercase. All four methods have a
-    corresponding bang method which modifies the receiver in-place. However,
-    these methods only understand the capitalization of ASCII characters; any
-    other character is left unchanged.  Case-insensitive comparison was
-    covered in the <link linkend="str.comparison">Comparison</link> section.</para>
+
+    <para><literal>String#downcase</literal> converts all characters in its receiver to lowercase, while <literal>String#upcase</literal> does the opposite.  <literal>String#swapcase</literal> toggles the case of each character: lowercase characters are converted to uppercase, and vice versa.  <literal>String#capitalize</literal> converts its receiver to lowercase then converts its first character to uppercase. All four methods have a corresponding bang method which modifies the receiver in-place. However, these methods only understand the capitalization of ASCII characters; any other character is left unchanged.  Case-insensitive comparison was covered in the <link linkend="str.comparison">Comparison</link> section.</para>
+    
     <example xml:id="ex.string-case">
       <title>Convert the case of a <literal>String</literal></title>
+
       <programlisting><xi:include href="examples/string-case.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.whitespace">
     <title>Whitespace</title>
-    <para><literal>String#chomp(<replaceable>s</replaceable> = $/)</literal> returns a copy of its
-    receiver with <replaceable>s</replaceable> deleted from the end. When <replaceable>s</replaceable> is
-    omitted, it has the value of <literal>$/</literal>, which defaults to
-    <literal>"\n"</literal>. <literal>String#chop</literal> returns its receiver minus the
-    final character, regardless of its value.  However, if a
-    <literal>String</literal> ends with <literal>"\r\n"</literal>, both methods treat it
-    specially: <literal>#chop</literal> deletes both characters at once, while
-    <literal>#chomp</literal> does likewise when called with no argument and
-    <literal>$/ == ?\n</literal>. Both methods have bang variants which modify their
-    receiver in-place. When they truncate the receiver, they return it;
-    otherwise, they return <literal>nil</literal>.</para>
-    <para>Removal of a trailing line terminator can be generalised to the removal
-    of any trailing and/or preceding whitespace, i.e. any consecutive
-    combination of <literal>"\s"</literal>, <literal>"\t"</literal>, <literal>"\r"</literal>,
-    and <literal>"\n"</literal>. <literal>String#lstrip</literal> deletes whitespace from
-    the left, <literal>String#rstrip</literal> deletes it from the right, and
-    <literal>String#strip</literal> deletes it from both sides. All have bang
-    variants which modify the receiver in-place.</para>
-    <para><literal>String#center(<replaceable>w</replaceable>)</literal> returns a <literal>String</literal>
-    of at least <replaceable>w</replaceable> characters in length. If its receiver is shorter
-    than <replaceable>w</replaceable>, it pads it on either side with as many space characters
-    as is necessary to achieve this goal. If a <literal>String</literal> is supplied
-    for the optional second argument, it is used for padding instead of
-    <literal>"\s"</literal>. <literal>String#ljust</literal> and <literal>String#rjust</literal>
-    accept the same arguments but justify their receiver to the left or right,
-    respectively.</para>
+
+    <para><literal>String#chomp(<replaceable>s</replaceable> = $/)</literal> returns a copy of its receiver with <replaceable>s</replaceable> deleted from the end. When <replaceable>s</replaceable> is omitted, it has the value of <literal>$/</literal>, which defaults to <literal>"\n"</literal>. <literal>String#chop</literal> returns its receiver minus the final character, regardless of its value.  However, if a <literal>String</literal> ends with <literal>"\r\n"</literal>, both methods treat it specially: <literal>#chop</literal> deletes both characters at once, while <literal>#chomp</literal> does likewise when called with no argument and <literal>$/ == ?\n</literal>. Both methods have bang variants which modify their receiver in-place. When they truncate the receiver, they return it; otherwise, they return <literal>nil</literal>.</para>
+    
+    <para>Removal of a trailing line terminator can be generalised to the removal of any trailing and/or preceding whitespace, i.e. any consecutive combination of <literal>"\s"</literal>, <literal>"\t"</literal>, <literal>"\r"</literal>, and <literal>"\n"</literal>. <literal>String#lstrip</literal> deletes whitespace from the left, <literal>String#rstrip</literal> deletes it from the right, and <literal>String#strip</literal> deletes it from both sides. All have bang variants which modify the receiver in-place.</para>
+    
+    <para><literal>String#center(<replaceable>w</replaceable>)</literal> returns a <literal>String</literal> of at least <replaceable>w</replaceable> characters in length. If its receiver is shorter than <replaceable>w</replaceable>, it pads it on either side with as many space characters as is necessary to achieve this goal. If a <literal>String</literal> is supplied for the optional second argument, it is used for padding instead of <literal>"\s"</literal>. <literal>String#ljust</literal> and <literal>String#rjust</literal> accept the same arguments but justify their receiver to the left or right, respectively.</para>
+    
     <example xml:id="ex.string-whitespace">
       <title>Adjusting whitespace in a <literal>String</literal></title>
+
       <programlisting><xi:include href="examples/string-whitespace.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.numeric">
     <title>Converting to Numeric</title>
-    <para><literal>String#to_i(<replaceable>r</replaceable> = 10)</literal> interprets the receiver as
-    an integer in base <replaceable>r</replaceable>, returning the corresponding
-    <literal>Integer</literal> object. Hexadecimal and octal numbers may be prefixed
-    with <literal>0x</literal> or <literal>0</literal>, respectively.
-    <literal>String#oct</literal> and <literal>String#hex</literal> are equivalent
-    <literal>#to_i(8)</literal> and <literal>#to_i(16)</literal>, respectively.</para>
-    <para>A <literal>Float</literal> may be created from a <literal>String</literal>
-    beginning with either form of <literal>Float</literal> literal, i.e. two groups
-    of digits separated with a full stop or exponential notation, via
-    <literal>String#to_f</literal>. A <literal>Rational</literal> may be instantiated from
-    a <literal>String</literal> of the form <literal><replaceable>n</replaceable>/<replaceable>d</replaceable></literal>,
-    where <replaceable>n</replaceable> is the numerator, and <replaceable>d</replaceable> the denominator,
-    with <literal>String#to_r</literal>. If <replaceable>d</replaceable> is omitted, it has the
-    value <literal>1</literal>. Lastly, <literal>String#to_c</literal> creates a
-    <literal>Complex</literal> number. If the receiver is in the format recognised
-    by <literal>#to_f</literal>, <literal>#to_r</literal>, or <literal>#to_i(10)</literal>, the
-    number represented is the real part. If it is followed by a signed number
-    with an <literal>i</literal> suffix, that is the imaginary part. If either part
-    is omitted, it has the value <literal>0</literal>.</para>
-    <para>In all cases, the number may be prefixed with a sign and arbitrary
-    whitespace, and followed by arbitrary characters. Digits may be separated
-    with low lines. If a number cannot be extracted, it is assumed to be
-    <literal>0</literal>.</para>
+
+    <para><literal>String#to_i(<replaceable>r</replaceable> = 10)</literal> interprets the receiver as an integer in base <replaceable>r</replaceable>, returning the corresponding <literal>Integer</literal> object. Hexadecimal and octal numbers may be prefixed with <literal>0x</literal> or <literal>0</literal>, respectively.  <literal>String#oct</literal> and <literal>String#hex</literal> are equivalent <literal>#to_i(8)</literal> and <literal>#to_i(16)</literal>, respectively.</para>
+
+    <para>A <literal>Float</literal> may be created from a <literal>String</literal> beginning with either form of <literal>Float</literal> literal, i.e. two groups of digits separated with a full stop or exponential notation, via <literal>String#to_f</literal>. A <literal>Rational</literal> may be instantiated from a <literal>String</literal> of the form <literal><replaceable>n</replaceable>/<replaceable>d</replaceable></literal>, where <replaceable>n</replaceable> is the numerator, and <replaceable>d</replaceable> the denominator, with <literal>String#to_r</literal>. If <replaceable>d</replaceable> is omitted, it has the value <literal>1</literal>. Lastly, <literal>String#to_c</literal> creates a <literal>Complex</literal> number. If the receiver is in the format recognised by <literal>#to_f</literal>, <literal>#to_r</literal>, or <literal>#to_i(10)</literal>, the number represented is the real part. If it is followed by a signed number with an <literal>i</literal> suffix, that is the imaginary part. If either part is omitted, it has the value <literal>0</literal>.</para>
+    
+    <para>In all cases, the number may be prefixed with a sign and arbitrary whitespace, and followed by arbitrary characters. Digits may be separated with low lines. If a number cannot be extracted, it is assumed to be <literal>0</literal>.</para>
+    
     <example xml:id="ex.string-numeric">
-      <title>Converting a <literal>String</literal> to a number
-    </title>
+      <title>Converting a <literal>String</literal> to a number</title>
+
       <programlisting><xi:include href="examples/string-numeric.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.checksums">
     <title>Checksums</title>
-    <para><literal>String#sum(<replaceable>b</replaceable> = 16)</literal> calculates a rudimentary
-    <replaceable>b</replaceable>-bit checksum of the receiver, which it returns as an
-    <literal>Integer</literal>. If <replaceable>b</replaceable> ≤ <literal>0</literal>, this is simply
-    the sum of the receiver’s bytes; otherwise, it is equivalent to
-    <literal>String#bytes.reduce(&amp;:+) &amp; ((1 &lt;&lt; <replaceable>b</replaceable>) -
-      1)</literal>.</para>
-    <para><literal>String#crypt(<replaceable>s</replaceable>)</literal> is a thin wrapper around
-    <literal>crypt(3)</literal>. The salt, <replaceable>s</replaceable>, is at least two characters
-    from the alphabet <literal>[a–zA–Z0–9./]</literal>. The receiver is encrypted with
-    <replaceable>s</replaceable> to produce a thirteen-character <literal>String</literal> from the
-    aforementioned alphabet, which begins with the first two characters of
-    <replaceable>s</replaceable>.</para>
+
+    <para><literal>String#sum(<replaceable>b</replaceable> = 16)</literal> calculates a rudimentary <replaceable>b</replaceable>-bit checksum of the receiver, which it returns as an <literal>Integer</literal>. If <replaceable>b</replaceable> ≤ <literal>0</literal>, this is simply the sum of the receiver’s bytes; otherwise, it is equivalent to <literal>String#bytes.reduce(&amp;:+) &amp; ((1 &lt;&lt; <replaceable>b</replaceable>) - 1)</literal>.</para>
+    
+    <para><literal>String#crypt(<replaceable>s</replaceable>)</literal> is a thin wrapper around <literal>crypt(3)</literal>. The salt, <replaceable>s</replaceable>, is at least two characters from the alphabet <literal>[a–zA–Z0–9./]</literal>. The receiver is encrypted with <replaceable>s</replaceable> to produce a thirteen-character <literal>String</literal> from the aforementioned alphabet, which begins with the first two characters of <replaceable>s</replaceable>.</para>
+    
     <example xml:id="ex.string-checksum">
       <title>Calculating a checksum for a <literal>String</literal></title>
+
       <programlisting><xi:include href="examples/string-checksum.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.sets">
     <title>Sets of Characters &amp; Transliteration</title>
-    <para><literal>String#squeeze</literal> returns a copy of its receiver without any
-    runs of consecutive characters, i.e. it deletes all but the first
-    character in each run. Optionally, one or more <literal>String</literal>
-    arguments may be given, in which case only runs of characters appearing in
-    the intersection of these arguments are collapsed. If an argument contains
-    two characters separated by a hyphen minus sign, it represents all
-    characters in that range. An argument with a caret as the first character
-    represents the negation of its contents. The bang variant modifies the
-    receiver in-place, returning <literal>nil</literal> if no changes were made.</para>
+
+    <para><literal>String#squeeze</literal> returns a copy of its receiver without any runs of consecutive characters, i.e. it deletes all but the first character in each run. Optionally, one or more <literal>String</literal> arguments may be given, in which case only runs of characters appearing in the intersection of these arguments are collapsed. If an argument contains two characters separated by a hyphen minus sign, it represents all characters in that range. An argument with a caret as the first character represents the negation of its contents. The bang variant modifies the receiver in-place, returning <literal>nil</literal> if no changes were made.</para>
+    
     <example xml:id="ex.string-squeeze">
-      <title>Collapsing consecutive runs of the same character
-    </title>
+      <title>Collapsing consecutive runs of the same character</title>
+
       <programlisting><xi:include href="examples/string-squeeze.rb" parse="text"/></programlisting>
     </example>
-    <para>The same approach can be applied to counting and deleting characters.
-    <literal>String#count</literal> and <literal>String#delete</literal> both accept the
-    same forms of argument with the same semantics. The former returns a
-    <literal>Fixnum</literal> indicating the specified character’s frequency in its
-    receiver, while the latter returns a copy of its receiver with the
-    characters removed. <literal>String#delete!</literal> behaves as
-    <literal>#delete</literal>, except the receiver is modified in-place and
-    <literal>nil</literal> is returned if no changes were made.</para>
+
+    <para>The same approach can be applied to counting and deleting characters.  <literal>String#count</literal> and <literal>String#delete</literal> both accept the same forms of argument with the same semantics. The former returns a <literal>Fixnum</literal> indicating the specified character’s frequency in its receiver, while the latter returns a copy of its receiver with the characters removed. <literal>String#delete!</literal> behaves as <literal>#delete</literal>, except the receiver is modified in-place and <literal>nil</literal> is returned if no changes were made.</para>
+    
     <example xml:id="ex.string-count-delete">
       <title>Counting and deleting characters in a <literal>String</literal></title>
+
       <programlisting><xi:include href="examples/string-count-delete.rb" parse="text"/></programlisting>
     </example>
-    <para><literal>String#tr(<replaceable>t</replaceable>, <replaceable>f</replaceable>)</literal> transliterates each
-    character specified by its first argument with the corresponding character
-    specified by its second. Both arguments may use the range construct
-    introduced above, and <replaceable>t</replaceable> may use the caret construct. If
-    <replaceable>f</replaceable> has more characters than <replaceable>t</replaceable>, the latter is padded
-    with the last character of the former.  <literal>String#tr!</literal> behaves in
-    the same fashion, except it modifies the receiver in-place and returns
-    <literal>nil</literal> if no changes were made. <literal>String#tr_s</literal> behaves
-    as <literal>#tr</literal>, except it collapses consecutive runs of characters in
-    the regions it affects.</para>
+
+    <para><literal>String#tr(<replaceable>t</replaceable>, <replaceable>f</replaceable>)</literal> transliterates each character specified by its first argument with the corresponding character specified by its second. Both arguments may use the range construct introduced above, and <replaceable>t</replaceable> may use the caret construct. If <replaceable>f</replaceable> has more characters than <replaceable>t</replaceable>, the latter is padded with the last character of the former.  <literal>String#tr!</literal> behaves in the same fashion, except it modifies the receiver in-place and returns <literal>nil</literal> if no changes were made. <literal>String#tr_s</literal> behaves as <literal>#tr</literal>, except it collapses consecutive runs of characters in the regions it affects.</para>
+    
     <example xml:id="ex.string-tr">
       <title>Transliterating characters in a <literal>String</literal></title>
+
       <programlisting><xi:include href="examples/string-tr.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.debug">
     <title>Debugging</title>
-    <para><literal>String#inspect</literal> and <literal>String#dump</literal> return a copy
-    of the receiver enclosed in quotation marks, with special characters
-    escaped, in order to aid debugging. ASCII control characters are replaced
-    with their corresponding escape sequences, if any, and other non-printing
-    characters are substituted for the corresponding byte escape. Quotation
-    marks are backslash escaped. In addition, <literal>String#dump</literal>
-    substitutes non-ASCII characters with the corresponding
-    <literal>\u{<replaceable>codepoint</replaceable>}</literal> escape. If the receiver is
-    associated with an ASCII-incompatible encoding, <replaceable>enc</replaceable>,
-    <literal>#dump</literal> appends <literal>.force_encoding('<replaceable>enc</replaceable>')</literal>
-    to its result.</para>
+
+    <para><literal>String#inspect</literal> and <literal>String#dump</literal> return a copy of the receiver enclosed in quotation marks, with special characters escaped, in order to aid debugging. ASCII control characters are replaced with their corresponding escape sequences, if any, and other non-printing characters are substituted for the corresponding byte escape. Quotation marks are backslash escaped. In addition, <literal>String#dump</literal> substitutes non-ASCII characters with the corresponding <literal>\u{<replaceable>codepoint</replaceable>}</literal> escape. If the receiver is associated with an ASCII-incompatible encoding, <replaceable>enc</replaceable>, <literal>#dump</literal> appends <literal>.force_encoding('<replaceable>enc</replaceable>')</literal> to its result.</para>
+
     <example xml:id="ex.string-debug">
-      <title>Obtaining a different representation of a
-      <literal>String</literal> to help debugging its contents
-    </title>
+      <title>Obtaining a different representation of a <literal>String</literal> to help debugging its contents</title>
+
       <programlisting><xi:include href="examples/string-debug.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="str.encoding">
     <title>Encoding</title>
-    <para>The encoding of a <literal>String</literal> literal is normally that of the
-    source file in which it appears, with the caveats noted above for
-    Unicode and byte escapes.</para>
+
+    <para>The encoding of a <literal>String</literal> literal is normally that of the source file in which it appears, with the caveats noted above for Unicode and byte escapes.</para>
+
     <sect2 xml:id="str.associate">
       <title>Forcing an Association</title>
-      <para>The encoding associated with a <literal>String</literal> may be changed
-      independently of its contents. This is necessary if the contents are
-      valid in one encoding, but associated with another. Transcoding would
-      be inappropriate because it would alter the underlying bytes, which
-      are already perfectly valid. The solution is the destructive method
-      <literal>String#force_encoding</literal>, which associates its receiver with
-      the encoding given as an argument. This operation will always succeed,
-      even if the <literal>String</literal>’s contents are <link linkend="str.valid-encoding">invalid</link> in the new encoding.</para>
-      <para>Yui Naruse, a member of the Ruby core team, cautions against the
-      use of this method: <quote><literal>String#force_encoding</literal> should be
-        sparsely used since Strings have already had appropriate encodings
-        assigned when those are created, or read from files specifying the
-        encoding.… If you need to use
-      <literal>String#force_encoding</literal> in your library, you should
-      reconsider your library design. You should not use this method
-      thoughtlessly.</quote> <biblioref linkend="bib.harada09"/>.</para>
+
+      <para>The encoding associated with a <literal>String</literal> may be changed independently of its contents. This is necessary if the contents are valid in one encoding, but associated with another. Transcoding would be inappropriate because it would alter the underlying bytes, which are already perfectly valid. The solution is the destructive method <literal>String#force_encoding</literal>, which associates its receiver with the encoding given as an argument. This operation will always succeed, even if the <literal>String</literal>’s contents are <link linkend="str.valid-encoding">invalid</link> in the new encoding.</para>
+      
+      <para>Yui Naruse, a member of the Ruby core team, cautions against the use of this method: <quote><literal>String#force_encoding</literal> should be sparsely used since Strings have already had appropriate encodings assigned when those are created, or read from files specifying the encoding.… If you need to use <literal>String#force_encoding</literal> in your library, you should reconsider your library design. You should not use this method thoughtlessly.</quote> <biblioref linkend="bib.harada09"/>.</para>
     </sect2>
+
     <sect2 xml:id="str.valid-encoding">
       <title>Valid Encodings</title>
-      <para>A <literal>String</literal>’s encoding is <firstterm>valid</firstterm> if its constituent bytes are properly formed
-      according to the encoding it is associated with. This check makes no
-      claims as to whether the characters in the <literal>String</literal> exist
-      in the encoding, for it inspects syntax rather than semantics.</para>
-      <para>In general, if you create a <literal>String</literal> via a literal, or
-      consume a <literal>String</literal> as input that is validly encoded,
-      manipulating it as a sequence of characters will ensure its encoding
-      remains valid.  However, associating a <literal>String</literal> with an
-      improper encoding, treating it as <link linkend="str.bytes">byte array</link>,
-      or consuming garbage input, may all result in an invalid encoding. The
-      <literal>String#valid_encoding?</literal> predicate returns
-      <literal>true</literal> if the <literal>String</literal>’s encoding is valid;
-      <literal>false</literal> otherwise.</para>
+
+      <para>A <literal>String</literal>’s encoding is <firstterm>valid</firstterm> if its constituent bytes are properly formed according to the encoding it is associated with. This check makes no claims as to whether the characters in the <literal>String</literal> exist in the encoding, for it inspects syntax rather than semantics.</para>
+      
+      <para>In general, if you create a <literal>String</literal> via a literal, or consume a <literal>String</literal> as input that is validly encoded, manipulating it as a sequence of characters will ensure its encoding remains valid.  However, associating a <literal>String</literal> with an improper encoding, treating it as <link linkend="str.bytes">byte array</link>, or consuming garbage input, may all result in an invalid encoding. The <literal>String#valid_encoding?</literal> predicate returns <literal>true</literal> if the <literal>String</literal>’s encoding is valid; <literal>false</literal> otherwise.</para>
     </sect2>
+
     <sect2 xml:id="str.ascii-only">
       <title>ASCII Only</title>
 
-      <para>Many operations on <literal>String</literal>s contain optimisations
-      for <literal>String</literal>s that are
-      <firstterm>ASCII-only</firstterm>-containing 7-bit ASCII characters
-      exclusively-regardless of the associated encoding.  For example, two
-      <literal>String</literal>s with disparate encodings are <link
-      linkend="enc.compatibility">compatible</link> if they’re both
-      ASCII-only. In general, however, these optimisations are transparent so
-      can be safely ignored. The <literal>String#ascii_only?</literal>
-      predicate can be useful if you wish to perform your own optimisations
-      along these lines.</para>
+      <para>Many operations on <literal>String</literal>s contain optimisations for <literal>String</literal>s that are <firstterm>ASCII-only</firstterm>-containing 7-bit ASCII characters exclusively-regardless of the associated encoding.  For example, two <literal>String</literal>s with disparate encodings are <link linkend="enc.compatibility">compatible</link> if they’re both ASCII-only. In general, however, these optimisations are transparent so can be safely ignored. The <literal>String#ascii_only?</literal> predicate can be useful if you wish to perform your own optimisations along these lines.</para>
     </sect2>
   </sect1>
+
   <sect1 xml:id="str.format">
     <title>Format Strings</title>
-    <para>A <firstterm>format string</firstterm> is a template specifying how a set of
-    arguments should be interpolated into a new <literal>String</literal>. It
-    contains arbitrary text-which is copied to the result
-    unchanged-interspersed with <firstterm>format sequences</firstterm>-which describe
-    how their corresponding argument should be converted before being
-    substituted in their place.</para>
-    <para><literal>String#%</literal> interprets its receiver as a format string, and
-    its argument-a plurality are supplied as an <literal>Array</literal>-as the
-    values to be interpolated, returning the expanded <literal>String</literal>.
-    <literal>Kernel#sprintf</literal>, and its alias <literal>Kernel#format</literal>,
-    interpret their first argument as a format string and subsequent arguments
-    as the values to be interpolated.</para>
-    <para>A format sequence begins with a percent sign, then contains zero or
-    more single-character <replaceable>flags</replaceable>, an optional minimal field <link linkend="str.sprintf-width">width</link>, an optional <link linkend="str.sprintf-precision">precision</link>, and a mandatory
-    conversion specifier, in that order. We will discuss each conversion
-    specifier in turn, along with the flags they support, then conclude by
-    explaining the other fields.</para>
+
+    <para>A <firstterm>format string</firstterm> is a template specifying how a set of arguments should be interpolated into a new <literal>String</literal>. It contains arbitrary text-which is copied to the result unchanged-interspersed with <firstterm>format sequences</firstterm>-which describe how their corresponding argument should be converted before being substituted in their place.</para>
+    
+    <para><literal>String#%</literal> interprets its receiver as a format string, and its argument-a plurality are supplied as an <literal>Array</literal>-as the values to be interpolated, returning the expanded <literal>String</literal>.  <literal>Kernel#sprintf</literal>, and its alias <literal>Kernel#format</literal>, interpret their first argument as a format string and subsequent arguments as the values to be interpolated.</para>
+    
+    <para>A format sequence begins with a percent sign, then contains zero or more single-character <replaceable>flags</replaceable>, an optional minimal field <link linkend="str.sprintf-width">width</link>, an optional <link linkend="str.sprintf-precision">precision</link>, and a mandatory conversion specifier, in that order. We will discuss each conversion specifier in turn, along with the flags they support, then conclude by explaining the other fields.</para>
+    
     <sect2 xml:id="str.sprintf-text">
       <title>Textual Conversions</title>
+    
       <para>Firstly, the following text-based conversion specifiers are available:</para>
+      
       <variablelist>
         <varlistentry>
-          <term>Character
-        </term>
+          <term>Character</term>
+
           <listitem>
-            <para>Conversion specifier <literal>c</literal> interprets a numerical
-        argument as a character code point, which it converts into the given
-        character. An argument consisting of a one-character
-        <literal>String</literal> is copied into the result unchanged.</para>
+            <para>Conversion specifier <literal>c</literal> interprets a numerical argument as a character code point, which it converts into the given character. An argument consisting of a one-character <literal>String</literal> is copied into the result unchanged.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
-          <term>Inspect
-        </term>
+          <term>Inspect</term>
+
           <listitem>
-            <para>Conversion specifier <literal>p</literal> is substituted for the
-        result of sending <literal>#inspect</literal> to its argument.</para>
+            <para>Conversion specifier <literal>p</literal> is substituted for the result of sending <literal>#inspect</literal> to its argument.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
-          <term>String
-        </term>
+          <term>String</term>
           <listitem>
-            <para>Conversion specifier <literal>s</literal> copies the argument into
-        the result as a <literal>String</literal>.</para>
+            <para>Conversion specifier <literal>s</literal> copies the argument into the result as a <literal>String</literal>.</para>
           </listitem>
         </varlistentry>
       </variablelist>
-      <para>If accompanied by a precision, both <literal>p</literal> and
-      <literal>s</literal> copy at most <replaceable>precision</replaceable> characters into the
-      result.</para>
+
+      <para>If accompanied by a precision, both <literal>p</literal> and <literal>s</literal> copy at most <replaceable>precision</replaceable> characters into the result.</para>
+      
       <example xml:id="ex.sprintf-textual">
-        <title>Using the text-based format sequences.
-      </title>
+        <title>Using the text-based format sequences.</title>
+
         <programlisting><xi:include href="examples/sprintf-textual.rb" parse="text"/></programlisting>
       </example>
     </sect2>
+
     <sect2 xml:id="str.sprintf-numbers">
       <title>Numbers</title>
-      <para>The remaining conversion specifiers format numbers. All support a
-      <literal>␣</literal> (a space character) flag, which prepends positive results
-      with a space, a <literal>+</literal> flag which prepends a plus sign to
-      positive results, and a <literal>0</literal> flag which <link linkend="str.sprintf-width">pads</link> fields with zeros instead of spaces. If
-      <literal>␣</literal> and <literal>+</literal> are used together, the latter has
-      precedence.</para>
+
+      <para>The remaining conversion specifiers format numbers. All support a <literal>␣</literal> (a space character) flag, which prepends positive results with a space, a <literal>+</literal> flag which prepends a plus sign to positive results, and a <literal>0</literal> flag which <link linkend="str.sprintf-width">pads</link> fields with zeros instead of spaces. If <literal>␣</literal> and <literal>+</literal> are used together, the latter has precedence.</para>
+
       <sect3 xml:id="str.sprintf-bases">
 	<title>Converting Between Numerical Bases</title>
-	<para>Conversion specifiers can convert an argument into an integer in a
-	given base. Negative results are usually represented in two’s
-	complement, prefixed with two full stops. However, if the
-	<literal>␣</literal> flag is supplied they are given in their absolute form
-	and prefixed with a hyphen-minus sign. When the <literal>0</literal> flag is
-	given and the result is represented as two’s complement, it is padded
-	with the digit one fewer than the base. For example, negative octal
-	numbers are padded with <literal>7</literal>s instead of <literal>0</literal>s.</para>
+
+	<para>Conversion specifiers can convert an argument into an integer in a given base. Negative results are usually represented in two’s complement, prefixed with two full stops. However, if the <literal>␣</literal> flag is supplied they are given in their absolute form and prefixed with a hyphen-minus sign. When the <literal>0</literal> flag is given and the result is represented as two’s complement, it is padded with the digit one fewer than the base. For example, negative octal numbers are padded with <literal>7</literal>s instead of <literal>0</literal>s.</para>
+	
 	<variablelist>
 	  <varlistentry>
-	    <term>Binary
-	    </term>
+	    <term>Binary</term>
+
 	    <listitem>
-	      <para>Conversion specifiers <literal>b</literal> and <literal>B</literal>
-	      convert their argument to base 2. The <literal>#</literal> flag causes
-	      <literal>0b</literal> to be prepended to the result of <literal>b</literal>, and
-	      <literal>0B</literal> to be prepended to the result of <literal>B</literal>,
-	      i.e. these conversion specifiers differ only in the case of their
-	      prefix.</para>
+	      <para>Conversion specifiers <literal>b</literal> and <literal>B</literal> convert their argument to base 2. The <literal>#</literal> flag causes <literal>0b</literal> to be prepended to the result of <literal>b</literal>, and <literal>0B</literal> to be prepended to the result of <literal>B</literal>, i.e. these conversion specifiers differ only in the case of their prefix.</para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>
-	    <term>Octal
-	    </term>
+	    <term>Octal</term>
+
 	    <listitem>
-	      <para>The <literal>o</literal> conversion specifier converts its argument to
-	      base 8. When this conversion specifier is used in conjunction with
-	      the <literal>#</literal> flag, and the result is positive, <literal>0</literal>
-	      is prepended to the result.</para>
+	      <para>The <literal>o</literal> conversion specifier converts its argument to base 8. When this conversion specifier is used in conjunction with the <literal>#</literal> flag, and the result is positive, <literal>0</literal> is prepended to the result.</para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>
-	    <term>Decimal 
-	    </term>
+	    <term>Decimal</term>
+
 	    <listitem>
-	      <para>Conversion specifiers <literal>i</literal>, <literal>u</literal>, and
-	      <literal>d</literal>, all of which are identical, convert their argument
-	      to base 10. Negative numbers are prefixed with a hyphen-minus sign.</para>
+	      <para>Conversion specifiers <literal>i</literal>, <literal>u</literal>, and <literal>d</literal>, all of which are identical, convert their argument to base 10. Negative numbers are prefixed with a hyphen-minus sign.</para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>
-	    <term>Hexadecimal 
-	    </term>
+	    <term>Hexadecimal</term>
+
 	    <listitem>
-	      <para>Both the <literal>x</literal> and <literal>X</literal> conversion specifiers
-	      convert their argument to base 16. The case of the conversion
-	      specifier dictates the case of the characters in the result. The
-	      <literal>#</literal> flag prepends <literal>0x</literal> or <literal>0X</literal> to
-	      the result, as appropriate.</para>
+	      <para>Both the <literal>x</literal> and <literal>X</literal> conversion specifiers convert their argument to base 16. The case of the conversion specifier dictates the case of the characters in the result. The <literal>#</literal> flag prepends <literal>0x</literal> or <literal>0X</literal> to the result, as appropriate.</para>
 	    </listitem>
 	  </varlistentry>
 	</variablelist>
+
 	<example xml:id="ex.sprintf-bases">
-	  <title>Using the format sequences to convert between numeric
-	  bases.
-	  </title>
+	  <title>Using the format sequences to convert between numeric bases.</title>
+
 	  <programlisting><xi:include href="examples/sprintf-bases.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
+
       <sect3 xml:id="str.sprint-notation">
 	<title>Numerical Notation</title>
-	<para>The notation used for displaying numerical arguments can also be
-	configured with conversion specifiers. The <literal>␣</literal> flag again
-	causes positive results to have a single space prepended, but has no
-	effect on negative results. The <literal>#</literal> flag forces the result
-	to contain a radix point, even if no digits follow.</para>
+
+	<para>The notation used for displaying numerical arguments can also be configured with conversion specifiers. The <literal>␣</literal> flag again causes positive results to have a single space prepended, but has no effect on negative results. The <literal>#</literal> flag forces the result to contain a radix point, even if no digits follow.</para>
+	
 	<variablelist>
 	  <varlistentry>
-	    <term>Exponential
-	    </term>
+	    <term>Exponential</term>
+
 	    <listitem>
-	      <para>The <literal>e</literal> conversion specifier represents the argument
-	      in exponential notation in the form: <literal>[-]<replaceable>α</replaceable>.<replaceable>β</replaceable>e±<replaceable>γ</replaceable></literal>, where <replaceable>α</replaceable> is a single
-	      digit, <replaceable>β</replaceable> is the fractional part consisting of
-	      <replaceable>precision</replaceable> (default: 6)  digits, and <replaceable>γ</replaceable>
-	      is the two-digit exponent.The <literal>E</literal> conversion specifier
-	      behaves identically, expect a capital <literal>E</literal> is used to
-	      introduce the exponent.</para>
+	      <para>The <literal>e</literal> conversion specifier represents the argument in exponential notation in the form: <literal>[-]<replaceable>α</replaceable>.<replaceable>β</replaceable>e±<replaceable>γ</replaceable></literal>, where <replaceable>α</replaceable> is a single digit, <replaceable>β</replaceable> is the fractional part consisting of <replaceable>precision</replaceable> (default: 6) digits, and <replaceable>γ</replaceable> is the two-digit exponent.The <literal>E</literal> conversion specifier behaves identically, expect a capital <literal>E</literal> is used to introduce the exponent.</para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>
-	    <term>Fixed-point
-	    </term>
+	    <term>Fixed-point</term>
+
 	    <listitem>
-	      <para>The <replaceable>f</replaceable> conversion specifier represents its argument
-	      with a whole part, preceded with a hyphen-minus sign if negative,
-	      and a fractional part, separated by a radix point. There are always
-	      <replaceable>precision</replaceable> (default: 6) digits following the radix point.</para>
+	      <para>The <replaceable>f</replaceable> conversion specifier represents its argument with a whole part, preceded with a hyphen-minus sign if negative, and a fractional part, separated by a radix point. There are always <replaceable>precision</replaceable> (default: 6) digits following the radix point.</para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>
-	    <term>Exponential or fixed-point
-	    </term>
+	    <term>Exponential or fixed-point</term>
+
 	    <listitem>
-	      <para>Both the <literal>g</literal> and <literal>G</literal> conversion specifiers
-	      render their argument in the notation most appropriate for its
-	      magnitude: exponential if the exponent is &lt; -4 or ≥
-	      <replaceable>precision</replaceable>; fixed-point, otherwise. There are at most
-	      <replaceable>precision</replaceable> (default: 6) digits in the result.
-	      Trailing zeros are omitted from the fractional part of the result
-	      unless the <literal>#</literal> flag is given. The radix point is omitted
-	      unless followed by at least one digit. The exponent is introduced
-	      with <literal>e</literal> if the <literal>g</literal> conversion specifier is
-	      used; or <literal>E</literal> if <literal>G</literal> is used instead.</para>
+	      <para>Both the <literal>g</literal> and <literal>G</literal> conversion specifiers render their argument in the notation most appropriate for its magnitude: exponential if the exponent is &lt; -4 or ≥ <replaceable>precision</replaceable>; fixed-point, otherwise. There are at most <replaceable>precision</replaceable> (default: 6) digits in the result.  Trailing zeros are omitted from the fractional part of the result unless the <literal>#</literal> flag is given. The radix point is omitted unless followed by at least one digit. The exponent is introduced with <literal>e</literal> if the <literal>g</literal> conversion specifier is used; or <literal>E</literal> if <literal>G</literal> is used instead.</para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>
-	    <term>Hexadecimal exponential 
-	    </term>
+	    <term>Hexadecimal exponential</term>
+
 	    <listitem>
-	      <para>A conversion specifier of <literal>a</literal> converts the argument
-	      to base-16 exponential notation (using lowercase digits) in the
-	      form: <literal>[-]0x<replaceable>α</replaceable>.<replaceable>β</replaceable>p±<replaceable>γ</replaceable></literal>, where <replaceable>α</replaceable> is a single
-	      hex digit, <replaceable>β</replaceable> is one or more hex digits, whose
-	      quantity is capped at <replaceable>precision</replaceable>, and <replaceable>γ</replaceable>
-	      is the single-digit decimal exponent. If the <literal>A</literal>
-	      specifier is used instead, the lowercase characters in the result
-	      are converted to uppercase, i.e. it takes the form <literal>[-]0X<replaceable>α</replaceable>.<replaceable>β</replaceable>P±<replaceable>γ</replaceable></literal>, where <replaceable>α</replaceable> and <replaceable>β</replaceable> use uppercase digits.</para>
+	      <para>A conversion specifier of <literal>a</literal> converts the argument to base-16 exponential notation (using lowercase digits) in the form: <literal>[-]0x<replaceable>α</replaceable>.<replaceable>β</replaceable>p±<replaceable>γ</replaceable></literal>, where <replaceable>α</replaceable> is a single hex digit, <replaceable>β</replaceable> is one or more hex digits, whose quantity is capped at <replaceable>precision</replaceable>, and <replaceable>γ</replaceable> is the single-digit decimal exponent. If the <literal>A</literal> specifier is used instead, the lowercase characters in the result are converted to uppercase, i.e. it takes the form <literal>[-]0X<replaceable>α</replaceable>.<replaceable>β</replaceable>P±<replaceable>γ</replaceable></literal>, where <replaceable>α</replaceable> and <replaceable>β</replaceable> use uppercase digits.</para>
 	    </listitem>
 	  </varlistentry>
 	</variablelist>
 	<example xml:id="ex.sprintf-notation">
-	  <title>Using the format sequences to convert between numeric
-	  notations.
-	  </title>
+	  <title>Using the format sequences to convert between numeric notations.</title>
+
 	  <programlisting><xi:include href="examples/sprintf-notation.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
     </sect2>
+
     <sect2 xml:id="str.sprintf-hash">
       <title>Hash Interpolation</title>
-      <para>If the arguments are given as a <literal>Hash</literal>, rather than an
-      <literal>Array</literal>, they may be referenced from a format sequence by
-      name instead of position. When a conversion specifier is immediately
-      preceeded by <literal>&lt;<replaceable>key</replaceable>&gt;</literal>, where <replaceable>key</replaceable>
-      names a key of the <literal>Hash</literal>, the corresponding value in the
-      <literal>Hash</literal> becomes the format sequence’s argument. A format
-      sequence with a conversion specifier of of the form
-      <literal>{<replaceable>name</replaceable>}</literal> is equivalent to
-      <literal>&lt;<replaceable>name</replaceable>&gt;s</literal>.</para>
+
+      <para>If the arguments are given as a <literal>Hash</literal>, rather than an <literal>Array</literal>, they may be referenced from a format sequence by name instead of position. When a conversion specifier is immediately preceeded by <literal>&lt;<replaceable>key</replaceable>&gt;</literal>, where <replaceable>key</replaceable> names a key of the <literal>Hash</literal>, the corresponding value in the <literal>Hash</literal> becomes the format sequence’s argument. A format sequence with a conversion specifier of of the form <literal>{<replaceable>name</replaceable>}</literal> is equivalent to <literal>&lt;<replaceable>name</replaceable>&gt;s</literal>.</para>
+      
       <example xml:id="ex.sprintf-hash">
-        <title>Arguments for a format string can be provided as a
-        <literal>Hash</literal>, allowing for a rudimentary templating system.
-      </title>
+        <title>Arguments for a format string can be provided as a <literal>Hash</literal>, allowing for a rudimentary templating system.</title>
+
         <programlisting><xi:include href="examples/sprintf-hash.rb" parse="text"/></programlisting>
       </example>
     </sect2>
+
     <sect2 xml:id="str.sprintf-width">
       <title>Field Width &amp; Justification</title>
-      <para>The <replaceable>width</replaceable> component of a format sequence is an optional
-      decimal digit string (with non-zero first digit) specifying the
-      minimum width of the field. Alternatively, the value
-      can be specified in <link linkend="str.sprintf-arguments">relative or absolute
-        terms</link>.</para>
-      <para>If the result has fewer characters than this width, it is padded;
-      if it has more characters, the field is expanded as needed. By
-      default, <emphasis>␣</emphasis> (a space character) is used for padding, but the
-      <literal>0</literal> flag causes an alternative character, usually a zero,
-      to be used instead.</para>
-      <para>Fields are normally right justified, but a flag of <literal>-</literal>
-      justifies left instead. In the former case, padding characters are
-      prepended to the result, while in the latter they are appended. If a
-      negative width is given, this flag is implied, and the field’s width
-      is this value with the sign ignored.</para>
+
+      <para>The <replaceable>width</replaceable> component of a format sequence is an optional decimal digit string (with non-zero first digit) specifying the minimum width of the field. Alternatively, the value can be specified in <link linkend="str.sprintf-arguments">relative or absolute terms</link>.</para>
+      
+      <para>If the result has fewer characters than this width, it is padded; if it has more characters, the field is expanded as needed. By default, <emphasis>␣</emphasis> (a space character) is used for padding, but the <literal>0</literal> flag causes an alternative character, usually a zero, to be used instead.</para>
+      
+      <para>Fields are normally right justified, but a flag of <literal>-</literal> justifies left instead. In the former case, padding characters are prepended to the result, while in the latter they are appended. If a negative width is given, this flag is implied, and the field’s width is this value with the sign ignored.</para>
+      
       <example xml:id="ex.sprintf-width">
-        <title>Specifying the minimum width of a field in a format
-        sequence.
-      </title>
+        <title>Specifying the minimum width of a field in a format sequence.</title>
+
         <programlisting><xi:include href="examples/sprintf-width.rb" parse="text"/></programlisting>
       </example>
     </sect2>
+
     <sect2 xml:id="str.sprintf-precision">
       <title>Precision</title>
-      <para>The optional <replaceable>precision</replaceable> component comprises a full stop
-      followed by an optional integer. If said integer is omitted or
-      negative, it has the value <literal>0</literal>. Alternatively, the value
-      can be specified in <link linkend="str.sprintf-arguments">relative or absolute
-        terms</link>. The precision gives:</para>
+
+      <para>The optional <replaceable>precision</replaceable> component comprises a full stop followed by an optional integer. If said integer is omitted or negative, it has the value <literal>0</literal>. Alternatively, the value can be specified in <link linkend="str.sprintf-arguments">relative or absolute terms</link>. The precision gives:</para>
+      
       <itemizedlist>
         <listitem>
-          <para>The minimum number of digits to appear for <literal>b</literal>,
-        <literal>B</literal>, <literal>d</literal>, <literal>i</literal>, <literal>o</literal>,
-        <literal>u</literal>, <literal>x</literal>, and <literal>X</literal> conversions.</para>
+          <para>The minimum number of digits to appear for <literal>b</literal>, <literal>B</literal>, <literal>d</literal>, <literal>i</literal>, <literal>o</literal>, <literal>u</literal>, <literal>x</literal>, and <literal>X</literal> conversions.</para>
         </listitem>
         <listitem>
-          <para>The number of digits to appear after the radix point for
-        <literal>a</literal>,  <literal>A</literal>,  <literal>e</literal>,  <literal>E</literal>,
-        <literal>f</literal>, and <literal>F</literal> conversions.</para>
+          <para>The number of digits to appear after the radix point for <literal>a</literal>, <literal>A</literal>, <literal>e</literal>, <literal>E</literal>, <literal>f</literal>, and <literal>F</literal> conversions.</para>
         </listitem>
         <listitem>
-          <para>The maximum number of significant digits for <literal>g</literal> and
-        <literal>G</literal> conversions.</para>
+          <para>The maximum number of significant digits for <literal>g</literal> and <literal>G</literal> conversions.</para>
         </listitem>
         <listitem>
-          <para>The maximum number of characters to be taken from a string for
-        <literal>s</literal> and <literal>p</literal> conversions.</para>
+          <para>The maximum number of characters to be taken from a string for <literal>s</literal> and <literal>p</literal> conversions.</para>
         </listitem>
       </itemizedlist>
     </sect2>
+
     <sect2 xml:id="str.sprintf-arguments">
       <title>Relative &amp; Absolute Arguments</title>
-      <para>Usually, an argument is mapped to a conversion specifier
-      implicitly: the <replaceable>n</replaceable><superscript>th</superscript> argument corresponds to the
-      <replaceable>n</replaceable><superscript>th</superscript> conversion specifier. However, this may be
-      made explicit so as to support arguments in a different order to their
-      conversion specifiers, and/or to use the same argument multiple times.</para>
-      <para>Arguments are indexed with integers, the first argument having an
-      index of 1. To marry a conversion specifier with an argument at index
-      <replaceable>i</replaceable>, the format sequence should begin with
-      <literal>%<replaceable>i</replaceable>$</literal>. However, if one format sequence has this
-      form, they all must: numbered and un-numbered conversion specifiers
-      cannot be mixed in the same format string.</para>
-      <para>The precision and width of a field can be provided in a similar
-      way. A width given as <literal>*<replaceable>i</replaceable>$</literal> or a precision given
-      as <literal>.*<replaceable>i</replaceable>$</literal>, specifies that the value is supplied
-      by the argument indexed by <replaceable>i</replaceable>. However, this construct must
-      always be paired with numbered conversion specifiers, which as noted
-      above, are an all-or-nothing deal.</para>
-      <para>Alternatively, a width given as a single asterisk, or a precision
-      given as <literal>.*</literal>, denote that the <replaceable>n</replaceable><superscript>th</superscript>
-      argument holds <emphasis>their</emphasis> value, rather than that of their
-      conversion specifier.  These constructs can be intermixed freely with
-      unnumbered conversion specifiers.</para>
+
+      <para>Usually, an argument is mapped to a conversion specifier implicitly: the <replaceable>n</replaceable><superscript>th</superscript> argument corresponds to the <replaceable>n</replaceable><superscript>th</superscript> conversion specifier. However, this may be made explicit so as to support arguments in a different order to their conversion specifiers, and/or to use the same argument multiple times.</para>
+      
+      <para>Arguments are indexed with integers, the first argument having an index of 1. To marry a conversion specifier with an argument at index <replaceable>i</replaceable>, the format sequence should begin with <literal>%<replaceable>i</replaceable>$</literal>. However, if one format sequence has this form, they all must: numbered and un-numbered conversion specifiers cannot be mixed in the same format string.</para>
+      
+      <para>The precision and width of a field can be provided in a similar way. A width given as <literal>*<replaceable>i</replaceable>$</literal> or a precision given as <literal>.*<replaceable>i</replaceable>$</literal>, specifies that the value is supplied by the argument indexed by <replaceable>i</replaceable>. However, this construct must always be paired with numbered conversion specifiers, which as noted above, are an all-or-nothing deal.</para>
+      
+      <para>Alternatively, a width given as a single asterisk, or a precision given as <literal>.*</literal>, denote that the <replaceable>n</replaceable><superscript>th</superscript> argument holds <emphasis>their</emphasis> value, rather than that of their conversion specifier.  These constructs can be intermixed freely with unnumbered conversion specifiers.</para>
+      
       <example xml:id="ex.sprintf-arguments">
-        <title>Alternative approaches to matching arguments with format
-        sequences.
-      </title>
+        <title>Alternative approaches to matching arguments with format sequences.</title>
+
         <programlisting><xi:include href="examples/sprintf-arguments.rb" parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
+
   <sect1 xml:id="str.unpack">
     <title>Unpacking</title>
-    <para><literal>String#unpack</literal> interprets the receiver as a sequence of
-    bytes-ignoring its encoding-which it expands into an <literal>Array</literal> of
-    values according to a given template. The template consists of
-    single-character <firstterm>directives</firstterm>
-    optionally followed by an integer count, <replaceable>count</replaceable>, or an asterisk.
-    Whitespace preceding directives is ignored. In general, <replaceable>count</replaceable>
-    specifies the number of times the corresponding directive should be
-    applied; when <replaceable>count</replaceable> is <literal>*</literal>, the directive is applied
-    as many times as possible. The inverse operation, i.e. packing an
-    <literal>Array</literal> of values into a <literal>String</literal> according to a
-    template, is performed with <literal>Array#pack</literal>.</para>
-    <para>The following directives create <literal>Integer</literal>s in the result
-    <literal>Array</literal>.</para>
 
-    <remark>This graf wants to be associated with the table. Footnote?
-    Annotation?</remark>
-    <para>In the following table, the <emphasis>C Type</emphasis> column is the
-    corresponding datatype in the C programming language. The <emphasis>Byte
-    Order</emphasis> column indicates whether the field’s bytes are big-endian,
-    or <emphasis>network</emphasis>, i.e.  most-significant bit first;
-    little-endian, or <emphasis>VAX</emphasis>, i.e.  least-significant bit
-    first; or in the native order, i.e. that of the current architecture’s. A
-    <emphasis>BER-compressed integer</emphasis> is an unsigned integer in base
-    128 with as few digits as possible. The high bit is set on each byte except
-    the LSB.</para>
+    <para><literal>String#unpack</literal> interprets the receiver as a sequence of bytes-ignoring its encoding-which it expands into an <literal>Array</literal> of values according to a given template. The template consists of single-character <firstterm>directives</firstterm> optionally followed by an integer count, <replaceable>count</replaceable>, or an asterisk.  Whitespace preceding directives is ignored. In general, <replaceable>count</replaceable> specifies the number of times the corresponding directive should be applied; when <replaceable>count</replaceable> is <literal>*</literal>, the directive is applied as many times as possible. The inverse operation, i.e. packing an <literal>Array</literal> of values into a <literal>String</literal> according to a template, is performed with <literal>Array#pack</literal>.</para>
+    
+    <para>The following directives create <literal>Integer</literal>s in the result <literal>Array</literal>.</para>
+
+    <remark>This graf wants to be associated with the table. Footnote?  Annotation?</remark>
+    
+    <para>In the following table, the <emphasis>C Type</emphasis> column is the corresponding datatype in the C programming language. The <emphasis>Byte Order</emphasis> column indicates whether the field’s bytes are big-endian, or <emphasis>network</emphasis>, i.e.  most-significant bit first; little-endian, or <emphasis>VAX</emphasis>, i.e.  least-significant bit first; or in the native order, i.e. that of the current architecture’s. A <emphasis>BER-compressed integer</emphasis> is an unsigned integer in base 128 with as few digits as possible. The high bit is set on each byte except the LSB.</para>
+    
     <table>
-      <caption>
-	<literal>Integer</literal> directives for <literal>String#unpack</literal>
-      </caption>
+      <caption><literal>Integer</literal> directives for <literal>String#unpack</literal></caption>
+
       <thead>
         <tr>
-          <th>Directive
-          </th>
-          <th>Interpretation
-          </th>
-          <th>C Type
-          </th>
-          <th>Byte order
-      </th>
+          <th>Directive</th>
+          <th>Interpretation</th>
+          <th>C Type</th>
+          <th>Byte order</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            <literal>C</literal>
-          </td>
-          <td>8-bit unsigned integer
-          </td>
-          <td>
-            <literal>unsigned char</literal>
-          </td>
-          <td>N/A    
-        </td>
+          <td><literal>C</literal></td>
+          <td>8-bit unsigned integer</td>
+          <td><literal>unsigned char</literal></td>
+          <td>N/A</td>
         </tr>
         <tr>
-          <td>
-            <literal>S</literal>
-          </td>
-          <td>16-bit unsigned integer
-          </td>
-          <td>
-            <literal>uint16_t</literal>
-          </td>
-          <td>Native    
-        </td>
+          <td><literal>S</literal></td>
+          <td>16-bit unsigned integer</td>
+          <td><literal>uint16_t</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
-          <td>
-            <literal>L</literal>
-          </td>
-          <td>32-bit unsigned integer
-          </td>
-          <td>
-            <literal>uint32_t</literal>
-          </td>
-          <td>Native
-        </td>
+          <td><literal>L</literal></td>
+          <td>32-bit unsigned integer</td>
+          <td><literal>uint32_t</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
-          <td>
-            <literal>Q</literal>
-          </td>
-          <td>64-bit unsigned integer
-          </td>
-          <td>
-            <literal>uint64_t</literal>
-          </td>
-          <td>Native
-        </td>
+          <td><literal>Q</literal></td>
+          <td>64-bit unsigned integer</td>
+          <td><literal>uint64_t</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
-          <td>
-            <literal>c</literal>
-          </td>
-          <td>8-bit signed integer
-          </td>
-          <td>
-            <literal>char</literal>
-          </td>
-          <td>Native
-        </td>
+          <td><literal>c</literal></td>
+          <td>8-bit signed integer</td>
+          <td><literal>char</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
-          <td>
-            <literal>s</literal>
-          </td>
-          <td>16-bit signed integer
-          </td>
-          <td>
-            <literal>int16_t</literal>
-          </td>
-          <td>Native
-        </td>
+          <td><literal>s</literal></td>
+          <td>16-bit signed integer</td>
+          <td><literal>int16_t</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
-          <td>
-            <literal>l</literal>
-          </td>
-          <td>32-bit signed integer
-          </td>
-          <td>
-            <literal>int32_t</literal>
-          </td>
-          <td>Native
-        </td>
+          <td><literal>l</literal></td>
+          <td>32-bit signed integer</td>
+          <td><literal>int32_t</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
           <td><literal>l!</literal> / <literal>l_</literal></td>
-          <td>Signed integer of <literal>sizeof(long)</literal> bytes
-          </td>
-          <td>
-            <literal>long</literal>
-          </td>
-          <td>Native
-        </td>
+          <td>Signed integer of <literal>sizeof(long)</literal> bytes</td>
+          <td><literal>long</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
-          <td>
-            <literal>q</literal>
-          </td>
-          <td>64-bit signed integer
-          </td>
-          <td>
-            <literal>int64_t</literal>
-          </td>
-          <td>Native
-        </td>
+          <td><literal>q</literal></td>
+          <td>64-bit signed integer</td>
+          <td><literal>int64_t</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
           <td><literal>S_</literal> / <literal>S!</literal></td>
-          <td>Unsigned integer of <literal>sizeof(unsigned short)</literal> bytes
-          </td>
-          <td>
-            <literal>unisgned short</literal>
-          </td>
-          <td>Native
-        </td>
+          <td>Unsigned integer of <literal>sizeof(unsigned short)</literal> bytes</td>
+          <td><literal>unisgned short</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
           <td><literal>I</literal> / <literal>I_</literal> / <literal>I!</literal></td>
-          <td>Unsigned integer of <literal>sizeof(unsigned int)</literal> bytes
-          </td>
-          <td>
-            <literal>unsigned int</literal>
-          </td>
-          <td>Native
-        </td>
+          <td>Unsigned integer of <literal>sizeof(unsigned int)</literal> bytes</td>
+          <td><literal>unsigned int</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
           <td><literal>L!</literal> / <literal>L_</literal></td>
-          <td>Unsigned integer of <literal>sizeof(unsigned long)</literal> bytes
-          </td>
-          <td>
-            <literal>unsigned long</literal>
-          </td>
-          <td>Native
-        </td>
+          <td>Unsigned integer of <literal>sizeof(unsigned long)</literal> bytes</td>
+          <td><literal>unsigned long</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
           <td><literal>s!</literal> / <literal>s_</literal></td>
-          <td>Signed integer of <literal>sizeof(short)</literal> bytes
-          </td>
-          <td>
-            <literal>short</literal>
-          </td>
-          <td>Native
-        </td>
+          <td>Signed integer of <literal>sizeof(short)</literal> bytes</td>
+          <td><literal>short</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
           <td><literal>i</literal> / <literal>i!</literal> / <literal>i_</literal></td>
-          <td>Signed integer of <literal>sizeof(int)</literal> bytes
-          </td>
-          <td>
-            <literal>int</literal>
-          </td>
-          <td>Native
-        </td>
+          <td>Signed integer of <literal>sizeof(int)</literal> bytes</td>
+          <td><literal>int</literal></td>
+          <td>Native</td>
         </tr>
         <tr>
-          <td>
-            <literal>n</literal>
-          </td>
-          <td>16-bit unsigned integer
-          </td>
-          <td>
-            <literal>unsigned short</literal>
-          </td>
-          <td>Big endian
-        </td>
+          <td><literal>n</literal></td>
+          <td>16-bit unsigned integer</td>
+          <td><literal>unsigned short</literal></td>
+          <td>Big endian</td>
         </tr>
         <tr>
-          <td>
-            <literal>N</literal>
-          </td>
-          <td>32-bit unsigned integer
-          </td>
-          <td>
-            <literal>unsigned long</literal>
-          </td>
-          <td>Big endian 
-        </td>
+          <td><literal>N</literal></td>
+          <td>32-bit unsigned integer</td>
+          <td><literal>unsigned long</literal></td>
+          <td>Big endian</td>
         </tr>
         <tr>
-          <td>
-            <literal>v</literal>
-          </td>
-          <td>16-bit unsigned integer
-          </td>
-          <td>
-            <literal>unsigned short</literal>
-          </td>
-          <td>Little endian 
-        </td>
+          <td><literal>v</literal></td>
+          <td>16-bit unsigned integer</td>
+          <td><literal>unsigned short</literal></td>
+          <td>Little endian</td>
         </tr>
         <tr>
-          <td>
-            <literal>V</literal>
-          </td>
-          <td>32-bit unsigned integer
-          </td>
-          <td>
-            <literal>unsigned long</literal>
-          </td>
-          <td>Little endian 
-        </td>
+          <td><literal>V</literal></td>
+          <td>32-bit unsigned integer</td>
+          <td><literal>unsigned long</literal></td>
+          <td>Little endian</td>
         </tr>
         <tr>
-          <td>
-            <literal>U</literal>
-          </td>
-          <td>UTF-8 character (codepoint)
-          </td>
-          <td>N/A   
-          </td>
-          <td>N/A   
-        </td>
+          <td><literal>U</literal></td>
+          <td>UTF-8 character (codepoint)</td>
+          <td>N/A</td>
+          <td>N/A</td>
         </tr>
         <tr>
-          <td>
-            <literal>w</literal>
-          </td>
-          <td>BER-compressed integer
-          </td>
-          <td>N/A   
-          </td>
-          <td>Big-endian   
-    </td>
+          <td><literal>w</literal></td>
+          <td>BER-compressed integer</td>
+          <td>N/A</td>
+          <td>Big-endian</td>
         </tr>
       </tbody>
     </table>
+
     <example xml:id="ex.string-unpack-int">
-      <title>Unpacking a sequence of bytes to <literal>Integer</literal>s with
-      <literal>String#unpack</literal></title>
+      <title>Unpacking a sequence of bytes to <literal>Integer</literal>s with <literal>String#unpack</literal></title>
+
       <programlisting><xi:include href="examples/string-unpack-int.rb" parse="text"/></programlisting>
     </example>
 
-    <remark>From the second sentence onward, this graf wants to be associated
-    with the table itself</remark>
-    <para>Similarly, the following directives unpack to
-    <literal>Float</literal>s. The <emphasis>Byte Order</emphasis> column
-    indicates whether the field’s bytes are big-endian, or
-    <emphasis>network</emphasis>, i.e.  most-significant bit first;
-    little-endian, or <emphasis>VAX</emphasis>, i.e.  least-significant bit
-    first; or in the native order, i.e. that of the current
-    architecture’s.</para>
+    <remark>From the second sentence onward, this graf wants to be associated with the table itself</remark>
+
+    <para>Similarly, the following directives unpack to <literal>Float</literal>s. The <emphasis>Byte Order</emphasis> column indicates whether the field’s bytes are big-endian, or <emphasis>network</emphasis>, i.e.  most-significant bit first; little-endian, or <emphasis>VAX</emphasis>, i.e.  least-significant bit first; or in the native order, i.e. that of the current architecture’s.</para>
+
     <table>
-      <caption>
-	<literal>Float</literal> directives for <literal>String#unpack</literal>
-      </caption>
+      <caption><literal>Float</literal> directives for <literal>String#unpack</literal></caption>
+
       <thead>
         <tr>
-          <th>Directive
-          </th>
-          <th>Interpretation
-          </th>
-          <th>Byte order
-      </th>
+          <th>Directive</th>
+          <th>Interpretation</th>
+          <th>Byte order</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><literal>D</literal> / <literal>d</literal></td>
-          <td>Double-precision float
-          </td>
-          <td>Native    
-        </td>
+          <td>Double-precision float</td>
+          <td>Native</td>
         </tr>
         <tr>
           <td><literal>F</literal> / <literal>f</literal></td>
-          <td>Single-precision float
-          </td>
-          <td>Native    
-        </td>
+          <td>Single-precision float</td>
+          <td>Native</td>
         </tr>
         <tr>
-          <td>
-            <literal>E</literal>
-          </td>
-          <td>Double-precision float
-          </td>
-          <td>Little-endian
-        </td>
+          <td><literal>E</literal></td>
+          <td>Double-precision float</td>
+          <td>Little-endian</td>
         </tr>
         <tr>
-          <td>
-            <literal>e</literal>
-          </td>
-          <td>Single-precision float
-          </td>
-          <td>Little-endian
-        </td>
+          <td><literal>e</literal></td>
+          <td>Single-precision float</td>
+          <td>Little-endian</td>
         </tr>
         <tr>
-          <td>
-            <literal>G</literal>
-          </td>
-          <td>Double-precision float
-          </td>
-          <td>Big-endian
-        </td>
+          <td><literal>G</literal></td>
+          <td>Double-precision float</td>
+          <td>Big-endian</td>
         </tr>
         <tr>
-          <td>
-            <literal>g</literal>
-          </td>
-          <td>Single-precision float
-          </td>
-          <td>Big-endian
-    </td>
+          <td><literal>g</literal></td>
+          <td>Single-precision float</td>
+          <td>Big-endian</td>
         </tr>
       </tbody>
     </table>
+
     <example xml:id="ex.string-unpack-float">
-      <title>Unpacking a sequence of bytes to <literal>Float</literal>s with
-      <literal>String#unpack</literal></title>
+      <title>Unpacking a sequence of bytes to <literal>Float</literal>s with <literal>String#unpack</literal></title>
+
       <programlisting><xi:include href="examples/string-unpack-float.rb" parse="text"/></programlisting>
     </example>
+
     <para>And, finally, the <literal>String</literal> directives:</para>
+
     <informaltable>
       <thead>
         <tr>
-          <th>Directive
-          </th>
-          <th>Interpretation
-      </th>
+          <th>Directive</th>
+          <th>Interpretation</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            <literal>A</literal>
-          </td>
-          <td>Binary string, padded with spaces if shorter than
-            <replaceable>count</replaceable></td>
+          <td><literal>A</literal></td>
+          <td>Binary string, padded with spaces if shorter than <replaceable>count</replaceable></td>
         </tr>
         <tr>
-          <td>
-            <literal>a</literal>
-          </td>
-          <td>Binary string, padded with nulls if shorter than
-            <replaceable>count</replaceable></td>
+          <td><literal>a</literal></td>
+          <td>Binary string, padded with nulls if shorter than <replaceable>count</replaceable></td>
         </tr>
         <tr>
-          <td>
-            <literal>Z</literal>
-          </td>
+          <td><literal>Z</literal></td>
           <td>As <literal>a</literal>, but null represented as <literal>*</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>B</literal>
-          </td>
-          <td>Big-endian bit string
-        </td>
+          <td><literal>B</literal></td>
+          <td>Big-endian bit string</td>
         </tr>
         <tr>
-          <td>
-            <literal>b</literal>
-          </td>
-          <td>Little-endian bit string
-        </td>
+          <td><literal>b</literal></td>
+          <td>Little-endian bit string</td>
         </tr>
         <tr>
-          <td>
-            <literal>H</literal>
-          </td>
-          <td>Big-endian hex string
-        </td>
+          <td><literal>H</literal></td>
+          <td>Big-endian hex string</td>
         </tr>
         <tr>
-          <td>
-            <literal>h</literal>
-          </td>
-          <td>Little-endian hex string
-        </td>
+          <td><literal>h</literal></td>
+          <td>Little-endian hex string</td>
         </tr>
         <tr>
-          <td>
-            <literal>u</literal>
-          </td>
-          <td><link xlink:href="http://en.wikipedia.org/wiki/Uuencode">UU-encoded</link> string,
-            as produced by <literal>uencode(1)</literal></td>
+          <td><literal>u</literal></td>
+          <td><link xlink:href="http://en.wikipedia.org/wiki/Uuencode">UU-encoded</link> string, as produced by <literal>uencode(1)</literal></td>
         </tr>
         <tr>
-          <td>
-            <literal>M</literal>
-          </td>
-          <td><link xlink:href="http://en.wikipedia.org/wiki/Quoted_printable">Quoted-printable</link>-encoded
-            string (MIME encoding)
-        </td>
+          <td><literal>M</literal></td>
+          <td><link xlink:href="http://en.wikipedia.org/wiki/Quoted_printable">Quoted-printable</link>-encoded string (MIME encoding)</td>
         </tr>
         <tr>
-          <td>
-            <literal>m</literal>
-          </td>
-          <td><link xlink:href="http://en.wikipedia.org/wiki/Base64">Base64-encoded</link> string
-            of <replaceable>count</replaceable> characters; <literal>0</literal> omits line feeds
-        </td>
+          <td><literal>m</literal></td>
+          <td><link xlink:href="http://en.wikipedia.org/wiki/Base64">Base64-encoded</link> string of <replaceable>count</replaceable> characters; <literal>0</literal> omits line feeds</td>
         </tr>
         <tr>
-          <td>
-            <literal>P</literal>
-          </td>
-          <td>Pointer to a structure (fixed-length string)
-        </td>
+          <td><literal>P</literal></td>
+          <td>Pointer to a structure (fixed-length string)</td>
         </tr>
         <tr>
-          <td>
-            <literal>p</literal>
-          </td>
-          <td>Pointer to a null-terminated string
-    </td>
+          <td><literal>p</literal></td>
+          <td>Pointer to a null-terminated string</td>
         </tr>
       </tbody>
     </informaltable>
+
     <example xml:id="ex.string-unpack-str">
-      <title>Unpacking a sequence of bytes to <literal>String</literal>s with
-      <literal>String#unpack</literal></title>
+      <title>Unpacking a sequence of bytes to <literal>String</literal>s with <literal>String#unpack</literal></title>
+
       <programlisting><xi:include href="examples/string-unpack-str.rb" parse="text"/></programlisting>
     </example>
-    <para>There are also directives to specify which byte should be read next:
-    <literal>x</literal> skips forward one byte, <literal>X</literal> skips backward one
-    byte, and <literal>@<replaceable>o</replaceable></literal> skips to the byte at offset
-    <replaceable>o</replaceable>.</para>
+
+    <para>There are also directives to specify which byte should be read next: <literal>x</literal> skips forward one byte, <literal>X</literal> skips backward one byte, and <literal>@<replaceable>o</replaceable></literal> skips to the byte at offset <replaceable>o</replaceable>.</para>
   </sect1>
+
   <sect1 xml:id="str.symbols">
     <title>Symbols</title>
-    <para>A <literal>Symbol</literal> is an immutable immediate representing an
-    identifier. Two symbols with the same content will always be represented
-    by the same object, e.g. <literal>:glark.object_id ==
-      :glark.object_id</literal>, so symbol comparisons are extremely efficient.
-    However, <literal>Symbol</literal> objects are not
-    garbage collected, so are unsuitable for storing data from unbounded
-    collections; use <literal>String</literal>s instead. <literal>Symbol</literal>s are
-    used for unique identifiers, such as <literal>Hash</literal> keys, as message
-    selectors and method names, and as a substitute for constants.</para>
-    <para><literal>Symbol</literal> is discussed in this section because it shares many
-    of its methods with <literal>String</literal>. In fact, these
-    <literal>Symbol</literal> methods are often implemented by converting the
-    receiver to a <literal>String</literal>, invoking the method upon it, then
-    converting it back to a <literal>Symbol</literal>.</para>
-    <!--figure>
-      <title>Syntax diagram of a symbol
-    </title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="figures/symbol.png" format="PNG" width="4in"/>
-        </imageobject>
-      </mediaobject>
-    </figure-->
-    <para>A <literal>Symbol</literal> literal consists of a colon (<literal>U＋003A</literal>) followed by a symbol or <literal>String</literal>
-    literal. A symbol is an <link linkend="pro.identifiers">identifier</link>-optionally followed by
-    <literal>=</literal>, <literal>?</literal>, or <literal>!</literal>-an <link linkend="mes.operators">operator method selector</link>, <literal>[]</literal>,
-    or <literal>[]=</literal>. The
-    <literal>%s<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> construct enables
-    symbols to be specified between arbitrary delimiters along the same lines
-    as <link linkend="str.single-quoted-q">%q</link>.</para>
-    <!--figure>
-      <title>Syntax diagram of a symbol literal
-    </title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="figures/symbol-literal.png" format="PNG" width="4in"/>
-        </imageobject>
-      </mediaobject>
-    </figure-->
-    <para>A <literal>Symbol</literal> may also be created from a <literal>String</literal>
-    with <literal>String#to_sym</literal>, but see the remark below regarding
-    invalid encoding.</para>
+
+    <para>A <literal>Symbol</literal> is an immutable immediate representing an identifier. Two symbols with the same content will always be represented by the same object, e.g. <literal>:glark.object_id == :glark.object_id</literal>, so symbol comparisons are extremely efficient.  However, <literal>Symbol</literal> objects are not garbage collected, so are unsuitable for storing data from unbounded collections; use <literal>String</literal>s instead. <literal>Symbol</literal>s are used for unique identifiers, such as <literal>Hash</literal> keys, as message selectors and method names, and as a substitute for constants.</para>
+    
+    <para><literal>Symbol</literal> is discussed in this section because it shares many of its methods with <literal>String</literal>. In fact, these <literal>Symbol</literal> methods are often implemented by converting the receiver to a <literal>String</literal>, invoking the method upon it, then converting it back to a <literal>Symbol</literal>.</para>
+    
+    <para>A <literal>Symbol</literal> literal consists of a colon (<literal>U＋003A</literal>) followed by a symbol or <literal>String</literal> literal. A symbol is an <link linkend="pro.identifiers">identifier</link>-optionally followed by <literal>=</literal>, <literal>?</literal>, or <literal>!</literal>-an <link linkend="mes.operators">operator method selector</link>, <literal>[]</literal>, or <literal>[]=</literal>. The <literal>%s<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> construct enables symbols to be specified between arbitrary delimiters along the same lines as <link linkend="str.single-quoted-q">%q</link>.</para>
+    
+    <para>A <literal>Symbol</literal> may also be created from a <literal>String</literal> with <literal>String#to_sym</literal>, but see the remark below regarding invalid encoding.</para>
+
     <example xml:id="ex.symbol-creating">
       <title>Creating a <literal>Symbol</literal></title>
+
       <programlisting><xi:include href="examples/symbol-creating.rb" parse="text"/></programlisting>
     </example>
+
     <sect2 xml:id="str.symbol-encoding">
       <title>Encoding</title>
-      <para>A <literal>Symbol</literal> is associated with an encoding, but it cannot
-      be manipulated directly. <literal>Symbol</literal> literals adopt the source
-      encoding of the file in which they are used. If they consist exclusively
-      of ASCII characters, they have the encoding US-ASCII. If a
-      <literal>Symbol</literal> is created from a <literal>String</literal>, either via
-      the <literal>:<replaceable>string</replaceable></literal> syntax or
-      <literal>String#to_sym</literal>, they have the encoding of that
-      <literal>String</literal>. Therefore, to create a <literal>Symbol</literal> with a
-      given encoding, first create a <literal>String</literal> with that encoding,
-      then convert that <literal>String</literal> to a <literal>Symbol</literal>.</para>
-      <para>The encoding of a <literal>Symbol</literal> must always be <link linkend="str.valid-encoding">valid</link>.  Therefore, attempting to convert a
-      <literal>String</literal> with invalid encoding to a <literal>Symbol</literal>,
-      causes an <literal>EncodingError</literal> to be raised.</para>
+
+      <para>A <literal>Symbol</literal> is associated with an encoding, but it cannot be manipulated directly. <literal>Symbol</literal> literals adopt the source encoding of the file in which they are used. If they consist exclusively of ASCII characters, they have the encoding US-ASCII. If a <literal>Symbol</literal> is created from a <literal>String</literal>, either via the <literal>:<replaceable>string</replaceable></literal> syntax or <literal>String#to_sym</literal>, they have the encoding of that <literal>String</literal>. Therefore, to create a <literal>Symbol</literal> with a given encoding, first create a <literal>String</literal> with that encoding, then convert that <literal>String</literal> to a <literal>Symbol</literal>.</para>
+      
+      <para>The encoding of a <literal>Symbol</literal> must always be <link linkend="str.valid-encoding">valid</link>.  Therefore, attempting to convert a <literal>String</literal> with invalid encoding to a <literal>Symbol</literal>, causes an <literal>EncodingError</literal> to be raised.</para>
     </sect2>
   </sect1>
 </chapter>
