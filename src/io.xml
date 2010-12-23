@@ -244,6 +244,8 @@
       
       <para>A stream may be read line by line with the methods described below. They differ in their behaviour when EoF is reached, and whether they return a single line or multiple lines. <function>#gets</function> and <function>#readline</function> assign the last line read to <literal>$_</literal>.</para> 
 
+      <para><function>Kernel.gets</function> and <function>Kernel.readline</function> behave like <function>IO#gets</function> and <function>IO#readline</function>, respectively, but read from <literal>ARGV</literal>.</para>
+
       <table>
         <caption>Instance methods for reading an <literal>IO</literal> stream by line</caption>
 	<thead>
