@@ -88,6 +88,8 @@
     
     <para><function>IO#print</function> accepts any number of arguments, each of which are converted with <function>#to_s</function>, then their concatenation is written to the receiver. If no arguments are supplied, an argument of <literal>$_</literal> is assumed. <function>Kernel#print</function> behaves identically, expect it writes to <literal>$stdout</literal>.</para>
 
+    <para><function>IO#printf</function> interprets its first argument as a format string, and the remainder as values to be interpolated. It expands the format string as with <function>String#%</function>, then prints it as with <function>IO#print</function>. <function>Kernel.printf</function> behaves identically except it prints to <literal>$stdout</literal>.</para>
+
     <para><function>IO#puts</function> also accepts any number of arguments, which it converts with <literal>#to_s</literal>. A newline is appended to each of these <literal>String</literal>s that do not already end with one. Then, their concatenation is written to their receiver. If no arguments are provided, <literal>nil</literal> is assumed, so by default a single newline is written. <literal>Array</literal> arguments are automatically expanded into their constituent elements, so each element is written on a line of its own. <function>Kernel#puts</function> writes to <literal>$stdout</literal>, instead.</para>
 
     <example xml:id="ex.print-puts">
