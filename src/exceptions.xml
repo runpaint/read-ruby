@@ -7,136 +7,68 @@
 	 xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Exceptions</title>
 
-  <para>An <firstterm>exception</firstterm> is an object representing an
-  abnormal condition that changes the typical flow of execution. A block may
-  initiate, or <firstterm>raise</firstterm>, an exception to signal an
-  abnormality which it is either unwilling or unable to handle locally. This
-  suspends program execution and causes a corresponding <firstterm>exception
-  handler</firstterm>—a block which has elected to resolve the abnormality—to
-  be sought. If the search is successful, the handler is called, then execution
-  resumes from the statement following that which raised the
-  exception. Otherwise, the program terminates.</para>
+  <para>An <firstterm>exception</firstterm> is an object representing an abnormal condition that changes the typical flow of execution. A block may initiate, or <firstterm>raise</firstterm>, an exception to signal an abnormality which it is either unwilling or unable to handle locally. This suspends program execution and causes a corresponding <firstterm>exception handler</firstterm>—a block which has elected to resolve the abnormality—to be sought. If the search is successful, the handler is called, then execution resumes from the statement following that which raised the exception. Otherwise, the program terminates.</para>
 
   <sect1 xml:id="exc.objects">
     <title><literal>Exception</literal> Objects</title>
 
-    <para>Exceptions are instances of <literal>Exception</literal> or a 
-    subclass thereof. These subclasses primarily exist to increase 
-    granularity in <literal>rescue</literal> clauses, which match 
-    exceptions solely on their class. They rarely augment the behaviour of 
-    their parent.</para>
+    <para>Exceptions are instances of <literal>Exception</literal> or a subclass thereof. These subclasses primarily exist to increase granularity in <literal>rescue</literal> clauses, which match exceptions solely on their class. They rarely augment the behaviour of their parent.</para>
 
-    <para>Most core exceptions subclass <literal>StandardError</literal>, 
-    allowing them to rescued by a bare <literal>rescue</literal> 
-    clause. The remainder are not expected to be rescued in the normal 
-    course of a program, so must be mentioned explicitly if they are to be 
-    rescued. The principle, therefore, is that custom exception classes 
-    should inherit from <literal>StandardError</literal> if they are 
-    generally recoverable; and <literal>Exception</literal> 
-    otherwise.</para>
+    <para>Most core exceptions subclass <literal>StandardError</literal>, allowing them to rescued by a bare <literal>rescue</literal> clause. The remainder are not expected to be rescued in the normal course of a program, so must be mentioned explicitly if they are to be rescued. The principle, therefore, is that custom exception classes should inherit from <literal>StandardError</literal> if they are generally recoverable; and <literal>Exception</literal> otherwise.</para>
 
-    <para>A custom exception is created by subclassing an existing 
-    <literal>Exception</literal> class. Idiomatically this is: 
-    <literal><replaceable>CustomError</replaceable> = 
-    Class.new(<replaceable>ExceptionClass</replaceable>)</literal>, where 
-    <replaceable>CustomError</replaceable> is the name of the new exception 
-    class and <replaceable>ExceptionClass</replaceable> is that of an 
-    existing exception class.</para>
+    <para>A custom exception is created by subclassing an existing <literal>Exception</literal> class. Idiomatically this is: <literal><replaceable>CustomError</replaceable> = Class.new(<replaceable>ExceptionClass</replaceable>)</literal>, where <replaceable>CustomError</replaceable> is the name of the new exception class and <replaceable>ExceptionClass</replaceable> is that of an existing exception class.</para>
 
-    <para>Exception objects are generally created implicitly with 
-    <literal>raise</literal>. An <literal>Exception</literal> class can be 
-    instantiated manually with its <literal>.new</literal> constructor, 
-    which accepts an optional <literal>String</literal> argument with which 
-    to set the exception’s message.</para>
+    <para>Exception objects are generally created implicitly with <literal>raise</literal>. An <literal>Exception</literal> class can be instantiated manually with its <literal>.new</literal> constructor, which accepts an optional <literal>String</literal> argument with which to set the exception’s message.</para>
 
     <sect2 xml:id="exc.message">
       <title>Message</title>
 
-      <para>An exception’s <firstterm>message</firstterm> is a human-readable 
-      <literal>String</literal> describing the nature of the encapsulated 
-      error. It is intended primarily for debugging purposes.</para>
+      <para>An exception’s <firstterm>message</firstterm> is a human-readable <literal>String</literal> describing the nature of the encapsulated error. It is intended primarily for debugging purposes.</para>
       
-      <para>It is retrieved with the exception’s <literal>#message</literal> 
-      accessor. It can be set with an argument to <literal>raise</literal> or 
-      the constructor of the exception class. The default message is the name 
-      of the exception’s class.</para>
+      <para>It is retrieved with the exception’s <literal>#message</literal> accessor. It can be set with an argument to <literal>raise</literal> or the constructor of the exception class. The default message is the name of the exception’s class.</para>
     </sect2>
 
     <sect2 xml:id="exc.backtrace">
       <title>Backtrace</title>
 
-      <para>The <firstterm>backtrace</firstterm> of an exception describes 
-      the call stack at the moment the exception was raised. It is 
-      represented as an <literal>Array</literal> which details the call stack 
-      in reverse chronological order: the first element describing the line 
-      where the exception was raised, the second, the caller of the method 
-      where the exception was raised, the third, the caller of that method, 
-      etc. Each element of the <literal>Array</literal> is a 
-      <literal>String</literal> detailing the filename and line number of the 
-      event.</para>
+      <para>The <firstterm>backtrace</firstterm> of an exception describes the call stack at the moment the exception was raised. It is represented as an <literal>Array</literal> which details the call stack in reverse chronological order: the first element describing the line where the exception was raised, the second, the caller of the method where the exception was raised, the third, the caller of that method, etc. Each element of the <literal>Array</literal> is a <literal>String</literal> detailing the filename and line number of the event.</para>
       
-      <para>An exception’s backtrace is set automatically by 
-      <literal>raise</literal> using <literal>Kernel.caller</literal>. It can 
-      be created manually by supplying an appropriate 
-      <literal>Array</literal> as the third argument to 
-      <literal>raise</literal>, or 
-      <literal>Exception#set_backtrace</literal>.</para>
+      <para>An exception’s backtrace is set automatically by <literal>raise</literal> using <literal>Kernel.caller</literal>. It can be created manually by supplying an appropriate <literal>Array</literal> as the third argument to <literal>raise</literal>, or <literal>Exception#set_backtrace</literal>.</para>
 
-      <para>The <literal>Exception#backtrace</literal> accessor returns the 
-      backtrace of the receiver.</para>
+      <para>The <literal>Exception#backtrace</literal> accessor returns the backtrace of the receiver.</para>
     </sect2>
   </sect1>
 
   <sect1 xml:id="exc.raise">
     <title><literal>raise</literal></title>
 
-    <para>An exception is raised with the <literal>Kernel.raise</literal> 
-    method, or its alias <literal>Kernel.fail</literal>.</para>
+    <para>An exception is raised with the <literal>Kernel.raise</literal> method, or its alias <literal>Kernel.fail</literal>.</para>
 
-    <para>When <literal>raise</literal> is called without arguments it raises 
-    a <literal>RuntimeError</literal>. If called thusly inside a 
-    <literal>rescue</literal> clause, it re-raises the current 
-    exception.</para>
+    <para>When <literal>raise</literal> is called without arguments it raises a <literal>RuntimeError</literal>. If called thusly inside a <literal>rescue</literal> clause, it re-raises the current exception.</para>
 
-    <para>If the sole argument to <literal>raise</literal> is an 
-    <literal>Exception</literal> object, that exception is raised. When the 
-    sole argument is a <literal>String</literal>, a 
-    <literal>RuntimeError</literal> is raised with that string as its 
-    message.</para>
+    <para>If the sole argument to <literal>raise</literal> is an <literal>Exception</literal> object, that exception is raised. When the sole argument is a <literal>String</literal>, a <literal>RuntimeError</literal> is raised with that string as its message.</para>
 
-    <para>The first argument of <literal>raise</literal> can be an object 
-    responding to <literal>:exception</literal>, in which case the exception 
-    raised is the <literal>Exception</literal> object returned by that 
-    method.  The <literal>Exception</literal> class itself defines such a 
-    method, allowing any of its subclasses to be used in this manner.</para>
+    <para>The first argument of <literal>raise</literal> can be an object responding to <literal>:exception</literal>, in which case the exception raised is the <literal>Exception</literal> object returned by that method.  The <literal>Exception</literal> class itself defines such a method, allowing any of its subclasses to be used in this manner.</para>
 
     <example xml:id="ex.raise-one-argument">
       <title>Using <literal>raise</literal> with a single argument</title>
 
-      <programlisting><xi:include
-      href="examples/raise-one-argument.rb"
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/raise-one-argument.rb" parse="text"/></programlisting>
     </example>
 
-    <para><literal>raise</literal> accepts a <literal>String</literal> as an 
-    optional second argument, which becomes the exception’s message.</para>
+    <para><literal>raise</literal> accepts a <literal>String</literal> as an optional second argument, which becomes the exception’s message.</para>
 
-    <para>The exception’s <link
-    linkend="exc.backtrace">backtrace</link> may be set explicitly 
-    by providing an <literal>Array</literal> of <literal>String</literal>s as 
-    <literal>raise</literal>’s third argument.</para>
+    <para>The exception’s <link linkend="exc.backtrace">backtrace</link> may be set explicitly by providing an <literal>Array</literal> of <literal>String</literal>s as <literal>raise</literal>’s third argument.</para>
 
     <example xml:id="ex.raise-multiple-arguments">
       <title>Using <literal>raise</literal> with multiple arguments</title>
 
-      <programlisting><xi:include
-      href="examples/raise-multiple-arguments.rb"
-      parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/raise-multiple-arguments.rb" parse="text"/></programlisting>
     </example>
 
     <table>
-      <caption>A summary of the arguments accepted by
-      <literal>raise</literal></caption>
+      <caption>A summary of the arguments accepted by <literal>raise</literal></caption>
+
       <thead>
 	<tr>
 	  <th>Arguments</th>
@@ -166,22 +98,19 @@
 	  <td><literal>Exception</literal></td>
 	  <td><literal>String</literal></td>
 	  <td/>
-	  <td><replaceable>a</replaceable> with <replaceable>b</replaceable>
-	  as the message</td>
+	  <td><replaceable>a</replaceable> with <replaceable>b</replaceable> as the message</td>
 	</tr>
 	<tr>
 	  <td><literal>Exception</literal></td>
 	  <td><literal>String</literal></td>
 	  <td><literal>Array</literal></td>
-	  <td><replaceable>a</replaceable> with <replaceable>b</replaceable> as the message,
-	  <replaceable>c</replaceable> as the backtrace</td>
+	  <td><replaceable>a</replaceable> with <replaceable>b</replaceable> as the message, <replaceable>c</replaceable> as the backtrace</td>
 	</tr>
 	<tr>
 	  <td><literal>String</literal></td>
 	  <td/>
 	  <td/>
-	  <td><literal>RuntimeError</literal> with
-	  <replaceable>a</replaceable> as the message</td>
+	  <td><literal>RuntimeError</literal> with <replaceable>a</replaceable> as the message</td>
 	</tr>
 	<tr>
 	  <td><literal>respond_to?(:exception)</literal></td>
@@ -193,16 +122,13 @@
 	  <td><literal>respond_to?(:exception)</literal></td>
 	  <td><literal>String</literal></td>
 	  <td/>
-	  <td><literal><replaceable>a</replaceable>.exception</literal> with
-	  <replaceable>b</replaceable> as the message</td>
+	  <td><literal><replaceable>a</replaceable>.exception</literal> with <replaceable>b</replaceable> as the message</td>
 	</tr>
 	<tr>
 	  <td><literal>respond_to?(:exception)</literal></td>
 	  <td><literal>String</literal></td>
 	  <td><literal>Array</literal></td>
-	  <td><literal><replaceable>a</replaceable>.exception</literal> with
-	  <replaceable>b</replaceable> as the message, <replaceable>c</replaceable> as
-	  the backtrace</td>
+	  <td><literal><replaceable>a</replaceable>.exception</literal> with <replaceable>b</replaceable> as the message, <replaceable>c</replaceable> as the backtrace</td>
 	</tr>
       </tbody>
     </table>
@@ -211,140 +137,66 @@
   <sect1 xml:id="exc.propagation">
     <title>Propagation</title>
 
-    <para>Once raised, exceptions propagate <quote>outward and upward</quote>
-    <biblioref linkend="bib.flan08" units="pages" begin="160" end="161"/>
-    toward the first matching exception handler. Each block encountered by
-    the search is examined for the presence of a <literal>rescue</literal>
-    clause that matches the class of the current exception. If one is found,
-    the exception is handled, and the search halted.</para>
+    <para>Once raised, exceptions propagate <quote>outward and upward</quote><biblioref linkend="bib.flan08" units="pages" begin="160" end="161"/> toward the first matching exception handler. Each block encountered by the search is examined for the presence of a <literal>rescue</literal> clause that matches the class of the current exception. If one is found, the exception is handled, and the search halted.</para>
     
-    <para>The outward propagation is the passage from the
-    <literal>raise</literal> statement to the lexically enclosing block, to
-    that block’s lexically enclosing block, until arriving at the top-level
-    of the program. If the entire program is contained in a single file this
-    step can be visualised as the movement from <literal>raise</literal>
-    toward the left margin.</para>
+    <para>The outward propagation is the passage from the <literal>raise</literal> statement to the lexically enclosing block, to that block’s lexically enclosing block, until arriving at the top-level of the program. If the entire program is contained in a single file this step can be visualised as the movement from <literal>raise</literal> toward the left margin.</para>
 
-    <para>If the outward search completes without the current exception being
-    handled, the search continues up the call stack: to the caller of the
-    current block, to the caller of the current block’s caller, and so on
-    until the call stack is exhausted. If at this point the exception has not
-    been handled, it is printed to STDERR and the program is aborted.</para>
+    <para>If the outward search completes without the current exception being handled, the search continues up the call stack: to the caller of the current block, to the caller of the current block’s caller, and so on until the call stack is exhausted. If at this point the exception has not been handled, it is printed to STDERR and the program is aborted.</para>
   </sect1>
 
   <sect1 xml:id="exc.handling">
     <title>Handling</title>
 
-    <para>An exception is handled with a <link
-    linkend="exc.postfix-rescue"><literal>rescue</literal> statement
-    modifier</link> or by attaching a <link
-    linkend="exc.rescue"><literal>rescue</literal> clause</link> to a <link
-    linkend="exc.begin-statement"><literal>begin</literal> statement</link>, a
-    method definition, a class definition, or a module definition.</para>
+    <para>An exception is handled with a <link linkend="exc.postfix-rescue"><literal>rescue</literal> statement modifier</link> or by attaching a <link linkend="exc.rescue"><literal>rescue</literal> clause</link> to a <link linkend="exc.begin-statement"><literal>begin</literal> statement</link>, a method definition, a class definition, or a module definition.</para>
 
     <sect2 xml:id="exc.begin-statement">
       <title><literal>begin</literal> Statements</title>
 
-      <para><literal>rescue</literal> is typically used in conjunction with a
-      <literal>begin</literal> statement, which simply associates a block of
-      statements with one or more <literal>rescue</literal> clauses. The
-      <literal>rescue</literal> clauses may be followed by optional <link
-      linkend="exc.else-clause"><literal>else</literal></link> and
-      <link linkend="exc.ensure-clause"><literal>ensure</literal></link>
-      clauses.</para>
+      <para><literal>rescue</literal> is typically used in conjunction with a <literal>begin</literal> statement, which simply associates a block of statements with one or more <literal>rescue</literal> clauses. The <literal>rescue</literal> clauses may be followed by optional <link linkend="exc.else-clause"><literal>else</literal></link> and <link linkend="exc.ensure-clause"><literal>ensure</literal></link> clauses.</para>
     </sect2>
 
     <sect2 xml:id="exc.rescue">
       <title><literal>rescue</literal></title>
 
-      <para>A <literal>rescue</literal> clause handles the exceptions 
-      described by its arguments, then returns control to the statement 
-      following the initiating <literal>raise</literal>.</para>
+      <para>A <literal>rescue</literal> clause handles the exceptions described by its arguments, then returns control to the statement following the initiating <literal>raise</literal>.</para>
 
-      <para>Without arguments, <literal>rescue</literal> handles only 
-      <literal>StandardError</literal> exceptions and subclasses thereof. 
-      <literal>rescue</literal> may be followed by <literal> =&gt; 
-      <replaceable>identifier</replaceable></literal> to assign the rescued 
-      exception to a local variable named 
-      <replaceable>identifier</replaceable>. Having done so, 
-      <literal>Exception</literal> instance methods such as 
-      <literal>#message</literal> and <literal>#class</literal> may be sent 
-      to it.</para>
+      <para>Without arguments, <literal>rescue</literal> handles only <literal>StandardError</literal> exceptions and subclasses thereof.  <literal>rescue</literal> may be followed by <literal> =&gt; <replaceable>identifier</replaceable></literal> to assign the rescued exception to a local variable named <replaceable>identifier</replaceable>. Having done so, <literal>Exception</literal> instance methods such as <literal>#message</literal> and <literal>#class</literal> may be sent to it.</para>
 
       <example xml:id="ex.rescue-clause">
-	<title>Using a <literal>begin</literal> block with a 
-	<literal>rescue</literal> clause to raise and rescue a 
-	<literal>RuntimeError</literal></title>
+	<title>Using a <literal>begin</literal> block with a <literal>rescue</literal> clause to raise and rescue a <literal>RuntimeError</literal></title>
 
-	<programlisting><xi:include
-	href="examples/rescue-clause.rb"
-	parse="text"/></programlisting>
+	<programlisting><xi:include href="examples/rescue-clause.rb" parse="text"/></programlisting>
       </example>
 
-      <para>If arguments are provided to <literal>rescue</literal> they must 
-      be supplied as a comma-separated list of <literal>Exception</literal> 
-      classes to be handled. A <literal>rescue</literal> clause so written 
-      will handle exceptions of any of the named classes or their 
-      subclasses.</para>
+      <para>If arguments are provided to <literal>rescue</literal> they must be supplied as a comma-separated list of <literal>Exception</literal> classes to be handled. A <literal>rescue</literal> clause so written will handle exceptions of any of the named classes or their subclasses.</para>
 
-      <para>A construct that accepts a <literal>rescue</literal> clause 
-      accepts any number of them. They are tested against the current 
-      exception in the order that they appear in the source file, so should 
-      be arranged by decreasing specificity.</para>
+      <para>A construct that accepts a <literal>rescue</literal> clause accepts any number of them. They are tested against the current exception in the order that they appear in the source file, so should be arranged by decreasing specificity.</para>
     </sect2>
 
     <sect2 xml:id="exc.postfix-rescue">
       <title>Postfix Form</title>
 
-      <para><literal>rescue</literal> may be also used as a statement 
-      modifier. In this form it is not restricted to the aforementioned 
-      constructs; it may appear anywhere a statement can otherwise. Its 
-      syntax is <literal><replaceable>a</replaceable> rescue 
-      <replaceable>b</replaceable></literal>, where 
-      <replaceable>a</replaceable> and <replaceable>b</replaceable> are both 
-      expressions. It evaluates to <replaceable>a</replaceable> by default; 
-      <replaceable>b</replaceable> if <replaceable>a</replaceable> raises an 
-      exception of <literal>StandardError</literal> or subclass 
-      thereof.</para>
+      <para><literal>rescue</literal> may be also used as a statement modifier. In this form it is not restricted to the aforementioned constructs; it may appear anywhere a statement can otherwise. Its syntax is <literal><replaceable>a</replaceable> rescue <replaceable>b</replaceable></literal>, where <replaceable>a</replaceable> and <replaceable>b</replaceable> are both expressions. It evaluates to <replaceable>a</replaceable> by default; <replaceable>b</replaceable> if <replaceable>a</replaceable> raises an exception of <literal>StandardError</literal> or subclass thereof.</para>
       
-      <para>Unlike the <literal>rescue</literal> clause, the 
-      <literal>rescue</literal> modifier does not permit specifying exception 
-      classes to match or a local variable to which the caught exception is 
-      aliased. However, regarding the last point, if the right-hand operand 
-      of <literal>rescue</literal> is the special variable <link
-      linkend="exc.dollar-bang"><literal>$!</literal></link>, the statement 
-      will evaluate to the rescued exception.</para>
+      <para>Unlike the <literal>rescue</literal> clause, the <literal>rescue</literal> modifier does not permit specifying exception classes to match or a local variable to which the caught exception is aliased. However, regarding the last point, if the right-hand operand of <literal>rescue</literal> is the special variable <link linkend="exc.dollar-bang"><literal>$!</literal></link>, the statement will evaluate to the rescued exception.</para>
 
       <example xml:id="ex.postfix-rescue-statement">
-	<title>Using the postfix <literal>rescue</literal> statement to 
-	return <literal>nil</literal> when a 
-	<literal>ZeroDivisionError</literal> is raised.</title>
+	<title>Using the postfix <literal>rescue</literal> statement to return <literal>nil</literal> when a <literal>ZeroDivisionError</literal> is raised.</title>
 
-	<programlisting><xi:include
-	href="examples/postfix-rescue-statement.rb"
-	parse="text"/></programlisting>
+	<programlisting><xi:include href="examples/postfix-rescue-statement.rb"	parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="exc.dollar-bang">
       <title><literal>$!</literal></title>
 
-      <para>Within a <literal>rescue</literal> clause or on the right-hand 
-      side of a <literal>rescue</literal> statement modifier, the 
-      <literal>$!</literal> variable holds the caught exception. In other 
-      contexts it evaluates to <literal>nil</literal>.</para>
+      <para>Within a <literal>rescue</literal> clause or on the right-hand side of a <literal>rescue</literal> statement modifier, the <literal>$!</literal> variable holds the caught exception. In other contexts it evaluates to <literal>nil</literal>.</para>
     </sect2>
 
     <sect2 xml:id="exc.else-clause">
       <title><literal>else</literal> Clause</title>
 
-      <para>A group of <literal>rescue</literal> statements may be followed 
-      by an <literal>else</literal> clause, whose body is executed iff 
-      neither the <literal>rescue</literal> clauses handled an exception nor 
-      the preceding statements raised one. However, even in this case the use 
-      of flow control statements in the statements preceding the 
-      <literal>rescue</literal> clauses may cause the <literal>else</literal> 
-      clause to be skipped.</para>
+      <para>A group of <literal>rescue</literal> statements may be followed by an <literal>else</literal> clause, whose body is executed iff neither the <literal>rescue</literal> clauses handled an exception nor the preceding statements raised one. However, even in this case the use of flow control statements in the statements preceding the <literal>rescue</literal> clauses may cause the <literal>else</literal> clause to be skipped.</para>
     </sect2>
 
     <sect2 xml:id="exc.ensure-clause">
@@ -352,67 +204,39 @@
       
       <!-- Note that it handles exit(), too -->
 
-      <para>A construct that accepts <literal>rescue</literal> clauses may 
-      include an <literal>ensure</literal> clause as its final clause. The 
-      statements in an <literal>ensure</literal> clause will always be 
-      executed, regardless of whether their previous sibling clauses raised 
-      an exception or employed a flow control statement such as 
-      <literal>return</literal>. Specifically, if the construct to which 
-      <literal>ensure</literal> is attached…</para>
+      <para>A construct that accepts <literal>rescue</literal> clauses may include an <literal>ensure</literal> clause as its final clause. The statements in an <literal>ensure</literal> clause will always be executed, regardless of whether their previous sibling clauses raised an exception or employed a flow control statement such as <literal>return</literal>. Specifically, if the construct to which <literal>ensure</literal> is attached…</para>
       
       <variablelist>
 	<varlistentry>
 	  <term>Exits normally</term>
 	  <listitem>
-	    <para>The <literal>else</literal> clause, if any, is executed,
-	    followed by the <literal>ensure</literal> clause.</para>
+	    <para>The <literal>else</literal> clause, if any, is executed, followed by the <literal>ensure</literal> clause.</para>
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
 	  <term>Executes <literal>return</literal></term>
 	  <listitem>
-	    <para>The <literal>else</literal> clause, if any, is skipped, and
-	    the <literal>ensure</literal> clause is executed.</para>
+	    <para>The <literal>else</literal> clause, if any, is skipped, and the <literal>ensure</literal> clause is executed.</para>
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
 	  <term>Raises an exception</term>
 	  <listitem>
-	    <para>A matching <literal>rescue</literal> clause, if any, is
-	    executed, followed by the <literal>ensure</literal>
-	    clause.</para>
+	    <para>A matching <literal>rescue</literal> clause, if any, is executed, followed by the <literal>ensure</literal> clause.</para>
 	  </listitem>
 	</varlistentry>
       </variablelist>
 
-      <para>The return value of a construct containing 
-      <literal>ensure</literal> is that of the previously executed clause, 
-      unless the <literal>ensure</literal> clause explicitly returns a value 
-      with <literal>return</literal>. That is, unlike other constructs the 
-      return value of <literal>ensure</literal> is not necessarily its last 
-      statement executed.  This is to allow <literal>ensure</literal> clauses 
-      to be attached to <literal>def</literal> statements, for example; 
-      otherwise the method being defined would never be able to return a 
-      value.</para>
+      <para>The return value of a construct containing <literal>ensure</literal> is that of the previously executed clause, unless the <literal>ensure</literal> clause explicitly returns a value with <literal>return</literal>. That is, unlike other constructs the return value of <literal>ensure</literal> is not necessarily its last statement executed.  This is to allow <literal>ensure</literal> clauses to be attached to <literal>def</literal> statements, for example; otherwise the method being defined would never be able to return a value.</para>
 
-      <para>An <literal>ensure</literal> clause may cancel the propagation of 
-      an exception by raising an exception of its own or executing a control 
-      flow statement. This new transfer of control—be it to the end of the 
-      current block via <literal>break</literal> or <literal>next</literal>, 
-      the return of the current method via <literal>return</literal>, or the 
-      nearest matching <literal>rescue</literal> clause via 
-      <literal>raise</literal>—replaces that of the current exception, 
-      aborting its passage.</para>
+      <para>An <literal>ensure</literal> clause may cancel the propagation of an exception by raising an exception of its own or executing a control flow statement. This new transfer of control—be it to the end of the current block via <literal>break</literal> or <literal>next</literal>, the return of the current method via <literal>return</literal>, or the nearest matching <literal>rescue</literal> clause via <literal>raise</literal>—replaces that of the current exception, aborting its passage.</para>
 
       <!-- TODO: State explicitly that an ensure clause containing, say,
 	   return, implicitly rescues the current exception -->
       <example xml:id="ex.ensure-clause">
-	<title>Using an <literal>ensure</literal> clause to save data to disk
-	even if an exception occurs</title>
+	<title>Using an <literal>ensure</literal> clause to save data to disk even if an exception occurs</title>
 
-	<programlisting><xi:include
-	href="examples/ensure-clause.rb"
-	parse="text"/></programlisting>
+	<programlisting><xi:include href="examples/ensure-clause.rb" parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
@@ -440,36 +264,19 @@
 		  <varlistentry>
 		    <term><literal>LoadError</literal></term>
 		    <listitem>
-		      <para>Raised by <literal>Kernel.require</literal>,
-		      <literal>Kernel.load</literal>, and
-		      <literal>Kernel.require_relative</literal> when the named
-		      file cannot be opened; by
-		      <literal>require_relative</literal> when called from
-		      inside <literal>eval</literal> or <literal>irb</literal>;
-		      and by the <literal>ruby</literal> binary when a script
-		      is expected but no supplied.</para>
+		      <para>Raised by <literal>Kernel.require</literal>, <literal>Kernel.load</literal>, and <literal>Kernel.require_relative</literal> when the named file cannot be opened; by <literal>require_relative</literal> when called from inside <literal>eval</literal> or <literal>irb</literal>; and by the <literal>ruby</literal> binary when a script is expected but no supplied.</para>
 		    </listitem>
 		  </varlistentry>
 		  <varlistentry>
 		    <term><literal>NotImplementedError</literal></term>
 		    <listitem>
-		      <para>Raised by methods which rely on operating system
-		      functions that are not available to the current
-		      script. For example, methods depending on the
-		      <literal>fsync()</literal> or <literal>fork()</literal>
-		      system calls may raise this exception if the underlying
-		      operating system or Ruby runtime does not support
-		      them.</para>
+		      <para>Raised by methods which rely on operating system functions that are not available to the current script. For example, methods depending on the <literal>fsync()</literal> or <literal>fork()</literal> system calls may raise this exception if the underlying operating system or Ruby runtime does not support them.</para>
 		    </listitem>
 		  </varlistentry>
 		  <varlistentry>
 		    <term><literal>SyntaxError</literal></term>
 		    <listitem>
-		      <para>Raised by <literal>require</literal>,
-		      <literal>require_relative</literal>,
-		      <literal>load</literal>, and <literal>eval</literal> if
-		      the script they are interpreting is syntactically
-		      invalid.</para>
+		      <para>Raised by <literal>require</literal>, <literal>require_relative</literal>, <literal>load</literal>, and <literal>eval</literal> if the script they are interpreting is syntactically invalid.</para>
 		    </listitem>
 		  </varlistentry>
 		</variablelist>
@@ -478,8 +285,7 @@
 	    <varlistentry>
 	      <term><literal>SecurityError</literal></term>
 	      <listitem>
-		<para>Raised by methods that are prohibited by the current safe
-		level.</para>
+		<para>Raised by methods that are prohibited by the current safe level.</para>
 	      </listitem>
 	    </varlistentry>
 	    <varlistentry>
@@ -490,30 +296,24 @@
 		    <term><literal>Interrupt</literal></term>
 		    <term><literal>SystemExit</literal></term>
 		    <listitem>
-		      <para>Raised by <literal>exit</literal> and processes
-		      which attempt to terminate the current script.</para>
+		      <para>Raised by <literal>exit</literal> and processes which attempt to terminate the current script.</para>
 		    </listitem>
 		  </varlistentry>
 		  <varlistentry>
 		    <term><literal>SystemStackError</literal></term>
 		    <listitem>
-		      <para>Raised by Ruby when a stack overflow is
-		      detected.</para>
+		      <para>Raised by Ruby when a stack overflow is detected.</para>
 		    </listitem>
 		  </varlistentry>
 		  <varlistentry>
 		    <term><literal>StandardError</literal></term>
 		    <listitem>
-		      <para>The parent class of most recoverable errors. Caught
-		      by a bare <literal>rescue</literal> statement modifier or
-		      clause.</para>
+		      <para>The parent class of most recoverable errors. Caught by a bare <literal>rescue</literal> statement modifier or clause.</para>
 		      <variablelist>
 			<varlistentry>
 			  <term><literal>ArgumentError</literal></term>
 			  <listitem>
-			    <para>Raised by Ruby when a message is sent with an
-			    unexpected number of arguments. Often raised by
-			    methods themselves for similar reasons.</para>
+			    <para>Raised by Ruby when a message is sent with an unexpected number of arguments. Often raised by methods themselves for similar reasons.</para>
 			  </listitem>
 			</varlistentry>
 			<varlistentry>
@@ -523,36 +323,25 @@
 			      <varlistentry>
 				<term><literal>Encoding::CompatibilityError</literal></term>
 				<listitem>
-				  <para>Raised by <literal>Encoding</literal>
-				  and <literal>String</literal> methods when
-				  the source encoding is incompatiable with the
-				  target encoding.</para>
+				  <para>Raised by <literal>Encoding</literal> and <literal>String</literal> methods when the source encoding is incompatiable with the target encoding.</para>
 				</listitem>
 			      </varlistentry>
 			      <varlistentry>
 				<term><literal>Encoding::ConverterNotFoundError</literal></term>
 				<listitem>
-				  <para>Raised by transcoding methods when a
-				  named encoding does not correspond with a
-				  known converter.</para>
+				  <para>Raised by transcoding methods when a named encoding does not correspond with a known converter.</para>
 				</listitem>
 			      </varlistentry>
 			      <varlistentry>
 				<term><literal>Encoding::UndefinedConversionError</literal></term>
 				<listitem>
-				  <para>Raised by <literal>Encoding</literal>
-				  and <literal>String</literal> methods when a
-				  transcoding operation fails.</para>
+				  <para>Raised by <literal>Encoding</literal> and <literal>String</literal> methods when a transcoding operation fails.</para>
 				</listitem>
 			      </varlistentry>
 			      <varlistentry>
 				<term><literal>Encoding::InvalidByteSequenceError</literal></term>
 				<listitem>
-				  <para>Raised by <literal>Encoding</literal>
-				  and <literal>String</literal> methods when
-				  the string being transcoded contains a byte
-				  invalid for the either the source or target
-				  encoding.</para>
+				  <para>Raised by <literal>Encoding</literal> and <literal>String</literal> methods when the string being transcoded contains a byte invalid for the either the source or target encoding.</para>
 				</listitem>
 			      </varlistentry>
 			    </variablelist>
@@ -561,27 +350,18 @@
 			<varlistentry>
 			  <term><literal>FiberError</literal></term>
 			  <listitem>
-			    <para>Raised by fibers when attempting to
-			    call/resume a dead fiber, attempting to <link
-			    linkend="flo.yield">yield</link> from the root
-			    fiber, or calling a fiber across threads.</para>
+			    <para>Raised by fibers when attempting to call/resume a dead fiber, attempting to <link linkend="flo.yield">yield</link> from the root fiber, or calling a fiber across threads.</para>
 			  </listitem>
 			</varlistentry>
 			<varlistentry>
 			  <term><literal>IOError</literal></term>
 			  <listitem>
-			    <para>Raised by methods performing input/output
-			    operations.  For example, it is raised when
-			    attempting to read from an <literal>IO</literal>
-			    stream not opened for reading, or when attempting
-			    to operate on a closed stream.</para>
+			    <para>Raised by methods performing input/output operations.  For example, it is raised when attempting to read from an <literal>IO</literal> stream not opened for reading, or when attempting to operate on a closed stream.</para>
 			    <variablelist>
 			      <varlistentry>
 				<term><literal>EOFError</literal></term>
 				<listitem>
-				  <para>Raised by <literal>IO</literal> methods
-				  when attempting to read past the end of a
-				  file.</para>
+				  <para>Raised by <literal>IO</literal> methods when attempting to read past the end of a file.</para>
 				</listitem>
 			      </varlistentry>
 			    </variablelist>
@@ -590,31 +370,18 @@
 			<varlistentry>
 			  <term><literal>IndexError</literal></term>
 			  <listitem>
-			    <para>Raised by some <literal>Array</literal> and
-			    <literal>String</literal> methods when attempting
-			    to access a subscript that is out of bounds; by
-			    some <literal>Regexp</literal> methods when
-			    attempting to access a capture group by an invalid
-			    name/subscript.</para>
+			    <para>Raised by some <literal>Array</literal> and <literal>String</literal> methods when attempting to access a subscript that is out of bounds; by some <literal>Regexp</literal> methods when attempting to access a capture group by an invalid name/subscript.</para>
 			    <variablelist>
 			      <varlistentry>
 				<term><literal>KeyError</literal></term>
 				<listitem>
-				  <para>Raised by certain
-				  <literal>Hash</literal> methods when
-				  attempting to access a value with an
-				  undefined key.</para>
+				  <para>Raised by certain <literal>Hash</literal> methods when attempting to access a value with an undefined key.</para>
 				</listitem>
 			      </varlistentry>
 			      <varlistentry xml:id="exc.stop-iteration">
 				<term><literal>StopIteration</literal></term>
 				<listitem>
-				  <para>Raised by
-				  <literal>Enumerator</literal>s when
-				  attempting to access an element past the end
-				  of the sequence. Caught by
-				  <literal>loop</literal>, causing the loop to
-				  terminate.</para>
+				  <para>Raised by <literal>Enumerator</literal>s when attempting to access an element past the end of the sequence. Caught by <literal>loop</literal>, causing the loop to terminate.</para>
 				</listitem>
 			      </varlistentry>
 			    </variablelist>
@@ -623,52 +390,18 @@
 			<varlistentry>
 			  <term><literal>LocalJumpError</literal></term>
 			  <listitem>
-			    <para>Raised when attempting to return from a
-			    method that has already has already returned, call
-			    a <literal>Proc</literal> that has already
-			    returned, executing <literal>retry</literal> in a
-			    <literal>Proc</literal>, executing
-			    <literal>next</literal> outside of a loop or block,
-			    and by many methods which were not supplied with a
-			    required block argument.</para>
+			    <para>Raised when attempting to return from a method that has already has already returned, call a <literal>Proc</literal> that has already returned, executing <literal>retry</literal> in a <literal>Proc</literal>, executing <literal>next</literal> outside of a loop or block, and by many methods which were not supplied with a required block argument.</para>
 			  </listitem>
 			</varlistentry>					
 			<varlistentry>
 			  <term><literal>NameError</literal></term>
 			  <listitem>
-			    <para>Raised when Ruby sees an identifier whose
-			    name neither corresponds to a local variable or
-			    method anywhere other than the left-hand side of
-			    the assignment operator; when an uninitialised
-			    constant is seen; when a class or instance variable
-			    is declared with an illegal name; and by
-			    <literal>Object#method</literal>,
-			    <literal>Object#instance_method</literal>, etc.,
-			    when attempting to retrieve a
-			    <literal>Method</literal> object for a non-existent
-			    method.</para>
+			    <para>Raised when Ruby sees an identifier whose name neither corresponds to a local variable or method anywhere other than the left-hand side of the assignment operator; when an uninitialised constant is seen; when a class or instance variable is declared with an illegal name; and by <literal>Object#method</literal>, <literal>Object#instance_method</literal>, etc., when attempting to retrieve a <literal>Method</literal> object for a non-existent method.</para>
 			    <variablelist>
 			      <varlistentry>
 				<term><literal>NoMethodError</literal></term>
 				<listitem>
-				  <para>Raised by Ruby when an attempt is made
-				  to invoke a non-existent
-				  method. <literal>NameError</literal> takes
-				  preference when an expression is ambiguous as
-				  to whether it represents a local variable
-				  reference or method call.  For example, if
-				  there is neither method nor variable named
-				  <literal>m</literal>, the expression
-				  <literal>m</literal> would result in a
-				  <literal>NameError</literal>; whereas the
-				  expression <replaceable>m()</replaceable>
-				  would cause a
-				  <literal>NoMethodError</literal>. Responds to
-				  <literal>#args</literal> with an
-				  <literal>Array</literal> of the arguments
-				  sent to the method, and to
-				  <literal>#name</literal> with the method’s
-				  name.</para>
+				  <para>Raised by Ruby when an attempt is made to invoke a non-existent method. <literal>NameError</literal> takes preference when an expression is ambiguous as to whether it represents a local variable reference or method call.  For example, if there is neither method nor variable named <literal>m</literal>, the expression <literal>m</literal> would result in a <literal>NameError</literal>; whereas the expression <replaceable>m()</replaceable> would cause a <literal>NoMethodError</literal>. Responds to <literal>#args</literal> with an <literal>Array</literal> of the arguments sent to the method, and to <literal>#name</literal> with the method’s name.</para>
 				</listitem>
 			      </varlistentry>
 			    </variablelist>
@@ -677,19 +410,12 @@
 			<varlistentry>
 			  <term><literal>RangeError</literal></term>
 			  <listitem>
-			    <para>Raised by methods receiving numeric arguments
-			    that fall outside of their operating limits. For
-			    example, <literal>Array#combination</literal> and
-			    <literal>Array#product</literal> raise this
-			    exception when their arguments are too large to
-			    permute.</para>
+			    <para>Raised by methods receiving numeric arguments that fall outside of their operating limits. For example, <literal>Array#combination</literal> and <literal>Array#product</literal> raise this exception when their arguments are too large to permute.</para>
 			    <variablelist>
 			      <varlistentry>
 				<term><literal>FloatDomainError</literal></term>
 				<listitem>
-				  <para>Raised by many mathematical methods
-				  which receive <acronym>NaN</acronym> or
-				  Infinity (∞) as arguments.</para>
+				  <para>Raised by many mathematical methods which receive <acronym>NaN</acronym> or Infinity (∞) as arguments.</para>
 				</listitem>
 			      </varlistentry>
 			    </variablelist>
@@ -698,48 +424,24 @@
 			<varlistentry>
 			  <term><literal>RegexpError</literal></term>
 			  <listitem>
-			    <para>Raised by <literal>Regexp.new</literal> when
-			    passed a syntactically invalid regular expression,
-			    and when a <literal>Regexp</literal> literal
-			    includes characters invalid in its encoding.</para>
+			    <para>Raised by <literal>Regexp.new</literal> when passed a syntactically invalid regular expression, and when a <literal>Regexp</literal> literal includes characters invalid in its encoding.</para>
 			  </listitem>
 			</varlistentry>
 			<varlistentry>
 			  <term><literal>RuntimeError</literal></term>
 			  <listitem>
-			    <para>The default exception instantiated by
-			    <literal>raise</literal>, so quite generic in
-			    usage. Core classes often raise this exception when
-			    a method has receieved valid arguments yet is
-			    unable to complete. Also, this is raised when
-			    attempting to modify frozen objects or modify an
-			    object whilst iterating it.</para>
+			    <para>The default exception instantiated by <literal>raise</literal>, so quite generic in usage. Core classes often raise this exception when a method has receieved valid arguments yet is unable to complete. Also, this is raised when attempting to modify frozen objects or modify an object whilst iterating it.</para>
 			  </listitem>
 			</varlistentry>
 			<varlistentry>
 			  <term><literal>SystemCallError</literal></term>
 			  <listitem>
-			    <para>Raised when an attempt to call an operating
-			    system function fails, despite that function being
-			    implemented and expected to work. For example, it
-			    is raised by <literal>Dir</literal> when unable to
-			    create a directory, <literal>exec</literal> when
-			    unable to execute a command, and
-			    <literal>File.link</literal> when unable to create
-			    a symlink.</para>
+			    <para>Raised when an attempt to call an operating system function fails, despite that function being implemented and expected to work. For example, it is raised by <literal>Dir</literal> when unable to create a directory, <literal>exec</literal> when unable to execute a command, and <literal>File.link</literal> when unable to create a symlink.</para>
 			    <variablelist>
 			      <varlistentry>
 				<term><literal>Errno::</literal>*</term>
 				<listitem>
-				  <para>There are many exception classes in the
-				  <literal>Errno</literal> namespace which
-				  subclass
-				  <literal>SystemCallError</literal>. They
-				  represent low-level,
-				  operating-system-specific exceptions, and as
-				  such it is often sufficient to rescue
-				  <literal>SystemCallError</literal> and ignore
-				  their specifics.</para>
+				  <para>There are many exception classes in the <literal>Errno</literal> namespace which subclass <literal>SystemCallError</literal>. They represent low-level, operating-system-specific exceptions, and as such it is often sufficient to rescue <literal>SystemCallError</literal> and ignore their specifics.</para>
 				</listitem>
 			      </varlistentry>
 			    </variablelist>
@@ -748,37 +450,19 @@
 			<varlistentry>
 			  <term><literal>ThreadError</literal></term>
 			  <listitem>
-			    <para>Raised by <literal>Thread</literal> when a
-			    thread cannot be initialised, moved to another
-			    group, manipulated on account of being dead, or
-			    when a shared mutex is unexpectedly locked.</para>
+			    <para>Raised by <literal>Thread</literal> when a thread cannot be initialised, moved to another group, manipulated on account of being dead, or when a shared mutex is unexpectedly locked.</para>
 			  </listitem>
 			</varlistentry>
 			<varlistentry>
 			  <term><literal>TypeError</literal></term>
 			  <listitem>
-			    <para>Common exception raised by methods who
-			    receive an argument of an unexpected type. For
-			    instance, it is raised by <literal>Range</literal>
-			    on attempts to iterate from
-			    <literal>Float</literal>s, <literal>class</literal>
-			    and <literal>module</literal> when the given
-			    constant is defined and not a
-			    <literal>Class</literal>, and by various classes
-			    unable to convert their argument to a specific
-			    type.</para>
+			    <para>Common exception raised by methods who receive an argument of an unexpected type. For instance, it is raised by <literal>Range</literal> on attempts to iterate from <literal>Float</literal>s, <literal>class</literal> and <literal>module</literal> when the given constant is defined and not a <literal>Class</literal>, and by various classes unable to convert their argument to a specific type.</para>
 			  </listitem>
 			</varlistentry>
 			<varlistentry>
 			  <term><literal>ZeroDivisionError</literal></term>
 			  <listitem>
-			    <para>Raised by mathematical operators when they
-			    are asked, explicitly or implicitly, to divided a
-			    number by <literal>0</literal>. Some methods raise
-			    this exception when a division by the
-			    <literal>Float</literal> <literal>0.0</literal>,
-			    while <literal>Integer#/</literal>, notably,
-			    returns <literal>Float::INFINITY</literal>.</para>
+			    <para>Raised by mathematical operators when they are asked, explicitly or implicitly, to divided a number by <literal>0</literal>. Some methods raise this exception when a division by the <literal>Float</literal> <literal>0.0</literal>, while <literal>Integer#/</literal>, notably, returns <literal>Float::INFINITY</literal>.</para>
 			  </listitem>
 			</varlistentry>
 		      </variablelist>
