@@ -5,319 +5,221 @@
 	 xmlns="http://docbook.org/ns/docbook"
 	 xmlns:xi="http://www.w3.org/2001/XInclude"
 	 xmlns:xlink="http://www.w3.org/1999/xlink">
+
   <title>Modules</title>
-  <para>A <firstterm>module</firstterm> is <quote>a named group of methods,
-  constants, and class variables</quote> <biblioref linkend="bib.flan08"/>. It
-  is, therefore, similar to a class except it can neither inherit behaviour nor
-  be instantiated. Indeed, <literal>Module</literal> is the superclass of
-  <literal>Class</literal>, the latter defining only three additional methods:
-  <literal>:new</literal>, <literal>:allocate</literal>, and
-  <literal>:superclass</literal>.</para>
+
+  <para>A <firstterm>module</firstterm> is <quote>a named group of methods, constants, and class variables</quote> <biblioref linkend="bib.flan08"/>. It is, therefore, similar to a class except it can neither inherit behaviour nor be instantiated. Indeed, <literal>Module</literal> is the superclass of <literal>Class</literal>, the latter defining only three additional methods: <literal>:new</literal>, <literal>:allocate</literal>, and <literal>:superclass</literal>.</para>
+
   <sect1 xml:id="mod.creation">
     <title>Creation</title>
+
     <sect2 xml:id="mod.module-keyword">
       <title><literal>module</literal> Keyword</title>
-      <!--figure>
-        <title>Syntax diagram of the <literal>module</literal> keyword
-      </title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="figures/module.png" format="PNG" width="4in"/>
-          </imageobject>
-        </mediaobject>
-      </figure-->
-      <para>The <literal>module <replaceable>name</replaceable>…end</literal>
-      expression opens a module named <replaceable>name</replaceable>. If the
-      constant <replaceable>name</replaceable> is already defined it must refer
-      to an existing module, otherwise a <literal>TypeError</literal> is
-      raised.  If <replaceable>name</replaceable> was previously undefined, it
-      is created as a <literal>Module</literal> object. That both modules and
-      classes are named with constants, means they share the same namespace: a
-      given (qualified) constant cannot name a class and a module
-      simultaneously. The module body, which may be empty, is the elliptical
-      region in the expression. It introduces a new context in which
-      <literal>self</literal> refers to the current module.</para>
+
+      <para>The <literal>module <replaceable>name</replaceable>…end</literal> expression opens a module named <replaceable>name</replaceable>. If the constant <replaceable>name</replaceable> is already defined it must refer to an existing module, otherwise a <literal>TypeError</literal> is raised.  If <replaceable>name</replaceable> was previously undefined, it is created as a <literal>Module</literal> object. That both modules and classes are named with constants, means they share the same namespace: a given (qualified) constant cannot name a class and a module simultaneously. The module body, which may be empty, is the elliptical region in the expression. It introduces a new context in which <literal>self</literal> refers to the current module.</para>
+
       <sect3 xml:id="mod.reopening">
         <title>Reopening Modules</title>
-        <para>If <literal>module</literal> is used with the name of a pre-existing
-        module that module is <emphasis>re-opened</emphasis>. If a method is defined in a
-        re-opened module with the same name as a pre-existing method in the
-        same module the old method is overwritten with the new.</para>
-        <para>Modules can be made immutable, effectively preventing them from
-        being reopened by freezing the module object. Frozen modules raise
-        <literal>RuntimeError</literal>s when methods are defined, or variables
-        manipulated, in their context.</para>
+
+        <para>If <literal>module</literal> is used with the name of a pre-existing module that module is <emphasis>re-opened</emphasis>. If a method is defined in a re-opened module with the same name as a pre-existing method in the same module the old method is overwritten with the new.</para>
+
+        <para>Modules can be made immutable, effectively preventing them from being reopened by freezing the module object. Frozen modules raise <literal>RuntimeError</literal>s when methods are defined, or variables manipulated, in their context.</para>
       </sect3>
     </sect2>
+
     <sect2 xml:id="mod.module-new">
       <title><literal>Module.new</literal></title>
-      <para>The <literal>Module.new</literal> constructor can be used to create a new
-      anonymous module. It is usually passed a block argument which is
-      evaluated in the context of the created module using
-      <literal>module_eval</literal>.</para>
-      <para><literal>Kernel.load</literal> can<footnote><para>And does, when supplied with a second argument that
-      is true, i.e. <literal>load file, true</literal>.
-      </para></footnote> use an
-      anonymous module to prevent a source file from affecting the global
-      namespace. The classes and modules the source file defines are created
-      in the context of this anonymous namespace, making them inaccessible to
-      the caller. The source file must explicitly specify the constants it
-      wishes to share with the caller by assigning them to global variables.</para>
-      <para>A module is an object like any other, so by assigning an anonymous
-      object to a <link linkend="var.local">local variable</link>, for example, it
-      only exists for as long as the variable does, and is invisible from
-      disjoint scopes.</para>
-      <para>However, magic happens if you assign an anonymous module to a
-      constant: the module takes on its name. Specifically, sending
-      <literal>:to_s</literal><footnote><para>…or <literal>:inspect</literal>, <literal>:name</literal>, and
-      any other method which uses <literal>#to_s</literal> internally.
-    </para></footnote> to an anonymous module
-      causes a search to be done for the first constant the module was
-      assigned to: if one is found, that becomes the module’s name.</para>
-      <para>This technique cannot be used to re‐open modules. Assigning an
-      anonymous module to a constant naming another module creates a new
-      module with the same name, clobbering the old one.</para>
+
+      <para>The <literal>Module.new</literal> constructor can be used to create a new anonymous module. It is usually passed a block argument which is evaluated in the context of the created module using <literal>module_eval</literal>.</para>
+      
+      <para><literal>Kernel.load</literal> can<footnote><para>And does, when supplied with a second argument that is true, i.e. <literal>load file, true</literal>.  </para></footnote> use an anonymous module to prevent a source file from affecting the global namespace. The classes and modules the source file defines are created in the context of this anonymous namespace, making them inaccessible to the caller. The source file must explicitly specify the constants it wishes to share with the caller by assigning them to global variables.</para>
+
+      <para>A module is an object like any other, so by assigning an anonymous object to a <link linkend="var.local">local variable</link>, for example, it only exists for as long as the variable does, and is invisible from disjoint scopes.</para>
+
+      <para>However, magic happens if you assign an anonymous module to a constant: the module takes on its name. Specifically, sending <literal>:to_s</literal><footnote><para>…or <literal>:inspect</literal>, <literal>:name</literal>, and any other method which uses <literal>#to_s</literal> internally.  </para></footnote> to an anonymous module causes a search to be done for the first constant the module was assigned to: if one is found, that becomes the module’s name.</para>
+
+      <para>This technique cannot be used to re‐open modules. Assigning an anonymous module to a constant naming another module creates a new module with the same name, clobbering the old one.</para>
+
       <example xml:id="ex.module-new">
-        <title>Using <literal>Module.new</literal> to create an anonymous
-        module
-      </title>
+        <title>Using <literal>Module.new</literal> to create an anonymous module</title>
+
         <programlisting><xi:include href="examples/module-new.rb" parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
+
   <sect1 xml:id="mod.mixins">
     <title>Mixins</title>
-    <para>The primary use of modules is <firstterm>mixins</firstterm>: imbuing a given
-    class with the instance methods, or <firstterm>features</firstterm>, of a given
-    module. A class may have any number of modules mixed in.</para>
+
+    <para>The primary use of modules is <firstterm>mixins</firstterm>: imbuing a given class with the instance methods, or <firstterm>features</firstterm>, of a given module. A class may have any number of modules mixed in.</para>
+
     <sect2 xml:id="mod.mixin-to-class">
       <title>Mixing a Module into a Class</title>
-      <para>Mixing-in a module to a class effectively enables multiple
-      inheritance: appending to the class features from any number of
-      sources. By contrast, classes may only <link linkend="cla.inheritance">inherit</link> from a maximum of one other
-      class.</para>
+
+      <para>Mixing-in a module to a class effectively enables multiple inheritance: appending to the class features from any number of sources. By contrast, classes may only <link linkend="cla.inheritance">inherit</link> from a maximum of one other class.</para>
     </sect2>
+
     <sect2 xml:id="mod.mixin-to-module">
       <title>Mixing a Module into a Module</title>
-      <para>It is less common to mixin a module to another module, but legal
-      nevertheless. The result is simply that the features of the included
-      module are copied to the other module.</para>
+
+      <para>It is less common to mixin a module to another module, but legal nevertheless. The result is simply that the features of the included module are copied to the other module.</para>
     </sect2>
+
     <sect2 xml:id="mod.inclusion">
       <title>Inclusion</title>
-      <para><literal>Module#include</literal> takes one or more module names as
-      arguments, then mixes them in to the enclosing class. Contrary to
-      intuition, the named modules are mixed-in in the reverse order in
-      which they are named. That is, <literal>include A, B</literal> appends the
-      features of module <literal>B</literal>, then module <literal>A</literal>.
-      Therefore, if <literal>A</literal> and <literal>B</literal> define an instance
-      method with the same name, <literal>B</literal>’s copy will be overwritten
-      by <literal>A</literal>’s.</para>
-      <para>Specifically, when used in the context of a class named
-      <replaceable>class</replaceable> <literal>#include</literal> sends each of its arguments
-      <literal>:append_features</literal> with <replaceable>class</replaceable> as an argument. The
-      default behaviour is defined by <literal>Module#append_features</literal>,
-      which adds the named modules to <replaceable>class</replaceable>’s method search path
-      then sends the <link linkend="mod.included">:included</link> message to
-      each. A corollary is that if a class defines its own
-      <literal>#append_features</literal> method, it must call <literal>super</literal> so
-      as to invoke <literal>Module#append_features</literal>; otherwise, the module
-      is not mixed in.</para>
+
+      <para><literal>Module#include</literal> takes one or more module names as arguments, then mixes them in to the enclosing class. Contrary to intuition, the named modules are mixed-in in the reverse order in which they are named. That is, <literal>include A, B</literal> appends the features of module <literal>B</literal>, then module <literal>A</literal>.  Therefore, if <literal>A</literal> and <literal>B</literal> define an instance method with the same name, <literal>B</literal>’s copy will be overwritten by <literal>A</literal>’s.</para>
+
+      <para>Specifically, when used in the context of a class named <replaceable>class</replaceable> <literal>#include</literal> sends each of its arguments <literal>:append_features</literal> with <replaceable>class</replaceable> as an argument. The default behaviour is defined by <literal>Module#append_features</literal>, which adds the named modules to <replaceable>class</replaceable>’s method search path then sends the <link linkend="mod.included">:included</link> message to each. A corollary is that if a class defines its own <literal>#append_features</literal> method, it must call <literal>super</literal> so as to invoke <literal>Module#append_features</literal>; otherwise, the module is not mixed in.</para>
+
       <sect3 xml:id="mod.included">
         <title><literal>included</literal> Callback</title>
-        <para>When a module has been included in a class it is sent a message
-        named <literal>:included</literal>, with the class name as an argument. This
-        allows the module to perform initialization such as dynamically adding
-        additional methods or variables to the named class. Be aware, however,
-        that <literal>:included</literal> is sent <emphasis>every</emphasis> time
-        <literal>Module#include</literal> is used, even if the module is already
-        included in the class.</para>
-        <para><literal>:included</literal> is sent <emphasis>after</emphasis> the module has been
-        included, so is powerless to prevent the inclusion or otherwise
-        condition it on some prerequisite. Its return value is ignored because
-        <literal>Module#include</literal> always returns the class object in which
-        it is used.</para>
+
+        <para>When a module has been included in a class it is sent a message named <literal>:included</literal>, with the class name as an argument. This allows the module to perform initialization such as dynamically adding additional methods or variables to the named class. Be aware, however, that <literal>:included</literal> is sent <emphasis>every</emphasis> time <literal>Module#include</literal> is used, even if the module is already included in the class.</para>
+        
+	<para><literal>:included</literal> is sent <emphasis>after</emphasis> the module has been included, so is powerless to prevent the inclusion or otherwise condition it on some prerequisite. Its return value is ignored because <literal>Module#include</literal> always returns the class object in which it is used.</para>
       </sect3>
+
       <sect3 xml:id="mod.class-include">
         <title><literal>Class#include?</literal></title>
-        <para>The <literal>Class#include?</literal> predicate returns
-        <literal>true</literal> if the module given as its argument has been
-        mixed-in to the receiver; <literal>false</literal> otherwise.</para>
+
+        <para>The <literal>Class#include?</literal> predicate returns <literal>true</literal> if the module given as its argument has been mixed-in to the receiver; <literal>false</literal> otherwise.</para>
       </sect3>
+
       <sect3 xml:id="mod.class-included-modules">
         <title><literal>Class#included_modules</literal></title>
-        <para><literal>Class#included_modules</literal> returns an <literal>Array</literal>
-        of <literal>Module</literal>s mixed-in to the receiver in the reverse
-        order of their inclusion. As <literal>Object</literal> includes the
-        <literal>Kernel</literal> module, this method will usually return
-        <literal>Kernel</literal> as the last element.</para>
+
+        <para><literal>Class#included_modules</literal> returns an <literal>Array</literal> of <literal>Module</literal>s mixed-in to the receiver in the reverse order of their inclusion. As <literal>Object</literal> includes the <literal>Kernel</literal> module, this method will usually return <literal>Kernel</literal> as the last element.</para>
       </sect3>
     </sect2>
+
     <sect2 xml:id="mod.extension">
       <title>Extension</title>
 
-      <para>Given a list of modules, <literal>Kernel#extend</literal> mixes
-      them into to a specific object by <link
-      linkend="mod.inclusion">including</link> them in its receiver’s <link
-      linkend="cla.singleton">singleton class</link>. Specifically, it sends
-      each of its arguments an <literal>:extend_object</literal> message with
-      the receiver as an argument. The default behaviour of
-      <literal>:extend_object</literal> is provided by
-      <literal>Module</literal>, which <link
-      linkend="mod.inclusion">includes</link> the module into the receiver’s
-      singleton class, then sends the module an <literal>:extended</literal>
-      message. As with <literal>Module#append_features</literal>, modules which
-      define their own <literal>#extend_object</literal> methods must employ
-      <literal>super</literal> to actually effect the extension.</para>
+      <para>Given a list of modules, <literal>Kernel#extend</literal> mixes them into to a specific object by <link linkend="mod.inclusion">including</link> them in its receiver’s <link linkend="cla.singleton">singleton class</link>. Specifically, it sends each of its arguments an <literal>:extend_object</literal> message with the receiver as an argument. The default behaviour of <literal>:extend_object</literal> is provided by <literal>Module</literal>, which <link linkend="mod.inclusion">includes</link> the module into the receiver’s singleton class, then sends the module an <literal>:extended</literal> message. As with <literal>Module#append_features</literal>, modules which define their own <literal>#extend_object</literal> methods must employ <literal>super</literal> to actually effect the extension.</para>
 
       <example xml:id="ex.extend-class">
-        <title>Using <literal>#extend</literal> to mix‐in a class method.
-      </title>
+        <title>Using <literal>#extend</literal> to mix‐in a class method.</title>
+
         <programlisting><xi:include href="examples/extend-class.rb" parse="text"/></programlisting>
       </example>
+
       <sect3 xml:id="mod.extend-self">
         <title>Extending <literal>self</literal></title>
-        <para>An idiomatic application of <literal>extend</literal> is to use
-        <literal>extend self</literal> within the context of a module. The effect
-        is to mix the current module into its <link linkend="cla.singleton">singleton class</link>:</para>
+
+        <para>An idiomatic application of <literal>extend</literal> is to use <literal>extend self</literal> within the context of a module. The effect is to mix the current module into its <link linkend="cla.singleton">singleton class</link>:</para>
         <itemizedlist>
           <listitem>
-            <para><link linkend="met.visibility">Public</link> instance methods can
-          be invoked as instance methods in the context of the module,
-          i.e. without an explicit receiver, and singleton methods of the
-          module from anywhere.</para>
+            <para><link linkend="met.visibility">Public</link> instance methods can be invoked as instance methods in the context of the module, i.e. without an explicit receiver, and singleton methods of the module from anywhere.</para>
           </listitem>
           <listitem>
             <para><link linkend="met.visibility">Private and protected</link> instance methods can only be invoked from within the context of the module.</para>
           </listitem>
         </itemizedlist>
-        <para>An example of <literal>extend self</literal> is provided in a
-        <link linkend="ex.module-namespacing-extend-self">figure
-        below</link>.</para>
+
+        <para>An example of <literal>extend self</literal> is provided in a <link linkend="ex.module-namespacing-extend-self">figure below</link>.</para>
       </sect3>
     </sect2>
   </sect1>
+
   <sect1 xml:id="mod.namespacing">
     <title>Namespacing</title>
-    <para>Modules can be used for <firstterm>namespacing</firstterm>: to combine a set of
-    methods with a common purpose so their names do not clash with unrelated
-    methods, and they are able to share data. Classes can be <link linkend="cla.nesting">used in the same way</link>.</para>
-    <para>Modules are preferable to classes in this respect when the namespace
-    cannot be sensibly instantiated. The use of a module clarifies this aspect
-    of the <acronym>API</acronym>.</para>
-    <para>Methods are defined in the module’s <link linkend="cla.singleton">singleton class</link>, then invoked with the
-    module name as the receiver:
-    <literal><replaceable>module</replaceable>.<replaceable>selector</replaceable></literal>.</para>
+
+    <para>Modules can be used for <firstterm>namespacing</firstterm>: to combine a set of methods with a common purpose so their names do not clash with unrelated methods, and they are able to share data. Classes can be <link linkend="cla.nesting">used in the same way</link>.</para>
+
+    <para>Modules are preferable to classes in this respect when the namespace cannot be sensibly instantiated. The use of a module clarifies this aspect of the <acronym>API</acronym>.</para>
+
+    <para>Methods are defined in the module’s <link linkend="cla.singleton">singleton class</link>, then invoked with the module name as the receiver: <literal><replaceable>module</replaceable>.<replaceable>selector</replaceable></literal>.</para>
+
     <example xml:id="ex.module-namespacing">
-      <title>Modules can be used as namespaces by defining methods on
-      their singleton class
-    </title>
+      <title>Modules can be used as namespaces by defining methods on their singleton class</title>
+
       <programlisting><xi:include href="examples/module-namespacing.rb" parse="text"/></programlisting>
     </example>
-    <para>Brown <biblioref begin="133" end="138" linkend="bib.brown09" units="pages"/>
-    suggests this technique can be useful in the following circumstances:</para>
+
+    <para>Brown <biblioref begin="133" end="138" linkend="bib.brown09" units="pages"/> suggests this technique can be useful in the following circumstances:</para>
+
     <blockquote>
       <itemizedlist>
         <listitem>
-          <para>You are solving a single, atomic task that involves lots of steps
-        that would be better broken out into helper functions.</para>
+          <para>You are solving a single, atomic task that involves lots of steps that would be better broken out into helper functions.</para>
         </listitem>
         <listitem>
-          <para>You are wrapping some functions that don’t rely on much common
-        state between them, but are related to a common topic.</para>
+          <para>You are wrapping some functions that don’t rely on much common state between them, but are related to a common topic.</para>
         </listitem>
         <listitem>
-          <para>The code is very general and can be used standalone or the code is
-        very specific but doesn’t relate directly to the object that it is
-        meant to be used by.</para>
+          <para>The code is very general and can be used standalone or the code is very specific but doesn’t relate directly to the object that it is meant to be used by.</para>
         </listitem>
         <listitem>
-          <para>The problem you are solving is small enough where object
-        orientation does more to get in the way than it does to help you.</para>
+          <para>The problem you are solving is small enough where object orientation does more to get in the way than it does to help you.</para>
         </listitem>
       </itemizedlist>
     </blockquote>
-    <para>This technique can be used in conjunction with <link linkend="mod.extend-self">extend self</link> to create private
-    helper methods: accessible to the module methods; inaccessible from
-    outside the module.</para>
+
+    <para>This technique can be used in conjunction with <link linkend="mod.extend-self">extend self</link> to create private helper methods: accessible to the module methods; inaccessible from outside the module.</para>
+
     <example xml:id="ex.module-namespacing-extend-self">
-      <title>A method can be grouped with private helper methods by
-      using a module that <literal>extend</literal>s <literal>self</literal></title>
+      <title>A method can be grouped with private helper methods by using a module that <literal>extend</literal>s <literal>self</literal></title>
+
       <programlisting><xi:include href="examples/module-namespacing-extend-self.rb" parse="text"/></programlisting>
     </example>
+
     <sect2 xml:id="mod.nesting">
       <title>Nesting</title>
-      <para>A module may be defined within the body of another class or module.
-        The fully qualified name of the inner module is
-        <literal><replaceable>outer</replaceable>::<replaceable>inner</replaceable></literal>, i.e. the module names
-        are concatenated with the <link linkend="var.constants-references">scope operator</link>.</para>
+
+      <para>A module may be defined within the body of another class or module.  The fully qualified name of the inner module is <literal><replaceable>outer</replaceable>::<replaceable>inner</replaceable></literal>, i.e. the module names are concatenated with the <link linkend="var.constants-references">scope operator</link>.</para>
     </sect2>
   </sect1>
+
   <sect1 xml:id="mod.module-functions">
     <title>Module Functions</title>
-    <para>A single module may be used both as a namespace and a mix-in. The
-    first case requires the module’s methods to be singleton methods on the
-    <literal>Module</literal> object; the second requires them to be instance
-    methods.</para>
+
+    <para>A single module may be used both as a namespace and a mix-in. The first case requires the module’s methods to be singleton methods on the <literal>Module</literal> object; the second requires them to be instance methods.</para>
+
     <example xml:id="ex.module-namespace-and-mixin">
-      <title>The <literal>Math</literal> module can be used as both a
-      namespace and a mix-in.
-    </title>
+      <title>The <literal>Math</literal> module can be used as both a namespace and a mix-in.</title>
+
       <programlisting><xi:include href="examples/module-namespace-and-mixin.rb" parse="text"/></programlisting>
     </example>
-    <para>One solution is <literal>Module#module_function</literal>, which is
-    used to convert a mix-in module to a namespace module. In the context of a
-    module, <literal>module_function</literal> is provided with one or more
-    instance method names as arguments. Alternatively,
-    <literal>module_function</literal> may be invoked without arguments, in
-    which case it affects all instance methods defined subsequently within the
-    same module. In both cases, each affected method is copied to the module’s
-    singleton class then the original method is made private. The duplication
-    satisfies the requirement that methods are both instance and singleton
-    methods. The visibility change forces classes which mix-in the module to
-    invoke its methods in the “functional style”, that is without an explicit
-    receiver, so as not to confuse them with traditional instance methods
-    <biblioref begin="251" end="252" linkend="bib.flan08"/>.</para>
+
+    <para>One solution is <literal>Module#module_function</literal>, which is used to convert a mix-in module to a namespace module. In the context of a module, <literal>module_function</literal> is provided with one or more instance method names as arguments. Alternatively, <literal>module_function</literal> may be invoked without arguments, in which case it affects all instance methods defined subsequently within the same module. In both cases, each affected method is copied to the module’s singleton class then the original method is made private. The duplication satisfies the requirement that methods are both instance and singleton methods. The visibility change forces classes which mix-in the module to invoke its methods in the “functional style”, that is without an explicit receiver, so as not to confuse them with traditional instance methods <biblioref begin="251" end="252" linkend="bib.flan08"/>.</para>
+    
     <example xml:id="ex.module-function">
-      <title><literal>module_function</literal> enables a module to be used
-      both as a namespace and mix-in
-    </title>
+      <title><literal>module_function</literal> enables a module to be used both as a namespace and mix-in</title>
+
       <programlisting><xi:include href="examples/module-function.rb" parse="text"/></programlisting>
     </example>
-    <para>A weakness of <literal>module_function</literal> is that it prevents a
-    singleton method of the module from calling a private method of the same
-    module.</para>
+
+    <para>A weakness of <literal>module_function</literal> is that it prevents a singleton method of the module from calling a private method of the same module.</para>
+
     <example xml:id="ex.module-function-private-method">
-      <title><literal>module_function</literal> foils the calling of a
-      private instance method from a singleton method
-    </title>
+      <title><literal>module_function</literal> foils the calling of a private instance method from a singleton method</title>
+
       <programlisting><xi:include href="examples/module-function-private-method.rb" parse="text"/></programlisting>
     </example>
-    <para><link linkend="mod.extend-self">extend self</link> does not
-    exhibit this problem, but neither does it offer the granularity of
-    <literal>module_function</literal>—it copies all instance methods into the
-    singleton class—nor automatically privatise instance methods.</para>
+
+    <para><link linkend="mod.extend-self">extend self</link> does not exhibit this problem, but neither does it offer the granularity of <literal>module_function</literal>—it copies all instance methods into the singleton class—nor automatically privatise instance methods.</para>
+
     <example xml:id="ex.module-function-extend-self">
-      <title><literal>extend self</literal> allows the calling of a private
-      instance method from a singleton method
-    </title>
+      <title><literal>extend self</literal> allows the calling of a private instance method from a singleton method</title>
+
       <programlisting><xi:include href="examples/module-function-extend-self.rb" parse="text"/></programlisting>
     </example>
   </sect1>
+
   <sect1 xml:id="mod.context">
     <title>Context</title>
+
     <sect2 xml:id="mod.module-eval">
       <title>Module Eval</title>
-      <para><literal>Module#module_eval</literal> takes a string or block which it
-      evaluates in the receiver’s context, setting <literal>self</literal> to the
-      receiver. The evaluated code can access the modules’s state, invoke its
-      singleton methods, and define methods.</para>
+
+      <para><literal>Module#module_eval</literal> takes a string or block which it evaluates in the receiver’s context, setting <literal>self</literal> to the receiver. The evaluated code can access the modules’s state, invoke its singleton methods, and define methods.</para>
     </sect2>
+
     <sect2 xml:id="mod.module-exec">
       <title>Module Exec</title>
-      <para><literal>Module#module_exec</literal> behaves as
-      <literal>Module#module_eval</literal> except it requires a block, to which it
-      passes any arguments it has received.</para>
+
+      <para><literal>Module#module_exec</literal> behaves as <literal>Module#module_eval</literal> except it requires a block, to which it passes any arguments it has received.</para>
     </sect2>
   </sect1>
 </chapter>
