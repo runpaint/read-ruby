@@ -10,263 +10,126 @@
   <sect1 xml:id="flo.conditionals">
     <title>Conditionals</title>
     
-    <para>
-      A <firstterm>conditional</firstterm> is an expression evaluated as a
-      truthbearer.  The conditional is <firstterm>false</firstterm> if the
-      expression’s value is <link linkend="pro.nil">nil</link> or <link
-      linkend="pro.false">false</link>; otherwise it is
-      <firstterm>true</firstterm>.
-    </para>
+    <para>A <firstterm>conditional</firstterm> is an expression evaluated as a truthbearer.  The conditional is <firstterm>false</firstterm> if the expression’s value is <link linkend="pro.nil">nil</link> or <link linkend="pro.false">false</link>; otherwise it is <firstterm>true</firstterm>.</para>
 
     <example xml:id="ex.conditional-true">
       <title>Conditionals that are true</title>
-      <programlisting><xi:include href="examples/conditional-true.rb"
-      parse="text"/></programlisting>
+
+      <programlisting><xi:include href="examples/conditional-true.rb" parse="text"/></programlisting>
     </example>
 
     <example xml:id="ex.conditional-false">
       <title>Conditionals that are false</title>
-      <programlisting><xi:include href="examples/conditional-false.rb"
-      parse="text"/></programlisting>
+
+      <programlisting><xi:include href="examples/conditional-false.rb" parse="text"/></programlisting>
     </example>
   </sect1>
 
   <sect1 xml:id="flo.boolean-logic">
     <title>Boolean Logic</title>
 
-    <para>The Boolean logic operators return either <literal>true</literal> or
-    <literal>false</literal> by evaluating their operands as conditionals. For this
-    reason, Boolean expressions are often themselves used as conditionals.</para>
+    <para>The Boolean logic operators return either <literal>true</literal> or <literal>false</literal> by evaluating their operands as conditionals. For this reason, Boolean expressions are often themselves used as conditionals.</para>
     
-    <para>There are two forms of each Boolean operator—keyword (e.g.
-    <literal>and</literal>) and  punctuation (e.g. <literal>&amp;&amp;</literal>)—which
-    differ only in precedence. The former have low precedence; the latter
-    high.</para>
+    <para>There are two forms of each Boolean operator—keyword (e.g.  <literal>and</literal>) and punctuation (e.g. <literal>&amp;&amp;</literal>)—which differ only in precedence. The former have low precedence; the latter high.</para>
     
     <sect2 xml:id="flo.and-operator">
       <title>AND Operator</title>
-      
-      <!--figure>
-	  <title>Syntax diagram of the Boolean AND operator</title>
-	  <mediaobject>
-          <imageobject>
-	  <imagedata fileref="figures/boolean-and-operator.png" format="PNG" width="4in"/>
-          </imageobject>
-	  </mediaobject>
-	  </figure-->
 
-      <para>The binary <literal>and</literal>/<literal>&amp;&amp;</literal> operators return
-      <literal>true</literal> iff both operands are true. They perform short-circuit
-      evaluation, so will only evaluate the second operand if the first is
-      true.</para>
+      <para>The binary <literal>and</literal>/<literal>&amp;&amp;</literal> operators return <literal>true</literal> iff both operands are true. They perform short-circuit evaluation, so will only evaluate the second operand if the first is true.</para>
 
       <example xml:id="ex.and-operator-fig">
-        <title>Using the Boolean AND operator (<literal>&amp;&amp;</literal>)
-        and the bitwise AND operator (<literal>&amp;</literal>) to determine whether
-        an integer is a power of 2</title>
-        <programlisting><xi:include href="examples/and-operator-fig.rb"
-	parse="text"/></programlisting>
+        <title>Using the Boolean AND operator (<literal>&amp;&amp;</literal>) and the bitwise AND operator (<literal>&amp;</literal>) to determine whether an integer is a power of 2</title>
+
+        <programlisting><xi:include href="examples/and-operator-fig.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="flo.or-operator">
       <title>OR Operator</title>
-      <!--figure>
-	  <title>Syntax diagram of the Boolean OR operator
-	  </title>
-	  <mediaobject>
-          <imageobject>
-	  <imagedata fileref="figures/boolean-or-operator.png" format="PNG" width="4in"/>
-          </imageobject>
-	  </mediaobject>
-	  </figure-->
 
-      <para>The binary <literal>or</literal>/<literal>||</literal> operators return
-      <literal>true</literal> iff at least one operand is true. They perform
-      short-circuit evaluation, so will only evaluate the second operand if
-      the first is false.</para>
+      <para>The binary <literal>or</literal>/<literal>||</literal> operators return <literal>true</literal> iff at least one operand is true. They perform short-circuit evaluation, so will only evaluate the second operand if the first is false.</para>
 
       <example xml:id="ex.or-operator-fig">
-        <title>Using the Boolean OR operator to determine whether the
-        check digit of an ISBN-13 is correct
-	</title>
-        <programlisting><xi:include href="examples/or-operator-fig.rb"
-	parse="text"/></programlisting>
+        <title>Using the Boolean OR operator to determine whether the check digit of an ISBN-13 is correct</title>
+
+        <programlisting><xi:include href="examples/or-operator-fig.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="flo.not-operator">
       <title>NOT Operator</title>
 
-      <!--figure>
-	  <title>Syntax diagram of the Boolean NOT operator
-	  </title>
-	  <mediaobject>
-          <imageobject>
-	  <imagedata fileref="figures/boolean-not-operator.png" format="PNG" width="4in"/>
-          </imageobject>
-	  </mediaobject>
-	  </figure-->
-
-      <para>The unary <literal>not</literal>/<literal>!</literal> operators return
-      <literal>true</literal> iff the operand is false.</para>
+      <para>The unary <literal>not</literal>/<literal>!</literal> operators return <literal>true</literal> iff the operand is false.</para>
 
       <example xml:id="ex.not-operator-fig">
-        <title>Using the Boolean NOT operator to invert the value of its
-        operand
-	</title>
-        <programlisting><xi:include href="examples/not-operator-fig.rb"
-	parse="text"/></programlisting>
+        <title>Using the Boolean NOT operator to invert the value of its operand</title>
+
+        <programlisting><xi:include href="examples/not-operator-fig.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="flo.flip-flop">
       <title>Flip Flops</title>
 
-      <para>When the <literal>..</literal> or <literal>...</literal> operators
-      are used in a conditional they don’t have their usual semantics
-      as <link linkend="ran.ranges">range literals</link>; they create a
-      <firstterm>flip-flop</firstterm> expression: a stateful, bitstable, Boolean test
-      between two expressions. They take the form
-      <literal>
-	<replaceable>left</replaceable>..<replaceable>right</replaceable>
-	</literal>, where <replaceable>left</replaceable>
-	and <replaceable>right</replaceable> are both Boolean expressions. They are false until
-	<replaceable>left</replaceable> is true, at which point they become true, remaining true
-	until <replaceable>right</replaceable> is true, at which point they become false until
-	<replaceable>left</replaceable> becomes true again. In this way they <emphasis>flip-flop</emphasis>
-      between true and false.</para>
+      <para>When the <literal>..</literal> or <literal>...</literal> operators are used in a conditional they don’t have their usual semantics as <link linkend="ran.ranges">range literals</link>; they create a <firstterm>flip-flop</firstterm> expression: a stateful, bitstable, Boolean test between two expressions. They take the form <literal><replaceable>left</replaceable>..<replaceable>right</replaceable> </literal>, where <replaceable>left</replaceable> and <replaceable>right</replaceable> are both Boolean expressions. They are false until <replaceable>left</replaceable> is true, at which point they become true, remaining true until <replaceable>right</replaceable> is true, at which point they become false until <replaceable>left</replaceable> becomes true again. In this way they <emphasis>flip-flop</emphasis> between true and false.</para>
 
-      <para>When a flip-flop becomes true it tests <replaceable>right</replaceable> to determine
-      whether its next state should be false. If <replaceable>left</replaceable> and
-      <replaceable>right</replaceable> are separated by three consecutive periods instead of
-      two, <replaceable>right</replaceable> is not tested until the expression is next
-      evaluated.</para>
+      <para>When a flip-flop becomes true it tests <replaceable>right</replaceable> to determine whether its next state should be false. If <replaceable>left</replaceable> and <replaceable>right</replaceable> are separated by three consecutive periods instead of two, <replaceable>right</replaceable> is not tested until the expression is next evaluated.</para>
     </sect2>
   </sect1>
 
   <sect1 xml:id="flo.branching">
     <title>Branching</title>
 
-    <para>
-      <firstterm>Branching statements</firstterm> predicate the execution of block on a
-      conditional. For example, an <literal>if</literal> statement executes its
-      associated code block iff its conditional is true. Each code block of an
-      branching statement is termed a <firstterm>branch</firstterm>, to describe the effect
-    of the statement on program execution.</para>
+    <para><firstterm>Branching statements</firstterm> predicate the execution of block on a conditional. For example, an <literal>if</literal> statement executes its associated code block iff its conditional is true. Each code block of an branching statement is termed a <firstterm>branch</firstterm>, to describe the effect of the statement on program execution.</para>
     
     <sect2 xml:id="flo.if-statement">
       <title><literal>if</literal> Statement</title>
       
-      <!--figure>
-	  <title>Syntax diagram of <literal>if</literal> statement
-	  </title>
-	  <mediaobject>
-          <imageobject>
-	  <imagedata fileref="figures/if-statement.png" format="PNG" width="4in"/>
-          </imageobject>
-	  </mediaobject>
-	  </figure-->
-      
-      <para>The <literal>if</literal> statement comprises a conditional, zero or more
-      statements (the branch), then, optionally, additional branches whose
-      forms are explained subsequently. The branch is executed iff the
-      conditional is true.</para>
+      <para>The <literal>if</literal> statement comprises a conditional, zero or more statements (the branch), then, optionally, additional branches whose forms are explained subsequently. The branch is executed iff the conditional is true.</para>
       
       <example xml:id="ex.if-statement-simple">
         <title>The simple form of the <literal>if</literal> statement</title>
-        <programlisting><xi:include href="examples/if-statement-simple.rb"
-	parse="text"/></programlisting>
+
+        <programlisting><xi:include href="examples/if-statement-simple.rb" parse="text"/></programlisting>
       </example>
 
-      <para>The return value of an <literal>if</literal> statement is that of the
-      executed branch, or <literal>nil</literal> if no branch was executed.</para>
+      <para>The return value of an <literal>if</literal> statement is that of the executed branch, or <literal>nil</literal> if no branch was executed.</para>
 
       <sect3 xml:id="flo.postfix-if">
         <title>Postfix Form</title>
 
-        <!--figure>
-	    <title>Syntax diagram of the postfix <literal>if</literal> statement
-	    </title>
-	    <mediaobject>
-            <imageobject>
-	    <imagedata fileref="figures/postfix-if-statement.png" format="PNG" width="4in"/>
-            </imageobject>
-	    </mediaobject>
-	    </figure-->
-
-        <para>A postfix <literal>if</literal> statement is a concise alternative when
-        the branch consists of a sole statement. It comprises an
-        expression, the <literal>if</literal> keyword, then a conditional. The
-        expression is executed iff the conditional is true.</para>
+        <para>A postfix <literal>if</literal> statement is a concise alternative when the branch consists of a sole statement. It comprises an expression, the <literal>if</literal> keyword, then a conditional. The expression is executed iff the conditional is true.</para>
 
         <example xml:id="ex.postfix-if-statement">
-          <title>The postfix <literal>if</literal> statement executes its
-          left-hand side if its right-hand side is true</title>
-	  <programlisting><xi:include href="examples/postfix-if-statement.rb"
-	  parse="text"/></programlisting>
+          <title>The postfix <literal>if</literal> statement executes its left-hand side if its right-hand side is true</title>
+
+	  <programlisting><xi:include href="examples/postfix-if-statement.rb" parse="text"/></programlisting>
         </example>
 
-        <para>This syntax, as opposed to <literal>if <replaceable>conditional</replaceable>…</literal>,
-        foregrounds the expression. This is of stylistic benefit if the
-        conditional is normally true because it highlights the default
-        case.</para>
+        <para>This syntax, as opposed to <literal>if <replaceable>conditional</replaceable>…</literal>, foregrounds the expression. This is of stylistic benefit if the conditional is normally true because it highlights the default case.</para>
       </sect3>
 
       <sect3 xml:id="flo.if-else-clause">
         <title><literal>else</literal> Clause</title>
         
-	<!--figure>
-	    <title>Syntax diagram of <literal>if</literal> statement with an
-	    <literal>else</literal> branch</title>
-	    <mediaobject>
-            <imageobject>
-	    <imagedata fileref="figures/else-clause.png" format="PNG" width="4in"/>
-            </imageobject>
-	    </mediaobject>
-	    </figure-->
-
-        <para>Prior to an <literal>if</literal> statement’s <literal>end</literal> keyword an
-        <literal>else</literal> branch may appear. It is executed iff no preceding
-        branch was executed, serving as the default branch.</para>
+        <para>Prior to an <literal>if</literal> statement’s <literal>end</literal> keyword an <literal>else</literal> branch may appear. It is executed iff no preceding branch was executed, serving as the default branch.</para>
 
         <example xml:id="ex.if-statement-with-else-clause">
-          <title>An <literal>if</literal> statement can contain an
-          <literal>else</literal> clause, which is executed iff no other branch was
-          executed</title>
-          <programlisting><xi:include
-	  href="examples/if-statement-with-else-clause.rb"
-	  parse="text"/></programlisting>
+          <title>An <literal>if</literal> statement can contain an <literal>else</literal> clause, which is executed iff no other branch was executed</title>
+
+          <programlisting><xi:include href="examples/if-statement-with-else-clause.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
 
       <sect3 xml:id="flo.if-elsif-clause">
         <title><literal>elsif</literal> Clause</title>
         
-	<!--figure>
-	    <title>Syntax diagram of <literal>if</literal> statement with an
-	    <literal>elsif</literal> branch
-	    </title>
-	    <mediaobject>
-            <imageobject>
-	    <imagedata fileref="figures/elsif-clause.png" format="PNG" width="4in"/>
-            </imageobject>
-	    </mediaobject>
-	    </figure-->
-        
-	<para>An <literal>if</literal> statement may contain any number of
-        <literal>elsif</literal> branches between the <literal>if</literal> branch and
-        before the <literal>else</literal> branch, if present. To execute they
-        require all prior conditionals to be false and their conditional to be
-        true.</para>
+	<para>An <literal>if</literal> statement may contain any number of <literal>elsif</literal> branches between the <literal>if</literal> branch and before the <literal>else</literal> branch, if present. To execute they require all prior conditionals to be false and their conditional to be true.</para>
         
 	<example xml:id="ex.if-statement-with-elsif-and-else-clause">
-          <title>Using an <literal>if</literal> statement with
-          <literal>elsif</literal> and <literal>else</literal> branches to compute the
-          Möbius function</title>
-          <programlisting><xi:include
-	  href="examples/if-statement-with-elsif-and-else-clause.rb"
-	  parse="text"/></programlisting>
+          <title>Using an <literal>if</literal> statement with <literal>elsif</literal> and <literal>else</literal> branches to compute the Möbius function</title>
+
+          <programlisting><xi:include href="examples/if-statement-with-elsif-and-else-clause.rb" parse="text"/></programlisting>
         </example>
       </sect3>
     </sect2>
@@ -274,44 +137,23 @@
     <sect2 xml:id="flo.unless-statement">
       <title><literal>unless</literal> Statement</title>
 
-      <para>The <literal>unless</literal> statement executes its branch iff its
-      conditional is false. It is equivalent to an <literal>if</literal>
-      statement with the conditional inverted. It may be followed by an
-      <literal>else</literal> branch, which executes iff the
-      <literal>unless</literal> conditional is true.  <literal>elsif</literal>
-      clauses are prohibited.</para>
+      <para>The <literal>unless</literal> statement executes its branch iff its conditional is false. It is equivalent to an <literal>if</literal> statement with the conditional inverted. It may be followed by an <literal>else</literal> branch, which executes iff the <literal>unless</literal> conditional is true.  <literal>elsif</literal> clauses are prohibited.</para>
 
       <example xml:id="ex.unless-statement-fig">
-        <title>The <literal>unless</literal> statement executes its body iff
-        its conditional is false.</title>
-        <programlisting><xi:include href="examples/unless-statement-fig.rb"
-	parse="text"/></programlisting>
+        <title>The <literal>unless</literal> statement executes its body iff its conditional is false.</title>
+
+        <programlisting><xi:include href="examples/unless-statement-fig.rb" parse="text"/></programlisting>
       </example>
 
       <sect3 xml:id="flo.postfix-unless-statement">
         <title>Postfix Form</title>
 
-        <!--figure>
-	    <title>Syntax diagram of the postfix <literal>unless</literal>
-	    statement</title>
-	    <mediaobject>
-            <imageobject>
-	    <imagedata fileref="figures/postfix-unless-statement.png" format="PNG" width="4in"/>
-            </imageobject>
-	    </mediaobject>
-	    </figure-->
-
-        <para>The postfix form of the <literal>unless</literal> statement behaves as
-        the postfix <literal>if</literal> statement, except the expression is
-        executed iff the conditional is false.</para>
+        <para>The postfix form of the <literal>unless</literal> statement behaves as the postfix <literal>if</literal> statement, except the expression is executed iff the conditional is false.</para>
 
         <example xml:id="ex.postfix-unless-statement-fig">
-          <title>Using the postfix-<literal>unless</literal> statement to
-          <literal>raise</literal> an <literal>ArgumentError</literal> if the argument
-          can’t be converted to a <literal>String</literal></title>
-          <programlisting><xi:include
-	  href="examples/postfix-unless-statement-fig.rb"
-	  parse="text"/></programlisting>
+          <title>Using the postfix-<literal>unless</literal> statement to <literal>raise</literal> an <literal>ArgumentError</literal> if the argument can’t be converted to a <literal>String</literal></title>
+
+          <programlisting><xi:include href="examples/postfix-unless-statement-fig.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
     </sect2>
@@ -319,144 +161,56 @@
     <sect2 xml:id="flo.ternary-operator">
       <title>Ternary Operator</title>
 
-      <!--figure>
-	  <title>Syntax diagram of the ternary operator</title>
-	  <mediaobject>
-          <imageobject>
-	  <imagedata fileref="figures/ternary-operator.png" format="PNG" width="4in"/>
-          </imageobject>
-	  </mediaobject>
-	  </figure-->
-
-      <para>The ternary operator is a concise alternative to <literal>if
-      <replaceable>conditional</replaceable>…else…</literal> when the conditional and branches
-      are simple. It consists of three operands, the first of which is the
-      conditional. If the conditional is true, the second expression is
-      evaluated; otherwise the third expression is evaluated.</para>
+      <para>The ternary operator is a concise alternative to <literal>if <replaceable>conditional</replaceable>…else…</literal> when the conditional and branches are simple. It consists of three operands, the first of which is the conditional. If the conditional is true, the second expression is evaluated; otherwise the third expression is evaluated.</para>
 
       <example xml:id="ex.ternary-operator-on-single-line">
-        <title>The ternary operator is a compact two-way branching
-        construct 
-	</title>
-        <programlisting><xi:include
-	href="examples/ternary-operator-on-single-line.rb"
-	parse="text"/></programlisting>
+        <title>The ternary operator is a compact two-way branching construct</title>
+
+        <programlisting><xi:include href="examples/ternary-operator-on-single-line.rb"	parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="flo.case-statement">
       <title><literal>case</literal> Statement</title>
       
-      <!--figure>
-	  <title>Syntax diagram of the <literal>case</literal> statement</title>
-	  <mediaobject>
-	  <imageobject>
-	  <imagedata fileref="figures/case-statement-syntax.png" format="PNG" width="4in"/>
-	  </imageobject>
-	  </mediaobject>
-	  </figure-->
-
-      <para>The <literal>case</literal> statement allows a single expression
-      (hereafter: the <firstterm>topic</firstterm>) to be
-      tested against other expressions without having to evaluate the
-      topic each time. It begins with a <literal>case
-      <replaceable>topic</replaceable>
-      </literal> clause, where <replaceable>topic</replaceable> is an arbitrary
-      expression.</para>
+      <para>The <literal>case</literal> statement allows a single expression (hereafter: the <firstterm>topic</firstterm>) to be tested against other expressions without having to evaluate the topic each time. It begins with a <literal>case <replaceable>topic</replaceable> </literal> clause, where <replaceable>topic</replaceable> is an arbitrary expression.</para>
 
       <sect3 xml:id="flo.when">
 	<title><literal>when</literal> Clause</title>
 	
-	<!--figure>
-	    <title>Syntax diagram of the <literal>case</literal> statement’s
-	    <literal>when</literal> clause  
-	    </title>
-	    <mediaobject>
-	    <imageobject>
-	    <imagedata fileref="figures/when-clause.png" format="PNG" width="4in"/>
-	    </imageobject>
-	    </mediaobject>
-	    </figure-->
-
-	<para>A branch is introduced by the <literal>when</literal> keyword followed by
-        a comma-separated list of one or more expressions. This list is
-        separated from the statements comprising the branch body by the
-        <literal>then</literal> keyword or a statement terminator.</para>
+	<para>A branch is introduced by the <literal>when</literal> keyword followed by a comma-separated list of one or more expressions. This list is separated from the statements comprising the branch body by the <literal>then</literal> keyword or a statement terminator.</para>
 	
-	<para>A <firstterm><literal>when</literal> clause</firstterm> matches
-	the topic if any of the expressions listed after
-	<literal>when</literal> have case equality
-	(<literal><replaceable>expression</replaceable> ===
-	<replaceable>topic</replaceable> </literal>) with the topic. Therefore,
-	<literal>when <replaceable>expression</replaceable> </literal> is
-	equivalent to <literal>if <replaceable>expression</replaceable> ===
-	<replaceable>topic</replaceable> </literal>. By default, the
-	<literal>#===</literal> message is equivalent to
-	<literal>#==</literal>—they both test for equality—but certain core
-	classes redefine <literal>#===</literal> to behave more usefully in
-	this context, as shown in the following table.</para>
+	<para>A <firstterm><literal>when</literal> clause</firstterm> matches the topic if any of the expressions listed after <literal>when</literal> have case equality (<literal><replaceable>expression</replaceable> === <replaceable>topic</replaceable> </literal>) with the topic. Therefore, <literal>when <replaceable>expression</replaceable> </literal> is equivalent to <literal>if <replaceable>expression</replaceable> === <replaceable>topic</replaceable> </literal>. By default, the <literal>#===</literal> message is equivalent to <literal>#==</literal>—they both test for equality—but certain core classes redefine <literal>#===</literal> to behave more usefully in this context, as shown in the following table.</para>
 	
 	<table xml:id="flo.case-equality-operator-table">
-	  <caption>The effect of the case equality operator on a receiver of
-	  class <replaceable>a</replaceable> and a single operand
-	  (<replaceable>b</replaceable>)
-	  </caption>
+	  <caption>The effect of the case equality operator on a receiver of class <replaceable>a</replaceable> and a single operand (<replaceable>b</replaceable>)</caption>
+
 	  <thead>
 	    <tr>
-	      <th>Class (<replaceable>a</replaceable>)
-	      </th>
-	      <th>Semantics of <literal>
-	      <replaceable>a</replaceable> === <replaceable>b</replaceable>
-	    </literal>
-	      </th>
+	      <th>Class (<replaceable>a</replaceable>)</th>
+	      <th>Semantics of <literal><replaceable>a</replaceable> === <replaceable>b</replaceable></literal></th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	    <tr>
-	      <td>
-		<literal>Class</literal>
-	      </td>
-	      <td>
-		<literal>
-		<replaceable>b</replaceable>.instance_of?(<replaceable>a</replaceable>)</literal>
-	      </td>
+	      <td><literal>Class</literal></td>
+	      <td><literal><replaceable>b</replaceable>.instance_of?(<replaceable>a</replaceable>)</literal></td>
 	    </tr>
 	    <tr>
-	      <td>
-		<literal>Proc</literal>
-	      </td>
-	      <td>
-		<literal>
-		<replaceable>a</replaceable>.call(<replaceable>b</replaceable>)</literal>
-	      </td>
+	      <td><literal>Proc</literal></td>
+	      <td><literal><replaceable>a</replaceable>.call(<replaceable>b</replaceable>)</literal></td>
 	    </tr>
 	    <tr>
-	      <td>
-		<literal>Range</literal>
-	      </td>
-	      <td>
-		<literal>
-		<replaceable>a</replaceable>.include?(<replaceable>b</replaceable>)</literal>
-	      </td>
+	      <td><literal>Range</literal></td>
+	      <td><literal><replaceable>a</replaceable>.include?(<replaceable>b</replaceable>)</literal></td>
 	    </tr>
 	    <tr>
-	      <td>
-		<literal>Regexp</literal>
-	      </td>
-	      <td>
-		<literal>
-		  <replaceable>a</replaceable> =~ <replaceable>b</replaceable>
-		</literal>
-	      </td>
+	      <td><literal>Regexp</literal></td>
+	      <td><literal><replaceable>a</replaceable> =~ <replaceable>b</replaceable></literal></td>
 	    </tr>
 	    <tr>
-	      <td>
-		<literal>Symbol</literal>
-	      </td>
-	      <td>
-		<literal>
-		<replaceable>a</replaceable> == <replaceable>b</replaceable>.to_sym</literal>
-	      </td>
+	      <td><literal>Symbol</literal></td>
+	      <td><literal><replaceable>a</replaceable> == <replaceable>b</replaceable>.to_sym</literal></td>
 	    </tr>
 	  </tbody>
 	</table>  
@@ -464,45 +218,25 @@
 
       <sect3 xml:id="flo.else">
 	<title><literal>else</literal> Clause</title>
-	<!--figure>
-	    <title>Syntax diagram of the <literal>case</literal> statement’s
-	    <literal>else</literal> clause  
-	    </title>
-	    <mediaobject>
-	    <imageobject>
-	    <imagedata fileref="figures/else-clause.png" format="PNG" width="4in"/>
-	    </imageobject>
-	    </mediaobject>
-	    </figure-->
-	<para>A single <literal>else</literal> clause may appear between the
-	final <literal>when</literal> clause and the <literal>end</literal>
-	keyword which delimits the <literal>case</literal> statement.</para>
+
+	<para>A single <literal>else</literal> clause may appear between the final <literal>when</literal> clause and the <literal>end</literal> keyword which delimits the <literal>case</literal> statement.</para>
 
 	<example xml:id="ex.case-cf-if">
-	  <title>The same method implemented first with an <literal>if</literal>
-	  statement then with a <literal>case</literal> statement
-	  </title>
-	  <programlisting><xi:include href="examples/case-cf-if.rb"
-	  parse="text"/></programlisting>
+	  <title>The same method implemented first with an <literal>if</literal> statement then with a <literal>case</literal> statement</title>
+
+	  <programlisting><xi:include href="examples/case-cf-if.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
 
       <sect3 xml:id="flo.case-evaluation">
 	<title>Evaluation</title>
-	<para>A <literal>case</literal> expression is evaluated by evaluating each
-	<literal>when</literal> branch in the order that they appear in the source
-	file. If a branch matches the topic, it is executed, and its return
-	value becomes that of the <literal>case</literal> statement; otherwise, the
-	next branch is evaluated in the same manner. If none of the
-	<literal>when</literal> branches match, and an <literal>else</literal> branch is
-	present, the <literal>case</literal> statement’s return value is that of the
-	<literal>else</literal> branch; otherwise it is <literal>nil</literal>.</para>
+
+	<para>A <literal>case</literal> expression is evaluated by evaluating each <literal>when</literal> branch in the order that they appear in the source file. If a branch matches the topic, it is executed, and its return value becomes that of the <literal>case</literal> statement; otherwise, the next branch is evaluated in the same manner. If none of the <literal>when</literal> branches match, and an <literal>else</literal> branch is present, the <literal>case</literal> statement’s return value is that of the <literal>else</literal> branch; otherwise it is <literal>nil</literal>.</para>
+
 	<example xml:id="ex.case-statement-fig">
-	  <title>Using the <literal>case</literal> statement to classify a HTTP
-	  status code
-	  </title>
-	  <programlisting><xi:include href="examples/case-statement-fig.rb"
-	  parse="text"/></programlisting>
+	  <title>Using the <literal>case</literal> statement to classify a HTTP status code</title>
+
+	  <programlisting><xi:include href="examples/case-statement-fig.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
     </sect2>   
@@ -511,88 +245,51 @@
   <sect1 xml:id="flo.looping">
     <title>Looping</title>
     
-    <para>Looping constructs represent repetition. They comprise a block of
-    code (hereafter: the <firstterm>body</firstterm>) and a
-    <firstterm>terminating condition</firstterm> which governs the number of
-    times the body will execute.</para>
+    <para>Looping constructs represent repetition. They comprise a block of code (hereafter: the <firstterm>body</firstterm>) and a <firstterm>terminating condition</firstterm> which governs the number of times the body will execute.</para>
 
-    <para>The following constructs are materially identical in that they can
-    all be used to create any kind of loop, albeit when combined with control
-    flow statements. The purpose of having many different approaches to
-    looping, as opposed to a single, generic construct, is to allow common
-    scenarios to be expressed concisely and simply, and in doing so lessen the
-    chance of erroneous terminating conditions.</para>
+    <para>The following constructs are materially identical in that they can all be used to create any kind of loop, albeit when combined with control flow statements. The purpose of having many different approaches to looping, as opposed to a single, generic construct, is to allow common scenarios to be expressed concisely and simply, and in doing so lessen the chance of erroneous terminating conditions.</para>
 
     <!-- TODO: loops don't create their own variable scope -->
     <sect2 xml:id="flo.count-controlled-loops">
       <title>Count-Controlled Loops</title>
 
-      <para>The constructs that follow instrument an a priori number of
-      repetitions.</para>
+      <para>The constructs that follow instrument an a priori number of repetitions.</para>
 
       <!-- for loops are unnecessary -->
       
       <sect3 xml:id="flo.integer-times">
         <title><literal>Integer#times</literal></title>
 
-        <para><literal>Integer#times</literal> creates a loop which executes
-        <replaceable>n</replaceable> times, where <replaceable>n</replaceable>
-        is the integer’s magnitude. For example, <literal>10.times { …
-        }</literal> executes the block ten times, passing into the block the
-        number of the current iteration. When the block is omitted an
-        <literal>Enumerator</literal> is returned.</para>
+        <para><literal>Integer#times</literal> creates a loop which executes <replaceable>n</replaceable> times, where <replaceable>n</replaceable> is the integer’s magnitude. For example, <literal>10.times { … }</literal> executes the block ten times, passing into the block the number of the current iteration. When the block is omitted an <literal>Enumerator</literal> is returned.</para>
 
         <example xml:id="ex.integer-times-loop">
-          <title><literal>Integer#times</literal> executes the associated block
-          the number of times specified by the receiver</title>
+          <title><literal>Integer#times</literal> executes the associated block the number of times specified by the receiver</title>
 	  
-	  <programlisting><xi:include 
-	  parse="text" href="examples/integer-times-loop.rb"/></programlisting>
+	  <programlisting><xi:include parse="text" href="examples/integer-times-loop.rb"/></programlisting>
 	</example>
       </sect3>
 
       <sect3 xml:id="flo.integer-upto">
         <title><literal>Integer#upto</literal></title>
 
-        <para>Similarly,
-        <literal>Integer#upto(<replaceable>limit</replaceable>)</literal>
-        counts from the value of the receiver <emphasis>up</emphasis> to the
-        value of <replaceable>limit</replaceable>, executing the loop body each
-        time. On each iteration the block is passed the current number in the
-        progression. For, example, <literal>10.upto(13)</literal> executes the
-        loop body four times, passing it 10, 11, 12, 13, then terminating. When
-        the block is omitted an <literal>Enumerator</literal> is
-        returned.</para>
+        <para>Similarly, <literal>Integer#upto(<replaceable>limit</replaceable>)</literal> counts from the value of the receiver <emphasis>up</emphasis> to the value of <replaceable>limit</replaceable>, executing the loop body each time. On each iteration the block is passed the current number in the progression. For, example, <literal>10.upto(13)</literal> executes the loop body four times, passing it 10, 11, 12, 13, then terminating. When the block is omitted an <literal>Enumerator</literal> is returned.</para>
 
         <example xml:id="ex.integer-upto-loop">
-          <title><literal>Integer#upto</literal> counts from the receiver up to
-          its argument, executing the associated block each time</title>
+          <title><literal>Integer#upto</literal> counts from the receiver up to its argument, executing the associated block each time</title>
 
-	  <programlisting><xi:include
-	  href="examples/integer-upto-loop.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/integer-upto-loop.rb" parse="text"/></programlisting>
         </example>
       </sect3>
 
       <sect3 xml:id="flo.integer-downto">
         <title><literal>Integer#downto</literal></title>
 
-        <para>Conversely,
-        <literal>Integer#downto(<replaceable>limit</replaceable>)</literal>
-        counts from the value of the receiver <emphasis>down</emphasis> to the
-        value of <replaceable>limit</replaceable>, executing the loop body each
-        time. As with <literal>Integer#upto</literal>, the block is passed the
-        number of the current progression. When the block is omitted an
-        <literal>Enumerator</literal> is returned.</para>
+        <para>Conversely, <literal>Integer#downto(<replaceable>limit</replaceable>)</literal> counts from the value of the receiver <emphasis>down</emphasis> to the value of <replaceable>limit</replaceable>, executing the loop body each time. As with <literal>Integer#upto</literal>, the block is passed the number of the current progression. When the block is omitted an <literal>Enumerator</literal> is returned.</para>
 
         <example xml:id="ex.integer-downto-loop">
-          <title><literal>Integer#downto</literal> counts from the receiver
-          down to its argument, executing the associated block each
-          time</title>
+          <title><literal>Integer#downto</literal> counts from the receiver down to its argument, executing the associated block each time</title>
 	  
-	  <programlisting><xi:include
-	  href="examples/integer-downto-loop.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/integer-downto-loop.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
     </sect2>
@@ -600,41 +297,28 @@
     <sect2 xml:id="flo.condition-controlled-loops">
       <title>Condition-Controlled Loops</title>
 
-      <para>A condition-controlled loop uses a conditional to determine when
-      the loop should terminate. The conditional is tested prior to each
-      repetition, its value determining whether to repeat or terminate the
-      loop.</para>
+      <para>A condition-controlled loop uses a conditional to determine when the loop should terminate. The conditional is tested prior to each repetition, its value determining whether to repeat or terminate the loop.</para>
 
       <sect3 xml:id="flo.while-lop">
         <title><literal>while</literal> Loops</title>
 
-        <para>The <literal>while</literal> loop executes its body as long as
-        its conditional is true. If the conditional is initially false the body
-        is never executed.</para>
+        <para>The <literal>while</literal> loop executes its body as long as its conditional is true. If the conditional is initially false the body is never executed.</para>
 	
         <example xml:id="ex.while-loop-fig">
-          <title>Using a <literal>while</literal> loop to calculate the Farey
-          sequence of order <replaceable>n</replaceable></title>
+          <title>Using a <literal>while</literal> loop to calculate the Farey sequence of order <replaceable>n</replaceable></title>
 	  
-	  <programlisting><xi:include 
-	  href="examples/while-loop-fig.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/while-loop-fig.rb" parse="text"/></programlisting>
 	</example>
 
         <sect4 xml:id="flo.postfix-while-statement">
           <title>Postfix Form</title>
 
-          <para><literal>while</literal> can also be used as a statement
-          modifier in which case it executes its left-hand side while its
-          right-hand side is true.</para>
+          <para><literal>while</literal> can also be used as a statement modifier in which case it executes its left-hand side while its right-hand side is true.</para>
 
           <example xml:id="ex.postfix-while-statement-fig">
-            <title>Using the postfix-<literal>while</literal> statement to
-            naïvely calculate the number of bits set in an integer</title>
+            <title>Using the postfix-<literal>while</literal> statement to naïvely calculate the number of bits set in an integer</title>
 	    
-	    <programlisting><xi:include
-	    href="examples/postfix-while-statement-fig.rb"
-	    parse="text"/></programlisting>
+	    <programlisting><xi:include href="examples/postfix-while-statement-fig.rb" parse="text"/></programlisting>
           </example>
         </sect4>
       </sect3>
@@ -642,33 +326,23 @@
       <sect3 xml:id="flo.until-loop">
         <title><literal>until</literal> Loops</title>
 
-        <para>The <literal>until</literal> loop executes its body as long as
-        its conditional is false. If the conditional is initially true the body
-        is never executed.</para>
+        <para>The <literal>until</literal> loop executes its body as long as its conditional is false. If the conditional is initially true the body is never executed.</para>
 
         <example xml:id="ex.until-loop-fig">
-          <title>Using the <literal>until</literal> loop to generate the
-          <emphasis>look-and-say</emphasis> sequence</title>
+          <title>Using the <literal>until</literal> loop to generate the <emphasis>look-and-say</emphasis> sequence</title>
 
-	  <programlisting><xi:include
-	  href="examples/until-loop-fig.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/until-loop-fig.rb" parse="text"/></programlisting>
         </example>
 
         <sect4 xml:id="flo.postfix-until-statement">
           <title>Postfix Form</title>
 
-          <para><literal>until</literal> can also be used as a statement
-          modifier in which case it executes its left-hand side until its
-          right-hand side is true.</para>
+          <para><literal>until</literal> can also be used as a statement modifier in which case it executes its left-hand side until its right-hand side is true.</para>
 
           <example xml:id="ex.postfix-until-statement-fig">
-            <title>Using the postfix-<literal>until</literal> statement to
-	    determine the next prime number following the receiver</title>
+            <title>Using the postfix-<literal>until</literal> statement to determine the next prime number following the receiver</title>
 	    
-	    <programlisting><xi:include
-	    href="examples/postfix-until-statement-fig.rb"
-	    parse="text"/></programlisting>
+	    <programlisting><xi:include href="examples/postfix-until-statement-fig.rb" parse="text"/></programlisting>
 	  </example>
         </sect4>
       </sect3>
@@ -677,26 +351,12 @@
     <sect2 xml:id="flo.loop">
       <title>Infinite Loops</title>
 
-      <para>The <literal>loop</literal> keyword executes its body
-      indefinitely. Unlike the constructs discussed previously, there is no
-      explicit terminating condition. An infinite loop qua infinite loop is
-      undesirable, so the body will typically include statements that
-      conditionally terminate it.  Such statements include the control flow
-      statements, <literal>return</literal>, <literal>throw</literal>,
-      <literal>raise</literal>, and <literal>exit</literal>. In addition, <link
-      linkend="exc.raise">raising</link> a <link
-      linkend="exc.stop-iteration"><literal>StopIteration</literal></link>
-      <link linkend="exc.exceptions">exception</link> inside the loop body has
-      the same effect. The principle of <literal>loop</literal>, therefore, is
-      to repeat an operation until explicitly told to halt.</para>
+      <para>The <literal>loop</literal> keyword executes its body indefinitely. Unlike the constructs discussed previously, there is no explicit terminating condition. An infinite loop qua infinite loop is undesirable, so the body will typically include statements that conditionally terminate it.  Such statements include the control flow statements, <literal>return</literal>, <literal>throw</literal>, <literal>raise</literal>, and <literal>exit</literal>. In addition, <link linkend="exc.raise">raising</link> a <link linkend="exc.stop-iteration"><literal>StopIteration</literal></link> <link linkend="exc.exceptions">exception</link> inside the loop body has the same effect. The principle of <literal>loop</literal>, therefore, is to repeat an operation until explicitly told to halt.</para>
 
       <example xml:id="ex.loop-loop-fig">
-        <title>Using the <literal>loop</literal> construct to determine whether
-	an integer is <emphasis>happy</emphasis></title>
+        <title>Using the <literal>loop</literal> construct to determine whether an integer is <emphasis>happy</emphasis></title>
 	
-	<programlisting><xi:include
-	href="examples/loop-loop-fig.rb"
-	parse="text"/></programlisting>
+	<programlisting><xi:include href="examples/loop-loop-fig.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
@@ -710,171 +370,91 @@
       <sect3 xml:id="flo.break-statement">
 	<title><literal>break</literal> Statement</title>
 
-	<para>Within a loop the <literal>break</literal> statement transfers
-	control to the first statement following the loop. (Within a <link
-	linkend="clo.yield-semantics-return">proc</link> or <link
-	linkend="clo.invocation-semantics-return">lambda</link> it has
-	different semantics). The value of a <literal>break</literal>
-	statement, and therefore the enclosing loop, is that of its
-	arguments—coerced into an <literal>Array</literal> if there is a
-	plurality—, or <literal>nil</literal> in their absence.</para>
+	<para>Within a loop the <literal>break</literal> statement transfers control to the first statement following the loop. (Within a <link linkend="clo.yield-semantics-return">proc</link> or <link linkend="clo.invocation-semantics-return">lambda</link> it has different semantics). The value of a <literal>break</literal> statement, and therefore the enclosing loop, is that of its arguments—coerced into an <literal>Array</literal> if there is a plurality—, or <literal>nil</literal> in their absence.</para>
 
 	<example xml:id="ex.break">
 	  <title>Using <literal>break</literal> to exit a loop early</title>
 	  
-	  <programlisting><xi:include
-	  href="examples/break.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/break.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
 
       <sect3 xml:id="flo.next-statement">
 	<title><literal>next</literal> Statement</title>
 
-	<para>The <literal>next</literal> statement ends the current iteration of
-	the loop and begins the next. It raises a <literal>LocalJump</literal>
-	exception when used outside of a loop or closure. Any arguments it is
-	given are ignored.</para>
+	<para>The <literal>next</literal> statement ends the current iteration of the loop and begins the next. It raises a <literal>LocalJump</literal> exception when used outside of a loop or closure. Any arguments it is given are ignored.</para>
 
 	<example xml:id="ex.next">
-	  <title>Using <literal>next</literal> to skip comments in
-	  <filename>/etc/hosts</filename></title>
+	  <title>Using <literal>next</literal> to skip comments in <filename>/etc/hosts</filename></title>
 
-	  <programlisting><xi:include
-	  parse="text"
-	  href="examples/next.rb"/></programlisting>
+	  <programlisting><xi:include parse="text" href="examples/next.rb"/></programlisting>
 	</example>
       </sect3>
 
       <sect3 xml:id="flo.redo-statement">
 	<title><literal>redo</literal> Statement</title>
 
-	<para>The <literal>redo</literal> statement restarts the current
-	iteration of the loop, returning control to the first expression in the
-	body. The loop conditional is not re-evaluated.</para>
+	<para>The <literal>redo</literal> statement restarts the current iteration of the loop, returning control to the first expression in the body. The loop conditional is not re-evaluated.</para>
 
 	<example xml:id="ex.redo">
-	  <title>Using <literal>redo</literal> to conditionally repeat a password
-	  prompt</title>
+	  <title>Using <literal>redo</literal> to conditionally repeat a password prompt</title>
 	  
-	  <programlisting><xi:include
-	  href="examples/redo.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/redo.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
 
       <sect3 xml:id="flo.throw-catch">
 	<title><literal>throw</literal>/<literal>catch</literal> Statements</title>
 	
-	<para>The <literal>catch</literal> method defines a labeled block of
-	code. The <literal>throw</literal> method exits a
-	<literal>catch</literal> block with a given label. Taken together, they
-	form a general-purpose control structure.</para>
+	<para>The <literal>catch</literal> method defines a labelled block of code. The <literal>throw</literal> method exits a <literal>catch</literal> block with a given label. Taken together, they form a general-purpose control structure.</para>
 
-	<para>The label is normally given as a <literal>Symbol</literal> or
-	<literal>String</literal>, however any object is permissible as long as
-	the thrown object is <emphasis>identical</emphasis> to the caught
-	object.</para>
+	<para>The label is normally given as a <literal>Symbol</literal> or <literal>String</literal>, however any object is permissible as long as the thrown object is <emphasis>identical</emphasis> to the caught object.</para>
 
-	<para>A <literal>catch</literal> block is defined with <literal>catch
-	<replaceable>label</replaceable>
-	<replaceable>block</replaceable></literal>, where
-	<replaceable>label</replaceable> is the label which this block should
-	catch, and <replaceable>block</replaceable> is a block literal. The block
-	is called immediately.</para>
+	<para>A <literal>catch</literal> block is defined with <literal>catch <replaceable>label</replaceable> <replaceable>block</replaceable></literal>, where <replaceable>label</replaceable> is the label which this block should catch, and <replaceable>block</replaceable> is a block literal. The block is called immediately.</para>
 
-	<para>The syntax of <literal>throw</literal> is <literal>throw
-	<replaceable>label</replaceable>,
-	<replaceable>value</replaceable></literal>, where
-	<replaceable>label</replaceable> is the label of an enclosing
-	<literal>catch</literal> block, and <replaceable>value</replaceable> is
-	an optional expression which, if supplied, becomes the value of the
-	corresponding <literal>catch</literal> block.</para>
+	<para>The syntax of <literal>throw</literal> is <literal>throw <replaceable>label</replaceable>, <replaceable>value</replaceable></literal>, where <replaceable>label</replaceable> is the label of an enclosing <literal>catch</literal> block, and <replaceable>value</replaceable> is an optional expression which, if supplied, becomes the value of the corresponding <literal>catch</literal> block.</para>
 	
-	<para><literal>throw</literal> immediately causes the current execution
-	path to terminate and a search to begin for the nearest
-	<literal>catch</literal> block defined with the same label. The search
-	proceeds out through the current lexical scope, then up through the call
-	stack towards the top-level of the program, crossing method boundaries if
-	necessary. If such a <literal>catch</literal> is found, it is exited, and
-	execution resumes from the statement that follows it. Otherwise, if the
-	search is unsuccessful, an <literal>ArgumentError</literal> exception is
-	raised.</para>
+	<para><literal>throw</literal> immediately causes the current execution path to terminate and a search to begin for the nearest <literal>catch</literal> block defined with the same label. The search proceeds out through the current lexical scope, then up through the call stack towards the top-level of the program, crossing method boundaries if necessary. If such a <literal>catch</literal> is found, it is exited, and execution resumes from the statement that follows it. Otherwise, if the search is unsuccessful, an <literal>ArgumentError</literal> exception is raised.</para>
 
 	<example xml:id="ex.catch-throw">
-	  <title>Using <literal>throw</literal> and
-	  <literal>catch</literal> to follow URL redirection. (Based on the
-	  implementation of <literal>OpenURI</literal>)</title>
+	  <title>Using <literal>throw</literal> and <literal>catch</literal> to follow URL redirection. (Based on the implementation of <literal>OpenURI</literal>)</title>
 
-	  <programlisting><xi:include
-	  href="examples/catch-throw.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/catch-throw.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
 
       <sect3 xml:id="flo.yield">
 	<title><literal>yield</literal> Statement</title>
 
-	<para>The <literal>yield</literal> statement causes control to be
-	transferred to the associated block, then resume from the statement
-	following <literal>yield</literal>. It effects a
-	<emphasis>temporary</emphasis> transfer such that the yielding method
-	retains control; whereas <literal>return</literal> cedes complete control
-	of execution to its caller. This enables a method to
-	<literal>yield</literal> to a block multiple times, as opposed to
-	<literal>return</literal> which, by definition, may be executed by a
-	method no more than once.</para>
+	<para>The <literal>yield</literal> statement causes control to be transferred to the associated block, then resume from the statement following <literal>yield</literal>. It effects a <emphasis>temporary</emphasis> transfer such that the yielding method retains control; whereas <literal>return</literal> cedes complete control of execution to its caller. This enables a method to <literal>yield</literal> to a block multiple times, as opposed to <literal>return</literal> which, by definition, may be executed by a method no more than once.</para>
 
-	<para>As explained in <link linkend="mes.block-argument"/>, a block
-	literal may be sent along with a message. Then, as explained in <link
-	linkend="met.block-arguments"/>, the receiving method may access this
-	block, which we will refer to as <emphasis>the associated
-	block</emphasis>.</para>
+	<para>As explained in <link linkend="mes.block-argument"/>, a block literal may be sent along with a message. Then, as explained in <link linkend="met.block-arguments"/>, the receiving method may access this block, which we will refer to as <emphasis>the associated block</emphasis>.</para>
 
-	<para>The return value of <literal>yield</literal> is that of the block
-	yielded to.</para>
+	<para>The return value of <literal>yield</literal> is that of the block yielded to.</para>
 
 	<sect4 xml:id="flo.yield-arguments">
 	  <title>Arguments</title>
 
-	  <para><literal>yield</literal> may be supplied with one or more
-	  arguments, which are passed to the associated block. It is this ability
-	  that enables <link linkend="flo.internal-iterators">internal
-	  iterators</link> to be <link
-	  linkend="flo.custom-internal-iterators">constructed</link>.</para>
+	  <para><literal>yield</literal> may be supplied with one or more arguments, which are passed to the associated block. It is this ability that enables <link linkend="flo.internal-iterators">internal iterators</link> to be <link linkend="flo.custom-internal-iterators">constructed</link>.</para>
 
-	  <para><literal>yield</literal>’s arguments are married with the
-	  block’s parameter list with <firstterm>yield semantics</firstterm>:
-	  semantics similar to those of <link
-	  linkend="met.arguments">methods</link>, with the following
-	  differences:</para>
+	  <para><literal>yield</literal>’s arguments are married with the block’s parameter list with <firstterm>yield semantics</firstterm>: semantics similar to those of <link linkend="met.arguments">methods</link>, with the following differences:</para>
 
 	  <itemizedlist>
 	    <listitem>
-	      <para>Superfluous arguments are silently discarded. A block wishing
-	      to collect a variable number of arguments into an
-	      <literal>Array</literal> must use a <link
-	      linkend="met.rest-parameters">rest parameter</link>.</para>
+	      <para>Superfluous arguments are silently discarded. A block wishing to collect a variable number of arguments into an <literal>Array</literal> must use a <link linkend="met.rest-parameters">rest parameter</link>.</para>
 	    </listitem> 
 	    <listitem>
-	      <para>Parameters representing omitted arguments are assigned
-	      <literal>nil</literal>.</para>
+	      <para>Parameters representing omitted arguments are assigned <literal>nil</literal>.</para>
 	    </listitem>
 	    <listitem>
-	      <para><literal>Array</literal> arguments are automatically
-	      exploded.</para>
+	      <para><literal>Array</literal> arguments are automatically exploded.</para>
 	    </listitem>
 	    <listitem>
-	      <para>Block literals are prohibited as arguments. That is, a block
-	      cannot be yielded to another block. The workaround is to yield a
-	      <literal>Proc</literal> object representing the block to be
-	      yielded.</para>
+	      <para>Block literals are prohibited as arguments. That is, a block cannot be yielded to another block. The workaround is to yield a <literal>Proc</literal> object representing the block to be yielded.</para>
 	    </listitem>
 	  </itemizedlist>
 
-	  <para>As with message expressions, the final argument to
-	  <literal>yield</literal> may be a <literal>Hash</literal> literal with
-	  or without its delimiting curly braces.</para>
+	  <para>As with message expressions, the final argument to <literal>yield</literal> may be a <literal>Hash</literal> literal with or without its delimiting curly braces.</para>
 	</sect4>
       </sect3>
     </sect2>
@@ -888,80 +468,39 @@
     <sect2 xml:id="flo.internal-iterators">
       <title>Internal</title>
       
-      <para>An internal iterator is a method which accepts a block to which
-      each element of a collection is <link linkend="flo.yield">yielded</link>
-      in turn. These are <emphasis>internal</emphasis>> iterators because they
-      “push“ elements of the collection to the block; whereas
-      <emphasis>external</emphasis>> iterators, discussed below, are objects
-      from which the elements are “pulled”.</para>
+      <para>An internal iterator is a method which accepts a block to which each element of a collection is <link linkend="flo.yield">yielded</link> in turn. These are <emphasis>internal</emphasis>> iterators because they “push“ elements of the collection to the block; whereas <emphasis>external</emphasis>> iterators, discussed below, are objects from which the elements are “pulled”.</para>
 
-      <para>In fact, <link
-      linkend="flo.integer-times"><literal>Integer#times</literal></link>,
-      <link linkend="flo.integer-upto"><literal>Integer#upto</literal></link>,
-      and <link
-      linkend="flo.integer-downto"><literal>Integer#downto</literal></link>,
-      which were introduced above, are themselves internal iterators. The
-      collection over which they iterate is a sequence of integers.</para>
+      <para>In fact, <link linkend="flo.integer-times"><literal>Integer#times</literal></link>, <link linkend="flo.integer-upto"><literal>Integer#upto</literal></link>, and <link linkend="flo.integer-downto"><literal>Integer#downto</literal></link>, which were introduced above, are themselves internal iterators. The collection over which they iterate is a sequence of integers.</para>
 
-      <para>The most common internal iterator is <glossterm
-      linkend="glo.each"/> because its presence allows a collection class to
-      mix-in the <link
-      linkend="enu.enumerables"><literal>Enumerable</literal></link> module. It
-      is defined on all core classes that can sensibly be iterated over, with
-      the provisos noted in <glossterm linkend="glo.each"/>.</para>
+      <para>The most common internal iterator is <glossterm linkend="glo.each"/> because its presence allows a collection class to mix-in the <link linkend="enu.enumerables"><literal>Enumerable</literal></link> module. It is defined on all core classes that can sensibly be iterated over, with the provisos noted in <glossterm linkend="glo.each"/>.</para>
 
-      <para>An object supporting internal iteration is sent the appropriate
-      selector (e.g. <literal>:each</literal>) along with a block literal
-      expecting at least one argument. Each time the block is called its
-      argument will be the next element of the collection, where the semantics
-      of <emphasis>next</emphasis> depend on the iterator’s intent. The block
-      is a closure, so flow control statements can be used in its body in the
-      manner described in <link linkend="clo.closures"/>.</para>
+      <para>An object supporting internal iteration is sent the appropriate selector (e.g. <literal>:each</literal>) along with a block literal expecting at least one argument. Each time the block is called its argument will be the next element of the collection, where the semantics of <emphasis>next</emphasis> depend on the iterator’s intent. The block is a closure, so flow control statements can be used in its body in the manner described in <link linkend="clo.closures"/>.</para>
 
-      <para><literal>:each</literal>, along with most internal iterators, can
-      also be sent without a block in which case it returns an
-      <literal>Enumerator</literal>.</para>
+      <para><literal>:each</literal>, along with most internal iterators, can also be sent without a block in which case it returns an <literal>Enumerator</literal>.</para>
 
-      <para>Internal iterators are not limited to behaving like
-      <literal>:each</literal>; <link linkend="enu.enumerables"/> describes
-      some of the specialised iterators the <literal>Enumerable</literal>
-      module defines in terms of <literal>:each</literal>.</para>
+      <para>Internal iterators are not limited to behaving like <literal>:each</literal>; <link linkend="enu.enumerables"/> describes some of the specialised iterators the <literal>Enumerable</literal> module defines in terms of <literal>:each</literal>.</para>
 
       <sect3 xml:id="flo.for">
 	<title><literal>for</literal></title>
 
-	<para>Objects responding to <literal>:each</literal> in the manner
-	outlined above may also be iterated over with the
-	<literal>for</literal> keyword as shown below. The only practical
-	difference between a <literal>for</literal> loop and using
-	<literal>:each</literal> directly is that the latter defines a new
-	variable scope for the duration of the block.</para>
+	<para>Objects responding to <literal>:each</literal> in the manner outlined above may also be iterated over with the <literal>for</literal> keyword as shown below. The only practical difference between a <literal>for</literal> loop and using <literal>:each</literal> directly is that the latter defines a new variable scope for the duration of the block.</para>
 
 	<example xml:id="ex.for-loop">
-	  <title>Using the <literal>for</literal> keyword to drive an
-	  internal iterator</title>
+	  <title>Using the <literal>for</literal> keyword to drive an internal iterator</title>
 
-	  <programlisting><xi:include
-	  href="examples/for-loop.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/for-loop.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
       
       <sect3 xml:id="flo.custom-internal-iterators">
 	<title>Custom Internal Iterators</title>
 	
-	<para>Fundamentally, an internal iterator is just a method which <link
-	linkend="flo.yield">yields</link> a value to a block. The mechanics of
-	methods accepting blocks are described in <link
-	linkend="met.block-arguments"/>.</para>
+	<para>Fundamentally, an internal iterator is just a method which <link linkend="flo.yield">yields</link> a value to a block. The mechanics of methods accepting blocks are described in <link linkend="met.block-arguments"/>.</para>
 
 	<example xml:id="ex.custom-internal-iterator">
-	  <title>Using <literal>yield</literal> to create a
-	  custom internal iterator</title>
+	  <title>Using <literal>yield</literal> to create a custom internal iterator</title>
 
-	  <programlisting><xi:include
-	  href="examples/custom-internal-iterator.rb"
-	  parse="text"/></programlisting>
+	  <programlisting><xi:include href="examples/custom-internal-iterator.rb" parse="text"/></programlisting>
 	</example>
       </sect3>
 
@@ -972,73 +511,42 @@
   <sect1 xml:id="flo.begin-exit-handler">
     <title>Begin / Exit Handlers</title>
 
-    <para>A <firstterm>begin</firstterm> or <firstterm>exit</firstterm>
-    handler registers code to be executed at the beginning or end,
-    respectively, of a program.</para>
+    <para>A <firstterm>begin</firstterm> or <firstterm>exit</firstterm> handler registers code to be executed at the beginning or end, respectively, of a program.</para>
 
     <sect2 xml:id="flo.begin-block">
       <title><literal>BEGIN</literal> Block</title>
 
-      <para>A <literal>BEGIN</literal> block, as opposed to a <link
-      linkend="exc.begin-statement"><literal>begin</literal> statement</link>,
-      is executed at the very beginning of a program. It consists of the
-      <literal>BEGIN</literal> keyword at the top-level of a program, followed
-      by statements delimited by curly braces, and defines its own variable
-      scope. If multiple <literal>BEGIN</literal> blocks are present, they
-      are executed in the order encountered by the interpreter.</para>
+      <para>A <literal>BEGIN</literal> block, as opposed to a <link linkend="exc.begin-statement"><literal>begin</literal> statement</link>, is executed at the very beginning of a program. It consists of the <literal>BEGIN</literal> keyword at the top-level of a program, followed by statements delimited by curly braces, and defines its own variable scope. If multiple <literal>BEGIN</literal> blocks are present, they are executed in the order encountered by the interpreter.</para>
       <!-- Behaviour changed as of  [ruby-core:21657] -->
 
       <example xml:id="ex.begin-block">
-	<title>Using <literal>BEGIN</literal> to execute a given block before
-	any other statement</title>
+	<title>Using <literal>BEGIN</literal> to execute a given block before any other statement</title>
 
-	<programlisting><xi:include
-	href="examples/begin-block.rb"
-	parse="text"/></programlisting>
+	<programlisting><xi:include href="examples/begin-block.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="flo.end-block">
       <title><literal>END</literal> Block</title>
 
-      <para>An <literal>END</literal> block, as opposed to the
-      <literal>end</literal> keyword, is executed at the very end of a
-      program. They consist of the <literal>END</literal> keyword followed by
-      statements delimited by curly braces.  Unlike <literal>BEGIN</literal>
-      blocks, they share local variable scope with surrounding code. A further
-      difference is that the execution of an <literal>END</literal> block is
-      governed by surrounding constructs: if it appears in the body of a
-      conditional, for instance, its execution is dependent on that conditional
-      being true. However, even if enclosed in a looping construct, an
-      <literal>END</literal> block is still only executed once.</para>
+      <para>An <literal>END</literal> block, as opposed to the <literal>end</literal> keyword, is executed at the very end of a program. They consist of the <literal>END</literal> keyword followed by statements delimited by curly braces.  Unlike <literal>BEGIN</literal> blocks, they share local variable scope with surrounding code. A further difference is that the execution of an <literal>END</literal> block is governed by surrounding constructs: if it appears in the body of a conditional, for instance, its execution is dependent on that conditional being true. However, even if enclosed in a looping construct, an <literal>END</literal> block is still only executed once.</para>
 
       <example xml:id="ex.end-block">
-	<title>Using <literal>END</literal> to execute a given block
-	after any other statement</title>
+	<title>Using <literal>END</literal> to execute a given block after any other statement</title>
 
-	<programlisting><xi:include
-	href="examples/end-block.rb"
-	parse="text"/></programlisting>
+	<programlisting><xi:include href="examples/end-block.rb" parse="text"/></programlisting>
       </example>
     </sect2>
 
     <sect2 xml:id="flo.at_exit">
       <title><literal>Kernel.at_exit</literal></title>
       
-      <para>An alternative to <link
-      linkend="flo.end-block"><literal>END</literal> blocks</link> is
-      <literal>Kernel.at_exit</literal>. It accepts a block argument which
-      it registers to execute at the end of program execution. If called
-      multiple times the blocks are executed in reverse chronological
-      order.</para>
+      <para>An alternative to <link linkend="flo.end-block"><literal>END</literal> blocks</link> is <literal>Kernel.at_exit</literal>. It accepts a block argument which it registers to execute at the end of program execution. If called multiple times the blocks are executed in reverse chronological order.</para>
 
       <example xml:id="ex.at_exit">
-	<title>Using <literal>at_exit</literal> to execute a given block after
-	any other statement</title>
+	<title>Using <literal>at_exit</literal> to execute a given block after any other statement</title>
 
-	<programlisting><xi:include
-	href="examples/at_exit.rb"
-	parse="text"/></programlisting>
+	<programlisting><xi:include href="examples/at_exit.rb"	parse="text"/></programlisting>
       </example>
     </sect2>
   </sect1>
