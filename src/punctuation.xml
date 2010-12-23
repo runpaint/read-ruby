@@ -1,399 +1,387 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appendix version="5.0" xml:id="pun.punctuation" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Appendix: Punctuation</title>
+
   <sect1 xml:id="pun.ampersands">
     <title>Ampersands (<literal>&amp;</literal>)</title>
-    <para>An ampersand (<literal>U＋0026</literal>) in the
-    context of…</para>
+
+    <para>An ampersand (<literal>U＋0026</literal>) in the context of…</para>
+
     <variablelist>
       <varlistentry>
         <term>A <link linkend="mes.expressions">message expression</link></term>
+
         <listitem>
-          <para>Converts a <literal>Proc</literal> object to a block, passing it to
-      the receiver.</para>
+          <para>Converts a <literal>Proc</literal> object to a block, passing it to the receiver.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>A <link linkend="met.arguments">parameter list</link></term>
+
         <listitem>
-          <para>Signifies that the following identifier corresponds to the
-      block sent along with the message.</para>
+          <para>Signifies that the following identifier corresponds to the block sent along with the message.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>An <link linkend="mes.operators">operator</link></term>
+
         <listitem>
-          <para>Performs bitwise AND. The operator consisting of two consecutive
-      ampersands performs Boolean AND.</para>
+          <para>Performs bitwise AND. The operator consisting of two consecutive ampersands performs Boolean AND.</para>
         </listitem>
       </varlistentry>
     </variablelist>
   </sect1>
+
   <sect1 xml:id="pun.apostrophes">
     <title>Apostrophes (<literal>'</literal>)</title>
-    <para>An apostrophe (<literal>U＋0027</literal>) delimits <link
-    linkend="str.single-quoted">single-quoted strings</link>.</para>
+
+    <para>An apostrophe (<literal>U＋0027</literal>) delimits <link linkend="str.single-quoted">single-quoted strings</link>.</para>
   </sect1>
+
   <sect1 xml:id="pun.asterisks">
     <title>Asterisks (<literal>*</literal>)</title>
-    <para>An asterisk (<literal>U＋002A</literal>) in the
-    context of…</para>
+
+    <para>An asterisk (<literal>U＋002A</literal>) in the context of…</para>
+
     <variablelist>
       <varlistentry>
         <term>A <link linkend="mes.expressions">message expression</link></term>
+
         <listitem>
           <para>Explodes an object into its constituent elements.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>A <link linkend="met.arguments">parameter list</link></term>
+
         <listitem>
-          <para>Prefixes a parameter which may receive a variable number of
-      arguments.</para>
+          <para>Prefixes a parameter which may receive a variable number of arguments.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>An <link linkend="mes.operators">operator</link></term>
+
         <listitem>
-          <para>Performs multiplication—when alone—or exponentiation—when
-      preceded by another asterisk.</para>
+          <para>Performs multiplication—when alone—or exponentiation—when preceded by another asterisk.</para>
         </listitem>
       </varlistentry>
     </variablelist>
   </sect1>
+
   <sect1 xml:id="pun.cicumflex-accents">
     <title>Circumflex Accents (<literal>^</literal>)</title>
-    <para>The circumflex accent-also known as a <emphasis>caret</emphasis>-(<literal>U＋005E</literal>) is an binary operator that performs bitwise
-    exclusive OR.</para>
+
+    <para>The circumflex accent-also known as a <emphasis>caret</emphasis>-(<literal>U＋005E</literal>) is an binary operator that performs bitwise exclusive OR.</para>
   </sect1>
+
   <sect1 xml:id="pun.colons">
     <title>Colons (<literal>:</literal>)</title>
+
     <para>A colon (<literal>U＋003A</literal>) in the context of…</para>
+
     <variablelist>
       <varlistentry>
-        <term>The beginning of an expression
-      </term>
+        <term>The beginning of an expression</term>
+
         <listitem>
-          <para>Creates a symbol from the following identifier or string. (Unless
-      followed by another colon).</para>
+          <para>Creates a symbol from the following identifier or string. (Unless followed by another colon).</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>An operator
-      </term>
+        <term>An operator</term>
+
         <listitem>
-          <para>Separates the <literal>then</literal> clause from the <literal>else</literal>
-      clause in a ternary expression.</para>
+          <para>Separates the <literal>then</literal> clause from the <literal>else</literal> clause in a ternary expression.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>An operator inside a <literal>Hash</literal> literal
-      </term>
+        <term>An operator inside a <literal>Hash</literal> literal</term>
+
         <listitem>
           <para>Separates <literal>Symbol</literal> keys from their corresponding values.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>A constant reference expression
-      </term>
+        <term>A constant reference expression</term>
+
         <listitem>
-          <para>Two consecutive colons serve as the scope operator when the
-      character to their immediate right is an uppercase US-ASCII letter:
-      either separating one constant’s name from another, or at the beginning
-      of such an expression.</para>
+          <para>Two consecutive colons serve as the scope operator when the character to their immediate right is an uppercase US-ASCII letter: either separating one constant’s name from another, or at the beginning of such an expression.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>A message expression
-      </term>
+        <term>A message expression</term>
+
         <listitem>
-          <para>Two consecutive colons followed by a character other than an
-      uppercase US-ASCII letter may separate the receiver from the selector.</para>
+          <para>Two consecutive colons followed by a character other than an uppercase US-ASCII letter may separate the receiver from the selector.</para>
         </listitem>
       </varlistentry>
     </variablelist>
   </sect1>
+
   <sect1 xml:id="pun.commas">
     <title>Commas (<literal>,</literal>)</title>
-    <para>A comma (<literal>U＋002C</literal>) separates expressions
-    in a list. It is used in message expressions, parameter lists, the lvalues
-    and rvalues of assignment expressions, <literal>Array</literal> and
-    <literal>Hash</literal> literals, and the list of method names passed to
-    <literal>undef</literal>.</para>
+
+    <para>A comma (<literal>U＋002C</literal>) separates expressions in a list. It is used in message expressions, parameter lists, the lvalues and rvalues of assignment expressions, <literal>Array</literal> and <literal>Hash</literal> literals, and the list of method names passed to <literal>undef</literal>.</para>
   </sect1>
+
   <sect1 xml:id="pun.commercial-ats">
     <title>Commercial At Signs (<literal>@</literal>)</title>
-    <para>When the commercial at sign-also known as an <emphasis>at sign</emphasis>-(<literal>U＋0040</literal>) prefixes an identifier it is a sigil
-    introducing an instance variable—if it appears by itself—or a class
-    variable—if it is preceded by another.  In a symbol literal or method
-    name, an <literal>@</literal> suffix distinguishes a unary operator from a
-    binary operator with the same name.</para>
+
+    <para>When the commercial at sign-also known as an <emphasis>at sign</emphasis>-(<literal>U＋0040</literal>) prefixes an identifier it is a sigil introducing an instance variable—if it appears by itself—or a class variable—if it is preceded by another.  In a symbol literal or method name, an <literal>@</literal> suffix distinguishes a unary operator from a binary operator with the same name.</para>
   </sect1>
+
   <sect1 xml:id="pun.curly-brackets">
     <title>Curly Brackets (<literal>{}</literal>)</title>
-    <para>A pair of curly brackets (<literal>U＋007B</literal>,
-    <literal>U＋007D</literal>) in the context of a message
-    expression delimit a block which is sent along with the message,
-    otherwise they delimit a hash literal.</para>
+
+    <para>A pair of curly brackets (<literal>U＋007B</literal>, <literal>U＋007D</literal>) in the context of a message expression delimit a block which is sent along with the message, otherwise they delimit a hash literal.</para>
   </sect1>
+
   <sect1 xml:id="pun.dollar-signs">
     <title>Dollar Signs (<literal>$</literal>)</title>
-    <para>A dollar sign (<literal>U＋0024</literal>) followed by an
-    identifier is a sigil denoting a global variable.</para>
+
+    <para>A dollar sign (<literal>U＋0024</literal>) followed by an identifier is a sigil denoting a global variable.</para>
   </sect1>
+
   <sect1 xml:id="pun.equals-signs">
     <title>Equals Signs (<literal>=</literal>)</title>
-    <para>An equals sign (<literal>U＋003D</literal>) in the
-    context of…</para>
+
+    <para>An equals sign (<literal>U＋003D</literal>) in the context of…</para>
+
     <variablelist>
       <varlistentry>
-        <term>An assignment expression
-      </term>
+        <term>An assignment expression</term>
+
         <listitem>
-          <para>Separates the variables being assigned to from the values being
-      assigned to them.</para>
+          <para>Separates the variables being assigned to from the values being assigned to them.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>An operator
-      </term>
+        <term>An operator</term>
+
         <listitem>
-          <para>Tests for equality if doubled, case equality if tripled, and
-      inequality if prefixed with less‐than  (<literal>U＋003C</literal>) or greater‐than (<literal>U＋003E</literal>) signs; performs pattern matching if followed
-      by a tilde (<literal>U＋007E</literal>).</para>
+          <para>Tests for equality if doubled, case equality if tripled, and inequality if prefixed with less‐than (<literal>U＋003C</literal>) or greater‐than (<literal>U＋003E</literal>) signs; performs pattern matching if followed by a tilde (<literal>U＋007E</literal>).</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>A parameter list
-      </term>
+        <term>A parameter list</term>
+
         <listitem>
           <para>Signifies that a parameter is optional and its default value</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>Hash literals
-      </term>
+        <term>Hash literals</term>
+
         <listitem>
           <para>When followed by a greater‐than sign (<literal>U＋003E</literal>) separates a key from its value.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>Embedded documentation
-      </term>
+        <term>Embedded documentation</term>
+
         <listitem>
-          <para>Introduces the beginning of embedded documentation when appearing
-      at the start of a line followed by <literal>begin</literal>, and the end
-      when appearing at the start of a line followed by <literal>end</literal></para>
+          <para>Introduces the beginning of embedded documentation when appearing at the start of a line followed by <literal>begin</literal>, and the end when appearing at the start of a line followed by <literal>end</literal></para>
         </listitem>
       </varlistentry>
     </variablelist>
   </sect1>
   <sect1 xml:id="pun.exclamation-marks">
     <title>Exclamation Marks (<literal>!</literal>)</title>
-    <para>An exclamation mark (<literal>U＋0021</literal>) in the
-    context of…</para>
+
+    <para>An exclamation mark (<literal>U＋0021</literal>) in the context of…</para>
+
     <variablelist>
       <varlistentry>
-        <term>A message selector</term>
-        <listitem>
+        <term>A message selector</term><listitem>
+
           <para>Signifies the message deserves extra attention</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>An <link linkend="mes.operators">operator</link></term>
+
         <listitem>
-          <para>Negates its operand, when used as a unary operator, the sense of a
-      pattern match, when followed by a tilde (<literal>U＋007E</literal>), or a test for equality, when followed by
-      an equals sign (<literal>U＋003D</literal>).</para>
+          <para>Negates its operand, when used as a unary operator, the sense of a pattern match, when followed by a tilde (<literal>U＋007E</literal>), or a test for equality, when followed by an equals sign (<literal>U＋003D</literal>).</para>
         </listitem>
       </varlistentry>
     </variablelist>
   </sect1>
+
   <sect1 xml:id="pun.full-stops">
     <title>Full Stops (<literal>.</literal>)</title>
+
     <para>A full stop-also known as <emphasis>periods</emphasis> or <emphasis>dots</emphasis>-(<literal>U＋002E</literal>) is used to separate in the context of…</para>
+
     <variablelist>
       <varlistentry>
         <term>A <link linkend="mes.expressions">message expression</link></term>
+
         <listitem>
           <para>It separates the receiver from the selector</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>A range literal
-      </term>
+        <term>A range literal</term>
+
         <listitem>
-          <para>Two or three consecutive periods separate the start value from the
-      end value</para>
+          <para>Two or three consecutive periods separate the start value from the end value</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>A float literal
-      </term>
+        <term>A float literal</term>
+
         <listitem>
-          <para>It is the radix point separating the whole part of the number from
-      the fractional part.</para>
+          <para>It is the radix point separating the whole part of the number from the fractional part.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>A flip-flop operator
-      </term>
+        <term>A flip-flop operator</term>
+
         <listitem>
           <para>It separates the first value from the last</para>
         </listitem>
       </varlistentry>
     </variablelist>
   </sect1>
+
   <sect1 xml:id="pun.grave-accents">
     <title>Grave Accents (<literal>`</literal>)</title>
-    <para>Grave accents-also known as <emphasis>backticks</emphasis>-(<literal>U＋0060</literal>) delimit a double‐quoted string interpreted as
-    a command to be executed.</para>
+
+    <para>Grave accents-also known as <emphasis>backticks</emphasis>-(<literal>U＋0060</literal>) delimit a double‐quoted string interpreted as a command to be executed.</para>
   </sect1>
+
   <sect1 xml:id="pun.greater-than">
     <title>Greater-Than Signs (<literal>&gt;</literal>)</title>
-    <para>When used as a binary operator, a greater‐than sign (<literal>U＋003E</literal>) represents the corresponding inequality. When
-    immediately followed by an equals sign, it is a binary operator
-    representing the greater-than-or-equal-to inequality. In a
-    <literal>Hash</literal> literal, it is preceded by an equals sign to separate
-    keys from their values.</para>
+
+    <para>When used as a binary operator, a greater‐than sign (<literal>U＋003E</literal>) represents the corresponding inequality. When immediately followed by an equals sign, it is a binary operator representing the greater-than-or-equal-to inequality. In a <literal>Hash</literal> literal, it is preceded by an equals sign to separate keys from their values.</para>
   </sect1>
+
   <sect1 xml:id="pun.hyphen-minus">
     <title>Hyphen Minus Signs (<literal>-</literal>)</title>
-    <para>A hyphen minus sign-also known as a <emphasis>dash</emphasis>, <emphasis>hyphen</emphasis>, or
-    <emphasis>minus sign</emphasis>-(<literal>U＋002D</literal>) performs
-    negation when used as a unary operator, and subtraction when used as a
-    binary operator. Both are <link linkend="met.operators">operator methods</link>,
-    whose selectors are distinguished by the former having a commercial at
-    sign prefix. When followed by a greater‐than sign (<literal>U＋003E</literal>) it may represent a lambda literal.</para>
+
+    <para>A hyphen minus sign-also known as a <emphasis>dash</emphasis>, <emphasis>hyphen</emphasis>, or <emphasis>minus sign</emphasis>-(<literal>U＋002D</literal>) performs negation when used as a unary operator, and subtraction when used as a binary operator. Both are <link linkend="met.operators">operator methods</link>, whose selectors are distinguished by the former having a commercial at sign prefix. When followed by a greater‐than sign (<literal>U＋003E</literal>) it may represent a lambda literal.</para>
   </sect1>
+
   <sect1 xml:id="pun.less-than">
-    <title>Less-Than Signs (<literal>&lt;</literal>)</title>
-    <para>A less‐than sign (<literal>U＋003C</literal>) in the
-    context of…</para>
+    <title>Less-Than Signs (<literal>&lt;</literal>)</title> <para>A less‐than sign (<literal>U＋003C</literal>) in the context of…</para>
+
     <variablelist>
       <varlistentry>
-        <term>An operator
-      </term>
+        <term>An operator</term>
+
         <listitem>
-          <para>Tests for the corresponding inequality when solitary or followed
-      by an equals sign (<literal>U＋003D</literal>). Serves as
-      the spaceship operator when followed by an equals sign and
-      greater‐than sign (<literal>U＋003E</literal>).</para>
+          <para>Tests for the corresponding inequality when solitary or followed by an equals sign (<literal>U＋003D</literal>). Serves as the spaceship operator when followed by an equals sign and greater‐than sign (<literal>U＋003E</literal>).</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>Class definition
-      </term>
+        <term>Class definition</term>
+
         <listitem>
           <para>Specifies the parent of the class being defined.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>Singleton class definition
-      </term>
+        <term>Singleton class definition</term>
+
         <listitem>
-          <para>Two consecutive less‐than signs following the <literal>class</literal>
-      keyword opens the singleton class of the following expression.</para>
+          <para>Two consecutive less‐than signs following the <literal>class</literal> keyword opens the singleton class of the following expression.</para>
         </listitem>
       </varlistentry>
     </variablelist>
   </sect1>
+
   <sect1 xml:id="pun.low-lines">
     <title>Low Lines (<literal>_</literal>)</title>
-    <para>A low line-also known as an <emphasis>underscore</emphasis>-(<literal>U＋005F</literal>) is used to separate digits in numeric
-    literals, and is a valid character in identifiers.</para>
+
+    <para>A low line-also known as an <emphasis>underscore</emphasis>-(<literal>U＋005F</literal>) is used to separate digits in numeric literals, and is a valid character in identifiers.</para>
   </sect1>
+
   <sect1 xml:id="pun.newlines">
     <title>Newlines (<literal>\n</literal>)</title>
+
     <para>A newline is one of the following character sequences:</para>
+
     <itemizedlist>
       <listitem>
         <para><literal>U＋000A</literal> (line feed)</para>
       </listitem>
       <listitem>
-        <para>〈<literal>U＋000D</literal>, <literal>U＋000A</literal>〉
-      (carriage return followed by line feed)</para>
+        <para>〈<literal>U＋000D</literal>, <literal>U＋000A</literal>〉(carriage return followed by line feed)</para>
       </listitem>
     </itemizedlist>
-    <para>The <link linkend="pro.statement-terminators">Statement Terminators</link>
-    section explains how the role of newlines in Ruby syntax is dependent on
-    their surrounding context.</para>
+
+    <para>The <link linkend="pro.statement-terminators">Statement Terminators</link> section explains how the role of newlines in Ruby syntax is dependent on their surrounding context.</para>
   </sect1>
+
   <sect1 xml:id="pun.number-signs">
     <title>Number Signs (<literal>#</literal>)</title>
-    <para>A number sign (<literal>U＋0023</literal>) inside a
-    double‐quoted string literal introduces an interpolation sequence.
-    Outside of a string literal it introduces a comment.</para>
+
+    <para>A number sign (<literal>U＋0023</literal>) inside a double‐quoted string literal introduces an interpolation sequence.  Outside of a string literal it introduces a comment.</para>
   </sect1>
+
   <sect1 xml:id="pun.parentheses">
     <title>Parentheses (<literal>()</literal>)</title>
-    <para>A balanced pair of parentheses (&lt;<literal>U＋0028</literal>, <literal>U＋0029</literal>&gt;)
-    group arguments in message expressions, enforce precedence in compound
-    expressions, and enclose the parameter list of a method definition.</para>
+
+    <para>A balanced pair of parentheses (&lt;<literal>U＋0028</literal>, <literal>U＋0029</literal>&gt;) group arguments in message expressions, enforce precedence in compound expressions, and enclose the parameter list of a method definition.</para>
   </sect1>
+
   <sect1 xml:id="pun.percent-signs">
     <title>Percent Signs (<literal>%</literal>)</title>
-    <para>A percent sign (<literal>U＋0025</literal>) is an
-    operator and part of a generalised quoting form for many object
-    literals.</para>
+
+    <para>A percent sign (<literal>U＋0025</literal>) is an operator and part of a generalised quoting form for many object literals.</para>
   </sect1>
+
   <sect1 xml:id="pun.plus-signs">
     <title>Plus Signs (<literal>+</literal>)</title>
-    <para>A plus sign (<literal>U＋002B</literal>) used a binary
-    operator, usually sums of concatenates its operands; when used as a unary
-    operator it usually makes its operand positive. Both are <link linkend="met.operators">operator methods</link>, whose selectors are
-    distinguished by the former having a commercial at
-    sign prefix.</para>
+
+    <para>A plus sign (<literal>U＋002B</literal>) used a binary operator, usually sums of concatenates its operands; when used as a unary operator it usually makes its operand positive. Both are <link linkend="met.operators">operator methods</link>, whose selectors are distinguished by the former having a commercial at sign prefix.</para>
   </sect1>
+
   <sect1 xml:id="pun.question-marks">
     <title>Question Marks (<literal>?</literal>)</title>
-    <para>A question mark (<literal>U＋003F</literal>) suffixing a
-    selector suggests the message is a predicate; as part of a ternary
-    expression it separates the conditional from the first clause; immediately
-    preceding a character, or a character escape evaluating to the same, it
-    evaluates to that character.</para>
+
+    <para>A question mark (<literal>U＋003F</literal>) suffixing a selector suggests the message is a predicate; as part of a ternary expression it separates the conditional from the first clause; immediately preceding a character, or a character escape evaluating to the same, it evaluates to that character.</para>
   </sect1>
+
   <sect1 xml:id="pun.quotation-marks">
     <title>Quotation Marks (<literal>"</literal>)</title>
-    <para>A pair of quotation marks (<literal>U＋0022</literal>)
-    delimit a double-quoted string literal.</para>
+
+    <para>A pair of quotation marks (<literal>U＋0022</literal>) delimit a double-quoted string literal.</para>
   </sect1>
+
   <sect1 xml:id="pun.reverse-solidi">
     <title>Reverse Solidi (<literal>\</literal>)</title>
-    <para>A reverse solidus-also known as a <emphasis>backslash</emphasis>-(<literal>U＋005C</literal>) in the context of a string literal introduces
-    an escape sequence. Immediately before a literal newline it escapes the
-    line break.</para>
+
+    <para>A reverse solidus-also known as a <emphasis>backslash</emphasis>-(<literal>U＋005C</literal>) in the context of a string literal introduces an escape sequence. Immediately before a literal newline it escapes the line break.</para>
   </sect1>
+
   <sect1 xml:id="pun.semicolons">
     <title>Semicolons (<literal>;</literal>)</title>
-    <para>A semicolon (<literal>U＋003B</literal>) is an explicit
-    statement terminator.</para>
+
+    <para>A semicolon (<literal>U＋003B</literal>) is an explicit statement terminator.</para>
   </sect1>
+
   <sect1 xml:id="pun.solidi">
     <title>Solidi (<literal>/</literal>)</title>
-    <para>A solidus-also known as a <emphasis>slash</emphasis>-(<literal>U＋002F</literal>) is an operator and, when appearing as part of
-    a pair, delimits a regexp literal.</para>
+
+    <para>A solidus-also known as a <emphasis>slash</emphasis>-(<literal>U＋002F</literal>) is an operator and, when appearing as part of a pair, delimits a regexp literal.</para>
   </sect1>
+
   <sect1 xml:id="pun.square-brackets">
     <title>Square Brackets (<literal>[]</literal>)</title>
-    <para>A pair of square brackets (&lt;<literal>U＋005B</literal>,
-    <literal>U＋005D</literal>&gt;) delimit an array literal. They
-    delimit the argument list of a message expression when its selector is a
-    pair of square brackets which are optionally followed by an equals sign.
-    Correspondingly, both of these selectors (<literal>[]</literal> and
-    <literal>[]=</literal>) are also valid method names.</para>
+
+    <para>A pair of square brackets (&lt;<literal>U＋005B</literal>, <literal>U＋005D</literal>&gt;) delimit an array literal. They delimit the argument list of a message expression when its selector is a pair of square brackets which are optionally followed by an equals sign.  Correspondingly, both of these selectors (<literal>[]</literal> and <literal>[]=</literal>) are also valid method names.</para>
   </sect1>
+
   <sect1 xml:id="pun.tildes">
     <title>Tildes (<literal>~</literal>)</title>
-    <para>A tilde (<literal>U＋007E</literal>) performs bitwise
-    complement when used as a unary operator. When used as a binary operator,
-    it performs pattern matching if preceded by an equals sign or inverted
-    pattern matching if preceded by an exclamation mark.</para>
+
+    <para>A tilde (<literal>U＋007E</literal>) performs bitwise complement when used as a unary operator. When used as a binary operator, it performs pattern matching if preceded by an equals sign or inverted pattern matching if preceded by an exclamation mark.</para>
   </sect1>
+
   <sect1 xml:id="pun.vertical-lines">
     <title>Vertical Lines (<literal>|</literal>)</title>
-    <para>A vertical line (<literal>U＋007C</literal>) is a bitwise-OR
-    operator when used singly, a Boolean OR operator when followed by another,
-    and serves to delimit the parameter list of a block.</para>
+
+    <para>A vertical line (<literal>U＋007C</literal>) is a bitwise-OR operator when used singly, a Boolean OR operator when followed by another, and serves to delimit the parameter list of a block.</para>
   </sect1>
- </appendix>
+</appendix>
