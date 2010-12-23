@@ -1103,7 +1103,7 @@
   <sect1 xml:id="io.argv">
     <title><literal>ARGV</literal></title> 
     
-    <para>The command-line arguments given to a program are available as elements of the <literal>ARGV</literal> <literal>Array</literal>. If <literal>ARGV</literal> is empty, no arguments were provided. Therefore, unlike C, <literal>ARGV[0]</literal> does not hold the program name, which is available as <literal>$0</literal> instead. This <literal>Array</literal> can be modified, so programs may remove an element after they have processed it.</para>
+    <para>The command-line arguments given to a program are available as elements of the <literal>ARGV</literal> <literal>Array</literal>, or its alias, <literal>$&lt;</literal>. If <literal>ARGV</literal> is empty, no arguments were provided. Therefore, unlike C, <literal>ARGV[0]</literal> does not hold the program name, which is available as <literal>$0</literal> instead. This <literal>Array</literal> can be modified, so programs may remove an element after they have processed it.</para>
 
     <example xml:id="ex.argv">
       <title>Using <literal>ARGV</literal> to examine our command-line arguments</title> 
