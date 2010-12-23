@@ -1,293 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appendix version="5.0" xml:id="key.keywords" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+
   <title>Keywords</title>
+
   <variablelist>
     <varlistentry>
-      <term>
-        <link linkend="met.aliases">alias</link>
-      </term>
+      <term><link linkend="met.aliases">alias</link></term>
+
       <listitem>
         <para>Creates a copy of an existing method with a new name.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.and-operator">and</link>
-      </term>
+      <term><link linkend="flo.and-operator">and</link></term>
+
       <listitem>
         <para>Boolean binary operator performing logical AND.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.begin-statement">begin</link>
-      </term>
+      <term><link linkend="flo.begin-statement">begin</link></term>
+
       <listitem>
-        <para>Introduces a block of code which may have <literal>rescue</literal>,
-    <literal>ensure</literal>, and <literal>else</literal> clauses attached.</para>
+        <para>Introduces a block of code which may have <literal>rescue</literal>, <literal>ensure</literal>, and <literal>else</literal> clauses attached.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.break-statement">break</link>
-      </term>
+      <term><link linkend="flo.break-statement">break</link></term>
+
       <listitem>
-        <para>Within a loop or block, transfers control to the statement
-    immediately following the construct.</para>
+        <para>Within a loop or block, transfers control to the statement immediately following the construct.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="cla.class-keyword">class</link>
-      </term>
+      <term><link linkend="cla.class-keyword">class</link></term>
+
       <listitem>
         <para>Defines a class.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.case-statement">case</link>
-      </term>
+      <term><link linkend="flo.case-statement">case</link></term>
+
       <listitem>
         <para>Multi-way conditional predicated on the value of a given expression.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="met.defining">def</link>
-      </term>
+      <term><link linkend="met.defining">def</link></term>
+
       <listitem>
         <para>Defines a method</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="key.defined">defined?</link>
-      </term>
+      <term><link linkend="key.defined">defined?</link></term>
+
       <listitem>
-        <para/>
+        <remark>TODO: complete</remark>
+	<para/>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="mes.block-argument">do</link>
-      </term>
+      <term><link linkend="mes.block-argument">do</link></term>
+
       <listitem>
         <para>Delimits a block literal</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.if-else-clause">else</link>
-      </term>
+      <term><link linkend="flo.if-else-clause">else</link></term>
+
       <listitem>
-        <para>Optional default clause for the <literal>case</literal>, <literal>if</literal>,
-    <literal>unless</literal> statements. Optional clause of <literal>begin</literal>,
-    <literal>class</literal>, <literal>def</literal>, and <literal>module</literal> statements
-    for use in exception handling.</para>
+        <para>Optional default clause for the <literal>case</literal>, <literal>if</literal>, <literal>unless</literal> statements. Optional clause of <literal>begin</literal>, <literal>class</literal>, <literal>def</literal>, and <literal>module</literal> statements for use in exception handling.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.if-elsif-clause">elsif</link>
-      </term>
+      <term><link linkend="flo.if-elsif-clause">elsif</link></term>
+
       <listitem>
         <para>Optional clause in an <literal>if</literal> statement.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.for">in</link>
-      </term>
+      <term><link linkend="flo.for">in</link></term>
+
       <listitem>
-        <para>Separates a list of identifiers from the object being iterated in a
-    <literal>for</literal> loop.</para>
+        <para>Separates a list of identifiers from the object being iterated in a <literal>for</literal> loop.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.ensure-clause">ensure</link>
-      </term>
+      <term><link linkend="flo.ensure-clause">ensure</link></term>
+
       <listitem>
-        <para>Optional clause of <literal>begin</literal>, <literal>class</literal>,
-    <literal>def</literal>, and <literal>module</literal> statements which is executed
-    even if sibling clauses raise an exception.</para>
+        <para>Optional clause of <literal>begin</literal>, <literal>class</literal>, <literal>def</literal>, and <literal>module</literal> statements which is executed even if sibling clauses raise an exception.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.false">false</link>
-      </term>
+      <term><link linkend="flo.false">false</link></term>
+
       <listitem>
-        <para>Singleton instance of <literal>FalseClass</literal> representing
-    falsehood.</para>
+        <para>Singleton instance of <literal>FalseClass</literal> representing falsehood.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.for">for</link>
-      </term>
+      <term><link linkend="flo.for">for</link></term>
+
       <listitem>
-        <para>Looping construct for iterating over an object responding to
-    <literal>:each</literal>.</para>
+        <para>Looping construct for iterating over an object responding to <literal>:each</literal>.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.if-statement">if</link>
-      </term>
+      <term><link linkend="flo.if-statement">if</link></term>
+
       <listitem>
         <para>Conditional statement and statement modifier.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="mod.module-keyword">module</link>
-      </term>
+      <term><link linkend="mod.module-keyword">module</link></term>
+
       <listitem>
         <para>Defines a module.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.next-statement">next</link>
-      </term>
+      <term><link linkend="flo.next-statement">next</link></term>
+
       <listitem>
-        <para>Ends the current iteration of a loop or iterator and begins the
-    next.</para>
+        <para>Ends the current iteration of a loop or iterator and begins the next.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.nil">nil</link>
-      </term>
+      <term><link linkend="flo.nil">nil</link></term>
+
       <listitem>
-        <para>Singleton instance of <literal>NilClass</literal> representing the
-    absence of a value.</para>
+        <para>Singleton instance of <literal>NilClass</literal> representing the absence of a value.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.not-operator">not</link>
-      </term>
+      <term><link linkend="flo.not-operator">not</link></term>
       <listitem>
         <para>Boolean unary operator performing logical NOT.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.or-operator">or</link>
-      </term>
+      <term><link linkend="flo.or-operator">or</link></term>
+
       <listitem>
         <para>Boolean binary operator performing logical OR.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.redo-statement">redo</link>
-      </term>
+      <term><link linkend="flo.redo-statement">redo</link></term>
+
       <listitem>
-        <para>Restarts the current iteration of a loop without re-evaluating the
-    conditional.</para>
+        <para>Restarts the current iteration of a loop without re-evaluating the conditional.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.rescue">rescue</link>
-      </term>
+      <term><link linkend="flo.rescue">rescue</link></term>
+
       <listitem>
-        <para>Optional clause of <literal>begin</literal>, <literal>class</literal>,
-    <literal>def</literal>, or <literal>module</literal> statements that handles the
-    specified exceptions.</para>
+        <para>Optional clause of <literal>begin</literal>, <literal>class</literal>, <literal>def</literal>, or <literal>module</literal> statements that handles the specified exceptions.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <literal>retry</literal>
-      </term>
+      <term><literal>retry</literal></term>
+
       <listitem>
+	<remark>TODO: Complete</remark>
         <para/>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="met.return-values">return</link>
-      </term>
+      <term><link linkend="met.return-values">return</link></term>
+
       <listitem>
-        <para>Immediately returns control from a method to its caller, along with
-    an optional value.</para>
+        <para>Immediately returns control from a method to its caller, along with an optional value.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="key.self">self</link>
-      </term>
+      <term><link linkend="key.self">self</link></term>
+
       <listitem>
         <para>Evaluates to the current object.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="met.super">super</link>
-      </term>
+      <term><link linkend="met.super">super</link></term>
+
       <listitem>
-        <para>When used in a method body, invokes the method from a parent class
-    with the same name.</para>
+        <para>When used in a method body, invokes the method from a parent class with the same name.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.true">true</link>
-      </term>
+      <term><link linkend="flo.true">true</link></term>
+
       <listitem>
         <para>Singleton instance of <literal>TrueClass</literal> representing truth.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="met.undefining">undef</link>
-      </term>
+      <term><link linkend="met.undefining">undef</link></term>
+
       <listitem>
-        <para>Removes the definition of a given method from the class in which it
-    was defined.</para>
+        <para>Removes the definition of a given method from the class in which it was defined.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.unless-statement">unless</link>
-      </term>
+      <term><link linkend="flo.unless-statement">unless</link></term>
+
       <listitem>
         <para>Conditional statement and statement modifier.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.until-loop">until</link>
-      </term>
+      <term><link linkend="flo.until-loop">until</link></term>
+
       <listitem>
         <para>Looping construct.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.when">when</link>
-      </term>
+      <term><link linkend="flo.when">when</link></term>
+
       <listitem>
         <para>Clause in a <literal>case</literal> statement.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.while-loop">while</link>
-      </term>
+      <term><link linkend="flo.while-loop">while</link></term>
+
       <listitem>
         <para>Looping construct.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>
-        <link linkend="flo.yield">yield</link>
-      </term>
+      <term><link linkend="flo.yield">yield</link></term>
+
       <listitem>
         <para>Transfers control from a method to an associated block then back.</para>
       </listitem>
