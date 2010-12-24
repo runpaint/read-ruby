@@ -137,7 +137,7 @@
 
     <para><literal>#concat(<replaceable>a</replaceable>)</literal> and its alias, <literal>#+ <replaceable>a</replaceable></literal>, append the elements of <literal>Array</literal> to the receiver.</para>
 
-    <para><literal>#join</literal> concatenates the elements of the receiver with <literal>$,</literal> to produce a <literal>String</literal>. If given a <literal>String</literal> argument, that is used in place of <literal>$,</literal></para>
+    <para><literal>#join</literal> concatenates the elements of the receiver with <literal>$,</literal>—the output record separator, which is <literal>nil</literal> by default—to produce a <literal>String</literal>. If given a <literal>String</literal> argument, that is used in place of <literal>$,</literal></para>
     
     <para><literal>#* <replaceable>string</replaceable></literal> is equivalent to <literal>#join(<replaceable>string</replaceable>)</literal>. <literal>#* <replaceable>integer</replaceable></literal> is equivalent to concatenating <replaceable>integer</replaceable> copies of the receiver.</para>
     
