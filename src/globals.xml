@@ -34,7 +34,7 @@
 	<td><literal>$$</literal></td>
 	<td><literal>$PID</literal> / <literal>$PROCESS_ID</literal></td>
 	<td><literal>Fixnum</literal></td>
-	<td>ID of the current Ruby process. Read‐only.</td>
+	<td>Process ID of the current Ruby process. Read‐only.</td>
 	<td>✖</td>
       </tr>
       <tr>
@@ -58,7 +58,7 @@
 	<td><literal>$"</literal></td>
 	<td rowspan="2"> </td>
 	<td rowspan="2"><literal>Array</literal> of <literal>String</literal>s</td>
-	<td rowspan="2">Absolute filenames of files loaded with <function>Kernel.load</function> or <function>Kernel.require</function>. Read‐only.</td>
+	<td rowspan="2">Absolute filenames of files loaded with <function>Kernel.load</function>, <function>Kernel.require</function>, or <function>Kernel.require_relative</function>. Read‐only.</td>
 	<td rowspan="2">✖</td>
       </tr>
       <tr>
@@ -91,7 +91,7 @@
 	<td><literal>$SAFE</literal></td>
 	<td> </td>
 	<td><literal>Fixnum</literal>s</td>
-	<td>Current safe level.</td>
+	<td>Current safe level. May be set from the command-line with the <option>-T</option> option.</td>
 	<td>✔</td>
       </tr>
       <tr>
@@ -118,7 +118,7 @@
 	<td><literal>$@</literal></td>
 	<td><literal>$ERROR_POSITION</literal></td>
 	<td><literal>Array</literal> of <literal>String</literal>s</td>
-	<td>Inside a <literal>rescue</literal> clause or after the <literal>rescue</literal> modifier holds the stack trace of the current exception. <remark>TODO: Xref from Exceptions</remark></td>
+	<td>Inside a <literal>rescue</literal> clause or after the <literal>rescue</literal> modifier holds the stack trace of the current exception; equivalent to <literal>$!.backtrace</literal>. <remark>TODO: Xref from Exceptions</remark></td>
 	<td>✔</td>
       </tr>
       <tr>
@@ -261,7 +261,7 @@
 	<td><literal>$-i</literal></td>
 	<td> </td>
 	<td><literal>true</literal> or <literal>false</literal></td>
-	<td>Argument of the <option>-i</option> switch, if given; otherwise <literal>nil</literal>; <literal>false</literal> otherwise.</td>
+	<td>Argument of the <option>-i</option> switch, if given; otherwise <literal>nil</literal>.</td>
 	<td>✖</td>
       </tr>
       <tr>
@@ -275,8 +275,7 @@
 	<td><literal>$-p</literal></td>
 	<td> </td>
 	<td><literal>true</literal> or <literal>false</literal></td>
-	<td><literal>true</literal> if the <option>-p</option> switch was 
-	given; <literal>false</literal> otherwise. Read‐only.</td>
+	<td><literal>true</literal> if the <option>-p</option> switch was given; <literal>false</literal> otherwise. Read‐only.</td>
 	<td>✖</td>
       </tr>
       <tr>
