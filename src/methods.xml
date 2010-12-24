@@ -10,7 +10,7 @@
   <para><quote>A <firstterm>method</firstterm> is a named block of parameterized code associated with one or more objects.</quote> (<biblioref begin="176" end="176" linkend="bib.flan08" units="pages"/>. It is the <quote>code found in a class <emphasis>for responding to a message</emphasis> </quote> (<biblioref begin="523" end="523" linkend="bib.mitchell04" units="pages"/>, emphasis mine.</para>
     
   <para>Having received a message, an object <firstterm>invokes</firstterm> a method in response. <emphasis>Invoke</emphasis> describes the calling of a specific method, in contrast to <emphasis>send</emphasis>, which is used at a higher level to describe a request for an object to perform a certain operation.</para>
-  
+
   <sect1 xml:id="met.instance">
     <title>Instance Methods</title>
     
@@ -22,6 +22,12 @@
       <para>It is conventional to employ the <literal>Class#method</literal> notation when referring to instance methods in documentation and prose. For example: <literal>Integer#even?</literal>.</para>
     </sidebar>
   </sect1>
+
+  <sect1 xml:id="met.global">
+    <title>Global Methods</title>
+
+    <para>Methods defined at the top-level of a program, outside of any <literal>Class</literal> or <literal>Module</literal> definitions, are private instance methods of <literal>Object</literal>. This enables programming in a <emphasis>functional</emphasis> style, without thinking in terms of objects.</para>
+  </sect1>  
   
   <sect1 xml:id="met.singleton">
     <title>Singleton Methods</title>
