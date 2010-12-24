@@ -44,7 +44,7 @@
     <sect2 xml:id="prc.backticks">
       <title>Backticks</title>
 
-      <para>A double-quoted string delimited with grave accents (<literal>U＋0060</literal>) characters, or “backticks”, executes its contents as an operating system command and returns the output. This is achieved by the <function>Kernel.`</function> method, which can be redefined to alter these semantics. Alternative delimiters can be used with the corresponding <literal>%x<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> construct, which follows the same rules as <link linkend="str.double-quoted-q">%Q</link>.</para>
+      <para>A double-quoted string delimited with grave accents (<literal>U＋0060</literal>) characters, or “backticks”, executes its contents as an operating system command and returns the output. It runs the command via a shell, so wildcard expansion and similar features are available. This is implemented with the <function>Kernel.`</function> method, which can be redefined to alter these semantics. Alternative delimiters can be used with the corresponding <literal>%x<replaceable>delimiter</replaceable>…<replaceable>delimiter</replaceable></literal> construct, which follows the same rules as <link linkend="str.double-quoted-q">%Q</link>.</para>
       
       <example xml:id="ex.backticks">
 	<title>Using backticks to execute commands and retrieve the output</title>
