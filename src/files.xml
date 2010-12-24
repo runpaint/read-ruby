@@ -106,6 +106,8 @@
       
       <para>Opening a file enables one to read from, write to, or otherwise manipulate and query, the resource. <literal>Kernel.open</literal> opens the file with the given path, returning a corresponding <literal>File</literal> object. It is typically used with a block, which receives the opened <literal>File</literal> object as an argument. Having executed the block, the file is automatically closed, even if the block raises an exception. The block-form has a return value equal to that of the block; otherwise a new <literal>File</literal> object is returned. Both forms accept an <link linkend="io.options-hash">options Hash</link> as their final argument.</para>
 
+      <remark>Sidebar: open-uri</remark>
+
       <example xml:id="ex.kernel-open-opts">
         <title>Creating, appending to, and reading from a file</title>
 

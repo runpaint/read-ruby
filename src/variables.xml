@@ -397,6 +397,8 @@
   <sect1 xml:id="var.globals">
     <title>Global Variables</title>
   
+    <remark>Sidebar: _English_ library</remark>
+
     <para>A global variable is named with a dollar sign (<literal>U＋0024</literal>) sigil: <literal>$<replaceable>identifier</replaceable></literal>.  Conventionally, the name consists of lowercase words separated by low lines.</para>
 
       <para>An uninitialised global variable has the value <literal>nil</literal>, although attempting to use such a variable results in a warning. The predefined global variables summarised in <xref linkend="glo.globals"/> are initialised automatically.</para>
