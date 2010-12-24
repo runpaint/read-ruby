@@ -86,7 +86,7 @@
 
     </example>
     
-    <para><function>IO#print</function> accepts any number of arguments, each of which are converted with <function>#to_s</function>, then their concatenation is written to the receiver. If no arguments are supplied, an argument of <literal>$_</literal> is assumed. <function>Kernel#print</function> behaves identically, expect it writes to <literal>$stdout</literal>.</para>
+    <para><function>IO#print</function> accepts any number of arguments, which it converts with <function>#to_s</function>, concatenates with <literal>$,</literal>—the output field separator, which is <literal>nil</literal> by default—then writes to the receiver. If no arguments are supplied, an argument of <literal>$_</literal> is assumed. <function>Kernel#print</function> behaves identically, expect it writes to <literal>$stdout</literal>.</para>
 
     <para><function>IO#printf</function> interprets its first argument as a format string, and the remainder as values to be interpolated. It expands the format string as with <function>String#%</function>, then prints it as with <function>IO#print</function>. <function>Kernel.printf</function> behaves identically except it prints to <literal>$stdout</literal>.</para>
 
