@@ -495,7 +495,7 @@
   <sect1 xml:id="str.split">
     <title>Splitting, Partitioning, &amp; Scanning</title>
 
-    <para><literal>String#split</literal> returns an <literal>Array</literal> of its receiver divided into space-separated substrings, i.e. <literal>'Horses for courses'.split</literal> returns <literal>['Horses', 'for', 'courses']</literal>.  If a <literal>String</literal> or <literal>Regexp</literal> argument is given, that is used as the delimiter. The delimiter is omitted from the results.</para>
+    <para><literal>String#split</literal> returns an <literal>Array</literal> of its receiver divided into substrings according to a delimiter. The default delimiter is given by <literal>$;</literal>, which is initially <literal>nil</literal>. This is equivalent to a single space character, i.e. <literal>'Horses for courses'.split</literal> returns <literal>['Horses', 'for', 'courses']</literal>. If a <literal>String</literal> or <literal>Regexp</literal> argument is given, that is used as the delimiter. The delimiter is omitted from the results.</para>
     
     <para><literal>String#partition</literal> also requires a <literal>String</literal> or <literal>Regexp</literal> argument specifying a delimiter. It always returns a three-element <literal>Array</literal> comprising the text preceding the first occurrence of the delimiter, the delimiter itself, then the text following the first occurrence of the delimiter. <literal>String#rpartition</literal> behaves similarly except it uses the last occurrence of the delimiter.</para>
     
