@@ -1142,5 +1142,160 @@
 
       <programlisting><xi:include href="examples/argf-shell.txt" parse="text"/></programlisting>      
     </example> 
-  </sect1> 
+  </sect1>
+
+  <sect1 xml:id="io.ref">
+    <title>Reference</title>
+
+    <!-- Use <parameter> instead of <replaceable> -->
+    <para><methodsynopsis><type>String</type><methodname>IO.binread</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>length</parameter></methodparam><methodparam choice="opt"><parameter>offset</parameter></methodparam></methodsynopsis> Opens the file named <replaceable>filename</replaceable>, reads from it in binary mode, then returns its contents as an ASCII-8BIT-encoded <literal>String</literal>. If <replaceable>length</replaceable> is given, a maximum of this many bytes are read; if <replaceable>offset</replaceable> is also given, reading starts from this byte.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO.copy_stream</methodname><methodparam><parameter>source</parameter></methodparam><methodparam><parameter>destination</parameter></methodparam><methodparam choice="opt"><parameter>length</parameter></methodparam><methodparam choice="opt"><parameter>offset</parameter></methodparam></methodsynopsis> Copies data from <replaceable>source</replaceable> to <replaceable>destination</replaceable>—both of which may be filenames or <literal>IO</literal> streams—returning the number of bytes copied. If <replaceable>length</replaceable> is given, a maximum of this many bytes are copied; if <replaceable>offset</replaceable> is also given, copying starts from this byte.</para>
+
+    <para><methodsynopsis><type>IO</type><methodname>IO.for_fd</methodname><methodparam><parameter>file_descriptor</parameter></methodparam><methodparam><parameter>mode</parameter></methodparam></methodsynopsis> Aliases <function>IO.new</function>.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO.foreach</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>separator=$/</parameter></methodparam><methodparam choice="opt"><parameter>limit</parameter></methodparam><methodparam choice="opt"><parameter>options</parameter></methodparam><methodparam><parameter>{|line| }</parameter></methodparam></methodsynopsis> Invokes the block with each line found in the file named <replaceable>filename</replaceable>. Lines are separated by <replaceable>separator</replaceable>, but if this value is <literal>nil</literal> the entire file is treated as a single <literal>String</literal>. If <replaceable>limit</replaceable> is given, it is the maximum number of characters to return for each line. If <replaceable>options</replaceable> is given it is an options <literal>Hash</literal> that may contain <literal>:encoding</literal>, <literal>:mode</literal>, and <literal>:open_args</literal> keys.</para>
+
+    <para><methodsynopsis><type>IO</type><methodname>IO.new</methodname><methodparam><parameter>file_descriptor</parameter></methodparam><methodparam><parameter>mode</parameter></methodparam></methodsynopsis> Returns a new <literal>IO</literal> stream for the given file descriptor and access mode. Aliased to <function>IO.for_fd</function>.</para>
+
+    <para><methodsynopsis><type>Object</type><methodname>IO.open</methodname><methodparam rep="repeat"><parameter>argument</parameter></methodparam><methodparam choice="opt"><parameter>{|io| }</parameter></methodparam></methodsynopsis> Instantiates an <literal>IO</literal> object by passing <replaceable>argument</replaceable>(s) to the class’s constructor, then returning the <literal>IO</literal> object. If a block is given, the new <literal>IO</literal> object is passed to it as a parameter, then closed automatically when the block exits; the return value is that of the block.</para> 
+
+    <para><methodsynopsis><type>Array</type><methodname>IO.pipe</methodname><void></void></methodsynopsis> Creates a pipe, the ends of which it returns as an <literal>Array</literal> of <literal>IO</literal> objects. The first element is the read end; the last element is the write end, which is in sync mode.</para>
+
+    <para><methodsynopsis><type>Object</type><methodname>IO.popen</methodname><methodparam><parameter>command</parameter></methodparam><methodparam choice="opt"><parameter>mode="r"</parameter></methodparam></methodsynopsis> Executes a command as a subprocess, opening a pipe to this subprocess’s standard input and output streams, which it returns as an <literal>IO</literal> object. If <replaceable>command</replaceable> is a <literal>String</literal> it names a command in the user’s path, and is subject to shell expansion. If it is a <literal>"-"</literal>, and the platform supports forking, the current process forks: an <literal>IO</literal> pipe connected to the child’s standard input and output streams is returned to the parent; <literal>nil</literal> is returned to the child.</para>
+
+      <para>Otherwise, <replaceable>command</replaceable> is an <literal>Array</literal> of <literal>String</literal>s, the first of which specifies the command name; the remainder, its arguments. The shell is bypassed, so none of these <literal>String</literal>s are subject to shell expansion. If the first element of this <literal>Array</literal> is a <literal>Hash</literal>, it specifies the names and corresponding values of environment variables that should be set in the subprocess. An <link linkend="prc.options-hash">options <literal>Hash</literal></link> may be supplied as the last element of this <literal>Array</literal>.</para>
+
+      <para>If a block is supplied, Ruby’s end of the pipe is passed to it as a parameter, then closed when the block exits. <literal>$?</literal> is set to the exit status of the subprocess, and the value of the block is returned.</para>
+
+      <para>When a block is supplied along with a <replaceable>command</replaceable> of <literal>"-"</literal>, Ruby forks, running the block in both processes. In the parent process the block is passed an <literal>IO</literal> pipe connected to the child’s standard input and output streams; in the child process the block is passed <literal>nil</literal>.</para>
+
+      <para><literal>Kernel.open("|<replaceable>command</replaceable>", <replaceable>mode</replaceable>='r')</literal> behaves like <literal>IO.popen(<replaceable>command</replaceable>, <replaceable>mode</replaceable>='r')</literal>, when <replaceable>command</replaceable> is a <literal>String</literal>. Likewise, <literal>Kernel.open("|-", <replaceable>mode</replaceable>='r')</literal> behaves like <literal>IO.popen("-", <replaceable>mode</replaceable>='r')</literal></para>
+
+    <para><methodsynopsis><type>String</type><methodname>IO.read</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>length</parameter></methodparam><methodparam choice="opt"><parameter>offset=0</parameter></methodparam><methodparam choice="opt"><parameter>options</parameter></methodparam></methodsynopsis> Opens the file named <parameter>filename</parameter>, then returns its contents from byte <parameter>offset</parameter> to the end of the file. If <parameter>length</parameter> is given, it is the maximum number of bytes to return. If <parameter>options</parameter> is given it is an <link linkend="prc.options-hash">options <literal>Hash</literal></link>.</para>
+
+    <para><methodsynopsis><type>String</type><methodname>IO.readlines</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>separator=$/</parameter></methodparam><methodparam choice="opt"><parameter>limit</parameter></methodparam><methodparam choice="opt"><parameter>options</parameter></methodparam></methodsynopsis> Returns the lines contained in the file named <parameter>filename</parameter> as an <literal>Array</literal> of <literal>String</literal>s. Lines are delimited by <parameter>separator</parameter>; if this value is <literal>nil</literal> the entire file is treated as a single line. If <parameter>limit</parameter> is given, at most that many characters will be returned for each line. If <parameter>options</parameter> is given it is an <link linkend="prc.options-hash">options <literal>Hash</literal></link>.</para>
+
+    <para><methodsynopsis><type>Array or nil</type><methodname>IO.select</methodname><methodparam><parameter>read</parameter></methodparam><methodparam choice="opt"><parameter>write</parameter></methodparam><methodparam choice="opt"><parameter>error</parameter></methodparam><methodparam choice="opt"><parameter>timeout</parameter></methodparam></methodsynopsis> Aliases <function>Kernel#select</function>.</para>
+
+    <para><methodsynopsis><type>Fixnum</type><methodname>IO.sysopen</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>mode</parameter></methodparam><methodparam choice="opt"><parameter>permissions</parameter></methodparam></methodsynopsis> Opens the file named <parameter>filename</parameter> and returns its file descriptor.</para>
+
+    <para><methodsynopsis><type>IO or nil</type><methodname>IO.try_convert</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <parameter>object</parameter> converted to an <literal>IO</literal> object by calling its <function>#to_io</function> method; or <literal>nil</literal> if this is impossible.</para>
+
+    <para><methodsynopsis><type>IO</type><methodname>IO#&lt;&lt;</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Converts <parameter>object</parameter> to a <literal>String</literal> with <function>#to_s</function>, writes it to the receiver, then returns <literal>self</literal>.</para>
+
+    <para><methodsynopsis><type>IO</type><methodname>IO#binmode</methodname><void></void></methodsynopsis> Puts the receiver into binary mode.</para>
+
+    <para><methodsynopsis><type>Enumerator or IO</type><methodname>IO#bytes</methodname><methodparam choice="opt"><parameter>{|byte| }</parameter></methodparam></methodsynopsis> Returns an <literal>Enumerator</literal> of the receiver’s bytes, each represented as a <literal>Fixnum</literal>. If a block is given, yields each byte to the block in turn, then returns the receiver.</para>
+
+    <para><methodsynopsis><type>Enumerator or IO</type><methodname>IO#chars</methodname><methodparam choice="opt"><parameter>{|char| }</parameter></methodparam></methodsynopsis> Returns an <literal>Enumerator</literal> of the receiver’s characters, each represented as a <literal>String</literal>. If a block is given, yields each character to the block in turn, then returns the receiver.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO#close</methodname><void></void></methodsynopsis> Closes the receiver’s stream, flushing any pending writes to the operating system.</para>
+
+    <para><methodsynopsis><type>true or false</type><methodname>IO#close_on_exec?</methodname><void></void></methodsynopsis> Returns <literal>true</literal> if the receiver’s <emphasis>close on exec</emphasis> flag is set; <literal>false</literal> otherwise. Raises <exceptionname>NotImplementedError</exceptionname> if unavailable on this platform.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO#close_read</methodname><void></void></methodsynopsis> Closes the read end of a duplex stream such as a pipe. Raises <exceptionname>IOError</exceptionname> if the receiver is not a duplex stream.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO#close_write</methodname><void></void></methodsynopsis> Closes the write end of a duplex stream such as a pipe. Raises <exceptionname>IOError</exceptionname> if the receiver is not a duplex stream.</para>
+
+    <para><methodsynopsis><type>true or false</type><methodname>IO#closed?</methodname><void></void></methodsynopsis> Returns <literal>true</literal> if the receiver is closed—for duplex streams, both ends must be closed; <literal>false</literal>, otherwise.</para>
+
+    <para><methodsynopsis><type>IO or Enumerator</type><methodname>IO#each</methodname><methodparam choice="opt"><parameter>separator=$/</parameter></methodparam><methodparam choice="opt"><parameter>limit</parameter></methodparam><methodparam choice="opt"><parameter>{|line| }</parameter></methodparam></methodsynopsis> Enumerates the lines in the receiver. If a block is given, each line is yielded to it in turn; otherwise, an <literal>Enumerator</literal> is returned. Lines are separated by <parameter>separator</parameter>; if this value is <literal>nil</literal>, the entire file is treated as a single line. If <parameter>length</parameter> is given it is the maximum number of characters to return for each line.</para>
+
+    <para><methodsynopsis><type>Enumerator or IO</type><methodname>IO#each_byte</methodname><methodparam choice="opt"><parameter>{|byte| }</parameter></methodparam></methodsynopsis> Aliases <function>IO#bytes</function>.</para>
+
+    <para><methodsynopsis><type>Enumerator or IO</type><methodname>IO#each_char</methodname><methodparam choice="opt"><parameter>{|char| }</parameter></methodparam></methodsynopsis> Aliases <function>IO#chars</function>.</para>
+
+    <para><methodsynopsis><type>true or false</type><methodname>IO#eof</methodname><void></void></methodsynopsis> Returns <literal>true</literal> if the receiver is at end of file; <literal>false</literal> otherwise. If the receiver is not open for reading, and <exceptionname>IOError</exceptionname> is raised.</para>
+
+    <para><methodsynopsis><type>true or false</type><methodname>IO#eof?</methodname><void></void></methodsynopsis> Aliases <function>IO#eof</function>.</para>
+
+    <para><methodsynopsis><type>Encoding</type><methodname>IO#external_encoding</methodname><void></void></methodsynopsis> Returns the external encoding associated with the receiver.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#fcntl</methodname><methodparam><parameter>command</parameter></methodparam><methodparam><parameter>argument</parameter></methodparam></methodsynopsis> Issues, via the <function>fcntl(2)</function> system call, the command <parameter>command</parameter> to the receiver’s stream with an argument of <parameter>argument</parameter>. See <xref linkend="io.fcntl"/> for more details.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#fileno</methodname><void></void></methodsynopsis> Returns the file descriptor associated with the receiver.</para>
+
+    <para><methodsynopsis><type>IO</type><methodname>IO#flush</methodname><void></void></methodsynopsis> Flushes Ruby’s I/O buffers, returning <literal>self</literal>.</para>
+
+    <para><methodsynopsis><type>0 or nil</type><methodname>IO#fsync</methodname><void></void></methodsynopsis> Flushes the operating system’s I/O buffers via the <function>fsync(2)</function> system call, returning <literal>0</literal>; returns <literal>nil</literal> if this system call is unimplemented.</para>
+
+    <para><methodsynopsis><type>Fixnum or nil</type><methodname>IO#getbyte</methodname><void></void></methodsynopsis> Returns the next byte from the receiver, or <literal>nil</literal> at end of file.</para>
+
+    <para><methodsynopsis><type>String or nil</type><methodname>IO#getc</methodname><void></void></methodsynopsis> Returns the next character from the receiver, or <literal>nil</literal> at end of file.</para>
+
+    <para><methodsynopsis><type>String or nil</type><methodname>IO#gets</methodname><methodparam choice="opt"><parameter>separator=$/</parameter></methodparam><methodparam choice="opt"><parameter>limit</parameter></methodparam></methodsynopsis> Returns the next line from the receiver’s stream, and assigns it to <literal>$_</literal>. Lines are delimited by <parameter>separator</parameter>: a value of <literal>""</literal> is equivalent to <literal>"\n\n"</literal>, while a <literal>nil</literal> value treats the entire file as a single line. If <parameter>limit</parameter> is given, at most that many characters are returned per line. Returns <literal>nil</literal> at end of file.</para>
+
+    <para><methodsynopsis><type>Encoding</type><methodname>IO#internal_encoding</methodname><void></void></methodsynopsis> Returns the internal encoding associated with the receiver.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#ioctl</methodname><methodparam><parameter>command</parameter></methodparam><methodparam><parameter>argument</parameter></methodparam></methodsynopsis> Issues, via the <function>ioctl(2)</function> system call, the command <parameter>command</parameter> to the receiver’s stream with an argument of <parameter>argument</parameter>. See <xref linkend="io.fcntl"/> for more details.</para>
+
+    <para><methodsynopsis><type>true or false</type><methodname>IO#isatty</methodname><void></void></methodsynopsis> Returns <literal>true</literal> if the receiver is associated with a terminal device; <literal>false</literal> otherwise. Aliased to <function>IO#tty?</function>.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#lineno</methodname><void></void></methodsynopsis> Returns the current line number read from the receiver. If the stream is not open for reading, an <exceptionname>IOError</exceptionname> is raised.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#lineno=</methodname><methodparam><parameter>line</parameter></methodparam></methodsynopsis> Sets the current line number to the <literal>Integer</literal> <parameter>line</parameter>.</para>
+
+    <para><methodsynopsis><type>IO or Enumerator</type><methodname>IO#lines</methodname><methodparam choice="opt"><parameter>separator=$/</parameter></methodparam><methodparam choice="opt"><parameter>limit</parameter></methodparam><methodparam choice="opt"><parameter>{|line| }</parameter></methodparam></methodsynopsis> Aliases <function>IO#each</function>.</para>
+
+    <para><methodsynopsis><type>Integer or nil</type><methodname>IO#pid</methodname><void></void></methodsynopsis> Returns the process ID associated with the receiver—as set by <function>IO.popen</function>—or <literal>nil</literal> if there isn’t one.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#pos</methodname><void></void></methodsynopsis> Returns the current byte offset of the receiver.</para>
+
+    <para><methodsynopsis><type>0</type><methodname>IO#pos=</methodname><methodparam><parameter>offset</parameter></methodparam></methodsynopsis> Seeks to the given <literal>Integer</literal> byte offset.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO#print</methodname><methodparam rep="repeat" choice="opt"><parameter>object=$_</parameter></methodparam></methodsynopsis> Converts the given objects with <function>#to_s</function>, then writes them to the receiver’s stream. Unless <literal>$\</literal> is <literal>nil</literal>, writes it, too.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO#printf</methodname><methodparam><parameter>format</parameter></methodparam><methodparam rep="repeat" choice="opt"><parameter>object=$_</parameter></methodparam></methodsynopsis> Expands the format string, <parameter>format</parameter> and its given arguments with <function>Kernel.sprintf</function>, then writes the result to the receiver’s stream.</para>
+
+    <para><methodsynopsis><type>Object</type><methodname>IO#putc</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Writes a single byte to its receiver’s stream, then returns its argument. It interprets a <literal>Numeric</literal> argument as a character code, writing the least-significant byte of the character corresponding to its integer part. A non-numeric argument is converted to a <literal>String</literal>, then its least-significant byte written to the stream. Please note the term <emphasis>byte</emphasis>: before Ruby 1.9.3, this method would only ever write a single byte, even when given a multi-byte character; as of 1.9.3, it behaves correctly with multi-byte characters.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO#puts</methodname><methodparam rep="repeat" choice="opt"><parameter>object=nil</parameter></methodparam></methodsynopsis> Converts the given objects with <function>#to_s</function>, appends <literal>"\n"</literal> to each of which that do not already end with a newline, then writes them to the receiver’s stream. If <parameter>object</parameter> responds to <function>#to_ary</function>, it is substituted for this method’s return value—i.e., the elements of <literal>Array</literal> arguments are printed one per line.</para>
+
+    <para><methodsynopsis><type>String or nil</type><methodname>IO#read</methodname><methodparam choice="opt"><parameter>length</parameter></methodparam><methodparam choice="opt"><parameter>buffer</parameter></methodparam></methodsynopsis> Reads from the current position in the receiver’s stream through to the end, returning the result. If <parameter>length</parameter> is given, it is the maximum number of bytes to read. If a <literal>String</literal> <parameter>buffer</parameter> is given, the data is read into it. At the end of file, <literal>nil</literal> is returned.</para>
+
+    <para><methodsynopsis><type>Fixnum</type><methodname>IO#readbyte</methodname><void></void></methodsynopsis> Returns the next byte from the receiver’s stream, raising <exceptionname>EOFError</exceptionname> at end of file.</para>
+
+    <para><methodsynopsis><type>String</type><methodname>IO#readchar</methodname><void></void></methodsynopsis> Returns the next character from the receiver’s stream, raising <exceptionname>EOFError</exceptionname> at end of file.</para>
+
+    <para><methodsynopsis><type>String or nil</type><methodname>IO#readline</methodname><methodparam choice="opt"><parameter>separator=$/</parameter></methodparam><methodparam choice="opt"><parameter>limit</parameter></methodparam></methodsynopsis> Reads the next line from the receiver’s stream in the manner of <function>IO#gets</function>, raising <exceptionname>EOFError</exceptionname> at end of file.</para>
+
+    <para><methodsynopsis><type>Array</type><methodname>IO#readlines</methodname><methodparam choice="opt"><parameter>separator=$/</parameter></methodparam><methodparam choice="opt"><parameter>limit</parameter></methodparam></methodsynopsis> Returns the lines from the receiver’s stream as an <literal>Array</literal> of <literal>String</literal>s. Lines are delimited by <parameter>separator</parameter>: a value of <literal>""</literal> is equivalent to <literal>"\n\n"</literal>, while a <literal>nil</literal> value treats the entire file as a single line. If <parameter>limit</parameter> is given, at most that many characters are returned per line.</para>
+
+    <para><methodsynopsis><type>String</type><methodname>IO#readpartial</methodname><methodparam><parameter>limit</parameter></methodparam><methodparam choice="opt"><parameter>result=""</parameter></methodparam></methodsynopsis> Attempts to read at most <parameter>limit</parameter> bytes from the receiver’s stream without blocking by returning buffered data before reading from the stream. If <parameter>result</parameter> is given it is a <literal>String</literal> to which the read data is appended. Raises <exceptionname>EOFError</exceptionname> at end of file.</para>
+
+    <para><methodsynopsis><type>String</type><methodname>IO#read_nonblock</methodname><methodparam><parameter>limit</parameter></methodparam><methodparam choice="opt"><parameter>result=""</parameter></methodparam></methodsynopsis> Sets the <literal>NONBLOCK</literal> flag on the receiver’s file descriptor, then attempts to read at most <parameter>limit</parameter> bytes from the receiver’s stream without blocking. If there is buffered data, that is returned before trying to read from the stream. If the stream can be read from without blocking, it is read from. Otherwise, either <exceptionname>Errno::EWOULDBLOCK</exceptionname> or <exceptionname>Errno::EAGAIN</exceptionname> is raised to indicate that the stream can not be read without blocking. If <parameter>result</parameter> is given it is a <literal>String</literal> to which the read data is appended. Raises <exceptionname>EOFError</exceptionname> at end of file.</para>
+
+    <para><methodsynopsis><type>IO</type><methodname>IO#reopen</methodname><methodparam><parameter>io</parameter></methodparam></methodsynopsis><methodsynopsis><type>IO</type><methodname>IO#reopen</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam><parameter>mode</parameter></methodparam></methodsynopsis> Re-associates the receiver with the given I/O stream, <parameter>io</parameter>, or a new stream for a file named <parameter>filename</parameter> that is opened with access mode <parameter>mode</parameter>.</para>
+
+    <para><methodsynopsis><type>0</type><methodname>IO#rewind</methodname><void></void></methodsynopsis> Resets both the position of the receiver’s stream and its line number to <literal>0</literal>.</para>
+
+    <para><methodsynopsis><type>0</type><methodname>IO#seek</methodname><methodparam><parameter>offset</parameter></methodparam><methodparam choice="opt"><parameter>whence=File::SEEK_SET</parameter></methodparam></methodsynopsis> Seeks to <parameter>offset</parameter> in the receiver’s stream. See <xref linkend="io.position"/> for an explanation of <parameter>whence</parameter>.</para>
+
+    <para><methodsynopsis><type>IO</type><methodname>IO#set_encoding</methodname><methodparam><parameter>external</parameter></methodparam><methodparam choice="opt"><parameter>internal=external</parameter></methodparam></methodsynopsis><methodsynopsis><type>IO</type><methodname>IO#set_encoding</methodname><methodparam><parameter>string</parameter></methodparam></methodsynopsis> Sets the external and internal encodings of the receiver’s stream. Both <parameter>external</parameter> and <parameter>internal</parameter> may be <literal>Encoding</literal> objects or encoding names as <literal>String</literal>s. The <parameter>string</parameter> contains the name of the external encoding, a colon, then the name of the internal encoding; or, just one encoding name for both.</para> 
+
+    <para><methodsynopsis><type>File::Stat</type><methodname>IO#stat</methodname><void></void></methodsynopsis> Returns a <link linkend="fil.file-stat"><literal>File::Stat</literal></link> object for the receiver’s stream.</para>
+
+    <para><methodsynopsis><type>true or false</type><methodname>IO#sync</methodname><void></void></methodsynopsis> Returns <literal>true</literal> if the receiver is in <emphasis>sync mode</emphasis>; <literal>false</literal>, otherwise.</para>
+
+    <para><methodsynopsis><type>true or false</type><methodname>IO#sync=</methodname><methodparam><parameter>boolean</parameter></methodparam></methodsynopsis> Sets the <emphasis>sync mode</emphasis> of the receiver to <parameter>boolean</parameter>—<literal>true</literal> or <literal>false</literal>—which it then returns.</para>
+
+    <para><methodsynopsis><type>String</type><methodname>IO#sysread</methodname><methodparam><parameter>limit</parameter></methodparam><methodparam choice="opt"><parameter>buffer</parameter></methodparam></methodsynopsis> Reads at most <parameter>limit</parameter> bytes from the receiver’s stream, bypassing Ruby’s I/O buffer, returning them as a <literal>String</literal>. If the <literal>String</literal> <parameter>buffer</parameter> is given, it has the read data appended. Raises <exceptionname>SystemCallError</exceptionname> on error and <exceptionname>EOFError</exceptionname> at end of file.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#sysseek</methodname><methodparam><parameter>offset</parameter></methodparam><methodparam choice="opt"><parameter>whence=File::SEEK_SET</parameter></methodparam></methodsynopsis> Behaves as <function>IO#seek</function> but bypasses Ruby’s I/O buffer.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#tell</methodname><void></void></methodsynopsis> Aliases <function>IO#pos</function>.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#to_i</methodname><void></void></methodsynopsis> Aliases <function>IO#fileno</function>.</para>
+
+    <para><methodsynopsis><type>IO</type><methodname>IO#to_io</methodname><void></void></methodsynopsis> Returns the receiver.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO#ungetbyte</methodname><methodparam><parameter>byte</parameter></methodparam></methodsynopsis> Pushes back the given byte(s) onto the receiver’s read buffer. <parameter>byte</parameter> may be a <literal>String</literal> or a single byte given as a <literal>Fixnum</literal>.</para>
+
+    <para><methodsynopsis><type>nil</type><methodname>IO#ungetc</methodname><methodparam><parameter>character</parameter></methodparam></methodsynopsis> Pushes back the characters contained in the <parameter>character</parameter> <literal>String</literal> onto the receiver’s read buffer.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#write</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Converts <parameter>object</parameter> to a <literal>String</literal> with <function>#to_s</function>, writes it to the receiver’s stream, then returns the number of bytes written.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>IO#write_nonblock</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Sets the <literal>File::NONBLOCK</literal> flag on the receiver’s stream then behaves as <function>IO#write</function>. If a write would block, either <exceptionname>Errno::EWOULDBLOCK</exceptionname> or <exceptionname>Errno::EAGAIN</exceptionname>. If the platform doesn’t support non-blocking writes for this type of <literal>IO</literal> object, <exceptionname>Errno::EBADF</exceptionname> is raised.</para>
+  </sect1>
 </chapter>
