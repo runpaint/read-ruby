@@ -18,6 +18,55 @@
     <section id="{$id}"><xsl:apply-templates/></section>
   </xsl:template>
 
+  <xsl:template match="d:methodsynopsis">
+    <code><b><xsl:value-of select="d:methodname"/></b><xsl:text>(</xsl:text>
+    <xsl:for-each select="d:methodparam/d:parameter">
+      <xsl:if test="(position() &gt; 1)">,&#160;</xsl:if>
+      <xsl:if test="starts-with(., '{')">
+	<xsl:text>) </xsl:text>
+      </xsl:if>
+      <code> <!-- Should be <var> but that's also italic -->
+	<xsl:choose>
+	  <xsl:when test="../@choice = 'opt'">
+	    <i><xsl:apply-templates/></i>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <b><xsl:apply-templates/></b>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </code>
+      <xsl:if test="../@rep = 'repeat'">,&#160;…</xsl:if>
+      <xsl:if test="last() = position() and not(starts-with(., '{'))">
+	<xsl:text>) </xsl:text>
+      </xsl:if>
+    </xsl:for-each>
+
+    <xsl:if test="d:void">
+      <xsl:text>)</xsl:text>
+    </xsl:if>
+
+    <xsl:text> #=&gt; </xsl:text><xsl:value-of select="d:type"/></code><br/>
+  </xsl:template>
+
+  <xsl:template match="d:methodsynopsis/d:type"/>
+  
+  <xsl:template match="d:methodsynopsis/d:methodparam"/>
+
+  <xsl:template match="d:methodsynopsis/d:methodparam/d:parameter">
+    <xsl:apply-templates/>
+  </xsl:template>
+  
+  <xsl:template match="d:methodsynopsis/d:void"/>
+  <xsl:template match="d:methodsynopsis/d:methodname"/>
+  
+  <xsl:template match="d:para/d:parameter">
+    <var><xsl:apply-templates/></var>
+  </xsl:template>
+
+  <xsl:template match="d:exceptionname">
+    <code><xsl:apply-templates/></code>
+  </xsl:template>
+
   <xsl:template match="d:para"><p><xsl:apply-templates/></p></xsl:template>
 
   <!-- Title 
