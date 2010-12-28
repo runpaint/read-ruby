@@ -184,15 +184,16 @@ end
 # Validate each minified HTML file in OUT_DIR, exiting if any are invalid
 desc "Validate HTML documents in #{OUT_DIR}"
 task :validate_html do
-  HTML.each do |f|
-    begin
-      v = W3CValidators::MarkupValidator.new.validate_file f    
-    rescue Net::HTTPFatalError => e
-      warn "#{f}: #{e}; retrying..."
-      sleep(1) and retry
-    end
-    puts (v.errors + v.warnings).join(?\n) unless v.is_valid?
-  end
+  warn "Skipping HTML validation"
+  # HTML.each do |f|
+  #   begin
+  #     v = W3CValidators::MarkupValidator.new.validate_file f    
+  #   rescue Net::HTTPFatalError => e
+  #     warn "#{f}: #{e}; retrying..."
+  #     sleep(1) and retry
+  #   end
+  #   puts (v.errors + v.warnings).join(?\n) unless v.is_valid?
+  # end
 end
 
 desc "Validate the XML with RelaxNG"

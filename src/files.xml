@@ -92,7 +92,7 @@
     <sect2 xml:id="fil.file-read">
       <title>Reading</title>
       
-      <para>Reading a file is the process of retrieving its contents. It can be achieved by passing a path argument to <literal>File.read</literal> which returns the contents as a <literal>String</literal>. An optional second argument specifies the number of bytes to read, and an optional third argument specifies the offset from which to begin reading. An <link linkend="io.options-hash">options Hash</link> may be supplied as the final argument.  <literal>File.binread</literal> takes the same arguments but reads the file in <link linkend="io.binmode">binary mode</link>. </para>
+      <para>Reading a file is the process of retrieving its contents. It can be achieved by passing a path argument to <literal>File.read</literal> which returns the contents as a <literal>String</literal>. An optional second argument specifies the number of bytes to read, and an optional third argument specifies the offset from which to begin reading. An <link linkend="io.options-hash">options Hash</link> may be supplied as the final argument.  <literal>File.binread</literal> takes the same arguments but reads the file in <link linkend="io.binmode-textmode">binary mode</link>. </para>
 
       <example xml:id="ex.file-read">
         <title>Reading a file with <literal>File.read</literal></title>
@@ -782,7 +782,7 @@
     <sect2 xml:id="fil.creating-dir">
       <title>Creation</title>
       
-      <para>A directory can be created by supplying its name as an argument to <literal>Dir.mkdir</literal>. An optional second argument specifies the permissions of the new directory. These are platform-specific permission bits, in the <link linkend="io.perm">same form</link> as <literal>IO</literal> and <literal>File</literal> accept them. They respect the current umask value, and are completely ignored on Windows. </para>
+      <para>A directory can be created by supplying its name as an argument to <literal>Dir.mkdir</literal>. An optional second argument specifies the permissions of the new directory. These are platform-specific permission bits, in the <link linkend="io.open">same form</link> as <literal>IO</literal> and <literal>File</literal> accept them. They respect the current umask value, and are completely ignored on Windows. </para>
     </sect2>
 
     <sect2 xml:id="fil.existing-dir">
