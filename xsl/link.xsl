@@ -208,6 +208,7 @@
       <xsl:when test="starts-with($id, 'glo.')">globals</xsl:when>
       <xsl:when test="starts-with($id, 'glo.')">glossary</xsl:when>
       <xsl:when test="starts-with($id, 'bib.')">bibliography</xsl:when>
+      <xsl:when test="starts-with($id, 'ref.io')">ref/io</xsl:when>
       <xsl:when test="starts-with($id, 'ex.')"></xsl:when>
       <xsl:otherwise>
 	<xsl:message terminate="yes">
@@ -220,7 +221,7 @@
   <xsl:template name="id-to-section">
     <xsl:param name="id"/>
     <xsl:choose>
-      <xsl:when test="starts-with($id, 'ex.')">
+      <xsl:when test="starts-with($id, 'ex.') or starts-with($id, 'ref.')">
 	<xsl:value-of select="$id"/>
       </xsl:when>
       <xsl:otherwise>

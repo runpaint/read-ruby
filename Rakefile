@@ -4,12 +4,24 @@ require 'bundler'
 require 'yaml'
 Bundler.require
 
+# Directory containing the source XML files
+SRC_DIR = 'src'
+
+# Directory containing the source XML files for the reference section
+SRC_REF_DIR = SRC_DIR + '/ref'
+
 # Directory containing the files that the web site consists of
 OUT_DIR = 'out'
+
+# Directory containing the reference appendices for the web site
+REF_DIR = OUT_DIR + '/ref'
 
 # Directory containing the immediate results of the XSLT
 BUILD_DIR = 'build'
 
+# Directory containing the immediate results of the XSLT for reference pages
+BUILD_REF_DIR = BUILD_DIR + '/ref'
+ 
 # XSL stylesheet for transforming SRC_XML to HTML
 HTML_XSL = "xsl/html5.xsl"
 
@@ -17,7 +29,7 @@ HTML_XSL = "xsl/html5.xsl"
 PDF_XSL = "xsl/pdf.xsl"
 
 # The DocBook sources (keywords.xml is currently unused)
-SRC_XML = FileList['src/*.xml'].exclude('src/keywords.xml')
+SRC_XML = FileList["#{SRC_DIR}/*.xml", "#{SRC_REF_DIR}/*.xml"].exclude('src/keywords.xml')
 
 # The root file of the XML source: XIncludes SRC_DIR
 BOOK_XML = 'book.xml'
@@ -75,7 +87,7 @@ PDF = File.join(OUT_DIR, 'read-ruby.pdf')
 PDF_HTML = "#{BUILD_DIR}/single.html"
 
 # Create OUT_DIR, EX_DIR, and BUILD_DIR as needed.
-[OUT_DIR, BUILD_DIR].each do |dir|
+[OUT_DIR, REF_DIR, BUILD_DIR, BUILD_REF_DIR].each do |dir|
   task :html => dir
   directory dir
 end

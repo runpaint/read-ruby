@@ -39,4 +39,5 @@
   <!-- Merge keywords.xml into glossary.xml -->
   <!-- <xi:include href="src/keywords.xml"/> -->
   <xi:include href="src/glossary.xml"/>
+  <xi:include href="src/ref/io.xml"/>
 </book>

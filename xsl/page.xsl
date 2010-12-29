@@ -34,9 +34,26 @@
     </xsl:call-template>
   </xsl:template>
 
+  <xsl:template name="extract-page-id">
+    <xsl:param name="id"/>
+    <xsl:choose>
+      <xsl:when test="starts-with($id, 'ref.')">
+	<xsl:text>ref/</xsl:text><xsl:value-of select="substring-after($id, '.')"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="substring-after($id, '.')"/>	
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template name="page">
     <xsl:param name="css"/>
-    <xsl:variable name="id" select="substring-after(@xml:id, '.')"/>
+    <xsl:variable name="id">
+      <xsl:if test="starts-with(@xml:id, 'ref.')">
+	<xsl:text>ref/</xsl:text>
+      </xsl:if>
+      <xsl:value-of select="substring-after(@xml:id, '.')"/>	
+    </xsl:variable>
     <xsl:document href="{$out_dir}/{$id}.html" 
 		  method="html" 
 		  doctype-system="about:legacy-compat">
