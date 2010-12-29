@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.array" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Array</title>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array[]</methodname><methodparam rep="repeat"><parameter>object</parameter></methodparam></methodsynopsis> Creates then returns a new <literal>Array</literal> comprising <parameter>object</parameter>(s).</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array.new</methodname><methodparam choice="opt"><parameter>size=0</parameter></methodparam><methodparam choice="opt"><parameter>object=nil</parameter></methodparam></methodsynopsis><methodsynopsis><type>Array</type><methodname>Array.new</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis><methodsynopsis><type>Array</type><methodname>Array.new</methodname><methodparam><parameter>size</parameter></methodparam><methodparam><parameter>{|i| }</parameter></methodparam></methodsynopsis> Creates and returns a new <literal>Array</literal>. The first form creates an <literal>Array</literal> with <parameter>size</parameter> elements each with the value <parameter>object</parameter>; without any arguments, an empty <literal>Array</literal> is created. If <parameter>array</parameter> is given, <parameter>array</parameter><literal>.to_ary</literal> is returned. If a block is given, an <literal>Array</literal> of <parameter>size</parameter> elements is created by calling the block with each index and using its return value as the corresponding element.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Array.try_convert</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <parameter>obj</parameter><literal>.to_ary</literal> or <literal>nil</literal> if this fails.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#&amp;</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis> Returns the set intersection of the receiver and argument: a new <literal>Array</literal> comprising the elements common to both without duplicates.</para>
+
+  <para><methodsynopsis><type>Array or String</type><methodname>Array#*</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> When <parameter>object</parameter> is numeric, concatenates <parameter>object</parameter><literal>.to_i</literal> copies of the receiver to create a new <literal>Array</literal>. Otherwise, equivalent to <literal>self.join(<replaceable>object</replaceable>)</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#+</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis> Concatenates the receiver with the argument to create a new <literal>Array</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#-</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis> Returns a copy of the receiver less elements appearing in <parameter>array</parameter>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#&lt;&lt;</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Appends <parameter>object</parameter> to the receiver, which it returns.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Array#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Converts <parameter>object</parameter> to an <literal>Array</literal> with <function>#to_ary</function>, then returns <literal>true</literal> if both <literal>Array</literal>s are the same length and all of their elements are equal according to <function>#==</function>; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Array#[]</methodname><methodparam><parameter>index</parameter></methodparam></methodsynopsis><methodsynopsis><type>Array or nil</type><methodname>Array#[]</methodname><methodparam><parameter>start</parameter></methodparam><methodparam><parameter>length</parameter></methodparam></methodsynopsis><methodsynopsis><type>Array or nil</type><methodname>Array#[]</methodname><methodparam><parameter>range</parameter></methodparam></methodsynopsis> Returns the element at index <parameter>index</parameter>, the elements with index <parameter>start</parameter> through to <parameter>start</parameter> + <parameter>length</parameter>, or the elements with indices in the <literal>Range</literal> <parameter>range</parameter>. When no elements match the constraint, the first form returns <literal>nil</literal>; the others return <literal>[]</literal>. Aliased by <function>Array#slice</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Array#[]=</methodname><methodparam><parameter>index</parameter></methodparam><methodparam><parameter>object</parameter></methodparam></methodsynopsis><methodsynopsis><type>Array or nil</type><methodname>Array#[]</methodname><methodparam><parameter>start</parameter></methodparam><methodparam><parameter>length</parameter></methodparam><methodparam><parameter>object</parameter></methodparam></methodsynopsis><methodsynopsis><type>Array or nil</type><methodname>Array#[]</methodname><methodparam><parameter>range</parameter></methodparam><methodparam><parameter>object</parameter></methodparam></methodsynopsis> With an <literal>Integer</literal> index, sets the element at index <parameter>index</parameter> to <parameter>object</parameter>, expanding the <literal>Array</literal> if necessary. Otherwise, replaces the elements with index <parameter>start</parameter> through to <parameter>start</parameter> + <parameter>length</parameter>, or indices within the given <literal>Range</literal>, with <parameter>object</parameter>. In these last two forms, if <parameter>object</parameter> is an <literal>Array</literal>, its elements are substituted for the matched elements in the receiver; if not, they are replaced by <parameter>object</parameter>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#|</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis> Returns the union of the receiver and the argument: a new <literal>Array</literal> comprising elements from both <literal>Array</literal>s without duplicates.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#assoc</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Where the receiver is an <literal>Array</literal> of <literal>Array</literal>s, returns the first sub-<literal>Array</literal> whose first element is <function>#==</function> to <parameter>object</parameter>, or <literal>nil</literal> if no such element is found.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Array#at</methodname><methodparam><parameter>index</parameter></methodparam></methodsynopsis> Returns the element with index <parameter>index</parameter>, or <literal>nil</literal> if the index is out of range.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#clear</methodname><void/></methodsynopsis> Returns the receiver with all elements removed.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#clear</methodname><void/></methodsynopsis> Removes all elements from the receiver, which it then returns.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Array#combination</methodname><methodparam><parameter>size</parameter></methodparam><methodparam choice="opt"><parameter>{|array| }</parameter></methodparam></methodsynopsis> Generates all combinations of size <parameter>size</parameter> from the receiver’s elements. Returns an <literal>Enumerator</literal> if the block is omitted, otherwise yields each combination to the block, then returns the receiver.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#collect!</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element of the receiver to the block, replacing it with the value the block returns. Aliased to <function>Array#map!</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#compact</methodname><void/></methodsynopsis> Returns a copy of the receiver less any <literal>nil</literal> elements.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Array#compact!</methodname><void/></methodsynopsis> Returns <literal>nil</literal> if the receiver doesn’t contain <literal>nil</literal> elements, otherwise removes all such elements then returns the receiver.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#concat</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis> Appends the elements in the given <literal>Array</literal> to the receiver, which it then returns.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Array#count</methodname><methodparam choice="opt"><parameter>object</parameter></methodparam></methodsynopsis><methodsynopsis><type>Integer</type><methodname>Array#count</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> With no argument, equivalent to <function>#size</function>. If <parameter>object</parameter> is given, returns the number of elements in the receiver that equal <parameter>object</parameter>. Otherwise, pass each element of the receiver to the block, returning the number of times it returns <literal>true</literal>.</para>
+
+  <para><methodsynopsis><type>Enumerator or nil</type><methodname>Array#cycle</methodname><methodparam choice="opt"><parameter>times</parameter></methodparam><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Invokes the block with each element of the receiver in turn, then repeats <parameter>times</parameter> times or forever if <parameter>times</parameter> is omitted. If the receiver is empty, returns <literal>nil</literal>. If the block is omitted, returns an <literal>Enumerator</literal>.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Array#delete</methodname><methodparam><parameter>object</parameter></methodparam><methodparam choice="opt"><parameter>{ }</parameter></methodparam></methodsynopsis> Deletes every element of the receiver that is equal to <parameter>object</parameter>. If the receiver didn’t contain <parameter>object</parameter> returns the value of the block, if given, or <literal>nil</literal> otherwise.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Array#delete_at</methodname><methodparam><parameter>index</parameter></methodparam></methodsynopsis> Deletes and returns the element of the receiver with the given index. Returns <literal>nil</literal> if the index is out of range.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#delete_if</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element of the receiver to the block, deleting those for which the block is <literal>true</literal>, then returns the receiver. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#each</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element to the block, deleting those for which the block is <literal>true</literal>, then returns the receiver. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#each_index</methodname><methodparam choice="opt"><parameter>{|index| }</parameter></methodparam></methodsynopsis> Passes the index of each element to the block, then returns the receiver. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Array#empty?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver contains no elements; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Array#eql?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is an <literal>Array</literal> whose elements are equal to the receiver in both number and content—according to <function>#eql?</function>; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Array#fetch</methodname><methodparam><parameter>index</parameter></methodparam><methodparam choice="opt"><parameter>{|index| }</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>Array#fetch</methodname><methodparam><parameter>index</parameter></methodparam><methodparam><parameter>default</parameter></methodparam></methodsynopsis> Returns the element at index <parameter>index</parameter>. If the index is out of range, the first form returns the value of the block when given the index, or raises an <exceptionname>IndexError</exceptionname> if the block is omitted; the second form returns <parameter>default</parameter>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#fill</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array</type><methodname>Array#fill</methodname><methodparam><parameter>{|index| }</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array</type><methodname>Array#fill</methodname><methodparam><parameter>object</parameter></methodparam><methodparam><parameter>start</parameter></methodparam><methodparam choice="opt"><parameter>length=nil</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array</type><methodname>Array#fill</methodname><methodparam><parameter>start</parameter></methodparam><methodparam choice="opt"><parameter>length=nil</parameter></methodparam><methodparam><parameter>{|index| }</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array</type><methodname>Array#fill</methodname><methodparam><parameter>object</parameter></methodparam><methodparam><parameter>range</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array</type><methodname>Array#fill</methodname><methodparam><parameter>range</parameter></methodparam><methodparam><parameter>{|index| }</parameter></methodparam></methodsynopsis> Sets elements of the receiver to the value of the block, if given, or <parameter>object</parameter>. The first two forms set all elements, the second two set elements starting at indices <parameter>start</parameter> through to <parameter>start</parameter> + <parameter>length</parameter>, and the remainder set elements with indices in the given <literal>Range</literal>. If <parameter>start</parameter> is <literal>nil</literal> it is equivalent to a value of <literal>0</literal>; if <parameter>length</parameter> is <literal>nil</literal> it is equivalent to the length of the receiver.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>Array#find_index</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Integer or nil</type><methodname>Array#find_index</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the index of the first element <function>#==</function> to <parameter>object</parameter> or, if a block is supplied, the first element for which the block is <literal>true</literal>. Returns <literal>nil</literal> if no elements matched, or an <literal>Enumerator</literal> if both argument and block are omitted. Aliased by <function>Array#index</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#flatten</methodname><methodparam choice="opt"><parameter>level=-1</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> comprising each element, or, if the element is itself an <literal>Array</literal>, the result of calling <function>#flatten</function> on that element. The depth of recursion depends on the value of <parameter>level</parameter>: if negative, the method always recurses; if zero, there is no recursion; if positive, the method only recurses a maximum of <parameter>level</parameter> levels.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Array#flatten!</methodname><methodparam choice="opt"><parameter>level=-1</parameter></methodparam></methodsynopsis> Returns <literal>nil</literal> if no element is itself an <literal>Array</literal>, otherwise invokes <function>Array#flatten(<replaceable>level</replaceable>)</function> to modify the receiver in-place.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Array#frozen?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is frozen; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>Array#index</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Integer or nil</type><methodname>Array#index</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Aliases <function>Array#find_index</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#insert</methodname><methodparam><parameter>index</parameter></methodparam><methodparam rep="repeat"><parameter>object</parameter></methodparam></methodsynopsis> Locates the element whose index is <parameter>index</parameter> then inserts <parameter>object</parameter>(s) before this element if <parameter>index</parameter> is positive, or after if <parameter>index</parameter> is negative. Returns the receiver.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Array#join</methodname><methodparam choice="opt"><parameter>separator=$,</parameter></methodparam></methodsynopsis> Concatenates each element with <parameter>separator</parameter>, then returns a concatenation of the result.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Array#last</methodname><methodparam choice="opt"><parameter>count=1</parameter></methodparam></methodsynopsis> Returns the last <parameter>count</parameter> elements of the receiver as an <literal>Array</literal>. If <parameter>count</parameter> is <literal>1</literal>, returns the corresponding element, or <literal>nil</literal> if the receiver is empty.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Array#length</methodname><void/></methodsynopsis> Returns the number of elements in the receiver.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#map!</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> Aliases <function>Array#collect!</function>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Array#pack</methodname><methodparam><parameter>directives</parameter></methodparam></methodsynopsis> Combines the elements of the receiver into a binary <literal>String</literal> by applying <parameter>directives</parameter>. <remark>TODO: Write this up in Arrays chapter with table of directives; xref.</remark></para>
+
+  <para><methodsynopsis><type>Enumerator or Array</type><methodname>Array#permutation</methodname><methodparam><parameter>size</parameter></methodparam><methodparam choice="opt"><parameter>{|array| }</parameter></methodparam></methodsynopsis> Generates all permutations with length <parameter>size</parameter> of the receiver’s elements, then yields them to the block; if the block is omitted, returns them as an <literal>Enumerator</literal>.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Array#pop</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam></methodsynopsis> Removes then returns the last <parameter>n</parameter> elements from the receiver. Returns <literal>nil</literal> if the receiver is empty.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#product</methodname><methodparam rep="repeat"><parameter>array</parameter></methodparam></methodsynopsis> Returns the Cartesian product of the receiver and its <parameter>argument</parameter>(s) as an <literal>Array</literal> of <literal>Array</literal>s. Each inner <literal>Array</literal> contains one element from the receiver, and one from each argument <parameter>array</parameter>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#push</methodname><methodparam rep="repeat"><parameter>object</parameter></methodparam></methodsynopsis> Appends each argument to the receiver, which it then returns.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Array#rassoc</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Where the receiver is an <literal>Array</literal> of <literal>Array</literal>s, returns the first sub-<literal>Array</literal> whose second element is <function>#==</function> to <parameter>object</parameter>, or <literal>nil</literal> if no such element is found.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Array#reject!</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Behaves as <function>Array#delete_if</function> but returns <literal>nil</literal> if the receiver wasn’t modified.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#replace</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis> Substitutes the elements of <parameter>array</parameter> for the elements of the receiver, which is resized if necessary, then returns the receiver.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#reverse</methodname><void/></methodsynopsis> Returns a copy of the receiver with the elements in reverse order.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#reverse!</methodname><void/></methodsynopsis> Behaves as <function>Array#reverse</function> but modifies the receiver in-place.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#reverse_each</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> Yields each element of the receiver to the block in reverse order, then returns <literal>self</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>Array#rindex</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis><methodsynopsis><type>Integer or nil</type><methodname>Array#rindex</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the index of the last element <function>#==</function> to <parameter>object</parameter> or, if a block is supplied, the last element for which the block is <literal>true</literal>. Returns <literal>nil</literal> if no elements matched, or an <literal>Enumerator</literal> if both argument and block are omitted.</para>
+  
+  <para><methodsynopsis><type>Array or nil</type><methodname>Array#sample</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam></methodsynopsis> Returns <parameter>n</parameter> elements of the receiver selected pseudo-randomly. If the receiver has fewer than <parameter>n</parameter> elements, returns them all; if the receiver is empty and <parameter>n</parameter> is omitted, returns <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Array#shift</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam></methodsynopsis> Deletes and returns the first <parameter>n</parameter> elements of the receiver, shifting the remaining elements down to fill the gap. Returns <literal>nil</literal> if the receiver is empty.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#shuffle</methodname><void/></methodsynopsis> Returns a copy of the receiver ordered pseudo-randomly.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#shuffle!</methodname><void/></methodsynopsis> Behaves as <function>Array#shuffle</function> but modifies the receiver in-place.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Array#size</methodname><void/></methodsynopsis> Aliases <function>Array#length</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Array#slice</methodname><methodparam><parameter>index</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array or nil</type><methodname>Array#slice</methodname><methodparam><parameter>start</parameter></methodparam><methodparam><parameter>length</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array or nil</type><methodname>Array#slice</methodname><methodparam><parameter>range</parameter></methodparam></methodsynopsis> Aliases <function>Array#[]</function>.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Array#slice!</methodname><methodparam><parameter>index</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array or nil</type><methodname>Array#slice!</methodname><methodparam><parameter>start</parameter></methodparam><methodparam><parameter>length</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array or nil</type><methodname>Array#slice!</methodname><methodparam><parameter>range</parameter></methodparam></methodsynopsis> Behaves as <function>Array#slice</function> but modifies the receiver in-place, returning the deleted element(s) or <literal>nil</literal> if no changes were made.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#sort!</methodname><methodparam choice="opt"><parameter>{|a, b| }</parameter></methodparam></methodsynopsis> Sorts the receiver in-place, then returns <literal>self</literal>. If the block is omitted, elements are sorted according to <function>#&lt;=&gt;</function>; otherwise, passes two elements at a time to the block, which is expected to return <literal>-1</literal> if the first element is less than the second, <literal>0</literal> if they are equal, and <literal>1</literal> if the first element is greater than the second.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#to_a</methodname><void/></methodsynopsis> Returns the receiver converted to an <literal>Array</literal>, using <function>#to_ary</function> if called on a subclass of <literal>Array</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#to_ary</methodname><void/></methodsynopsis> Returns the receiver.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Array#to_s</methodname><void/></methodsynopsis> Returns the receiver represented in <literal>Array</literal> literal notation.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#transpose</methodname><void/></methodsynopsis> When the receiver is an <literal>Array</literal> of <literal>Array</literal>s, returns a new <literal>Array</literal> whose rows are the receiver’s columns, and whose columns are the receiver’s rows.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#uniq</methodname><void/></methodsynopsis> Returns a copy of the receiver with duplicate—according to <function>#eql?</function> and <function>#hash</function>—elements removed.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#uniq!</methodname><void/></methodsynopsis> Behaves as <function>Array#uniq</function> but modifies the receiver in-place and returns <literal>nil</literal> if there were no duplicate elements.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#unshift</methodname><methodparam rep="repeat"><parameter>object</parameter></methodparam></methodsynopsis> Prepends <parameter>object</parameter>(s) to the receiver, moving the existing elements upward, then returns <literal>self</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#values_at</methodname><methodparam rep="repeat"><parameter>indices</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> comprising elements in the receiver with the given indices, where <parameter>indices</parameter> is an <literal>Integer</literal> index or a <literal>Range</literal> of the same.</para> 
+</appendix>

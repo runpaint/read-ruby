@@ -40,4 +40,5 @@
   <!-- <xi:include href="src/keywords.xml"/> -->
   <xi:include href="src/glossary.xml"/>
   <xi:include href="src/ref/io.xml"/>
+  <xi:include href="src/ref/array.xml"/>
 </book>
