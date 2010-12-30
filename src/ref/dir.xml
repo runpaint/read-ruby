@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.dir" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Dir</title>
+
+  <para><methodsynopsis><type>Array</type><methodname>Dir[]</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array</type><methodname>Dir[]</methodname><methodparam rep="repeat"><parameter>string</parameter></methodparam></methodsynopsis> Passes its arguments to <function>Dir.glob</function>, returning the result.</para>
+
+  <para><methodsynopsis><type>Object or 0</type><methodname>Dir.chdir</methodname><methodparam choice="opt"><parameter>directory=ENV['HOME'] || ENV['LOGDIR']</parameter></methodparam><methodparam choice="opt"><parameter>{|directory| }</parameter></methodparam></methodsynopsis> Changes the current working directory of the process to <parameter>directory</parameter> and returns <literal>0</literal>. If a block is supplied, it receives the new working directory as an argument and ensures the original working directory is restored when the block exits; the return value is that of the block. However, it is an error for multiple threads to have these blocks open simultaneously. If <parameter>directory</parameter> does not exist the appropriate <exceptionname>Errno::</exceptionname> exception is raised.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Dir.chroot</methodname><methodparam><parameter>directory</parameter></methodparam></methodsynopsis> Changes the root directory of the process—assuming it has the appropriate privileges—to <parameter>directory</parameter>. A <exceptionname>NotImplementedError</exceptionname> is raised on platforms without the <function>chroot(2)</function> system call.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Dir.delete</methodname><methodparam><parameter>directory</parameter></methodparam></methodsynopsis> Deletes the empty directory <parameter>directory</parameter>, raising an <exceptionname>Errno::</exceptionname> exception on error. Aliased to <function>Dir.rmdir</function> and <function>Dir.unlink</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Dir.entries</methodname><methodparam><parameter>directory</parameter></methodparam></methodsynopsis> Returns the entries—filenames, <literal>.</literal>, and <literal>..</literal>—of <parameter>directory</parameter> as an <literal>Array</literal> of <literal>String</literal>s. Raises an <exceptionname>Errno::</exceptionname> exception if the directory doesn’t exist.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Dir.exist?</methodname><methodparam><parameter>directory</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>directory</parameter> exists and is a directory; <literal>false</literal>, otherwise. Aliased by <function>Dir.exists?</function> and <function>File.directory?</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Dir.exists?</methodname><methodparam><parameter>directory</parameter></methodparam></methodsynopsis> Aliases <function>Dir.exist?</function>.</para>
+
+  <para><methodsynopsis><type>Enumerator or nil</type><methodname>Dir.foreach</methodname><methodparam choice="opt"><parameter>{|entry| }</parameter></methodparam></methodsynopsis> Yields each entry—filenames, <literal>.</literal>, and <literal>..</literal>—of <parameter>directory</parameter> to the given block; returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Dir.getwd</methodname><void/></methodsynopsis> Returns the canonical path of the current working directory for this process. Aliased by <function>Dir.pwd</function>.</para>
+
+  <para><methodsynopsis><type>Array or false</type><methodname>Dir.glob</methodname><methodparam><parameter>pattern</parameter></methodparam><methodparam choice="opt"><parameter>flags=0</parameter></methodparam><methodparam choice="opt"><parameter>{|filename| }</parameter></methodparam></methodsynopsis> Yields the filenames matching the glob pattern <parameter>pattern</parameter> to the block; returning an <literal>Array</literal> if the block is omitted. The syntax of <parameter>pattern</parameter> and valid <parameter>flags</parameter> are explained in <xref linkend="fil.dir-glob"/>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Dir.mkdir</methodname><methodparam><parameter>directory</parameter></methodparam><methodparam choice="opt"><parameter>permissions</parameter></methodparam></methodsynopsis> Creates a directory named <parameter>directory</parameter> with the permissions given in <parameter>permissions</parameter>. The permissions are ignored on Windows, and modified by the current process’s umask.</para>
+
+  <para><methodsynopsis><type>Dir</type><methodname>Dir.new</methodname><methodparam><parameter>directory</parameter></methodparam><methodparam choice="opt"><parameter>encoding: <replaceable>encoding</replaceable></parameter></methodparam></methodsynopsis> Instantiates and returns a <literal>Dir</literal> object representing the directory named <parameter>directory</parameter>. The directory is assumed to have the same encoding as the local file system—i.e. <literal>Encoding.find('filesystem')</literal>—but an alternative encoding can be specified as <parameter>encoding</parameter>.</para>
+
+  <para><methodsynopsis><type>Dir or Object</type><methodname>Dir.open</methodname><methodparam><parameter>directory</parameter></methodparam><methodparam choice="opt"><parameter>encoding: <replaceable>encoding</replaceable></parameter></methodparam><methodparam choice="opt"><parameter>{|dir| }</parameter></methodparam></methodsynopsis> Behaves as <function>Dir.new</function>, but if a block is supplied the new <literal>Dir</literal> object is yielded to it, then closed when the block exits. Returns the value of the block, if one was given, or the new <literal>Dir</literal> object.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Dir.pwd</methodname><void/></methodsynopsis> Aliases <function>Dir.getwd</function>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Dir.rmdir</methodname><methodparam><parameter>directory</parameter></methodparam></methodsynopsis> Aliases <function>Dir.delete</function>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Dir.unlink</methodname><methodparam><parameter>directory</parameter></methodparam></methodsynopsis> Aliases <function>Dir.delete</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Dir#close</methodname><void/></methodsynopsis> Closes the directory stream represented by the receiver.</para>
+
+  <para><methodsynopsis><type>Enumerator or Dir</type><methodname>Dir#each</methodname><methodparam choice="opt"><parameter>{|entry| }</parameter></methodparam></methodsynopsis> Yields each entry—filenames, <literal>.</literal>, and <literal>..</literal>—of the receiver’s directory stream to the block, then returns <literal>self</literal>. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Dir#path</methodname><void/></methodsynopsis> Returns the path of the directory stream represented by the receiver.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Dir#pos</methodname><void/></methodsynopsis> Returns the current position in the directory stream represented by the receiver. Aliased by <function>Dir#tell</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Dir#pos=</methodname><methodparam><parameter>position</parameter></methodparam></methodsynopsis> Seeks the receiver’s directory stream to the given position—which should have previously been returned by <function>Dir#pos</function>—then returns <parameter>position</parameter>.</para>
+
+  <para><methodsynopsis><type>String or nil</type><methodname>Dir#read</methodname><void/></methodsynopsis> Returns the next entry in the receiver’s stream, then advances the stream’s position. Returns <literal>nil</literal> after the last entry.</para> 
+
+  <para><methodsynopsis><type>Dir</type><methodname>Dir#rewind</methodname><void/></methodsynopsis> Resets the position of the receiver’s directory stream to its beginning, returning <literal>self</literal>.</para>
+  
+  <para><methodsynopsis><type>Integer</type><methodname>Dir#seek</methodname><methodparam><parameter>position</parameter></methodparam></methodsynopsis> Seeks the receiver’s directory stream to the given position—which should have previously been returned by <function>Dir#pos</function>—then returns <parameter>self</parameter>.</para>
+  
+  <para><methodsynopsis><type>Integer</type><methodname>Dir#tell</methodname><void/></methodsynopsis> Aliases <function>Dir#pos</function>.</para>
+</appendix>
