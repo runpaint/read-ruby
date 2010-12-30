@@ -212,6 +212,7 @@
       <xsl:when test="starts-with($id, 'ref.basicobject')">ref/basicobject</xsl:when>
       <xsl:when test="starts-with($id, 'ref.bignum')">ref/bignum</xsl:when>
       <xsl:when test="starts-with($id, 'ref.binding')">ref/binding</xsl:when>
+      <xsl:when test="starts-with($id, 'ref.class')">ref/class</xsl:when>
       <xsl:when test="starts-with($id, 'ref.io')">ref/io</xsl:when>
       <xsl:when test="starts-with($id, 'ex.')"></xsl:when>
       <xsl:otherwise>

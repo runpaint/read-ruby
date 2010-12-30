@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.class" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Class</title>
+
+  <para><methodsynopsis><type>Object</type><methodname>Class.inherited</methodname><methodparam><parameter>class</parameter></methodparam></methodsynopsis> Hook that is fired when a subclass of the receiver class is created; <parameter>class</parameter> is the subclass as a <literal>Class</literal> object.</para>
+
+  <para><methodsynopsis><type>Class</type><methodname>Class.new</methodname><methodparam choice="opt"><parameter>superclass=Object</parameter></methodparam><methodparam choice="opt"><parameter>{ }</parameter></methodparam></methodsynopsis> Creates and returns an anonymous class that inherits from <parameter>superclass</parameter>. If a block is supplied it is evaluated in the context of this class: within it, <literal>self</literal> is the new <literal>Class</literal> instance.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Class#allocate</methodname><void/></methodsynopsis> Allocates memory for an instance of the receiver’s class, then returns the new object. Invoked automatically by the interpreter when <function>#initialize</function> is called; cannot be overridden.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Class#new</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Creates a new instance of the receiver’s class with <function>#allocate</function>, which it initialises with <function>#initialize(<replaceable>argument</replaceable>, …)</function>, then returns.</para>
+
+  <para><methodsynopsis><type>Class or nil</type><methodname>Class#superclass</methodname><void/></methodsynopsis> Returns the superclass of the receiver, or <literal>nil</literal> if the receiver is <literal>BasicObject</literal>.</para>
+</appendix>
