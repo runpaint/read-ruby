@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.comparable" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Comparable</title>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Comparable#&lt;</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <function>#&lt;=&gt;(<replaceable>object</replaceable>)</function> is negative; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Comparable#&lt;=</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <function>#&lt;=&gt;(<replaceable>object</replaceable>)</function> is negative or zero; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Comparable#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <function>#&lt;=&gt;(<replaceable>object</replaceable>)</function> is zero; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Comparable#&gt;=</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <function>#&lt;=&gt;(<replaceable>object</replaceable>)</function> is zero or positive; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Comparable#&gt;</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <function>#&lt;=&gt;(<replaceable>object</replaceable>)</function> is positive; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Comparable#between?</methodname><methodparam><parameter>minimum</parameter></methodparam><methodparam><parameter>maximum</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is between <parameter>minimum</parameter> and <parameter>maximum</parameter>—i.e. <function>#&lt;=&gt;(<replaceable>minimum</replaceable>)</function> is zero or positive and <function>#&lt;=&gt;(<replaceable>maximum</replaceable>)</function> is zero or negative—or <literal>false</literal>, otherwise.</para>
+</appendix>
