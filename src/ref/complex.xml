@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.complex" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Complex</title>
+
+  <remark>TODO: Document Complex::I</remark>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex.polar</methodname><methodparam><parameter>magnitude</parameter></methodparam><methodparam choice="opt"><parameter>angle=0</parameter></methodparam></methodsynopsis> Returns the <literal>Complex</literal> number represented by the polar coordinates <parameter>magnitude</parameter> and <parameter>angle</parameter>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex.rect</methodname><methodparam><parameter>real</parameter></methodparam><methodparam choice="opt"><parameter>imaginary=0</parameter></methodparam></methodsynopsis> Returns the <literal>Complex</literal> number with the real part, <parameter>real</parameter>, and the imaginary part, <parameter>imaginary</parameter>. Aliased by <function>Complex#rectangular</function>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex.rectangular</methodname><methodparam><parameter>real</parameter></methodparam><methodparam choice="opt"><parameter>imaginary=0</parameter></methodparam></methodsynopsis> Aliases <function>Complex#rect</function>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#+</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of adding the receiver to <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#-</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of subtracting <parameter>number</parameter> from the receiver.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#*</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of multiplying <parameter>number</parameter> with the receiver.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#/</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing the receiver by <parameter>number</parameter>. Aliased by <function>Complex#quo</function>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#**</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of raising the receiver to the <parameter>number</parameter><superscript>th</superscript> power.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Complex#==</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the <parameter>number</parameter> is a <literal>Numeric</literal> with the same value as the receiver; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#abs</methodname><void/></methodsynopsis> Returns the absolute value of the receiver. Aliased by <function>Complex#magnitude</function>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#abs2</methodname><void/></methodsynopsis> Returns the square of the absolute value of the receiver.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Complex#angle</methodname><void/></methodsynopsis> Returns the amplitude of the receiver, i.e. <literal>atan2(<replaceable>imaginary</replaceable>, <replaceable>real</replaceable>)</literal>, where <replaceable>imaginary</replaceable> is the receiver’s imaginary part, and <replaceable>real</replaceable> its real part. Aliased by <function>Complex#arg</function> and <function>Complex#phase</function>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Complex#arg</methodname><void/></methodsynopsis> Aliases <function>Complex#angle</function>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#conj</methodname><void/></methodsynopsis> Returns the conjugate of the receiver: its real part minus its imaginary part. Aliased by <function>Complex#conjugate</function>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#conjugate</methodname><void/></methodsynopsis> Aliases <function>Complex#conj</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Complex#denominator</methodname><void/></methodsynopsis> Returns the denominator of the receiver: the least common multiple of the denominators of both real and imaginary parts.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Complex#eql?</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>number</parameter> is a <literal>Complex</literal> whose real and imaginary parts are <function>#eql?</function> to the receiver’s real and imaginary parts, respectively; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Complex#fdiv</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using floating-point division—the receiver by <parameter>number</parameter>.</para>
+ 
+ <para><methodsynopsis><type>Numeric</type><methodname>Complex#imag</methodname><void/></methodsynopsis> Returns the imaginary part of the receiver. Aliased by <function>Complex#imaginary</function>.</para>
+
+ <para><methodsynopsis><type>Numeric</type><methodname>Complex#imaginary</methodname><void/></methodsynopsis> Aliases <function>Complex#imag</function>.</para>
+ 
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#magnitude</methodname><void/></methodsynopsis> Aliases <function>Complex#abs</function>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#numerator</methodname><void/></methodsynopsis> Returns the numerator of the receiver.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Complex#phase</methodname><void/></methodsynopsis> Aliases <function>Complex#angle</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Complex#polar</methodname><void/></methodsynopsis> Returns the receiver’s polar coordinates as a two-element <literal>Array</literal>: the first element is <function>Complex#abs</function>, and the last element is <function>Complex#arg</function>.</para>
+ 
+  <para><methodsynopsis><type>Complex</type><methodname>Complex#quo</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—after converting the real and imaginary parts of the receiver to <literal>Rational</literal>s—the receiver by <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Complex#rect</methodname><void/></methodsynopsis> Returns an <literal>Array</literal> whose first element is the receiver’s real part, and last element is the receiver’s imaginary part. Aliased by <function>Complex#rectangular</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Complex#rectangular</methodname><void/></methodsynopsis> Aliases <function>Complex#rect</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Complex#real</methodname><void/></methodsynopsis> Returns the real part of the receiver.</para>
+
+  <para><methodsynopsis><type>false</type><methodname>Complex#real?</methodname><void/></methodsynopsis> Returns <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Complex#to_f</methodname><void/></methodsynopsis> Returns the real part of the receiver as a <literal>Float</literal>; raises a <exceptionname>RangeError</exceptionname> if the imaginary part is non-zero.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Complex#to_i</methodname><void/></methodsynopsis> Returns the real part of the receiver as a <literal>Integer</literal>; raises a <exceptionname>RangeError</exceptionname> if the imaginary part is non-zero.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>Complex#to_r</methodname><void/></methodsynopsis> Returns the real part of the receiver as a <literal>Rational</literal>; raises a <exceptionname>RangeError</exceptionname> if the imaginary part is non-zero.</para>
+</appendix>
