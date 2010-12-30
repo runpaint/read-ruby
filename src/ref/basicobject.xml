@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.basicobject" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>BasicObject</title>
+
+  <para><methodsynopsis><type>true or false</type><methodname>BasicObject#!</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is <literal>false</literal> or <literal>nil</literal>; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>BasicObject#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is the same object as the receiver; <literal>false</literal>, otherwise. Aliased by <function>BasicObject#equal?</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>BasicObject#!=</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns the inverse of <function>BasicObject#==</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>BasicObject#equal?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Aliases <function>BasicObject#==</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>BasicObject#instance_eval</methodname><methodparam><parameter>code</parameter></methodparam><methodparam choice="opt"><parameter>file</parameter></methodparam><methodparam choice="opt"><parameter>line</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>BasicObject#instance_eval</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> Executes a given piece of code in the context of the receiver. In the first form, <parameter>code</parameter> is a <literal>String</literal> of Ruby, and <parameter>file</parameter> and <parameter>line</parameter> are the filename and line number, respectively, to be used in error messages. In the second, the block is passed the receiver as an argument, then invoked with <literal>self</literal> set to the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>BasicObject#instance_exec</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam><methodparam><parameter>{|argument, …| }</parameter></methodparam></methodsynopsis> Yields its arguments to the block, within which <literal>self</literal> is set to the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>BasicObject#method_missing</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Called when the receiver is sent a message for which it has no method defined: <parameter>name</parameter> is the message selector as a <literal>Symbol</literal>, and <parameter>argument</parameter>(s) the argument(s) it was sent with.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>BasicObject#__send__</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam><methodparam choice="opt"><parameter>&amp;block</parameter></methodparam></methodsynopsis> Sends a message named <parameter>name</parameter> to the receiver with the given <parameter>argument</parameter>(s) and <parameter>block</parameter>, returning the result.</para>
+</appendix>
