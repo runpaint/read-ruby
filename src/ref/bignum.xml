@@ -18,7 +18,7 @@
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#**</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of raising the receiver to the <parameter>number</parameter><superscript>th</superscript> power.</para>
 
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#-@</methodname><void/></methodsynopsis> Returns the result of inverting the receiver’s sign.</para>
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#~</methodname><void/></methodsynopsis> Returns the result of inverting the receiver’s bits.</para>
 
@@ -55,8 +55,6 @@
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#remainder</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Divides the receiver by <parameter>number</parameter>, returning the remainder.</para>
  
   <para><methodsynopsis><type>Integer</type><methodname>Bignum#size</methodname><void/></methodsynopsis> Returns the number of bytes used to represent the receiver.</para>
-
-  <para><methodsynopsis><type>Bignum</type><methodname>Bignum#size</methodname><void/></methodsynopsis> Returns the number of bytes used to represent the receiver.</para>
  
   <para><methodsynopsis><type>Bignum</type><methodname>Bignum#to_f</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Float</literal>, or <literal>Float::INFINITY</literal> if its too big.</para>
  
