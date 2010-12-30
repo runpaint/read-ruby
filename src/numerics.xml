@@ -57,7 +57,7 @@
     <sect2 xml:id="num.bits">
       <title>Bit Twiddling</title>
 
-      <para>There are a collection of methods that treat <literal>Integer</literal>s like bit fields, operating on the number’s binary operation. The unary operator <literal>Integer#~</literal> inverts the bit pattern, while <literal>#&gt;&gt;</literal> and <literal>#&lt;&lt;</literal> shift it right or left, respectively, by the number of bits specified as an argument. The binary logical operators <literal>#|</literal>, <literal>#&amp;</literal>, and <literal>#^</literal>, perform bitwise OR, AND or, XOR, respectively.</para>
+      <para>There are a collection of methods that treat <literal>Integer</literal>s like bit fields, operating on the number’s binary operation. The unary operator <literal>Integer#~</literal> inverts the bit pattern, while <literal>#&gt;&gt;</literal> and <literal>#&lt;&lt;</literal> shift it right or left, respectively, by the number of bits specified as an argument. The binary logical operators <literal>#|</literal>, <literal>#&amp;</literal>, and <literal>#^</literal>, perform bitwise OR, AND or, XOR, respectively. <remark>TODO: Note #[] and that Bignums are treated as infinitely long bitstring in 2's complement.</remark></para>
       
       <example xml:id="ex.numeric-bits">
 	<title>Performing bit operations on <literal>Integer</literal>s</title>
@@ -77,7 +77,7 @@
     <sect2 xml:id="num.constants">
       <title>Constants</title>
     
-      <para>The precision and limits of <literal>Float</literal> are specified by the following constants:</para>
+      <para><remark>TODO: Move all of this section to Reference/Float; mention Float::INFINITY and Float::NAN above.</remark>The precision and limits of <literal>Float</literal> are specified by the following constants:</para>
       
       <variablelist>
 	<varlistentry>

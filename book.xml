@@ -42,5 +42,6 @@
   <xi:include href="src/ref/array.xml"/>
   <xi:include href="src/ref/basicobject.xml"/>
   <xi:include href="src/ref/bignum.xml"/>
+  <xi:include href="src/ref/binding.xml"/>
   <xi:include href="src/ref/io.xml"/>
 </book>
