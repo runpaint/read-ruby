@@ -208,13 +208,17 @@
       <xsl:when test="starts-with($id, 'glo.')">globals</xsl:when>
       <xsl:when test="starts-with($id, 'glo.')">glossary</xsl:when>
       <xsl:when test="starts-with($id, 'bib.')">bibliography</xsl:when>
-      <xsl:when test="starts-with($id, 'ref.array')">ref/array</xsl:when>
-      <xsl:when test="starts-with($id, 'ref.basicobject')">ref/basicobject</xsl:when>
-      <xsl:when test="starts-with($id, 'ref.bignum')">ref/bignum</xsl:when>
-      <xsl:when test="starts-with($id, 'ref.binding')">ref/binding</xsl:when>
-      <xsl:when test="starts-with($id, 'ref.class')">ref/class</xsl:when>
-      <xsl:when test="starts-with($id, 'ref.comparable')">ref/class</xsl:when>
-      <xsl:when test="starts-with($id, 'ref.io')">ref/io</xsl:when>
+      <xsl:when test="starts-with($id, 'ref.')">
+	<xsl:text>ref/</xsl:text>
+	<xsl:choose>
+	  <xsl:when test="contains($id, '-')">
+	    <xsl:value-of select="substring-before(substring-after($id, '.'), '-')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="substring-after($id, '.')"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:when>
       <xsl:when test="starts-with($id, 'ex.')"></xsl:when>
       <xsl:otherwise>
 	<xsl:message terminate="yes">
@@ -227,8 +231,11 @@
   <xsl:template name="id-to-section">
     <xsl:param name="id"/>
     <xsl:choose>
-      <xsl:when test="starts-with($id, 'ex.') or starts-with($id, 'ref.')">
+      <xsl:when test="starts-with($id, 'ex.')">
 	<xsl:value-of select="$id"/>
+      </xsl:when>
+      <xsl:when test="starts-with($id, 'ref.')">
+	<xsl:value-of select="substring-after($id, '-')"/>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:value-of select="substring-after($id, '.')"/>
@@ -281,7 +288,7 @@
     <xsl:param name="section" select="$chapter"/>
 
     <xsl:choose>
-      <xsl:when test="$section = $chapter">
+      <xsl:when test="$section = $chapter or not(string($section))">
 	<xsl:value-of select="concat('/', $chapter)"/>
       </xsl:when>
       <xsl:otherwise>

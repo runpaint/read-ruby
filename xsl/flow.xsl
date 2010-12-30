@@ -67,7 +67,21 @@
     <code><xsl:apply-templates/></code>
   </xsl:template>
 
-  <xsl:template match="d:para"><p><xsl:apply-templates/></p></xsl:template>
+  <xsl:template match="d:para[@xml:id]">
+    <xsl:variable name="id">
+      <xsl:call-template name="id-to-section">
+	<xsl:with-param name="id" select="@xml:id"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <p id="{$id}"><xsl:call-template name="para"/></p>
+  </xsl:template>
+
+  <xsl:template match="d:para">
+    <p><xsl:call-template name="para"/></p>
+  </xsl:template>
+
+  <xsl:template name="para"><xsl:apply-templates/></xsl:template>
 
   <!-- Title 
        Generally, a <title> is converted to a <h1>. This works because HTML5
