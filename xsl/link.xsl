@@ -210,6 +210,7 @@
       <xsl:when test="starts-with($id, 'bib.')">bibliography</xsl:when>
       <xsl:when test="starts-with($id, 'ref.array')">ref/array</xsl:when>
       <xsl:when test="starts-with($id, 'ref.basicobject')">ref/basicobject</xsl:when>
+      <xsl:when test="starts-with($id, 'ref.bignum')">ref/bignum</xsl:when>
       <xsl:when test="starts-with($id, 'ref.io')">ref/io</xsl:when>
       <xsl:when test="starts-with($id, 'ex.')"></xsl:when>
       <xsl:otherwise>
