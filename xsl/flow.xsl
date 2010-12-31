@@ -19,13 +19,30 @@
   </xsl:template>
 
   <xsl:template match="d:methodsynopsis">
+    <!-- FIXME: <code> should be <var> but that's also italic -->
     <code><b><xsl:value-of select="d:methodname"/></b><xsl:text>(</xsl:text>
+
     <xsl:for-each select="d:methodparam/d:parameter">
-      <xsl:if test="(position() &gt; 1)">,&#160;</xsl:if>
-      <xsl:if test="starts-with(., '{')">
-	<xsl:text>) </xsl:text>
-      </xsl:if>
-      <code> <!-- Should be <var> but that's also italic -->
+      <xsl:choose>
+       <!-- If this is a block paramater, we want to display it after
+       the parenthesised argument list, so we insert the closing
+       parenthesis before rendering the block. -->
+       <xsl:when test="starts-with(., '{')">
+         <xsl:text>) </xsl:text>
+       </xsl:when>
+       <!-- The parameters inside the parentheses should be displayed
+       as a comma-separated list. Before we render a parameter, we
+       check that there was a preceding parameter, then render the
+       comma that follows the last one. However, if this is a block
+       parameter, the last parameter was effectively the final one in
+       this list, so it doesn't need a comma to follow
+       it.-->
+       <xsl:when test="position() &gt; 1">
+         <xsl:text>,&#160;</xsl:text>
+       </xsl:when>
+      </xsl:choose>
+       <!-- Optional paramaters are italicised; require parameters are bolded. -->
+
 	<xsl:choose>
 	  <xsl:when test="../@choice = 'opt'">
 	    <i><xsl:apply-templates/></i>
@@ -34,29 +51,45 @@
 	    <b><xsl:apply-templates/></b>
 	  </xsl:otherwise>
 	</xsl:choose>
-      </code>
+
+      <!-- Optional parameters are followed by ", ..." -->
       <xsl:if test="../@rep = 'repeat'">,&#160;…</xsl:if>
+  
+      <!-- After rendering the last non-block parameter close the
+	   parenthesised argument list -->
       <xsl:if test="last() = position() and not(starts-with(., '{'))">
 	<xsl:text>) </xsl:text>
       </xsl:if>
     </xsl:for-each>
 
+      <!-- If there were no parameters the block above will never
+	   execute, so the argument list wouldn't get closed; do that
+	   now. -->
     <xsl:if test="d:void">
       <xsl:text>)</xsl:text>
+
     </xsl:if>
 
+    <!-- Finally, print the return value. This synopsis may be
+	 followed by another, or the textual description. Both must be
+	 preceded by a line break. -->
     <xsl:text> #=&gt; </xsl:text><xsl:value-of select="d:type"/></code><br/>
   </xsl:template>
 
+  <!-- Don't display; we handle this element above -->
   <xsl:template match="d:methodsynopsis/d:type"/>
   
+  <!-- Don't display; we handle this element above -->
   <xsl:template match="d:methodsynopsis/d:methodparam"/>
 
   <xsl:template match="d:methodsynopsis/d:methodparam/d:parameter">
     <xsl:apply-templates/>
   </xsl:template>
   
+  <!-- Don't display; we handle this element above -->
   <xsl:template match="d:methodsynopsis/d:void"/>
+
+  <!-- Don't display; we handle this element above -->
   <xsl:template match="d:methodsynopsis/d:methodname"/>
   
   <xsl:template match="d:para/d:parameter">
