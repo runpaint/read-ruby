@@ -209,7 +209,7 @@
 
     <para>An <literal>IO</literal> stream may be configured to use binary mode or text mode. These mutually exclusive options determine what automatic modifications, if any, Ruby will make to data read from, and written to, the stream. They have no relationship to the <link linkend="io.access-mode">access mode</link>.</para>
 
-      <para><firstterm>Binary mode</firstterm> is disabled by default. It must be enabled when reading a file with an <link linkend="enc.compatibility">ASCII-incompatible</link> <link linkend="enc.external">external encoding</link>. When enabled it has the following effects:</para>
+      <para><firstterm>Binary mode</firstterm> is disabled by default. It must be enabled when reading a file with an <link linkend="enc.compatibility">ASCII-incompatible</link> <glossterm linkend="glo.external-encoding"/>. When enabled it has the following effects:</para>
  
       <itemizedlist>
         <listitem>
@@ -239,7 +239,7 @@
   <sect1 xml:id="io.string"> 
     <title>Encoding String</title>
     
-    <para><literal>IO</literal> methods that expect encoding names as arguments, often accept <firstterm>encoding string</firstterm>s, which allow one or both of the <link linkend="enc.external">external encoding</link> and <link linkend="enc.internal">internal encoding</link> to be specified at once in one of the forms below.</para>
+    <para><literal>IO</literal> methods that expect encoding names as arguments, often accept <firstterm>encoding string</firstterm>s, which allow one or both of the <glossterm linkend="glo.external-encoding"/> and <glossterm linkend="glo.internal-encoding"/> to be specified at once in one of the forms below.</para>
 
     <para>Both <replaceable>external</replaceable> and <replaceable>internal</replaceable> are names of encodings. The <emphasis>Inferred from BOM</emphasis> column indicates that the external encoding is set to that specified by a <acronym>BOM</acronym>, if present, otherwise to the named encoding.</para>
     
@@ -311,7 +311,7 @@
     <sect2 xml:id="io.mode-string">
       <title>Mode String</title> 
       
-      <para>The <firstterm>mode string</firstterm> is a concise way to specify options for opening a file. At its simplest, it consists of only the <link linkend="io.access-mode">access mode</link> as a <literal>String</literal>, e.g. a mode string of <literal>"r"</literal> opens a file in read-only mode. If the next character is <literal>b</literal>, it specifies <link linkend="io.binmode-textmode">binary mode</link>; if it is <literal>t </literal>, it specifies <link linkend="io.binmode-textmode">text mode</link>. Finally, the <link linkend="enc.external">external</link> and/or <link linkend="enc.internal">internal</link> encodings may be specified as an <link linkend="io.string">encoding string</link>.</para>
+      <para>The <firstterm>mode string</firstterm> is a concise way to specify options for opening a file. At its simplest, it consists of only the <link linkend="io.access-mode">access mode</link> as a <literal>String</literal>, e.g. a mode string of <literal>"r"</literal> opens a file in read-only mode. If the next character is <literal>b</literal>, it specifies <link linkend="io.binmode-textmode">binary mode</link>; if it is <literal>t </literal>, it specifies <link linkend="io.binmode-textmode">text mode</link>. Finally, the <glossterm linkend="glo.external-encoding">external</glossterm> and/or <glossterm linkend="glo.internal-encoding">internal</glossterm> encodings may be specified as an <link linkend="io.string">encoding string</link>.</para>
 
       <para>In the table below, <replaceable>mode</replaceable> denotes one of the access modes given in the <link linkend="io.access-mode">Access Mode</link> table.  The <emphasis>Binary?</emphasis> and <emphasis>Text?</emphasis> columns indicates whether the stream is in binary text mode, respectively. Both <replaceable>internal</replaceable> and <replaceable>external</replaceable> are names of encodings.</para>
       

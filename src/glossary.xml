@@ -463,6 +463,22 @@
     </glossdef>
   </glossentry>
 
+  <glossentry xml:id="glo.default-external-encoding">
+    <glossterm>default external encoding</glossterm>
+    
+    <glossdef>
+      <para>The default value for the <glossterm linkend="glo.external-encoding">external encoding</glossterm> of new <literal>IO</literal> streams. See <xref linkend="enc.io"/> for details.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.default-internal-encoding">
+    <glossterm>default internal encoding</glossterm>
+    
+    <glossdef>
+      <para>The default value for the <glossterm linkend="glo.internal-encoding">internal encoding</glossterm> of new <literal>IO</literal> streams. See <xref linkend="enc.io"/> for details.</para>
+    </glossdef>
+  </glossentry>
+
   <glossentry xml:id="glo.each">
     <glossterm><literal>#each</literal></glossterm>
 
@@ -498,6 +514,22 @@
 
     <glossdef>
       <para>The <literal>:empty?</literal> predicate is defined by <literal>Array</literal>, <literal>Hash</literal>, <literal>Set</literal>, <literal>SortedSet</literal>, <literal>String</literal>, and <literal>Symbol</literal>. It returns <literal>true</literal> if the receiver doesn’t have any content; <literal>false</literal> otherwise.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.external-encoding">
+    <glossterm>external encoding</glossterm>
+    
+    <glossdef>
+      <para>The encoding of the data in an <literal>IO</literal> stream. See <xref linkend="enc.io"/> for details.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry xml:id="glo.internal-encoding">
+    <glossterm>internal encoding</glossterm>
+    
+    <glossdef>
+      <para>The encoding to which data in an <literal>IO</literal> stream should be automatically transcoded to. See <xref linkend="enc.io"/> for details.</para>
     </glossdef>
   </glossentry>
 

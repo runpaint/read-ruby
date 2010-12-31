@@ -5,25 +5,23 @@
          version="5.0" 
          xml:id="enc.encoding" 
          xml:lang="en">
-         
+
   <title>Encoding</title>
   
-  <para>An encoding is a mapping between byte sequences and characters<footnote><para> In Unicode terminology, this encompasses both <acronym>CES</acronym>s and <acronym>CEF</acronym>s.</para></footnote>. Each program source file, <literal>String</literal>, <literal>Symbol</literal>, <literal>Regexp</literal>, <literal>File</literal>, and <literal>IO</literal> object is, relatively independently, associated with its own encoding.  This <link linkend="str.associate">association</link> is simply a statement, that has either been made explicitly about a specific object, or derived from a corresponding default encoding. It may even be spurious.</para>
+  <remark>TODO: Note in IO#external_encoding description that if the stream is in write-only mode, and wasn’t explicitly assigned an external encoding, this method returns nil</remark>
+
+  <para>An encoding is a mapping between byte sequences and characters<footnote><para> In Unicode terminology, this encompasses both <acronym>CES</acronym>s and <acronym>CEF</acronym>s.</para></footnote>. Each program source file, <literal>String</literal>, <literal>Symbol</literal>, <literal>Regexp</literal>, <literal>File</literal>, and <literal>IO</literal> object is, relatively independently, associated with its own encoding.</para>
   
+  <para>The process of converting data from one encoding to another is called <firstterm><link linkend="enc.transcoding">Transcoding</link></firstterm>. It is quite distinct from re-associating an object with another encoding: transcoding translates the underlying bytes to their equivalent representation in the target encoding, while association changes the label attached to an object.</para>
+
   <para>The encoding associated with a source file-the <link linkend="enc.source">source encoding</link>-is by default US-ASCII. If a source file contains characters outside of this encoding, it must specify which one, otherwise Ruby refuses to load it.</para>
 
-  <para>The encoding associated with <link linkend="str.encoding">String</link>s, <link linkend="str.symbol-encoding">Symbol</link>s, and <link linkend="reg.encoding">Regexp</link>s, is by default the source encoding of the file in which they are contained. However, if their literals contain certain character escapes, this is changed implicitly. As with source files, this association can be overridden on a per-object basis.</para>
+  <para>The encoding associated with <link linkend="str.encoding">String</link>s, <link linkend="str.symbol-encoding">Symbol</link>s, and <link linkend="reg.encoding">Regexp</link>s, is by default the source encoding of the file in which they are contained. However, if their literals contain certain character escapes, their encoding changed implicitly. As with source files, this association can be overridden on a per-object basis.</para>
   
-  <para>An <literal>IO</literal> or <literal>File</literal> object represents an external data stream, whose encoding is termed its <link linkend="enc.external">external encoding</link>. Data read from a stream is associated with this encoding. Unless set explicitly, it defaults to an encoding inferred from the user’s environment. Both types of object <emphasis>may</emphasis> also be associated with an <link linkend="enc.internal">internal encoding</link>: that which the programmer desires it to have. If set explicitly, data read from the stream is transcoded to the internal encoding; while data written to it is transcoded to the external encoding. The internal encoding is never inferred or derived, so by default no transcoding occurs.</para>
-
-  <para><link linkend="enc.transcoding">Transcoding</link> is quite distinct from mere <emphasis>association</emphasis>. Whereas the latter changed an attribute of an object, the former converts its contents: translating its underlying bytes to their equivalent representation in another encoding.  This chapter discusses both topics, but it is essential to be cognizant of their difference.</para>
-
   <sect1 xml:id="enc.class">
     <title><literal>Encoding</literal> Class</title>
 
-    <para>Ruby represents the encodings that she understands as instances of the <literal>Encoding</literal> class, defining each as a constant under the <literal>Encoding</literal> namespace. The constant is named after the upper-case encoding name, with low lines replacing hyphen-minus characters. For example, <literal>Encoding::UTF_8</literal> or <literal>Encoding::Windows_1250</literal>. Given an encoding name as a <literal>String</literal>, the corresponding <literal>Encoding</literal> object may be retrieved with <literal>Encoding.find(<replaceable>name</replaceable>)</literal>.</para>
-    
-    <para>A list of built-in encodings may be retrieved as an <literal>Array</literal> of <literal>Encoding</literal> objects with the <literal>Encoding.list</literal> method.  <literal>Encoding.aliases</literal> returns a <literal>Hash</literal> whose keys are encoding aliases, and values are the corresponding built-in encoding. Methods that expect encodings as arguments accept instances of <literal>Encoding</literal>, or <literal>String</literal>s naming a built-in encoding or its alias. The <literal>Encoding</literal> object associated with a <literal>String</literal>, <literal>Symbol</literal>, or <literal>Regexp</literal> is returned by their <literal>#encoding</literal> method.</para>
+    <para>Ruby represents the encodings that she understands as instances of the <literal>Encoding</literal> class, defining each as a constant under the <literal>Encoding</literal> namespace. The constant is named after the upper-case encoding name, with low lines replacing hyphen-minus characters. Methods that accept encodings as arguments recognise both <literal>Encoding</literal> objects, e.g. <literal>Encoding::UTF_8</literal>, and their names, e.g. <literal>"utf-8"</literal>. The <literal>Encoding</literal> object associated with a <literal>String</literal>, <literal>Symbol</literal>, or <literal>Regexp</literal> is returned by their <literal>#encoding</literal> method.</para>
   </sect1>
 
   <sect1 xml:id="enc.source">
@@ -44,108 +42,18 @@
     </example>
   </sect1>
 
-  <sect1 xml:id="enc.external">
-    <title>External Encoding</title>
-
-    <para>The encoding of the data in an <literal>IO</literal> stream is known by Ruby as the object’s <firstterm>external encoding</firstterm>. Every <literal>IO</literal> object has an external encoding, so data read from it will be associated with the same. Ruby infers the default external encoding with the following steps <biblioref linkend="bib.harada09"/>, stopping as soon as she finds one which is usable:</para>
+  <sect1 xml:id="enc.io">
+    <title>IO Streams</title>
     
-    <variablelist>
-      <title>Procedure for Deriving the Default External Encoding</title>
+    <para>An <literal>IO</literal> object is associated with an <firstterm>external encoding</firstterm> and, optionally, an <firstterm>internal encoding</firstterm>. The former is the actual encoding of data in the stream; the latter is the desired encoding. Both encodings have default values, but may be set for a specific stream with <function>IO#set_encoding(<replaceable>external</replaceable>, <replaceable>internal</replaceable>=nil)</function>.</para>
 
-      <varlistentry>
-        <term><literal>Encoding.default_external=</literal></term>
-        <listitem>
-          <para>If an <literal>Encoding</literal> object, or name, been assigned to <literal>Encoding.default_external=</literal>, that is the default external encoding.</para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>Interpreter’s <literal>-E</literal> switch</term>
-        <listitem>
-          <remark>Clarify thet _encoding_ must be valid?</remark>
-          <para>If the Ruby interpreter was invoked with an <option>-E<replaceable>encoding</replaceable></option> option, <replaceable>encoding</replaceable> is the default external encoding.</para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>Locale encoding</term>
-        <listitem>
-          <para>Use the encoding derived from the user’s environment, as explained in <xref linkend="enc.locale"/>.</para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <sect2 xml:id="enc.locale">
-      <title>Locale Encoding</title>
-      
-      <para>The <firstterm>locale encoding</firstterm> is an encoding inferred from the user’s environment that Ruby supports. It is determined in two distinct stages, the first of which is to interrogate the user’s environment for his preferred encoding:</para>
-
-      <orderedlist>
-        <listitem>
-          <para>Inspect relevant environment variables, e.g. <envar>LANG</envar>, <envar>LC_CTYPE</envar>, or <envar>LC_ALL</envar></para>
-        </listitem>
-        <listitem>
-          <para>Or, if the platform is Windows or Cygwin, by invoking C’s <function>nl_langinfo_codeset()</function> or Windows’ <link xlink:href="http://msdn.microsoft.com/en-us/library/ms683162(VS.85).aspx" ><function>GetConsoleCP()</function></link> function.</para>
-        </listitem>
-      </orderedlist>
-      
-      <para>The result of this search, or <literal>nil</literal> if it failed, is the <firstterm>locale charmap</firstterm> encoding, and is assigned to <literal>Encoding.locale_charmap</literal>. Ruby must now correlate this encoding with the encodings she supports to determine the <firstterm>locale encoding</firstterm>:</para>
-      
-      <orderedlist>
-        <listitem>
-          <para>If the locale charmap encoding is known to Ruby-that is, <literal>Encoding.find(Encoding.locale_charmap)</literal> returns an <literal>Encoding</literal> object-that becomes the locale encoding.</para>
-        </listitem>
-        <listitem>
-          <para>If the locale charmap encoding couldn’t be determined, the locale encoding is US-ASCII.</para>
-        </listitem>
-        <listitem>
-          <para>Otherwise, the locale encoding is ASCII-8BIT.</para>
-        </listitem>
-      </orderedlist>
-    </sect2>
-
-    <sect2 xml:id="enc.external-stream">
-      <title><literal>IO</literal> Streams</title>
-
-      <para>By default, as the name suggests, all <literal>IO</literal> objects have the default external encoding as their external encoding. However, this may also be set on a per-stream basis by specifying an external encoding when <link linkend="io.open">opening</link> an I/O stream, or with <literal>IO#set_encoding(<replaceable>encoding</replaceable>)</literal>, where <replaceable>encoding</replaceable> is an encoding name or <literal>Encoding</literal> object. The external encoding of a stream may be queried with <literal>IO#external_encoding</literal>, which returns the corresponding <literal>Encoding</literal> object. Note, however, that if the stream is in write-only mode, and wasn’t explicitly assigned an external encoding, this method returns <literal>nil</literal>.</para>
-    </sect2>
-  </sect1>
-
-  <sect1 xml:id="enc.internal">
-    <title>Internal Encoding</title>
-  
-    <para>Optionally, an <literal>IO</literal> object may also be associated with an <firstterm>internal encoding</firstterm>. This is the encoding that the programmer wishes to use with the data in a stream. The default value of an <literal>IO</literal> object’s internal encoding is equal to the <firstterm>default internal encoding</firstterm> (<literal>Encoding.default_internal</literal>), which is determined as follows:</para>
-
-    <variablelist>
-      <title>Procedure for Determining the Default Internal Encoding</title>
-
-      <varlistentry>
-        <term><literal>Encoding.default_internal=</literal></term>
-        <listitem>
-          <para>If an <literal>Encoding</literal> object, or name, been assigned to <literal>Encoding.default_internal=</literal>, that is the default internal encoding.</para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>Interpreter’s <literal>-E</literal> switch</term>
-        <listitem>
-          <para>If the Ruby interpreter was invoked with an <option>-E<replaceable>external</replaceable>:<replaceable>internal</replaceable></option> or <option>-E:<replaceable>internal</replaceable></option> option, where both <replaceable>external</replaceable> and <replaceable>internal</replaceable> are valid encoding names, the default internal encoding is <replaceable>internal</replaceable>.</para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>Interpreter’s <option>-U</option> switch</term>
-        <listitem>
-          <para>If the interpreter was invoked with the <option>-U</option> switch, the default internal encoding is UTF-8</para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <para>If all the above steps failed, the default internal encoding is <literal>nil</literal>. Therefore, unlike the default external encoding which is inferred automatically from one’s locale, the default internal encoding is <literal>nil</literal> unless set explicitly.</para>
+    <para>The default external encoding is returned by <function>Encoding.default_external</function>, and may be set by assigning an encoding to <function>Encoding.default_external=</function>, or invoking the interpreter with a switch of the form <option>-E<replaceable>encoding</replaceable></option>. Otherwise, the default external encoding is set to the <emphasis>locale encoding</emphasis>.</para>
     
-    <para>The internal encoding of an <literal>IO</literal> may be changed from this default on a per-stream basis by specifying an internal encoding when <link linkend="io.open">opening</link> the stream, or with <literal>IO#set_encoding(<replaceable>external</replaceable>, <replaceable>internal</replaceable>)</literal>, where both <replaceable>external</replaceable> and <replaceable>internal</replaceable> are encoding names or <literal>Encoding</literal> objects. Alternatively, <literal>IO#set_encoding</literal> may be given a <literal>String</literal> of the form <literal><replaceable>external</replaceable>:<replaceable>internal</replaceable></literal>.</para>
+    <para>The <firstterm>locale encoding</firstterm> is one which best reflects the user’s environment. Ruby sets it automatically, by first deriving a <firstterm>locale charmap encoding</firstterm> from relevant environment variables—e.g. <envar>LANG</envar>, <envar>LC_CTYPE</envar>, and <envar>LC_ALL</envar>—or, on Windows, by invoking the system’s <function>nl_langinfo_codeset()</function> or <link xlink:href="http://msdn.microsoft.com/en-us/library/ms683162(VS.85).aspx" ><function>GetConsoleCP()</function></link> functions. If a locale charmap encoding is found and supported by Ruby, it becomes the <firstterm>locale encoding</firstterm>. If the locale charmap isn’t supported by Ruby, or wasn’t found at all, the locale encoding is set to <emphasis>ASCII-8BIT</emphasis> or <emphasis>US-ASCII</emphasis>, respectively.</para>
 
-    <para>An internal encoding of <literal>nil</literal> means that the programmer does not express a preference for how the data he reads and writes via I/O is encoded. Accordingly, Ruby associates the data with the stream’s external encoding, and gets out of the way. This, too, is the situation if the stream’s external encoding is equal to its internal encoding: the data is already encoded how the programmer requires.</para>
-    
-    <para>The internal encoding is relevant when it is both set-that is, has a non-<literal>nil</literal> value-and differs from the <link linkend="enc.external">external encoding</link>. To honour the internal encoding, Ruby <link linkend="enc.transcoding">transcodes</link> data read from a stream from the external to the internal encoding, and transcodes data written to the stream from the internal to the external encoding.</para>
-    
-    <para>The transcoding works exactly the same as <link linkend="enc.transcoding">String#encode</link>, so the <link linkend="enc.options-hash">#encode options Hash</link> may be merged with the <link linkend="io.options-hash">IO</link> options Hash, wherever the latter is accepted. For example, it may be supplied as the final argument of <link linkend="io.init">IO.new</link> or <literal>IO#set_encoding</literal>.</para>
+  <para>If an <literal>IO</literal> stream needs to be processed in an encoding different to its external encoding, it must be transcoded. The target of the transcoding—the desired encoding—is called the <firstterm>internal encoding</firstterm> of an <literal>IO</literal> object. The default internal encoding is <literal>nil</literal> so no transcoding occurs by default. It may be specified by assigning an encoding to <function>Encoding.default_internal=</function> or invoking the interpreter with a switch of the form <option>-E:<replaceable>encoding</replaceable></option>. It may be set to <emphasis>UTF-8</emphasis> by invoking the interpreter with the <option>-U</option> switch. The salient point is that, unlike the external encoding, the internal encoding is never derived automatically: transcoding happens only when it is explicitly requested.</para>
+
+  <para>If the internal encoding is <literal>nil</literal>, or the internal and external encodings are equal, there is no transcoding needed: the stream is already encoded as desired. Otherwise, Ruby <link linkend="enc.transcoding">transcodes</link> data read from a stream from the external to the internal encoding, and transcodes data written to the stream from the internal to the external encoding. The transcoding works exactly the same as <link linkend="enc.transcoding">String#encode</link>, so the <link linkend="enc.options-hash">#encode options Hash</link> may be merged with the <link linkend="io.options-hash">IO</link> options Hash, wherever the latter is accepted. For example, it can be supplied as the final argument of <link linkend="io.init">IO.new</link> or <literal>IO#set_encoding</literal>.</para>
   </sect1>
 
   <sect1 xml:id="enc.ascii-8bit">
@@ -167,7 +75,7 @@
   
     <para><firstterm>Transcoding</firstterm> a <literal>String</literal> converts its bytes to the equivalent byte sequences in a given encoding, with which it associates the result. It is typically performed with <literal>String#encode</literal>, which returns its receiver transcoded from a <replaceable>source</replaceable> encoding to a <replaceable>target</replaceable> encoding.  <literal>String#encode!</literal> operates in the same manner, but transcodes the receiver in-place.</para>
 
-    <para>By default, <replaceable>source</replaceable> is the receiver’s current encoding, and <replaceable>target</replaceable> is the <link linkend="enc.internal">default internal</link> encoding.  When called with one encoding argument, this becomes the <replaceable>target</replaceable> encoding. When called with two encoding arguments, the first is the <replaceable>target</replaceable>, the second is the <replaceable>source</replaceable>. This last form is mainly useful when the <literal>String</literal> is associated with <link linkend="enc.ascii-8bit">ASCII-8BIT</link>: it associates the <literal>String</literal> with <replaceable>source</replaceable>, then transcodes from <replaceable>source</replaceable> to <replaceable>target</replaceable>.</para>
+    <para>By default, <replaceable>source</replaceable> is the receiver’s current encoding, and <replaceable>target</replaceable> is the <glossterm linkend="glo.default-internal-encoding"/>.  When called with one encoding argument, this becomes the <replaceable>target</replaceable> encoding. When called with two encoding arguments, the first is the <replaceable>target</replaceable>, the second is the <replaceable>source</replaceable>. This last form is mainly useful when the <literal>String</literal> is associated with <link linkend="enc.ascii-8bit">ASCII-8BIT</link>: it associates the <literal>String</literal> with <replaceable>source</replaceable>, then transcodes from <replaceable>source</replaceable> to <replaceable>target</replaceable>.</para>
   
     <para>If a character in the <literal>String</literal> does not exist in the <replaceable>target</replaceable> encoding, or the <literal>String</literal> contains bytes invalid in its current encoding, an exception is raised.  This behaviour can be changed by supplying an <replaceable>options</replaceable> <literal>Hash</literal> as the final argument, whose form is described in the table that follows.</para>
 
