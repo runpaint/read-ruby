@@ -13,7 +13,7 @@
   <sect1 xml:id="has.literals">
     <title>Literals</title>
     
-    <para>A <literal>Hash</literal> literal consists of a comma-separated list of key-value pairs enclosed in curly braces (<literal>{</literal>, <literal>}</literal>). It creates a new <literal>Hash</literal> object with the specified contents. The key is separated from its value with <literal>=&gt;</literal>. If the key is a <literal>Symbol</literal> literal, the colon with which its prefixed may be made its suffix, and <literal>=&gt;</literal> can be omitted. (This syntactical shortcut is a reason for preferring <literal>Symbol</literal> keys).</para>
+    <para>A <literal>Hash</literal> literal consists of a comma-separated list of key-value pairs enclosed in curly braces (<literal>{</literal>, <literal>}</literal>). It creates a new <literal>Hash</literal> object with the specified contents. The key is separated from its value with <literal>=&gt;</literal>. If the key is a <literal>Symbol</literal> literal, the colon with which it’s prefixed may be made its suffix, and <literal>=&gt;</literal> can be omitted. (This syntactical shortcut is a reason for preferring <literal>Symbol</literal> keys).</para>
     
     <example xml:id="ex.hash-literals">
       <title>Creating a <literal>Hash</literal> with a literal</title>
