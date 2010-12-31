@@ -205,7 +205,7 @@
       <xsl:when test="starts-with($id, 'tim.')">times</xsl:when>
       <xsl:when test="starts-with($id, 'con.')">concurrency</xsl:when>
       <xsl:when test="starts-with($id, 'pun.')">punctuation</xsl:when>
-      <xsl:when test="starts-with($id, 'glo.')">globals</xsl:when>
+      <xsl:when test="starts-with($id, 'glb.')">globals</xsl:when>
       <xsl:when test="starts-with($id, 'glo.')">glossary</xsl:when>
       <xsl:when test="starts-with($id, 'bib.')">bibliography</xsl:when>
       <xsl:when test="starts-with($id, 'ref.')">

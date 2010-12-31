@@ -401,7 +401,7 @@
 
     <para>A global variable is named with a dollar sign (<literal>U＋0024</literal>) sigil: <literal>$<replaceable>identifier</replaceable></literal>.  Conventionally, the name consists of lowercase words separated by low lines.</para>
 
-      <para>An uninitialised global variable has the value <literal>nil</literal>, although attempting to use such a variable results in a warning. The predefined global variables summarised in <xref linkend="glo.globals"/> are initialised automatically.</para>
+      <para>An uninitialised global variable has the value <literal>nil</literal>, although attempting to use such a variable results in a warning. The predefined global variables summarised in <xref linkend="glb.globals"/> are initialised automatically.</para>
       
     <para>A global variable should not be defined with the same name as a predefined global variable, and indeed cannot if that variable is read‐only.</para>
     
