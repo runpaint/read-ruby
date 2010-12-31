@@ -167,7 +167,7 @@
 	  </xsl:message>
 	</xsl:if>
 	
-	<a class="glossterm" href="{$href}"><xsl:apply-templates select="$anchor/d:glossterm/*"/></a>	
+	<a class="glossterm" href="{$href}"><xsl:value-of select="$anchor/d:glossterm"/></a>	
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
