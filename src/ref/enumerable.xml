@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.enumerable" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Enumerable</title>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Enumerable#all?</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element of the receiver to the block, returning <literal>true</literal> if the block is always <literal>true</literal>; <literal>false</literal>, otherwise. If the block is omitted, returns <literal>true</literal> if every element is neither <literal>false</literal> nor <literal>nil</literal>; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Enumerable#any?</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element of the receiver to the block, returning <literal>true</literal> as soon as the block is <literal>true</literal>; <literal>false</literal>, otherwise. If the block is omitted, returns <literal>true</literal> if at least one element is neither <literal>false</literal> nor <literal>nil</literal>; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>Enumerator</type><methodname>Enumerable#chunk</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Enumerator</type><methodname>Enumerable#chunk</methodname><methodparam><parameter>initial_state</parameter></methodparam><methodparam><parameter>{|object, state| }</parameter></methodparam></methodsynopsis> Enumerates consecutive chunks of elements for which the block returns the same value. A chunk comprises the return value of the block, and an <literal>Array</literal> of corresponding elements. If the block returns <literal>nil</literal> or <literal>:_separator</literal> the corresponding element is dropped; if it returns <literal>:_alone</literal>, the element is the sole member of its chunk. If <parameter>initial_state</parameter> is given, it is duplicated for each iteration and passed to the block as a second argument: it can be used to maintain state.</para>
+
+  <para><methodsynopsis><type>Enumerator</type><methodname>Enumerable#collect</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element of the receiver to the block, returning an <literal>Array</literal> of its results. Returns an <literal>Enumerator</literal> if the block is omitted. Aliased by <function>Enumerable#map</function>.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#collect_concat</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Behaves like <function>Enumerable#collect</function>, but flattens the result <literal>Array</literal> before returning. Aliased by <function>Enumerable#flat_map</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Enumerable#count</methodname><methodparam choice="opt"><parameter>object</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Integer</type><methodname>Enumerable#count</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns how many elements of the receiver equal <parameter>object</parameter> or for which the block is <literal>true</literal>. If both <parameter>object</parameter> and block are omitted, returns the total number of elements in the receiver.</para>
+
+  <para><methodsynopsis><type>Enumerator or nil</type><methodname>Enumerable#cycle</methodname><methodparam choice="opt"><parameter>times</parameter></methodparam><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Invokes the block with each element of the receiver in turn, then repeats <parameter>times</parameter> times or forever if <parameter>times</parameter> is omitted. If the receiver is empty, returns <literal>nil</literal>. If the block is omitted, returns an <literal>Enumerator</literal>.</para>
+
+  <para><methodsynopsis><type>Object, Enumerator, or nil</type><methodname>Enumerable#detect</methodname><methodparam choice="opt"><parameter>default=->{ nil }</parameter></methodparam><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element to the block, returning the first for which the block is <literal>true</literal>. If the block is never <literal>true</literal>, the result of calling the <parameter>default</parameter> <literal>Proc</literal> is returned. Aliased by <function>Enumerable#find</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerable#drop</methodname><methodparam><parameter>n</parameter></methodparam></methodsynopsis> Returns all but the first <parameter>n</parameter> elements.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#drop_while</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the first element for which the block is <literal>false</literal> along with all that follow, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Enumerable or Enumerator</type><methodname>Enumerable#each_entry</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Behaves like <function>#each</function> except if <function>#each</function> yielded multiple values at once, this method yields them as an <literal>Array</literal> rather than separate parameters. Returns an <literal>Enumerator</literal> if the block is omitted.</para> 
+
+  <para><methodsynopsis><type>Enumerator or nil</type><methodname>Enumerable#each_cons</methodname><methodparam><parameter>size</parameter></methodparam><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Yields consecutive sub-<literal>Array</literal>s of size <parameter>size</parameter>: the first contains elements <literal>0</literal>–(<parameter>size</parameter>−1), the second, elements <literal>1</literal>–<parameter>size</parameter>, and so forth. An <literal>Enumerator</literal> is returned if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Enumerator or nil</type><methodname>Enumerable#each_slice</methodname><methodparam><parameter>size</parameter></methodparam><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Yields each group of <parameter>size</parameter> elements as <literal>Array</literal>s: the first contains the first <parameter>size</parameter> elements, the second, the next <parameter>size</parameter> elements, and so forth. An <literal>Enumerator</literal> is returned if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Enumerable or Enumerator</type><methodname>Enumerable#each_with_index</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam><methodparam choice="opt"><parameter>{|object, index| }</parameter></methodparam></methodsynopsis> Yields each element along with its index, or returns an <literal>Enumerator</literal> if the block is omitted. Any <parameter>argument</parameter>s are passed to <function>#each</function>.</para>
+
+  <para><methodsynopsis><type>Object or Enumerator</type><methodname>Enumerable#each_with_object</methodname><methodparam><parameter>object</parameter></methodparam><methodparam choice="opt"><parameter>{|element, object| }</parameter></methodparam></methodsynopsis> Yields each element along with <parameter>object</parameter>, then returns <parameter>object</parameter>. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerable#entries</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Returns the elements as an <literal>Array</literal>. Any <parameter>argument</parameter>s given are passed to <function>#each</function>. Aliased by <function>Enumerable#to_a</function>.</para>
+
+  <para><methodsynopsis><type>Object, Enumerator, or nil</type><methodname>Enumerable#find</methodname><methodparam choice="opt"><parameter>default=->{ nil }</parameter></methodparam><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Aliases <function>Enumerable#detect</function>.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#find_all</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the elements for which the block is <literal>true</literal>, or returns an <literal>Enumerator</literal> if the block is omitted. Aliased by <function>Enumerable#select</function>.</para>
+
+  <para><methodsynopsis><type>Integer, Enumerator, or nil</type><methodname>Enumerable#find_index</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the index of the first element for which the block is <literal>true</literal>, or <literal>nil</literal> if it never is. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Enumerable#first</methodname><void/></methodsynopsis><methodsynopsis><type>Array</type><methodname>Enumerable#first</methodname><methodparam><parameter>n</parameter></methodparam></methodsynopsis> Returns the first element, or if an argument is given, the first <parameter>n</parameter> elements.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#flat_map</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Aliases <function>Enumerable#collect_concat</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerable#grep</methodname><methodparam><parameter>pattern</parameter></methodparam><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the elements which are equal with <function>#===</function> to <parameter>pattern</parameter>. If the block is given, each element is mapped through it before being appended to the result <literal>Array</literal>.</para>
+
+  <para><methodsynopsis><type>Hash or Enumerator</type><methodname>Enumerable#group_by</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns a <literal>Hash</literal> mapping values returned by the block to <literal>Array</literal>s of elements for which the block returned that value, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Enumerable#include?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> as soon as an element is equal—in terms of <function>#==</function>—to <parameter>object</parameter>; <literal>false</literal> if there is no such element. Aliased by <function>Enumerable#member?</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Enumerable#inject</methodname><methodparam choice="opt"><parameter>initial</parameter></methodparam><methodparam choice="opt"><parameter>{|accumulator, element| }</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>Enumerable#inject</methodname><methodparam><parameter>initial</parameter></methodparam><methodparam><parameter>selector</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>Enumerable#inject</methodname><methodparam><parameter>selector</parameter></methodparam></methodsynopsis> Iterates over the receiver, accumulating a return value. The first form yields both an accumulator object and an element. On the first iteration the accumulator is initialised to <parameter>initial</parameter>, if given; or the first element, if not—in this case, the first element isn’t yielded. Subsequently, the accumulator is assigned the value last returned by the block. The other forms are like the first but with an implicit block of <literal>{|accumulator, element| accumulator.send(selector, element)}</literal>. The return value is that of the block on the final iteration. Aliased by <function>Enumerable#reduce</function>.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#map</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Aliases <function>Enumerable#collect</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Enumerable#max</methodname><methodparam choice="opt"><parameter>{|a, b| }</parameter></methodparam></methodsynopsis> Returns the element with the maximum value by passing each pair to the block, and expecting a return value congruous with that of <function>&lt;=&gt;</function>. If the block is omitted, compares elements with <function>#&lt;=&gt;</function>, instead.</para>
+
+  <para><methodsynopsis><type>Object or Enumerator</type><methodname>Enumerable#max_by</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the element for which the block returned the largest value, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Enumerable#member?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Aliases <function>Enumerable#include?</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Enumerable#min</methodname><methodparam choice="opt"><parameter>{|a, b| }</parameter></methodparam></methodsynopsis> Returns the element with the minimum value by passing each pair to the block, and expecting a return value accordant with that of <function>#&lt;=&gt;</function>. If the block is omitted, compares elements with <function>#&lt;=&gt;</function>, instead.</para>
+
+  <para><methodsynopsis><type>Object or Enumerator</type><methodname>Enumerable#min_by</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the element for which the block returned the smallest value, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerable#minmax</methodname><methodparam choice="opt"><parameter>{|a, b| }</parameter></methodparam></methodsynopsis> Passes its arguments to both <function>Enumerable#min</function> and <function>Enumerable#max</function>, and returns their values.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#minmax_by</methodname><methodparam choice="opt"><parameter>{|a, b| }</parameter></methodparam></methodsynopsis> Passes its arguments to both <function>Enumerable#min_by</function> and <function>Enumerable#max_by</function>, and returns their values. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Enumerable#none?</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element of the receiver to the block, returning <literal>true</literal> if the block is never <literal>true</literal>; <literal>false</literal>, otherwise. If the block is omitted, returns <literal>true</literal> if every element is either <literal>false</literal> or <literal>nil</literal>; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Enumerable#one?</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Passes each element of the receiver to the block, returning <literal>true</literal> if the block is <literal>true</literal> exactly once; <literal>false</literal>, otherwise. If the block is omitted, returns <literal>true</literal> if exactly one element is neither <literal>false</literal> nor <literal>nil</literal>; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#parition</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> whose first element is an <literal>Array</literal> of elements for which the block was <literal>true</literal>; and last element is an <literal>Array</literal> of the remainder.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Enumerable#reduce</methodname><methodparam choice="opt"><parameter>initial</parameter></methodparam><methodparam choice="opt"><parameter>{|accumulator, element| }</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>Enumerable#reduce</methodname><methodparam><parameter>initial</parameter></methodparam><methodparam><parameter>selector</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>Enumerable#reduce</methodname><methodparam><parameter>selector</parameter></methodparam></methodsynopsis> Aliases <function>Enumerable#inject</function>.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#reject</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the elements for which the block is <literal>false</literal>, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#reverse_each</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Yields each element in reverse order, or returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#select</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Aliases <function>Enumerable#find_all</function>.</para>
+
+  <para><methodsynopsis><type>Enumerator</type><methodname>Enumerable#slice_before</methodname><methodparam><parameter>pattern</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Enumerator</type><methodname>Enumerable#slice_before</methodname><methodparam><parameter>{|object| }</parameter></methodparam><methodparam><parameter>{|object, state| }</parameter></methodparam></methodsynopsis>
+    <methodsynopsis><type>Enumerator</type><methodname>Enumerable#slice_before</methodname><methodparam><parameter>initial_state</parameter></methodparam><methodparam><parameter>{|object, state| }</parameter></methodparam></methodsynopsis> Groups elements such that an element is a member of its predecessor’s group unless the given condition is <literal>true</literal>, in which case it’s a member of a new group. The first element is a member of the default group. In the first form, the condition is <parameter>pattern</parameter> having case-equality—i.e. <function>#===</function>—with the element; in the other forms, it is specified by the value of the block when passed the element. If <parameter>initial_state</parameter> is given, it can be used for maintaining state: it’s duplicated for each iteration and passed to the block as the second argument.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerable#sort</methodname><methodparam choice="opt"><parameter>{|a, b| }</parameter></methodparam></methodsynopsis> Returns the elements sorted either by passing each pair to the block and expecting a return value accordant with that of <function>#&lt;=&gt;</function>, or comparing elements with their <function>#&lt;=&gt;</function> methods.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#sort_by</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Maps each element through the block then sorts them on the value returned, or returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerable#take</methodname><methodparam><parameter>n</parameter></methodparam></methodsynopsis> Returns the first <parameter>n</parameter> elements.</para>
+
+  <para><methodsynopsis><type>Array or Enumerator</type><methodname>Enumerable#take_while</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Collects elements until the block is <literal>false</literal>, then returns them. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerable#to_a</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Aliases <function>Enumerable#entries</function>.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Enumerable#zip</methodname><methodparam rep="repeat"><parameter>object</parameter></methodparam><methodparam choice="opt"><parameter>{|array| }</parameter></methodparam></methodsynopsis> Creates an <literal>Array</literal> for each element, containing the element along with the corresponding element from each of its <literal>Enumerable</literal> arguments. If fewer arguments are given than there are elements in the receiver, the result <literal>Array</literal>s are padded with <literal>nil</literal>s. If a block is given, each result <literal>Array</literal> is yielded to it; otherwise they are returned as an <literal>Array</literal> of <literal>Array</literal>s.</para>
+</appendix>

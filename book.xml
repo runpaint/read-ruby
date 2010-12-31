@@ -48,5 +48,6 @@
   <xi:include href="src/ref/complex.xml"/>
   <xi:include href="src/ref/dir.xml"/>
   <xi:include href="src/ref/encoding.xml"/>
+  <xi:include href="src/ref/enumerable.xml"/>
   <xi:include href="src/ref/io.xml"/>
 </book>
