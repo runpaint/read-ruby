@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.encoding" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Encoding</title>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Encoding.aliases</methodname><void/></methodsynopsis> Maps encoding aliases to their canonical names.</para>
+
+  <para><methodsynopsis><type>Encoding or nil</type><methodname>Encoding.compatible?</methodname><methodparam><parameter>a</parameter></methodparam><methodparam><parameter>b</parameter></methodparam></methodsynopsis> Compares the encoding of its two arguments, which are either Encoding objects or objects associated with encodings. If they are compatible, returns the encoding which would result from their combination; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Encoding</type><methodname>Encoding.default_external</methodname><void/></methodsynopsis> Returns the default external encoding.</para>
+
+  <para><methodsynopsis><type>Encoding</type><methodname>Encoding.default_external=</methodname><methodparam><parameter>encoding</parameter></methodparam></methodsynopsis> Sets the default external encoding to <parameter>encoding</parameter>, which may be an <literal>Encoding</literal> object or an encoding name.</para>
+
+  <para><methodsynopsis><type>Encoding or nil</type><methodname>Encoding.default_internal</methodname><void/></methodsynopsis> Returns the default internal encoding, or <literal>nil</literal> if there isn’t one.</para>
+
+  <para><methodsynopsis><type>Encoding</type><methodname>Encoding.default_internal=</methodname><methodparam><parameter>encoding</parameter></methodparam></methodsynopsis> Sets the default internal encoding to <parameter>encoding</parameter>, which may be an <literal>Encoding</literal> object, an encoding name, or <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Encoding</type><methodname>Encoding.find</methodname><methodparam><parameter>encoding</parameter></methodparam></methodsynopsis> Returns the <literal>Encoding</literal> object representing the named encoding, raising an <exceptionname>ArgumentError</exceptionname> for invalid names. <parameter>encoding</parameter> may be a <literal>String</literal> or <literal>Symbol</literal> and may name an encoding alias. An <parameter>encoding</parameter> of <emphasis>external</emphasis> returns the default external encoding; <emphasis>filesystem</emphasis>, the filesystem encoding; <emphasis>internal</emphasis>, the default internal encoding; and <emphasis>locale</emphasis>, the locale encoding.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Encoding.list</methodname><void/></methodsynopsis> Returns an <literal>Array</literal> of <literal>Encoding</literal> objects currently loaded. Aliases are excluded.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Encoding.locale_charmap</methodname><void/></methodsynopsis> Returns the name of the locale charmap encoding, if it could be derived from the environment, or <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Encoding.name_list</methodname><void/></methodsynopsis> Returns the names of the currently loaded encodings as an <literal>Array</literal> of <literal>String</literal>s. Aliases are included.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Encoding#ascii_compatible?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is ASCII-compatible; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Encoding#dummy?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is a dummy encoding; <literal>false</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Encoding#name</methodname><void/></methodsynopsis> Returns the name of this encoding.</para>
+ 
+  <para><methodsynopsis><type>Array</type><methodname>Encoding#names</methodname><void/></methodsynopsis> Returns the name of this encoding and those of its aliases as an <literal>Array</literal> of <literal>String</literal>s.</para>
+ 
+ <para><methodsynopsis><type>Encoding</type><methodname>Encoding#replicate</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns a replica of the receiver named <parameter>name</parameter>; raises an <exceptionname>ArgumentError</exceptionname> if the given name is already in use.</para>
+</appendix>
