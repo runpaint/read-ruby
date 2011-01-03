@@ -14,6 +14,8 @@
 
   <para>The first element of an <literal>Array</literal> has the index <literal>0</literal>, so the last element has an index one less than the total number of elements. Methods that accept <literal>Array</literal> indices as arguments, interpret negative indices as counting backward from the last element, i.e. <literal>-2</literal> refers to the penultimate element.</para>
 
+  <para>The number of elements an <literal>Array</literal> contains is returned by <function>Array#size</function>. When the size is <literal>0</literal>, <function>Array#empty?</function> returns <literal>true</literal>.</para>
+
   <para>Instances of <literal>Array</literal> are <link linkend="enu.enumerables"><literal>Enumerable</literal></link>, so in addition to the methods described in this chapter, they also respond to the <literal>Enumerable</literal> methods.</para>
 
   <sect1 xml:id="arr.literals">
@@ -294,18 +296,6 @@
       <title>Sorting the elements of an <literal>Array</literal></title>
 
       <programlisting><xi:include href="examples/array-order.rb" parse="text"/></programlisting>
-    </example>    
-  </sect1>
-
-  <sect1 xml:id="arr.size">
-    <title>Size</title>
-    
-    <para>The length of an <literal>Array</literal> is the number of elements it contains. It is given as an <literal>Integer</literal> greater than or equal to <literal>0</literal> by <literal>#length</literal> or its alias <literal>#size</literal>. The <literal>#empty?</literal> predicate returns <literal>true</literal> when the receiver has a size of <literal>0</literal>; <literal>false</literal> otherwise.</para>
-
-    <example xml:id="ex.array-size">
-      <title>Finding the size of an <literal>Array</literal></title>
-
-      <programlisting><xi:include href="examples/array-size.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
 </chapter>
