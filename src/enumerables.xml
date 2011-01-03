@@ -278,22 +278,6 @@
 
 	<programlisting><xi:include href="examples/enu-stopiteration.rb" parse="text"/></programlisting>
     </example>
-
-      <para>A weakness of <function>#next</function> is that it cannot distinguish an element provided by <literal>yield</literal> from one provided by <literal>yield nil</literal>: it returns <literal>nil</literal> in both cases. <function>#next_values</function> offers a solution by wrapping the value of <function>#next</function> in an <literal>Array</literal>, returning <literal>[]</literal> for <literal>yield</literal> and <literal>[nil]</literal> for <literal>yield nil</literal>. <function>#peek_values</function> wraps the value of <function>#peek</function> in the same way. Both methods raise <literal>StopIteration</literal> as before.</para>
-
-      <example xml:id="ex.enu-next_values">
-	<title>Requesting the next value from an <literal>Enumerator</literal> as an <literal>Array</literal>.</title>
-
-	<programlisting><xi:include href="examples/enu-next_values.rb" parse="text"/></programlisting>
-      </example>
-
-      <para>By default, the value of <literal>yield <replaceable>e</replaceable></literal> in the enumerated method is <literal>nil</literal>. That is, when <literal>yield</literal>ed an element the <literal>Enumerator</literal> returns <literal>nil</literal>. <function>#feed(<replaceable>v</replaceable>)</function> takes an arbitrary object, <replaceable>v</replaceable>, and returns that the next—and only the next—time <literal>yield</literal> is called.</para>
-
-      <example xml:id="ex.enu-feed">
-	<title>Feeding an <literal>Enumerator</literal> a value.</title>
-
-	<programlisting><xi:include href="examples/enu-feed.rb" parse="text"/></programlisting>
-      </example>
     </sect2>
   </sect1>
 
