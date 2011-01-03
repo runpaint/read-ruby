@@ -39,7 +39,7 @@
     <sect2 xml:id="pro.literals">
       <title>Literals</title>
       
-      <para>An <firstterm>object literal</firstterm> is a syntactical shortcut for the instantiation of a particular core object. Literals exist for strings, numbers, symbols, arrays, hashes, ranges, lambdas.</para>
+      <para>An <firstterm>object literal</firstterm> is a syntactical shortcut for the instantiation of a particular core object. Literals exist for <literal>Array</literal>s, <literal>Hash</literal>es, <literal>Numeric</literal>s, <literal>Proc</literal>s, <literal>Range</literal>s, <literal>Regexp</literal>s, <literal>String</literal>s, and <literal>Symbol</literal>s.</para>
     </sect2>
 
     <sect2 xml:id="pro.identifiers">
