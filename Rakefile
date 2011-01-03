@@ -2,6 +2,7 @@
 require 'rake/clean'
 require 'bundler'
 require 'yaml'
+require 'json'
 Bundler.require
 
 # Directory containing the source XML files
@@ -193,19 +194,18 @@ task :fixup, [:file]  do |_, a|
   open(a.file, ?w) {|f| f << nok.to_s}
 end
 
-# Validate each minified HTML file in OUT_DIR, exiting if any are invalid
 desc "Validate HTML documents in #{OUT_DIR}"
 task :validate_html do
-  warn "Skipping HTML validation"
-  # HTML.each do |f|
-  #   begin
-  #     v = W3CValidators::MarkupValidator.new.validate_file f    
-  #   rescue Net::HTTPFatalError => e
-  #     warn "#{f}: #{e}; retrying..."
-  #     sleep(1) and retry
-  #   end
-  #   puts (v.errors + v.warnings).join(?\n) unless v.is_valid?
-  # end
+  HTML.map do |f|
+    Thread.new do
+      mech = Mechanize.new.post(URI.parse('http://validator.nu/?out=json'), 
+                                File.read(f), {'Content-Type' => 'text/html'})
+      JSON.parse(mech.body.force_encoding('utf-8'))['messages'].
+        reject{|m| m['type'] == 'info'}
+    end
+  end.map(&:value).each_with_index do |msg, i|
+    warn "#{HTML[i]} is invalid HTML: #{msg}" unless msg.empty?
+  end
 end
 
 desc "Validate the XML with RelaxNG"
