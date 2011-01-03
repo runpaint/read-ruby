@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.fiber" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Fiber</title>
+
+  <para><methodsynopsis><type>Fiber</type><methodname>Fiber.new</methodname><methodparam><parameter>{ }</parameter></methodparam></methodsynopsis> Returns a new <literal>Fiber</literal> whose body is the given block.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Fiber.yield</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Suspends the current <literal>Fiber</literal>, returning control, and any <parameter>argument</parameter>(s), to where this <literal>Fiber</literal> was resumed from. Returns the arguments of the corresponding <function>Fiber#resume</function> call. The root <literal>Fiber</literal> cannot be yielded from.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Fiber#resume</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Resumes this <literal>Fiber</literal>. If there was a corresponding <function>Fiber.yield</function>, its arguments become this method’s return value, and this method’s arguments become <function>Fiber.yield</function>’s return value.</para>
+</appendix>
