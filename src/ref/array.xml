@@ -112,7 +112,9 @@
 
   <para><methodsynopsis><type>Array or nil</type><methodname>Array#reject!</methodname><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Behaves as <function>Array#delete_if</function> but returns <literal>nil</literal> if the receiver wasn’t modified.</para>
 
-  <para><methodsynopsis><type>Array</type><methodname>Array#repeated_combination</methodname><methodparam><parameter>length</parameter></methodparam><methodparam choice="opt"><parameter>{|array| }</parameter></methodparam></methodsynopsis> Yields each combination of—possibly repeated—elements of length <parameter>length</parameter>, or returns an <literal>Enumerator</literal> if the block is omitted.</para>
+  <para><methodsynopsis><type>Array</type><methodname>Array#repeated_combination</methodname><methodparam><parameter>length</parameter></methodparam><methodparam choice="opt"><parameter>{|array| }</parameter></methodparam></methodsynopsis> Yields each combination of <parameter>length</parameter> elements—some of which may be repeated—or returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#repeated_permutation</methodname><methodparam><parameter>length</parameter></methodparam><methodparam choice="opt"><parameter>{|array| }</parameter></methodparam></methodsynopsis> Yields each permutation of <parameter>length</parameter> elements—some of which may be repeated—or returns an <literal>Enumerator</literal> if the block is omitted.</para>
 
   <para><methodsynopsis><type>Array</type><methodname>Array#replace</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis> Substitutes the elements of <parameter>array</parameter> for the elements of the receiver, which is resized if necessary, then returns the receiver.</para>
 
