@@ -247,9 +247,9 @@
     <sect2 xml:id="enu.enumerator-instantiation">
       <title>Instantiation</title>
 
-      <para>As described above, most <literal>Enumerable</literal> methods return <literal>Enumerator</literal>s when their block is omitted. <function>Kernel#to_enum(<replaceable>method</replaceable>=:each</function>, and its alias <function>Kernel#enum_for</function>, create an <literal>Enumerator</literal> from their receiver’s <replaceable>method</replaceable> method. If additional arguments are provided, they are passed to <replaceable>method</replaceable>. Equivalently, <function>Enumerator.new(<replaceable>object</replaceable>, <replaceable>method</replaceable>=:each)</function> can be used to the same effect. Additional arguments are, again, passed to <replaceable>object</replaceable>’s <replaceable>method</replaceable>.</para>
+      <para>As described above, most <literal>Enumerable</literal> methods return <literal>Enumerator</literal>s when their block is omitted. More generally, <function>Kernel#to_enum(<replaceable>method</replaceable>=:each</function> creates an <literal>Enumerator</literal> from its receiver’s <replaceable>method</replaceable> method. If additional arguments are provided, they are passed to <replaceable>method</replaceable>.</para>
 
-      <para>More usefully, <function>Enumerator.new</function> can take a block to which it passes an instance of <literal>Enumerator::Yielder</literal>. The block specifies an element to be enumerated by supplying it as an argument of <literal>Enumerator::Yielder#yield</literal>, or its alias <literal>Enumerator::Yielder#&lt;&lt;</literal>. <function>#yield</function> behaves lazily: blocking until the <literal>Enumerator</literal> requests a new element.</para>
+      <para><function>Enumerator.new</function> can take a block to which it passes an instance of <literal>Enumerator::Yielder</literal>. The block specifies an element to be enumerated by supplying it as an argument of <literal>Enumerator::Yielder#yield</literal>, or its alias <literal>Enumerator::Yielder#&lt;&lt;</literal>. <function>#yield</function> behaves lazily: blocking until the <literal>Enumerator</literal> requests a new element.</para>
     
       <example xml:id="ex.enu-enumerator-instantiation">
 	<title>Creating an <literal>Enumerator</literal>.</title>
