@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.enumerator" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Enumerator</title>
+
+  <para><methodsynopsis><type>Enumerator</type><methodname>Enumerator.new</methodname><methodparam><parameter>object</parameter></methodparam><methodparam choice="opt"><parameter>selector=:each</parameter></methodparam><methodparam rep="repeat" choice="opt"><parameter>argument</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Enumerator</type><methodname>Enumerator.new</methodname><methodparam><parameter>{|yielder| }</parameter></methodparam></methodsynopsis> The first form returns an <literal>Enumerator</literal> for <parameter>object</parameter> in terms of its method named <parameter>selector</parameter>; any arguments given are passed to this method. If a block is given instead, it is passed a new <literal>Enumerator::Yielder</literal> object which may be used to lazily append values to this <literal>Enumerator</literal>.</para> 
+  
+  <para><methodsynopsis><type>Object or Enumerator</type><methodname>Enumerator#each</methodname><methodparam><parameter>{|*item| }</parameter></methodparam></methodsynopsis> Yields each element of this enumeration—passing to the block as many parameters as the <literal>Enumerator</literal> supplied. Returns <literal>self</literal>, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Object or Enumerator</type><methodname>Enumerator#each_with_index</methodname><methodparam><parameter>{|(*item), index| }</parameter></methodparam></methodsynopsis> Yields each element of this enumeration—passing to the block as many parameters as the <literal>Enumerator</literal> supplied—along with the corresponding index. Returns <literal>self</literal>, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Object or Enumerator</type><methodname>Enumerator#each_with_object</methodname><methodparam><parameter>object</parameter></methodparam><methodparam><parameter>{|(*item), object| }</parameter></methodparam></methodsynopsis> Yields each element of this enumeration—passing to the block as many parameters as the <literal>Enumerator</literal> supplied—along with <parameter>object</parameter>. Returns <parameter>object</parameter>, or an <literal>Enumerator</literal> if the block is omitted. Aliased by <function>Enumerator#with_object</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Enumerator#feed</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <parameter>object</parameter> to the receiver the next time it yields a value.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Enumerator#next</methodname><void/></methodsynopsis> Returns the next element of this <literal>Enumerator</literal>, or raises <exceptionname>StopIteration</exceptionname> if the last has already been returned.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerator#next_values</methodname><void/></methodsynopsis> Returns the next element of this <literal>Enumerator</literal> as an <literal>Array</literal>, or raises <exceptionname>StopIteration</exceptionname> if the last has already been returned. Returns <literal>[]</literal> if the receiver used a bare <literal>yield</literal>; or <literal>[nil]</literal> if it used <literal>yield nil</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Enumerator#peek</methodname><void/></methodsynopsis> Returns the next element of this <literal>Enumerator</literal> without advancing the next-element pointer, or raises <exceptionname>StopIteration</exceptionname> if the last has already been returned.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Enumerator#peek_values</methodname><void/></methodsynopsis> Returns the next element of this <literal>Enumerator</literal> as an <literal>Array</literal> without advancing the next-element pointer, or raises <exceptionname>StopIteration</exceptionname> if the last has already been returned. Returns <literal>[]</literal> if the receiver used a bare <literal>yield</literal>; or <literal>[nil]</literal> if it used <literal>yield nil</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Enumerator#rewind</methodname><void/></methodsynopsis> Resets the <literal>Enumerator</literal> such that a subsequent call to <function>Enumerator#next</function> returns the first element again. If the enumerated object has a <function>#rewind</function> method, it is called. Returns <literal>self</literal>.</para>
+
+  <para><methodsynopsis><type>Object or Enumerator</type><methodname>Enumerator#with_index</methodname><methodparam choice="opt"><parameter>offset=0</parameter></methodparam><methodparam><parameter>{|(*item), index| }</parameter></methodparam></methodsynopsis> Behaves as <function>Enumerator#each_with_index</function>, except <parameter>offset</parameter> is added to each index.</para>
+
+  <para><methodsynopsis><type>Object or Enumerator</type><methodname>Enumerator#with_object</methodname><methodparam><parameter>object</parameter></methodparam><methodparam><parameter>{|(*item), object| }</parameter></methodparam></methodsynopsis> Aliases <function>Enumerator#each_with_object</function>.</para>
+</appendix>
