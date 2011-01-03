@@ -26,6 +26,8 @@
   <para><methodsynopsis><type>String</type><methodname>Dir.getwd</methodname><void/></methodsynopsis> Returns the canonical path of the current working directory for this process. Aliased by <function>Dir.pwd</function>.</para>
 
   <para><methodsynopsis><type>Array or false</type><methodname>Dir.glob</methodname><methodparam><parameter>pattern</parameter></methodparam><methodparam choice="opt"><parameter>flags=0</parameter></methodparam><methodparam choice="opt"><parameter>{|filename| }</parameter></methodparam></methodsynopsis> Yields the filenames matching the glob pattern <parameter>pattern</parameter> to the block; returning an <literal>Array</literal> if the block is omitted. The syntax of <parameter>pattern</parameter> and valid <parameter>flags</parameter> are explained in <xref linkend="fil.dir-glob"/>.</para>
+  
+  <para><methodsynopsis><type>String</type><methodname>Dir.home</methodname><methodparam choice="opt"><parameter>user</parameter></methodparam></methodsynopsis> Returns the home directory of <parameter>user</parameter> or, if that argument’s omitted, the current user.</para>
 
   <para><methodsynopsis><type>0</type><methodname>Dir.mkdir</methodname><methodparam><parameter>directory</parameter></methodparam><methodparam choice="opt"><parameter>permissions=0777</parameter></methodparam></methodsynopsis> Creates a directory named <parameter>directory</parameter> with the permissions given in <parameter>permissions</parameter>. The permissions are ignored on Windows, and modified by the current process’s umask.</para>
 
