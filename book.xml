@@ -53,5 +53,6 @@
   <xi:include href="src/ref/exception.xml"/>
   <xi:include href="src/ref/falseclass.xml"/>
   <xi:include href="src/ref/fiber.xml"/>
+  <xi:include href="src/ref/file.xml"/>
   <xi:include href="src/ref/io.xml"/>
 </book>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.file" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>File</title>
+
+  <para><methodsynopsis><type>String</type><methodname>File.absolute_path</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>directory=Dir.pwd</parameter></methodparam></methodsynopsis> Returns <parameter>filename</parameter> as an absolute path name relative to <parameter>directory</parameter>.</para>
+
+  <para><methodsynopsis><type>Time</type><methodname>File.atime</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the last access time for <parameter>filename</parameter>, or the epoch if has never been accessed.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>File.basename</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>extension=''</parameter></methodparam></methodsynopsis> Returns the last component of <parameter>filename</parameter> with <parameter>extension</parameter> removed from the end. An <parameter>extension</parameter> of <literal>.*</literal> removes any extension present.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File.blockdev?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is a block device; <literal>false</literal> if it isn’t or this operating system does not support such devices.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.chardev?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is a character device; <literal>false</literal> if it isn’t or this operating system does not support such devices.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File.chmod</methodname><methodparam><parameter>permission</parameter></methodparam><methodparam rep="repeat"><parameter>filename</parameter></methodparam></methodsynopsis> Sets the permission bits of each named file to the <literal>Integer</literal> <parameter>permission</parameter>, returning the number of files processed. On Unix-like systems, <parameter>permissions</parameter> is the bit-mask documented in <function>chmod(2)</function>.</para>
+  
+  <para><methodsynopsis><type>Integer</type><methodname>File.chown</methodname><methodparam><parameter>owner</parameter></methodparam><methodparam><parameter>group</parameter></methodparam><methodparam rep="repeat"><parameter>filename</parameter></methodparam></methodsynopsis> Sets the owner and group of each named file to the <literal>Integer</literal>s <parameter>owner</parameter> and <parameter>group</parameter>, respectively, returning the number of files processed. If either <parameter>owner</parameter> or <parameter>group</parameter> is <literal>nil</literal> or <literal>-1</literal>, it is ignored.</para> 
+
+  <para><methodsynopsis><type>Time</type><methodname>File.ctime</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the time of last status change—i.e. the inode change time on Unix-like systems—for <parameter>filename</parameter>.</para>
+  
+  <para><methodsynopsis><type>Integer</type><methodname>File.delete</methodname><methodparam rep="repeat"><parameter>filename</parameter></methodparam></methodsynopsis> Deletes each named file, returning the number deleted. Aliased by <function>File.unlink</function>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File.directory?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is a directory; otherwise, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>String</type><methodname>File.dirname</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <parameter>filename</parameter> with the last component removed.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.executable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is executable by the effective owner of the current process; otherwise, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File.executable_real?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is executable by the real owner of the current process; otherwise, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File.exist?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> exists; otherwise, <literal>false</literal>. Aliased by <function>File#exists?</function>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File.exists?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Aliases <function>File.exist?</function>.</para>
+  
+  <para><methodsynopsis><type>String</type><methodname>File.expand_path</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>directory=Dir.pwd</parameter></methodparam></methodsynopsis> Returns <parameter>filename</parameter> as an absolute path relative to <parameter>directory</parameter>. However, <parameter>directory</parameter> is ignored if <parameter>filename</parameter> begins with a tilde: if the tilde is followed by a user name, <parameter>filename</parameter> is expanded relative to that user’s home directory; otherwise, <parameter>filename</parameter> is expanded relative to the current user’s home directory.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>File.extname</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the portion of the filename following the right-most full stop, including the full stop itself, or <literal>""</literal> if there is no full stop.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.file?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if file is a regular—as opposed to a device, directory, pipe, or socket—file; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.fnmatch</methodname><methodparam><parameter>pattern</parameter></methodparam><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>flags</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> matches the globbing pattern <parameter>pattern</parameter>; otherwise, <literal>false</literal>. The globbing syntax and permissible <parameter>flag</parameter> values are explained in <xref linkend="fil.dir-glob"/>. Aliased by <function>File.fnmatch?</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.fnmatch?</methodname><methodparam><parameter>pattern</parameter></methodparam><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>flags</parameter></methodparam></methodsynopsis> Aliases <function>File.fnmatch</function>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>File.ftype</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the file type as one of the following <literal>String</literal>s: <literal>"blockSpecial"</literal>, <literal>"characterSpecial"</literal>, <literal>"directory"</literal>, <literal>"fifo"</literal>, <literal>"link"</literal>, <literal>"socket"</literal>, or <literal>"unknown"</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.grpowned?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the effective group ID of the current process is equal to the group ID of <parameter>filename</parameter>; otherwise, or on Windows, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.identical?</methodname><methodparam><parameter>filename1</parameter></methodparam><methodparam><parameter>filename2</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename1</parameter> and <parameter>filename2</parameter> resolve to the same file; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>File.join</methodname><methodparam rep="repeat"><parameter>component</parameter></methodparam></methodsynopsis> Concatenates the given path components with <literal>File::SEPARATOR</literal>, returning the result.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File.lchmod</methodname><methodparam><parameter>permission</parameter></methodparam><methodparam rep="repeat"><parameter>filename</parameter></methodparam></methodsynopsis> Behaves as <function>File.chmod</function> except that if a <parameter>filename</parameter> is a symbolic link, it changes the permission of the link; not its target. Raises a <exceptionname>NotImplementedError</exceptionname> on platforms lacking the <function>lchmod(2)</function> system call.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File.lchown</methodname><methodparam><parameter>owner</parameter></methodparam><methodparam><parameter>group</parameter></methodparam><methodparam rep="repeat"><parameter>filename</parameter></methodparam></methodsynopsis> Behaves as <function>File.chown</function> except that if a <parameter>filename</parameter> is a symbolic link, it changes the owner and group of the link; not its target. Raises a <exceptionname>NotImplementedError</exceptionname> on platforms lacking the <function>lchown(2)</function> system call.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>File.link</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam><parameter>link</parameter></methodparam></methodsynopsis> Creates a hard link named <parameter>link</parameter> to an existing file named <parameter>filename</parameter>. If <parameter>link</parameter> exists prior to this method being invoked, an <exceptionname>Errno::</exceptionname> <literal>Exception</literal> will be raised.</para>
+
+  <para><methodsynopsis><type>File::Stat</type><methodname>File.lstat</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Behaves as <function>IO#stat</function> except that if <parameter>filename</parameter> is a symbolic link, it returns status information for the link; not its target.</para>
+
+  <para><methodsynopsis><type>Time</type><methodname>File.mtime</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the time of last modification—on Unix-like systems this equates to the file’s contents being modified, or, if <parameter>filename</parameter> is a directory, the creation or deletion of files in that directory—for <parameter>filename</parameter>.</para>
+
+  <para><methodsynopsis><type>File</type><methodname>File.new</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>mode='r'</parameter></methodparam><methodparam choice="opt"><parameter>permissions</parameter></methodparam><methodparam choice="opt"><parameter>options</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>File</type><methodname>File.new</methodname><methodparam><parameter>file_descriptor</parameter></methodparam><methodparam choice="opt"><parameter>mode='r'</parameter></methodparam><methodparam choice="opt"><parameter>options</parameter></methodparam></methodsynopsis> The first form opens a file named <parameter>filename</parameter>, which it returns as a <literal>File</literal> object. The <parameter>mode</parameter> may be either a given as a <link linkend="io.mode-string">mode string</link> or a logical OR of the file <link linkend="io.open-flags">open flags</link>. The permissions of the file are given by the <literal>Integer</literal> <parameter>permissions</parameter>, the meaning of which is platform dependent. An <link linkend="io.options-hash"><literal>IO</literal> options <literal>Hash</literal></link> may supplied as <parameter>options</parameter>. Alternatively, a file descriptor may be given as the first argument in which case the arguments are passed to <function>IO.new</function> to instantiate a <literal>File</literal> object for the existing stream.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File.owned?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is owned by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>String or nil</type><methodname>File.path</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns this file’s pat by invoking <function>#to_path</function>; if that method isn’t defined, <literal>nil</literal> is returned instead.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.pipe?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is a pipe; otherwise, or if the operating system doesn’t support named pipes, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.readable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is readable by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.readable_real?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is readable by the real user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>File.readlink</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the target of the symbolic link named <parameter>filename</parameter>. Raises <exceptionname>NotImplementedError</exceptionname> if the operating system lacks the <function>readlink(2)</function> system call.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>File.realdirpath</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>directory=Dir.pwd</parameter></methodparam></methodsynopsis> Behaves as <function>File.realpath</function> but allows the last component to be nonexistent.</para>  
+
+  <para><methodsynopsis><type>String</type><methodname>File.realpath</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>directory=Dir.pwd</parameter></methodparam></methodsynopsis> Returns the canonical absolute pathname for the given path: all symbolic links are expanded, references to <literal>/./</literal> and <literal>/../</literal> are resolved relative to <parameter>directory</parameter>, and superfluous slashes are removed. All path components must exist.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>File.rename</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam><parameter>new</parameter></methodparam></methodsynopsis> Renames the file or directory named <parameter>filename</parameter> to <parameter>new</parameter>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.setgid?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has its set-group-ID bit set; otherwise, or if the operating system doesn’t support <emphasis>setgid</emphasis> bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.setuid?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has its set-user-ID bit set; otherwise, or if the operating system doesn’t support <emphasis>suid</emphasis> bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File.size</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the size of the file named <parameter>filename</parameter> in bytes.</para>
+  
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File.size?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>nil</literal> if the file named <parameter>filename</parameter> has a size of <literal>0</literal>; otherwise, the size in bytes.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.socket?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is a socket; otherwise, or if the operating system doesn’t support sockets, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>File.split</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the directory name—i.e. <function>File.dirname</function>—and basename—i.e. File.basename—of the file named <parameter>file</parameter> as a two-element <literal>Array</literal>.</para>
+
+  <para><methodsynopsis><type>File::Stat</type><methodname>File.stat</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns status information for the file named <parameter>filename</parameter>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.sticky?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has its sticky bit set; otherwise, or if the operating system doesn’t support sticky bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>File.symlink</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam><parameter>new</parameter></methodparam></methodsynopsis> Creates a symbolic link from an existing file named <parameter>filename</parameter> to <parameter>new</parameter>. Raises <exceptionname>NotImplementedError</exceptionname> on operating systems that lack the <function>symlink(2)</function> system call.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.symlink?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if there is a symbolic link named <parameter>filename</parameter>; otherwise, or if the operating system doesn’t support symbolic links, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>File.truncate</methodname><methodparam><parameter>filename</parameter></methodparam><methodparam><parameter>length</parameter></methodparam></methodsynopsis> Truncates the file named <parameter>filename</parameter> to <parameter>length</parameter> bytes in length. <parameter>length</parameter> may be greater or less than the file’s current size; if greater, the file is extended with null (<literal>"\0"</literal>) bytes. Raises <exceptionname>NotImplementedError</exceptionname> on operating systems lacking the <function>truncate(2)</function> system call.</para>
+  
+  <para><methodsynopsis><type>Integer</type><methodname>File.umask</methodname><methodparam choice="opt"><parameter>mask</parameter></methodparam></methodsynopsis> Returns the file mode creation mask—<firstterm>umask</firstterm>—of the calling process. If an <literal>Integer</literal> <parameter>mask</parameter> is given, the umask is set to <literal><replaceable>mask</replaceable> &amp; 0777</literal>. The umask modifies the permissions of newly created files and directories by turning off the bits in the access mode that are on in the umask.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File.unlink</methodname><methodparam rep="repeat"><parameter>filename</parameter></methodparam></methodsynopsis> Aliases <function>File.delete</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File.utime</methodname><methodparam><parameter>atime</parameter></methodparam><methodparam><parameter>mtime</parameter></methodparam><methodparam rep="repeat"><parameter>filename</parameter></methodparam></methodsynopsis> Sets the access times and last modification times for each named file to <parameter>atime</parameter> and <parameter>mtime</parameter>, respectively. The times may be given as <literal>Time</literal> objects or <literal>Integer</literal> seconds since the epoch. Returns the number of files changed. Raises <exceptionname>NotImplementedError</exceptionname> on non-Windows systems which lack both the <function>utimes(2)</function> and <function>utimensat(2)</function> system calls.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File.world_readable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the permission bits of the file named <parameter>filename</parameter> if it is world readable; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File.world_writable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the permission bits of the file named <parameter>filename</parameter> if it is world writable; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.writable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is writable by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.writable_real?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is writable by the real user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File.zero?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has a size of <literal>0</literal>; otherwise, <literal>false</literal>.</para>
+
+</appendix>
