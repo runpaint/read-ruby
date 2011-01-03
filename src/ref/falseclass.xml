@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.falseclass" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>FalseClass</title>
+
+  <para><methodsynopsis><type>false</type><methodname>FalseClass#&amp;</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Performs a logical AND with the given argument.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FalseClass#^</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Performs exclusive OR: returns <literal>false</literal> if <parameter>object</parameter> is <literal>nil</literal> or <literal>false</literal>; <literal>true</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FalseClass#|</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Performs logical OR: returns <literal>false</literal> if <parameter>object</parameter> is <literal>nil</literal> or <literal>false</literal>; <literal>true</literal>, otherwise.</para>
+</appendix>
