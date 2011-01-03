@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.exception" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Exception</title>
+
+  <para><methodsynopsis><type>Exception</type><methodname>Exception.exception</methodname><methodparam choice="opt"><parameter>message='Exception'</parameter></methodparam></methodsynopsis> Returns a new <literal>Exception</literal> with the given message.</para>
+
+  <para><methodsynopsis><type>Exception</type><methodname>Exception.new</methodname><methodparam choice="opt"><parameter>message='Exception'</parameter></methodparam></methodsynopsis> Returns a new <literal>Exception</literal> with the given message.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Exception#backtrace</methodname><void/></methodsynopsis> Returns the backtrace as an <literal>Array</literal> of <literal>String</literal>s.</para>
+  
+  <para><methodsynopsis><type>Exception</type><methodname>Exception#exception</methodname><methodparam choice="opt"><parameter>message</parameter></methodparam></methodsynopsis> Returns the receiver if no argument is given; otherwise, creates a new instance of the receiver’s class with the given message.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Exception#message</methodname><void/></methodsynopsis> Returns this <literal>Exception</literal>’s message.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Exception#set_backtrace</methodname><methodparam><parameter>array</parameter></methodparam></methodsynopsis> Sets this <literal>Exception</literal>’s backtrace to the given <literal>Array</literal> of <literal>String</literal>s.</para>
+  
+  <para><methodsynopsis><type>Object</type><methodname>Exception#to_s</methodname><void/></methodsynopsis> Returns the message or, if that’s not set, the class name of this <literal>Exception</literal>.</para>
+</appendix>
