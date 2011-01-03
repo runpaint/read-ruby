@@ -43,7 +43,7 @@
 
   <para><methodsynopsis><type>Enumerator or Dir</type><methodname>Dir#each</methodname><methodparam choice="opt"><parameter>{|entry| }</parameter></methodparam></methodsynopsis> Yields each entry—filenames, <literal>.</literal>, and <literal>..</literal>—of the receiver’s directory stream to the block, then returns <literal>self</literal>. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
 
-  <para><methodsynopsis><type>String</type><methodname>Dir#path</methodname><void/></methodsynopsis> Returns the path of the directory stream represented by the receiver.</para>
+  <para><methodsynopsis><type>String</type><methodname>Dir#path</methodname><void/></methodsynopsis> Returns the path of the directory stream represented by the receiver. Aliased by <function>Dir#to_path</function>.</para>
 
   <para><methodsynopsis><type>Integer</type><methodname>Dir#pos</methodname><void/></methodsynopsis> Returns the current position in the directory stream represented by the receiver. Aliased by <function>Dir#tell</function>.</para>
 
@@ -56,4 +56,6 @@
   <para><methodsynopsis><type>Integer</type><methodname>Dir#seek</methodname><methodparam><parameter>position</parameter></methodparam></methodsynopsis> Seeks the receiver’s directory stream to the given position—which should have previously been returned by <function>Dir#pos</function>—then returns <parameter>self</parameter>.</para>
   
   <para><methodsynopsis><type>Integer</type><methodname>Dir#tell</methodname><void/></methodsynopsis> Aliases <function>Dir#pos</function>.</para>
+  
+  <para><methodsynopsis><type>String</type><methodname>Dir#to_path</methodname><void/></methodsynopsis> Aliases <function>Dir#path</function>.</para>
 </appendix>
