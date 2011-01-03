@@ -121,6 +121,10 @@
   <para><methodsynopsis><type>Array</type><methodname>Array#reverse_each</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> Yields each element of the receiver to the block in reverse order, then returns <literal>self</literal>.</para>
 
   <para><methodsynopsis><type>Integer or nil</type><methodname>Array#rindex</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis><methodsynopsis><type>Integer or nil</type><methodname>Array#rindex</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> Returns the index of the last element <function>#==</function> to <parameter>object</parameter> or, if a block is supplied, the last element for which the block is <literal>true</literal>. Returns <literal>nil</literal> if no elements matched, or an <literal>Enumerator</literal> if both argument and block are omitted.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#rotate</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam></methodsynopsis> Returns a new <literal>Array</literal> comprising the element at index <replaceable>n</replaceable>, each consecutive element, then the element at index <literal>0</literal> through to the element at index <literal><replaceable>n</replaceable> - 1</literal>. <remark>Example at examples/array-rotate.rb</remark></para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Array#rotate!</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam></methodsynopsis> Behaves as <function>Array#rotate!</function> but modifies the receiver in-place.</para>
   
   <para><methodsynopsis><type>Array or nil</type><methodname>Array#sample</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam></methodsynopsis> Returns <parameter>n</parameter> elements of the receiver selected pseudo-randomly. If the receiver has fewer than <parameter>n</parameter> elements, returns them all; if the receiver is empty and <parameter>n</parameter> is omitted, returns <literal>nil</literal>.</para>
 

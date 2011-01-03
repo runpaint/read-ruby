@@ -251,18 +251,6 @@
     </example>    
   </sect1>
 
-  <sect1 xml:id="arr.rotation">
-    <title>Rotation</title>
-
-    <para><literal>#rotate(<replaceable>n</replaceable>)</literal> returns a new <literal>Array</literal> comprising the element at index <replaceable>n</replaceable>, each consecutive element, then the element at index <literal>0</literal> through to the element at index <literal><replaceable>n</replaceable> - 1</literal>. If <replaceable>n</replaceable> is omitted, it is assumed to have the value <literal>1</literal>. <literal>#rotate!(<replaceable>size</replaceable>)</literal> behaves in the same manner, except it modifies the receiver in-place.</para>
-
-    <example xml:id="ex.array-rotate">
-      <title>Rotating an <literal>Array</literal>’s elements</title>
-
-      <programlisting><xi:include href="examples/array-rotate.rb" parse="text"/></programlisting>
-    </example>    
-  </sect1>
-
   <sect1 xml:id="arr.iterate">
     <title>Iteration</title>
     
