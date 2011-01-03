@@ -308,16 +308,4 @@
       <programlisting><xi:include href="examples/array-size.rb" parse="text"/></programlisting>
     </example>    
   </sect1>
-
-  <sect1 xml:id="arr.coercion">
-    <title>Coercion</title>
-    
-    <para>In <xref linkend="obj.conversion"/> the <literal>:to_a</literal> and <literal>:to_ary</literal> messages were introduced for converting an object into an <literal>Array</literal> either explicitly or implicitly, respectively. <literal>Array.try_convert</literal> was introduced as a wrapper around <literal>:to_ary</literal>: it returns its argument implicitly converted to an <literal>Array</literal> if possible, otherwise <literal>nil</literal>. Lastly, <literal>Kernel.Array</literal> attempts to convert its argument to an <literal>Array</literal> first implicitly, then explicitly.</para>
-
-    <example xml:id="ex.array-coercion">
-      <title>Coercing to and from <literal>Array</literal></title>
-
-      <programlisting><xi:include href="examples/array-coercion.rb" parse="text"/></programlisting>
-    </example>    
-  </sect1>
 </chapter>
