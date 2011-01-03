@@ -97,7 +97,7 @@
 	</tr>
 	<tr>
 	  <td>Nanoseconds</td>
-	  <td>Nanosecond<footnote><para>1 nanosecond is 10<superscript>−9</superscript> seconds</para></footnote> of microsoecond</td>
+	  <td>Nanosecond<footnote><para>1 nanosecond is 10<superscript>−9</superscript> seconds</para></footnote> of second</td>
 	  <td><literal>Integer</literal></td>
 	  <td>0</td>
 	  <td><function>Time#nsec</function>, <function>Time#tv_nsec</function></td>
