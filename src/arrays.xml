@@ -226,20 +226,12 @@
   <sect1 xml:id="arr.permutations">
     <title>Permutations &amp; Combinations</title>
 
-    <para><literal>#permutation(<replaceable>size</replaceable>)</literal> generates all permutations of the receiver of length <replaceable>size</replaceable>. If <replaceable>size</replaceable> is omitted, it is assumed to be that of the receiver. When a block is given, each permutation is yielded; otherwise an <literal>Enumerator</literal> is returned. <literal>#repeated_permutation(<replaceable>size</replaceable>)</literal> computes permutations of length <replaceable>size</replaceable> recursively, either yielding them to a block or returning an <literal>Enumerator</literal>.</para>
+    <para><literal>#permutation(<replaceable>size</replaceable>)</literal> yields each permutation of the receiver of length <replaceable>size</replaceable>. If <replaceable>size</replaceable> is omitted, it is assumed to be that of the receiver. Similarly, <function>Array#combination</function> yields combinations of elements with the given length.</para> 
 
-    <example xml:id="ex.array-permutation">
-      <title>Permuting an <literal>Array</literal></title>
+    <example xml:id="ex.array-permutation-combination">
+      <title>Generating permutations or combinations of an <literal>Array</literal></title>
 
-      <programlisting><xi:include href="examples/array-permutation.rb" parse="text"/></programlisting>
-    </example>    
-
-    <para><literal>#combination(<replaceable>size</replaceable>)</literal> computes combinations of the receiver’s elements with length <replaceable>size</replaceable>. <literal>#repeated_combination(<replaceable>size</replaceable>)</literal> behaves likewise, except it generates combinations recursively. Both methods either yield each combination to a block, or return an <literal>Enumerator</literal>.</para>
-
-    <example xml:id="ex.array-combination">
-      <title>Combinations of an <literal>Array</literal>’s elements</title>
-
-      <programlisting><xi:include href="examples/array-combination.rb" parse="text"/></programlisting>
+      <programlisting><xi:include href="examples/array-permutation-combination.rb" parse="text"/></programlisting>
     </example>    
     
     <para><literal>#product</literal> accepts any number of <literal>Array</literal> arguments, then returns an <literal>Array</literal> of <literal>Array</literal>s comprising all combinations of picking an element from the receiver and each argument. If <literal>#product</literal> is given <replaceable>n</replaceable> arguments, each element of the <literal>Array</literal> it returns has <literal><replaceable>n</replaceable> + 1</literal> elements.</para>
