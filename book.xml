@@ -55,5 +55,6 @@
   <xi:include href="src/ref/fiber.xml"/>
   <xi:include href="src/ref/file.xml"/>
   <xi:include href="src/ref/file-stat.xml"/>
+  <xi:include href="src/ref/filetest.xml"/>
   <xi:include href="src/ref/io.xml"/>
 </book>

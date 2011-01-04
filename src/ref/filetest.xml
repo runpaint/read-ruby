@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.filetest" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>FileTest</title>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.blockdev?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is a block device; <literal>false</literal> if it isn’t or this operating system does not support such devices.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.chardev?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is a character device; <literal>false</literal> if it isn’t or this operating system does not support such devices.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.directory?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is a directory; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.executable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is executable by the effective owner of the current process; otherwise, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.executable_real?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is executable by the real owner of the current process; otherwise, <literal>false</literal>.</para>
+ 
+ <para><methodsynopsis><type>true or false</type><methodname>FileTest.exist?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> exists; otherwise, <literal>false</literal>. Aliased by <function>FileTest.exists?</function>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.exists?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Aliases <function>FileTest.exist?</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.file?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if file is a regular—as opposed to a device, directory, pipe, or socket—file; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.grpowned?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the effective group ID of the current process is equal to the group ID of <parameter>filename</parameter>; otherwise, or on Windows, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.identical?</methodname><methodparam><parameter>filename1</parameter></methodparam><methodparam><parameter>filename2</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename1</parameter> and <parameter>filename2</parameter> resolve to the same file; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.owned?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is owned by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.pipe?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is a pipe; otherwise, or if the operating system doesn’t support named pipes, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.readable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is readable by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.readable_real?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is readable by the real user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.setgid?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has its set-group-ID bit set; otherwise, or if the operating system doesn’t support <emphasis>setgid</emphasis> bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.setuid?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has its set-user-ID bit set; otherwise, or if the operating system doesn’t support <emphasis>suid</emphasis> bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>FileTest.size</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the size of the file named <parameter>filename</parameter> in bytes.</para>
+  
+  <para><methodsynopsis><type>Integer or nil</type><methodname>FileTest.size?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>nil</literal> if the file named <parameter>filename</parameter> has a size of <literal>0</literal>; otherwise, the size in bytes.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.socket?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is a socket; otherwise, or if the operating system doesn’t support sockets, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.sticky?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has its sticky bit set; otherwise, or if the operating system doesn’t support sticky bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.symlink?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if there is a symbolic link named <parameter>filename</parameter>; otherwise, or if the operating system doesn’t support symbolic links, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>FileTest.world_readable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns the permission bits of the file named <parameter>filename</parameter> if it is world readable; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.writable?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is writable by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.writable_real?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> is writable by the real user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.zero?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has a size of <literal>0</literal>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>FileTest.zero?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the file named <parameter>filename</parameter> has a size of <literal>0</literal>; otherwise, <literal>false</literal>.</para>
+</appendix>
