@@ -36,6 +36,8 @@
 
     <para><methodsynopsis><type>true or false</type><methodname>Bignum#&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is greater than <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
 
+    <para><methodsynopsis><type>true or false</type><methodname>Bignum#&gt;=</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is greater than or equal to <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
+
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&gt;&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of right-shifting <parameter>number</parameter> bits of the receiver and its sign.</para>
 
   <para><methodsynopsis><type>0 or 1</type><methodname>Bignum#[]</methodname><methodparam><parameter>bit</parameter></methodparam></methodsynopsis> Returns the <parameter>bit</parameter><superscript>th</superscript> bit of the receiver, where the 0<superscript>th</superscript> bit is the least significant.</para>
