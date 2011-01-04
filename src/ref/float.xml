@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.float" 
+	 xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Float</title>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#%</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of the receiver modulo <parameter>number</parameter>. Aliased by <function>Float#modulo</function>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#*</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of multiplying <parameter>number</parameter> with the receiver.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#**</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of raising the receiver to the <parameter>number</parameter><superscript>th</superscript> power.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#+</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of adding the receiver to <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#-</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of subtracting <parameter>number</parameter> from the receiver.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Float#/</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using integer division—the receiver by <parameter>number</parameter>. Aliased by <function>Float#div</function>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Float#&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Float#&lt;=</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than or equal to <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>-1, 0, 1</type><methodname>Float#&lt;=&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>-1</literal> if the receiver is less than <parameter>number</parameter>, <literal>0</literal> if they are equal, and <literal>1</literal> if it is greater.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Float#==</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the <parameter>number</parameter> is a <literal>Numeric</literal> with the same value as the receiver; <literal>false</literal>, otherwise. Aliased by <function>Float#===</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Float#===</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Float#==</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Float#&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is greater than <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Float#&gt;=</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is greater than or equal to <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#abs</methodname><void/></methodsynopsis> Returns the absolute value of the receiver. Aliased by <function>Float#magnitude</function>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#angle</methodname><void/></methodsynopsis> Returns <literal>0</literal> if the receiver is positive; otherwise, <literal>Math::PI</literal>. Aliased by <function>Float#arg</function> and <function>Float#phase</function>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#arg</methodname><void/></methodsynopsis> Aliases <function>Float#angle</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Float#ceil</methodname><void/></methodsynopsis> Returns the smallest <literal>Integer</literal> greater than or equal to the receiver.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Float#coerce</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> whose first element is <parameter>number</parameter> converted to a <literal>Float</literal> with <function>Kernel.Float</function>, and last element is the receiver.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Float#denominator</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Rational</literal>, returning <function>Rational#denominator</function>. <literal>Float::INFINITY</literal> and <literal>Float::NAN</literal> both have a denominator of <literal>1</literal>.</para>
+  
+  <para><methodsynopsis><type>Array</type><methodname>Float#divmod</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Divides the receiver by <parameter>number</parameter>, returning an <literal>Array</literal> whose first element is the quotient, and last element, the modulus. The quotient is rounded toward −∞.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Float#eql?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is a <literal>Float</literal> with the same value as <parameter>object</parameter>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#fdiv</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using floating-point division—the receiver by <parameter>number</parameter>. Aliased by <function>Float#quo</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Float#finite?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is neither <literal>Float::INFINITY</literal> nor <literal>Float::NAN</literal>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Float#floor</methodname><void/></methodsynopsis> Returns the largest <literal>Integer</literal> less than or equal to the receiver.</para>
+  
+  <para><methodsynopsis><type>nil, -1, or 1</type><methodname>Float#infinite?</methodname><void/></methodsynopsis> Returns <literal>nil</literal> if the receiver is neither <literal>Float::INFINITY</literal> or <literal>Float::NAN</literal>; <literal>-1</literal> if it is <literal>-Float::INFINITY</literal>; and <literal>1</literal> if it is <literal>Float::INFINITY</literal>.</para>
+   
+  <para><methodsynopsis><type>Float</type><methodname>Float#magnitude</methodname><void/></methodsynopsis> Aliases <function>Float#abs</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Float#modulo</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Float#%</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Float#nan?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is <literal>Float::NAN</literal>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Float#numerator</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Rational</literal>, returning <function>Rational#numerator</function>. <literal>Float::INFINITY</literal> and <literal>Float::NAN</literal> both have a numerator of their self.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#phase</methodname><void/></methodsynopsis> Aliases <function>Float#angle</function>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Float#quo</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Float#fdiv</function>.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>Float#rationalize</methodname><methodparam choice="opt"><parameter>epsilon</parameter></methodparam></methodsynopsis> Returns the simplest rational number differing from the receiver by no more than <parameter>epsilon</parameter>—if <parameter>epsilon</parameter> is omitted, it is calculated automatically. To do so, it assumes that the receiver is accurate only to the precision of Ruby’s floating-point representation; as opposed to <function>Float#to_r</function>, say, which assumes the receiver is perfectly accurate.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Float#round</methodname><methodparam choice="opt"><parameter>digits=0</parameter></methodparam></methodsynopsis> Returns the receiver rounded to <parameter>digits</parameter> digits. If <parameter>digits</parameter> is <literal>0</literal>, the number is rounded to the nearest <literal>Integer</literal>.</para>
+  
+  <para><methodsynopsis><type>Float</type><methodname>Float#to_f</methodname><void/></methodsynopsis> Returns the receiver.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Float#to_i</methodname><void/></methodsynopsis> Converts the receiver to an <literal>Integer</literal> by truncation, i.e. removing the fractional part. Aliased to <function>Float#to_int</function> and <function>Float#truncate</function>.</para> 
+
+  <para><methodsynopsis><type>Integer</type><methodname>Float#to_int</methodname><void/></methodsynopsis> Aliases <function>Float#to_i</function>.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>Float#to_r</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Rational</literal> precisely.</para>
+ 
+  <para><methodsynopsis><type>String</type><methodname>Float#to_s</methodname><void/></methodsynopsis> Returns the receiver in fixed or exponential form, according to its magnitude. Returns <literal>"Infinity"</literal> for <literal>Float::INFINITY</literal>, <literal>"-Infinity"</literal> for <literal>-Float::INFINITY</literal>, and <literal>"NaN"</literal> for <literal>Float::NAN</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Float#truncate</methodname><void/></methodsynopsis> Aliases <function>Float#to_i</function>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Float#zero?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is equal to <literal>0.0</literal>; otherwise, <literal>false</literal>.</para>
+</appendix>
