@@ -25,6 +25,8 @@
   <para><methodsynopsis><type>true or false</type><methodname>Fixnum#&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
 
   <para><methodsynopsis><type>Integer</type><methodname>Fixnum#&lt;&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of left-shifting <parameter>number</parameter> bits of the receiver.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Fixnum#&lt;=</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than or equal to <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
 
   <para><methodsynopsis><type>-1, 0, 1</type><methodname>Fixnum#&lt;=&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>-1</literal> if the receiver is less than <parameter>number</parameter>, <literal>0</literal> if they are equal, and <literal>1</literal> if it is greater.</para>
 
