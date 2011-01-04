@@ -27,8 +27,12 @@
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&amp;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise AND between the receiver and <parameter>number</parameter>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#^</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise EXCLUSIVE OR between the receiver and <parameter>number</parameter>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Bignum#&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&lt;&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of left-shifting <parameter>number</parameter> bits of the receiver.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Bignum#&lt;=</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than or equal to <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&gt;&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of right-shifting <parameter>number</parameter> bits of the receiver and its sign.</para>
 
