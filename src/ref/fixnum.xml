@@ -47,15 +47,13 @@
   <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#abs</methodname><void/></methodsynopsis> Returns the absolute value of the receiver. Aliased by <function>Fixnum#magnitude</function>.</para>
 
   <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#div</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Fixnum#/</function>.</para>
-
+  
+  <para><methodsynopsis><type>Array</type><methodname>Fixnum#divmod</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Divides the receiver by <parameter>number</parameter>, returning an <literal>Array</literal> whose first element is the quotient, and last element, the modulus. The quotient is rounded toward −∞.</para>
+  
   <para><methodsynopsis><type>true or false</type><methodname>Fixnum#even?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this number is even; otherwise, <literal>false</literal>.</para>
 
-  <para><methodsynopsis><type>true or false</type><methodname>Fixnum#eql?</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>number</parameter> is a <literal>Fixnum</literal> with the same value as the receiver; <literal>false</literal>, otherwise.</para>
-
-  <para><methodsynopsis><type>Array</type><methodname>Fixnum#divmod</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Divides the receiver by <parameter>number</parameter>, returning an <literal>Array</literal> whose first element is the quotient, and last element, the modulus. The quotient is rounded toward −∞.</para>
-
   <para><methodsynopsis><type>Float</type><methodname>Fixnum#fdiv</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using floating-point division—the receiver by <parameter>number</parameter>. Aliased by <function>Fixnum#quo</function>.</para>
- 
+   
   <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#magnitude</methodname><void/></methodsynopsis> Aliases <function>Fixnum#abs</function>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Fixnum#modulo</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Fixnum#%</function>.</para>
