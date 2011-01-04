@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.hash" 
+	 xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Hash</title>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Hash[]</methodname><methodparam rep="repeat"><parameter>object</parameter></methodparam></methodsynopsis> Creates and returns a <literal>Hash</literal> such that the first two arguments comprise the first key-value pair, the second two arguments comprise the second key-value pair, and so forth—accordingly, there must be an even number of arguments given.</para>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Hash.new</methodname><methodparam choice="opt"><parameter>object</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Hash</type><methodname>Hash.new</methodname><methodparam><parameter>{|hash, key| }</parameter></methodparam></methodsynopsis> Creates and returns a <literal>Hash</literal> whose default value is <literal>nil</literal> if neither block nor argument are given, <parameter>object</parameter>, or the block. In the last case, the block is called every time a nonexistent key is requested, passing in the receiver and the given key.</para>
+
+  <para><methodsynopsis><type>Hash or nil</type><methodname>Hash.try_convert</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Converts <parameter>object</parameter> to a <literal>Hash</literal> with <function>#to_hash</function>, returning the result; if this is impossible, returns <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Hash#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if both the receiver and <parameter>object</parameter> have the same default value, the same number of keys, and the value of every key in the receiver is equal—according to <function>#==</function>—the value of the corresponding key in <parameter>object</parameter>. If <parameter>object</parameter> is not a <literal>Hash</literal>, it is converted using <function>#to_hash</function>, then the test repeated. In either the test or the conversion fails, <literal>false</literal> is returned.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Hash#[]</methodname><methodparam><parameter>key</parameter></methodparam></methodsynopsis> Returns the value corresponding to the given key, or the default value if the key doesn’t exist.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Hash#[]=</methodname><methodparam><parameter>key</parameter></methodparam><methodparam><parameter>value</parameter></methodparam></methodsynopsis> Sets the given key to the given value, returning the latter. Aliased by <function>Hash#store</function>.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Hash#assoc</methodname><methodparam><parameter>key</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> whose first element is <parameter>key</parameter>, and last element is the value corresponding to that key. If <parameter>key</parameter> does not exist, the default value is ignored, and <literal>nil</literal> returned.</para>
+  
+  <para><methodsynopsis><type>Hash</type><methodname>Hash#clear</methodname><void/></methodsynopsis> Returns the receiver with all of its key-value pairs removed.</para>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Hash#compare_by_identity</methodname><void/></methodsynopsis> Converts the receiver to an <link linkend="has.identity">identity <literal>Hash</literal></link>, which it returns.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Hash#compare_by_identity?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is an <link linkend="has.identity">identity <literal>Hash</literal></link>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Hash#default</methodname><void/></methodsynopsis> Returns the receiver’s default value.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Hash#default=</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Sets the default value to <parameter>object</parameter>, which it then returns.</para>
+
+  <para><methodsynopsis><type>Proc or nil</type><methodname>Hash#default_proc</methodname><void/></methodsynopsis> Returns the default <literal>Proc</literal>, or <literal>nil</literal> if there’s not one.</para>
+
+  <para><methodsynopsis><type>Proc</type><methodname>Hash#default_proc=</methodname><methodparam><parameter>proc</parameter></methodparam></methodsynopsis> Sets the default <literal>Proc</literal> to <parameter>proc</parameter>, which it then returns.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Hash#delete</methodname><methodparam><parameter>key</parameter></methodparam><methodparam choice="opt"><parameter>{|key| }</parameter></methodparam></methodsynopsis> Deletes from the receiver the key, <parameter>key</parameter>, and its associated value, returning the value. If the block is given and <parameter>key</parameter> did not exist, the block is called with the key as an argument and its result returned; otherwise, <literal>nil</literal> is returned.</para>
+
+  <para><methodsynopsis><type>Hash or Enumerator</type><methodname>Hash#delete_if</methodname><methodparam choice="opt"><parameter>{|key, value| }</parameter></methodparam></methodsynopsis> Deletes each key-value pair for which the block is <literal>true</literal>, then returns the receiver. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Hash or Enumerator</type><methodname>Hash#each</methodname><methodparam choice="opt"><parameter>{|key, value| }</parameter></methodparam></methodsynopsis> Yields each key-value pair to the block. Returns an <literal>Enumerator</literal> if the block is omitted. Aliased by <function>Hash#each_pair</function>.</para>
+
+  <para><methodsynopsis><type>Hash or Enumerator</type><methodname>Hash#each_key</methodname><methodparam choice="opt"><parameter>{|key| }</parameter></methodparam></methodsynopsis> Yields each key to the block. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+  
+  <para><methodsynopsis><type>Hash or Enumerator</type><methodname>Hash#each_pair</methodname><methodparam choice="opt"><parameter>{|key, value| }</parameter></methodparam></methodsynopsis> Aliases <function>Hash#each</function>.</para>
+
+ <para><methodsynopsis><type>Hash or Enumerator</type><methodname>Hash#each_value</methodname><methodparam choice="opt"><parameter>{|value| }</parameter></methodparam></methodsynopsis> Yields each value to the block. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+ <para><methodsynopsis><type>true or false</type><methodname>Hash#empty?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver contains no key-value pairs; otherwise, <literal>false</literal>.</para>
+
+ <para><methodsynopsis><type>Object</type><methodname>Hash#fetch</methodname><methodparam><parameter>key</parameter></methodparam><methodparam choice="opt"><parameter>default</parameter></methodparam></methodsynopsis>
+<methodsynopsis><type>Object</type><methodname>Hash#fetch</methodname><methodparam><parameter>key</parameter></methodparam><methodparam><parameter>{|key| }</parameter></methodparam></methodsynopsis> Returns the value associated with the key <parameter>key</parameter>. If the given key does not exist, and no other arguments are given, an <exceptionname>KeyError</exceptionname> is raised; if <parameter>default</parameter> is given, it will be returned; otherwise, the block is called with the key as a parameter, and its value returned. All forms ignore any default values.</para>
+
+ <para><methodsynopsis><type>Array</type><methodname>Hash#flatten</methodname><methodparam choice="opt"><parameter>depth=1</parameter></methodparam></methodsynopsis> Returns the receiver converted to an <literal>Array</literal> then flattened with <function>Array#flatten(<replaceable>depth</replaceable>)</function>.</para>
+
+ <para><methodsynopsis><type>true or false</type><methodname>Hash#has_key?</methodname><methodparam><parameter>key</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the given key exists in the receiver; otherwise, <literal>false</literal>. Aliased by <function>Hash#include?</function> and <function>Hash#member?</function>.</para>
+
+ <para><methodsynopsis><type>true or false</type><methodname>Hash#has_value?</methodname><methodparam><parameter>value</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if a key exists in the receiver with the given value; otherwise, <literal>false</literal>. Aliased by <function>Hash#value?</function>.</para>
+
+ <para><methodsynopsis><type>true or false</type><methodname>Hash#include?</methodname><methodparam><parameter>key</parameter></methodparam></methodsynopsis> Aliases <function>Hash#has_key?</function>.</para>
+
+ <para><methodsynopsis><type>Object</type><methodname>Hash#index</methodname><methodparam><parameter>key</parameter></methodparam></methodsynopsis> Deprecated; use the identical <function>Hash#key</function> instead.</para>
+
+ <para><methodsynopsis><type>Hash</type><methodname>Hash#invert</methodname><void/></methodsynopsis> Returns a new <literal>Hash</literal> whose keys are the receiver’s values, and values, the receiver’s keys—if the receiver has keys with duplicate values, the results are unspecified.</para>
+
+ <para><methodsynopsis><type>Object or nil</type><methodname>Hash#key</methodname><methodparam><parameter>value</parameter></methodparam></methodsynopsis> Returns the first key associated with the given value, or <literal>nil</literal> if no such key exists.</para>
+
+ <para><methodsynopsis><type>Array</type><methodname>Hash#keys</methodname><void/></methodsynopsis> Returns the keys of the receiver.</para>
+ 
+ <para><methodsynopsis><type>Integer</type><methodname>Hash#length</methodname><void/></methodsynopsis> Returns the number of key-value pairs in the receiver. Aliased by <function>Hash#size</function>.</para>
+
+ <para><methodsynopsis><type>true or false</type><methodname>Hash#member?</methodname><methodparam><parameter>key</parameter></methodparam></methodsynopsis> Aliases <function>Hash#has_key?</function>.</para>
+
+ <para><methodsynopsis><type>Hash</type><methodname>Hash#merge</methodname><methodparam><parameter>hash</parameter></methodparam><methodparam choice="opt"><parameter>{|key, old_value, new_value| }</parameter></methodparam></methodsynopsis> Returns a new <literal>Hash</literal> containing the key-value pairs of the receiver plus those of the given <literal>Hash</literal>. If the same key exists in both <literal>Hash</literal>es, it’s associated with the value from <parameter>hash</parameter>. Alternatively, if a block is given it is called with each duplicate key, along with its value in the receiver and its value in <parameter>hash</parameter>: its return value becomes the value of the duplicate key.</para>
+
+ <para><methodsynopsis><type>Hash</type><methodname>Hash#merge!</methodname><methodparam><parameter>hash</parameter></methodparam><methodparam choice="opt"><parameter>{|key, old_value, new_value| }</parameter></methodparam></methodsynopsis> Behaves as <function>Hash#merge</function>, but modifies the receiver in-place. Aliased by <function>Hash#update</function>.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Hash#rassoc</methodname><methodparam><parameter>value</parameter></methodparam></methodsynopsis> Returns a two-element <literal>Array</literal> comprising the first key whose value is <parameter>value</parameter>, and <parameter>value</parameter>. If there is no key associated with the given value, <literal>nil</literal> returned.</para>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Hash#rehash</methodname><void/></methodsynopsis> Re-creates the receiver using the current hash values for each key. If called while the receiver is being iterated over, an <exceptionname>IndexError</exceptionname> is raised.</para>
+
+  <para><methodsynopsis><type>Hash or Enumerator</type><methodname>Hash#reject</methodname><methodparam><parameter>{|key, value| }</parameter></methodparam></methodsynopsis> Deletes each key-value pair for which the block is <literal>true</literal> from a copy of the receiver, then returns this copy. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+  
+  <para><methodsynopsis><type>Hash or Enumerator</type><methodname>Hash#reject</methodname><methodparam><parameter>{|key, value| }</parameter></methodparam></methodsynopsis> Deletes each key-value pair for which the block is <literal>true</literal> from a copy of the receiver, then returns this copy. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+  
+  <para><methodsynopsis><type>Hash, Enumerator, or nil</type><methodname>Hash#reject!</methodname><methodparam choice="opt"><parameter>{|key, value| }</parameter></methodparam></methodsynopsis> Deletes each key-value pair for which the block is <literal>true</literal>, then returns the receiver. Returns <literal>nil</literal> if the block was never <literal>true</literal>, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Hash#replace</methodname><methodparam><parameter>hash</parameter></methodparam></methodsynopsis> Replaces all key-value pairs in the receiver with those from <parameter>hash</parameter>, then returns the receiver.</para>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Hash#select</methodname><methodparam choice="opt"><parameter>{|key, value| }</parameter></methodparam></methodsynopsis> Returns a new <literal>Hash</literal> containing the key-value pairs of the receiver for which the block is <literal>true</literal>.</para>
+
+  <para><methodsynopsis><type>Array or Object</type><methodname>Hash#shift</methodname><void/></methodsynopsis> Deletes and returns the oldest key-value pair—i.e. the first pair to be returned in an iteration—in the receiver. Returns the default value if the receiver is empty.</para>
+ 
+  <para><methodsynopsis><type>Integer</type><methodname>Hash#size</methodname><void/></methodsynopsis> Aliases <function>Hash#length</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Hash#sort</methodname><methodparam choice="opt"><parameter>{|a, b| }</parameter></methodparam></methodsynopsis> Converts the receiver to an <literal>Array</literal> of <literal>[<replaceable>key</replaceable>, <replaceable>value</replaceable>]</literal> <literal>Arrays</literal>s, on which it invokes <function>Array#sort</function> with the block—if given.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Hash#store</methodname><methodparam><parameter>key</parameter></methodparam><methodparam><parameter>value</parameter></methodparam></methodsynopsis> Aliases <function>Hash#[]=</function>.</para>
+  
+  <para><methodsynopsis><type>Array</type><methodname>Hash#to_a</methodname><void/></methodsynopsis> Returns the receiver as an <literal>Array</literal> of <literal>[<replaceable>key</replaceable>, <replaceable>value</replaceable>]</literal> <literal>Arrays</literal>s.</para>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Hash#to_hash</methodname><void/></methodsynopsis> Returns the receiver.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Hash#to_s</methodname><void/></methodsynopsis> Returns the receiver in the form <literal>{<replaceable>key<subscript>0</subscript></replaceable> =&gt; <replaceable>value<subscript>0</subscript></replaceable>, …, <replaceable>key<subscript><replaceable>n</replaceable></subscript></replaceable> =&gt; <replaceable>value<subscript><replaceable>n</replaceable></subscript></replaceable>}</literal>, with both both <replaceable>key</replaceable> and <replaceable>value</replaceable> substituted for their <function>#inspect</function> output. An empty <literal>Hash</literal> is returned as <literal>"{}"</literal>, and a recursive <literal>Hash</literal> as <literal>"{....}"</literal>.</para>
+
+ <para><methodsynopsis><type>Hash</type><methodname>Hash#update</methodname><methodparam><parameter>hash</parameter></methodparam><methodparam choice="opt"><parameter>{|key, old_value, new_value| }</parameter></methodparam></methodsynopsis> Aliases <function>Hash#merge!</function>.</para>
+
+ <para><methodsynopsis><type>true or false</type><methodname>Hash#value?</methodname><methodparam><parameter>value</parameter></methodparam></methodsynopsis> Aliases <function>Hash#has_value?</function>.</para>
+
+ <para><methodsynopsis><type>Array</type><methodname>Hash#values</methodname><void/></methodsynopsis> Returns the values of every key.</para>
+
+ <para><methodsynopsis><type>Array</type><methodname>Hash#values_at</methodname><methodparam rep="repeat"><parameter>key</parameter></methodparam></methodsynopsis> Returns the values associated with each given key, or the default value if the key does not exist.</para>
+</appendix>
