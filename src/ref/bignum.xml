@@ -40,6 +40,8 @@
 
   <para><methodsynopsis><type>Bignum</type><methodname>Bignum#abs</methodname><void/></methodsynopsis> Returns the absolute value of the receiver. Aliased by <function>Bignum#magnitude</function>.</para>
 
+  <para><methodsynopsis><type>Array</type><methodname>Bignum#coerce</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> whose first element is <parameter>number</parameter> as a <literal>Bignum</literal>, and last element is the receiver. If <parameter>number</parameter> is neither a <literal>Fixnum</literal> nor a <literal>Bignum</literal>, a <exceptionname>TypeError</exceptionname> is raised.</para>
+
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#div</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Bignum#/</function>.</para>
 
   <para><methodsynopsis><type>Array</type><methodname>Bignum#divmod</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Divides the receiver by <parameter>number</parameter>, returning an <literal>Array</literal> whose first element is the quotient, and last element, the modulus. The quotient is rounded toward −∞.</para>
