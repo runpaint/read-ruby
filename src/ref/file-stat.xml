@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.file-stat" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>File::Stat</title>
+
+  <para><methodsynopsis><type>-1, 0, 1</type><methodname>File::Stat#&lt;=&gt;</methodname><methodparam><parameter>stat</parameter></methodparam></methodsynopsis> Compares the modification time of this file with that of the given <literal>File::Stat</literal> object, returning <literal>-1</literal> if the receiver is older, <literal>0</literal> if they are equal, and <literal>1</literal> if the receiver is younger.</para>
+
+  <para><methodsynopsis><type>Time</type><methodname>File::Stat#atime</methodname><void/></methodsynopsis> Returns the last access time for this file, or the epoch if has never been accessed.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File::Stat#blksize</methodname><void/></methodsynopsis> Returns the block size of this file’s filesystem, or <literal>nil</literal> if the filesystem doesn’t support this attribute.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#blockdev?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is a block device; <literal>false</literal> if it isn’t or this operating system does not support such devices.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#blocks</methodname><void/></methodsynopsis> Returns the number of file system blocks allocated for this file, or <literal>nil</literal> if the filesystem doesn’t support this attribute.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#chardev?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is a character device; <literal>false</literal> if it isn’t or this operating system does not support such devices.</para>
+
+  <para><methodsynopsis><type>Time</type><methodname>File::Stat#ctime</methodname><void/></methodsynopsis> Returns the time of last status change—i.e. the inode change time on Unix-like systems—for this file.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File::Stat#dev</methodname><void/></methodsynopsis> Returns the device ID for this file.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#dev_major</methodname><void/></methodsynopsis> Returns the major part of <function>File::Stat#dev</function>; otherwise, or if the operating system doesn’t support this attribute, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#dev_minor</methodname><void/></methodsynopsis> Returns the minor part of <function>File::Stat#dev</function> on supported operating systems; otherwise, or if the operating system doesn’t support this attribute, <literal>nil</literal>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#directory?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file a directory; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#executable?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is executable by the effective owner of the current process; otherwise, or if the operating system does not have the concept of an <emphasis>executable</emphasis> file, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#executable_real?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is executable by the real owner of the current process; otherwise, or if the operating system does not have the concept of an <emphasis>executable</emphasis> file, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#file?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is a regular—as opposed to a device, directory, pipe, or socket—file; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>File::Stat#ftype</methodname><void/></methodsynopsis> Returns this file’s type as one of the following <literal>String</literal>s: <literal>"blockSpecial"</literal>, <literal>"characterSpecial"</literal>, <literal>"directory"</literal>, <literal>"fifo"</literal>, <literal>"link"</literal>, <literal>"socket"</literal>, or <literal>"unknown"</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File::Stat#gid</methodname><void/></methodsynopsis> Returns this group ID of this file’s owner.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#grpowned?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the effective group ID of the current process is equal to the group ID of this file; otherwise, or on Windows, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File::Stat#ino</methodname><void/></methodsynopsis> Returns the inode number for this file.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File::Stat#mode</methodname><void/></methodsynopsis> Returns the permission bits for this file.</para>
+
+  <para><methodsynopsis><type>Time</type><methodname>File::Stat#mtime</methodname><void/></methodsynopsis> Returns the time of last modification—on Unix-like systems this equates to the file’s contents being modified, or, if this file is a directory, the creation or deletion of files in that directory—for this file.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File::Stat#nlink</methodname><void/></methodsynopsis> Returns the number of hard links to this file.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#owned?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is owned by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#pipe?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is a pipe; otherwise, or if the operating system doesn’t support pipes, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#rdev</methodname><void/></methodsynopsis> Returns the device number that this special file represents, or <literal>nil</literal> if the operating system doesn’t support this attribute.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#rdev_major</methodname><void/></methodsynopsis> Returns the major part of the device number that this special file represents, or <literal>nil</literal> if the operating system doesn’t return this attribute.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#rdev_minor</methodname><void/></methodsynopsis> Returns the minor part of the device number that this special file represents, or <literal>nil</literal> if the operating system doesn’t return this attribute.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#readable?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is readable by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#readable_real?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is readable by the real user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#setgid?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file has its set-group-ID bit set; otherwise, or if the operating system doesn’t support setgid bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#setuid?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file has its set-user-ID bit set; otherwise, or if the operating system doesn’t support setuid bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File::Stat#size</methodname><void/></methodsynopsis> Returns the size of this file in bytes.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#size?</methodname><void/></methodsynopsis> Returns <literal>nil</literal> if this file has a size of <literal>0</literal>; otherwise, the size in bytes.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#socket?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is a socket; otherwise, or if the operating system doesn’t support sockets, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#sticky?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file has its sticky bit set; otherwise, or if the operating system doesn’t support sticky bits, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#symlink?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is a symbolic link; otherwise, or if the operating system doesn’t support symbolic links, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>File::Stat#uid</methodname><void/></methodsynopsis> Returns the user ID of the file’s owner.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#world_readable?</methodname><void/></methodsynopsis> Returns the permission bits of this file if it is world readable; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>File::Stat#world_writable?</methodname><void/></methodsynopsis> Returns the permission bits of this file if it is world writable; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#writable?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is writable by the effective user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#writable_real?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file is writable by the real user ID of the current process; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>File::Stat#zero?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this file has a size of <literal>0</literal>; otherwise, <literal>false</literal>.</para>
+</appendix>
