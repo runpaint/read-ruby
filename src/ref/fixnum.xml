@@ -6,37 +6,33 @@
   
   <title>Fixnum</title>
 
+  <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#%</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of the receiver modulo <parameter>number</parameter>. Aliased by <function>Fixnum#modulo</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#&amp;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise AND between the receiver and <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Fixnum#*</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of multiplying <parameter>number</parameter> with the receiver.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Fixnum#**</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of raising the receiver to the <parameter>number</parameter><superscript>th</superscript> power.</para>
+
   <para><methodsynopsis><type>Numeric</type><methodname>Fixnum#+</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of adding the receiver to <parameter>number</parameter>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Fixnum#-</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of subtracting <parameter>number</parameter> from the receiver.</para>
 
-  <para><methodsynopsis><type>Numeric</type><methodname>Fixnum#*</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of multiplying <parameter>number</parameter> with the receiver.</para>
+  <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
 
   <para><methodsynopsis><type>Integer</type><methodname>Fixnum#/</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using integer division—the receiver by <parameter>number</parameter>. Aliased by <function>Fixnum#div</function>.</para>
 
-  <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#%</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of the receiver modulo <parameter>number</parameter>. Aliased by <function>Fixnum#modulo</function>.</para>
-
-  <para><methodsynopsis><type>Numeric</type><methodname>Fixnum#**</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of raising the receiver to the <parameter>number</parameter><superscript>th</superscript> power.</para>
-
-  <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
-
-  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#~</methodname><void/></methodsynopsis> Returns the result of inverting the receiver’s bits.</para>
-
-  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#|</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise OR between the receiver and <parameter>number</parameter>.</para>
-
-  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#&amp;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise AND between the receiver and <parameter>number</parameter>.</para>
-
-  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#^</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise EXCLUSIVE OR between the receiver and <parameter>number</parameter>.</para>
-
   <para><methodsynopsis><type>Integer</type><methodname>Fixnum#&lt;&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of left-shifting <parameter>number</parameter> bits of the receiver.</para>
-
-  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#&gt;&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of right-shifting <parameter>number</parameter> bits of the receiver and its sign.</para>
 
   <para><methodsynopsis><type>-1, 0, 1</type><methodname>Fixnum#&lt;=&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>-1</literal> if the receiver is less than <parameter>number</parameter>, <literal>0</literal> if they are equal, and <literal>1</literal> if it is greater.</para>
 
   <para><methodsynopsis><type>true or false</type><methodname>Fixnum#==</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the <parameter>number</parameter> is a <literal>Numeric</literal> with the same value as the receiver; <literal>false</literal>, otherwise.</para>
 
+  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#&gt;&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of right-shifting <parameter>number</parameter> bits of the receiver and its sign.</para>
+
   <para><methodsynopsis><type>0 or 1</type><methodname>Fixnum#[]</methodname><methodparam><parameter>bit</parameter></methodparam></methodsynopsis> Returns the <parameter>bit</parameter><superscript>th</superscript> bit of the receiver, where the 0<superscript>th</superscript> bit is the least significant.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#^</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise EXCLUSIVE OR between the receiver and <parameter>number</parameter>.</para>
 
   <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#abs</methodname><void/></methodsynopsis> Returns the absolute value of the receiver. Aliased by <function>Fixnum#magnitude</function>.</para>
 
@@ -65,4 +61,8 @@
   <para><methodsynopsis><type>String</type><methodname>Fixnum#to_s</methodname><methodparam choice="opt"><parameter>base=10</parameter></methodparam></methodsynopsis> Returns a <literal>String</literal> representation of the receiver in the given base, where <parameter>base</parameter> is between <literal>2</literal> and <literal>36</literal> inclusive.</para>
   
   <para><methodsynopsis><type>true or false</type><methodname>Fixnum#zero?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is equal to zero; otherwise, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#|</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise OR between the receiver and <parameter>number</parameter>.</para>
+ 
+  <para><methodsynopsis><type>Integer</type><methodname>Fixnum#~</methodname><void/></methodsynopsis> Returns the result of inverting the receiver’s bits.</para>
 </appendix>
