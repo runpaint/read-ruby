@@ -30,7 +30,9 @@
 
   <para><methodsynopsis><type>-1, 0, 1</type><methodname>Bignum#&lt;=&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>-1</literal> if the receiver is less than <parameter>number</parameter>, <literal>0</literal> if they are equal, and <literal>1</literal> if it is greater.</para>
 
-  <para><methodsynopsis><type>true or false</type><methodname>Bignum#==</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the <parameter>number</parameter> is a <literal>Numeric</literal> with the same value as the receiver; <literal>false</literal>, otherwise.</para>
+  <para><methodsynopsis><type>true or false</type><methodname>Bignum#==</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the <parameter>number</parameter> is a <literal>Numeric</literal> with the same value as the receiver; <literal>false</literal>, otherwise. Aliased by <function>Bignum#===</function>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Bignum#===</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Bignum#==</function>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&gt;&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of right-shifting <parameter>number</parameter> bits of the receiver and its sign.</para>
 
