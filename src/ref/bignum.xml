@@ -5,43 +5,39 @@
 	 xmlns:xlink="http://www.w3.org/1999/xlink">
   
   <title>Bignum</title>
+  
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#%</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of the receiver modulo <parameter>number</parameter>. Aliased by <function>Bignum#modulo</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&amp;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise AND between the receiver and <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#*</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of multiplying <parameter>number</parameter> with the receiver.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#**</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of raising the receiver to the <parameter>number</parameter><superscript>th</superscript> power.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#+</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of adding the receiver to <parameter>number</parameter>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#-</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of subtracting <parameter>number</parameter> from the receiver.</para>
 
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#*</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of multiplying <parameter>number</parameter> with the receiver.</para>
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#/</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using integer division—the receiver by <parameter>number</parameter>. Aliased by <function>Bignum#div</function>.</para>
 
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#%</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of the receiver modulo <parameter>number</parameter>. Aliased by <function>Bignum#modulo</function>.</para>
-
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#**</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of raising the receiver to the <parameter>number</parameter><superscript>th</superscript> power.</para>
-
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
-
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#~</methodname><void/></methodsynopsis> Returns the result of inverting the receiver’s bits.</para>
-
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#|</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise OR between the receiver and <parameter>number</parameter>.</para>
-
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&amp;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise AND between the receiver and <parameter>number</parameter>.</para>
-
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#^</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise EXCLUSIVE OR between the receiver and <parameter>number</parameter>.</para>
-  
   <para><methodsynopsis><type>true or false</type><methodname>Bignum#&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&lt;&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of left-shifting <parameter>number</parameter> bits of the receiver.</para>
 
   <para><methodsynopsis><type>true or false</type><methodname>Bignum#&lt;=</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than or equal to <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
 
-  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&gt;&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of right-shifting <parameter>number</parameter> bits of the receiver and its sign.</para>
-
   <para><methodsynopsis><type>-1, 0, 1</type><methodname>Bignum#&lt;=&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>-1</literal> if the receiver is less than <parameter>number</parameter>, <literal>0</literal> if they are equal, and <literal>1</literal> if it is greater.</para>
 
   <para><methodsynopsis><type>true or false</type><methodname>Bignum#==</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the <parameter>number</parameter> is a <literal>Numeric</literal> with the same value as the receiver; <literal>false</literal>, otherwise.</para>
 
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#&gt;&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of right-shifting <parameter>number</parameter> bits of the receiver and its sign.</para>
+
   <para><methodsynopsis><type>0 or 1</type><methodname>Bignum#[]</methodname><methodparam><parameter>bit</parameter></methodparam></methodsynopsis> Returns the <parameter>bit</parameter><superscript>th</superscript> bit of the receiver, where the 0<superscript>th</superscript> bit is the least significant.</para>
 
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#^</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise EXCLUSIVE OR between the receiver and <parameter>number</parameter>.</para>
+  
   <para><methodsynopsis><type>Bignum</type><methodname>Bignum#abs</methodname><void/></methodsynopsis> Returns the absolute value of the receiver. Aliased by <function>Bignum#magnitude</function>.</para>
 
   <para><methodsynopsis><type>Array</type><methodname>Bignum#coerce</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> whose first element is <parameter>number</parameter> as a <literal>Bignum</literal>, and last element is the receiver. If <parameter>number</parameter> is neither a <literal>Fixnum</literal> nor a <literal>Bignum</literal>, a <exceptionname>TypeError</exceptionname> is raised.</para>
@@ -69,4 +65,8 @@
   <para><methodsynopsis><type>Bignum</type><methodname>Bignum#to_f</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Float</literal>, or <literal>Float::INFINITY</literal> if its too big.</para>
  
   <para><methodsynopsis><type>Bignum</type><methodname>Bignum#to_s</methodname><methodparam choice="opt"><parameter>base=10</parameter></methodparam></methodsynopsis> Returns a <literal>String</literal> representation of the receiver in the given base, where <parameter>base</parameter> is between <literal>2</literal> and <literal>36</literal> inclusive.</para>
+  
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#|</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of a bitwise OR between the receiver and <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Bignum#~</methodname><void/></methodsynopsis> Returns the result of inverting the receiver’s bits.</para>
 </appendix>
