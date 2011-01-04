@@ -55,6 +55,8 @@
   <para><methodsynopsis><type>Bignum</type><methodname>Bignum#magnitude</methodname><void/></methodsynopsis> Aliases <function>Bignum#abs</function>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#modulo</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Bignum#%</function>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Bignum#odd?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this number is odd; otherwise, <literal>false</literal>.</para>
 
   <para><methodsynopsis><type>Numeric</type><methodname>Bignum#remainder</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Divides the receiver by <parameter>number</parameter>, returning the remainder.</para>
  
