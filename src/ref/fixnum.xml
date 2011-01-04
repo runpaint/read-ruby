@@ -21,6 +21,8 @@
   <para><methodsynopsis><type>Fixnum</type><methodname>Fixnum#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
 
   <para><methodsynopsis><type>Integer</type><methodname>Fixnum#/</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using integer division—the receiver by <parameter>number</parameter>. Aliased by <function>Fixnum#div</function>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Fixnum#&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is less than <parameter>number</parameter>; otherwise, <literal>false</literal>.</para>
 
   <para><methodsynopsis><type>Integer</type><methodname>Fixnum#&lt;&lt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of left-shifting <parameter>number</parameter> bits of the receiver.</para>
 
