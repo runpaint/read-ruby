@@ -32,7 +32,7 @@
   
   <para><methodsynopsis><type>true or false</type><methodname>File.executable_real?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> is executable by the real owner of the current process; otherwise, <literal>false</literal>.</para>
   
-  <para><methodsynopsis><type>true or false</type><methodname>File.exist?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> exists; otherwise, <literal>false</literal>. Aliased by <function>File#exists?</function>.</para>
+  <para><methodsynopsis><type>true or false</type><methodname>File.exist?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>filename</parameter> exists; otherwise, <literal>false</literal>. Aliased by <function>File.exists?</function>.</para>
   
   <para><methodsynopsis><type>true or false</type><methodname>File.exists?</methodname><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Aliases <function>File.exist?</function>.</para>
   
