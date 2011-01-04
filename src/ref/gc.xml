@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.gc" 
+	 xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>GC</title>
+
+  <para><methodsynopsis><type>Integer</type><methodname>GC.count</methodname><void/></methodsynopsis> Returns the number of times the garbage collector has run in the current process.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>GC.disable</methodname><void/></methodsynopsis> Disables garbage collection, returning <literal>true</literal> if garbage collection was already disabled; otherwise, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>GC.enable</methodname><void/></methodsynopsis> Enables garbage collection, returning <literal>true</literal> if garbage collection was disabled; otherwise, <literal>false</literal>.</para>
+  
+  <para><methodsynopsis><type>nil</type><methodname>GC.start</methodname><void/></methodsynopsis> Starts the garbage collector unless it has been explicitly disabled. Aliased to <function>GC#garbage_collect</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>GC.stress</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the <emphasis>stress</emphasis> flag—see <function>GC.stress=</function> for details—is set; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>GC.stress=</methodname><methodparam><parameter>boolean</parameter></methodparam></methodsynopsis> Sets the <emphasis>stress</emphasis> flag to <parameter>boolean</parameter>—which may be either <literal>true</literal> or <literal>false</literal>. In the first case, the garbage collector will run after every object allocation; in the second, and default, case the garbage collector will run as often as necessary.</para> 
+
+  <para><methodsynopsis><type>nil</type><methodname>GC#garbage_collect</methodname><void/></methodsynopsis> Aliases <function>GC.start</function>.</para>
+</appendix>
