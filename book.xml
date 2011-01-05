@@ -62,4 +62,5 @@
   <xi:include href="src/ref/hash.xml"/>
   <xi:include href="src/ref/integer.xml"/>
   <xi:include href="src/ref/io.xml"/>
+  <xi:include href="src/ref/kernel.xml"/>
 </book>
