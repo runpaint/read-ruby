@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.integer" 
+	 xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Integer</title>
+  
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#ceil</methodname><void/></methodsynopsis> Returns the receiver. Aliased by <function>Integer#floor</function>, <function>Integer#round</function>, <function>Integer#to_i</function>, and <function>Integer#to_int</function>, and <function>Integer#truncate</function>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Integer#chr</methodname><methodparam choice="opt"><parameter>encoding</parameter></methodparam></methodsynopsis> Interprets the receiver as a codepoint in the <parameter>encoding</parameter>, returning the corresponding character. If <parameter>encoding</parameter> is not given, it is the default internal encoding—if set—or <emphasis>US-ASCII</emphasis>.</para>
+
+  <para><methodsynopsis><type>1</type><methodname>Integer#denominator</methodname><void/></methodsynopsis> Returns <literal>1</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or Enumerator</type><methodname>Integer#downto</methodname><methodparam><parameter>until</parameter></methodparam><methodparam choice="opt"><parameter>{|n| }</parameter></methodparam></methodsynopsis> Yields each <literal>Integer</literal> from the receiver down to, and including, the given <literal>Integer</literal>. Returns the receiver, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Integer#even?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this number is even; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#floor</methodname><void/></methodsynopsis> Aliases <function>Integer#ceil</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#gcd</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the greatest divisor of the receiver and <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Integer#gcdlcm</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> whose first element is <function>Integer#gcd</function>, and second element is <function>Integer#lcm</function>.</para>
+
+  <para><methodsynopsis><type>true</type><methodname>Integer#integer?</methodname><void/></methodsynopsis> Returns <literal>true</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#lcm</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the lowest common multiple of the receiver and <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#next</methodname><void/></methodsynopsis> Returns the receiver incremented by <literal>1</literal>. Aliased by <function>Integer#succ</function>.</para>
+
+<para><methodsynopsis><type>Integer</type><methodname>Integer#numerator</methodname><void/></methodsynopsis> Returns the receiver.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Integer#odd?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this number is odd; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#ord</methodname><void/></methodsynopsis> Returns the receiver.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#pred</methodname><void/></methodsynopsis> Returns the receiver decremented by <literal>1</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#round</methodname><void/></methodsynopsis> Aliases <function>Integer#ceil</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#succ</methodname><void/></methodsynopsis> Aliases <function>Integer#next</function>.</para>
+
+  <para><methodsynopsis><type>Integer or Enumerator</type><methodname>Integer#times</methodname><methodparam choice="opt"><parameter>{|n| }</parameter></methodparam></methodsynopsis> Yields each <literal>Integer</literal> from <literal>0</literal> up to, but not including, the receiver. Returns the receiver, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#to_i</methodname><void/></methodsynopsis> Aliases <function>Integer#ceil</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#to_int</methodname><void/></methodsynopsis> Aliases <function>Integer#ceil</function>.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>Integer#to_r</methodname><void/></methodsynopsis> Returns a <literal>Rational</literal> whose numerator is the receiver, and whose denominator is one.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Integer#truncate</methodname><void/></methodsynopsis> Aliases <function>Integer#ceil</function>.</para>
+
+  <para><methodsynopsis><type>Integer or Enumerator</type><methodname>Integer#upto</methodname><methodparam><parameter>until</parameter></methodparam><methodparam choice="opt"><parameter>{|n| }</parameter></methodparam></methodsynopsis> Yields each <literal>Integer</literal> from the receiver up to, and including, the given <literal>Integer</literal>. Returns the receiver, or an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>Integer#rationalize</methodname><methodparam choice="opt"><parameter>epsilon</parameter></methodparam></methodsynopsis> Converts the receiver to a <literal>Rational</literal>, ignoring its argument.</para>
+</appendix>
+

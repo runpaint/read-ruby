@@ -60,5 +60,6 @@
   <xi:include href="src/ref/float.xml"/>
   <xi:include href="src/ref/gc.xml"/>
   <xi:include href="src/ref/hash.xml"/>
+  <xi:include href="src/ref/integer.xml"/>
   <xi:include href="src/ref/io.xml"/>
 </book>
