@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.marshal" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Marshal</title>
+
+  <para><methodsynopsis><type>IO or String</type><methodname>Marshal.dump</methodname><methodparam><parameter>object</parameter></methodparam><methodparam choice="opt"><parameter>io</parameter></methodparam><methodparam choice="opt"><parameter>limit=-1</parameter></methodparam></methodsynopsis> Serialises <parameter>object</parameter> and all of its descendants, writing the result to the <literal>IO</literal> stream, <parameter>io</parameter>, if specified, or returning it as a <literal>String</literal>. If <parameter>limit</parameter> is positive, it specifies the maximum depth of descendant objects to serialise; if it is negative, there is no limit.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Marshal.load</methodname><methodparam><parameter>source</parameter></methodparam><methodparam choice="opt"><parameter>proc</parameter></methodparam></methodsynopsis> De-serialises the data in <parameter>source</parameter> to a Ruby object. <parameter>source</parameter> is either an <literal>IO</literal> stream from which the data is read, or an object responding to <function>#to_str</function>. If <parameter>proc</parameter> is given as a <literal>Proc</literal>, it is invoked with each object as it is de-serialised. Aliased by <function>Marshal.restore</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Marshal.restore</methodname><methodparam><parameter>source</parameter></methodparam><methodparam choice="opt"><parameter>proc</parameter></methodparam></methodsynopsis> Aliases <function>Marshal.load</function>.</para>
+</appendix>
