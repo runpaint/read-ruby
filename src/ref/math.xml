@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.math" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Math</title>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.acos</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the arc cosine of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.acosh</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the inverse hyperbolic cosine of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.asin</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the arc sine of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.asinh</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the inverse hyperbolic sine of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.atan</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the arc tangent of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.atanh</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the inverse hyperbolic tangent of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.atan2</methodname><methodparam><parameter>y</parameter></methodparam><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the principal value of the arc tangent of <literal><replaceable>y</replaceable>/<replaceable>x</replaceable></literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.cbrt</methodname><methodparam><parameter>n</parameter></methodparam></methodsynopsis> Returns the cube root of the given <literal>Numeric</literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.cos</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the cosine of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.erf</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the error function of <parameter>x</parameter>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.erfc</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the complementary error function of <parameter>x</parameter>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.exp</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns <literal>Math::E ** <replaceable>x</replaceable></literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Math.frexp</methodname><methodparam><parameter>n</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> whose first element is a <literal>Float</literal> which, when multiplied by <literal>2</literal> raised to the power of the last element, equals <parameter>n</parameter>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.gamma</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the result of the Gamma function for <replaceable>x</replaceable>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.hypot</methodname><methodparam><parameter>x</parameter></methodparam><methodparam><parameter>y</parameter></methodparam></methodsynopsis> Returns the hypotenuse of the right-angled triangle with sides <replaceable>x</replaceable> and <replaceable>y</replaceable>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.ldexp</methodname><methodparam><parameter>base</parameter></methodparam><methodparam><parameter>exponent</parameter></methodparam></methodsynopsis> Returns the product of the <literal>Float</literal> <parameter>base</parameter> and <literal>2</literal> raised to the <literal>Integer</literal> <parameter>exponent</parameter>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Math.lgamma</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns a two-element <literal>Array</literal> whose first element is the natural logarithm of the absolute value of the Gamma function for <replaceable>x</replaceable>, and last element is <literal>-1</literal> if the Gamma function returned a negative number, or <literal>1</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.log</methodname><methodparam><parameter>n</parameter></methodparam><methodparam choice="opt"><parameter>base=Math::E</parameter></methodparam></methodsynopsis> Returns the natural logarithm of the <literal>Numeric</literal> <parameter>n</parameter> in the base <parameter>base</parameter>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.log10</methodname><methodparam><parameter>n</parameter></methodparam></methodsynopsis> Returns the base-10 logarithm of the given <literal>Numeric</literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.log2</methodname><methodparam><parameter>n</parameter></methodparam></methodsynopsis> Returns the base-2 logarithm of the given <literal>Numeric</literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.sin</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the sine of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.sinh</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the hyperbolic sine of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.sqrt</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the non-negative square root of <parameter>x</parameter>, raising <exceptionname>Math::DomainError</exceptionname> if <parameter>x</parameter> is negative.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.tan</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the tangent of angle <parameter>x</parameter>, which is given in radians.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Math.tanh</methodname><methodparam><parameter>x</parameter></methodparam></methodsynopsis> Returns the hyperbolic tangent of angle <parameter>x</parameter>, which is given in radians.</para>
+</appendix>
