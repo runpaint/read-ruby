@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.method" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Method</title>
+
+  <para><methodsynopsis><type>Object</type><methodname>Method#[]</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Invokes the objectified method with the given arguments, returning the result. Aliased by <function>Method#call</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Method#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is a <literal>Method</literal> object representing the same method as objectified by the receiver, or an alias thereof; otherwise, <literal>false</literal>. Aliased by <function>Method#eql?</function>.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Method#arity</methodname><void/></methodsynopsis> Returns the arity of the objectified method: if it accepts a fixed number of arguments, this number is returned; for methods implemented in Ruby that accept a variable number of arguments, the negative of this number less one is returned; for methods implemented in C that accept a variable number of arguments, <literal>-1</literal> is returned.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Method#call</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Aliases <function>Method#[]</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Method#eql?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Aliases <function>Method#==</function>.</para>
+
+  <para><methodsynopsis><type>Symbol</type><methodname>Method#name</methodname><void/></methodsynopsis> Returns the name of the objectified method, i.e. its selector.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Method#owner</methodname><void/></methodsynopsis> Returns the <literal>Class</literal> or <literal>Module</literal> in which the objectified method is defined.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Method#parameters</methodname><void/></methodsynopsis> Returns an <literal>Array</literal>, each element of which describes a parameter accepted by the objectified method as an <literal>Array</literal> of the form <literal>[<replaceable>type</replaceable>, <replaceable>name</replaceable>]</literal>. <replaceable>type</replaceable> is <literal>:req</literal> if the parameter is required, <literal>:opt</literal> if the parameter is optional, <literal>:rest</literal> if the parameter accepts a variable number of arguments, or <literal>:block</literal> if the parameter expects a block literal. <replaceable>name</replaceable> is the parameter’s name as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Method#receiver</methodname><void/></methodsynopsis> Returns the object to which the objectified method is bound.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Method#source_location</methodname><void/></methodsynopsis> Returns the absolute filename and line number where the objectified method was defined, or <literal>nil</literal> if it is implemented in C.</para>
+
+  <para><methodsynopsis><type>Proc</type><methodname>Method#to_proc</methodname><void/></methodsynopsis> Returns a <literal>Proc</literal> corresponding to the objectified method.</para>
+
+  <para><methodsynopsis><type>UnboundMethod</type><methodname>Method#unbind</methodname><void/></methodsynopsis> Returns the objectified method detached from its receiver.</para>
+</appendix>
