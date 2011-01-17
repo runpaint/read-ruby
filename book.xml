@@ -64,4 +64,5 @@
   <xi:include href="src/ref/io.xml"/>
   <xi:include href="src/ref/kernel.xml"/>
   <xi:include href="src/ref/marshal.xml"/>
+  <xi:include href="src/ref/matchdata.xml"/>
 </book>

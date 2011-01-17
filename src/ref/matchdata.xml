@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.matchdata" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>MatchData</title>
+
+  <para><methodsynopsis><type>String</type><methodname>MatchData#[]</methodname><methodparam><parameter>group</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array</type><methodname>MatchData#[]</methodname><methodparam><parameter>start</parameter></methodparam><methodparam><parameter>length</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Array</type><methodname>MatchData#[]</methodname><methodparam><parameter>range</parameter></methodparam></methodsynopsis> The first form returns the text corresponding to the given group: a <literal>Fixnum</literal> specifies a numbered group, and a <literal>Symbol</literal> specifies a named group. If <parameter>group</parameter> is <literal>0</literal>, the entire matched string is returned. The second and third forms return the text corresponding to the <parameter>length</parameter> consecutive capture groups starting from <parameter>start</parameter>, or those in positions specified by the given <literal>Range</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>MatchData#begin</methodname><methodparam><parameter>group</parameter></methodparam></methodsynopsis> Returns the character offset in the original string where the given capture group began. <parameter>group</parameter> may be a group’s position, as a <literal>Fixnum</literal>, or name, as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>MatchData#captures</methodname><void/></methodsynopsis> Returns the text corresponding to each capture group as an <literal>Array</literal> of <literal>String</literal>s.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>MatchData#end</methodname><methodparam><parameter>group</parameter></methodparam></methodsynopsis> Returns the character offset in the original string where the given capture group ended. <parameter>group</parameter> may be a group’s position, as a <literal>Fixnum</literal>, or name, as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>MatchData#length</methodname><void/></methodsynopsis> Returns the number of captured groups, i.e. the number of elements in <function>MatchData#captures</function>. Aliased by <function>MatchData#size</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>MatchData#names</methodname><void/></methodsynopsis> Returns the names of each named capture group as an <literal>Array</literal> of <literal>String</literal>s.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>MatchData#offset</methodname><methodparam><parameter>group</parameter></methodparam></methodsynopsis> Returns the character offsets in the original string where the given capture group began and ended. <parameter>group</parameter> may be a group’s position, as a <literal>Fixnum</literal>, or name, as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>MatchData#post_match</methodname><void/></methodsynopsis> Returns the portion of the original string which follows this match. Equivalent to <literal>$'</literal>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>MatchData#pre_match</methodname><void/></methodsynopsis> Returns the portion of the original string which precedes this match. Equivalent to <literal>$`</literal>.</para>
+
+  <para><methodsynopsis><type>Regexp</type><methodname>MatchData#regexp</methodname><void/></methodsynopsis> Returns the regular expression used in this match.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>MatchData#size</methodname><void/></methodsynopsis> Aliases <function>MatchData#length</function>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>MatchData#string</methodname><void/></methodsynopsis> Returns a frozen copy of the original string used in this match.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>MatchData#to_a</methodname><void/></methodsynopsis> Returns the text corresponding to each capture group as an <literal>Array</literal> of <literal>String</literal>s, with the full string matched as the first element.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>MatchData#to_s</methodname><void/></methodsynopsis> Returns the matched string.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>MatchData#values_at</methodname><methodparam rep="repeat"><parameter>index</parameter></methodparam></methodsynopsis> Returns the text corresponding to each numbered group whose <parameter>index</parameter> is given.</para>
+</appendix>
