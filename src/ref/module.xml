@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.module" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Module</title>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module.constants</methodname><methodparam choice="opt"><parameter>include_ancestors</parameter></methodparam></methodsynopsis> Returns the names of top-level constants as an <literal>Array</literal> of <literal>Symbol</literal>s. If <parameter>include_ancestors</parameter> is <literal>true</literal>, the receiver’s ancestors are also searched; otherwise, they’re not.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module.nesting</methodname><void/></methodsynopsis> Returns the enclosing <literal>Module</literal>, the <literal>Module</literal> which encloses that, and so on, as an <literal>Array</literal> of <literal>Module</literal>s.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module.new</methodname><methodparam choice="opt"><parameter>{|module }</parameter></methodparam></methodsynopsis> Creates and returns a new, anonymous <literal>Module</literal>. If the block is supplied, it is passed this object, then evaluated in the context of the new <literal>Module</literal>.</para>
+
+  <para><methodsynopsis><type>true, false, or nil</type><methodname>Module#&lt;</methodname><methodparam><parameter>module</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>module</parameter> is included in, or a subclass of, the receiver <literal>Module</literal> or one of its ancestors. Returns <literal>false</literal> if the two <literal>Module</literal>s are related in another way, or <literal>nil</literal> if they’re not related at all.</para>
+
+  <para><methodsynopsis><type>true, false, or nil</type><methodname>Module#&lt;=</methodname><methodparam><parameter>module</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>module</parameter> is included in, a subclass of, or equal to, the receiver <literal>Module</literal> or one of its ancestors. Returns <literal>false</literal> if the two <literal>Module</literal>s are related in another way, or <literal>nil</literal> if they’re not related at all.</para>
+
+  <para><methodsynopsis><type>true, false, or nil</type><methodname>Module#&gt;</methodname><methodparam><parameter>module</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>module</parameter> is included by, or subclasses, the receiver <literal>Module</literal> or one of its ancestors. Returns <literal>false</literal> if the two <literal>Module</literal>s are related in another way, or <literal>nil</literal> if they’re not related at all.</para>
+
+  <para><methodsynopsis><type>true, false, or nil</type><methodname>Module#&gt;=</methodname><methodparam><parameter>module</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>module</parameter> is included by, subclasses, or is equal to, the receiver <literal>Module</literal> or one of its ancestors. Returns <literal>false</literal> if the two <literal>Module</literal>s are related in another way, or <literal>nil</literal> if they’re not related at all.</para>
+
+  <para><methodsynopsis><type>-1, 0, 1</type><methodname>Module#&lt;=&gt;</methodname><methodparam><parameter>module</parameter></methodparam></methodsynopsis> Returns <literal>-1</literal> if the receiver includes <parameter>module</parameter>, <literal>0</literal> if the two <literal>Module</literal>s are equal, or <literal>1</literal>, otherwise.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Module#===</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is either an instance or descendant of the receiver; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module#ancestors</methodname><void/></methodsynopsis> Returns an <literal>Array</literal> comprising the receiver and each of the <literal>Modules</literal> it includes.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Module#autoload</methodname><methodparam><parameter>name</parameter></methodparam><methodparam><parameter>filename</parameter></methodparam></methodsynopsis> Arranges for <literal>require(<replaceable>filename</replaceable>)</literal> to be invoked, in the top-level context, the first time that the <literal>Module</literal> named <parameter>name</parameter> is referenced within the namespace of the receiver. <parameter>name</parameter> may be either a <literal>String</literal> or <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>String or nil</type><methodname>Module#autoload?</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns the filename that will be automatically loaded when the <literal>Module</literal> named <parameter>name</parameter> is referenced within the namespace of the receiver, or <literal>nil</literal> if there is no such file. <parameter>name</parameter> may be either a <literal>String</literal> or <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#class_eval</methodname><methodparam><parameter>ruby</parameter></methodparam><methodparam choice="opt"><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>line</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>Module#class_eval</methodname><methodparam><parameter>{|module| }</parameter></methodparam></methodsynopsis> Evaluates either a <literal>String</literal> of Ruby, <parameter>ruby</parameter>, or the given block, in the context of the receiver. The <literal>String</literal> <parameter>filename</parameter> and <literal>Fixnum</literal> <parameter>line</parameter> are used as the filename and line number, respectively, reported in error messages. The block is passed the receiver as its argument. Aliased by <function>Module#module_eval</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#class_exec</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam><methodparam><parameter>{|*arguments| }</parameter></methodparam></methodsynopsis> Evaluates the given block in the context of the receiver, passing in its arguments. Aliased by <function>Module#module_exec</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Module#class_variable_defined?</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if a class variable named <parameter>name</parameter> is defined in the receiver; otherwise, <literal>false</literal>. <parameter>name</parameter> is a <literal>Symbol</literal> of the form <literal>:@@<replaceable>identifier</replaceable></literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#class_variable_get</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns the value of the class variable named <parameter>name</parameter> which is defined in the receiver. <parameter>name</parameter> is a <literal>Symbol</literal> of the form <literal>:@@<replaceable>identifier</replaceable></literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#class_variable_set</methodname><methodparam><parameter>name</parameter></methodparam><methodparam><parameter>value</parameter></methodparam></methodsynopsis> Assigns <parameter>value</parameter> to the class variable named <parameter>name</parameter> which is defined in the receiver. <parameter>name</parameter> is a <literal>Symbol</literal> of the form <literal>:@@<replaceable>identifier</replaceable></literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module#class_variables</methodname><void/></methodsynopsis> Returns the names of class variables defined in the receiver as an <literal>Array</literal> of <literal>Symbol</literal>s.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Module#const_defined?</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt"><parameter>include_ancestors=true</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if a constant named <parameter>name</parameter> (a <literal>Symbol</literal>) is defined in the receiver; otherwise, <literal>false</literal>. If <parameter>include_ancestors</parameter> is <literal>true</literal>, the receiver’s ancestors are also searched.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#const_get</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns the value of the constant named <parameter>name</parameter> (a <literal>Symbol</literal>) which is defined in the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#const_missing</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Hook method invoked when an undefined constant named <parameter>name</parameter> (a <literal>Symbol</literal>) is referenced, and expected to either return the corresponding value or delegate to its parent with <function>super</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#const_set</methodname><methodparam><parameter>name</parameter></methodparam><methodparam><parameter>value</parameter></methodparam></methodsynopsis> Assigns <parameter>value</parameter> to the receiver’s constant named <parameter>name</parameter> (a <literal>Symbol</literal>), creating it if necessary.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module#constants</methodname><methodparam choice="opt"><parameter>include_ancestors=true</parameter></methodparam></methodsynopsis> Returns the names of constants accessible from the receiver as an <literal>Array</literal> of <literal>Symbol</literal>s. If <parameter>include_ancestors</parameter> is <literal>true</literal>, the receiver’s ancestors are also searched.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Module#include?</methodname><methodparam><parameter>module</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>module</parameter> is a <literal>Module</literal> included in the receiver or its ancestors; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module#included_modules</methodname><void/></methodsynopsis> Returns the <literal>Module</literal>s included in the receiver and its ancestors.</para>
+
+  <para><methodsynopsis><type>UnboundMethod</type><methodname>Module#instance_method</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns an objectification of the receiver’s instance method named <parameter>name</parameter>, where <parameter>name</parameter> is a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module#instance_methods</methodname><methodparam choice="opt"><parameter>include_ancestors=true</parameter></methodparam></methodsynopsis> Returns the names of the receiver’s non-private instance methods as an <literal>Array</literal> of <literal>Symbol</literal>s. When <parameter>include_ancestors</parameter> is <literal>true</literal>, the ancestors of the receiver are included in the search; otherwise, they’re not.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Module#method_defined?</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if a public or protected instance method named <parameter>name</parameter> is defined in the receiver or its ancestors; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#module_eval</methodname><methodparam><parameter>ruby</parameter></methodparam><methodparam choice="opt"><parameter>filename</parameter></methodparam><methodparam choice="opt"><parameter>line</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>Module#module_eval</methodname><methodparam><parameter>{|module| }</parameter></methodparam></methodsynopsis> Aliases <function>Module#class_eval</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#module_exec</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam><methodparam><parameter>{|*arguments| }</parameter></methodparam></methodsynopsis> Aliases <function>Module#class_exec</function>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Module#name</methodname><void/></methodsynopsis> Returns the name of the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#private_class_method</methodname><methodparam choice="opt" rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> Makes private each class method with one of the given names.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module#private_instance_methods</methodname><methodparam choice="opt"><parameter>include_ancestors=true</parameter></methodparam></methodsynopsis> Returns the names of the receiver’s private instance methods as an <literal>Array</literal> of <literal>Symbol</literal>s. When <parameter>include_parents</parameter> is <literal>true</literal>, the ancestors of the receiver are included in the search; otherwise, they’re not.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Module#private_method_defined?</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if a private instance method named <parameter>name</parameter> is defined in the receiver or its ancestors; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module#protected_instance_methods</methodname><methodparam choice="opt"><parameter>include_ancestors=true</parameter></methodparam></methodsynopsis> Returns the names of the receiver’s protected instance methods as an <literal>Array</literal> of <literal>Symbol</literal>s. When <parameter>include_parents</parameter> is <literal>true</literal>, the ancestors of the receiver are included in the search; otherwise, they’re not.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Module#protected_method_defined?</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if a protected instance method named <parameter>name</parameter> is defined in the receiver or its ancestors; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#public_class_method</methodname><methodparam choice="opt" rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> Makes public each class method with one of the given names.</para>
+
+  <para><methodsynopsis><type>UnboundMethod</type><methodname>Module#public_instance_method</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns an objectification of the receiver’s public instance method named <parameter>name</parameter>, where <parameter>name</parameter> is a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Module#public_instance_methods</methodname><methodparam choice="opt"><parameter>include_ancestors=true</parameter></methodparam></methodsynopsis> Returns the names of the receiver’s public instance methods as an <literal>Array</literal> of <literal>Symbol</literal>s. When <parameter>include_parents</parameter> is <literal>true</literal>, the ancestors of the receiver are included in the search; otherwise, they’re not.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Module#public_method_defined?</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if a public instance method named <parameter>name</parameter> is defined in the receiver or its ancestors; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#remove_class_variable</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Undefines the receiver’s class variable named <parameter>name</parameter>, where <parameter>name</parameter> is a <literal>Symbol</literal> of the form <literal>:@@<replaceable>identifier</replaceable></literal>.</para>
+
+  <!-- The methods below are private -->
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#alias_method</methodname><methodparam><parameter>alias</parameter></methodparam><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Defines an alias named <parameter>alias</parameter> for the receiver’s method named <parameter>name</parameter>.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#append_features</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Hook method invoked when the receiver is included in a module named <parameter>name</parameter>. In order for Ruby to import the constants, methods, and class variables of <parameter>name</parameter> into the receiver, this method should call <function>super</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Module#attr</methodname><methodparam rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> For each given <parameter>name</parameter> creates an instance variable named <literal>@<replaceable>name</replaceable></literal>, and an instance method named <parameter>name</parameter> which returns the value of this variable. <parameter>name</parameter> is a <literal>Symbol</literal>. Aliased by <function>Module#attr_reader</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Module#attr_accessor</methodname><methodparam rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> For each given <parameter>name</parameter> creates an instance variable named <literal>@<replaceable>name</replaceable></literal>, an instance method named <parameter>name</parameter> which returns the value of this variable, and an instance method named <literal><replaceable>name</replaceable>=</literal> which assigns its argument to this variable. <parameter>name</parameter> is a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Module#attr_reader</methodname><methodparam rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> Aliases <function>Module#attr</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Module#attr_writer</methodname><methodparam rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> For each given <parameter>name</parameter> creates an instance variable named <literal>@<replaceable>name</replaceable></literal>, and an instance method named <literal><replaceable>name</replaceable>=</literal> which assigns its argument to this variable. <parameter>name</parameter> is a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Proc</type><methodname>Module#define_method</methodname><methodparam><parameter>name</parameter></methodparam><methodparam><parameter>body</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Proc</type><methodname>Module#define_method</methodname><methodparam><parameter>name</parameter></methodparam><methodparam><parameter>{ }</parameter></methodparam></methodsynopsis> Defines in the receiver an instance method named <parameter>name</parameter> with a body of <parameter>body</parameter> or the given block. <parameter>name</parameter> is a <literal>Symbol</literal> or <literal>String</literal>; <parameter>body</parameter> is a <literal>Proc</literal>, <literal>Method</literal>, or <literal>UnboundMethod</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#extend_object</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Hook invoked by <function>Object#extend</function> on the <literal>Module</literal> with which <parameter>object</parameter> is being extended. Should delegate to its parent with <literal>super</literal>. Aliased to <function>Module#extended</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#extended</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Aliases <function>Module#extend_object</function>.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#include</methodname><methodparam rep="repeat"><parameter>module</parameter></methodparam></methodsynopsis> Mixes in each of the given <literal>Module</literal>s to the receiver by iterating over its arguments in reverse order, invoking <function>Module#append_features</function>, then invoking <function>Module#included</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#method_added</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Hook method invoked when a method is defined on the receiver. <parameter>name</parameter> is the new method’s name as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#method_removed</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Hook method invoked when a method is removed from the receiver. <parameter>name</parameter> is the removed method’s name as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#method_undefined</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Hook method invoked when a method is undefined from the receiver. <parameter>name</parameter> is the undefined method’s name as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#module_function</methodname><methodparam choice="opt" rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> Copies the receiver’s instance method named <parameter>name</parameter> to the receiver’s singleton class, then makes the instance method private. Repeats this process for each <parameter>name</parameter> specified. If called without arguments, applies this process to each instance method defined subsequently in the same scope.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#private</methodname><methodparam choice="opt" rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> Makes each named instance method private, where <parameter>name</parameter> is a <literal>Symbol</literal>. If no arguments are given, sets the visibility of each instance method subsequently defined in the same scope to private.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#protected</methodname><methodparam choice="opt" rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> Makes each named instance method protected, where <parameter>name</parameter> is a <literal>Symbol</literal>. If no arguments are given, sets the visibility of each instance method subsequently defined in the same scope to protected.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#public</methodname><methodparam choice="opt" rep="repeat"><parameter>name</parameter></methodparam></methodsynopsis> Makes each named instance method public, where <parameter>name</parameter> is a <literal>Symbol</literal>. If no arguments are given, sets the visibility of each instance method subsequently defined in the same scope to public.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Module#remove_const</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Removes from the receiver the definition of the constant named <parameter>name</parameter> (a <literal>Symbol</literal>), returning its value.</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#remove_method</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Removes from the receiver the definition of the method named <parameter>name</parameter> (a <literal>Symbol</literal>).</para>
+
+  <para><methodsynopsis><type>Module</type><methodname>Module#undef_method</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Undefines each named method from the receiver, where <parameter>name</parameter> is a <literal>Symbol</literal>.</para>
+</appendix>

@@ -67,4 +67,5 @@
   <xi:include href="src/ref/matchdata.xml"/>
   <xi:include href="src/ref/math.xml"/>
   <xi:include href="src/ref/method.xml"/>
+  <xi:include href="src/ref/module.xml"/>
 </book>
