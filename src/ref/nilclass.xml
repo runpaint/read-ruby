@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.nilclass" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>NilClass</title>
+
+  <para><methodsynopsis><type>false</type><methodname>NilClass#&amp;</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Performs a logical AND between the receiver and <parameter>object</parameter>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>NilClass#^</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Performs an exclusive OR between the receiver and <parameter>object</parameter>: returns <literal>false</literal> if <parameter>object</parameter> is <literal>false</literal> or <literal>nil</literal>; otherwise, <literal>true</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>NilClass#|</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Performs a logical OR between the receiver and <parameter>object</parameter>: returns <literal>false</literal> if <parameter>object</parameter> is <literal>false</literal> or <literal>nil</literal>; otherwise, <literal>true</literal>.</para>
+
+  <para><methodsynopsis><type>true</type><methodname>NilClass#nil?</methodname><void/></methodsynopsis> Returns <literal>true</literal>.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>NilClass#rationalize</methodname><void/></methodsynopsis> Returns a new <literal>Rational</literal> object whose numerator is <literal>0</literal>, and denominator is <literal>1</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>NilClass#to_a</methodname><void/></methodsynopsis> Returns <literal>[]</literal>.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>NilClass#to_c</methodname><void/></methodsynopsis> Returns a new <literal>Complex</literal> object whose real part and imaginary part are both <literal>0</literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>NilClass#to_f</methodname><void/></methodsynopsis> Returns <literal>0.0</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>NilClass#to_i</methodname><void/></methodsynopsis> Returns <literal>0</literal>.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>NilClass#to_r</methodname><void/></methodsynopsis> Returns a new <literal>Rational</literal> object whose numerator is <literal>0</literal>, and denominator is <literal>1</literal>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>NilClass#to_s</methodname><void/></methodsynopsis> Returns <literal>""</literal>.</para>
+</appendix>
