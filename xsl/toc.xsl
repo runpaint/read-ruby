@@ -36,13 +36,17 @@
   </xsl:template>
 
   <xsl:template name="toc-ol">
-    <ol>
-      <xsl:for-each select="d:chapter">
-	<!-- TODO: Pass chapter name in as param -->
-	<xsl:call-template name="toc-entry"/>
-      </xsl:for-each>
-      <!-- TODO: Add biblio and gloss -->
-    </ol>
+    <xsl:for-each select="d:part">
+      <h2><xsl:value-of select="d:title"/></h2>
+
+      <ol>
+	<xsl:for-each select="d:chapter|d:appendix">
+	  <!-- TODO: Pass chapter name in as param -->
+	  <xsl:call-template name="toc-entry"/>
+	</xsl:for-each>
+	<!-- TODO: Add biblio and gloss -->
+      </ol>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template name="toc-entry">

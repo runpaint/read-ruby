@@ -51,15 +51,18 @@
 	  <section style="clear:both">
 	    <h1>Contents</h1>
 
-	    <ol>
-	      <xsl:for-each select="//d:chapter">
-		<xsl:variable name="ch">
-		  <xsl:call-template name="id-to-href">
-		    <xsl:with-param name="id" select="@xml:id"/>
-		    <xsl:with-param name="relative" select="0"/>
-		  </xsl:call-template>
-		</xsl:variable>
-		<li><a href="{$ch}"><xsl:value-of select="d:title"/></a>
+	    <xsl:for-each select="//d:part">
+	      <h2><xsl:value-of select="d:title"/></h2>
+
+	      <ol>
+		<xsl:for-each select="d:chapter">
+		  <xsl:variable name="ch">
+		    <xsl:call-template name="id-to-href">
+		      <xsl:with-param name="id" select="@xml:id"/>
+		      <xsl:with-param name="relative" select="0"/>
+		    </xsl:call-template>
+		  </xsl:variable>
+		  <li><a href="{$ch}"><xsl:value-of select="d:title"/></a>
 		  <ol>
 		    <xsl:for-each select="d:sect1">
 		      <xsl:variable name="sec">
@@ -72,19 +75,20 @@
 		      </li>
 		    </xsl:for-each>
 		  </ol>
-		</li>
-	      </xsl:for-each>
-	      <xsl:for-each select="d:glossary|d:bibliography">
-		<xsl:variable name="sec">
-		  <xsl:call-template name="id-to-href">
-		    <xsl:with-param name="id" select="@xml:id"/>
-		    <xsl:with-param name="relative" select="0"/>
-		  </xsl:call-template>
-		</xsl:variable>
-		<li><a href="{$sec}"><xsl:value-of select="d:title"/></a>
-		</li>
-	      </xsl:for-each>
-	    </ol>
+		  </li>
+		</xsl:for-each>
+		<xsl:for-each select="d:glossary|d:bibliography|d:appendix">
+		  <xsl:variable name="sec">
+		    <xsl:call-template name="id-to-href">
+		      <xsl:with-param name="id" select="@xml:id"/>
+		      <xsl:with-param name="relative" select="0"/>
+		    </xsl:call-template>
+		  </xsl:variable>
+		  <li><a href="{$sec}"><xsl:value-of select="d:title"/></a>
+		  </li>
+		</xsl:for-each>
+	      </ol>
+	    </xsl:for-each>
 	    <p>(<a rel="index" href="/toc">complete</a> table of contents)</p>
 	  </section>
 	</body>
