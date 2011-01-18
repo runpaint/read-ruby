@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.numeric" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Numeric</title>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#%</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of the receiver modulo <parameter>number</parameter>. Aliased by <function>Numeric#modulo</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#+@</methodname><void/></methodsynopsis> Returns the receiver with a positive sign.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#-@</methodname><void/></methodsynopsis> Returns the receiver with a negative sign.</para>
+  
+  <para><methodsynopsis><type>0 or nil</type><methodname>Numeric#&lt;=&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>0</literal> if the receiver is equal to <parameter>number</parameter>; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#abs</methodname><void/></methodsynopsis> Returns the absolute value of the receiver. Aliased by <function>Numeric#magnitude</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#abs2</methodname><void/></methodsynopsis> Returns the square of the absolute value of the receiver.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#angle</methodname><void/></methodsynopsis> Returns <literal>Math::PI</literal> if the receiver is negative; otherwise, <literal>0</literal>. Aliased by <function>Numeric#arg</function> and <function>Numeric#phase</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#arg</methodname><void/></methodsynopsis> Aliases <function>Numeric#angle</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Numeric#ceil</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Float</literal> then returns <function>Float#ceil</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Numeric#coerce</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> containing <parameter>object</parameter> and the receiver. If <parameter>object</parameter> isn’t a <literal>Numeric</literal>, both elements of the <literal>Array</literal> are converted to <literal>Float</literal>s.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#conj</methodname><void/></methodsynopsis> Returns the receiver. Aliased by <function>Numeric#conjugate</function>.</para>
+
+ <para><methodsynopsis><type>Numeric</type><methodname>Numeric#conjugate</methodname><void/></methodsynopsis> Aliases <function>Numeric#conj</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Numeric#denominator</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Rational</literal> then returns <function>Rational#denominator</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#div</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Divides the receiver by <parameter>number</parameter>, using <function>#/</function>, then converts the result to an <literal>Integer</literal>.</para>
+  
+  <para><methodsynopsis><type>Array</type><methodname>Numeric#divmod</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Divides the receiver by <parameter>number</parameter>, returning an <literal>Array</literal> whose first element is the quotient, and last element, the modulus. The quotient is rounded toward −∞.</para>
+  
+  <para><methodsynopsis><type>true or false</type><methodname>Numeric#eql?</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver and <parameter>number</parameter> have both the same type and value; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Numeric#fdiv</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using floating-point division—the receiver by <parameter>number</parameter>. Aliased by <function>Numeric#quo</function>.</para>
+  
+  <para><methodsynopsis><type>Integer</type><methodname>Numeric#floor</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Float</literal> then returns <function>Float#round</function>.</para>
+   
+  <para><methodsynopsis><type>Complex</type><methodname>Numeric#i</methodname><void/></methodsynopsis> Returns a new <literal>Complex</literal> whose real part is <literal>0</literal>, and imaginary part is the receiver.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Numeric#image</methodname><void/></methodsynopsis> Returns <literal>0</literal>. Aliased by <function>Numeric#imaginary</function>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Numeric#imaginary</methodname><void/></methodsynopsis>  Aliases <function>Numeric#image</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Numeric#integer?</methodname><void/></methodsynopsis>  Returns <literal>true</literal> if the receiver is an <literal>Integer</literal>, or a subclass thereof; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#magnitude</methodname><void/></methodsynopsis> Aliases <function>Numeric#abs</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#modulo</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Numeric#%</function>.</para>
+
+  <para><methodsynopsis><type>Numeric or nil</type><methodname>Numeric#nonzero?</methodname><void/></methodsynopsis> Returns the receiver if non-zero; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Numeric#numerator</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Rational</literal> then returns <function>Rational#numerator</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#phase</methodname><void/></methodsynopsis> Aliases <function>Numeric#angle</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Numeric#polar</methodname><void/></methodsynopsis> Returns an <literal>Array</literal> whose first element is the absolute value of the receiver, using <function>#abs</function>, and last element is the arg of the receiver, using <function>#arg</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#quo</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Converts the receiver to a <literal>Rational</literal> then divides it, using <function>Rational#/</function>, by <parameter>number</parameter>, returning the result.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#real</methodname><void/></methodsynopsis> Returns the receiver.</para>
+
+  <para><methodsynopsis><type>true</type><methodname>Numeric#real?</methodname><void/></methodsynopsis> Returns <literal>true</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Numeric#rect</methodname><void/></methodsynopsis> Returns an <literal>Array</literal> whose first element is the receiver, and last element <literal>0</literal>. Aliased by <function>Numeric#rectangular</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Numeric#rectangular</methodname><void/></methodsynopsis> Aliases <function>Numeric#rect</function>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Numeric#remainder</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Computes the modulo of the receiver and <parameter>number</parameter> using <function>#modulo</function>. Returns the modulo minus <parameter>number</parameter> if the receiver and <parameter>number</parameter> have different signs; otherwise, the modulo.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Numeric#round</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Float</literal>then returns <function>Float#round</function>.</para>
+
+  <para><methodsynopsis><type>Numeric or Enumerator</type><methodname>Numeric#step</methodname><methodparam><parameter>stop</parameter></methodparam><methodparam><parameter>step</parameter></methodparam><methodparam choice="opt"><parameter>{|n| }</parameter></methodparam></methodsynopsis> Yields each number from the receiver to the <literal>Numeric</literal> <parameter>stop</parameter>, incrementing by <parameter>step</parameter> with <function>#+</function>. If <parameter>step</parameter> is positive, counts up from the receiver until <function>#&gt;</function> than <parameter>end</parameter>; otherwise, counts down until <function>#&lt;</function> than <parameter>end</parameter>. Returns an <literal>Enumerator</literal> if the block is omitted.</para>
+
+  <para><methodsynopsis><type>Complex</type><methodname>Numeric#to_c</methodname><void/></methodsynopsis> Returns a new <literal>Complex</literal> number whose real part is the receiver, and imaginary part is <literal>0</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Numeric#to_int</methodname><void/></methodsynopsis> Converts the receiver to an <literal>Integer</literal> using <function>#to_i</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Numeric#truncate</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Float</literal> then returns <function>Float#truncate</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Numeric#zero?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver has a zero value; otherwise, <literal>false</literal>.</para>
+</appendix>
