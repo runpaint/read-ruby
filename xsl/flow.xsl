@@ -145,4 +145,9 @@
   <xsl:template match="d:glossary/d:title"/>
   <xsl:template match="d:bibliography/d:title"/>
   <xsl:template match="d:appendix/d:title"/>
+  
+  <!-- Ignore <part>s for now, but process their contents -->
+  <xsl:template match="d:part">
+    <xsl:apply-templates/>
+  </xsl:template>
 </xsl:stylesheet>

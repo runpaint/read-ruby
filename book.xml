@@ -6,30 +6,73 @@
       xml:lang="en" 
       version="5.0">
   <title>Read Ruby 1.9</title>
-  <!-- Chapters -->
-  <xi:include href="src/programs.xml"/>
-  <xi:include href="src/variables.xml"/>
-  <xi:include href="src/messages.xml"/>
-  <xi:include href="src/objects.xml"/>
-  <xi:include href="src/classes.xml"/>
-  <xi:include href="src/modules.xml"/>
-  <xi:include href="src/methods.xml"/>
-  <xi:include href="src/closures.xml"/>
-  <xi:include href="src/encoding.xml"/>
-  <xi:include href="src/enumerables.xml"/>
-  <xi:include href="src/arrays.xml"/>
-  <xi:include href="src/hashes.xml"/>
-  <xi:include href="src/ranges.xml"/>
-  <xi:include href="src/files.xml"/>
-  <xi:include href="src/flow.xml"/>
-  <xi:include href="src/exceptions.xml"/>
-  <xi:include href="src/numerics.xml"/>
-  <xi:include href="src/strings.xml"/>
-  <xi:include href="src/regexps.xml"/>
-  <xi:include href="src/io.xml"/>
-  <xi:include href="src/processes.xml"/>
-  <xi:include href="src/times.xml"/>
-  <xi:include href="src/concurrency.xml"/>
+
+  <part>
+    <title>Language</title>
+
+    <xi:include href="src/programs.xml"/>
+    <xi:include href="src/variables.xml"/>
+    <xi:include href="src/messages.xml"/>
+    <xi:include href="src/objects.xml"/>
+    <xi:include href="src/classes.xml"/>
+    <xi:include href="src/modules.xml"/>
+    <xi:include href="src/methods.xml"/>
+    <xi:include href="src/closures.xml"/>
+    <xi:include href="src/flow.xml"/>
+    <xi:include href="src/exceptions.xml"/>
+    <xi:include href="src/concurrency.xml"/>
+  </part>
+
+  <part>
+    <title>API</title>
+
+    <xi:include href="src/numerics.xml"/>
+    <xi:include href="src/strings.xml"/>
+    <xi:include href="src/encoding.xml"/>
+    <xi:include href="src/regexps.xml"/>
+    <xi:include href="src/enumerables.xml"/>
+    <xi:include href="src/arrays.xml"/>
+    <xi:include href="src/hashes.xml"/>
+    <xi:include href="src/ranges.xml"/>
+    <xi:include href="src/files.xml"/>
+    <xi:include href="src/io.xml"/>
+    <xi:include href="src/processes.xml"/>
+    <xi:include href="src/times.xml"/>
+  </part>
+
+  <part>
+    <title>Reference</title>
+
+    <xi:include href="src/ref/array.xml"/>
+    <xi:include href="src/ref/basicobject.xml"/>
+    <xi:include href="src/ref/bignum.xml"/>
+    <xi:include href="src/ref/binding.xml"/>
+    <xi:include href="src/ref/class.xml"/>
+    <xi:include href="src/ref/comparable.xml"/>
+    <xi:include href="src/ref/complex.xml"/>
+    <xi:include href="src/ref/dir.xml"/>
+    <xi:include href="src/ref/encoding.xml"/>
+    <xi:include href="src/ref/enumerable.xml"/>
+    <xi:include href="src/ref/enumerator.xml"/>
+    <xi:include href="src/ref/exception.xml"/>
+    <xi:include href="src/ref/falseclass.xml"/>
+    <xi:include href="src/ref/fiber.xml"/>
+    <xi:include href="src/ref/file.xml"/>
+    <xi:include href="src/ref/file-stat.xml"/>
+    <xi:include href="src/ref/filetest.xml"/>
+    <xi:include href="src/ref/fixnum.xml"/>
+    <xi:include href="src/ref/float.xml"/>
+    <xi:include href="src/ref/gc.xml"/>
+    <xi:include href="src/ref/hash.xml"/>
+    <xi:include href="src/ref/integer.xml"/>
+    <xi:include href="src/ref/io.xml"/>
+    <xi:include href="src/ref/kernel.xml"/>
+    <xi:include href="src/ref/marshal.xml"/>
+    <xi:include href="src/ref/matchdata.xml"/>
+    <xi:include href="src/ref/math.xml"/>
+    <xi:include href="src/ref/method.xml"/>
+    <xi:include href="src/ref/module.xml"/>
+  </part>
 
   <xi:include href="src/bibliography.xml"/>
 
@@ -38,34 +81,5 @@
   <xi:include href="src/globals.xml"/>
   <!-- Merge keywords.xml into glossary.xml -->
   <!-- <xi:include href="src/keywords.xml"/> -->
-  <xi:include href="src/glossary.xml"/>
-  <xi:include href="src/ref/array.xml"/>
-  <xi:include href="src/ref/basicobject.xml"/>
-  <xi:include href="src/ref/bignum.xml"/>
-  <xi:include href="src/ref/binding.xml"/>
-  <xi:include href="src/ref/class.xml"/>
-  <xi:include href="src/ref/comparable.xml"/>
-  <xi:include href="src/ref/complex.xml"/>
-  <xi:include href="src/ref/dir.xml"/>
-  <xi:include href="src/ref/encoding.xml"/>
-  <xi:include href="src/ref/enumerable.xml"/>
-  <xi:include href="src/ref/enumerator.xml"/>
-  <xi:include href="src/ref/exception.xml"/>
-  <xi:include href="src/ref/falseclass.xml"/>
-  <xi:include href="src/ref/fiber.xml"/>
-  <xi:include href="src/ref/file.xml"/>
-  <xi:include href="src/ref/file-stat.xml"/>
-  <xi:include href="src/ref/filetest.xml"/>
-  <xi:include href="src/ref/fixnum.xml"/>
-  <xi:include href="src/ref/float.xml"/>
-  <xi:include href="src/ref/gc.xml"/>
-  <xi:include href="src/ref/hash.xml"/>
-  <xi:include href="src/ref/integer.xml"/>
-  <xi:include href="src/ref/io.xml"/>
-  <xi:include href="src/ref/kernel.xml"/>
-  <xi:include href="src/ref/marshal.xml"/>
-  <xi:include href="src/ref/matchdata.xml"/>
-  <xi:include href="src/ref/math.xml"/>
-  <xi:include href="src/ref/method.xml"/>
-  <xi:include href="src/ref/module.xml"/>
+  <xi:include href="src/glossary.xml"/>  
 </book>
