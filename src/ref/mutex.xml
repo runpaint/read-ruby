@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.mutex" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Mutex</title>
+
+  <para><methodsynopsis><type>Mutex</type><methodname>Mutex.new</methodname><void/></methodsynopsis> Creates and returns a new <literal>Mutex</literal>.</para>
+
+  <para><methodsynopsis><type>Mutex</type><methodname>Mutex#lock</methodname><void/></methodsynopsis> Tries to place a lock on this mutex. If already locked by another thread, blocks until the lock has been removed; if locked by the current thread, raises a <exceptionname>ThreadError</exceptionname>.</para> 
+
+  <para><methodsynopsis><type>true or false</type><methodname>Mutex#locked?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if this mutex is locked; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Mutex#sleep</methodname><methodparam choice="opt"><parameter>duration=nil</parameter></methodparam></methodsynopsis> Unlocks this mutex, sleeps for <parameter>duration</parameter> seconds, re-locks this mutex, then returns the number of seconds slept. If <parameter>duration</parameter> is <literal>nil</literal>, sleeps forever.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Mutex#synchronize</methodname><methodparam><parameter>{ }</parameter></methodparam></methodsynopsis> Locks this mutex, yields to the block, releases the lock, then returns the value of the block.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Mutex#try_lock</methodname><void/></methodsynopsis> Tries to place a lock on this mutex without blocking: if it is unlocked, locks it, then returns <literal>true</literal>; otherwise, returns <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Mutex</type><methodname>Mutex#unlock</methodname><void/></methodsynopsis> Releases the current thread’s lock on this mutex.</para>
+</appendix>

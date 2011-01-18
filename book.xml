@@ -72,6 +72,7 @@
     <xi:include href="src/ref/math.xml"/>
     <xi:include href="src/ref/method.xml"/>
     <xi:include href="src/ref/module.xml"/>
+    <xi:include href="src/ref/mutex.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>
