@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.process" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Process</title>
+
+  <para><methodsynopsis><type>N/A</type><methodname>Process.abort</methodname><methodparam choice="opt"><parameter>message</parameter></methodparam></methodsynopsis> Aliases <function>Kernel.abort</function>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Process.daemon</methodname><methodparam choice="opt"><parameter>keep_directory=false</parameter></methodparam><methodparam choice="opt"><parameter>keep_stdio_open=false</parameter></methodparam></methodsynopsis> Detaches the current process from its controlling terminal and runs it in the background. The working directory of the process is changed to <literal>/</literal> unless <parameter>keep_directory</parameter> is <parameter>true</parameter>; otherwise, the working directory is unchanged. The standard output, input, and error streams are redirected to <literal>/dev/null</literal> unless <parameter>keep_stdio_open</parameter> is <literal>true</literal>. Uses the <function>daemon(3)</function> function, if available, or forks then calls <function>Process.setssid</function>. If neither approach is supported by the current platform, a <exceptionname>NotImplementedError</exceptionname> is raised.</para>
+
+  <para><methodsynopsis><type>Thread</type><methodname>Process.detach</methodname><methodparam><parameter>pid</parameter></methodparam></methodsynopsis> Creates and returns a <literal>Thread</literal> that monitors the process with given PID, and reaps it when it terminates.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.egid</methodname><void/></methodsynopsis> Returns the effective group ID for the current process.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.egid=</methodname><methodparam><parameter>egid</parameter></methodparam></methodsynopsis> Sets the effective group ID for the current process to <parameter>egid</parameter>, which it then returns. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>setresgid(2)</function>, <function>setregid(2)</function>, <function>setegid(3)</function>, and <function>setgid(2)</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.euid</methodname><void/></methodsynopsis> Returns the effective user ID for the current process.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.euid=</methodname><methodparam><parameter>euid</parameter></methodparam></methodsynopsis> Sets the effective user ID for the current process to <parameter>euid</parameter>, which it then returns. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>setresuid(2)</function>, <function>setreuid(2)</function>, <function>seteuid(3)</function>, and <function>setuid(2)</function>.</para>
+
+  <para><methodsynopsis><type>N/A</type><methodname>Process.exec</methodname><methodparam choice="opt"><parameter>environment={}</parameter></methodparam><methodparam><parameter>command</parameter></methodparam><methodparam rep="repeat" choice="opt"><parameter>argument</parameter></methodparam><methodparam choice="opt"><parameter>options={}</parameter></methodparam></methodsynopsis> Aliases <function>Kernel.exec</function>.</para>
+
+  <para><methodsynopsis><type>N/A</type><methodname>Process.exit</methodname><methodparam choice="opt"><parameter>status=1</parameter></methodparam></methodsynopsis> Aliases <function>Kernel.exit</function>.</para>
+
+  <para><methodsynopsis><type>N/A</type><methodname>Process.exit!</methodname><methodparam choice="opt"><parameter>status=1</parameter></methodparam></methodsynopsis> Aliases <function>Kernel.exit!</function>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>Process.fork</methodname><methodparam choice="opt"><parameter>{ }</parameter></methodparam></methodsynopsis> Aliases <function>Kernel.fork</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.getpgid</methodname><methodparam><parameter>pid</parameter></methodparam></methodsynopsis> Returns the process group ID for the process with the given PID. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>getpgid(2)</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.getpgrp</methodname><void/></methodsynopsis> Returns the process group ID for the current process. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking both <function>getpgrp(2)</function> and <function>getpgid(2)</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.getpriority</methodname><methodparam><parameter>which</parameter></methodparam><methodparam><parameter>who</parameter></methodparam></methodsynopsis> Returns the scheduling priority of the process, process group or user, as indicated by <parameter>which</parameter> and <parameter>who</parameter>. <parameter>which</parameter> is one of the following constants: <literal>Process::PRIO_PROCESS</literal>, <literal>Process::PRIO_PGRP</literal>, and <literal>Process::PRIO_USER</literal>. In the first case, <parameter>who</parameter> is a PID; in the second, a PGID; and in the third, a UID. If <parameter>who</parameter> is <literal>0</literal> it refers to the current process, the process group of the current process, or the real UID of the current process, respectively. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>getpriority(2)</function>.</para>  
+
+  <para><methodsynopsis><type>Array</type><methodname>Process.getrlimit</methodname><methodparam><parameter>resource</parameter></methodparam></methodsynopsis> Returns the soft and hard limit for the resource identified by <parameter>resource</parameter>. See <xref linkend="prc.limit"/> for details. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>getrlimit(2)</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.gid</methodname><void/></methodsynopsis> Returns the group ID for the current process.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.gid=</methodname><methodparam><parameter>gid</parameter></methodparam></methodsynopsis> Sets the group ID for the current process to <parameter>gid</parameter>, which it then returns. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>setresgid(2)</function>, <function>setregid(2)</function>, <function>setrgid(3)</function>, and <function>setgid(2)</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Process.groups</methodname><void/></methodsynopsis> Returns the supplementary group IDs of the current process as an <literal>Array</literal> of <literal>Integer</literal>s. Raises <exceptionname>NotImplementedError</exceptionname> on platforms without <function>getgroups(2)</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Process.groups=</methodname><methodparam><parameter>groups</parameter></methodparam></methodsynopsis> Sets the supplementary group IDs of the current process to the given <literal>Array</literal>. <parameter>groups</parameter> may specify groups by GID, as a <literal>Fixnum</literal>, or name, as a <literal>String</literal>. Returns the new value of <function>Process.groups</function>. Raises <exceptionname>NotImplementedError</exceptionname> on platforms without <function>setgroups(2)</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Process.initgroups</methodname><methodparam><parameter>user</parameter></methodparam><methodparam><parameter>group</parameter></methodparam></methodsynopsis> Initialises the group access list with all groups of which the named user is a member, plus the GID, <parameter>group</parameter>. Returns the new value of <function>Process.groups</function>. Raises <exceptionname>NotImplementedError</exceptionname> on platforms without <function>initgroups(2)</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.kill</methodname><methodparam><parameter>signal</parameter></methodparam><methodparam rep="repeat"><parameter>pid</parameter></methodparam></methodsynopsis> Sends the signal identified by <parameter>signal</parameter> to each process identified by the PID <parameter>pid</parameter>, where <parameter>signal</parameter> is the name (as a <literal>Symbol</literal> or <literal>String</literal>) or number (as a <literal>Fixnum</literal>) of a POSIX signal. If <parameter>signal</parameter> is negative or its name begins with <literal>-</literal>, its process group is killed instead.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.maxgroups</methodname><void/></methodsynopsis> Returns the maximum number of supplementary groups handled by <function>Process.groups</function> and <function>Process.groups=</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.maxgroups=</methodname><methodparam><parameter>max</parameter></methodparam></methodsynopsis> Sets the maximum number of supplementary groups handled by <function>Process.groups</function> and <function>Process.groups=</function> to the lowest value of <parameter>max</parameter> and <literal>4096</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.pid</methodname><void/></methodsynopsis> Returns the process ID for the current process.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.pid</methodname><void/></methodsynopsis> Returns the process ID for the current process.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.ppid</methodname><void/></methodsynopsis> Returns the process ID for the current process’s parent, or <literal>0</literal> on Windows.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Process.setpgid</methodname><methodparam><parameter>pid</parameter></methodparam><methodparam><parameter>pgid</parameter></methodparam></methodsynopsis> Sets the process group ID of the process identified by the given PID to <parameter>pgid</parameter>. A <parameter>pid</parameter> of <literal>0</literal> refers to the current process; a <parameter>pgid</parameter> of <literal>0</literal> sets the process group of the process specified by <parameter>pid</parameter> to its PID. Raises an <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>setpgid(2)</function>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Process.setgrp</methodname><void/></methodsynopsis> Sets the process group of the current process to its PID. Raises an <exceptionname>NotImplementedError</exceptionname> on platforms lacking both <function>setpgid(2)</function> and <function>setpgrp(3)</function>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Process.setpriority</methodname><methodparam><parameter>which</parameter></methodparam><methodparam><parameter>who</parameter></methodparam><methodparam><parameter>priority</parameter></methodparam></methodsynopsis> Sets the scheduling priority of the process, process group or user, as indicated by <parameter>which</parameter> and <parameter>who</parameter>, to <parameter>priority</parameter>. <parameter>which</parameter> is one of the following constants: <literal>Process::PRIO_PROCESS</literal>, <literal>Process::PRIO_PGRP</literal>, and <literal>Process::PRIO_USER</literal>. In the first case, <parameter>who</parameter> is a PID; in the second, a PGID; and in the third, a UID. If <parameter>who</parameter> is <literal>0</literal> it refers to the current process, the process group of the current process, or the real UID of the current process, respectively. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>getpriority(2)</function>.</para>
+
+  <para><methodsynopsis><type>0</type><methodname>Process.setrlimit</methodname><methodparam><parameter>which</parameter></methodparam><methodparam><parameter>soft</parameter></methodparam><methodparam choice="opt"><parameter>hard=soft</parameter></methodparam></methodsynopsis> Sets the soft and hard limits of the resource identified by <parameter>which</parameter> to <parameter>soft</parameter> and <parameter>hard</parameter>, respectively. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>setrlimit(2)</function>. See <xref linkend="prc.limit"/> for details.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.setsid</methodname><void/></methodsynopsis> Creates a new session with the current process as its sole member—i.e. makes the current process a process group leader. If the current process is already a process group leader, does nothing. Returns the session ID. Raises <exceptionname>NotImplementedError</exceptionname> on systems lacking either <function>setsid(2)</function> or both <function>setpgrp(3)</function> and <function>TIOCNOTTY</function>.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Process.spawn</methodname><methodparam choice="opt"><parameter>environment={}</parameter></methodparam><methodparam><parameter>command</parameter></methodparam><methodparam rep="repeat" choice="opt"><parameter>argument</parameter></methodparam><methodparam choice="opt"><parameter>options={}</parameter></methodparam></methodsynopsis> Aliases <function>Kernel.spawn</function>.</para>
+
+  <para><methodsynopsis><type>Struct::Tms</type><methodname>Process.times</methodname><void/></methodsynopsis> Returns the user and system CPU times for the current process. Raises <exceptionname>NotImplementedError</exceptionname> on systems lacking <function>times(2)</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.uid</methodname><void/></methodsynopsis> Returns the user ID of the current process.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.uid=</methodname><methodparam><parameter>uid</parameter></methodparam></methodsynopsis> Sets the user ID of the current process to the given <literal>Integer</literal>, which it then returns. Raises <exceptionname>NotImplementedError</exceptionname> on platforms lacking <function>setresuid(2)</function>, <function>setreuid(2)</function>, <function>setruid(3)</function>, and <function>setuid(2)</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.wait</methodname><methodparam choice="opt"><parameter>pid=-1</parameter></methodparam><methodparam choice="opt"><parameter>flags=0</parameter></methodparam></methodsynopsis> Suspends the calling process until one of its children exit. A <parameter>pid</parameter> less than <literal>-1</literal> refers to the child process identified by the absolute value of <parameter>pid</parameter>; a <parameter>pid</parameter> of <literal>-1</literal> refers to any child; a <parameter>pid</parameter> of <literal>0</literal> refers to any child whose PGID is that of the current process; and a positive <parameter>pid</parameter> refers to the child with a PID of <parameter>pid</parameter>. <parameter>flags</parameter> is a either <literal>0</literal> or a logical OR of <literal>Process::WNOHANG</literal> (don’t block unless there is a matching child process) and <literal>Process::WUNTRACED</literal> (return stopped children that haven’t previously been reported). Raises a <exceptionname>SystemError</exceptionname> if there are no child processes. Aliased by <function>Process.waitpid</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Process.waitall</methodname><void/></methodsynopsis> Waits for all child processes to terminate. Returns an <literal>Array</literal> whose elements have the form <literal>[<replaceable>pid</replaceable>, <replaceable>status</replaceable>]</literal>, where <replaceable>pid</replaceable> is the PID of a child, and <replaceable>status</replaceable> the corresponding <literal>Process::Status</literal> object.</para>
+  
+  <para><methodsynopsis><type>Array</type><methodname>Process.wait2</methodname><methodparam choice="opt"><parameter>pid=-1</parameter></methodparam><methodparam choice="opt"><parameter>flags=0</parameter></methodparam></methodsynopsis> Behaves as <function>Process.wait</function> but returns an <literal>Array</literal> containing the PID of the child process and the corresponding <literal>Process::Status</literal> object. Aliased by <function>Process.waitpid2</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.waitpid</methodname><methodparam choice="opt"><parameter>pid=-1</parameter></methodparam><methodparam choice="opt"><parameter>flags=0</parameter></methodparam></methodsynopsis> Aliases <function>Process.wait</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Process.waitpid2</methodname><methodparam choice="opt"><parameter>pid=-1</parameter></methodparam><methodparam choice="opt"><parameter>flags=0</parameter></methodparam></methodsynopsis> Aliases <function>Process.wait2</function>.</para>
+</appendix>

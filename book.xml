@@ -78,6 +78,7 @@
     <xi:include href="src/ref/object.xml"/>
     <xi:include href="src/ref/objectspace.xml"/>
     <xi:include href="src/ref/proc.xml"/>
+    <xi:include href="src/ref/process.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>
