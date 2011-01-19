@@ -75,6 +75,7 @@
     <xi:include href="src/ref/mutex.xml"/>
     <xi:include href="src/ref/nilclass.xml"/>
     <xi:include href="src/ref/numeric.xml"/>
+    <xi:include href="src/ref/object.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>
