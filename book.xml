@@ -80,6 +80,7 @@
     <xi:include href="src/ref/proc.xml"/>
     <xi:include href="src/ref/process.xml"/>
     <xi:include href="src/ref/process-gid.xml"/>
+    <xi:include href="src/ref/process-status.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>

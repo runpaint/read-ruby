@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.process-status" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Process::Status</title>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Process::Status#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is a <literal>Process::Status</literal> object whose <literal>Integer</literal> values are equal; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Process::Status#&amp;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Performs a logical AND between the receiver’s <literal>Integer</literal> value and the given <literal>Integer</literal>.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Process::Status#&gt;&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Right shifts the bits in the receiver by <parameter>number</parameter> places.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Process::Status#coredump?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the associated process generated a coredump; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Process::Status#exited?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the associated process exited normally; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Process::Status#exitstatus</methodname><void/></methodsynopsis> Returns least significant byte of the receiver’s <literal>Integer</literal> value, or <literal>nil</literal> if the associated process exited abnormally.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Process::Status#pid</methodname><void/></methodsynopsis> Returns the PID of the associated process.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Process::Status#signaled?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the associated process terminated because of an uncaught signal; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Process::Status#stopped?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the associated process is stopped; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true, false, or nil</type><methodname>Process::Status#success?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the associated process exited successfully; <literal>false</literal> if it exited abnormally; and <literal>nil</literal> if it didn’t exit.</para>
+
+  <para><methodsynopsis><type>Fixnum or nil</type><methodname>Process::Status#stopsig</methodname><void/></methodsynopsis> Returns the number of the signal that caused the associated process to stop, or <literal>nil</literal> if it isn’t stopped.</para>
+
+  <para><methodsynopsis><type>Fixnum or nil</type><methodname>Process::Status#termsig</methodname><void/></methodsynopsis> Returns the number of the signal that caused the associated process to terminate, or <literal>nil</literal> if it didn’t terminate due to an uncaught signal.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Process::Status#to_i</methodname><void/></methodsynopsis> Returns the <literal>Integer</literal> value of this status.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Process::Status#to_s</methodname><void/></methodsynopsis> Returns the <literal>Integer</literal> value of this status as a <literal>String</literal>.</para>
+</appendix>
