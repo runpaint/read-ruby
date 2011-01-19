@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.proc" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Proc</title>
+
+  <para><methodsynopsis><type>Proc</type><methodname>Proc.new</methodname><methodparam choice="opt"><parameter>{ }</parameter></methodparam></methodsynopsis> Creates and returns a new <literal>Proc</literal> object for the given block. If the block is omitted, must be called within a method that has a block parameter: the block passed to the method becomes the body of the <literal>Proc</literal>.</para>
+  
+  <para><methodsynopsis><type>Object</type><methodname>Proc#[]</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Invokes the block associated with the receiver, passing in any <parameter>argument</parameter>s as block parameters. Returns the value of this block. Aliased by <function>Proc#call</function> and <function>Proc#yield</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Proc#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is a <literal>Proc</literal> identical to the receiver; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Proc#===</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns the result of invoking the receiver with <parameter>object</parameter> as an argument.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Proc#arity</methodname><void/></methodsynopsis> Returns the arity of the receiver. A receiver that requires exactly <replaceable>n</replaceable> arguments has an arity of <replaceable>n</replaceable>. If it also accepts optional arguments, its arity is <literal>-(<replaceable>n</replaceable> + 1)</literal>.</para>
+
+  <para><methodsynopsis><type>Binding</type><methodname>Proc#binding</methodname><void/></methodsynopsis> Returns the binding associated with the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Proc#call</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Aliases <function>Proc#[]</function>.</para>
+
+  <para><methodsynopsis><type>Proc</type><methodname>Proc#curry</methodname><void/></methodsynopsis> Returns a curried version of the receiver. If a curried <literal>Proc</literal> receives as many arguments as it expects, it behaves as the receiver. If it is called with fewer arguments than it expects, it returns a new curried <literal>Proc</literal>, <replaceable>p</replaceable>, with each argument it did receive already assigned to the corresponding block parameter. Therefore, <replaceable>p</replaceable> expects the remaining arguments, which it will assign to the remaining block parameters.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Proc#lambda?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver has lambda semantics; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Proc#parameters</methodname><void/></methodsynopsis> Returns an <literal>Array</literal>, each element of which describes a parameter accepted by the receiver as an <literal>Array</literal> of the form <literal>[<replaceable>type</replaceable>, <replaceable>name</replaceable>]</literal>. <replaceable>type</replaceable> is <literal>:req</literal> if the parameter is required, <literal>:opt</literal> if the parameter is optional, <literal>:rest</literal> if the parameter accepts a variable number of arguments, or <literal>:block</literal> if the parameter expects a block literal. <replaceable>name</replaceable> is the parameter’s name as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>Array or nil</type><methodname>Proc#source_location</methodname><void/></methodsynopsis> Returns the filename and line number of the source file in which the receiver was defined, or <literal>nil</literal> if it was defined in C.</para>
+
+  <para><methodsynopsis><type>Proc</type><methodname>Proc#to_proc</methodname><void/></methodsynopsis> Returns the receiver.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Proc#to_s</methodname><void/></methodsynopsis> Returns a <literal>String</literal> specifying the object ID and source location of the receiver.</para>
+  
+  <para><methodsynopsis><type>Object</type><methodname>Proc#yield</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Aliases <function>Proc#[]</function>.</para>
+</appendix>
