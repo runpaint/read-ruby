@@ -76,6 +76,7 @@
     <xi:include href="src/ref/nilclass.xml"/>
     <xi:include href="src/ref/numeric.xml"/>
     <xi:include href="src/ref/object.xml"/>
+    <xi:include href="src/ref/objectspace.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>

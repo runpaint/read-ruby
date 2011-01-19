@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.objectspace" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>ObjectSpace</title>
+
+  <para><methodsynopsis><type>Object</type><methodname>ObjectSpace._id2ref</methodname><methodparam><parameter>id</parameter></methodparam></methodsynopsis> Converts an <literal>Integer</literal> object ID, <parameter>id</parameter>, to the corresponding <literal>Object</literal>.</para>
+  
+  <para><methodsynopsis><type>Hash</type><methodname>ObjectSpace.count_objects</methodname><void/></methodsynopsis> Returns a <literal>Hash</literal> mapping each internal object type to the number of objects having that type. See <xref linkend="obj.each_object"/> for details.</para>
+
+ <para><methodsynopsis><type>Array</type><methodname>ObjectSpace.define_finalizer</methodname><methodparam><parameter>object</parameter></methodparam><methodparam><parameter>proc</parameter></methodparam></methodsynopsis> Arranges for the <literal>Proc</literal>, <parameter>proc</parameter>, to be invoked just prior to <parameter>object</parameter> being garbage collected. <parameter>proc</parameter> is passed <parameter>object</parameter>’s object ID, a <literal>Fixnum</literal>, as an argument.</para>
+
+ <para><methodsynopsis><type>Integer or Enumerator</type><methodname>ObjectSpace.each_object</methodname><methodparam choice="opt"><parameter>module</parameter></methodparam><methodparam choice="opt"><parameter>{|object| }</parameter></methodparam></methodsynopsis> Yields each living, non-immediate object in the current process. If a <literal>Class</literal> is given for <parameter>module</parameter>, only objects with that class, or a subclass thereof, are selected; if a <literal>Module</literal> is given, only objects that include that module are selected. If the block is given, objects are yielded to it, then their count returned; otherwise, an <literal>Enumerator</literal> is returned.</para>
+
+ <para><methodsynopsis><type>nil</type><methodname>ObjectSpace.garbage_collect</methodname><void/></methodsynopsis> Starts the garbage collector.</para>
+
+ <para><methodsynopsis><type>Object</type><methodname>ObjectSpace.undefine_finalizer</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Removes any finalizers that were defined for <parameter>object</parameter>, then returns its argument.</para>
+</appendix>
