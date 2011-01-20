@@ -21,5 +21,7 @@
 
   <para><methodsynopsis><type>Object</type><methodname>BasicObject#method_missing</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Called when the receiver is sent a message for which it has no method defined: <parameter>name</parameter> is the message selector as a <literal>Symbol</literal>, and <parameter>argument</parameter>(s) the argument(s) it was sent with.</para>
 
+  <para><methodsynopsis><type>Fixnum</type><methodname>BasicObject#__id__</methodname><void/></methodsynopsis> Returns an identifier for the receiver which distinguishes it from all other active objects.</para>
+
   <para><methodsynopsis><type>Object</type><methodname>BasicObject#__send__</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam><methodparam choice="opt"><parameter>&amp;block</parameter></methodparam></methodsynopsis> Sends a message named <parameter>name</parameter> to the receiver with the given <parameter>argument</parameter>(s) and <parameter>block</parameter>, returning the result.</para>
 </appendix>
