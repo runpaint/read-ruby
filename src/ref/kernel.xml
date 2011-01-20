@@ -7,10 +7,9 @@
   
   <title>Kernel</title>
 
-  <para><methodsynopsis><type>Symbol or nil</type><methodname>Kernel.__callee__</methodname><void/></methodsynopsis> Returns the name of the current method, or <literal>nil</literal> if called outside of a method. Aliased to <function>Kernel.__method__</function>.</para>
 
-  <para><methodsynopsis><type>Symbol or nil</type><methodname>Kernel.__method__</methodname><void/></methodsynopsis> Aliases <function>Kernel.__callee__</function>.</para>
-  
+  <para><methodsynopsis><type>Array</type><methodname>Kernel.Array</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Converts <parameter>object</parameter> to an <literal>Array</literal> with either <function>#to_ary</function> or <function>#to_a</function>. If neither succeed, returns a new <literal>Array</literal> with <parameter>object</parameter> as its sole element. If <parameter>object</parameter> is <literal>nil</literal>, returns <literal>[]</literal>.</para>
+
   <para><methodsynopsis><type>Complex</type><methodname>Kernel.Complex</methodname><methodparam><parameter>real</parameter></methodparam><methodparam choice="opt"><parameter>imaginary=0</parameter></methodparam></methodsynopsis>
   <methodsynopsis><type>Complex</type><methodname>Kernel.Complex</methodname><methodparam><parameter>string</parameter></methodparam></methodsynopsis> Creates and returns a <literal>Complex</literal> number. The first form sets the real part to <parameter>real</parameter>, and the imaginary part to <parameter>imaginary</parameter>, both of which may be <literal>Numeric</literal>s or <literal>String</literal>s. The second form expects a <literal>String</literal> representation of a complex number, i.e. the <function>#to_s</function> form of a <literal>Numeric</literal>, <literal>+</literal> or <literal>-</literal>, the <function>#to_s</function> form of another <literal>Numeric</literal>, then <literal>i</literal>.</para>
 
@@ -23,6 +22,10 @@
 
   <para><methodsynopsis><type>String</type><methodname>Kernel.String</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Converts <parameter>object</parameter> to a <literal>String</literal> with <function>#to_s</function>, which it then returns.</para>
 
+  <para><methodsynopsis><type>Symbol or nil</type><methodname>Kernel.__callee__</methodname><void/></methodsynopsis> Returns the name of the current method, or <literal>nil</literal> if called outside of a method. Aliased to <function>Kernel.__method__</function>.</para>
+
+  <para><methodsynopsis><type>Symbol or nil</type><methodname>Kernel.__method__</methodname><void/></methodsynopsis> Aliases <function>Kernel.__callee__</function>.</para>
+  
   <para><methodsynopsis><type>String</type><methodname>Kernel.`</methodname><methodparam><parameter>command</parameter></methodparam></methodsynopsis> Runs the <literal>String</literal> <parameter>command</parameter> in a subshell, then returns its standard output.</para>
 
   <para><methodsynopsis><type>N/A</type><methodname>Kernel.abort</methodname><methodparam choice="opt"><parameter>message</parameter></methodparam></methodsynopsis> Terminates the current process with an exit code of <literal>1</literal>. If the <parameter>message</parameter> <literal>String</literal> is given, it is written to standard error.</para>
@@ -61,8 +64,6 @@
 
   <para><methodsynopsis><type>String</type><methodname>Kernel.format</methodname><methodparam><parameter>format</parameter></methodparam><methodparam rep="repeat" choice="opt"><parameter>argument</parameter></methodparam></methodsynopsis> Applies the format <literal>String</literal>, <parameter>format</parameter>, to the <parameter>argument</parameter>(s) to create a new <literal>String</literal>, which is returned. Aliased by <function>Kernel.sprintf</function>.</para>
 
-  <para><methodsynopsis><type>true or false</type><methodname>Kernel.gem</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>version</parameter></methodparam></methodsynopsis> Adds the directories holding the gem named <parameter>name</parameter> to <literal>$LOAD_PATH</literal>. By default, the latest version of the gem is added; other versions can be specified by supplying one or more <parameter>version</parameter> predicates, all of which must be satisfied. A predicate has the form <literal><replaceable>operator</replaceable> <replaceable>number</replaceable></literal>. <replaceable>operator</replaceable> is one of <literal>=</literal> (this version only), <literal>!=</literal> (any version but this), <literal>&gt;</literal> (a higher version than this), <literal>&lt;</literal> (a lower version than this), <literal>&gt;=</literal> (at least this version), <literal>&lt;=</literal> (at most this version), and <literal>~&gt;</literal> (at least this version, but less than this version after incrementing its penultimate digit by <literal>1</literal>). <replaceable>number</replaceable> is up to three integers separated by periods which correspond to the major version, the minor version, and the patch level, respectively; omitted parts default to <literal>0</literal>.</para>
-
   <para><methodsynopsis><type>String or nil</type><methodname>Kernel.gets</methodname><methodparam choice="opt"><parameter>separator=$/</parameter></methodparam></methodsynopsis> Returns the next line from <literal>ARGV</literal>, or <literal>nil</literal> at end of file. Lines are separated by, and include, <parameter>separator</parameter>. A <parameter>separator</parameter> of <literal>nil</literal> treats an entire file as a single line, while a <parameter>separator</parameter> of <literal>""</literal> is equivalent to <literal>"\n\n"</literal>. Each line read is assigned to <literal>$_</literal>.</para>
 
   <para><methodsynopsis><type>Array</type><methodname>Kernel.global_variables</methodname><void/></methodsynopsis> Returns the names—as <literal>Symbol</literal>s—of all defined global variables.</para>
@@ -91,6 +92,8 @@
   <para><methodsynopsis><type>Proc</type><methodname>Kernel.proc</methodname><methodparam><parameter>{ }</parameter></methodparam></methodsynopsis> Creates and returns a <literal>Proc</literal> with proc semantics for the given block.</para>
 
   <para><methodsynopsis><type>Object</type><methodname>Kernel.putc</methodname><methodparam><parameter>argument</parameter></methodparam></methodsynopsis> Behaves as <literal>STDOUT.putc(<replaceable>argument</replaceable>)</literal>. See <function>IO#putc</function> for details.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel.puts</methodname><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Invokes <function>IO#puts</function> on <literal>STDOUT</literal> with the given <parameter>argument</parameter>s.</para>
 
   <para><methodsynopsis><type>N/A</type><methodname>Kernel.raise</methodname><void/></methodsynopsis>
 <methodsynopsis><type>N/A</type><methodname>Kernel.raise</methodname><methodparam><parameter>message</parameter></methodparam></methodsynopsis>
@@ -138,4 +141,113 @@
   <para><methodsynopsis><type>Array or nil</type><methodname>Kernel.untrace_var</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt"><parameter>command</parameter></methodparam></methodsynopsis> Disables tracing for the global variable named <parameter>name</parameter>. If <parameter>command</parameter> is given, only tracing for that command is disabled, and <literal>nil</literal> is returned; otherwise, all tracing is disabled, and an <literal>Array</literal> of the disabled commands is returned.</para>
 
   <para><methodsynopsis><type>nil</type><methodname>Kernel.warn</methodname><methodparam><parameter>message</parameter></methodparam></methodsynopsis> Writes the given message to the standard error stream, unless <literal>$VERBOSE</literal> is <literal>nil</literal>.</para>
+
+  <!-- Instance methods -->
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#!~</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver does not match, as per <function>#=~</function>, <parameter>object</parameter>; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>0 or nil</type><methodname>Kernel#&lt;=&gt;</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>0</literal> if the receiver equals, as per <function>#==</function>, <parameter>object</parameter>; otherwise, <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#===</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Aliases <function>BasicObject#==</function>. Usually overridden to test for case equality.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Kernel#=~</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>nil</literal>. Usually overridden to match the receiver against a <literal>Regexp</literal>.</para>
+
+  <para><methodsynopsis><type>Class</type><methodname>Kernel#class</methodname><void/></methodsynopsis> Returns the <literal>Class</literal> of the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#clone</methodname><void/></methodsynopsis> Returns a shallow copy of the receiver: its instance variables are copied by reference rather than value, and its tainted and frozen state is preserved.</para>
+
+  <para><methodsynopsis><type>Proc</type><methodname>Kernel#define_singleton_method</methodname><methodparam><parameter>name</parameter></methodparam><methodparam><parameter>body</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Proc</type><methodname>Kernel#define_singleton_method</methodname><methodparam><parameter>name</parameter></methodparam><methodparam><parameter>{ }</parameter></methodparam></methodsynopsis> Defines on the receiver a singleton method named with the <literal>Symbol</literal> <parameter>name</parameter>. The method body may be given as a <literal>Proc</literal>, <literal>Method</literal>, <literal>UnboundMethod</literal>, or literal block. In the last case, the block is evaluated via <function>BasicObject#instance_eval</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Kernel#display</methodname><methodparam choice="opt"><parameter>stream=$&gt;</parameter></methodparam></methodsynopsis> Uses <function>IO#write</function> to write the receiver to the <literal>IO</literal> <parameter>stream</parameter>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#dup</methodname><void/></methodsynopsis> Returns a shallow copy of the receiver: its instance variables are copied by reference rather than value, and its tainted state is preserved.</para>
+
+  <para><methodsynopsis><type>Enumerator</type><methodname>Kernel#enum_for</methodname><methodparam choice="opt"><parameter>name=:each</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Returns an <literal>Enumerator</literal> that will traverse the receiver using its method named <parameter>name</parameter>. Any <parameter>argument</parameter>s are passed directly to this method. Aliased by <function>Kernel#to_enum</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#eql?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Aliases <function>BasicObject#==</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#extend</methodname><methodparam rep="repeat"><parameter>module</parameter></methodparam></methodsynopsis> Mixes-in each given <literal>Module</literal> to the receiver’s singleton class, returning the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#freeze</methodname><void/></methodsynopsis> Freezes then returns the receiver.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#frozen?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is frozen; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Kernel#hash</methodname><void/></methodsynopsis> Returns the unique hash value for the receiver.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Kernel#__id__</methodname><void/></methodsynopsis> Aliases <function>BasicObject#object_id</function>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#initialize_clone</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Callback invoked by both <function>Kernel#clone</function>, expected to copy additional state from the receiver to the new object, <parameter>object</parameter>. By default, invokes <function>Kernel#initialize_copy</function>, passing in <parameter>object</parameter>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#initialize_dup</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Callback invoked by both <function>Kernel#dup</function>, expected to copy additional state from the receiver to the new object, <parameter>object</parameter>. By default, invokes <function>Kernel#initialize_copy</function>, passing in <parameter>object</parameter>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Kernel#inspect</methodname><void/></methodsynopsis> Returns a human-readable representation of the receiver that is suitable for debugging purposes.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#instance_of?</methodname><methodparam><parameter>class</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver is an instance of the given <literal>Class</literal> object; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#instance_variable_defined?</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver defines an instance variable named <parameter>name</parameter>; otherwise, <literal>false</literal>. <parameter>name</parameter> is a <literal>Symbol</literal> of the form <literal>:@<replaceable>identifier</replaceable>.</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#instance_variable_get</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns the value of the receiver’s instance variable named <parameter>name</parameter>, raising a <exceptionname>NameError</exceptionname> if it is undefined. <parameter>name</parameter> is a <literal>Symbol</literal> of the form <literal>:@<replaceable>identifier</replaceable>.</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#instance_variable_set</methodname><methodparam><parameter>name</parameter></methodparam><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Assigns <parameter>object</parameter> to the receiver’s instance variable named <parameter>name</parameter>, returning <parameter>object</parameter>. <parameter>name</parameter> is a <literal>Symbol</literal> of the form <literal>:@<replaceable>identifier</replaceable>.</literal>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Kernel#instance_variables</methodname><void/></methodsynopsis> Returns the names of instance variables defined in the receiver as an <literal>Array</literal> of <literal>Symbol</literal>s.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#is_a?</methodname><methodparam><parameter>class</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the given <literal>Class</literal> or <literal>Module</literal> is an ancestor of the receiver’s class; otherwise, <literal>false</literal>. Aliased by <function>Kernel#kind_of?</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#kind_of?</methodname><methodparam><parameter>class</parameter></methodparam></methodsynopsis> Aliases <function>Kernel#is_a?</function>.</para>
+
+  <para><methodsynopsis><type>Method</type><methodname>Kernel#method</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns an objectification of the receiver’s method named <parameter>name</parameter>, where <parameter>name</parameter> is a <literal>Symbol</literal>. Raises a <exceptionname>NameError</exceptionname> if the named method does not exist.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Kernel#methods</methodname><methodparam choice="opt"><parameter>all_public=true</parameter></methodparam></methodsynopsis> Returns the names of both public and protected methods to which the receiver responds, as an <literal>Array</literal> of <literal>Symbol</literal>s. If <parameter>all_public</parameter> is <literal>false</literal>, equivalent to <function>Kernel#singleton_methods</function>.</para>
+
+  <para><methodsynopsis><type>false</type><methodname>Kernel#nil?</methodname><void/></methodsynopsis> Returns <literal>false</literal>; overridden by <function>NilClass#nil?</function>.</para>
+
+  <para><methodsynopsis><type>Fixnum</type><methodname>Kernel#object_id</methodname><void/></methodsynopsis> Aliases <function>BasicObject#__id__</function>.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Kernel#private_methods</methodname><void/></methodsynopsis> Returns the names of the private methods to which the receiver responds, as an <literal>Array</literal> of <literal>Symbol</literal>s.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Kernel#protected_methods</methodname><void/></methodsynopsis> Returns the names of the protected methods to which the receiver responds, as an <literal>Array</literal> of <literal>Symbol</literal>s.</para>
+
+  <para><methodsynopsis><type>Method</type><methodname>Kernel#public_method</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Returns an objectification of the receiver’s public method named <parameter>name</parameter>, where <parameter>name</parameter> is a <literal>Symbol</literal>. Raises a <exceptionname>NameError</exceptionname> if the named method does not exist or isn’t public.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Kernel#public_methods</methodname><methodparam choice="opt"><parameter>inherited=true</parameter></methodparam></methodsynopsis> Returns the names of the public methods to which the receiver responds, as an <literal>Array</literal> of <literal>Symbol</literal>s. If <parameter>inherited</parameter> is <literal>false</literal>, inherited methods are omitted.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#public_send</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Invokes the receiver’s public method named <parameter>name</parameter> with the given <parameter>argument</parameter>s, returning the method’s value.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#respond_to?</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt"><parameter>private=false</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the receiver responds to a public or protected method named <parameter>name</parameter>; <literal>false</literal>, otherwise. If <parameter>private</parameter> is <literal>true</literal>, considers private methods, too.</para>
+
+  <para><methodsynopsis><type>false</type><methodname>Kernel#respond_to_missing?</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt"><parameter>private=false</parameter></methodparam></methodsynopsis> Hook called by <function>Kernel#respond_to?</function> when the receiver doesn’t define a method named <parameter>name</parameter>. If an object responds to a message via <function>BasicObject#method_missing</function> it is supposed to override this method to return <literal>true</literal> when given the selector.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#send</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam><methodparam choice="opt"><parameter>&amp;block</parameter></methodparam></methodsynopsis> Aliases <function>BasicObject#__send__</function>.</para>
+
+  <para><methodsynopsis><type>Class</type><methodname>Kernel#singleton_class</methodname><void/></methodsynopsis> Returns the receiver’s singleton class, creating it if necessary.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Kernel#singleton_methods</methodname><methodparam choice="opt"><parameter>from_modules=true</parameter></methodparam></methodsynopsis> Returns the names of the receiver’s singleton methods, as an <literal>Array</literal> of <literal>Symbol</literal>s. If <parameter>from_modules</parameter> is <literal>false</literal>, the list excludes methods defined in <literal>Module</literal>s mixed-in to the receiver’s singleton class.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#taint</methodname><void/></methodsynopsis> Taints and returns the receiver.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel#tainted?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is tainted; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#tap</methodname><methodparam><parameter>{|object| }</parameter></methodparam></methodsynopsis> Yields the receiver to the block then returns the receiver.</para>
+
+  <para><methodsynopsis><type>Enumerator</type><methodname>Kernel#to_enum</methodname><methodparam choice="opt"><parameter>name=:each</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>argument</parameter></methodparam></methodsynopsis> Aliases <function>Kernel#enum_for</function>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Kernel#to_s</methodname><void/></methodsynopsis> Returns a <literal>String</literal> containing the receiver’s class and object ID. For the top-level object, returns <literal>"main"</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#trust</methodname><void/></methodsynopsis> Trusts and returns the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#untaint</methodname><void/></methodsynopsis> Un-taints and returns the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#untrust</methodname><void/></methodsynopsis> Un-trusts and returns the receiver.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#untrusted?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is not trusted; otherwise, <literal>false</literal>.</para>
+
+  <!-- Private instance methods -->
+
+  <para><methodsynopsis><type>true or false</type><methodname>Kernel.gem</methodname><methodparam><parameter>name</parameter></methodparam><methodparam choice="opt" rep="repeat"><parameter>version</parameter></methodparam></methodsynopsis> Adds the directories holding the gem named <parameter>name</parameter> to <literal>$LOAD_PATH</literal>. By default, the latest version of the gem is added; other versions can be specified by supplying one or more <parameter>version</parameter> predicates, all of which must be satisfied. A predicate has the form <literal><replaceable>operator</replaceable> <replaceable>number</replaceable></literal>. <replaceable>operator</replaceable> is one of <literal>=</literal> (this version only), <literal>!=</literal> (any version but this), <literal>&gt;</literal> (a higher version than this), <literal>&lt;</literal> (a lower version than this), <literal>&gt;=</literal> (at least this version), <literal>&lt;=</literal> (at most this version), and <literal>~&gt;</literal> (at least this version, but less than this version after incrementing its penultimate digit by <literal>1</literal>). <replaceable>number</replaceable> is up to three integers separated by periods which correspond to the major version, the minor version, and the patch level, respectively; omitted parts default to <literal>0</literal>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#initialize_copy</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Callback invoked by both <function>Kernel#initialize_clone</function> and <function>Kernel#initialize_dup</function>, expected to copy additional state from the receiver to the new object, <parameter>object</parameter>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Kernel#remove_instance_variable</methodname><methodparam><parameter>name</parameter></methodparam></methodsynopsis> Removes the receiver’s instance variable named <parameter>name</parameter>, returning its old value. <parameter>name</parameter> is a <literal>Symbol</literal> of the form <literal>:@<replaceable>identifier</replaceable></literal>.</para>
 </appendix>
