@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.process-sys" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Process::Sys</title>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.getegid</methodname><void/></methodsynopsis> Aliases <function>Process.egid</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.geteuid</methodname><void/></methodsynopsis> Aliases <function>Process.euid</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.getgid</methodname><void/></methodsynopsis> Aliases <function>Process.gid</function>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Process.getuid</methodname><void/></methodsynopsis> Aliases <function>Process.uid</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Process.issetugid</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the current process environment or memory address space is considered tainted by UID or GID changes; otherwise, <literal>false</literal>. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>issetugid(2)</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Process.setegid</methodname><methodparam><parameter>gid</parameter></methodparam></methodsynopsis> Sets the effective group ID of the current process to the given <literal>Integer</literal>. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>setegid(2)</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Process.seteuid</methodname><methodparam><parameter>uid</parameter></methodparam></methodsynopsis> Sets the effective user ID of the current process to the given <literal>Integer</literal>. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>seteuid(2)</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Process.setregid</methodname><methodparam><parameter>real</parameter></methodparam><methodparam><parameter>effective</parameter></methodparam></methodsynopsis> Sets the real and effective group IDs of the current process to <parameter>real</parameter> and <parameter>effective</parameter>, respectively. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>setregid(2)</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Process.setresgid</methodname><methodparam><parameter>real</parameter></methodparam><methodparam><parameter>effective</parameter></methodparam><methodparam><parameter>saved</parameter></methodparam></methodsynopsis> Sets the real, effective, and saved group IDs of the current process to <parameter>real</parameter>, <parameter>effective</parameter>, and <parameter>saved</parameter> respectively. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>setresgid(2)</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Process.setresuid</methodname><methodparam><parameter>real</parameter></methodparam><methodparam><parameter>effective</parameter></methodparam><methodparam><parameter>saved</parameter></methodparam></methodsynopsis> Sets the real, effective, and saved user IDs of the current process to <parameter>real</parameter>, <parameter>effective</parameter>, and <parameter>saved</parameter> respectively. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>setresuid(2)</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Process.setreuid</methodname><methodparam><parameter>real</parameter></methodparam><methodparam><parameter>effective</parameter></methodparam></methodsynopsis> Sets the real and effective user IDs of the current process to <parameter>real</parameter> and <parameter>effective</parameter>, respectively. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>setreuid(2)</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Process.setrgid</methodname><methodparam><parameter>real</parameter></methodparam></methodsynopsis> Sets the real group ID of the current process to the given <literal>Integer</literal>. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>setrgid(2)</function>.</para>
+
+  <para><methodsynopsis><type>nil</type><methodname>Process.setruid</methodname><methodparam><parameter>real</parameter></methodparam></methodsynopsis> Sets the real user ID of the current process to the given <literal>Integer</literal>. Raises <exceptionname>NotImplementedError</exceptionname> on platforms that lack <function>setruid(2)</function>.</para>
+</appendix>

@@ -82,6 +82,7 @@
     <xi:include href="src/ref/process.xml"/>
     <xi:include href="src/ref/process-gid.xml"/>
     <xi:include href="src/ref/process-status.xml"/>
+    <xi:include href="src/ref/process-sys.xml"/>
     <xi:include href="src/ref/process-uid.xml"/>
   </part>
 
