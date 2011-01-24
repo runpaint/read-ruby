@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.rational" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Rational</title>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Rational#*</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of multiplying <parameter>number</parameter> with the receiver.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Rational#**</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of raising the receiver to the <parameter>number</parameter><superscript>th</superscript> power.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Rational#+</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of adding the receiver to <parameter>number</parameter>.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Rational#-</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of subtracting <parameter>number</parameter> from the receiver.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Rational#/</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using rational division if possible; otherwise, floating-point division—the receiver by <parameter>number</parameter>. Aliased by <function>Numeric#div</function> and <function>Rational#quo</function>.</para>
+  
+  <para><methodsynopsis><type>-1, 0, 1</type><methodname>Rational#&lt;=&gt;</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>-1</literal> if the receiver is less than <parameter>number</parameter>, <literal>0</literal> if they are equal, and <literal>1</literal> if it is greater.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Rational#==</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if the <parameter>number</parameter> is a <literal>Numeric</literal> with the same value as the receiver; <literal>false</literal>, otherwise. If <parameter>number</parameter> is a <literal>Float</literal>, the receiver is coerced into a <literal>Float</literal> prior to the comparison.</para>
+
+  <para><methodsynopsis><type>Integer or Rational</type><methodname>Rational#ceil</methodname><methodparam choice="opt"><parameter>precision=0</parameter></methodparam></methodsynopsis> Returns the smallest <literal>Integer</literal> greater than or equal to the receiver. If <parameter>precision</parameter> is given, returns the receiver rounded toward positive infinity: if <parameter>precision</parameter> is positive, it specifies the number of digits following the decimal point; otherwise, it specifies the number of digits preceding the decimal point.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Rational#coerce</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns an <literal>Array</literal> whose first element is <parameter>object</parameter>, and second, the receiver—both coerced to <literal>Numeric</literal>s of the same class. If <parameter>object</parameter> is an <literal>Integer</literal>, it is converted to a <literal>Rational</literal>; if it is a <literal>Float</literal>, both are converted to <literal>Float</literal>s; if it is a <literal>Complex</literal> without an imaginary part, it is converted to a <literal>Rational</literal> whose numerator equals the real part, and whose denominator is <literal>1</literal>; otherwise, a <exceptionname>TypeError</exceptionname> is raised.</para> 
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Rational#denominator</methodname><void/></methodsynopsis> Returns the denominator of the receiver.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Rational#fdiv</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Returns the result of dividing—using floating-point division—the receiver by <parameter>number</parameter>. Aliased by <function>Rational#quo</function>.</para>
+
+  <para><methodsynopsis><type>Integer or Rational</type><methodname>Rational#floor</methodname><methodparam choice="opt"><parameter>precision=0</parameter></methodparam></methodsynopsis> Returns the largest <literal>Integer</literal> less than or equal to the receiver. If <parameter>precision</parameter> is given, returns the receiver rounded toward negative infinity: if <parameter>precision</parameter> is positive, it specifies the number of digits following the decimal point; otherwise, it specifies the number of digits preceding the decimal point.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Rational#numerator</methodname><void/></methodsynopsis> Returns the numerator of the receiver.</para>
+
+  <para><methodsynopsis><type>Numeric</type><methodname>Rational#quo</methodname><methodparam><parameter>number</parameter></methodparam></methodsynopsis> Aliases <function>Rational#/</function>.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>Rational#rationalize</methodname><methodparam choice="opt"><parameter>epsilon</parameter></methodparam></methodsynopsis> Returns the simplest rational number differing from the receiver by no more than the absolute value of <parameter>epsilon</parameter>. If <parameter>epsilon</parameter> is omitted, returns the receiver.</para>
+
+  <para><methodsynopsis><type>Integer or Rational</type><methodname>Rational#round</methodname><methodparam choice="opt"><parameter>precision=0</parameter></methodparam></methodsynopsis> Returns the <literal>Integer</literal> nearest to the receiver: rounding upwards if there’s a tie. If <parameter>precision</parameter> is positive, it specifies the number of digits following the decimal point; otherwise, it specifies the number of digits preceding the decimal point.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Rational#to_f</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Float</literal>.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Rational#to_i</methodname><void/></methodsynopsis> Returns the receiver truncated to an <literal>Integer</literal>.</para>
+
+  <para><methodsynopsis><type>Rational</type><methodname>Rational#to_r</methodname><void/></methodsynopsis> Returns the receiver.</para>
+ 
+  <para><methodsynopsis><type>String</type><methodname>Rational#to_s</methodname><void/></methodsynopsis> Returns a <literal>String</literal> comprising the numerator and denominator of the receiver, separated by a solidus.</para>
+
+  <para><methodsynopsis><type>Integer or Rational</type><methodname>Rational#truncate</methodname><methodparam choice="opt"><parameter>precision=0</parameter></methodparam></methodsynopsis> Returns the receiver truncated toward zero. If <parameter>precision</parameter> is given, the result is a <literal>Rational</literal>; otherwise, it is an <literal>Integer</literal>. When <parameter>precision</parameter> is negative, it specifies the number of digits preceding the decimal point; otherwise, it specifies the number of digits following the decimal point.</para>
+</appendix>
