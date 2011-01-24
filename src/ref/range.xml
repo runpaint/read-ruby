@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.range" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Range</title>
+
+  <para><methodsynopsis><type>Range</type><methodname>Range.new</methodname><methodparam><parameter>begin</parameter></methodparam><methodparam><parameter>end</parameter></methodparam><methodparam choice="opt"><parameter>exclusive</parameter></methodparam></methodsynopsis> Creates and returns a <literal>Range</literal> of <parameter>begin</parameter> to <parameter>end</parameter>, inclusive. If <parameter>exclusive</parameter> is <literal>true</literal>, <parameter>end</parameter> is omitted.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Range#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> is a <literal>Range</literal> whose beginning and end values are <function>#==</function> to the corresponding values in the receiver, and they are both either exclusive or inclusive; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Range#===</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns the value of <function>Range#include?</function> when passed <parameter>object</parameter>.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Range#begin</methodname><void/></methodsynopsis> Returns the beginning value of the receiver.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Range#cover?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is between—using the comparison operators—the beginning and end value of the receiver. If the receiver is inclusive, <parameter>object</parameter> may equal the end value; otherwise, it may not.</para>
+
+  <para><methodsynopsis><type>Range</type><methodname>Range#each</methodname><methodparam choice="opt"><parameter>{|value| }</parameter></methodparam></methodsynopsis> Generates successive elements of the receiver with <function>#succ</function>, yielding them to the block. If the block is omitted, an <literal>Enumerator</literal> is returned.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Range#end</methodname><void/></methodsynopsis> Returns the end value of the receiver.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Range#eql?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> is a <literal>Range</literal> whose beginning and end values are <function>#eql?</function> to the corresponding values in the receiver, and they are both either exclusive or inclusive; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Range#exclude_end?</methodname><void/></methodsynopsis> Return <literal>true</literal> if the receiver is exclusive; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Object or Array</type><methodname>Range#first</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam></methodsynopsis> Returns the first <parameter>n</parameter> elements of the receiver as an <literal>Array</literal>. If <parameter>n</parameter> is omitted, returns the first element itself.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Range#include?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> If the endpoints of the receiver are <literal>Numeric</literal>, behaves as <function>Range#cover?</function>. Otherwise, uses <literal>Enumerable#include?</literal> to determine whether <parameter>object</parameter> is an element of the receiver, returning <literal>true</literal> if it is; otherwise, <literal>false</literal>. Aliased by <function>Range#member?</function>.</para> 
+
+  <para><methodsynopsis><type>Object or Array</type><methodname>Range#last</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam></methodsynopsis> Returns the last <parameter>n</parameter> elements of the receiver as an <literal>Array</literal>. If <parameter>n</parameter> is omitted, returns the last element itself.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Range#max</methodname><methodparam choice="opt"><parameter>{|a,b| }</parameter></methodparam></methodsynopsis> Returns the largest element of the receiver, or <literal>nil</literal> if the beginning value exceeds the end value. If a block is given it is used to find the maximum value: it is passed each pair of elements in turn, and expected to behave like <function>#&lt;=&gt;</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Range#member?</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Aliases <function>Range#include?</function>.</para>
+
+  <para><methodsynopsis><type>Object or nil</type><methodname>Range#min</methodname><methodparam choice="opt"><parameter>{|a,b| }</parameter></methodparam></methodsynopsis> Returns the smallest element of the receiver, or <literal>nil</literal> if the beginning value exceeds the end value. If a block is given it is used to find the maximum value: it is passed each pair of elements in turn, and expected to behave like <function>#&lt;=&gt;</function>.</para>
+
+  <para><methodsynopsis><type>Range</type><methodname>Range#step</methodname><methodparam choice="opt"><parameter>n=1</parameter></methodparam><methodparam choice="opt"><parameter>{|value| }</parameter></methodparam></methodsynopsis> Generates successive elements of the receiver with <function>#succ</function>, or if the endpoints are numeric, <function>#+</function>, yielding every <parameter>n</parameter><superscript>th</superscript> to the block. If the block is omitted, an <literal>Enumerator</literal> is returned.</para>
+</appendix>
