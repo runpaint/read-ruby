@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.regexp" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Regexp</title>
+
+  <para><methodsynopsis><type>Regexp</type><methodname>Regexp.compile</methodname><methodparam><parameter>pattern</parameter></methodparam><methodparam choice="opt"><parameter>options</parameter></methodparam><methodparam choice="opt"><parameter>encoding</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Regexp</type><methodname>Regexp.compile</methodname><methodparam><parameter>regexp</parameter></methodparam></methodsynopsis> Creates and returns a new <literal>Regexp</literal>. <parameter>pattern</parameter> is a regular expression as a <literal>String</literal>. If <parameter>options</parameter> is a <literal>Fixnum</literal> it is the bitwise-OR of one or more of the following constants: <literal>Regexp::EXTENDED</literal>, <literal>Regexp::IGNORECASE</literal>, and <literal>Regexp::MULTILINE</literal>; if it is <literal>nil</literal>, it is equivalent to <literal>Regexp::IGNORECASE</literal>. The <literal>Regexp</literal> will have the encoding of <parameter>pattern</parameter>, unless <parameter>encoding</parameter> is <literal>"n"</literal> or <literal>"N"</literal>, in which case it will have the ASCII-8BIT encoding. In the second form, a new <literal>Regexp</literal> is created from the given <literal>Regexp</literal>, inheriting its options. Aliased by <function>Regexp.new</function>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Regexp.escape</methodname><methodparam><parameter>string</parameter></methodparam></methodsynopsis> Returns the given <literal>String</literal> with all <literal>Regexp</literal> metacharacters escaped. Aliased by <function>Regexp.quote</function>.</para>
+
+  <para><methodsynopsis><type>MatchData</type><methodname>Regexp.last_match</methodname><methodparam choice="opt"><parameter>capture</parameter></methodparam></methodsynopsis> Returns the <literal>MatchData</literal> object representing the last successful match; equivalent to <literal>$~</literal>. If <parameter>capture</parameter> is given, returns the text corresponding to the specified capture group: a <literal>Fixnum</literal> specifies a numbered group, and a <literal>Symbol</literal> specifies a named group.</para>
+
+  <para><methodsynopsis><type>Regexp</type><methodname>Regexp.new</methodname><methodparam><parameter>pattern</parameter></methodparam><methodparam choice="opt"><parameter>options</parameter></methodparam><methodparam choice="opt"><parameter>encoding</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Regexp</type><methodname>Regexp.new</methodname><methodparam><parameter>regexp</parameter></methodparam></methodsynopsis> Aliases <function>Regexp.compile</function>.</para>
+
+  <para><methodsynopsis><type>String</type><methodname>Regexp.quote</methodname><methodparam><parameter>string</parameter></methodparam></methodsynopsis> Aliases <function>Regexp.escape</function>.</para>
+
+  <para><methodsynopsis><type>Regexp or nil</type><methodname>Regexp.try_convert</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <parameter>object</parameter> if it’s a <literal>Regexp</literal>, otherwise tries to convert it to one with <function>#to_regexp</function>. If this approach fails, returns <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Regexp</type><methodname>Regexp.union</methodname><methodparam choice="opt" rep="repeat"><parameter>pattern</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Regexp</type><methodname>Regexp.union</methodname><methodparam><parameter>patterns</parameter></methodparam></methodsynopsis>Returns a <literal>Regexp</literal> that matches any of the given <parameter>patterns</parameter>. If <parameter>pattern</parameter> is a <literal>String</literal>, its metacharacters are escaped; if it’s a <literal>Regexp</literal>, it corresponds to a group matching the same pattern with the same options. If no <parameter>pattern</parameter>s are given, <literal>/(?!)/</literal>—a <literal>Regexp</literal> that will never match—is returned. In the second form, the <parameter>pattern</parameter>s are given as an <literal>Array</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Regexp#==</methodname><methodparam><parameter>regexp</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>regexp</parameter> is a <literal>Regexp</literal> with the same pattern, encoding, and <emphasis>case-fold</emphasis> setting as the receiver; otherwise, <literal>false</literal>. Aliased by <function>Regexp#eql?</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Regexp#===</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is a <literal>String</literal> that matches the receiver; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>Regexp#=~</methodname><methodparam><parameter>string</parameter></methodparam></methodsynopsis> If the given <literal>String</literal> matches the receiver, sets <literal>$~</literal> to the corresponding <literal>MatchData</literal> object, then returns the offset in <parameter>string</parameter> where the match begins; otherwise, returns <literal>nil</literal>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>Regexp#~</methodname><void/></methodsynopsis> Behaves as <function>Regexp#=~</function>, but matches the receiver against <literal>$_</literal>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Regexp#casefold?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver is case-insensitive; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>Encoding</type><methodname>Regexp#encoding</methodname><void/></methodsynopsis> Returns the <literal>Encoding</literal> associated with the receiver.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Regexp#eql?</methodname><methodparam><parameter>regexp</parameter></methodparam></methodsynopsis> Aliases <function>Regexp#==</function>.</para>
+
+  <para><methodsynopsis><type>true or false</type><methodname>Regexp#fixed_encoding?</methodname><void/></methodsynopsis> Returns <literal>true</literal> if the receiver contains non-ASCII characters; otherwise, <literal>false</literal>.</para>
+
+  <para><methodsynopsis><type>MatchData or nil</type><methodname>Regexp#match</methodname><methodparam><parameter>string</parameter></methodparam><methodparam choice="opt"><parameter>offset=0</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object or nil</type><methodname>Regexp#match</methodname><methodparam><parameter>string</parameter></methodparam><methodparam choice="opt"><parameter>offset=0</parameter></methodparam><methodparam><parameter>{|matchdata| }</parameter></methodparam></methodsynopsis> Matches the receiver against the <literal>String</literal> <parameter>string</parameter>, starting from the <parameter>offset</parameter><superscript>th</superscript> character. If the match fails, <literal>nil</literal> is returned. Otherwise, the first form returns the <literal>MatchData</literal> object, and the second form yields the <literal>MatchData</literal> object to the block then returns the block’s value.</para>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Regexp#named_captures</methodname><void/></methodsynopsis> Assuming each named capture group has an integer index, with the first being <literal>1</literal>, returns a <literal>Hash</literal> associating each unique name with an <literal>Array</literal> of indices corresponding to the groups that capture it.</para>
+
+  <para><methodsynopsis><type>Array</type><methodname>Regexp#names</methodname><void/></methodsynopsis> Returns the unique names corresponding to each named capture group as an <literal>Array</literal> of <literal>String</literal>s.</para>
+
+  <para><methodsynopsis><type>Integer</type><methodname>Regexp#options</methodname><void/></methodsynopsis> Returns the bitwise-OR of the options with which the receiver was created.</para> 
+
+<para><methodsynopsis><type>String</type><methodname>Regexp#source</methodname><void/></methodsynopsis> Returns the receiver’s pattern.</para>
+
+<para><methodsynopsis><type>String</type><methodname>Regexp#to_s</methodname><void/></methodsynopsis> Returns the receiver as a <literal>String</literal>, i.e. the pattern and the associated objects in a form that re-compiles to a semantically identical <literal>Regexp</literal>.</para>
+</appendix>

@@ -86,6 +86,7 @@
     <xi:include href="src/ref/process-uid.xml"/>
     <xi:include href="src/ref/range.xml"/>
     <xi:include href="src/ref/rational.xml"/>
+    <xi:include href="src/ref/regexp.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>
