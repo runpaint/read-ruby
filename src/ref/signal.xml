@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.signal" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Signal</title>
+
+  <para><methodsynopsis><type>Hash</type><methodname>Signal.list</methodname><void/></methodsynopsis> Returns a <literal>Hash</literal> whose keys are signal names, and values the corresponding signal numbers.</para>
+
+  <para><methodsynopsis><type>Object</type><methodname>Signal.trap</methodname><methodparam><parameter>signal</parameter></methodparam><methodparam><parameter>command</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>Object</type><methodname>Signal.trap</methodname><methodparam><parameter>signal</parameter></methodparam><methodparam><parameter>{|signal_number| }</parameter></methodparam></methodsynopsis> Registers a signal handler for the signal identified by <parameter>signal</parameter>, where <parameter>signal</parameter> is a signal name—as a <literal>String</literal> or <literal>Symbol</literal>—or a signal number. If <parameter>signal</parameter> is a <literal>Proc</literal>, or a block is given, they are called with the signal number as their argument. If <parameter>signal</parameter> is <literal>nil</literal>, <literal>""</literal>, or <literal>"IGNORE"</literal>, the signal is ignored. If <parameter>signal</parameter> is <literal>"DEFAULT"</literal>, the operating system’s default handler will be used. If <parameter>signal</parameter> is <literal>"EXIT"</literal>, the signal will terminate the interpreter. Returns the previous handler for this signal.</para>
+</appendix>
