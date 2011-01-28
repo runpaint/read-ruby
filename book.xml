@@ -52,14 +52,14 @@
     <xi:include href="src/ref/complex.xml"/>
     <xi:include href="src/ref/dir.xml"/>
     <xi:include href="src/ref/encoding.xml"/>
-    <xi:include href="src/ref/encoding-converter.xml"/>
+    <xi:include href="src/ref/encoding_converter.xml"/>
     <xi:include href="src/ref/enumerable.xml"/>
     <xi:include href="src/ref/enumerator.xml"/>
     <xi:include href="src/ref/exception.xml"/>
     <xi:include href="src/ref/falseclass.xml"/>
     <xi:include href="src/ref/fiber.xml"/>
     <xi:include href="src/ref/file.xml"/>
-    <xi:include href="src/ref/file-stat.xml"/>
+    <xi:include href="src/ref/file_stat.xml"/>
     <xi:include href="src/ref/filetest.xml"/>
     <xi:include href="src/ref/fixnum.xml"/>
     <xi:include href="src/ref/float.xml"/>
@@ -80,17 +80,17 @@
     <xi:include href="src/ref/objectspace.xml"/>
     <xi:include href="src/ref/proc.xml"/>
     <xi:include href="src/ref/process.xml"/>
-    <xi:include href="src/ref/process-gid.xml"/>
-    <xi:include href="src/ref/process-status.xml"/>
-    <xi:include href="src/ref/process-sys.xml"/>
-    <xi:include href="src/ref/process-uid.xml"/>
+    <xi:include href="src/ref/process_gid.xml"/>
+    <xi:include href="src/ref/process_status.xml"/>
+    <xi:include href="src/ref/process_sys.xml"/>
+    <xi:include href="src/ref/process_uid.xml"/>
     <xi:include href="src/ref/range.xml"/>
     <xi:include href="src/ref/rational.xml"/>
     <xi:include href="src/ref/regexp.xml"/>
     <xi:include href="src/ref/signal.xml"/>
     <xi:include href="src/ref/string.xml"/>
     <xi:include href="src/ref/struct.xml"/>
-    <xi:include href="src/ref/struct-tms.xml"/>
+    <xi:include href="src/ref/struct_tms.xml"/>
     <xi:include href="src/ref/symbol.xml"/>
   </part>
 

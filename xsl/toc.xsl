@@ -59,7 +59,7 @@
 	<xsl:with-param name="relative">0</xsl:with-param>
       </xsl:call-template>
     </xsl:variable>
-    <!-- TODO: Fix empty titles by removing superflous text nodes -->
+    <!-- TODO: Fix empty titles by removing superfluous text nodes -->
     <li><a href="{$href}"><xsl:apply-templates select="(d:title//.)[2]"/></a>
       <xsl:if test="d:sect1|d:sect2|d:sect3|d:sect4|d:sect5|d:section">
 	<ol>
