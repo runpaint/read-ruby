@@ -90,6 +90,7 @@
     <xi:include href="src/ref/signal.xml"/>
     <xi:include href="src/ref/string.xml"/>
     <xi:include href="src/ref/struct.xml"/>
+    <xi:include href="src/ref/struct-tms.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>

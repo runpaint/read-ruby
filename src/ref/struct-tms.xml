@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.struct-tms" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Struct::Tms</title>
+
+  <para><methodsynopsis><type>Float</type><methodname>Struct::Tms#cstime</methodname><void/></methodsynopsis> Returns the number of seconds of system CPU time consumed by waited-for, terminated child processes, i.e. the sum of their <function>Struct::Tms#stime</function> and <function>Struct::Tms#cstime</function> values. Returns <literal>0.0</literal> on Windows.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Struct::Tms#cutime</methodname><void/></methodsynopsis> Returns the number of seconds of user CPU time consumed by waited-for, terminated child processes, i.e. the sum of their <function>Struct::Tms#utime</function> and <function>Struct::Tms#cutime</function> values. Returns <literal>0.0</literal> on Windows.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Struct::Tms#stime</methodname><void/></methodsynopsis> Returns the number of seconds of system CPU time consumed by the calling process.</para>
+
+  <para><methodsynopsis><type>Float</type><methodname>Struct::Tms#utime</methodname><void/></methodsynopsis> Returns the number of seconds of user CPU time consumed by the calling process.</para>
+</appendix>
