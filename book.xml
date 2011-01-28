@@ -88,6 +88,7 @@
     <xi:include href="src/ref/rational.xml"/>
     <xi:include href="src/ref/regexp.xml"/>
     <xi:include href="src/ref/signal.xml"/>
+    <xi:include href="src/ref/string.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>
