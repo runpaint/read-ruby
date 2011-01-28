@@ -91,6 +91,7 @@
     <xi:include href="src/ref/string.xml"/>
     <xi:include href="src/ref/struct.xml"/>
     <xi:include href="src/ref/struct-tms.xml"/>
+    <xi:include href="src/ref/symbol.xml"/>
   </part>
 
   <xi:include href="src/bibliography.xml"/>

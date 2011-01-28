@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix version="5.0"
+         xml:id="ref.symbol" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	 xmlns:xi="http://www.w3.org/2001/XInclude"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>Symbol</title>
+
+  <para><methodsynopsis><type>Array</type><methodname>Symbol.all_symbols</methodname><void/></methodsynopsis> Returns the names of all <literal>Symbol</literal>s currently defined.</para>
+
+  <para><methodsynopsis><type>-1, 0, 1, or nil</type><methodname>Symbol#&lt;=&gt;</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Converts both the receiver and <parameter>object</parameter> to <literal>String</literal>s then compares them with <function>String#&lt;=&gt;</function>.</para>
+
+
+  <para><methodsynopsis><type>true or false</type><methodname>Symbol#==</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>true</literal> if <parameter>object</parameter> is a <literal>Symbol</literal> with the same <function>Symbol#object_id</function> as the receiver; otherwise, <literal>false</literal>. Aliased by <function>Symbol#===</function>.</para> 
+
+  <para><methodsynopsis><type>true or false</type><methodname>Symbol#===</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Aliases <function>Symbol#==</function>.</para>
+
+  <para><methodsynopsis><type>Integer or nil</type><methodname>Symbol#=~</methodname><methodparam><parameter>pattern</parameter></methodparam></methodsynopsis> Converts the receiver to a <literal>String</literal>, then returns the value of <function>String#=~</function> with the same argument. Aliased by <function>Symbol#match</function>.</para>
+
+  <para><methodsynopsis><type>String or nil</type><methodname>Symbol#[]</methodname><methodparam><parameter>offset</parameter></methodparam><methodparam choice="opt"><parameter>length</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>String or nil</type><methodname>Symbol#[]</methodname><methodparam><parameter>range</parameter></methodparam></methodsynopsis> 
+  <methodsynopsis><type>String or nil</type><methodname>Symbol#[]</methodname><methodparam><parameter>regexp</parameter></methodparam><methodparam choice="opt"><parameter>group</parameter></methodparam></methodsynopsis>
+    <methodsynopsis><type>String or nil</type><methodname>Symbol#[]</methodname><methodparam><parameter>string</parameter></methodparam></methodsynopsis> Converts the receiver to a <literal>String</literal> then returns the result of <function>String#[]</function> for the same arguments. Aliased by <function>Symbol#slice</function>.</para>
+    
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#capitalize</methodname><void/></methodsynopsis> Converts the receiver to a <literal>String</literal>, capitalises it with <function>String#capitalize</function>, then returns the result as a <literal>Symbol</literal>.</para>
+
+  <para><methodsynopsis><type>-1, 0, 1, or nil</type><methodname>Symbol#casecmp</methodname><methodparam><parameter>object</parameter></methodparam></methodsynopsis> Returns <literal>nil</literal> unless <parameter>object</parameter> is a <literal>Symbol</literal>. Otherwise, converts the receiver and <parameter>object</parameter> to <literal>String</literal>s, then returns the value of <function>String#casecmp</function> when given the converted <parameter>object</parameter> as argument.</para>
+
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#downcase</methodname><void/></methodsynopsis> Converts the receiver to a <literal>String</literal>, changes it to lowercase with <function>String#downcase</function>, then returns the result as a <literal>Symbol</literal>.</para>
+
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#empty?</methodname><void/></methodsynopsis> Converts the receiver to a <literal>String</literal>, then returns the result of <function>String#empty?</function>.</para>
+
+    <para><methodsynopsis><type>Encoding</type><methodname>Symbol#encoding</methodname><void/></methodsynopsis> Returns the encoding of the receiver.</para>
+
+    <para><methodsynopsis><type>String</type><methodname>Symbol#id2name</methodname><void/></methodsynopsis> Returns the receiver as a <literal>String</literal>. Aliased by <function>Symbol#to_s</function>.</para>
+
+    <para><methodsynopsis><type>String</type><methodname>Symbol#inspect</methodname><void/></methodsynopsis> Returns a <literal>String</literal> which evaluates to the receiver.</para>
+
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#intern</methodname><void/></methodsynopsis> Returns the receiver.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>Symbol#length</methodname><void/></methodsynopsis> Converts the receiver to a <literal>String</literal>, then returns the result of <function>String#length</function>. Aliased by <function>Symbol#size</function>.</para>
+
+    <para><methodsynopsis><type>Integer or nil</type><methodname>Symbol#match</methodname><methodparam><parameter>pattern</parameter></methodparam></methodsynopsis> Aliases <function>Symbol#=~</function>.</para>
+
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#next</methodname><void/></methodsynopsis> Converts the receiver to a <literal>String</literal>, then returns the result of <function>String#next</function> as a <literal>Symbol</literal>. Aliased by <function>Symbol#succ</function>.</para>
+
+    <para><methodsynopsis><type>Integer</type><methodname>Symbol#size</methodname><void/></methodsynopsis> Aliases <function>Symbol#length</function>.</para>
+
+    <para><methodsynopsis><type>String or nil</type><methodname>Symbol#slice</methodname><methodparam><parameter>offset</parameter></methodparam><methodparam choice="opt"><parameter>length</parameter></methodparam></methodsynopsis>
+  <methodsynopsis><type>String or nil</type><methodname>Symbol#slice</methodname><methodparam><parameter>range</parameter></methodparam></methodsynopsis> 
+  <methodsynopsis><type>String or nil</type><methodname>Symbol#slice</methodname><methodparam><parameter>regexp</parameter></methodparam><methodparam choice="opt"><parameter>group</parameter></methodparam></methodsynopsis>
+    <methodsynopsis><type>String or nil</type><methodname>Symbol#slice</methodname><methodparam><parameter>string</parameter></methodparam></methodsynopsis> Aliases <function>Symbol#[]</function>.</para>
+
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#succ</methodname><void/></methodsynopsis> Aliases <function>Symbol#next</function>.</para>
+
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#swapcase</methodname><void/></methodsynopsis> Converts the receiver to a <literal>String</literal>, adjusts its letter case with <function>String#swapcase</function>, then returns the result as a <literal>Symbol</literal>.</para>
+
+    <para><methodsynopsis><type>Proc</type><methodname>Symbol#to_proc</methodname><void/></methodsynopsis> Converts the receiver to a <literal>Proc</literal> of the form <literal>{|object| object.send(<replaceable>symbol</replaceable>)}</literal>, where <replaceable>symbol</replaceable> is the receiver. In other words, interprets the receiver as a name of a method to call on each object passed to the block.</para>
+
+    <para><methodsynopsis><type>String</type><methodname>Symbol#to_s</methodname><void/></methodsynopsis> Aliases <function>Symbol#id2name</function>.</para>
+
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#to_sym</methodname><void/></methodsynopsis> Returns the receiver.</para>
+
+    <para><methodsynopsis><type>Symbol</type><methodname>Symbol#upcase</methodname><void/></methodsynopsis> Converts the receiver to a <literal>String</literal>, adjusts its letter case with <function>String#upcase</function>, then returns the result as a <literal>Symbol</literal>.</para>
+</appendix>
