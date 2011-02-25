@@ -69,7 +69,7 @@
 	<para>An operator’s arity is the number of arguments it takes. An arity of 1 makes an operator <firstterm>unary</firstterm>, 2,	<firstterm>binary</firstterm>, and 3, <firstterm>ternary</firstterm>.</para>
 	
 	<table rules="groups">
-	  <caption>Operators in descdending order of precedence</caption>
+	  <caption>Operators in descending order of precedence</caption>
 
 	  <thead>
 	    <tr>
