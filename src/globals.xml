@@ -10,6 +10,9 @@
     
   <para>Ruby predefines certain global variables automatically. They are summarised in the following table.</para>
 
+  <para>Note that the English names are only available if you first 'require
+    english'.</para>
+
   <table>
     <caption>Predefined global variables</caption>
   
